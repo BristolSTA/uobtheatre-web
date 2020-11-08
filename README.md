@@ -9,34 +9,37 @@ This project utilises the following:
 - Vue JS - A progressive JavaScript framework for reactive content
 - Tailwindcss - A utility-fist CSS framework
 
-## Project setup
-```
-yarn install
-```
+Here are the important areas to take a look at:
+- `/public/` This folder contains the base HTML file that is compiled and used as the entry point for the application. Other files in here are copied like-for-like over into the dist folder during the build process
+- `/src/` This folder contains all the JS and CSS for the application
+    - `/src/views/` This folder contains all the pages for the application. These are later referenced by the router
+    - `/src/router/` This folder contains the configuration for the router, which decides what to show to a user depending on their URI
+    - `/src/components/` This folder contains the Vue components utilised in the views
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
 
-### Compiles and minifies for production
-```
-yarn build
-```
+## Geting started
+1. Run `yarn install`
+2. Run `yarn serve`
+3. Visit the URL output in the command line
 
-### Run your unit tests
+You can now edit the project files, and the browser will reload the page automatically.
+
+You can run `yarn lint` to lint and fix files.
+
+## To build and deploy
+1. Run `yarn build`
+2. Deploy the files from `/dist`
+
+## Testing
+
+### Unit Tests
 ```
 yarn test:unit
 ```
 
-### Run your end-to-end tests
+### End-to-end tests
 ```
 yarn test:e2e
-```
-
-### Lints and fixes files
-```
-yarn lint
 ```
 
 ### Customize configuration
