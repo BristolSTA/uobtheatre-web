@@ -7,7 +7,7 @@ This repository is the frontend for uobtheatre.com, the Shows and Events platfor
 This project utilises the following:
 - Vue CLI - Handles the compiliation and chores in the repository
 - Vue JS - A progressive JavaScript framework for reactive content
-- Tailwindcss - A utility-fist CSS framework
+- Tailwindcss - A utility-first CSS framework
 
 Here are the important areas to take a look at:
 - `/public/` This folder contains the base HTML file that is compiled and used as the entry point for the application. Other files in here are copied like-for-like over into the dist folder during the build process
