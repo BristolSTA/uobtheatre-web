@@ -1,23 +1,11 @@
 <template>
   <div>
-    <div
-      id="nav"
-      class="bg-teal-400"
-    >
-      <router-link to="/">
-        Home
-      </router-link> |
-      <router-link to="/about">
-        About
-      </router-link>
+    <div id="nav" class="bg-teal-400">
+      <router-link to="/"> Home </router-link> |
+      <router-link to="/about"> About </router-link>
     </div>
     <slot />
-    <div
-      id="footer"
-      class="bg-gray-500"
-    >
-      &copy; Bristol STA
-    </div>
+    <div id="footer" class="bg-gray-500">&copy; Bristol STA</div>
   </div>
 </template>
 

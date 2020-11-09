@@ -14,7 +14,3 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 
 # [Optional] Uncomment if you want to install more global node modules
 RUN sudo -u node npm install -g @vue/cli
-
-RUN yarn install
-
-RUN ./node_modules/.bin/cypress install

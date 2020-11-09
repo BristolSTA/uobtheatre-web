@@ -16,10 +16,14 @@
 		"dbaeumer.vscode-eslint",
 		"bradlc.vscode-tailwindcss",
 		"jcbuisson.vue",
-		"octref.vetur"
+		"octref.vetur",
+		"esbenp.prettier-vscode"
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "yarn install",
+	"postCreateCommand": [
+		"yarn install",
+		"./node_modules/.bin/cypress install",
+	],
 }
