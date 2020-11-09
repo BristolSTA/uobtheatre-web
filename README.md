@@ -1,9 +1,18 @@
 # uobtheatre-web
 
-## About
+## About 🕵️‍♀️
 This repository is the frontend for uobtheatre.com, the Shows and Events platform operated by Bristol STA for use by Bristol SU socieities.
 
-## Project Structure and Form
+## Geting started 🌟
+1. Run `yarn install`
+2. Run `yarn serve`
+3. Visit the URL output in the command line
+
+You can now edit the project files, and the browser will reload the page automatically.
+
+You can run `yarn lint` to lint and fix files.
+
+## Project Structure and Form 🌴
 This project utilises the following:
 - Vue CLI - Handles the compiliation and chores in the repository
 - Vue JS - A progressive JavaScript framework for reactive content
@@ -16,21 +25,11 @@ Here are the important areas to take a look at:
     - `/src/router/` This folder contains the configuration for the router, which decides what to show to a user depending on their URI
     - `/src/components/` This folder contains the Vue components utilised in the views
 
-
-## Geting started
-1. Run `yarn install`
-2. Run `yarn serve`
-3. Visit the URL output in the command line
-
-You can now edit the project files, and the browser will reload the page automatically.
-
-You can run `yarn lint` to lint and fix files.
-
-## To build and deploy
+## To build and deploy 🔨
 1. Run `yarn build`
 2. Deploy the files from `/dist`
 
-## Testing
+## Testing 👨‍💻
 
 ### Unit Tests
 ```
