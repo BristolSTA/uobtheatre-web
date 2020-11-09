@@ -39,7 +39,7 @@ yarn test:unit
 
 ### End-to-end tests
 ```
-yarn test:e2e
+yarn test:e2e --headless
 ```
 
 ### Customize configuration
