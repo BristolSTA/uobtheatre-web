@@ -9,19 +9,19 @@ import router from './router';
 
 import { makeServer } from './server';
 
-if (process.env.NODE_ENV === 'development') {
-    makeServer();
-}
-
 /**
  * Import styles
  */
 import './assets/styles/app.css';
 
+if (process.env.NODE_ENV === 'development') {
+  makeServer();
+}
+
 /**
  * Create view app
  */
 new Vue({
-    router,
-    render: h => h(App)
+  router,
+  render: (h) => h(App),
 }).$mount('#app');
