@@ -4,6 +4,15 @@
 This repository is the frontend for uobtheatre.com, the Shows and Events platform operated by Bristol STA for use by Bristol SU socieities.
 
 ## Geting started 🌟
+
+Here is what we recommend you have installed and use to develop:
+- [Visual Studio Code](https://code.visualstudio.com/) - A code editor
+- [Docker](https://www.docker.com/get-started) - Develop without cluttering your PC
+
+If you have the above, install the [VS Code Remote Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers), and when you open the folder with VS code, click open in remote container, and you'll be set up ready for the next step!
+
+## Installing the application
+
 1. Run `yarn install`
 2. Run `yarn serve`
 3. Visit the URL output in the command line
@@ -14,9 +23,9 @@ You can run `yarn lint` to lint and fix files.
 
 ## Project Structure and Form 🌴
 This project utilises the following:
-- Vue CLI - Handles the compiliation and chores in the repository
-- Vue JS - A progressive JavaScript framework for reactive content
-- Tailwindcss - A utility-first CSS framework
+- [Vue CLI](https://cli.vuejs.org/) - Handles the compiliation and chores in the repository
+- [Vue JS](https://vuejs.org/) - A progressive JavaScript framework for reactive content
+- [Tailwindcss](https://tailwindcss.com/) - A utility-first CSS framework
 
 Here are the important areas to take a look at:
 - `/public/` This folder contains the base HTML file that is compiled and used as the entry point for the application. Other files in here are copied like-for-like over into the dist folder during the build process
