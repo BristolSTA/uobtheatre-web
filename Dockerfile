@@ -1,6 +1,7 @@
   
 # pull official base image
 FROM node:14-alpine as build
+
 # install simple http server for serving static content
 RUN npm install -g http-server
 
@@ -16,6 +17,7 @@ COPY package*.json ./
 # install project dependencies
 RUN yarn
 RUN yarn global add @vue/cli
+
 # copy project files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
 
