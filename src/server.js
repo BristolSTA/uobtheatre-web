@@ -30,19 +30,32 @@ export function makeServer({ environment = 'development' } = {}) {
 
     models: {
       production: Model.extend({
-        society: belongsTo(),
+        society: belongsTo('society'),
         performances: hasMany(),
+        cast: hasMany('cast'),
+        crew: hasMany('crew'),
       }),
       performance: Model.extend({
         venue: belongsTo(),
-        production: belongsTo(),
+        production: belongsTo('performance'),
       }),
       society: Model,
       venue: Model,
+      cast: Model.extend({
+        production: belongsTo(),
+      }),
+      crew: Model.extend({
+        production: belongsTo(),
+      }),
     },
 
     serializers: {
-      production: RelationshipSerializer(['society', 'performances']),
+      production: RelationshipSerializer([
+        'society',
+        'performances',
+        'cast',
+        'crew',
+      ]),
     },
 
     factories: {
@@ -52,10 +65,20 @@ export function makeServer({ environment = 'development' } = {}) {
         poster_image: null,
         feature_image: null,
         description: () => faker.lorem.paragraph(),
+        warnings: ['Stobe Lighting', 'Nudity'],
+        afterCreate(production, server) {
+          production.cast = server.createList('cast', 4, {
+            production: production,
+          });
+          production.crew = server.createList('crew', 4, {
+            production: production,
+          });
+          production.society = server.create('society');
+        },
       }),
       performance: Factory.extend({
-        start_time: '',
-        end_time: '',
+        start: () => faker.date.past(),
+        end: () => faker.date.future(),
         description: '',
 
         afterCreate(performance, server) {
@@ -68,6 +91,21 @@ export function makeServer({ environment = 'development' } = {}) {
       society: Factory.extend({
         name: () => faker.name.findName(),
       }),
+      cast: Factory.extend({
+        name: () => faker.name.findName(),
+        profile_picture: null,
+        role: () =>
+          faker.random.arrayElement(['Peter Pan', 'The Wizard', 'Gary']),
+      }),
+      crew: Factory.extend({
+        role: () =>
+          faker.random.arrayElement([
+            'Stage Manager',
+            'Chief Electrician',
+            'Sound Engineer',
+          ]),
+        name: () => faker.name.findName(),
+      }),
     },
 
     seeds(server) {
@@ -78,16 +116,19 @@ export function makeServer({ environment = 'development' } = {}) {
         name: 'MTB',
       });
 
-      server.create('production');
-      server.create('production', {
+      let legally = server.create('production', {
         name: 'Legally Blonde',
         society: mtbSociety,
       });
-      server.create('production', {
+      legally.createPerformance();
+      legally.createPerformance();
+
+      let trash = server.create('production', {
         name: 'TRASh',
         subtitle: 'The Really Artsy Show',
         society: dramsoc,
       });
+      trash.createPerformance();
       server.create('production', {
         name: 'Present Laughter',
         society: dramsoc,
@@ -109,6 +150,6 @@ export function makeServer({ environment = 'development' } = {}) {
       this.resource('societies');
     },
   });
-
+  console.log(server.db);
   return server;
 }
