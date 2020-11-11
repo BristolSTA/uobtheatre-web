@@ -4,6 +4,7 @@ import NavBar from '@/layout/NavBar.vue';
 
 describe('NavBar', () => {
   let navbarComponent;
+
   beforeEach(() => {
     navbarComponent = mount(NavBar, {
       stubs: ['router-link'],
