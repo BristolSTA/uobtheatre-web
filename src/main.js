@@ -12,7 +12,7 @@ import { makeServer } from './server';
 /**
  * Import styles
  */
-import './assets/styles/app.css';
+import './assets/styles/app.scss';
 
 if (process.env.NODE_ENV === 'development') {
   makeServer();

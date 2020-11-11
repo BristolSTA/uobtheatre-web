@@ -35,10 +35,11 @@
     "chai": "^4.1.2",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
+    "eslint-plugin-vue-a11y": "^0.0.31",
     "faker": "^5.1.0",
     "miragejs": "^0.1.41",
-    "sass": "^1.26.5",
-    "sass-loader": "^8.0.2",
+    "sass": "^1.29.0",
+    "sass-loader": "^10.1.0",
     "vue-cli-plugin-tailwind": "~1.5.0",
     "vue-template-compiler": "^2.6.11"
   }
