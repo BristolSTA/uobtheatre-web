@@ -2,11 +2,16 @@
   <nav class="bg-sta-gray-dark p-6">
     <div class="container flex items-center justify-between flex-wrap xl:px-40">
       <div class="flex items-center flex-shrink-0 text-white mr-10">
-        <span class="text-4xl tracking-tight uppercase">UOB Theatre</span>
+        <router-link to="/"
+          ><span class="text-4xl tracking-tight uppercase"
+            >UOB Theatre</span
+          ></router-link
+        >
       </div>
       <div class="block lg:hidden">
         <button
           class="px-3 py-2 border rounded text-white border-sta-orange"
+          role="toggle"
           @click="navHidden = !navHidden"
           @keydown="
             (e) => {
@@ -25,6 +30,7 @@
         </button>
       </div>
       <div
+        ref="collapsableNavbar"
         class="w-full lg:flex lg:items-center lg:w-auto"
         :class="navHidden ? 'hidden' : 'block'"
       >
@@ -37,8 +43,10 @@
           >
             {{ item[1] }}
           </router-link>
-          <a class="btn btn-orange btn-outline inline-block mt-4 lg:mt-0"
-            >Login</a
+          <router-link
+            to="/login"
+            class="btn btn-orange btn-outline inline-block mt-4 lg:mt-0"
+            >Login</router-link
           >
         </div>
       </div>
