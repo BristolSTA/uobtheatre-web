@@ -64,6 +64,7 @@ export function makeServer({ environment = 'development' } = {}) {
         subtitle: () => faker.lorem.sentence(5),
         poster_image: null,
         featured_image: null,
+        cover_image: 'https://via.placeholder.com/1800x1000',
         age_rating: null,
         facebook_event: null,
         description: () => faker.lorem.paragraph(),
