@@ -63,9 +63,14 @@ export function makeServer({ environment = 'development' } = {}) {
         name: () => faker.random.words(3),
         subtitle: () => faker.lorem.sentence(5),
         poster_image: null,
-        feature_image: null,
+        featured_image: null,
+        age_rating: null,
+        facebook_event: null,
         description: () => faker.lorem.paragraph(),
         warnings: ['Stobe Lighting', 'Nudity'],
+        start_date () {
+          return this.performances
+        },
         afterCreate(production, server) {
           production.cast = server.createList('cast', 4, {
             production: production,
@@ -139,6 +144,12 @@ export function makeServer({ environment = 'development' } = {}) {
       this.namespace = 'api';
 
       this.resource('productions', { except: ['index'] });
+      this.get('productions/upcoming_productions',  function (schema) {
+        return paginatedResponse(
+          this.serialize(schema.productions.all()).productions
+        );
+      });
+      
       this.get('productions', function (schema) {
         return paginatedResponse(
           this.serialize(schema.productions.all()).productions
@@ -150,6 +161,5 @@ export function makeServer({ environment = 'development' } = {}) {
       this.resource('societies');
     },
   });
-  console.log(server.db);
   return server;
 }

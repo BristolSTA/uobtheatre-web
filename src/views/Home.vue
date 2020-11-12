@@ -4,8 +4,8 @@
     <div id="splashscreen">
       <div class="bg-black bg-opacity-40 flex items-center">
         <div class=" text-white container px-4 lg:w-2/3">
-          <div class="text-2xl">Musical Theatre Bristol</div> <!-- API input -->
-          <div class="text-4xl">Legally Blonde: The Musical</div>
+          <div class="text-2xl">{{ productions[0].society.name }}</div> <!-- API input -->
+          <div class="text-4xl">{{ productions[0].name }}</div>
           <div class="text-2xl">18 July - 22 July 2020</div>
         </div>
       </div>
@@ -45,7 +45,7 @@ export default {
   },
   created() {
     productionService
-      .fetchProductions()
+      .fetchUpcomingProductions()
       .then((data) => (this.productions = data.results));
   },
 };
