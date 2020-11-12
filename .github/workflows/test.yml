@@ -34,4 +34,4 @@ jobs:
     - name: Run End-to-End Tests
       uses: cypress-io/github-action@v2
       with:
-        command: yarn test:e2e
+        command: yarn test:e2e --headless
