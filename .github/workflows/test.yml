@@ -25,8 +25,18 @@ jobs:
     - run: yarn
       name: Install Yarn Dependencies
       
+    - run: yarn build
+      name: Build Project
+      
     - run: yarn test:unit
       name: Run Unit Tests
       
-    - run: yarn test:e2e --headless
-      name: Run End-to-End Tests
+    - name: Run End-to-End Tests
+      uses: cypress-io/github-action@v1
+      with:
+        start: yarn serve --mode=production
+        wait-on: http://localhost:8080/
+        config_file: cypress.json
+        spec: "tests/e2e/**/*"
+      env:
+        CYPRESS_baseUrl: http://localhost:8080/
