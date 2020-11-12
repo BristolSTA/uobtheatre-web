@@ -32,11 +32,6 @@ jobs:
       name: Run Unit Tests
       
     - name: Run End-to-End Tests
-      uses: cypress-io/github-action@v1
+      uses: cypress-io/github-action@v2
       with:
-        start: yarn serve --mode=production
-        wait-on: http://localhost:8080/
-        config_file: cypress.json
-        spec: "tests/e2e/**/*"
-      env:
-        CYPRESS_baseUrl: http://localhost:8080/
+        command: yarn test:e2e
