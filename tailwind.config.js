@@ -31,6 +31,9 @@ module.exports = {
           dark: '#CC6C00',
         },
       },
+      opacity: {
+        '40': '0.4'
+      },
     },
   },
   variants: {},
