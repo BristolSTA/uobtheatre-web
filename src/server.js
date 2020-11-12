@@ -68,9 +68,8 @@ export function makeServer({ environment = 'development' } = {}) {
         facebook_event: null,
         description: () => faker.lorem.paragraph(),
         warnings: ['Stobe Lighting', 'Nudity'],
-        start_date () {
-          return this.performances
-        },
+        start_date: () => faker.date.past(),
+        end_date: () => faker.date.future(),
         afterCreate(production, server) {
           production.cast = server.createList('cast', 4, {
             production: production,
@@ -144,12 +143,12 @@ export function makeServer({ environment = 'development' } = {}) {
       this.namespace = 'api';
 
       this.resource('productions', { except: ['index'] });
-      this.get('productions/upcoming_productions',  function (schema) {
+      this.get('productions/upcoming_productions', function (schema) {
         return paginatedResponse(
           this.serialize(schema.productions.all()).productions
         );
       });
-      
+
       this.get('productions', function (schema) {
         return paginatedResponse(
           this.serialize(schema.productions.all()).productions
