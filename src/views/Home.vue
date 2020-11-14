@@ -4,10 +4,7 @@
       <div
         id="splashscreen"
         :style="{
-          'background-image':
-            productions.length > 0
-              ? `url(${productions[0].cover_image} )`
-              : null,
+          'background-image': splashBackground,
         }"
       >
         <div class="bg-black bg-opacity-40 flex items-center">
@@ -52,6 +49,7 @@
 </style>
 
 <script>
+// eslint-disable-next-line no-unused-vars
 import { productionService } from '@/services';
 
 export default {
@@ -64,7 +62,15 @@ export default {
   created() {
     productionService
       .fetchUpcomingProductions()
-      .then((data) => (this.productions = data.results));
+      .then((data) => (this.productions = data.results))
+      .catch((e) => console.log(e));
+  },
+  computed: {
+    splashBackground() {
+      return this.productions.length > 0
+        ? `url("${this.productions[0].cover_image}")`
+        : null;
+    },
   },
 };
 </script>

@@ -1,5 +1,5 @@
 import {
-  Server,
+  createServer,
   Model,
   Factory,
   belongsTo,
@@ -14,7 +14,7 @@ let paginatedResponse = (data) => {
     count: 2,
     next: null,
     previous: null,
-    results: data.models ?? data,
+    results: data.models ? data.models : data,
   };
 };
 
@@ -25,7 +25,7 @@ export function makeServer({ environment = 'development' } = {}) {
       include: relationships,
     });
 
-  const server = new Server({
+  return createServer({
     environment,
 
     models: {
@@ -161,5 +161,4 @@ export function makeServer({ environment = 'development' } = {}) {
       this.resource('societies');
     },
   });
-  return server;
 }
