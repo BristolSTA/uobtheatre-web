@@ -16,7 +16,7 @@ import './assets/styles/app.scss';
 
 import { makeServer } from './server';
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development' && !process.env.VUE_APP_API_BASE) {
   makeServer({ environment: 'development' });
 }
 

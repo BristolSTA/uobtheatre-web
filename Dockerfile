@@ -21,6 +21,9 @@ RUN yarn global add @vue/cli
 # copy project files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
 
+# run setup script
+RUN yarn setup
+
 # build app for production with minification
 RUN yarn build
 

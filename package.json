@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "postinstall": "yarn husky install",
+    "setup": "cp .env.example .env.local",
     "serve": "./node_modules/.bin/vue-cli-service serve",
     "build": "./node_modules/.bin/vue-cli-service build",
     "test:unit": "./node_modules/.bin/vue-cli-service test:unit",

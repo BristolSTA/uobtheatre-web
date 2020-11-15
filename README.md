@@ -44,11 +44,14 @@ Here are the important areas to take a look at:
 To build on a standalone system:
 
 1. Run `yarn build`
-2. Deploy the files from `/dist`
+2. Run `yarn setup` to create the `.env` file from the example. Edit this as required.
+3. Deploy the files from `/dist`
 
 If using docker:
 
 1. `docker run --rm -it -p 8080:8080 $(docker build -q .)`
+
+Checkout the `.env.example` file to see the environment variables to set/override
 
 ## Testing 👨‍💻
 
