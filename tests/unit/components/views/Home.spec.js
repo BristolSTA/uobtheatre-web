@@ -1,8 +1,8 @@
 import { makeServer } from '@/server';
 import { shallowMount } from '@vue/test-utils';
-import { waitFor, fixTextSpacing } from '../../helpers';
 import { expect } from 'chai';
 import Home from '@/views/Home.vue';
+import { fixTextSpacing, waitFor } from '../../helpers';
 
 describe('Home', function () {
   let homepageComponent;

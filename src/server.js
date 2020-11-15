@@ -1,10 +1,10 @@
 import {
-  createServer,
-  Model,
   Factory,
-  belongsTo,
-  hasMany,
+  Model,
   Serializer,
+  belongsTo,
+  createServer,
+  hasMany,
 } from 'miragejs';
 
 import faker from 'faker';

@@ -1,5 +1,7 @@
+import { expect } from 'chai';
 import { mount } from '@vue/test-utils';
 import FooterBar from '@/layout/FooterBar.vue';
+import { fixTextSpacing } from '../../helpers';
 
 describe('FooterBar', function () {
   let footerBarComponent;
@@ -11,10 +13,9 @@ describe('FooterBar', function () {
   });
 
   it('displays our name and current year', () => {
-    expect(footerBarComponent.text()).toContain(
-      "Bristol Stage Technicians' Association"
+    expect(fixTextSpacing(footerBarComponent.text())).to.contain(
+      `Bristol Stage Technicians' Association ${new Date().getFullYear()}`
     );
-    expect(footerBarComponent.text()).toContain(new Date().getFullYear());
   });
 
   it('displays links correctly', async () => {
@@ -28,14 +29,14 @@ describe('FooterBar', function () {
 
     let links = footerBarComponent.findAll('ul router-link-stub');
 
-    expect(links.length).toBe(2);
+    expect(links.length).to.equal(2);
 
     // First link should direct to privacy
-    expect(links.at(0).attributes('to')).toBe('/privacy');
-    expect(links.at(0).text()).toBe('Privacy');
+    expect(links.at(0).attributes('to')).to.equal('/privacy');
+    expect(links.at(0).text()).to.equal('Privacy');
 
     // Second link should be terms
-    expect(links.at(1).attributes('to')).toBe('/terms');
-    expect(links.at(1).text()).toBe('Terms');
+    expect(links.at(1).attributes('to')).to.equal('/terms');
+    expect(links.at(1).text()).to.equal('Terms');
   });
 });
