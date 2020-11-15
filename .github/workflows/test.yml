@@ -20,9 +20,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-
       - run: yarn
         name: Install Yarn Dependencies
+
+      - run: yarn setup
+        name: Setup Project
 
       - run: yarn build
         name: Build Project
