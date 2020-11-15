@@ -1,11 +1,11 @@
-import api from '@/services/api';
+import api, { paginatedResource } from '@/services/api';
 
 export default {
   fetchProductions() {
-    return api.get('productions/').then((response) => response.data);
+    return new paginatedResource('productions/');
   },
   fetchUpcomingProductions() {
-    return api.get('productions/upcoming_productions/').then((response) => response.data);
+    return new paginatedResource('productions/upcoming_productions/');
   },
   fetchProduction(id) {
     return api.get(`productions/${id}/`).then((response) => response.data);

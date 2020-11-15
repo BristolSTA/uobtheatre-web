@@ -21,8 +21,24 @@ const waitFor = function (callback) {
   });
 };
 
+const waitForTick = function (Vue, callback) {
+  // eslint-disable-next-line no-async-promise-executor
+  return new Promise(async (resolve) => {
+    let maxAttempts = 200;
+    let attempts = 0;
+
+    while (attempts < maxAttempts) {
+      attempts++;
+      await Vue.$nextTick();
+      if (callback()) {
+        resolve();
+      }
+    }
+  });
+};
+
 const fixTextSpacing = function (text) {
   return text.replace(/\s\s+/g, ' ');
 };
 
-export { waitForDOM, waitFor, fixTextSpacing };
+export { waitForDOM, waitFor, waitForTick, fixTextSpacing };

@@ -59,7 +59,7 @@ export default {
   created() {
     productionService
       .fetchUpcomingProductions()
-      .then((data) => (this.upcomingProductions = data.results));
+      .then((results) => (this.upcomingProductions = results));
   },
   computed: {
     featuredProduction() {
