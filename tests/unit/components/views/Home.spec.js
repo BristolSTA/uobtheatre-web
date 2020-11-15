@@ -28,7 +28,7 @@ describe('Home', function () {
       expect(splashscreenContainer.text()).to.contain('Welcome to UOB Theatre');
     });
 
-    it('shows first-most shows details on splashscreen', async () => {
+    it('shows featured production on splashscreen', async () => {
       // Seed a production that can't be featured (no cover photo)
       server.create('production', {
         name: 'My production without a picture',
@@ -53,7 +53,7 @@ describe('Home', function () {
 
       homepageComponent = shallowMount(Home);
       splashscreenContainer = homepageComponent.find('#splashscreen');
-      await waitFor(() => homepageComponent.vm.productions.length > 0);
+      await waitFor(() => homepageComponent.vm.featuredProduction);
 
       // Should have production name
       expect(splashscreenContainer.text()).to.contain('Upside Down Cake');

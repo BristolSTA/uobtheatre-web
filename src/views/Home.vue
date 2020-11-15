@@ -28,7 +28,7 @@
 
     <h1>Productions</h1>
     <ul>
-      <li v-for="production in productions" :key="production.id">
+      <li v-for="production in upcomingProductions" :key="production.id">
         {{ production.name }} ({{ production.date }})
       </li>
     </ul>
@@ -53,17 +53,17 @@ export default {
   name: 'Home',
   data() {
     return {
-      productions: [],
+      upcomingProductions: [],
     };
   },
   created() {
     productionService
       .fetchUpcomingProductions()
-      .then((data) => (this.productions = data.results));
+      .then((data) => (this.upcomingProductions = data.results));
   },
   computed: {
     featuredProduction() {
-      return this.productions.find((production) => {
+      return this.upcomingProductions.find((production) => {
         return !!production.cover_image;
       });
     },
