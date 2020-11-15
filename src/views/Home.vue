@@ -8,12 +8,12 @@
     >
       <div class="bg-black bg-opacity-40 flex items-center">
         <div class="text-white container px-4 lg:w-2/3">
-          <template v-if="productions.length > 0">
-            <div class="text-2xl">{{ productions[0].society.name }}</div>
-            <div class="text-4xl">{{ productions[0].name }}</div>
+          <template v-if="featuredProduction">
+            <div class="text-2xl">{{ featuredProduction.society.name }}</div>
+            <div class="text-4xl">{{ featuredProduction.name }}</div>
             <div class="text-2xl">
-              {{ productions[0].start_date | dateFormat('d MMMM') }} -
-              {{ productions[0].end_date | dateFormat('d MMMM y') }}
+              {{ featuredProduction.start_date | dateFormat('d MMMM') }} -
+              {{ featuredProduction.end_date | dateFormat('d MMMM y') }}
             </div>
           </template>
           <template v-else>
@@ -62,9 +62,14 @@ export default {
       .then((data) => (this.productions = data.results));
   },
   computed: {
+    featuredProduction() {
+      return this.productions.find((production) => {
+        return !!production.cover_image;
+      });
+    },
     splashBackground() {
-      return this.productions.length > 0
-        ? `url("${this.productions[0].cover_image}")`
+      return this.featuredProduction
+        ? `url("${this.featuredProduction.cover_image}")`
         : null;
     },
   },

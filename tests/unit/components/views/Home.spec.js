@@ -29,6 +29,15 @@ describe('Home', function () {
     });
 
     it('shows first-most shows details on splashscreen', async () => {
+      // Seed a production that can't be featured (no cover photo)
+      server.create('production', {
+        name: 'My production without a picture',
+        cover_image: null,
+        society: server.create('society', { name: 'Dramatic Pause' }),
+        start_date: new Date('2020-11-13'),
+        end_date: new Date('2020-11-14'),
+      });
+      // Seed a production that can be featured
       server.create('production', {
         name: 'Upside Down Cake',
         cover_image: 'http://pathto.example/my-image.png',
@@ -36,6 +45,7 @@ describe('Home', function () {
         start_date: new Date('2020-11-14'),
         end_date: new Date('2020-11-18'),
       });
+      // Seed a second production that can be featurted
       server.create('production', {
         name: 'Not This One Again...',
         society: server.create('society', { name: 'Jill Bowls Films' }),
