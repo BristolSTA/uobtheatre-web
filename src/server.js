@@ -1,10 +1,10 @@
 import {
-  Server,
-  Model,
   Factory,
-  belongsTo,
-  hasMany,
+  Model,
   Serializer,
+  belongsTo,
+  createServer,
+  hasMany,
 } from 'miragejs';
 
 import faker from 'faker';
@@ -14,7 +14,7 @@ let paginatedResponse = (data) => {
     count: 2,
     next: null,
     previous: null,
-    results: data.models ?? data,
+    results: data.models ? data.models : data,
   };
 };
 
@@ -25,7 +25,7 @@ export function makeServer({ environment = 'development' } = {}) {
       include: relationships,
     });
 
-  const server = new Server({
+  return createServer({
     environment,
 
     models: {
@@ -63,9 +63,14 @@ export function makeServer({ environment = 'development' } = {}) {
         name: () => faker.random.words(3),
         subtitle: () => faker.lorem.sentence(5),
         poster_image: null,
-        feature_image: null,
+        featured_image: null,
+        cover_image: 'https://via.placeholder.com/1800x1000',
+        age_rating: null,
+        facebook_event: null,
         description: () => faker.lorem.paragraph(),
         warnings: ['Stobe Lighting', 'Nudity'],
+        start_date: () => faker.date.past(),
+        end_date: () => faker.date.future(),
         afterCreate(production, server) {
           production.cast = server.createList('cast', 4, {
             production: production,
@@ -139,6 +144,12 @@ export function makeServer({ environment = 'development' } = {}) {
       this.namespace = 'api';
 
       this.resource('productions', { except: ['index'] });
+      this.get('productions/upcoming_productions', function (schema) {
+        return paginatedResponse(
+          this.serialize(schema.productions.all()).productions
+        );
+      });
+
       this.get('productions', function (schema) {
         return paginatedResponse(
           this.serialize(schema.productions.all()).productions
@@ -150,6 +161,4 @@ export function makeServer({ environment = 'development' } = {}) {
       this.resource('societies');
     },
   });
-  console.log(server.db);
-  return server;
 }

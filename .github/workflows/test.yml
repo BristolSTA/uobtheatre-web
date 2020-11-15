@@ -2,13 +2,12 @@ name: Build & Test
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   run:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -16,22 +15,22 @@ jobs:
         node-version: [10.x, 12.x, 14.x]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
 
-    - run: yarn
-      name: Install Yarn Dependencies
-      
-    - run: yarn build
-      name: Build Project
-      
-    - run: yarn test:unit
-      name: Run Unit Tests
-      
-    - name: Run End-to-End Tests
-      uses: cypress-io/github-action@v2
-      with:
-        command: yarn test:e2e --headless
+      - run: yarn
+        name: Install Yarn Dependencies
+
+      - run: yarn build
+        name: Build Project
+
+      - run: yarn test:unit --coverage
+        name: Run Unit Tests
+
+      - name: Run End-to-End Tests
+        uses: cypress-io/github-action@v2
+        with:
+          command: yarn test:e2e --headless

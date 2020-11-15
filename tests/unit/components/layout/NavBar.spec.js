@@ -1,5 +1,5 @@
-import { expect } from 'chai';
 import { mount } from '@vue/test-utils';
+import { expect } from 'chai';
 import NavBar from '@/layout/NavBar.vue';
 
 describe('NavBar', () => {
