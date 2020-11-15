@@ -62,13 +62,16 @@ export function makeServer({ environment = 'development' } = {}) {
       production: Factory.extend({
         name: () => faker.random.words(3),
         subtitle: () => faker.lorem.sentence(5),
+        slug() {
+          return this.name.toLowerCase().replace(/ /g, '-');
+        },
         poster_image: 'https://via.placeholder.com/400x566',
         featured_image: 'https://via.placeholder.com/1920x960',
         cover_image: 'https://via.placeholder.com/1800x1000',
         age_rating: null,
         facebook_event: 'https://facebook.com',
         description: () => faker.lorem.paragraph(),
-        warnings: ['Stobe Lighting', 'Nudity'],
+        warnings: ['Strobe Lighting', 'Nudity'],
         start_date: () => faker.date.past(),
         end_date: () => faker.date.future(),
         afterCreate(production, server) {

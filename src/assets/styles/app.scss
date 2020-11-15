@@ -4,7 +4,7 @@
 
 @layer components {
   .btn {
-    @apply rounded px-6 py-2 cursor-pointer;
+    @apply rounded-sm px-6 py-2 cursor-pointer inline-block;
     @apply text-white;
 
     &:hover {
@@ -30,5 +30,11 @@
       @apply text-white;
       @apply border-transparent;
     }
+  }
+}
+@layer utilities {
+  .text-h1,
+  .text-h2 {
+    @apply font-semibold;
   }
 }

@@ -38,7 +38,7 @@
           /></a>
         </div>
 
-        <div class="text-white ml-10 flex-1">
+        <div class="text-white ml-10 flex-1 text-center md:text-left">
           <p class="mb-4">
             &copy; Bristol Stage Technicians' Association
             {{ new Date().getFullYear() }}

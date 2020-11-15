@@ -13,10 +13,27 @@ module.exports = {
   },
   rules: {
     'import/order': 2,
+    'spellcheck/spell-checker': [
+      'warn',
+      {
+        skipWords: [
+          'csrftoken',
+          'vue',
+          'jill',
+          'bloggs',
+          'theatre',
+          'pegg',
+          'dramsoc',
+        ],
+        identifiers: false,
+        lang: 'en_GB',
+        minLength: 5,
+      },
+    ],
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
   },
-  plugins: ['prettier', 'vue-a11y', 'import'],
+  plugins: ['prettier', 'vue-a11y', 'import', 'spellcheck'],
   overrides: [
     {
       files: [

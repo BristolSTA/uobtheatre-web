@@ -1,3 +1,5 @@
+import { mount, RouterLinkStub } from '@vue/test-utils';
+
 const waitForDOM = function (wrapper, selector) {
   return new Promise((resolve) => {
     const timer = setInterval(() => {
@@ -41,4 +43,12 @@ const fixTextSpacing = function (text) {
   return text.replace(/\s\s+/g, ' ');
 };
 
-export { waitForDOM, waitFor, waitForTick, fixTextSpacing };
+const mountWithoutRouter = function (component) {
+  return mount(component, {
+    stubs: {
+      RouterLink: RouterLinkStub,
+    },
+  });
+};
+
+export { waitForDOM, waitFor, waitForTick, fixTextSpacing, mountWithoutRouter };

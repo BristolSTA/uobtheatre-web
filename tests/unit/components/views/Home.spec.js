@@ -1,8 +1,8 @@
 import { makeServer } from '@/server';
-import { shallowMount } from '@vue/test-utils';
 import { expect } from 'chai';
 import Home from '@/views/Home.vue';
-import { fixTextSpacing, waitFor } from '../../helpers';
+import { RouterLinkStub } from '@vue/test-utils';
+import { fixTextSpacing, waitFor, mountWithoutRouter } from '../../helpers';
 
 describe('Home', function () {
   let homepageComponent;
@@ -10,7 +10,7 @@ describe('Home', function () {
 
   beforeEach(() => {
     server = makeServer({ environment: 'test' });
-    homepageComponent = shallowMount(Home);
+    homepageComponent = mountWithoutRouter(Home);
   });
 
   afterEach(() => {
@@ -29,29 +29,9 @@ describe('Home', function () {
     });
 
     it('shows featured production on splashscreen', async () => {
-      // Seed a production that can't be featured (no cover photo)
-      server.create('production', {
-        name: 'My production without a picture',
-        cover_image: null,
-        society: server.create('society', { name: 'Dramatic Pause' }),
-        start_date: new Date('2020-11-13'),
-        end_date: new Date('2020-11-14'),
-      });
-      // Seed a production that can be featured
-      server.create('production', {
-        name: 'Upside Down Cake',
-        cover_image: 'http://pathto.example/my-image.png',
-        society: server.create('society', { name: 'Joe Bloggs Productions' }),
-        start_date: new Date('2020-11-14'),
-        end_date: new Date('2020-11-18'),
-      });
-      // Seed a second production that can be featurted
-      server.create('production', {
-        name: 'Not This One Again...',
-        society: server.create('society', { name: 'Jill Bowls Films' }),
-      });
+      seedProductions();
 
-      homepageComponent = shallowMount(Home);
+      homepageComponent = mountWithoutRouter(Home);
       splashscreenContainer = homepageComponent.find('#splashscreen');
       await waitFor(() => homepageComponent.vm.featuredProduction);
 
@@ -77,4 +57,89 @@ describe('Home', function () {
       );
     });
   });
+
+  describe("What's On", () => {
+    let whatsOnContainer;
+    beforeEach(() => {
+      // eslint-disable-next-line spellcheck/spell-checker
+      whatsOnContainer = homepageComponent.findComponent({ ref: 'whatson' });
+    });
+    it('falls back with no productions', () => {
+      expect(whatsOnContainer.text()).to.contain(
+        'There are currently no upcoming productions'
+      );
+    });
+
+    it('shows upcoming productions', async () => {
+      seedProductions();
+
+      homepageComponent = mountWithoutRouter(Home);
+
+      await waitFor(() => homepageComponent.vm.upcomingProductions.length > 0);
+      // eslint-disable-next-line spellcheck/spell-checker
+      let whatsOnProductions = homepageComponent
+        .findComponent({
+          ref: 'whatson',
+        })
+        .findAll('.production-feature');
+
+      expect(whatsOnProductions.length).to.equal(3);
+
+      // Checks for the first production
+      // Has image in first div
+      expect(whatsOnProductions.at(0).find('div:first-of-type img').exists()).to
+        .be.true;
+      // Is for the first production in the list
+      expect(
+        whatsOnProductions.at(0).find('div:last-of-type').text()
+      ).to.contain('My production without a picture');
+      // Has correct dates
+      expect(
+        fixTextSpacing(whatsOnProductions.at(0).find('div:last-of-type').text())
+      ).to.contain('13 November - 14 November 2020');
+      // Link to production
+      expect(whatsOnProductions.at(0).find('a').exists()).to.be.true;
+      expect(
+        homepageComponent.findAllComponents(RouterLinkStub).at(1).props('to')
+          .name
+      ).to.equal('production');
+      expect(
+        homepageComponent.findAllComponents(RouterLinkStub).at(1).props('to')
+          .params.productionSlug
+      ).to.equal('my-production-without-a-picture');
+
+      // Second div should be reversed
+      expect(whatsOnProductions.at(0).classes()).not.to.contain(
+        'flex-row-reverse'
+      );
+      expect(whatsOnProductions.at(1).classes()).to.contain('flex-row-reverse');
+      expect(whatsOnProductions.at(2).classes()).not.to.contain(
+        'flex-row-reverse'
+      );
+    });
+  });
+
+  let seedProductions = () => {
+    // Seed a production that can't be featured (no cover photo)
+    server.create('production', {
+      name: 'My production without a picture',
+      cover_image: null,
+      society: server.create('society', { name: 'Dramatic Pause' }),
+      start_date: new Date('2020-11-13'),
+      end_date: new Date('2020-11-14'),
+    });
+    // Seed a production that can be featured
+    server.create('production', {
+      name: 'Upside Down Cake',
+      cover_image: 'http://pathto.example/my-image.png',
+      society: server.create('society', { name: 'Joe Bloggs Productions' }),
+      start_date: new Date('2020-11-14'),
+      end_date: new Date('2020-11-18'),
+    });
+    // Seed a second production that can be featured
+    server.create('production', {
+      name: 'Not This One Again...',
+      society: server.create('society', { name: 'Jill Bowls Films' }),
+    });
+  };
 });
