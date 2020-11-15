@@ -3,9 +3,9 @@
     <div class="container flex items-center justify-between flex-wrap xl:px-40">
       <div class="flex items-center flex-shrink-0 text-white mr-10">
         <router-link to="/"
-          ><span class="text-4xl tracking-tight uppercase"
-            >UOB Theatre</span
-          ></router-link
+          ><span class="text-4xl tracking-tight uppercase">{{
+            $appName
+          }}</span></router-link
         >
       </div>
       <div class="block lg:hidden">
@@ -54,7 +54,7 @@
   </nav>
 </template>
 
-<style lang="postcss">
+<style lang="postcss" scoped>
 nav .router-link-exact-active {
   color: @apply bg-sta-orange;
 }

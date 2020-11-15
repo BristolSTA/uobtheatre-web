@@ -17,7 +17,7 @@
             </div>
           </template>
           <template v-else>
-            <div class="text-4xl">Welcome to UOB Theatre</div>
+            <div class="text-4xl">Welcome to {{ $appName }}</div>
             <div class="text-2xl">
               The Home of Bristol Student Perfomring Arts
             </div>
@@ -54,6 +54,13 @@ export default {
   data() {
     return {
       upcomingProductions: [],
+    };
+  },
+  metaInfo() {
+    const appName = this.$appName;
+    return {
+      title: `${appName} | The Home Of Bristol Student Performing Arts`,
+      titleTemplate: null,
     };
   },
   created() {

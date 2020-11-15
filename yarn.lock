@@ -11303,6 +11303,13 @@ vue-loader@^15.9.2:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
+vue-meta@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/vue-meta/-/vue-meta-2.4.0.tgz#a419fb4b4135ce965dab32ec641d1989c2ee4845"
+  integrity sha512-XEeZUmlVeODclAjCNpWDnjgw+t3WA6gdzs6ENoIAgwO1J1d5p1tezDhtteLUFwcaQaTtayRrsx7GL6oXp/m2Jw==
+  dependencies:
+    deepmerge "^4.2.2"
+
 vue-router@^3.2.0:
   version "3.4.9"
   resolved "https://registry.npm.taobao.org/vue-router/download/vue-router-3.4.9.tgz?cache=0&sync_timestamp=1604611039295&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-router%2Fdownload%2Fvue-router-3.4.9.tgz#c016f42030ae2932f14e4748b39a1d9a0e250e66"

@@ -6,6 +6,12 @@ import { DateTime } from 'luxon';
  * Vue extensions
  */
 
+// Constants
+
+Vue.prototype.$appName = process.env.VUE_APP_NAME;
+
+// Filters
+
 Vue.filter('dateFormat', (date, format) => {
   return DateTime.fromISO(date).toFormat(format);
 });
