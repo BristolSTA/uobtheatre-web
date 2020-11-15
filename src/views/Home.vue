@@ -59,8 +59,7 @@ export default {
   created() {
     productionService
       .fetchUpcomingProductions()
-      .then((data) => (this.productions = data.results))
-      .catch((e) => console.log(e));
+      .then((data) => (this.productions = data.results));
   },
   computed: {
     splashBackground() {
