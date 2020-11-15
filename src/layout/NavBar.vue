@@ -1,6 +1,6 @@
 <template>
   <nav class="bg-sta-gray-dark p-6">
-    <div class="container flex items-center justify-between flex-wrap xl:px-40">
+    <div class="container flex items-center justify-between flex-wrap">
       <div class="flex items-center flex-shrink-0 text-white mr-10">
         <router-link to="/"
           ><span class="text-4xl tracking-tight uppercase">{{
