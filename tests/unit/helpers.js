@@ -43,7 +43,7 @@ const fixTextSpacing = function (text) {
   return text.replace(/\s\s+/g, ' ');
 };
 
-const mountWithoutRouter = function (component) {
+const mountWithRouterMock = function (component) {
   return mount(component, {
     stubs: {
       RouterLink: RouterLinkStub,
@@ -51,4 +51,10 @@ const mountWithoutRouter = function (component) {
   });
 };
 
-export { waitForDOM, waitFor, waitForTick, fixTextSpacing, mountWithoutRouter };
+export {
+  waitForDOM,
+  waitFor,
+  waitForTick,
+  fixTextSpacing,
+  mountWithRouterMock,
+};

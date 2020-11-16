@@ -2,7 +2,7 @@ import { makeServer } from '@/server';
 import { expect } from 'chai';
 import Home from '@/views/Home.vue';
 import { RouterLinkStub } from '@vue/test-utils';
-import { fixTextSpacing, waitFor, mountWithoutRouter } from '../../helpers';
+import { fixTextSpacing, waitFor, mountWithRouterMock } from '../../helpers';
 
 describe('Home', function () {
   let homepageComponent;
@@ -10,7 +10,7 @@ describe('Home', function () {
 
   beforeEach(() => {
     server = makeServer({ environment: 'test' });
-    homepageComponent = mountWithoutRouter(Home);
+    homepageComponent = mountWithRouterMock(Home);
   });
 
   afterEach(() => {
@@ -31,7 +31,7 @@ describe('Home', function () {
     it('shows featured production on splashscreen', async () => {
       seedProductions();
 
-      homepageComponent = mountWithoutRouter(Home);
+      homepageComponent = mountWithRouterMock(Home);
       splashscreenContainer = homepageComponent.find('#splashscreen');
       await waitFor(() => homepageComponent.vm.featuredProduction);
 
@@ -61,7 +61,6 @@ describe('Home', function () {
   describe("What's On", () => {
     let whatsOnContainer;
     beforeEach(() => {
-      // eslint-disable-next-line spellcheck/spell-checker
       whatsOnContainer = homepageComponent.findComponent({ ref: 'whatson' });
     });
     it('falls back with no productions', () => {
@@ -73,10 +72,9 @@ describe('Home', function () {
     it('shows upcoming productions', async () => {
       seedProductions();
 
-      homepageComponent = mountWithoutRouter(Home);
+      homepageComponent = mountWithRouterMock(Home);
 
       await waitFor(() => homepageComponent.vm.upcomingProductions.length > 0);
-      // eslint-disable-next-line spellcheck/spell-checker
       let whatsOnProductions = homepageComponent
         .findComponent({
           ref: 'whatson',

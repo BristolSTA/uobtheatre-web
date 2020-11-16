@@ -1,14 +1,11 @@
-import { mount, createLocalVue } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 import { expect } from 'chai';
 import NavBar from '@/layout/NavBar.vue';
-import VueRouter from 'vue-router';
 
 describe('NavBar', () => {
   let navbarComponent;
 
   beforeEach(() => {
-    const localVue = createLocalVue();
-    localVue.use(VueRouter);
     navbarComponent = mount(NavBar, {
       stubs: ['router-link'],
     });
