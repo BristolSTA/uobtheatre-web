@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Meta from 'vue-meta';
 import Home from '../views/Home.vue';
+import Production from '../views/Production.vue';
 
 Vue.use(VueRouter);
 Vue.use(Meta);
@@ -25,7 +26,7 @@ const routes = [
   {
     path: '/production/:productionSlug',
     name: 'production',
-    component: Home,
+    component: Production,
   },
 ];
 

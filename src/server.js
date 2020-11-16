@@ -146,17 +146,19 @@ export function makeServer({ environment = 'development' } = {}) {
     routes() {
       this.namespace = 'api';
 
-      this.resource('productions', { except: ['index'] });
+      this.resource('productions', { except: ['index', 'show'] });
       this.get('productions/upcoming_productions', function (schema) {
         return paginatedResponse(
           this.serialize(schema.productions.all()).productions
         );
       });
-
       this.get('productions', function (schema) {
         return paginatedResponse(
           this.serialize(schema.productions.all()).productions
         );
+      });
+      this.get('productions/:slug', function (schema, request) {
+        return schema.productions.findBy({ slug: request.params.slug });
       });
 
       this.resource('performances');

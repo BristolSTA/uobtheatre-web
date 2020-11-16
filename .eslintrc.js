@@ -24,6 +24,8 @@ module.exports = {
           'theatre',
           'pegg',
           'dramsoc',
+          'artsy',
+          'webpack',
         ],
         identifiers: false,
         lang: 'en_GB',

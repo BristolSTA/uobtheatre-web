@@ -7,7 +7,9 @@ export default {
   fetchUpcomingProductions() {
     return new paginatedResource('productions/upcoming_productions/');
   },
-  fetchProduction(id) {
-    return api.get(`productions/${id}/`).then((response) => response.data);
+  fetchProductionBySlug(slug) {
+    return api
+      .get(`productions/${slug}/`)
+      .then((response) => response.data.production);
   },
 };
