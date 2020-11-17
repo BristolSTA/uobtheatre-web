@@ -49,7 +49,7 @@
           >
             <img
               :src="production.featured_image"
-              :alt="`${production.name} Poster Image`"
+              :alt="`${production.name} feature image`"
               class="inline-block"
               style="max-height: 300px"
           /></router-link>
