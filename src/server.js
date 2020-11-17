@@ -61,7 +61,7 @@ export function makeServer({ environment = 'development' } = {}) {
     factories: {
       production: Factory.extend({
         name: () => faker.random.words(3),
-        subtitle: () => faker.lorem.sentence(5),
+        subtitle: null,
         slug() {
           return this.name.toLowerCase().replace(/ /g, '-');
         },
@@ -74,6 +74,7 @@ export function makeServer({ environment = 'development' } = {}) {
         warnings: ['Strobe Lighting', 'Nudity'],
         start_date: () => faker.date.past(),
         end_date: () => faker.date.future(),
+        min_ticket_price: () => faker.random.number({ min: 1, max: 10 }),
         afterCreate(production, server) {
           production.cast = server.createList('cast', 4, {
             production: production,

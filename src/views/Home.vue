@@ -67,12 +67,8 @@
               {{ production.name }}
             </h2></router-link
           >
-          <span
-            v-if="production.subtitle"
-            class="text-sta-orange font-semibold"
-            >{{ production.subtitle }}</span
-          >
-          <p>
+          <span v-if="production.subtitle">{{ production.subtitle }}</span>
+          <p class="text-sta-orange font-semibold">
             {{ production.start_date | dateFormat('d MMMM') }} -
             {{ production.end_date | dateFormat('d MMMM y') }}
           </p>
