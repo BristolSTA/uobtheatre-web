@@ -74,7 +74,8 @@ export function makeServer({ environment = 'development' } = {}) {
         warnings: ['Strobe Lighting', 'Nudity'],
         start_date: () => faker.date.past(),
         end_date: () => faker.date.future(),
-        min_ticket_price: () => faker.random.number({ min: 1, max: 10 }),
+        min_ticket_price: () =>
+          faker.random.number({ min: 1, max: 10 }).toFixed(2),
         afterCreate(production, server) {
           production.cast = server.createList('cast', 4, {
             production: production,
