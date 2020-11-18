@@ -61,16 +61,21 @@ export function makeServer({ environment = 'development' } = {}) {
     factories: {
       production: Factory.extend({
         name: () => faker.random.words(3),
-        subtitle: () => faker.lorem.sentence(5),
+        subtitle: null,
+        slug() {
+          return this.name.toLowerCase().replace(/ /g, '-');
+        },
         poster_image: 'https://via.placeholder.com/400x566',
         featured_image: 'https://via.placeholder.com/1920x960',
         cover_image: 'https://via.placeholder.com/1800x1000',
         age_rating: null,
         facebook_event: 'https://facebook.com',
         description: () => faker.lorem.paragraph(),
-        warnings: ['Stobe Lighting', 'Nudity'],
+        warnings: ['Strobe Lighting', 'Nudity'],
         start_date: () => faker.date.past(),
         end_date: () => faker.date.future(),
+        min_ticket_price: () =>
+          faker.random.number({ min: 1, max: 10 }).toFixed(2),
         afterCreate(production, server) {
           production.cast = server.createList('cast', 4, {
             production: production,
@@ -143,17 +148,19 @@ export function makeServer({ environment = 'development' } = {}) {
     routes() {
       this.namespace = 'api';
 
-      this.resource('productions', { except: ['index'] });
+      this.resource('productions', { except: ['index', 'show'] });
       this.get('productions/upcoming_productions', function (schema) {
         return paginatedResponse(
           this.serialize(schema.productions.all()).productions
         );
       });
-
       this.get('productions', function (schema) {
         return paginatedResponse(
           this.serialize(schema.productions.all()).productions
         );
+      });
+      this.get('productions/:slug', function (schema, request) {
+        return schema.productions.findBy({ slug: request.params.slug });
       });
 
       this.resource('performances');

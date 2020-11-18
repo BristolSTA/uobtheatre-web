@@ -18,23 +18,27 @@
           </ul>
         </nav>
       </div>
-      <div class="flex items-center w-full mt-4 flex-1">
-        <div class="w-32">
+      <div class="flex items-center w-full mt-4 flex-1 flex-wrap">
+        <div class="w-1/2 md:w-32 text-center">
           <a href="https://bristolsta.com" target="_blank"
             ><img
               src="@/assets/images/sta-logo-white.png"
+              class="inline-block"
+              style="max-width: 100px"
               alt="Stage Technicians' Association Logo"
           /></a>
         </div>
-        <div class="w-32 ml-10">
+        <div class="w-1/2 md:w-32 text-center">
           <a href="https://bristolsu.org" target="_blank">
             <img
               src="@/assets/images/bristol-su-logo.png"
+              class="inline-block"
+              style="max-width: 100px"
               alt="Bristol SU Baloon Logo"
           /></a>
         </div>
 
-        <div class="text-white ml-10">
+        <div class="text-white ml-10 flex-1 text-center md:text-left">
           <p class="mb-4">
             &copy; Bristol Stage Technicians' Association
             {{ new Date().getFullYear() }}

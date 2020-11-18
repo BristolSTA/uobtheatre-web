@@ -28,9 +28,6 @@ describe('NavBar', () => {
 
     expect(links.length).to.equal(4);
 
-    // First link should direct to home (from the logo/sitename)
-    expect(links.at(0).attributes('to')).to.equal('/');
-
     // Second link should be our "Home" link
     expect(links.at(1).attributes('to')).to.equal('/');
     expect(links.at(1).text()).to.equal('Home');
