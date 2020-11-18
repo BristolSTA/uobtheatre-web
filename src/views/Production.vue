@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex">
+    <div class="flex border-b-2">
       <div class="w-3/5 bg-sta-gray p-10">
         <div class="w-full text-center">
           <img
@@ -47,7 +47,6 @@
         </div>
       </div>
     </div>
-    {{ production ? production.name : 'Loading...' }}
   </div>
 </template>
 
