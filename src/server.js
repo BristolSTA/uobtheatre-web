@@ -123,22 +123,22 @@ export function makeServer({ environment = 'development' } = {}) {
       let dramsoc = server.create('society', {
         name: 'Dramsoc',
       });
-      let mtbSociety = server.create('society', {
-        name: 'MTB',
-      });
 
       server.create('production', {
         name: 'Legally Blonde',
-        society: mtbSociety,
+        society: server.create('society', {
+          name: 'MTB',
+        }),
         performances: server.createList('performance', 3),
       });
 
-      let trash = server.create('production', {
+      server.create('production', {
         name: 'TRASh',
         subtitle: 'The Really Artsy Show',
         society: dramsoc,
+        performances: server.createList('performance', 1),
       });
-      trash.createPerformance();
+
       server.create('production', {
         name: 'Present Laughter',
         society: dramsoc,
