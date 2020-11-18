@@ -56,6 +56,7 @@ export function makeServer({ environment = 'development' } = {}) {
         'cast',
         'crew',
       ]),
+      performance: RelationshipSerializer(['venue']),
     },
 
     factories: {
@@ -89,7 +90,7 @@ export function makeServer({ environment = 'development' } = {}) {
       performance: Factory.extend({
         start: () => faker.date.past(),
         end: () => faker.date.future(),
-        description: '',
+        description: '123',
 
         afterCreate(performance, server) {
           performance.venue = server.create('venue');
@@ -126,12 +127,11 @@ export function makeServer({ environment = 'development' } = {}) {
         name: 'MTB',
       });
 
-      let legally = server.create('production', {
+      server.create('production', {
         name: 'Legally Blonde',
         society: mtbSociety,
+        performances: server.createList('performance', 3),
       });
-      legally.createPerformance();
-      legally.createPerformance();
 
       let trash = server.create('production', {
         name: 'TRASh',
