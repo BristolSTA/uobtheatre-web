@@ -38,9 +38,6 @@ module.exports = {
           dark: '#CC6C00',
         },
       },
-      borderColor:{
-        default: '#23272A',
-      },
       opacity: {
         40: '0.4',
       },
