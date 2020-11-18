@@ -1,6 +1,21 @@
 // Use this file for extending any libraries, where the effect is also needed in testing
 import Vue from 'vue';
 import { DateTime } from 'luxon';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import {
+  faChevronLeft,
+  faChevronRight,
+  faTicketAlt,
+  faClock,
+} from '@fortawesome/free-solid-svg-icons';
+
+/**
+ * Import FontAwesome
+ */
+
+library.add(faChevronLeft, faChevronRight, faTicketAlt, faClock);
+Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 /**
  * Vue extensions

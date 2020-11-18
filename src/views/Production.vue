@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex border-b-2">
+    <div class="flex">
       <div class="w-3/5 bg-sta-gray p-10">
         <div class="w-full text-center">
           <img
@@ -19,28 +19,18 @@
           </div>
           <div>Live at {{ production.performances }}</div>
           <div>
-            {{ production.start_date | dateFormat('d MMMM') }} -
-            {{ production.end_date | dateFormat('d MMMM y') }}
+            {{ production.start_date | dateFormat('d MMM') }} -
+            {{ production.end_date | dateFormat('d MMM y') }}
           </div>
           <div class="flex">
-            <div style="margin-left: 5px; margin-right: 13px">
-              <img
-                src="~@/assets/images/clock.png"
-                alt="ticket-img"
-                class="inline-block pb-0.5"
-                style="min-width: 16px; max-width: 16px"
-              />
+            <div class="w-6 text-center mr-1">
+              <font-awesome-icon icon="clock" />
             </div>
             <div class="">Duration</div>
           </div>
           <div class="flex">
-            <div style="margin-right: 8px">
-              <img
-                src="~@/assets/images/ticket-alt.png"
-                alt="ticket-img"
-                class="inline-block pb-0.5"
-                style="max-width: 26px"
-              />
+            <div class="w-6 text-center mr-1">
+              <font-awesome-icon icon="ticket-alt" />
             </div>
             <div>Tickets avaliable from £{{ production.min_ticket_price }}</div>
           </div>
