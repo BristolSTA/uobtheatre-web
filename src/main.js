@@ -1,9 +1,7 @@
-import Vue from 'vue';
+import { createApp } from 'vue';
 import App from './App.vue';
 import './registerServiceWorker';
 import router from './router';
-
-require('./extensions');
 
 /**
  * Import styles
@@ -23,7 +21,4 @@ if (process.env.NODE_ENV === 'development' && !process.env.VUE_APP_API_BASE) {
 /**
  * Create view app
  */
-new Vue({
-  router,
-  render: (h) => h(App),
-}).$mount('#app');
+const app = require('./extensions')(App).use(router).mount('#app');

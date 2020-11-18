@@ -1,25 +1,32 @@
 // Use this file for extending any libraries, where the effect is also needed in testing
-import Vue from 'vue';
 import { DateTime } from 'luxon';
+import { createApp } from 'vue';
 
-/**
- * Vue extensions
- */
+module.exports = (options) => {
+  let app = createApp(options);
 
-// Constants
+  /**
+   * Vue extensions
+   */
 
-Vue.prototype.$appName = process.env.VUE_APP_NAME;
+  // Constants
+  app.config.globalProperties.$appName = process.env.VUE_APP_NAME;
 
-// Filters
+  // Filters
+  app.config.globalProperties.$filters = {
+    dateFormat(date, format) {
+      return DateTime.fromISO(date).toFormat(format);
+    },
+    truncate(text, length, clamp) {
+      clamp = clamp || '...';
+      var node = document.createElement('div');
+      node.innerHTML = text;
+      var content = node.textContent;
+      return content.length > length
+        ? content.slice(0, length) + clamp
+        : content;
+    },
+  };
 
-Vue.filter('dateFormat', (date, format) => {
-  return DateTime.fromISO(date).toFormat(format);
-});
-
-Vue.filter('truncate', (text, length, clamp) => {
-  clamp = clamp || '...';
-  var node = document.createElement('div');
-  node.innerHTML = text;
-  var content = node.textContent;
-  return content.length > length ? content.slice(0, length) + clamp : content;
-});
+  return app;
+};
