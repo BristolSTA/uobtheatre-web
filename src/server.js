@@ -148,6 +148,8 @@ export function makeServer({ environment = 'development' } = {}) {
         name: 'TRASh',
         subtitle: 'The Really Artsy Show',
         society: dramsoc,
+        start_date: '2020-11-19',
+        end_date: '2020-11-19',
         performances: server.createList('performance', 1),
       });
 
