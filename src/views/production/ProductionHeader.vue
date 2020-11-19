@@ -28,21 +28,16 @@
         {{ production.start_date | dateFormat('d MMM') }} -
         {{ production.end_date | dateFormat('d MMM y') }}
       </p>
-      <div class="flex">
-        <div class="w-6 text-center mr-1">
-          <font-awesome-icon icon="clock" />
-        </div>
-        <div class="">{{ duration }}</div>
-      </div>
-      <div class="flex">
-        <div class="w-6 text-center mr-1">
-          <font-awesome-icon icon="ticket-alt" />
-        </div>
-        <div>
-          Tickets avaliable from
-          <span class="font-semibold">£{{ production.min_ticket_price }}</span>
-        </div>
-      </div>
+      <icon-list-item icon="clock">{{ duration }}</icon-list-item>
+      <icon-list-item icon="ticket-alt"
+        >Tickets avaliable from
+        <span class="font-semibold"
+          >£{{ production.min_ticket_price }}</span
+        ></icon-list-item
+      >
+      <button class="btn btn-green w-full font-semibold mt-4">
+        Buy Tickets
+      </button>
     </div>
   </div>
 </template>
@@ -50,8 +45,10 @@
 <script>
 import lo from 'lodash';
 import { joinWithAnd } from '@/utils';
+import IconListItem from '@/components/ui/IconListItem.vue';
 
 export default {
+  components: { IconListItem },
   name: 'ProductionHeader',
   props: {
     production: {
