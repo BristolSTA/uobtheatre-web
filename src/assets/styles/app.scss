@@ -34,7 +34,8 @@
 }
 @layer utilities {
   .text-h1,
-  .text-h2 {
+  .text-h2,
+  .text-h3 {
     @apply font-semibold;
   }
 }
