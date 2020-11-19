@@ -49,7 +49,7 @@
 
 <script>
 import lo from 'lodash';
-import { joinWithAnd, duration as calcDuration } from '@/utils';
+import { joinWithAnd } from '@/utils';
 
 export default {
   name: 'ProductionHeader',
@@ -75,32 +75,10 @@ export default {
       return joinWithAnd(venues);
     },
     duration() {
-      if (!this.production || this.production.performances.length == 0) return;
-      let minPerformance = lo
+      return lo
         .chain(this.production.performances)
-        .minBy((performance) => {
-          return calcDuration(performance.start, performance.end).as('minutes');
-        })
-        .value();
-      minPerformance = calcDuration(
-        minPerformance.start,
-        minPerformance.end
-      ).shiftTo('hours', 'minutes');
-
-      let duration = '';
-      if (minPerformance.hours >= 1) {
-        duration = `${minPerformance.hours} ${
-          minPerformance.hours == 1 ? 'hour' : 'hours'
-        }`;
-      }
-      if (minPerformance.minutes >= 1) {
-        if (duration === '') duration += ', ';
-        duration += `${minPerformance.minutes} ${
-          minPerformance.minutes == 1 ? 'minute' : 'minutes'
-        }`;
-      }
-
-      return duration;
+        .minBy('duration_mins')
+        .value().duration_human;
     },
   },
 };

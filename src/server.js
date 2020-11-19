@@ -104,6 +104,8 @@ export function makeServer({ environment = 'development' } = {}) {
         afterCreate(performance, server) {
           performance.venue = server.create('venue');
         },
+        duration_mins: 100,
+        duration_human: '1 hour 40 minutes',
       }),
       venue: Factory.extend({
         name: () => `${faker.random.arrayElement(['Winston', 'Pegg'])} Theatre`,
