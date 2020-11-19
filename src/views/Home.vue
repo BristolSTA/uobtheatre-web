@@ -15,11 +15,16 @@
               params: { productionSlug: featuredProduction.slug },
             }"
           >
-            <div class="text-2xl">{{ featuredProduction.society.name }}</div>
-            <div class="text-h1">{{ featuredProduction.name }}</div>
             <div class="text-2xl">
-              {{ featuredProduction.start_date | dateFormat('d MMMM') }} -
-              {{ featuredProduction.end_date | dateFormat('d MMMM y') }}
+              {{ featuredProduction.society.name }}
+            </div>
+            <div class="text-h1">
+              {{ featuredProduction.name }}
+            </div>
+            <div class="text-2xl">
+              {{ $filters.dateFormat(featuredProduction.start_date, 'd MMMM') }}
+              -
+              {{ $filters.dateFormat(featuredProduction.end_date, 'd MMMM') }}
             </div>
           </router-link>
           <template v-else>
@@ -32,7 +37,7 @@
       </div>
     </div>
 
-    <div class="container text-white mt-4" ref="whatson">
+    <div ref="whatson" class="container text-white mt-4">
       <h1 class="text-h1">What's On</h1>
       <div
         v-for="(production, index) in upcomingProductionsToShow"
@@ -52,7 +57,8 @@
               :alt="`${production.name} feature image`"
               class="inline-block"
               style="max-height: 300px"
-          /></router-link>
+            />
+          </router-link>
         </div>
         <div
           class="w-full md:w-1/2 p-2 text-center"
@@ -63,17 +69,18 @@
               name: 'production',
               params: { productionSlug: production.slug },
             }"
-            ><h2 class="text-h2 font-semibold hover:text-gray-300">
-              {{ production.name }}
-            </h2></router-link
           >
+            <h2 class="text-h2 font-semibold hover:text-gray-300">
+              {{ production.name }}
+            </h2>
+          </router-link>
           <span v-if="production.subtitle">{{ production.subtitle }}</span>
           <p class="text-sta-orange font-semibold">
-            {{ production.start_date | dateFormat('d MMMM') }} -
-            {{ production.end_date | dateFormat('d MMMM y') }}
+            {{ $filters.dateFormat(production.start_date, 'd MMMM') }} -
+            {{ $filters.dateFormat(production.end_date, 'd MMMM y') }}
           </p>
           <p class="mt-2">
-            {{ production.description | truncate(230) }}
+            {{ $filters.truncate(production.description, 230) }}
           </p>
           <router-link
             :to="{
@@ -81,8 +88,9 @@
               params: { productionSlug: production.slug },
             }"
             class="btn btn-rouge mt-6 inline-block"
-            >More Information</router-link
           >
+            More Information
+          </router-link>
         </div>
       </div>
       <div
@@ -100,9 +108,9 @@
         class="text-center flex items-center py-10"
       >
         <div class="w-full">
-          <router-link to="/" class="btn btn-outline btn-orange"
-            >View All Upcoming Productions</router-link
-          >
+          <router-link to="/" class="btn btn-outline btn-orange">
+            View All Upcoming Productions
+          </router-link>
         </div>
       </div>
     </div>
@@ -139,11 +147,6 @@ export default {
       titleTemplate: null,
     };
   },
-  created() {
-    productionService
-      .fetchUpcomingProductions()
-      .then((results) => (this.upcomingProductions = results));
-  },
   computed: {
     featuredProduction() {
       return this.upcomingProductions.find((production) => {
@@ -158,6 +161,11 @@ export default {
         ? `url("${this.featuredProduction.cover_image}")`
         : null;
     },
+  },
+  created() {
+    productionService
+      .fetchUpcomingProductions()
+      .then((results) => (this.upcomingProductions = results));
   },
 };
 </script>

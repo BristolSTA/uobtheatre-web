@@ -1,9 +1,16 @@
 // Use this file for extending any libraries, where the effect is also needed in testing
 import { DateTime } from 'luxon';
 import { createApp } from 'vue';
+// import Meta from 'vue-meta';
 
-module.exports = (options) => {
+export default (options) => {
   let app = createApp(options);
+
+  /**
+   * Vue Plugins
+   */
+
+  // app.use(Meta);
 
   /**
    * Vue extensions

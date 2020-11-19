@@ -1,10 +1,6 @@
-import Vue from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
-import Meta from 'vue-meta';
 import Home from '../views/Home.vue';
 import Production from '../views/Production.vue';
-
-Vue.use(Meta);
 
 const routes = [
   {
@@ -31,7 +27,7 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
 });
 
 export default router;
