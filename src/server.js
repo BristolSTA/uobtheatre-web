@@ -9,6 +9,8 @@ import {
 
 import faker from 'faker';
 
+import { DateTime } from 'luxon';
+
 let paginatedResponse = (data) => {
   return {
     count: 2,
@@ -73,8 +75,11 @@ export function makeServer({ environment = 'development' } = {}) {
         facebook_event: 'https://facebook.com',
         description: () => faker.lorem.paragraph(),
         warnings: ['Strobe Lighting', 'Nudity'],
-        start_date: () => faker.date.past(),
-        end_date: () => faker.date.future(),
+        start_date: () => DateTime.local(),
+        end_date: () =>
+          DateTime.local().plus({
+            day: faker.random.number({ min: 1, max: 3 }),
+          }),
         min_ticket_price: () =>
           faker.random.number({ min: 1, max: 10 }).toFixed(2),
         afterCreate(production, server) {
@@ -88,8 +93,11 @@ export function makeServer({ environment = 'development' } = {}) {
         },
       }),
       performance: Factory.extend({
-        start: () => faker.date.past(),
-        end: () => faker.date.future(),
+        start: () => DateTime.local(),
+        end: () =>
+          DateTime.local().plus({
+            hours: faker.random.number({ min: 1, max: 3 }),
+          }),
         description: faker.lorem.words(4),
         sold_out: false,
 

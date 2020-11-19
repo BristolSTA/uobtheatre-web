@@ -32,13 +32,16 @@
         <div class="w-6 text-center mr-1">
           <font-awesome-icon icon="clock" />
         </div>
-        <div class="">Duration</div>
+        <div class="">{{ duration }}</div>
       </div>
       <div class="flex">
         <div class="w-6 text-center mr-1">
           <font-awesome-icon icon="ticket-alt" />
         </div>
-        <div>Tickets avaliable from £{{ production.min_ticket_price }}</div>
+        <div>
+          Tickets avaliable from
+          <span class="font-semibold">£{{ production.min_ticket_price }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -46,7 +49,7 @@
 
 <script>
 import lo from 'lodash';
-import { joinWithAnd } from '@/utils';
+import { joinWithAnd, duration as calcDuration } from '@/utils';
 
 export default {
   name: 'ProductionHeader',
@@ -72,7 +75,32 @@ export default {
       return joinWithAnd(venues);
     },
     duration() {
-      return null;
+      if (!this.production || this.production.performances.length == 0) return;
+      let minPerformance = lo
+        .chain(this.production.performances)
+        .minBy((performance) => {
+          return calcDuration(performance.start, performance.end).as('minutes');
+        })
+        .value();
+      minPerformance = calcDuration(
+        minPerformance.start,
+        minPerformance.end
+      ).shiftTo('hours', 'minutes');
+
+      let duration = '';
+      if (minPerformance.hours >= 1) {
+        duration = `${minPerformance.hours} ${
+          minPerformance.hours == 1 ? 'hour' : 'hours'
+        }`;
+      }
+      if (minPerformance.minutes >= 1) {
+        if (duration === '') duration += ', ';
+        duration += `${minPerformance.minutes} ${
+          minPerformance.minutes == 1 ? 'minute' : 'minutes'
+        }`;
+      }
+
+      return duration;
     },
   },
 };
