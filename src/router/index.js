@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Meta from 'vue-meta';
 import Home from '../views/Home.vue';
-import Production from '../views/Production.vue';
+import Production from '../views/production/Production.vue';
 
 Vue.use(VueRouter);
 Vue.use(Meta);

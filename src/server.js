@@ -90,7 +90,8 @@ export function makeServer({ environment = 'development' } = {}) {
       performance: Factory.extend({
         start: () => faker.date.past(),
         end: () => faker.date.future(),
-        description: '123',
+        description: faker.lorem.words(4),
+        sold_out: false,
 
         afterCreate(performance, server) {
           performance.venue = server.create('venue');
@@ -101,6 +102,7 @@ export function makeServer({ environment = 'development' } = {}) {
       }),
       society: Factory.extend({
         name: () => faker.name.findName(),
+        logo_image: 'https://via.placeholder.com/500x500/0000FF',
       }),
       cast: Factory.extend({
         name: () => faker.name.findName(),
