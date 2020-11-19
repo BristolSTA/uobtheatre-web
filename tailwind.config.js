@@ -11,7 +11,7 @@ module.exports = {
     container: {
       center: true,
       padding: {
-        default: '1rem',
+        DEFAULT: '1rem',
         sm: '2rem',
         lg: '4rem',
         xl: '5rem',
@@ -20,20 +20,20 @@ module.exports = {
     extend: {
       colors: {
         'sta-gray': {
-          default: '#2B303A',
+          DEFAULT: '#2B303A',
           dark: '#23272A',
           light: '#3D434E',
         },
         'sta-rouge': {
-          default: '#FF6978',
+          DEFAULT: '#FF6978',
           dark: '#CC3645',
         },
         'sta-green': {
-          default: '#4B8F8C',
+          DEFAULT: '#4B8F8C',
           dark: '#185C59',
         },
         'sta-orange': {
-          default: '#FF9F1C',
+          DEFAULT: '#FF9F1C',
           dark: '#CC6C00',
         },
       },
