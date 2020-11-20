@@ -36,7 +36,11 @@
           >£{{ production.min_ticket_price }}</span
         ></icon-list-item
       >
-      <button class="btn btn-green w-full font-semibold mt-4">
+      <button
+        class="btn btn-green w-full font-semibold mt-4"
+        @click="$emit('scroll-to-tickets')"
+        @keydown="$emit('scroll-to-tickets')"
+      >
         Buy Tickets
       </button>
     </div>
@@ -47,6 +51,7 @@
 import lo from 'lodash';
 import { joinWithAnd, displayStartEnd } from '@/utils';
 import IconListItem from '@/components/ui/IconListItem.vue';
+import humanizeDuration from 'humanize-duration';
 
 export default {
   components: { IconListItem },
@@ -76,10 +81,12 @@ export default {
       return joinWithAnd(venues);
     },
     duration() {
-      return lo
-        .chain(this.production.performances)
-        .minBy('duration_mins')
-        .value().duration_human;
+      return humanizeDuration(
+        lo.chain(this.production.performances).minBy('duration_mins').value()
+          .duration_mins *
+          60 *
+          1000
+      );
     },
   },
 };

@@ -1,10 +1,13 @@
 <template>
   <div class="bg-sta-gray min-h-full">
-    <production-header :production="production" />
+    <production-header
+      :production="production"
+      @scroll-to-tickets="$refs.performances.$el.scrollIntoView()"
+    />
     <hr class="border-sta-gray-dark border-t-2" />
     <production-cast-credits :production="production" />
     <hr class="border-sta-gray-dark border-t-2" />
-    <production-performances :production="production" />
+    <production-performances ref="performances" :production="production" />
   </div>
 </template>
 
