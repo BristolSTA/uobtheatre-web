@@ -8,7 +8,7 @@
         :key="performance.id"
       >
         <div
-          class="p-3 pt-1 m-2 font-semibold"
+          class="p-3 pt-1 m-2"
           :class="[performance.sold_out ? 'bg-sta-gray-dark' : 'bg-sta-green']"
         >
           <h2 class="text-h2">
@@ -16,7 +16,7 @@
           </h2>
           <div>{{ performance.venue.name }}</div>
           <div>Starting at {{ performance.start | dateFormat('T') }}</div>
-          <div class="text-sm">
+          <div class="text-sm font-semibold">
             <p v-if="performance.sold_out">No Tickets Avaliable</p>
             <p v-else>Tickets Avaliable</p>
           </div>
