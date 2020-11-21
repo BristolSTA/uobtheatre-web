@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-full bg-sta-gray">
+  <div class="min-h-full">
     <login-box ref="login-box" />
   </div>
 </template>

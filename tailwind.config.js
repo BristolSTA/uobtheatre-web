@@ -23,6 +23,7 @@ module.exports = {
           DEFAULT: '#2B303A',
           dark: '#23272A',
           light: '#3D434E',
+          verylight: '#8D8B86',
         },
         'sta-rouge': {
           DEFAULT: '#FF6978',
@@ -46,6 +47,10 @@ module.exports = {
       },
     },
   },
-  variants: {},
+  variants: {
+    extend: {
+      backgroundColor: ['checked'],
+    }
+  },
   plugins: [],
 };
