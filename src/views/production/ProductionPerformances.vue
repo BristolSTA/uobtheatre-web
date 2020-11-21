@@ -25,14 +25,14 @@
             v-if="performance.sold_out"
             disabled="true"
           >
-            <p>SOLD OUT</p>
+            SOLD OUT
           </button>
           <router-link
             to="/"
             class="btn w-2/3 font-semibold text-center mt-4 btn-orange"
             v-else
           >
-            <p>Book</p>
+            Book
           </router-link>
         </div>
       </div>
