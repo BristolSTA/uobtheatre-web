@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 import Meta from 'vue-meta';
 import Home from '../views/Home.vue';
 import Production from '../views/Production.vue';
-import Login from '../login/Login.vue';
+import Login from '../views/login/Login.vue';
 
 Vue.use(VueRouter);
 Vue.use(Meta);
