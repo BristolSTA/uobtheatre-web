@@ -1,6 +1,6 @@
 <template>
   <a
-    href="#"
+    class="cursor-pointer"
     @click="$emit('click')"
     @keydown="
       (e) => {

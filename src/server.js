@@ -36,6 +36,7 @@ export function makeServer({ environment = 'development' } = {}) {
         performances: hasMany(),
         cast: hasMany('cast'),
         crew: hasMany('crew'),
+        productionTeam: hasMany('production_team'),
       }),
       performance: Model.extend({
         venue: belongsTo(),
@@ -49,6 +50,9 @@ export function makeServer({ environment = 'development' } = {}) {
       crew: Model.extend({
         production: belongsTo(),
       }),
+      production_team: Model.extend({
+        production: belongsTo(),
+      }),
     },
 
     serializers: {
@@ -57,6 +61,7 @@ export function makeServer({ environment = 'development' } = {}) {
         'performances',
         'cast',
         'crew',
+        'productionTeam',
       ]),
       performance: RelationshipSerializer(['venue']),
     },
@@ -89,6 +94,9 @@ export function makeServer({ environment = 'development' } = {}) {
           production.crew = server.createList('crew', 4, {
             production: production,
           });
+          production.productionTeam = server.createList('productionTeam', 3, {
+            production: production,
+          });
           production.society = server.create('society');
         },
       }),
@@ -117,17 +125,21 @@ export function makeServer({ environment = 'development' } = {}) {
       }),
       cast: Factory.extend({
         name: () => faker.name.findName(),
-        profile_picture: null,
+        profile_picture: () =>
+          faker.random.arrayElement([
+            'https://via.placeholder.com/100x100/FBD400',
+            null,
+          ]),
         role: () =>
           faker.random.arrayElement(['Peter Pan', 'The Wizard', 'Gary']),
       }),
       crew: Factory.extend({
-        role: () =>
-          faker.random.arrayElement([
-            'Stage Manager',
-            'Chief Electrician',
-            'Sound Engineer',
-          ]),
+        department: () =>
+          faker.random.arrayElement(['Stage Management', 'Lighting', 'Sound']),
+        name: () => faker.name.findName(),
+      }),
+      productionTeam: Factory.extend({
+        role: () => faker.random.arrayElement(['Producer', 'Music Director']),
         name: () => faker.name.findName(),
       }),
     },
