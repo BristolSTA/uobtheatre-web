@@ -1,7 +1,13 @@
 <template>
   <div class="container my-6 text-white">
     <div class="text-center"><h1 class="text-h2">Dates and Times</h1></div>
-    <div class="flex flex-wrap justify-center">
+    <div
+      class="text-xl my-20 text-center"
+      v-if="production.performances.length === 0"
+    >
+      No Upcoming Performances
+    </div>
+    <div class="flex flex-wrap justify-center" v-else>
       <div
         class="w-full md:w-1/2 lg:w-1/3 2xl:w-1/4"
         v-for="performance in production.performances"
