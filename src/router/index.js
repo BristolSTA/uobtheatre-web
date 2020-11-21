@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import Meta from 'vue-meta';
 import Home from '../views/Home.vue';
 import Production from '../views/Production.vue';
+import Login from '../login/Login.vue';
 
 Vue.use(VueRouter);
 Vue.use(Meta);
@@ -27,6 +28,11 @@ const routes = [
     path: '/production/:productionSlug',
     name: 'production',
     component: Production,
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login,
   },
 ];
 
