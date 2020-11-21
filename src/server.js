@@ -99,7 +99,7 @@ export function makeServer({ environment = 'development' } = {}) {
             hours: faker.random.number({ min: 1, max: 3 }),
           }),
         description: faker.lorem.words(4),
-        sold_out: false,
+        sold_out: () => faker.random.arrayElement([true, false]),
         is_online: () => faker.random.arrayElement([true, false]),
         is_inperson: () => faker.random.arrayElement([true, false]),
         duration_mins: 100,
