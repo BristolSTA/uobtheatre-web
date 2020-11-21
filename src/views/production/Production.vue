@@ -1,12 +1,12 @@
 <template>
-  <div class="bg-sta-gray min-h-full">
+  <div class="min-h-full bg-sta-gray">
     <production-header
       :production="production"
       @scroll-to-tickets="$refs.performances.$el.scrollIntoView()"
     />
-    <hr class="border-sta-gray-dark border-t-2" />
+    <hr class="border-t-2 border-sta-gray-dark" />
     <production-cast-credits :production="production" />
-    <hr class="border-sta-gray-dark border-t-2" />
+    <hr class="border-t-2 border-sta-gray-dark" />
     <production-performances ref="performances" :production="production" />
   </div>
 </template>
@@ -23,6 +23,14 @@ export default {
     ProductionPerformances,
   },
   name: 'production',
+  metaInfo() {
+    const productionName = this.production
+      ? this.production.name
+      : 'Loading...';
+    return {
+      title: `${productionName}`,
+    };
+  },
   data() {
     return {
       production: null,

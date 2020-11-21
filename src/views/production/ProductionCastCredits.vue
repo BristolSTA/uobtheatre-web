@@ -83,31 +83,6 @@
           </div>
         </div>
       </div>
-      <div class="cast-credit-section" v-if="this.production.cast.length">
-        <h1 class="crew-section-header">CAST</h1>
-        <div class="flex flex-wrap justify-center space-y-4">
-          <div
-            v-for="(member, index) in sortedCast"
-            :key="index"
-            class="flex items-center justify-center w-full px-2 sm:w-1/2 xl:w-1/3"
-          >
-            <div v-if="member.profile_picture" class="flex-none w-20">
-              <img
-                class="rounded-full"
-                :src="member.profile_picture"
-                alt="profile image"
-              />
-            </div>
-
-            <div class="text-center sm:flex-grow">
-              <p>
-                <strong>{{ member.name }}</strong>
-              </p>
-              <p>{{ member.role }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="cast-credit-section" v-if="this.production.crew.length">
         <h1 class="crew-section-header">CREW</h1>
         <div class="flex flex-wrap justify-center">
@@ -125,6 +100,31 @@
               <p v-for="(member, gIndex) in group" :key="gIndex">
                 {{ member.name }}
               </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-full p-4 text-center" v-if="this.production.cast.length">
+        <h1 class="crew-section-header">CAST</h1>
+        <div class="flex flex-wrap justify-center space-y-4">
+          <div
+            v-for="(member, index) in sortedCast"
+            :key="index"
+            class="flex items-center justify-center w-full px-2 sm:w-1/4 xl:w-1/5"
+          >
+            <div v-if="member.profile_picture" class="flex-none w-20">
+              <img
+                class="rounded-full"
+                :src="member.profile_picture"
+                alt="profile image"
+              />
+            </div>
+
+            <div class="text-center sm:flex-grow">
+              <p>
+                <strong>{{ member.name }}</strong>
+              </p>
+              <p>{{ member.role }}</p>
             </div>
           </div>
         </div>

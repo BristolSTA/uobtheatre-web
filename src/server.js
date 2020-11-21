@@ -78,7 +78,7 @@ export function makeServer({ environment = 'development' } = {}) {
         cover_image: 'https://via.placeholder.com/1800x1000',
         age_rating: null,
         facebook_event: 'https://facebook.com',
-        description: () => faker.lorem.paragraph(),
+        description: () => faker.lorem.paragraphs(3),
         warnings: ['Strobe Lighting', 'Nudity'],
         start_date: () => DateTime.local(),
         end_date: () =>
@@ -88,7 +88,7 @@ export function makeServer({ environment = 'development' } = {}) {
         min_ticket_price: () =>
           faker.random.number({ min: 1, max: 10 }).toFixed(2),
         afterCreate(production, server) {
-          production.cast = server.createList('cast', 4, {
+          production.cast = server.createList('cast', 30, {
             production: production,
           });
           production.crew = server.createList('crew', 4, {
