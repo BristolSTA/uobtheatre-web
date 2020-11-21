@@ -3,7 +3,7 @@
     <div class="text-center"><h1 class="text-h2">Dates and Times</h1></div>
     <div
       class="text-xl my-20 text-center"
-      v-if="!production.performances.length"
+      v-if="!production || !production.performances.length"
     >
       No Upcoming Performances
     </div>
