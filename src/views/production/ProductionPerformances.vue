@@ -1,5 +1,5 @@
 <template>
-  <div class="text-white container my-6">
+  <div class="container my-6 text-white">
     <div class="text-center"><h1 class="text-h2">Dates and Times</h1></div>
     <div class="flex flex-wrap justify-center">
       <div
@@ -21,15 +21,14 @@
             <p v-else>Tickets Avaliable</p>
           </div>
           <button
-            class="btn w-2/3 font-semibold text-center mt-4 btn-rouge btn-outline"
+            class="w-2/3 mt-4 font-semibold text-center btn btn-rouge btn-outline disabled"
             v-if="performance.sold_out"
-            disabled="true"
           >
             SOLD OUT
           </button>
           <router-link
             to="/"
-            class="btn w-2/3 font-semibold text-center mt-4 btn-orange"
+            class="w-2/3 mt-4 font-semibold text-center btn btn-orange"
             v-else
           >
             Book
