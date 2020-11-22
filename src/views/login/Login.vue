@@ -1,9 +1,7 @@
 <template>
-  <div class="bg-sta-gray">
-    <div class="h-screen prosarch">
-      <div class="flex">
-        <login-box2 class="justify-center items-center" ref="login-box2" />
-      </div>
+  <div class="bg-sta-gray h-screen prosarch">
+    <div class="flex h-full justify-center items-center">
+      <user-auth-box class="shadow-2xl" />
     </div>
   </div>
 </template>
@@ -15,21 +13,14 @@
   background-repeat: no-repeat;
   background-position: top center;
   // filter: blur(3px);
-
-  /* Set up positioning */
-  // > div {
-  //   min-height: 50vh;
-  // }
 }
 </style>
 
 <script>
-import LoginBox2 from './LoginBox2.vue';
+import UserAuthBox from './UserAuthBox.vue';
 
 export default {
-  components: {
-    LoginBox2,
-  },
+  components: { UserAuthBox },
   name: 'login',
 };
 </script>
