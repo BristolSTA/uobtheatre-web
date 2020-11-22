@@ -1,15 +1,36 @@
 <template>
-  <div class="min-h-full">
-    <login-box ref="login-box" />
+  <div class="bg-sta-gray">
+    <div class="h-screen prosarch">
+      <div class="flex">
+        <login-box2 class="justify-center items-center" ref="login-box" />
+      </div>
+    </div>
   </div>
 </template>
 
+<style scoped lang="scss">
+.prosarch {
+  background-image: url('~@/assets/images/pros-arch-lit.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top center;
+  // filter: blur(3px);
+
+  /* Set up positioning */
+  // > div {
+  //   min-height: 50vh;
+  // }
+}
+</style>
+
 <script>
-import LoginBox from './LoginBox.vue';
+import LoginBox2 from './LoginBox2.vue';
+// import SignUpBox from './SignUpBox.vue';
 
 export default {
   components: {
-    LoginBox,
+    LoginBox2,
+    // SignUpBox,
   },
   name: 'login',
 };
