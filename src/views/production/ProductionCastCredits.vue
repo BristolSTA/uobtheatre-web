@@ -67,7 +67,7 @@
       </div>
       <div v-else class="flex flex-wrap justify-center">
         <div
-          class="cast-credit-section"
+          class="cast-credit-section lg:w-1/2"
           v-if="this.production.productionTeam.length"
         >
           <h1 class="crew-section-header">Production Team</h1>
@@ -90,7 +90,10 @@
             </div>
           </div>
         </div>
-        <div class="cast-credit-section" v-if="this.production.crew.length">
+        <div
+          class="cast-credit-section lg:w-1/2"
+          v-if="this.production.crew.length"
+        >
           <h1 class="crew-section-header">CREW</h1>
           <div class="flex flex-wrap justify-center">
             <div
@@ -145,10 +148,14 @@
 
 <style lang="scss" scoped>
 .crew-section-header {
-  @apply text-2xl tracking-wide uppercase;
+  @apply text-2xl;
+  @apply tracking-wide;
+  @apply uppercase;
 }
 .cast-credit-section {
-  @apply w-full p-4 text-center lg:w-1/2;
+  @apply w-full;
+  @apply p-4;
+  @apply text-center;
 }
 </style>
 

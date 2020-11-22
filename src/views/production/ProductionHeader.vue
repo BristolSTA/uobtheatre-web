@@ -2,11 +2,12 @@
   <div
     class="flex flex-wrap items-center justify-center space-x-0 md:space-x-10 py-12"
   >
-    <template v-if="!production">
-      <div class="text-white text-xl justify-center font-semibold my-20">
-        Loading Production...
-      </div>
-    </template>
+    <div
+      v-if="!production"
+      class="text-white text-xl justify-center font-semibold my-20"
+    >
+      Loading Production...
+    </div>
     <template v-else>
       <div class="inline-block relative m-10 w-full md:w-2/3 max-w-xl">
         <img
