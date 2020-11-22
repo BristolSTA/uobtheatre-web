@@ -2,8 +2,12 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Meta from 'vue-meta';
 import Home from '../views/Home.vue';
+<<<<<<< HEAD
 import Production from '../views/Production.vue';
 import Login from '../views/login/Login.vue';
+=======
+import Production from '../views/production/Production.vue';
+>>>>>>> feat/20-prodictionPage
 
 Vue.use(VueRouter);
 Vue.use(Meta);

@@ -1,13 +1,13 @@
 <template>
-  <div class="bg-sta-gray min-h-full">
+  <div class="min-h-full bg-sta-gray">
     <div
       id="splashscreen"
       :style="{
         'background-image': splashBackground,
       }"
     >
-      <div class="bg-black bg-opacity-40 flex items-center">
-        <div class="text-white container px-4 lg:w-2/3">
+      <div class="flex items-center bg-black bg-opacity-40">
+        <div class="container px-4 text-white lg:w-2/3">
           <router-link
             v-if="featuredProduction"
             :to="{
@@ -32,15 +32,15 @@
       </div>
     </div>
 
-    <div class="container text-white mt-4" ref="whatson">
+    <div class="container mt-4 text-white" ref="whatson">
       <h1 class="text-h1">What's On</h1>
       <div
         v-for="(production, index) in upcomingProductionsToShow"
         :key="production.id"
-        class="production-feature py-4 flex flex-wrap items-center"
+        class="flex flex-wrap items-center py-4 production-feature"
         :class="{ 'flex-row-reverse': index % 2 == 1 }"
       >
-        <div class="w-full md:w-1/2 text-center p-2">
+        <div class="w-full p-2 text-center md:w-1/2">
           <router-link
             :to="{
               name: 'production',
@@ -55,7 +55,7 @@
           /></router-link>
         </div>
         <div
-          class="w-full md:w-1/2 p-2 text-center"
+          class="w-full p-2 text-center md:w-1/2"
           :class="[index % 2 == 0 ? 'md:text-left' : 'md:text-right']"
         >
           <router-link
@@ -63,12 +63,12 @@
               name: 'production',
               params: { productionSlug: production.slug },
             }"
-            ><h2 class="text-h2 font-semibold hover:text-gray-300">
+            ><h2 class="font-semibold text-h2 hover:text-gray-300">
               {{ production.name }}
             </h2></router-link
           >
           <span v-if="production.subtitle">{{ production.subtitle }}</span>
-          <p class="text-sta-orange font-semibold">
+          <p class="font-semibold text-sta-orange">
             {{ production.start_date | dateFormat('d MMMM') }} -
             {{ production.end_date | dateFormat('d MMMM y') }}
           </p>
@@ -80,14 +80,14 @@
               name: 'production',
               params: { productionSlug: production.slug },
             }"
-            class="btn btn-rouge mt-6 inline-block"
+            class="inline-block mt-6 btn btn-rouge"
             >More Information</router-link
           >
         </div>
       </div>
       <div
         v-if="upcomingProductions.length == 0"
-        class="text-center flex items-center"
+        class="flex items-center text-center"
         style="height: 30vh"
       >
         <div class="w-full">
@@ -97,7 +97,7 @@
       </div>
       <div
         v-if="upcomingProductions.length > upcomingProductionsToShow.length"
-        class="text-center flex items-center py-10"
+        class="flex items-center py-10 text-center"
       >
         <div class="w-full">
           <router-link to="/" class="btn btn-outline btn-orange"

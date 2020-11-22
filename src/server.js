@@ -9,6 +9,8 @@ import {
 
 import faker from 'faker';
 
+import { DateTime } from 'luxon';
+
 let paginatedResponse = (data) => {
   return {
     count: 2,
@@ -34,6 +36,7 @@ export function makeServer({ environment = 'development' } = {}) {
         performances: hasMany(),
         cast: hasMany('cast'),
         crew: hasMany('crew'),
+        productionTeam: hasMany('production_team'),
       }),
       performance: Model.extend({
         venue: belongsTo(),
@@ -47,6 +50,9 @@ export function makeServer({ environment = 'development' } = {}) {
       crew: Model.extend({
         production: belongsTo(),
       }),
+      production_team: Model.extend({
+        production: belongsTo(),
+      }),
     },
 
     serializers: {
@@ -55,7 +61,9 @@ export function makeServer({ environment = 'development' } = {}) {
         'performances',
         'cast',
         'crew',
+        'productionTeam',
       ]),
+      performance: RelationshipSerializer(['venue']),
     },
 
     factories: {
@@ -70,26 +78,39 @@ export function makeServer({ environment = 'development' } = {}) {
         cover_image: 'https://via.placeholder.com/1800x1000',
         age_rating: null,
         facebook_event: 'https://facebook.com',
-        description: () => faker.lorem.paragraph(),
+        description: () => faker.lorem.paragraphs(3),
         warnings: ['Strobe Lighting', 'Nudity'],
-        start_date: () => faker.date.past(),
-        end_date: () => faker.date.future(),
+        start_date: () => DateTime.local(),
+        end_date: () =>
+          DateTime.local().plus({
+            day: faker.random.number({ min: 1, max: 3 }),
+          }),
         min_ticket_price: () =>
           faker.random.number({ min: 1, max: 10 }).toFixed(2),
         afterCreate(production, server) {
-          production.cast = server.createList('cast', 4, {
+          production.cast = server.createList('cast', 30, {
             production: production,
           });
           production.crew = server.createList('crew', 4, {
+            production: production,
+          });
+          production.productionTeam = server.createList('productionTeam', 3, {
             production: production,
           });
           production.society = server.create('society');
         },
       }),
       performance: Factory.extend({
-        start: () => faker.date.past(),
-        end: () => faker.date.future(),
-        description: '',
+        start: () => DateTime.local(),
+        end: () =>
+          DateTime.local().plus({
+            hours: faker.random.number({ min: 1, max: 3 }),
+          }),
+        description: faker.lorem.words(4),
+        sold_out: () => faker.random.arrayElement([true, false]),
+        is_online: () => faker.random.arrayElement([true, false]),
+        is_inperson: () => faker.random.arrayElement([true, false]),
+        duration_mins: 100,
 
         afterCreate(performance, server) {
           performance.venue = server.create('venue');
@@ -100,20 +121,25 @@ export function makeServer({ environment = 'development' } = {}) {
       }),
       society: Factory.extend({
         name: () => faker.name.findName(),
+        logo_image: 'https://via.placeholder.com/500x500/0000FF',
       }),
       cast: Factory.extend({
         name: () => faker.name.findName(),
-        profile_picture: null,
+        profile_picture: () =>
+          faker.random.arrayElement([
+            'https://via.placeholder.com/100x100/FBD400',
+            null,
+          ]),
         role: () =>
           faker.random.arrayElement(['Peter Pan', 'The Wizard', 'Gary']),
       }),
       crew: Factory.extend({
-        role: () =>
-          faker.random.arrayElement([
-            'Stage Manager',
-            'Chief Electrician',
-            'Sound Engineer',
-          ]),
+        department: () =>
+          faker.random.arrayElement(['Stage Management', 'Lighting', 'Sound']),
+        name: () => faker.name.findName(),
+      }),
+      productionTeam: Factory.extend({
+        role: () => faker.random.arrayElement(['Producer', 'Music Director']),
         name: () => faker.name.findName(),
       }),
     },
@@ -122,23 +148,24 @@ export function makeServer({ environment = 'development' } = {}) {
       let dramsoc = server.create('society', {
         name: 'Dramsoc',
       });
-      let mtbSociety = server.create('society', {
-        name: 'MTB',
-      });
 
-      let legally = server.create('production', {
+      server.create('production', {
         name: 'Legally Blonde',
-        society: mtbSociety,
+        society: server.create('society', {
+          name: 'MTB',
+        }),
+        performances: server.createList('performance', 3),
       });
-      legally.createPerformance();
-      legally.createPerformance();
 
-      let trash = server.create('production', {
+      server.create('production', {
         name: 'TRASh',
         subtitle: 'The Really Artsy Show',
         society: dramsoc,
+        start_date: '2020-11-19',
+        end_date: '2020-11-19',
+        performances: server.createList('performance', 1),
       });
-      trash.createPerformance();
+
       server.create('production', {
         name: 'Present Laughter',
         society: dramsoc,
