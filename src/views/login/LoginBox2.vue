@@ -2,18 +2,22 @@
   <div class="bg-sta-gray" style="width: 360px">
     <div class="relative">
       <div class="flex items-center text-center">
-        <div
+        <button
           class="w-1/2 py-3 font-semibold br"
           :class="[login ? 'bg-sta-orange' : 'bg-gray-200']"
+          @click="login = true"
+          @keydown="login = true"
         >
-          <clickable-link @click="login = true">Login</clickable-link>
-        </div>
+          Login
+        </button>
 
         <div
           class="w-1/2 py-3 font-semibold bl"
           :class="[login ? 'bg-gray-200' : ' bg-sta-orange']"
+          @click="login = false"
+          @keydown="login = false"
         >
-          <clickable-link @click="login = false">Sign Up</clickable-link>
+          Sign Up
         </div>
       </div>
       <div

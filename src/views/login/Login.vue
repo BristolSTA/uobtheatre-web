@@ -25,12 +25,10 @@
 
 <script>
 import LoginBox2 from './LoginBox2.vue';
-// import SignUpBox from './SignUpBox.vue';
 
 export default {
   components: {
     LoginBox2,
-    // SignUpBox,
   },
   name: 'login',
 };
