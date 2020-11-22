@@ -53,6 +53,7 @@ export function makeServer({ environment = 'development' } = {}) {
       production_team: Model.extend({
         production: belongsTo(),
       }),
+      user: Model,
     },
 
     serializers: {
@@ -142,6 +143,12 @@ export function makeServer({ environment = 'development' } = {}) {
         role: () => faker.random.arrayElement(['Producer', 'Music Director']),
         name: () => faker.name.findName(),
       }),
+      user: Factory.extend({
+        name: () => faker.name.findName(),
+        email: () => faker.email(),
+        password: () => faker.password(),
+        token: () => faker.token()
+      })
     },
 
     seeds(server) {
@@ -170,6 +177,13 @@ export function makeServer({ environment = 'development' } = {}) {
         name: 'Present Laughter',
         society: dramsoc,
       });
+
+      server.create('user', {
+        name: 'admin',
+        password: 'admin',
+        email: 'admin@bristolsta.com',
+        token: '36c86c19f8f8d73aa59c3a00814137bdee0ab8de',
+      });
     },
 
     routes() {
@@ -193,6 +207,11 @@ export function makeServer({ environment = 'development' } = {}) {
       this.resource('performances');
       this.resource('venues');
       this.resource('societies');
+
+      this.post('api-token-auth', function (schema, request) {
+        let token = schema.users.findBy({email: JSON.parse(request.requestBody).email }).token;
+        return {'token':token}
+      });
     },
   });
 }

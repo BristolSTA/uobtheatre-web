@@ -1,6 +1,6 @@
 <template>
   <div class="bg-sta-gray w-80">
-    <div class="flex items-center text-center space-x-1">
+    <div class="flex items-center space-x-1 text-center">
       <button
         class="w-1/2 py-3 font-semibold focus:outline-none"
         :class="[login ? 'bg-sta-orange' : 'bg-gray-200']"
@@ -26,6 +26,8 @@
       </div>
       <button
         class="w-full mt-6 text-xl font-semibold text-center btn btn-orange btn-outline"
+        @click="authService.login(email, password)"
+        @keydown="authService.login(email, password)"
       >
         Log In
       </button>
@@ -66,6 +68,7 @@
 </template>
 
 <script>
+import { authService } from '@/services';
 import ClickableLink from '@/components/ui/ClickableLink.vue';
 import TextInput from '@/components/ui/TextInput.vue';
 
@@ -79,6 +82,7 @@ export default {
       password: null,
       email: null,
       accepted_terms: false,
+      authService: authService,
     };
   },
 };
