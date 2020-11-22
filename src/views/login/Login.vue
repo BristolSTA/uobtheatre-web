@@ -2,7 +2,7 @@
   <div class="bg-sta-gray">
     <div class="h-screen prosarch">
       <div class="flex">
-        <login-box2 class="justify-center items-center" ref="login-box" />
+        <login-box2 class="justify-center items-center" ref="login-box2" />
       </div>
     </div>
   </div>

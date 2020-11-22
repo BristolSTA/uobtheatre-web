@@ -2,8 +2,19 @@
   <div class="bg-sta-gray" style="width: 360px">
     <div class="relative">
       <div class="flex items-center text-center">
-        <div class="w-1/2 py-3 font-semibold bg-gray-200 br">Login</div>
-        <div class="w-1/2 py-3 font-semibold bg-sta-orange bl">Sign Up</div>
+        <div
+          class="w-1/2 py-3 font-semibold br"
+          :class="[login ? 'bg-sta-orange' : 'bg-gray-200']"
+        >
+          <clickable-link @click="login = true">Login</clickable-link>
+        </div>
+
+        <div
+          class="w-1/2 py-3 font-semibold bl"
+          :class="[login ? 'bg-gray-200' : ' bg-sta-orange']"
+        >
+          <clickable-link @click="login = false">Sign Up</clickable-link>
+        </div>
       </div>
       <div
         class="absolute top-0 flex items-center justify-center w-full h-full"
@@ -14,7 +25,32 @@
         >
       </div>
     </div>
-    <div class="flex flex-col p-6 space-y-2">
+    <p class="text-white">{{ login }}</p>
+    <div v-if="login" class="flex flex-col p-6 space-y-2">
+      <label for="email">
+        <span class="labelText">Email</span>
+        <input class="w-full p-1 rounded-sm" id="email" v-model="email"
+      /></label>
+      <label for="password">
+        <span class="labelText">Password</span>
+        <input class="w-full p-1 rounded-sm" id="password" v-model="password"
+      /></label>
+      <br />
+      <br />
+      <br />
+      <button
+        class="w-full text-xl font-semibold text-center btn btn-orange btn-outline disabled"
+      >
+        Log In
+      </button>
+      <p class="mt-2 text-white">
+        <clickable-link @click="login = false">
+          Don't have an account? <strong>Sign Up</strong></clickable-link
+        >
+      </p>
+    </div>
+
+    <div v-else class="flex flex-col p-6 space-y-2">
       <label for="name">
         <span class="labelText">Full Name</span>
         <input class="w-full p-1 rounded-sm" id="name" v-model="name"
@@ -42,7 +78,9 @@
         Sign Up
       </button>
       <p class="mt-2 text-white">
-        <a href="link">Already have an account? <strong>Log In</strong></a>
+        <clickable-link @click="login = true">
+          Already have an account? <strong>Log In</strong></clickable-link
+        >
       </p>
     </div>
   </div>
@@ -69,5 +107,10 @@ import ClickableLink from '@/components/ui/ClickableLink.vue';
 export default {
   name: 'login-box2',
   components: { ClickableLink },
+  data() {
+    return {
+      login: false,
+    };
+  },
 };
 </script>
