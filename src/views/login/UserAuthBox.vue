@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-sta-gray" style="width: 360px">
+  <div class="bg-sta-gray w-80">
     <div class="flex items-center text-center space-x-1">
       <button
         class="w-1/2 py-3 font-semibold focus:outline-none"
@@ -21,14 +21,8 @@
     </div>
     <div v-if="login" class="p-6">
       <div class="space-y-2">
-        <label for="email">
-          <span class="labelText">Email</span>
-          <input class="w-full p-1 rounded-sm" id="email" v-model="email"
-        /></label>
-        <label for="password">
-          <span class="labelText">Password</span>
-          <input class="w-full p-1 rounded-sm" id="password" v-model="password"
-        /></label>
+        <text-input name="Email" v-model="email" />
+        <text-input name="Password" v-model="password" input_type="password" />
       </div>
       <button
         class="w-full mt-6 text-xl font-semibold text-center btn btn-orange btn-outline disabled"
@@ -43,26 +37,19 @@
     </div>
 
     <div v-else class="flex flex-col p-6 space-y-2">
-      <label for="name">
-        <span class="labelText">Full Name</span>
-        <input class="w-full p-1 rounded-sm" id="name" v-model="name"
-      /></label>
-      <label for="email">
-        <span class="labelText">Email</span>
-        <input class="w-full p-1 rounded-sm" id="email" v-model="email"
-      /></label>
-      <label for="password">
-        <span class="labelText">Password</span>
-        <input class="w-full p-1 rounded-sm" id="password" v-model="password"
-      /></label>
+      <text-input name="Full Name" v-model="name" />
+      <text-input name="Email" v-model="email" />
+      <text-input name="Password" v-model="password" input_type="password" />
       <label for="checkbox" class="flex items-center space-x-2"
         ><input
           type="checkbox"
           id="checkbox"
-          v-model="checked"
+          v-model="accepted_terms"
           class="w-5 h-5 border rounded-sm border-sta-grey focus:outline-none"
         />
-        <span class="labelText">Accept the Terms of Use?</span></label
+        <span class="text-xs font-semibold text-white"
+          >Accept the Terms of Use?</span
+        ></label
       >
       <button
         class="w-full text-xl font-semibold text-center btn btn-orange btn-outline disabled"
@@ -78,22 +65,20 @@
   </div>
 </template>
 
-<style lang="scss">
-.labelText {
-  @apply text-xs;
-  @apply font-semibold;
-  @apply text-white;
-}
-</style>
-
 <script>
 import ClickableLink from '@/components/ui/ClickableLink.vue';
+import TextInput from '@/components/ui/TextInput.vue';
+
 export default {
   name: 'user-auth-box',
-  components: { ClickableLink },
+  components: { ClickableLink, TextInput },
   data() {
     return {
       login: true,
+      name: null,
+      password: null,
+      email: null,
+      accepted_terms: false,
     };
   },
 };
