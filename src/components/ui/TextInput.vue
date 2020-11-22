@@ -2,7 +2,7 @@
   <label :for="inputId">
     <span class="text-white text-xs font-semibold">{{ name }}</span>
     <input
-      class="w-full p-1 rounded-sm"
+      class="w-full p-1 rounded-sm focus:outline-none"
       :id="inputId"
       :value="value"
       @input="$emit('input', $event.target.value)"

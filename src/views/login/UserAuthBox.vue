@@ -25,7 +25,7 @@
         <text-input name="Password" v-model="password" input_type="password" />
       </div>
       <button
-        class="w-full mt-6 text-xl font-semibold text-center btn btn-orange btn-outline disabled"
+        class="w-full mt-6 text-xl font-semibold text-center btn btn-orange btn-outline"
       >
         Log In
       </button>
@@ -52,7 +52,7 @@
         ></label
       >
       <button
-        class="w-full text-xl font-semibold text-center btn btn-orange btn-outline disabled"
+        class="w-full text-xl font-semibold text-center btn btn-orange btn-outline"
       >
         Sign Up
       </button>

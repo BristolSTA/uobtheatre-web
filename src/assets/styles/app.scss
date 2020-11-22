@@ -12,9 +12,9 @@
     }
     &.disabled {
       @apply cursor-not-allowed;
-      &:focus {
-        @apply outline-none;
-      }
+    }
+    &:focus {
+      @apply outline-none;
     }
   }
 

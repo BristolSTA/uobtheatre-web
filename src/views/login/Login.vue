@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-sta-gray h-screen prosarch">
+  <div class="bg-sta-gray h-screen login-background">
     <div class="flex h-full justify-center items-center">
       <user-auth-box class="shadow-2xl" />
     </div>
@@ -7,12 +7,11 @@
 </template>
 
 <style scoped lang="scss">
-.prosarch {
+.login-background {
   background-image: url('~@/assets/images/pros-arch-lit.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: top center;
-  // filter: blur(3px);
 }
 </style>
 
