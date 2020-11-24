@@ -1,37 +1,35 @@
 import { makeServer } from '@/server';
 import { expect } from 'chai';
-import ProductionPage from '@/views/production/Production.vue';
 import ProductionHeader from '@/views/production/ProductionHeader.vue';
-import ProductionCastCredits from '@/views/production/ProductionCastCredits.vue';
-import ProductionPerformances from '@/views/production/ProductionPerformances.vue';
-
 
 import { mount } from '@vue/test-utils';
 import { waitFor } from '../../../helpers';
 
+describe('ProductionHeader', function () {
+  let headerContainer;
+  let server;
 
+  beforeEach(() => {
+    server = makeServer({ environment: 'test' });
 
-describe('ProductionHeader', () => {
-    let productionHeaderContainer;
-
-    beforeEach(() => {
-      productionHeaderContainer = productionComponent.findComponent({ ref: 'header'});
+    server.create('production', {
+      name: 'Legally Ginger',
+      slug: 'legally-ginger',
     });
 
-    it('fall back while producion is loading', () => {
-      expect(productionHeaderContainer.text()).to.contain(
-        'Loading Production...'
-      );
+    headerContainer = mount(ProductionHeader, {
+      mocks: {
+        $route: {
+          params: {
+            productionSlug: 'legally-ginger',
+          },
+        },
+      },
     });
+  });
 
-    it('shows production with all details in header', async () => {
-      seedProductions();
-
-      productionComponent = mountWithRouterMock(Producion);
-      productionHeaderContainer = productionComponent.findComponent({ ref: 'header'});
-      await waitFor(() => productionComponent.vm.production);
-
-    });
+  it('fall back while producion is loading', () => {
+    expect(headerContainer.text()).to.contain('Loading Production...');
   });
 
   let seedProductions = () => {
@@ -45,3 +43,4 @@ describe('ProductionHeader', () => {
       performances: server.createList('performance', 3),
     });
   };
+});
