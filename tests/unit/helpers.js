@@ -19,7 +19,7 @@ const waitFor = function (callback) {
         clearInterval(timer);
         resolve();
       }
-    }, 5);
+    }, 100);
   });
 };
 
