@@ -20,6 +20,24 @@ let paginatedResponse = (data) => {
   };
 };
 
+let updateIfDoesntHave = function (model, keyValues, value) {
+  // By default, assume keyValues is a dictonary of key value pairs
+  if (keyValues instanceof String) {
+    keyValues = {
+      [keyValues]: value,
+    };
+  }
+  let updateObj = {};
+  Object.keys(keyValues).forEach((key) => {
+    if (!model[key]) {
+      value = keyValues[key];
+      if (typeof value === 'function') value = value();
+      updateObj[key] = value;
+    }
+  });
+  model.update(updateObj);
+};
+
 export function makeServer({ environment = 'development' } = {}) {
   let RelationshipSerializer = (relationships) =>
     Serializer.extend({
@@ -88,16 +106,20 @@ export function makeServer({ environment = 'development' } = {}) {
         min_ticket_price: () =>
           faker.random.number({ min: 1, max: 10 }).toFixed(2),
         afterCreate(production, server) {
-          production.cast = server.createList('cast', 30, {
-            production: production,
+          updateIfDoesntHave(production, {
+            cast: () => {
+              return server.createList('cast', 30);
+            },
+            crew: () => {
+              return server.createList('crew', 4);
+            },
+            productionTeam: () => {
+              return server.createList('productionTeam', 3);
+            },
+            society: () => {
+              return server.create('society');
+            },
           });
-          production.crew = server.createList('crew', 4, {
-            production: production,
-          });
-          production.productionTeam = server.createList('productionTeam', 3, {
-            production: production,
-          });
-          production.society = server.create('society');
         },
       }),
       performance: Factory.extend({
@@ -113,7 +135,11 @@ export function makeServer({ environment = 'development' } = {}) {
         duration_mins: 100,
 
         afterCreate(performance, server) {
-          performance.venue = server.create('venue');
+          updateIfDoesntHave(performance, {
+            venue: () => {
+              return server.create('venue');
+            },
+          });
         },
       }),
       venue: Factory.extend({
@@ -169,6 +195,10 @@ export function makeServer({ environment = 'development' } = {}) {
       server.create('production', {
         name: 'Present Laughter',
         society: dramsoc,
+      });
+
+      server.create('production', {
+        name: 'A Default Production',
       });
     },
 
