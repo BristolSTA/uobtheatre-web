@@ -3,6 +3,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
+  "eslint.packageManager": "yarn",
   "eslint.validate": ["javascript", "javascriptreact", "vue"],
   "path-intellisense.mappings": {
     "@": "${workspaceRoot}/src"
