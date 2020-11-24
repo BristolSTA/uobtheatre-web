@@ -3,9 +3,10 @@
     <production-header
       :production="production"
       @scroll-to-tickets="$refs.performances.$el.scrollIntoView()"
+      ref="header"
     />
     <hr class="border-t-2 border-sta-gray-dark" />
-    <production-cast-credits :production="production" />
+    <production-cast-credits :production="production" ref="cast-credits" />
     <hr class="border-t-2 border-sta-gray-dark" />
     <production-performances ref="performances" :production="production" />
   </div>
