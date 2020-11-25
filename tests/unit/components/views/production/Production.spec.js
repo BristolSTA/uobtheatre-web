@@ -1,4 +1,4 @@
-import { makeServer } from '@/server';
+import { makeServer } from '@/fakeApi';
 import { expect } from 'chai';
 import ProductionPage from '@/views/production/Production.vue';
 import ProductionHeader from '@/views/production/ProductionHeader.vue';
@@ -45,7 +45,7 @@ describe('Production', function () {
   afterEach(() => {
     server.shutdown();
   });
-  
+
   it('contains the correct components', async () => {
     expect(headerComponent.exists()).to.be.true;
     expect(castCreditsComponent.exists()).to.be.true;
@@ -74,5 +74,4 @@ describe('Production', function () {
   it('handles invalid production', () => {
     // TODO: Implement after 404 ready
   });
-
 });
