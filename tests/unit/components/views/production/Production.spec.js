@@ -53,8 +53,6 @@ describe('Production', function () {
 
     await waitFor(() => productionPageComponent.vm.production);
 
-    headerComponent = productionPageComponent.findComponent(ProductionHeader);
-
     expect(headerComponent.props('production')).to.eq(
       productionPageComponent.vm.production
     );

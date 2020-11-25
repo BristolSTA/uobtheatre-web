@@ -36,6 +36,10 @@ describe('ProductionHeader', function () {
     });
   });
 
+  afterEach(() => {
+    server.shutdown();
+  });
+
   it('fall back while producion is loading', () => {
     expect(headerContainer.text()).to.contain('Loading Production...');
   });
