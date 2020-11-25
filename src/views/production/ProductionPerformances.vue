@@ -45,6 +45,7 @@
           </router-link>
         </div>
       </div>
+      {{ production }}
     </div>
   </div>
 </template>
