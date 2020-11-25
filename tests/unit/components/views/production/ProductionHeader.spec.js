@@ -3,16 +3,20 @@ import { expect } from 'chai';
 import ProductionHeader from '@/views/production/ProductionHeader.vue';
 
 import { mount } from '@vue/test-utils';
-// import { waitFor } from '../../../helpers';
+import { productionService } from '@/services';
 
 describe('ProductionHeader', function () {
   let headerContainer;
   let server;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     server = makeServer({ environment: 'test' });
 
-    let production = server.create('production', {
+    let venue = server.create('venue', {
+      name: 'The New Vic',
+    });
+
+    server.create('production', {
       name: 'Legally Ginger',
       slug: 'legally-ginger',
       cover_image: 'http://pathto.example/my-image.png',
@@ -22,19 +26,21 @@ describe('ProductionHeader', function () {
       }),
       start_date: new Date('2020-11-14'),
       end_date: new Date('2020-11-18'),
-      performances: server.create('performance', {
+      performances: server.createList('performance', 2, {
         start: Date('2020-11-14'),
-        venue: server.create('venue', {
-          name: 'The New Vic',
-        }),
+        venue: venue,
       }),
     });
 
-    headerContainer = mount(ProductionHeader, {
-      propsData: {
-        production: production,
-      },
-    });
+    return productionService
+      .fetchProductionBySlug('legally-ginger')
+      .then((production) => {
+        headerContainer = mount(ProductionHeader, {
+          propsData: {
+            production: production,
+          },
+        });
+      });
   });
 
   afterEach(() => {

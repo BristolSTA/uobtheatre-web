@@ -100,17 +100,15 @@ export default {
       return joinWithAnd(venues);
     },
     hasOnlinePerformances() {
-      return Boolean(
-        this.production.performances.find(
-          (performance) => performance.is_online
-        )
+      if (!this.production.performances) return;
+      return !!this.production.performances.find(
+        (performance) => performance.is_online
       );
     },
     hasInPersonPerformances() {
-      return Boolean(
-        this.production.performances.find(
-          (performance) => performance.is_inperson
-        )
+      if (!this.production.performances) return;
+      return !!this.production.performances.find(
+        (performance) => performance.is_inperson
       );
     },
     duration() {
