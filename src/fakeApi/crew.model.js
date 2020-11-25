@@ -1,17 +1,17 @@
 import faker from 'faker';
 import { Model, Factory, belongsTo } from 'miragejs';
 
-export default class {
+export default {
   registerModels() {
     return {
       crew: Model.extend({
         production: belongsTo(),
       }),
     };
-  }
+  },
   registerSerializers() {
     return {};
-  }
+  },
   registerFactories() {
     return {
       crew: Factory.extend({
@@ -20,6 +20,6 @@ export default class {
         name: () => faker.name.findName(),
       }),
     };
-  }
-  registerRoutes() {}
-}
+  },
+  registerRoutes() {},
+};

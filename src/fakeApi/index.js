@@ -9,13 +9,13 @@ import ProductionTeamInterface from './productionTeam.model';
 import VenueInterface from './venue.model';
 
 let apiModels = [
-  new ProductionInterface(),
-  new PerformanceInterface(),
-  new SocietyInterface(),
-  new CastInterface(),
-  new CrewInterface(),
-  new ProductionTeamInterface(),
-  new VenueInterface(),
+  ProductionInterface,
+  PerformanceInterface,
+  SocietyInterface,
+  CastInterface,
+  CrewInterface,
+  ProductionTeamInterface,
+  VenueInterface,
 ];
 
 let models = {};

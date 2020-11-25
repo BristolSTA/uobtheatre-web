@@ -7,7 +7,7 @@ import {
   paginatedResponse,
 } from './utils';
 
-export default class {
+export default {
   registerModels() {
     return {
       production: Model.extend({
@@ -18,7 +18,7 @@ export default class {
         productionTeam: hasMany('production_team'),
       }),
     };
-  }
+  },
   registerSerializers() {
     return {
       production: RelationshipSerializer([
@@ -29,7 +29,7 @@ export default class {
         'productionTeam',
       ]),
     };
-  }
+  },
   registerFactories() {
     return {
       production: Factory.extend({
@@ -70,7 +70,7 @@ export default class {
         },
       }),
     };
-  }
+  },
   registerRoutes() {
     this.resource('productions', { except: ['index', 'show'] });
 
@@ -92,5 +92,5 @@ export default class {
     this.get('productions/:slug', function (schema, request) {
       return schema.productions.findBy({ slug: request.params.slug });
     });
-  }
-}
+  },
+};

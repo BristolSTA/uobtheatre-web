@@ -3,7 +3,7 @@ import { DateTime } from 'luxon';
 import { Model, Factory, belongsTo } from 'miragejs';
 import { RelationshipSerializer, updateIfDoesntHave } from './utils';
 
-export default class {
+export default {
   registerModels() {
     return {
       performance: Model.extend({
@@ -11,12 +11,12 @@ export default class {
         production: belongsTo('performance'),
       }),
     };
-  }
+  },
   registerSerializers() {
     return {
       performance: RelationshipSerializer(['venue']),
     };
-  }
+  },
   registerFactories() {
     return {
       performance: Factory.extend({
@@ -40,8 +40,8 @@ export default class {
         },
       }),
     };
-  }
+  },
   registerRoutes() {
     this.resource('performances');
-  }
-}
+  },
+};

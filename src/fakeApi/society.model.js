@@ -1,15 +1,15 @@
 import faker from 'faker';
 import { Model, Factory } from 'miragejs';
 
-export default class {
+export default {
   registerModels() {
     return {
       society: Model,
     };
-  }
+  },
   registerSerializers() {
     return {};
-  }
+  },
   registerFactories() {
     return {
       society: Factory.extend({
@@ -17,8 +17,8 @@ export default class {
         logo_image: 'https://via.placeholder.com/500x500/0000FF',
       }),
     };
-  }
+  },
   registerRoutes() {
     this.resource('societies');
-  }
-}
+  },
+};
