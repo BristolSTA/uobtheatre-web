@@ -30,7 +30,11 @@
             {{ production.subtitle }} by {{ production.society.name }}
           </p>
         </span>
-        <p>Live at the {{ venues }}</p>
+        <p>
+          <template v-if="hasInPersonPerformances">Live at the </template>
+          <template v-else>View </template>
+          {{ venues }}
+        </p>
         <p>
           {{
             displayStartEnd(production.start_date, production.end_date, 'd MMM')
@@ -77,7 +81,6 @@ export default {
   computed: {
     venues() {
       if (!this.production || !this.production.performances.length) return;
-
       let venues = lo.uniq(
         this.production.performances.map((performance) => {
           return performance.venue.name;
@@ -85,10 +88,30 @@ export default {
       );
 
       if (venues.length > 3) {
-        venues = lo.take(venues, 2).append('others');
+        venues = lo.take(venues, 2);
+        venues.push('others');
+      }
+
+      if (this.hasOnlinePerformances) {
+        venues = lo.take(venues);
+        venues.push('Online');
       }
 
       return joinWithAnd(venues);
+    },
+    hasOnlinePerformances() {
+      return Boolean(
+        this.production.performances.find(
+          (performance) => performance.is_online
+        )
+      );
+    },
+    hasInPersonPerformances() {
+      return Boolean(
+        this.production.performances.find(
+          (performance) => performance.is_inperson
+        )
+      );
     },
     duration() {
       if (!this.production || !this.production.performances.length) return;

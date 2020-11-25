@@ -205,10 +205,24 @@ export default {
       return lodash.sortBy(this.production.cast, 'profile_picture');
     },
     medium() {
-      if (this.production.is_online && this.production.is_inperson)
+      if (this.hasOnlinePerformances && this.hasInPersonPerformances)
         return 'In Person + Online';
-      if (this.production.is_online) return 'Online Only';
+      if (this.hasOnlinePerformances) return 'Online Only';
       return 'In Person Only';
+    },
+    hasOnlinePerformances() {
+      return Boolean(
+        this.production.performances.find(
+          (performance) => performance.is_online
+        )
+      );
+    },
+    hasInPersonPerformances() {
+      return Boolean(
+        this.production.performances.find(
+          (performance) => performance.is_inperson
+        )
+      );
     },
   },
 };
