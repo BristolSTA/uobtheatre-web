@@ -9,56 +9,8 @@ import { fixTextSpacing } from '../../../helpers.js';
 describe('ProductionHeader', function () {
   let headerContainer;
   let server;
-
   beforeEach(async () => {
     server = makeServer({ environment: 'test' });
-
-    // let venue = server.create('venue', {
-    //   name: 'The New Vic',
-    // });
-
-    server.create('production', {
-      name: 'Legally Ginger',
-      slug: 'legally-ginger',
-      cover_image: 'http://pathto.example/my-image.png',
-      society: server.create('society', {
-        name: 'Joe Bloggs Productions',
-        logo_image: 'http://pathto.example/logo-image.png',
-      }),
-      start_date: new Date('2020-11-14'),
-      end_date: new Date('2020-11-18'),
-      min_ticket_price: '4.34',
-      performances: [
-        server.create('performance', {
-          start: Date('2020-11-14'),
-          venue: server.create('venue', {
-            name: 'The New Vic',
-          }),
-          is_inperson: true,
-          is_online: false,
-          duration_mins: 102,
-        }),
-        server.create('performance', {
-          start: Date('2020-11-15'),
-          venue: server.create('venue', {
-            name: 'The Newer Vic',
-          }),
-          is_inperson: true,
-          is_online: false,
-          duration_mins: 112,
-        }),
-      ],
-    });
-
-    return productionService
-      .fetchProductionBySlug('legally-ginger')
-      .then((production) => {
-        headerContainer = mount(ProductionHeader, {
-          propsData: {
-            production: production,
-          },
-        });
-      });
   });
 
   afterEach(() => {
@@ -66,11 +18,36 @@ describe('ProductionHeader', function () {
   });
 
   it('fall back while production is loading', async () => {
-    await headerContainer.setProps({ production: null });
+    headerContainer = mount(ProductionHeader, {
+      propsData: {
+        production: null,
+      },
+    });
     expect(headerContainer.text()).to.contain('Loading Production...');
   });
 
-  it('Testing text elecemts', () => {
+  it('shows production details correctly', async () => {
+    await createWithPerformances([
+      {
+        start: Date('2020-11-14'),
+        venue: server.create('venue', {
+          name: 'The New Vic',
+        }),
+        is_inperson: true,
+        is_online: false,
+        duration_mins: 102,
+      },
+      {
+        start: Date('2020-11-15'),
+        venue: server.create('venue', {
+          name: 'The Newer Vic',
+        }),
+        is_inperson: true,
+        is_online: false,
+        duration_mins: 112,
+      },
+    ]);
+
     // test correct show title
     expect(headerContainer.text()).to.contain('Legally Ginger');
 
@@ -97,4 +74,35 @@ describe('ProductionHeader', function () {
   it('Testing text for online only production', () => {});
 
   it('Testing text for online and in person production', () => {});
+
+  let createWithPerformances = (performances) => {
+    let perfs = [];
+    performances.forEach((perf) => {
+      perfs.push(server.create('performance', perf));
+    });
+
+    server.create('production', {
+      name: 'Legally Ginger',
+      slug: 'legally-ginger',
+      cover_image: 'http://pathto.example/my-image.png',
+      society: server.create('society', {
+        name: 'Joe Bloggs Productions',
+        logo_image: 'http://pathto.example/logo-image.png',
+      }),
+      start_date: new Date('2020-11-14'),
+      end_date: new Date('2020-11-18'),
+      min_ticket_price: '4.34',
+      performances: perfs,
+    });
+
+    return productionService
+      .fetchProductionBySlug('legally-ginger')
+      .then((production) => {
+        headerContainer = mount(ProductionHeader, {
+          propsData: {
+            production: production,
+          },
+        });
+      });
+  };
 });
