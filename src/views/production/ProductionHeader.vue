@@ -31,7 +31,7 @@
           </p>
         </span>
         <p>
-          <template v-if="hasInPersonPerformances">Live at the </template>
+          <template v-if="hasInPersonPerformances">Live at </template>
           <template v-else>View </template>
           {{ venues }}
         </p>
@@ -80,24 +80,27 @@ export default {
   },
   computed: {
     venues() {
-      if (!this.production || !this.production.performances.length) return;
-      let venues = lo.uniq(
-        this.production.performances.map((performance) => {
-          return performance.venue.name;
-        })
-      );
+      if (this.hasInPersonPerformances) {
+        if (!this.production || !this.production.performances.length) return;
+        let venues = lo.uniq(
+          this.production.performances.map((performance) => {
+            return performance.venue.name;
+          })
+        );
 
-      if (venues.length > 3) {
-        venues = lo.take(venues, 2);
-        venues.push('others');
+        if (venues.length > 3) {
+          venues = lo.take(venues, 2);
+          venues.push('others');
+        }
+
+        if (this.hasOnlinePerformances) {
+          venues = lo.take(venues);
+          venues.push('Online');
+        }
+
+        return joinWithAnd(venues);
       }
-
-      if (this.hasOnlinePerformances) {
-        venues = lo.take(venues);
-        venues.push('Online');
-      }
-
-      return joinWithAnd(venues);
+      return 'Online';
     },
     hasOnlinePerformances() {
       if (!this.production.performances) return;

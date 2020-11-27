@@ -71,9 +71,51 @@ describe('ProductionHeader', function () {
     );
   });
 
-  it('Testing text for online only production', () => {});
+  it('Testing text for online only production', async () => {
+    await createWithPerformances([
+      {
+        venue: server.create('venue', {
+          name: 'The New Vic',
+        }),
+        is_inperson: false,
+        is_online: true,
+      },
+      {
+        venue: server.create('venue', {
+          name: 'The Newer Vic',
+        }),
+        is_inperson: false,
+        is_online: true,
+      },
+    ]);
 
-  it('Testing text for online and in person production', () => {});
+    // test online only
+    expect(fixTextSpacing(headerContainer.text())).to.contain('View Online');
+  });
+
+  it('Testing text for online and in person production', async () => {
+    await createWithPerformances([
+      {
+        venue: server.create('venue', {
+          name: 'The New Vic',
+        }),
+        is_inperson: false,
+        is_online: true,
+      },
+      {
+        venue: server.create('venue', {
+          name: 'The New Vic',
+        }),
+        is_inperson: true,
+        is_online: false,
+      },
+    ]);
+
+    // test online and live
+    expect(fixTextSpacing(headerContainer.text())).to.contain(
+      'Live at The New Vic and Online '
+    );
+  });
 
   let createWithPerformances = (performances) => {
     let perfs = [];
