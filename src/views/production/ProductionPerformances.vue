@@ -9,7 +9,7 @@
     </div>
     <div v-else class="flex flex-wrap justify-center">
       <div
-        class="w-full md:w-1/2 lg:w-1/3 2xl:w-1/4"
+        class="performance w-full md:w-1/2 lg:w-1/3 2xl:w-1/4"
         v-for="performance in production.performances"
         :key="performance.id"
       >

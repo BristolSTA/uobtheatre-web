@@ -123,14 +123,14 @@ describe('ProductionHeader', function () {
     await createWithPerformances([
       {
         venue: server.create('venue', {
-          name: 'The New Vic',
+          name: 'New Vic',
         }),
         is_inperson: false,
         is_online: true,
       },
       {
         venue: server.create('venue', {
-          name: 'The New Vic',
+          name: 'New Vic',
         }),
         is_inperson: true,
         is_online: false,
@@ -139,7 +139,7 @@ describe('ProductionHeader', function () {
 
     // test online and live
     expect(fixTextSpacing(headerContainer.text())).to.contain(
-      'Live at The New Vic and Online '
+      'Live at the New Vic and Online '
     );
   });
 
