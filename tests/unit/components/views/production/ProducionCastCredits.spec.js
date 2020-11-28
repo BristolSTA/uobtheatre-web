@@ -4,7 +4,6 @@ import ProductionCastCredits from '@/views/production/ProductionCastCredits.vue'
 
 import { mount } from '@vue/test-utils';
 import { productionService } from '@/services';
-import { fixTextSpacing } from '../../../helpers.js';
 
 describe('CastCreditsContainer', function () {
   let castCreditsContainer;
@@ -18,12 +17,103 @@ describe('CastCreditsContainer', function () {
   });
 
   describe('Overview', () => {
-    let overview;
+    it('shows the correct overview', async () => {
+      await createWithPerformances([
+        {
+          start: Date('2020-11-14'),
+          venue: server.create('venue'),
+          is_inperson: true,
+          is_online: false,
+        },
+      ]);
 
-    beforeEach(() => {
-      overview = castCreditsContainer.findComponent({
-        ref: 'overview',
-      });
+      // correct descriprion
+      expect(castCreditsContainer.text()).to.contain(
+        'The description of the show.'
+      );
+
+      // correct poster image
+      expect(
+        castCreditsContainer
+          .findComponent({
+            ref: 'poster_image',
+          })
+          .attributes('src')
+      ).to.equal('http://pathto.example/poster-image.png');
+    });
+
+    it('shows the correct show information', async () => {
+      await createWithPerformances([
+        {
+          start: Date('2020-11-14'),
+          venue: server.create('venue'),
+          is_inperson: true,
+          is_online: false,
+        },
+      ]);
+
+      // correct warnings
+      expect(
+        castCreditsContainer
+          .findComponent({
+            ref: 'warnings',
+          })
+          .text()
+      ).to.contain('Strobe Lighting');
+      expect(
+        castCreditsContainer
+          .findComponent({
+            ref: 'warnings',
+          })
+          .text()
+      ).to.contain('Nudity');
+
+      //correct medium for in person
+      expect(castCreditsContainer.text()).to.contain('Medium: In Person Only');
+
+      // correct description
+      expect(castCreditsContainer.text()).to.contain(
+        'A production by Joe Bloggs Productions'
+      );
+    });
+
+    it('shows the correct medium for online and no show warnings', async () => {
+      await createWithPerformances(
+        [
+          {
+            start: Date('2020-11-14'),
+            venue: server.create('venue'),
+            is_inperson: false,
+            is_online: true,
+          },
+        ],
+        { warnings: null }
+      );
+
+      expect(
+        castCreditsContainer
+          .findComponent({
+            ref: 'warnings',
+          })
+          .exists()
+      ).to.be.false;
+
+      expect(castCreditsContainer.text()).to.contain('Medium: Online Only');
+    });
+
+    it('shows the correct medium for online and in person', async () => {
+      await createWithPerformances([
+        {
+          start: Date('2020-11-14'),
+          venue: server.create('venue'),
+          is_inperson: true,
+          is_online: true,
+        },
+      ]);
+
+      expect(castCreditsContainer.text()).to.contain(
+        'Medium: In Person + Online'
+      );
     });
   });
 
@@ -89,13 +179,13 @@ describe('CastCreditsContainer', function () {
         {
           name: 'Legally Ginger',
           slug: 'legally-ginger',
-          cover_image: 'http://pathto.example/cover-image.png',
+          poster_image: 'http://pathto.example/poster-image.png',
           society: server.create('society', {
             name: 'Joe Bloggs Productions',
           }),
-          start_date: new Date('2020-11-14'),
-          end_date: new Date('2020-11-18'),
           performances: perfs,
+          warnings: ['Strobe Lighting', 'Nudity'],
+          description: 'The description of the show.',
           cast: [
             server.create('cast', { name: 'Alex T', role: 'Good Guy' }),
             server.create('cast', { name: 'Jeff', role: 'Bad Guy' }),

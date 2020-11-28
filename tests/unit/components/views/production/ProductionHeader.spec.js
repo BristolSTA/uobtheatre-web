@@ -156,7 +156,6 @@ describe('ProductionHeader', function () {
           name: 'Legally Ginger',
           slug: 'legally-ginger',
           cover_image: 'http://pathto.example/cover-image.png',
-          poster_image: 'https://pathto.example/poster-image.png',
           featured_image: 'http://pathto.example/featured-image.png',
           society: server.create('society', {
             name: 'Joe Bloggs Productions',

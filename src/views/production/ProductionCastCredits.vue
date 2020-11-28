@@ -30,6 +30,7 @@
             class="inline-block max-h-80"
             :src="production.poster_image"
             alt="show poster"
+            ref="poster_image"
           />
         </div>
         <div class="flex-grow order-3 mt-4 lg:mt-0 lg:order-2">
@@ -41,7 +42,11 @@
           <h3 class="text-xl font-semibold uppercase">Show Information</h3>
           <p><strong>Medium:</strong> {{ medium }}</p>
           <p v-if="production.age_rating">Ages {{ production.age_rating }}+</p>
-          <div v-if="production.warnings" class="p-3 bg-sta-rouge">
+          <div
+            v-if="production.warnings"
+            class="p-3 bg-sta-rouge"
+            ref="warnings"
+          >
             <span class="text-xl font-semibold uppercase"
               >Audience Warnings</span
             >
