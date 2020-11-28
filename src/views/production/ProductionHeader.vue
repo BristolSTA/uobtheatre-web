@@ -24,7 +24,7 @@
         </p>
       </span>
       <p>
-        <template v-if="hasInPersonPerformances">Live at </template>
+        <template v-if="hasInPersonPerformances">Live at the</template>
         <template v-else>View </template>
         {{ venues }}
       </p>
