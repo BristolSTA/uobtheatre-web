@@ -32,7 +32,13 @@ describe('Production', function () {
         },
       },
     });
+  });
 
+  afterEach(() => {
+    server.shutdown();
+  });
+
+  let findComponents = () => {
     headerComponent = productionPageComponent.findComponent(ProductionHeader);
     castCreditsComponent = productionPageComponent.findComponent(
       ProductionCastCredits
@@ -40,18 +46,24 @@ describe('Production', function () {
     performancesComponent = productionPageComponent.findComponent(
       ProductionPerformances
     );
-  });
+  };
 
-  afterEach(() => {
-    server.shutdown();
+  it('starts by showing loading screen', () => {
+    findComponents();
+    expect(productionPageComponent.text()).to.contain('Loading Production...');
+    expect(headerComponent.exists()).to.be.false;
+    expect(castCreditsComponent.exists()).to.be.false;
+    expect(performancesComponent.exists()).to.be.false;
   });
 
   it('contains the correct components', async () => {
+    await waitFor(() => productionPageComponent.vm.production);
+
+    findComponents();
+
     expect(headerComponent.exists()).to.be.true;
     expect(castCreditsComponent.exists()).to.be.true;
     expect(performancesComponent.exists()).to.be.true;
-
-    await waitFor(() => productionPageComponent.vm.production);
 
     expect(headerComponent.props('production')).to.eq(
       productionPageComponent.vm.production

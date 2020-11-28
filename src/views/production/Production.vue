@@ -1,14 +1,22 @@
 <template>
   <div class="min-h-full bg-sta-gray">
-    <production-header
-      :production="production"
-      @scroll-to-tickets="$refs.performances.$el.scrollIntoView()"
-      ref="header"
-    />
-    <hr class="border-t-2 border-sta-gray-dark" />
-    <production-cast-credits :production="production" ref="cast-credits" />
-    <hr class="border-t-2 border-sta-gray-dark" />
-    <production-performances ref="performances" :production="production" />
+    <div
+      v-if="!production"
+      class="justify-center my-20 text-xl font-semibold text-white"
+    >
+      Loading Production...
+    </div>
+    <template v-else>
+      <production-header
+        :production="production"
+        @scroll-to-tickets="$refs.performances.$el.scrollIntoView()"
+        ref="header"
+      />
+      <hr class="border-t-2 border-sta-gray-dark" />
+      <production-cast-credits :production="production" ref="cast-credits" />
+      <hr class="border-t-2 border-sta-gray-dark" />
+      <production-performances ref="performances" :production="production" />
+    </template>
   </div>
 </template>
 

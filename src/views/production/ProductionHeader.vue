@@ -2,62 +2,54 @@
   <div
     class="flex flex-wrap items-center justify-center py-12 space-x-0 md:space-x-10"
   >
-    <div
-      v-if="!production"
-      class="justify-center my-20 text-xl font-semibold text-white"
-    >
-      Loading Production...
+    <div class="relative inline-block w-full max-w-xl m-10 md:w-2/3">
+      <img
+        class="w-full p-8"
+        :src="production.featured_image"
+        :alt="`${production.name} feature image`"
+      />
+      <img
+        :src="production.society.logo_image"
+        :alt="`${production.society.name} logo`"
+        class="absolute bottom-0 left-0 w-20"
+      />
     </div>
-    <template v-else>
-      <div class="relative inline-block w-full max-w-xl m-10 md:w-2/3">
-        <img
-          class="w-full p-8"
-          :src="production.featured_image"
-          :alt="`${production.name} feature image`"
-        />
-        <img
-          :src="production.society.logo_image"
-          :alt="`${production.society.name} logo`"
-          class="absolute bottom-0 left-0 w-20"
-        />
-      </div>
-      <div
-        class="flex flex-col items-center w-full px-10 text-white md:block md:text-left md:w-auto md:max-w-md"
+    <div
+      class="flex flex-col items-center w-full px-10 text-white md:block md:text-left md:w-auto md:max-w-md"
+    >
+      <span class="font-semibold text-center md:text-left">
+        <span class="text-h2">{{ production.name }}</span>
+        <p class="mb-1 -mt-2 text-sta-gray-verylight">
+          {{ production.subtitle }} by {{ production.society.name }}
+        </p>
+      </span>
+      <p>
+        <template v-if="hasInPersonPerformances">Live at </template>
+        <template v-else>View </template>
+        {{ venues }}
+      </p>
+      <p>
+        {{
+          displayStartEnd(production.start_date, production.end_date, 'd MMM')
+        }}
+      </p>
+      <icon-list-item v-if="duration" icon="clock">{{
+        duration
+      }}</icon-list-item>
+      <icon-list-item icon="ticket-alt"
+        >Tickets avaliable from
+        <span class="font-semibold"
+          >£{{ production.min_ticket_price }}</span
+        ></icon-list-item
       >
-        <span class="font-semibold text-center md:text-left">
-          <span class="text-h2">{{ production.name }}</span>
-          <p class="mb-1 -mt-2 text-sta-gray-verylight">
-            {{ production.subtitle }} by {{ production.society.name }}
-          </p>
-        </span>
-        <p>
-          <template v-if="hasInPersonPerformances">Live at </template>
-          <template v-else>View </template>
-          {{ venues }}
-        </p>
-        <p>
-          {{
-            displayStartEnd(production.start_date, production.end_date, 'd MMM')
-          }}
-        </p>
-        <icon-list-item v-if="duration" icon="clock">{{
-          duration
-        }}</icon-list-item>
-        <icon-list-item icon="ticket-alt"
-          >Tickets avaliable from
-          <span class="font-semibold"
-            >£{{ production.min_ticket_price }}</span
-          ></icon-list-item
-        >
-        <button
-          class="w-full mt-4 font-semibold btn btn-green"
-          @click="$emit('scroll-to-tickets')"
-          @keydown="$emit('scroll-to-tickets')"
-        >
-          Buy Tickets
-        </button>
-      </div>
-    </template>
+      <button
+        class="w-full mt-4 font-semibold btn btn-green"
+        @click="$emit('scroll-to-tickets')"
+        @keydown="$emit('scroll-to-tickets')"
+      >
+        Buy Tickets
+      </button>
+    </div>
   </div>
 </template>
 

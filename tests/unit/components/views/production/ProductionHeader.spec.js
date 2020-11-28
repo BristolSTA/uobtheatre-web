@@ -17,15 +17,6 @@ describe('ProductionHeader', function () {
     server.shutdown();
   });
 
-  it('fall back while production is loading', async () => {
-    headerContainer = mount(ProductionHeader, {
-      propsData: {
-        production: null,
-      },
-    });
-    expect(headerContainer.text()).to.contain('Loading Production...');
-  });
-
   it('shows production details correctly', async () => {
     await createWithPerformances([
       {
