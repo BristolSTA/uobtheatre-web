@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Meta from 'vue-meta';
+import NProgress from 'nprogress';
+
 import Home from '../views/Home.vue';
 const Production = () => import('../views/production/Production.vue');
 
@@ -24,6 +26,18 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+});
+
+// Set up navigation guards for loading stuff
+router.beforeResolve((to, _from, next) => {
+  if (to.name) {
+    NProgress.start();
+  }
+  next();
+});
+
+router.afterEach(() => {
+  NProgress.done();
 });
 
 export default router;

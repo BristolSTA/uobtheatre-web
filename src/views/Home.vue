@@ -40,7 +40,10 @@
         class="flex flex-wrap items-center py-4 production-feature"
         :class="{ 'flex-row-reverse': index % 2 == 1 }"
       >
-        <div class="w-full p-2 text-center md:w-1/2">
+        <div
+          class="w-full md:w-1/2 text-center p-2 md:px-6"
+          :class="[index % 2 == 0 ? 'md:text-right' : 'md:text-left']"
+        >
           <router-link
             :to="{
               name: 'production',
@@ -55,7 +58,7 @@
           /></router-link>
         </div>
         <div
-          class="w-full p-2 text-center md:w-1/2"
+          class="w-full md:w-1/2 p-2 md:px-6 text-center"
           :class="[index % 2 == 0 ? 'md:text-left' : 'md:text-right']"
         >
           <router-link
