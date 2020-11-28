@@ -41,7 +41,9 @@
         >
           <h3 class="text-xl font-semibold uppercase">Show Information</h3>
           <p><strong>Medium:</strong> {{ medium }}</p>
-          <p v-if="production.age_rating">Ages {{ production.age_rating }}+</p>
+          <p v-if="production.age_rating" ref="age_rating">
+            Ages {{ production.age_rating }}+
+          </p>
           <div
             v-if="production.warnings"
             class="p-3 bg-sta-rouge"
@@ -130,11 +132,7 @@
               :key="index"
               class="flex items-center justify-center w-full px-2 sm:w-1/4 xl:w-1/5 production-cast-member"
             >
-              <div
-                v-if="member.profile_picture"
-                class="flex-none w-20"
-                ref="cast_pic"
-              >
+              <div v-if="member.profile_picture" class="flex-none w-20">
                 <img
                   class="rounded-full"
                   :src="member.profile_picture"

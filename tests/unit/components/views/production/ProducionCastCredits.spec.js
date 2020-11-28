@@ -71,6 +71,9 @@ describe('CastCreditsContainer', function () {
       //correct medium for in person
       expect(castCreditsContainer.text()).to.contain('Medium: In Person Only');
 
+      //correct age rating
+      expect(castCreditsContainer.text()).to.contain('Ages 18+');
+
       // correct description
       expect(castCreditsContainer.text()).to.contain(
         'A production by Joe Bloggs Productions'
@@ -87,13 +90,21 @@ describe('CastCreditsContainer', function () {
             is_online: true,
           },
         ],
-        { warnings: null }
+        { warnings: null, age_rating: null }
       );
 
       expect(
         castCreditsContainer
           .findComponent({
             ref: 'warnings',
+          })
+          .exists()
+      ).to.be.false;
+
+      expect(
+        castCreditsContainer
+          .findComponent({
+            ref: 'age_rating',
           })
           .exists()
       ).to.be.false;
@@ -194,6 +205,7 @@ describe('CastCreditsContainer', function () {
           }),
           performances: perfs,
           warnings: ['Strobe Lighting', 'Nudity'],
+          age_rating: '18',
           description: 'The description of the show.',
           cast: [
             server.create('cast', { name: 'Alex T', role: 'Good Guy' }),
