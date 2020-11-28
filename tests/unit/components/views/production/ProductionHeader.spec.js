@@ -58,7 +58,7 @@ describe('ProductionHeader', function () {
 
     // test for correct ticket price
     expect(fixTextSpacing(headerContainer.text())).to.contain(
-      'Tickets avaliable from £4.34'
+      'Tickets available from £4.34'
     );
 
     // correct feature image

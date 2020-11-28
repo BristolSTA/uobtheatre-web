@@ -26,30 +26,36 @@ describe('ProductionHeader', function () {
       await createWithPerformances([
         // An available in-person & online performance
         {
-          start: Date.parse('28 November 2020 16:00:00 GMT'),
-          end: Date.parse('28 November 2020 18:00:00 GMT'),
+          start: new Date('28 November 2020 16:00:00 GMT').toISOString(),
+          end: new Date('28 November 2020 18:00:00 GMT').toISOString(),
           sold_out: false,
           disabled: false,
           is_online: true,
           is_inperson: true,
+          venue: server.create('venue', {
+            name: 'Winston Theatre',
+          }),
         },
         // A disabled, in-person performance
         {
-          start: Date.parse('29 November 2020 17:00:00 GMT'),
-          end: Date.parse('29 November 2020 19:00:00 GMT'),
+          start: new Date('29 November 2020 17:00:00 GMT').toISOString(),
+          end: new Date('29 November 2020 19:00:00 GMT').toISOString(),
           sold_out: false,
           disabled: true,
           is_online: false,
           is_inperson: true,
+          venue: server.create('venue', {
+            name: 'Pegg Theatre',
+          }),
         },
         // A sold out performance
         {
-          start: Date.parse('30 November 2020 18:00:00 GMT'),
-          end: Date.parse('30 November 2020 20:00:00 GMT'),
+          start: new Date('30 November 2020 18:00:00 GMT').toISOString(),
+          end: new Date('30 November 2020 20:00:00 GMT').toISOString(),
           sold_out: true,
           disabled: false,
-          is_online: false,
-          is_inperson: true,
+          is_online: true,
+          is_inperson: false,
         },
       ]);
     });
@@ -57,9 +63,39 @@ describe('ProductionHeader', function () {
     it('displays three performances', () => {
       expect(performancesContainer.findAll('.performance').length).to.eq(3);
     });
-    it('first performance is available and correct', () => {});
-    it('second performance is unavailable and correct', () => {});
-    it('third performance is sold out and correct', () => {});
+    it('first performance is available and correct', () => {
+      let performance = performancesContainer.findAll('.performance').at(0);
+
+      expect(performance.text()).to.contain('Saturday 28 Nov');
+      expect(performance.find('div.bg-sta-green').exists()).to.be.true;
+      expect(performance.text()).to.contain('Winston Theatre and Online');
+      expect(performance.text()).to.contain('Starting at 16:00');
+      expect(performance.text()).to.contain('Tickets Available');
+      expect(performance.find('a').text()).to.eq('Book');
+      //TODO: Test for link to booking page
+    });
+    it('second performance is unavailable and correct', () => {
+      let performance = performancesContainer.findAll('.performance').at(1);
+
+      expect(performance.text()).to.contain('Sunday 29 Nov');
+      expect(performance.find('div.bg-sta-green').exists()).to.be.false;
+      expect(performance.find('div.bg-sta-gray-dark').exists()).to.be.true;
+      expect(performance.text()).to.contain('Pegg Theatre');
+      expect(performance.text()).to.contain('Starting at 17:00');
+      expect(performance.text()).to.contain('No Tickets Available');
+      expect(performance.find('button').text()).to.eq('Unavailable');
+    });
+    it('third performance is sold out and correct', () => {
+      let performance = performancesContainer.findAll('.performance').at(2);
+
+      expect(performance.text()).to.contain('Monday 30 Nov');
+      expect(performance.find('div.bg-sta-green').exists()).to.be.false;
+      expect(performance.find('div.bg-sta-gray-dark').exists()).to.be.true;
+      expect(performance.text()).to.contain('Online');
+      expect(performance.text()).to.contain('Starting at 18:00');
+      expect(performance.text()).to.contain('No Tickets Available');
+      expect(performance.find('button').text()).to.eq('SOLD OUT');
+    });
   });
 
   let createWithPerformances = (performances, productionOverrides) => {

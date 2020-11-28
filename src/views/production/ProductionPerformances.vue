@@ -27,8 +27,8 @@
           <div>{{ performanceVenue(performance) }}</div>
           <div>Starting at {{ performance.start | dateFormat('T') }}</div>
           <div class="text-sm font-semibold">
-            <p v-if="performanceDisabled(performance)">No Tickets Avaliable</p>
-            <p v-else>Tickets Avaliable</p>
+            <p v-if="performanceDisabled(performance)">No Tickets Available</p>
+            <p v-else>Tickets Available</p>
           </div>
           <button
             class="w-2/3 mt-4 font-semibold text-center btn btn-rouge btn-outline disabled"
@@ -63,7 +63,7 @@ export default {
     },
     disabledReason(performance) {
       if (performance.sold_out) return 'SOLD OUT';
-      return 'Unavaliable';
+      return 'Unavailable';
     },
     performanceVenue(performance) {
       if (performance.is_inperson && performance.is_online)
