@@ -7,11 +7,14 @@
         class="w-full p-8"
         :src="production.featured_image"
         :alt="`${production.name} feature image`"
+        ref="featured_image"
       />
       <img
         :src="production.society.logo_image"
         :alt="`${production.society.name} logo`"
         class="absolute bottom-0 left-0 w-20"
+        v-if="production.society.logo_image"
+        ref="society_image"
       />
     </div>
     <div

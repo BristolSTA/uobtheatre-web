@@ -41,6 +41,7 @@ export function makeServer({ environment = 'development' } = {}) {
     seeds(server) {
       let dramsoc = server.create('society', {
         name: 'Dramsoc',
+        logo_image: null,
       });
 
       server.create('production', {

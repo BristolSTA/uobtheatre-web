@@ -60,9 +60,44 @@ describe('ProductionHeader', function () {
     expect(fixTextSpacing(headerContainer.text())).to.contain(
       'Tickets avaliable from £4.34'
     );
+
+    // correct feature image
+    expect(
+      headerContainer
+        .findComponent({
+          ref: 'featured_image',
+        })
+        .attributes('src')
+    ).to.equal('http://pathto.example/featured-image.png');
+
+    // correct society image
+    expect(
+      headerContainer
+        .findComponent({
+          ref: 'society_image',
+        })
+        .attributes('src')
+    ).to.equal('http://pathto.example/logo-image.png');
   });
 
-  it('Testing text for online only production', async () => {
+  it('shows no society image when none is given', async () => {
+    await createWithPerformances([], {
+      society: server.create('society', {
+        name: 'Joe Bloggs Productions',
+        logo_image: null,
+      }),
+    });
+
+    expect(
+      headerContainer
+        .findComponent({
+          ref: 'society_image',
+        })
+        .exists()
+    ).to.be.false;
+  });
+
+  it('shows online online only performances', async () => {
     await createWithPerformances([
       {
         venue: server.create('venue', {
@@ -84,7 +119,7 @@ describe('ProductionHeader', function () {
     expect(fixTextSpacing(headerContainer.text())).to.contain('View Online');
   });
 
-  it('Testing text for online and in person production', async () => {
+  it('shows online and in person performances', async () => {
     await createWithPerformances([
       {
         venue: server.create('venue', {
@@ -108,25 +143,33 @@ describe('ProductionHeader', function () {
     );
   });
 
-  let createWithPerformances = (performances) => {
+  let createWithPerformances = (performances, productionOverrides) => {
     let perfs = [];
     performances.forEach((perf) => {
       perfs.push(server.create('performance', perf));
     });
 
-    server.create('production', {
-      name: 'Legally Ginger',
-      slug: 'legally-ginger',
-      cover_image: 'http://pathto.example/my-image.png',
-      society: server.create('society', {
-        name: 'Joe Bloggs Productions',
-        logo_image: 'http://pathto.example/logo-image.png',
-      }),
-      start_date: new Date('2020-11-14'),
-      end_date: new Date('2020-11-18'),
-      min_ticket_price: '4.34',
-      performances: perfs,
-    });
+    server.create(
+      'production',
+      Object.assign(
+        {
+          name: 'Legally Ginger',
+          slug: 'legally-ginger',
+          cover_image: 'http://pathto.example/cover-image.png',
+          poster_image: 'https://pathto.example/poster-image.png',
+          featured_image: 'http://pathto.example/featured-image.png',
+          society: server.create('society', {
+            name: 'Joe Bloggs Productions',
+            logo_image: 'http://pathto.example/logo-image.png',
+          }),
+          start_date: new Date('2020-11-14'),
+          end_date: new Date('2020-11-18'),
+          min_ticket_price: '4.34',
+          performances: perfs,
+        },
+        productionOverrides
+      )
+    );
 
     return productionService
       .fetchProductionBySlug('legally-ginger')
