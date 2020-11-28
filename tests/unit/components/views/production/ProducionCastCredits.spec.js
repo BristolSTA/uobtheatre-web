@@ -159,11 +159,20 @@ describe('CastCreditsContainer', function () {
     it('contains cast ', () => {
       expect(castCredits.text()).to.contain('Cast');
 
-      expect(castCredits.text()).to.contain('Alex T');
-      expect(castCredits.text()).to.contain('Good Guy');
+      let castArray = castCreditsContainer.findAll('.production-cast-member');
 
-      expect(castCredits.text()).to.contain('Jeff');
-      expect(castCredits.text()).to.contain('Bad Guy');
+      expect(castArray.at(0).text()).to.contain('Kit');
+      expect(castArray.at(0).text()).to.contain('Crazy person');
+
+      expect(castArray.at(0).find('img').exists()).to.be.true;
+      expect(castArray.at(0).find('img').attributes('src')).to.equal(
+        'http://pathto.example/profile-pic.png'
+      );
+
+      expect(castArray.at(1).text()).to.contain('Alex T');
+      expect(castArray.at(1).text()).to.contain('Good Guy');
+
+      expect(castArray.at(1).find('img').exists()).to.be.false;
     });
   });
 
@@ -188,7 +197,6 @@ describe('CastCreditsContainer', function () {
           description: 'The description of the show.',
           cast: [
             server.create('cast', { name: 'Alex T', role: 'Good Guy' }),
-            server.create('cast', { name: 'Jeff', role: 'Bad Guy' }),
             server.create('cast', {
               name: 'Kit',
               role: 'Crazy person',
