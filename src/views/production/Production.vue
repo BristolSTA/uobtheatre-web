@@ -2,7 +2,7 @@
   <div class="min-h-full bg-sta-gray">
     <div
       v-if="!production"
-      class="justify-center my-20 text-xl font-semibold text-white"
+      class="justify-center py-20 text-xl font-semibold text-white text-center"
     >
       Loading Production...
     </div>
@@ -46,9 +46,11 @@ export default {
     };
   },
   created() {
-    productionService
-      .fetchProductionBySlug(this.$route.params.productionSlug)
-      .then((data) => (this.production = data));
+    this.runPromiseWithLoading(
+      productionService
+        .fetchProductionBySlug(this.$route.params.productionSlug)
+        .then((data) => (this.production = data))
+    );
   },
 };
 </script>

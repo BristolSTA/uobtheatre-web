@@ -143,9 +143,11 @@ export default {
     };
   },
   created() {
-    productionService
-      .fetchUpcomingProductions()
-      .then((results) => (this.upcomingProductions = results));
+    this.runPromiseWithLoading(
+      productionService
+        .fetchUpcomingProductions()
+        .then((results) => (this.upcomingProductions = results))
+    );
   },
   computed: {
     featuredProduction() {
