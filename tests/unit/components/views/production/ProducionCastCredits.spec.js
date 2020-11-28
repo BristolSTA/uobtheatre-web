@@ -208,7 +208,11 @@ describe('CastCreditsContainer', function () {
           age_rating: '18',
           description: 'The description of the show.',
           cast: [
-            server.create('cast', { name: 'Alex T', role: 'Good Guy' }),
+            server.create('cast', {
+              name: 'Alex T',
+              role: 'Good Guy',
+              profile_picture: null,
+            }),
             server.create('cast', {
               name: 'Kit',
               role: 'Crazy person',
