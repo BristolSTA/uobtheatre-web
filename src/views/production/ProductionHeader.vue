@@ -40,7 +40,7 @@
         duration
       }}</icon-list-item>
       <icon-list-item icon="ticket-alt"
-        >Tickets avaliable from
+        >Tickets available from
         <span class="font-semibold"
           >£{{ production.min_ticket_price }}</span
         ></icon-list-item
