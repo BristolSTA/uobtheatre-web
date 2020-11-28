@@ -14,13 +14,14 @@
           :class="{ 'text-sta-rouge': !overview }"
         >
           <clickable-link @click="overview = false"
-            >Cast & Credits</clickable-link
+            >Cast &amp; Credits</clickable-link
           >
         </li>
       </ul>
       <div
         v-if="overview"
         class="flex flex-wrap p-4 lg:flex-nowrap lg:space-x-4"
+        ref="overview"
       >
         <div
           class="flex-none order-1 w-full mb-4 text-center sm:w-1/2 lg:w-auto lg:mb-0"
@@ -65,7 +66,7 @@
           >
         </div>
       </div>
-      <div v-else class="flex flex-wrap justify-center">
+      <div v-else class="flex flex-wrap justify-center" ref="cast_credits">
         <div
           class="cast-credit-section lg:w-1/2"
           v-if="this.production.productionTeam.length"
@@ -94,7 +95,7 @@
           class="cast-credit-section lg:w-1/2"
           v-if="this.production.crew.length"
         >
-          <h1 class="crew-section-header">CREW</h1>
+          <h1 class="uppercase crew-section-header">Crew</h1>
           <div class="flex flex-wrap justify-center">
             <div
               v-for="(groups, groupsIndex) in crewGroupedSplit"
@@ -117,7 +118,7 @@
           </div>
         </div>
         <div class="w-full p-4 text-center" v-if="this.production.cast.length">
-          <h1 class="crew-section-header">CAST</h1>
+          <h1 class="uppercase crew-section-header">Cast</h1>
           <div class="flex flex-wrap justify-center space-y-4">
             <div
               v-for="(member, index) in sortedCast"
