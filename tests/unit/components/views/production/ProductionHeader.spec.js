@@ -42,10 +42,10 @@ describe('ProductionHeader', function () {
     // test correct show title
     expect(headerContainer.text()).to.contain('Legally Ginger');
 
-    // test correct society perfomring show
+    // test correct society performing show
     expect(headerContainer.text()).to.contain('by Joe Bloggs Productions');
 
-    // test combine of two venues
+    // test combination of two venues
     expect(fixTextSpacing(headerContainer.text())).to.contain(
       'The New Vic and The Newer Vic'
     );
@@ -53,7 +53,7 @@ describe('ProductionHeader', function () {
     // test production start and end dates
     expect(headerContainer.text()).to.contain('14 Nov - 18 Nov 2020');
 
-    // test for performance time to be the minimum length, in nice format
+    // test for performance time to be the minimum length, in human format
     expect(headerContainer.text()).to.contain('1 hour, 42 minutes');
 
     // test for correct ticket price
@@ -97,7 +97,7 @@ describe('ProductionHeader', function () {
     ).to.be.false;
   });
 
-  it('shows online online only performances', async () => {
+  it('shows online only performances', async () => {
     await createWithPerformances([
       {
         venue: server.create('venue', {
@@ -141,6 +141,12 @@ describe('ProductionHeader', function () {
     expect(fixTextSpacing(headerContainer.text())).to.contain(
       'Live at the New Vic and Online '
     );
+  });
+
+  it('has tickets button that emits event', async () => {
+    let button = headerContainer.find('button');
+    await button.trigger('click');
+    expect(headerContainer.emitted('scroll-to-tickets').length).to.eq(1);
   });
 
   let createWithPerformances = (performances, productionOverrides) => {

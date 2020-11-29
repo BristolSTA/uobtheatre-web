@@ -53,30 +53,29 @@ describe('CastCreditsContainer', function () {
       ]);
 
       // correct warnings
-      expect(
-        castCreditsContainer
-          .findComponent({
-            ref: 'warnings',
-          })
-          .text()
-      ).to.contain('Strobe Lighting');
-      expect(
-        castCreditsContainer
-          .findComponent({
-            ref: 'warnings',
-          })
-          .text()
-      ).to.contain('Nudity');
+      let warnings = castCreditsContainer.findComponent({ ref: 'warnings' });
+      expect(warnings.exists()).to.be.true;
+      expect(warnings.text()).to.contain('Strobe Lighting');
+      expect(warnings.text()).to.contain('Nudity');
 
       //correct medium for in person
       expect(castCreditsContainer.text()).to.contain('Medium: In Person Only');
 
       //correct age rating
+      expect(castCreditsContainer.findComponent({ ref: 'age_rating' }).exists())
+        .to.be.true;
       expect(castCreditsContainer.text()).to.contain('Ages 18+');
 
       // correct description
       expect(castCreditsContainer.text()).to.contain(
         'A production by Joe Bloggs Productions'
+      );
+
+      // correct facebook link
+      let link = castCreditsContainer.findComponent({ ref: 'facebook_link' });
+      expect(link.exists()).to.be.true;
+      expect(link.attributes('href')).to.eq(
+        'https://facebook.com/legally-ginger'
       );
     });
 
@@ -90,25 +89,23 @@ describe('CastCreditsContainer', function () {
             is_online: true,
           },
         ],
-        { warnings: null, age_rating: null }
+        { warnings: null, age_rating: null, facebook_event: null }
       );
 
+      // no warnings
+      expect(castCreditsContainer.findComponent({ ref: 'warnings' }).exists())
+        .to.be.false;
+
+      // no age rating
+      expect(castCreditsContainer.findComponent({ ref: 'age_rating' }).exists())
+        .to.be.false;
+
+      // no facebook link
       expect(
-        castCreditsContainer
-          .findComponent({
-            ref: 'warnings',
-          })
-          .exists()
+        castCreditsContainer.findComponent({ ref: 'facebook_link' }).exists()
       ).to.be.false;
 
-      expect(
-        castCreditsContainer
-          .findComponent({
-            ref: 'age_rating',
-          })
-          .exists()
-      ).to.be.false;
-
+      //online only medium
       expect(castCreditsContainer.text()).to.contain('Medium: Online Only');
     });
 
@@ -122,9 +119,15 @@ describe('CastCreditsContainer', function () {
         },
       ]);
 
+      //medium is online and in person
       expect(castCreditsContainer.text()).to.contain(
         'Medium: In Person + Online'
       );
+    });
+
+    it('handles having no performances', async () => {
+      await createWithPerformances([]);
+      expect(castCreditsContainer.text()).not.to.contain('Medium');
     });
   });
 
@@ -157,7 +160,7 @@ describe('CastCreditsContainer', function () {
       expect(castCredits.text()).to.contain('Nicole');
     });
 
-    it('contains crew ', () => {
+    it('contains crew', () => {
       expect(castCredits.text()).to.contain('Crew');
 
       expect(castCredits.text()).to.contain('Sound');
@@ -167,11 +170,12 @@ describe('CastCreditsContainer', function () {
       expect(castCredits.text()).to.contain('Millie');
     });
 
-    it('contains cast ', () => {
+    it('contains cast', () => {
       expect(castCredits.text()).to.contain('Cast');
 
       let castArray = castCreditsContainer.findAll('.production-cast-member');
 
+      // cast memeber with picture
       expect(castArray.at(0).text()).to.contain('Kit');
       expect(castArray.at(0).text()).to.contain('Crazy person');
 
@@ -180,6 +184,7 @@ describe('CastCreditsContainer', function () {
         'http://pathto.example/profile-pic.png'
       );
 
+      // cast memebr no picture
       expect(castArray.at(1).text()).to.contain('Alex T');
       expect(castArray.at(1).text()).to.contain('Good Guy');
 
@@ -204,6 +209,7 @@ describe('CastCreditsContainer', function () {
             name: 'Joe Bloggs Productions',
           }),
           performances: perfs,
+          facebook_event: 'https://facebook.com/legally-ginger',
           warnings: ['Strobe Lighting', 'Nudity'],
           age_rating: '18',
           description: 'The description of the show.',

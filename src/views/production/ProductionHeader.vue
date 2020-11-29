@@ -22,7 +22,7 @@
     >
       <span class="font-semibold text-center md:text-left">
         <span class="text-h2">{{ production.name }}</span>
-        <p class="mb-1 -mt-2 text-sta-gray-verylight">
+        <p class="mb-1 -mt-2 text-sta-gray-lighter">
           {{ production.subtitle }} by {{ production.society.name }}
         </p>
       </span>
@@ -36,15 +36,13 @@
           displayStartEnd(production.start_date, production.end_date, 'd MMM')
         }}
       </p>
-      <icon-list-item v-if="duration" icon="clock">{{
-        duration
-      }}</icon-list-item>
-      <icon-list-item icon="ticket-alt"
-        >Tickets available from
-        <span class="font-semibold"
-          >£{{ production.min_ticket_price }}</span
-        ></icon-list-item
-      >
+      <icon-list-item v-if="duration" icon="clock">
+        {{ duration }}
+      </icon-list-item>
+      <icon-list-item icon="ticket-alt" v-if="production.min_ticket_price">
+        Tickets available from
+        <span class="font-semibold"> £{{ production.min_ticket_price }} </span>
+      </icon-list-item>
       <button
         class="w-full mt-4 font-semibold btn btn-green"
         @click="$emit('scroll-to-tickets')"
@@ -75,9 +73,11 @@ export default {
   },
   computed: {
     venues() {
+      if (!this.production.performances.length) return '';
+
+      let venues = [];
       if (this.hasInPersonPerformances) {
-        if (!this.production || !this.production.performances.length) return;
-        let venues = lo.uniq(
+        venues = lo.uniq(
           this.production.performances.map((performance) => {
             return performance.venue.name;
           })
@@ -87,30 +87,26 @@ export default {
           venues = lo.take(venues, 2);
           venues.push('others');
         }
-
-        if (this.hasOnlinePerformances) {
-          venues = lo.take(venues);
-          venues.push('Online');
-        }
-
-        return joinWithAnd(venues);
       }
-      return 'Online';
+
+      if (this.hasOnlinePerformances) {
+        venues = lo.take(venues);
+        venues.push('Online');
+      }
+      return joinWithAnd(venues);
     },
     hasOnlinePerformances() {
-      if (!this.production.performances) return;
       return !!this.production.performances.find(
         (performance) => performance.is_online
       );
     },
     hasInPersonPerformances() {
-      if (!this.production.performances) return;
       return !!this.production.performances.find(
         (performance) => performance.is_inperson
       );
     },
     duration() {
-      if (!this.production || !this.production.performances.length) return;
+      if (!this.production.performances.length) return;
       return humanizeDuration(
         lo.chain(this.production.performances).minBy('duration_mins').value()
           .duration_mins *
