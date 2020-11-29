@@ -4,7 +4,7 @@ import Meta from 'vue-meta';
 import NProgress from 'nprogress';
 
 import Home from '../views/Home.vue';
-import Production from '../views/Production.vue';
+const Production = () => import('../views/production/Production.vue');
 
 Vue.use(VueRouter);
 Vue.use(Meta);
@@ -15,16 +15,6 @@ const routes = [
     name: 'home',
     component: Home,
   },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ '../views/About.vue'),
-  },
-
   {
     path: '/production/:productionSlug',
     name: 'production',

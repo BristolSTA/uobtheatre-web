@@ -7,8 +7,14 @@
     @apply rounded-sm px-6 py-2 cursor-pointer inline-block;
     @apply text-white;
 
-    &:hover {
+    &:hover:not(.disabled) {
       @apply bg-sta-gray-light;
+    }
+    &.disabled {
+      @apply cursor-not-allowed;
+      &:focus {
+        @apply outline-none;
+      }
     }
   }
 
@@ -25,7 +31,7 @@
       @apply border-sta-#{$color};
       @apply text-sta-#{$color};
     }
-    .btn-#{$color}:hover {
+    .btn-#{$color}:hover:not(.disabled) {
       @apply bg-sta-#{$color}-dark;
       @apply text-white;
       @apply border-transparent;
@@ -34,7 +40,8 @@
 }
 @layer utilities {
   .text-h1,
-  .text-h2 {
+  .text-h2,
+  .text-h3 {
     @apply font-semibold;
   }
 }

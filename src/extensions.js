@@ -9,12 +9,13 @@ import {
   faTicketAlt,
   faClock,
 } from '@fortawesome/free-solid-svg-icons';
+import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 
 /**
  * Import FontAwesome
  */
 
-library.add(faChevronLeft, faChevronRight, faTicketAlt, faClock);
+library.add(faChevronLeft, faChevronRight, faTicketAlt, faClock, faFacebook);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 /**
@@ -37,4 +38,16 @@ Vue.filter('truncate', (text, length, clamp) => {
   node.innerHTML = text;
   var content = node.textContent;
   return content.length > length ? content.slice(0, length) + clamp : content;
+});
+
+Vue.mixin({
+  methods: {
+    runPromiseWithLoading(promise) {
+      if (!this.$store) return promise;
+      this.$store.commit('SET_LOADING');
+      return promise.then(() => {
+        this.$store.commit('SET_NOT_LOADING');
+      });
+    },
+  },
 });

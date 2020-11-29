@@ -23,6 +23,7 @@ module.exports = {
           DEFAULT: '#2B303A',
           dark: '#23272A',
           light: '#3D434E',
+          lighter: '#8D8B86',
         },
         'sta-rouge': {
           DEFAULT: '#FF6978',
@@ -43,6 +44,10 @@ module.exports = {
       fontSize: {
         h1: '3rem',
         h2: '2rem',
+        h3: '1rem',
+      },
+      padding: {
+        0.5: '0.125rem',
       },
     },
   },

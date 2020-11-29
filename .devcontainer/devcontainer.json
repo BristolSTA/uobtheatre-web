@@ -18,7 +18,8 @@
 		"jcbuisson.vue",
 		"octref.vetur",
 		"esbenp.prettier-vscode",
-		"christian-kohler.path-intellisense"
+		"christian-kohler.path-intellisense",
+		"heybourn.headwind"
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],

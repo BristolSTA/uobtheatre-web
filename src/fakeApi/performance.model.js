@@ -27,6 +27,7 @@ export default {
           }),
         description: faker.lorem.words(4),
         sold_out: () => faker.random.arrayElement([true, false]),
+        disabled: () => false,
         is_online: () => faker.random.arrayElement([true, false]),
         is_inperson: () => faker.random.arrayElement([true, false]),
         duration_mins: 100,

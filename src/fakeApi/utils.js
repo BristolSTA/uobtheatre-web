@@ -18,7 +18,7 @@ let updateIfDoesntHave = function (model, keyValues, value) {
   }
   let updateObj = {};
   Object.keys(keyValues).forEach((key) => {
-    if (!model[key]) {
+    if (!model[key] || model[key].length == 0) {
       value = keyValues[key];
       if (typeof value === 'function') value = value();
       updateObj[key] = value;
