@@ -55,7 +55,8 @@
               :alt="`${production.name} feature image`"
               class="inline-block"
               style="max-height: 300px"
-          /></router-link>
+            />
+          </router-link>
         </div>
         <div
           class="w-full p-2 text-center md:w-1/2 md:px-6"
@@ -68,8 +69,8 @@
             }"
             ><h2 class="font-semibold text-h2 hover:text-gray-300">
               {{ production.name }}
-            </h2></router-link
-          >
+            </h2>
+          </router-link>
           <span v-if="production.subtitle">{{ production.subtitle }}</span>
           <p class="font-semibold text-sta-orange">
             {{ production.start_date | dateFormat('d MMMM') }} -
@@ -84,8 +85,8 @@
               params: { productionSlug: production.slug },
             }"
             class="mt-6 btn btn-rouge"
-            >More Information</router-link
-          >
+            >More Information
+          </router-link>
         </div>
       </div>
       <div
@@ -104,8 +105,8 @@
       >
         <div class="w-full">
           <router-link to="/" class="btn btn-outline btn-orange"
-            >View All Upcoming Productions</router-link
-          >
+            >View All Upcoming Productions
+          </router-link>
         </div>
       </div>
     </div>
