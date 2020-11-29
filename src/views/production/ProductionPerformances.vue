@@ -32,6 +32,7 @@
           </div>
           <button
             class="w-2/3 mt-4 font-semibold text-center btn btn-rouge btn-outline disabled"
+            disabled
             v-if="performanceDisabled(performance)"
           >
             {{ disabledReason(performance) }}
