@@ -83,7 +83,7 @@
               name: 'production',
               params: { productionSlug: production.slug },
             }"
-            class="inline-block mt-6 btn btn-rouge"
+            class="mt-6 btn btn-rouge"
             >More Information</router-link
           >
         </div>
