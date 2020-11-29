@@ -8,6 +8,8 @@
 
 <script>
 import Layout from '@/layout/Layout.vue';
+import { mapState } from 'vuex';
+import NProgress from 'nprogress';
 
 export default {
   components: {
@@ -33,6 +35,16 @@ export default {
         },
       ],
     };
+  },
+  computed: mapState(['loading']),
+  watch: {
+    loading(newValue) {
+      if (newValue) {
+        NProgress.start();
+      } else {
+        NProgress.done();
+      }
+    },
   },
 };
 </script>

@@ -1,6 +1,6 @@
-import { makeServer } from '@/server';
-import { expect } from 'chai';
 import Home from '@/views/Home.vue';
+import { makeServer } from '@/fakeApi';
+import { expect } from 'chai';
 import { RouterLinkStub } from '@vue/test-utils';
 import { fixTextSpacing, waitFor, mountWithRouterMock } from '../../helpers';
 

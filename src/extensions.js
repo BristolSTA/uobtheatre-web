@@ -39,3 +39,15 @@ Vue.filter('truncate', (text, length, clamp) => {
   var content = node.textContent;
   return content.length > length ? content.slice(0, length) + clamp : content;
 });
+
+Vue.mixin({
+  methods: {
+    runPromiseWithLoading(promise) {
+      if (!this.$store) return promise;
+      this.$store.commit('SET_LOADING');
+      return promise.then(() => {
+        this.$store.commit('SET_NOT_LOADING');
+      });
+    },
+  },
+});
