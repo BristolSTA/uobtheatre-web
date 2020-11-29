@@ -9,7 +9,6 @@
       >
         Login
       </button>
-
       <button
         class="w-1/2 py-3 font-semibold focus:outline-none"
         :class="[login ? 'bg-gray-200' : ' bg-sta-orange']"
@@ -33,8 +32,8 @@
       </button>
       <p class="mt-2 text-white">
         <clickable-link @click="login = false">
-          Don't have an account? <strong>Sign Up</strong></clickable-link
-        >
+          Don't have an account? <strong>Sign Up</strong>
+        </clickable-link>
       </p>
     </div>
 
@@ -42,17 +41,17 @@
       <text-input name="Full Name" v-model="name" />
       <text-input name="Email" v-model="email" />
       <text-input name="Password" v-model="password" input_type="password" />
-      <label for="checkbox" class="flex items-center space-x-2"
-        ><input
+      <label for="checkbox" class="flex items-center space-x-2">
+        <input
           type="checkbox"
           id="checkbox"
           v-model="accepted_terms"
           class="w-5 h-5 border rounded-sm border-sta-grey focus:outline-none"
         />
-        <span class="text-xs font-semibold text-white"
-          >Accept the Terms of Use?</span
-        ></label
-      >
+        <span class="text-xs font-semibold text-white">
+          Accept the Terms of Use?
+        </span>
+      </label>
       <button
         class="w-full text-xl font-semibold text-center btn btn-orange btn-outline"
       >
@@ -60,8 +59,8 @@
       </button>
       <p class="mt-2 text-white">
         <clickable-link @click="login = true">
-          Already have an account? <strong>Log In</strong></clickable-link
-        >
+          Already have an account? <strong>Log In</strong>
+        </clickable-link>
       </p>
     </div>
   </div>
