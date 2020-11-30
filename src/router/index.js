@@ -4,6 +4,7 @@ import Meta from 'vue-meta';
 import NProgress from 'nprogress';
 
 import Home from '../views/Home.vue';
+import Err404 from '../views/Err404.vue';
 const Production = () => import('../views/production/Production.vue');
 
 Vue.use(VueRouter);
@@ -20,6 +21,7 @@ const routes = [
     name: 'production',
     component: Production,
   },
+  { path: '*', component: Err404 },
 ];
 
 const router = new VueRouter({
