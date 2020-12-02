@@ -18,15 +18,23 @@
         Sign Up
       </button>
     </div>
-    <div v-if="login" class="p-6">
-      <div class="space-y-2">
-        <text-input name="Email" v-model="email" />
-        <text-input name="Password" v-model="password" input_type="password" />
-      </div>
+    <div v-if="login" class="flex flex-col p-6 space-y-2">
+      <text-input name="Email" v-model="email" />
+      <text-input name="Password" v-model="password" input_type="password" />
+      <label for="remember_me" class="flex items-center space-x-2">
+        <input
+          type="checkbox"
+          id="remember_me"
+          v-model="remember_me"
+          class="w-5 h-5 border rounded-sm border-sta-grey focus:outline-none"
+        />
+        <span class="text-xs font-semibold text-white"> Remember me? </span>
+      </label>
+
       <button
-        class="w-full mt-6 text-xl font-semibold text-center btn btn-orange btn-outline"
-        @click="authService.login(email, password)"
-        @keydown="authService.login(email, password)"
+        class="w-full mt-2 text-xl font-semibold text-center btn btn-orange btn-outline"
+        @click="attemptLogin"
+        @keydown="attemptLogin"
       >
         Log In
       </button>
@@ -41,10 +49,10 @@
       <text-input name="Full Name" v-model="name" />
       <text-input name="Email" v-model="email" />
       <text-input name="Password" v-model="password" input_type="password" />
-      <label for="checkbox" class="flex items-center space-x-2">
+      <label for="accept_terms" class="flex items-center space-x-2">
         <input
           type="checkbox"
-          id="checkbox"
+          id="accept_terms"
           v-model="accepted_terms"
           class="w-5 h-5 border rounded-sm border-sta-grey focus:outline-none"
         />
@@ -81,8 +89,14 @@ export default {
       password: null,
       email: null,
       accepted_terms: false,
+      remember_me: false,
       authService: authService,
     };
+  },
+  methods: {
+    attemptLogin() {
+      authService.login(this.email, this.password);
+    },
   },
 };
 </script>
