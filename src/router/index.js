@@ -4,7 +4,7 @@ import Meta from 'vue-meta';
 import NProgress from 'nprogress';
 
 import Home from '../views/Home.vue';
-import Err404 from '../views/Err404.vue';
+import NotFoundError from '../views/errors/NotFound.vue';
 const Production = () => import('../views/production/Production.vue');
 
 Vue.use(VueRouter);
@@ -21,7 +21,8 @@ const routes = [
     name: 'production',
     component: Production,
   },
-  { path: '*', component: Err404 },
+  { path: '/404', name: '404', component: NotFoundError },
+  { path: '*', redirect: '/404' },
 ];
 
 const router = new VueRouter({

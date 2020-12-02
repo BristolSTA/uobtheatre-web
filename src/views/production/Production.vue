@@ -50,6 +50,7 @@ export default {
       productionService
         .fetchProductionBySlug(this.$route.params.productionSlug)
         .then((data) => (this.production = data))
+        .catch(this.handle404)
     );
   },
 };
