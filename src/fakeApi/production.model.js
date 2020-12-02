@@ -5,6 +5,7 @@ import {
   RelationshipSerializer,
   updateIfDoesntHave,
   paginatedResponse,
+  NotFoundResponse,
 } from './utils';
 
 export default {
@@ -86,7 +87,10 @@ export default {
 
     // Production by slug
     this.get('productions/:slug', function (schema, request) {
-      return schema.productions.findBy({ slug: request.params.slug });
+      return (
+        schema.productions.findBy({ slug: request.params.slug }) ??
+        NotFoundResponse()
+      );
     });
   },
 };

@@ -1,4 +1,4 @@
-import { Serializer } from 'miragejs';
+import { Serializer, Response } from 'miragejs';
 
 let paginatedResponse = (data) => {
   return {
@@ -37,9 +37,14 @@ let DefaultSerializer = Serializer.extend({
   root: false,
 });
 
+let NotFoundResponse = () => {
+  return new Response(404);
+};
+
 export {
   paginatedResponse,
   updateIfDoesntHave,
   RelationshipSerializer,
   DefaultSerializer,
+  NotFoundResponse,
 };
