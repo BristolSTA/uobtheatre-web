@@ -72,8 +72,13 @@
           >
           <span v-if="production.subtitle">{{ production.subtitle }}</span>
           <p class="font-semibold text-sta-orange">
-            {{ production.start_date | dateFormat('d MMMM') }} -
-            {{ production.end_date | dateFormat('d MMMM y') }}
+            {{
+              displayStartEnd(
+                production.start_date,
+                production.end_date,
+                'd MMMM'
+              )
+            }}
           </p>
           <p class="mt-2">
             {{ production.description | truncate(230) }}
@@ -125,6 +130,7 @@
 
 <script>
 import { productionService } from '@/services';
+import { displayStartEnd } from '@/utils';
 import lo from 'lodash';
 
 export default {
@@ -132,6 +138,7 @@ export default {
   data() {
     return {
       upcomingProductions: [],
+      displayStartEnd: displayStartEnd,
     };
   },
   /* istanbul ignore next */
