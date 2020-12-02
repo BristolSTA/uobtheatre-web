@@ -49,5 +49,10 @@ Vue.mixin({
         this.$store.commit('SET_NOT_LOADING');
       });
     },
+    handle404(err) {
+      if (err.response && err.response.status == 404) {
+        this.$router.push({ name: '404' });
+      }
+    },
   },
 });
