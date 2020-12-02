@@ -8,8 +8,6 @@ export default {
     return new paginatedResource('productions/upcoming_productions/');
   },
   fetchProductionBySlug(slug) {
-    return api
-      .get(`productions/${slug}/`)
-      .then((response) => response.data.production);
+    return api.get(`productions/${slug}/`).then((response) => response.data);
   },
 };

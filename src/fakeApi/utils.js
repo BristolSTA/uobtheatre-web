@@ -28,9 +28,18 @@ let updateIfDoesntHave = function (model, keyValues, value) {
 };
 
 let RelationshipSerializer = (relationships) =>
-  Serializer.extend({
+  DefaultSerializer.extend({
     embed: true,
     include: relationships,
   });
 
-export { paginatedResponse, updateIfDoesntHave, RelationshipSerializer };
+let DefaultSerializer = Serializer.extend({
+  root: false,
+});
+
+export {
+  paginatedResponse,
+  updateIfDoesntHave,
+  RelationshipSerializer,
+  DefaultSerializer,
+};

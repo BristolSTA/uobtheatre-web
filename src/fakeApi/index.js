@@ -1,5 +1,7 @@
 import { createServer } from 'miragejs';
 
+import { DefaultSerializer } from './utils';
+
 import ProductionInterface from './production.model';
 import PerformanceInterface from './performance.model';
 import SocietyInterface from './society.model';
@@ -36,7 +38,12 @@ export function makeServer({ environment = 'development' } = {}) {
 
     serializers: Object.assign({}, serializers),
 
-    factories: Object.assign({}, factories),
+    factories: Object.assign(
+      {
+        application: DefaultSerializer,
+      },
+      factories
+    ),
 
     seeds(server) {
       let dramsoc = server.create('society', {
