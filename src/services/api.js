@@ -2,7 +2,10 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 const api = axios.create({
-  baseURL: process.env.VUE_APP_API_BASE ?? '/api',
+  baseURL:
+    process.env.NODE_ENV != 'test' && process.env.VUE_APP_API_BASE
+      ? process.env.VUE_APP_API_BASE
+      : '/api',
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',

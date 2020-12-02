@@ -76,16 +76,12 @@ export default {
 
     // Upcoming Productions
     this.get('productions/upcoming_productions', function (schema) {
-      return paginatedResponse(
-        this.serialize(schema.productions.all()).productions
-      );
+      return paginatedResponse(this.serialize(schema.productions.all()));
     });
 
     // All productions paginated endpoint
     this.get('productions', function (schema) {
-      return paginatedResponse(
-        this.serialize(schema.productions.all()).productions
-      );
+      return paginatedResponse(this.serialize(schema.productions.all()));
     });
 
     // Production by slug
