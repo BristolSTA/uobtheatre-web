@@ -1,5 +1,6 @@
 // Use this file for extending any libraries, where the effect is also needed in testing
 import Vue from 'vue';
+import config from '@/config';
 import { DateTime } from 'luxon';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -24,7 +25,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 // Constants
 
-Vue.prototype.$appName = process.env.VUE_APP_NAME;
+Vue.prototype.$appName = config.application.name;
 
 // Filters
 
