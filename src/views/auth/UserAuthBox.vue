@@ -2,7 +2,7 @@
   <div class="bg-sta-gray w-80">
     <div class="flex items-center space-x-1 text-center">
       <button
-        class="w-1/2 py-3 font-semibold focus:outline-none"
+        class="w-1/2 py-3 font-semibold rounded-none focus:outline-none"
         :class="[login ? 'bg-sta-orange' : 'bg-gray-200']"
         @click="login = true"
         @keydown="login = true"
@@ -10,7 +10,7 @@
         Login
       </button>
       <button
-        class="w-1/2 py-3 font-semibold focus:outline-none"
+        class="w-1/2 py-3 font-semibold rounded-none focus:outline-none"
         :class="[login ? 'bg-gray-200' : ' bg-sta-orange']"
         @click="login = false"
         @keydown="login = false"
@@ -18,9 +18,18 @@
         Sign Up
       </button>
     </div>
-    <div v-if="login" class="flex flex-col p-6 space-y-2">
-      <text-input name="Email" v-model="email" />
-      <text-input name="Password" v-model="password" input_type="password" />
+    <form
+      v-if="login"
+      class="flex flex-col p-6 space-y-2"
+      @submit.prevent="attemptLogin"
+    >
+      <text-input name="Email" v-model="email" autocomplete="username email" />
+      <text-input
+        name="Password"
+        v-model="password"
+        input_type="password"
+        autocomplete="current-password"
+      />
       <label for="remember_me" class="flex items-center space-x-2">
         <input
           type="checkbox"
@@ -33,22 +42,27 @@
 
       <button
         class="w-full mt-2 text-xl font-semibold text-center btn btn-orange btn-outline"
-        @click="attemptLogin"
-        @keydown="attemptLogin"
+        type="submit"
       >
         Log In
       </button>
+
       <p class="mt-2 text-white">
-        <clickable-link @click="login = false">
+        <clickable-link @click.prevent="login = false">
           Don't have an account? <strong>Sign Up</strong>
         </clickable-link>
       </p>
-    </div>
+    </form>
 
-    <div v-else class="flex flex-col p-6 space-y-2">
-      <text-input name="Full Name" v-model="name" />
-      <text-input name="Email" v-model="email" />
-      <text-input name="Password" v-model="password" input_type="password" />
+    <form v-else class="flex flex-col p-6 space-y-2">
+      <text-input name="Full Name" v-model="name" autocomplete="name" />
+      <text-input name="Email" v-model="email" autocomplete="username email" />
+      <text-input
+        name="Password"
+        v-model="password"
+        input_type="password"
+        autocomplete="new-password"
+      />
       <label for="accept_terms" class="flex items-center space-x-2">
         <input
           type="checkbox"
@@ -65,12 +79,13 @@
       >
         Sign Up
       </button>
+
       <p class="mt-2 text-white">
-        <clickable-link @click="login = true">
+        <clickable-link @click.prevent="login = true">
           Already have an account? <strong>Log In</strong>
         </clickable-link>
       </p>
-    </div>
+    </form>
   </div>
 </template>
 

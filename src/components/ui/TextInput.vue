@@ -5,6 +5,7 @@
       class="w-full p-1 rounded-sm focus:outline-none"
       :id="inputId"
       :value="value"
+      :autocomplete="autocomplete"
       @input="$emit('input', $event.target.value)"
       :type="input_type"
     />
@@ -22,6 +23,9 @@ export default {
       required: true,
     },
     input_type: {
+      required: false,
+    },
+    autocomplete: {
       required: false,
     },
   },

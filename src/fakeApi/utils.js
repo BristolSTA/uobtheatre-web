@@ -41,10 +41,26 @@ let NotFoundResponse = () => {
   return new Response(404);
 };
 
+let ValidationErrorResponse = (
+  fieldErrors,
+  nonFieldErrors,
+  errorCode = 400
+) => {
+  let data = {};
+  if (fieldErrors) {
+    data['field_errors'] = fieldErrors;
+  }
+  if (nonFieldErrors) {
+    data['non_field_errors'] = nonFieldErrors;
+  }
+  return new Response(errorCode, {}, data);
+};
+
 export {
   paginatedResponse,
   updateIfDoesntHave,
   RelationshipSerializer,
   DefaultSerializer,
   NotFoundResponse,
+  ValidationErrorResponse,
 };

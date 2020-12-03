@@ -9,6 +9,7 @@ import CastInterface from './cast.model';
 import CrewInterface from './crew.model';
 import ProductionTeamInterface from './productionTeam.model';
 import VenueInterface from './venue.model';
+import UserInterface from './user.model';
 
 let apiModels = [
   ProductionInterface,
@@ -18,6 +19,7 @@ let apiModels = [
   CrewInterface,
   ProductionTeamInterface,
   VenueInterface,
+  UserInterface,
 ];
 
 let models = {};
@@ -75,6 +77,13 @@ export function makeServer({ environment = 'development' } = {}) {
 
       server.create('production', {
         name: 'A Default Production',
+      });
+
+      server.create('user', {
+        username: 'admin',
+        password: 'admin',
+        email: 'admin@bristolsta.com',
+        token: '36c86c19f8f8d73aa59c3a00814137bdee0ab8de',
       });
     },
 

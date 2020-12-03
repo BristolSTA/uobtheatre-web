@@ -4,7 +4,7 @@ import Meta from 'vue-meta';
 import NProgress from 'nprogress';
 
 import Home from '../views/Home.vue';
-import Login from '../views/login/Login.vue';
+import Login from '../views/auth/Login.vue';
 import NotFoundError from '../views/errors/NotFound.vue';
 const Production = () => import('../views/production/Production.vue');
 
