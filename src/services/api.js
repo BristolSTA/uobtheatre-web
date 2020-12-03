@@ -1,11 +1,9 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import config from '@/config';
 
 const api = axios.create({
-  baseURL:
-    process.env.NODE_ENV != 'test' && process.env.VUE_APP_API_BASE
-      ? process.env.VUE_APP_API_BASE
-      : '/api',
+  baseURL: config.api.endpoint,
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
@@ -15,6 +13,12 @@ const api = axios.create({
 
 export default api;
 
+/**
+ * Wrapper for requesting & retrieving data from the API that is paginated
+ *
+ * @param {string} endpoint API method endpoint (e.g. /productions)
+ * @param {number} page Requested page number
+ */
 let paginatedResource = class {
   apiResponse;
   constructor(endpoint, page = null) {

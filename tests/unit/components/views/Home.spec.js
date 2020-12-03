@@ -25,9 +25,7 @@ describe('Home', function () {
     });
 
     it('shows fallback with no productions', () => {
-      expect(splashscreenContainer.text()).to.contain(
-        `Welcome to ${process.env.VUE_APP_NAME}`
-      );
+      expect(splashscreenContainer.text()).to.contain(`Welcome to UOB Theatre`);
     });
 
     it('shows featured production on splashscreen', async () => {
