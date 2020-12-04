@@ -110,7 +110,11 @@ export default {
   },
   methods: {
     attemptLogin() {
-      authService.login(this.email, this.password);
+      authService
+        .login(this.email, this.password, this.remember_me)
+        .then(() => {
+          alert('Logged in! Cookie set!');
+        });
     },
   },
 };

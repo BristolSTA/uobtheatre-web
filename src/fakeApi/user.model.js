@@ -1,5 +1,5 @@
 import faker from 'faker';
-import { Model, Factory } from 'miragejs';
+import { Model, Factory, Response } from 'miragejs';
 import { ValidationErrorResponse } from './utils';
 
 export default {
@@ -30,7 +30,7 @@ export default {
         return ValidationErrorResponse(null, [
           'Unable to log in with provided credentials.',
         ]);
-      return { token: user.token };
+      return new Response(200, {}, { token: user.token });
     });
   },
 };

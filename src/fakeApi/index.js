@@ -26,6 +26,12 @@ let models = {};
 let serializers = {};
 let factories = {};
 
+/**
+ * Creates and installs the Mirage JS mock API server
+ *
+ * @param {string} environment The environment the server is being used in
+ * @returns {createServer} MirageJS Server instance
+ */
 export function makeServer({ environment = 'development' } = {}) {
   apiModels.forEach((model) => {
     models = Object.assign(models, model.registerModels());
