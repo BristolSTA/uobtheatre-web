@@ -1,7 +1,7 @@
 <template>
-  <nav class="bg-sta-gray-dark p-6">
-    <div class="container flex items-center justify-between flex-wrap">
-      <div class="flex items-center flex-shrink-0 text-white mr-10">
+  <nav class="p-6 bg-sta-gray-dark">
+    <div class="container flex flex-wrap items-center justify-between">
+      <div class="flex items-center flex-shrink-0 mr-10 text-white">
         <router-link :to="{ name: 'home' }"
           ><span class="text-4xl tracking-tight uppercase">{{
             $appName
@@ -10,7 +10,7 @@
       </div>
       <div class="block lg:hidden">
         <button
-          class="px-3 py-2 border rounded text-white border-sta-orange"
+          class="px-3 py-2 text-white border rounded border-sta-orange"
           role="toggle"
           @click="navHidden = !navHidden"
           @keydown="
@@ -20,7 +20,7 @@
           "
         >
           <svg
-            class="fill-current h-6 w-6"
+            class="w-6 h-6 fill-current"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -38,14 +38,14 @@
           <router-link
             v-for="(item, index) in navItems"
             :key="index"
-            :to="item[0]"
-            class="block font-semibold uppercase mt-4 mr-6 tracking-wide lg:inline-block lg:mt-0 text-white hover:text-sta-orange"
+            :to="navBarLink(item)"
+            class="block mt-4 mr-6 font-semibold tracking-wide text-white uppercase lg:inline-block lg:mt-0 hover:text-sta-orange"
           >
             {{ item[1] }}
           </router-link>
           <router-link
             to="/login"
-            class="btn btn-orange btn-outline inline-block mt-4 lg:mt-0"
+            class="inline-block mt-4 btn btn-orange btn-outline lg:mt-0"
             >Login</router-link
           >
         </div>
@@ -72,6 +72,11 @@ export default {
       ],
       navHidden: true,
     };
+  },
+  methods: {
+    navBarLink(item) {
+      return item[0].concat(item[1]).toLowerCase();
+    },
   },
 };
 </script>

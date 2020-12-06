@@ -4,6 +4,7 @@ import Meta from 'vue-meta';
 import NProgress from 'nprogress';
 
 import Home from '../views/Home.vue';
+import Venues from '../views/Venues.vue';
 import NotFoundError from '../views/errors/NotFound.vue';
 const Production = () => import('../views/production/Production.vue');
 
@@ -20,6 +21,11 @@ const routes = [
     path: '/production/:productionSlug',
     name: 'production',
     component: Production,
+  },
+  {
+    path: '/venues',
+    name: 'venues',
+    component: Venues,
   },
   { path: '/404', name: '404', component: NotFoundError },
   { path: '*', redirect: '/404' },
