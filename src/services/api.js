@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import config from '@/config';
+import authService from './authService';
 
 const api = new (class {
   axiosInstance;
@@ -90,16 +91,31 @@ const api = new (class {
           method: requestType,
           url: endpoint,
           data: data,
+          headers: this.getAuthHeaders(),
         })
         .then((response) => {
           resolve(response.data);
         })
         .catch((error) => {
-          let errors = new Errors();
-          errors.record(error.response.data);
-          reject(errors, error.response.data);
+          // HTTP 400 Code = Validation Error
+          if (error.response.status == 400 && error.response.data) {
+            let errors = new Errors();
+            errors.record(error.response.data);
+            return reject(errors, error.response.data);
+          }
+          reject(error);
         });
     });
+  }
+
+  /**
+   * @returns {object} Authorization headers
+   */
+  getAuthHeaders() {
+    if (!authService.getAuthToken()) return;
+    return {
+      Authorization: `Token ${authService.getAuthToken()}`,
+    };
   }
 })();
 
@@ -150,7 +166,17 @@ let Errors = class {
    * Create a new Errors instance.
    */
   constructor() {
-    this.errors = {};
+    this.resetErrors();
+  }
+
+  /**
+   * Resets errors object
+   */
+  resetErrors() {
+    this.errors = {
+      field_errors: {},
+      non_field_errors: [],
+    };
   }
 
   /**
@@ -160,7 +186,10 @@ let Errors = class {
    * @returns {boolean} Whether the field has errors
    */
   has(field) {
-    return Object.prototype.hasOwnProperty.call(this.errors, field);
+    return Object.prototype.hasOwnProperty.call(
+      this.errors.field_errors,
+      field
+    );
   }
 
   /**
@@ -169,7 +198,10 @@ let Errors = class {
    * @returns {boolean} Whether there are any errors
    */
   any() {
-    return Object.keys(this.errors).length > 0;
+    return (
+      Object.keys(this.errors.field_errors).length > 0 ||
+      Object.keys(this.errors.non_field_errors).length > 0
+    );
   }
 
   /**
@@ -179,9 +211,18 @@ let Errors = class {
    * @returns {string} The error message
    */
   get(field) {
-    if (this.errors[field]) {
-      return this.errors[field][0];
+    if (this.errors.field_errors[field]) {
+      return this.errors.field_errors[field][0];
     }
+  }
+
+  /**
+   * Retrieve the generic (i.e. non-field) errors
+   *
+   * @returns {Array | null} Array of generic errors
+   */
+  getGenericErrors() {
+    return this.errors.non_field_errors;
   }
 
   /**
@@ -190,7 +231,14 @@ let Errors = class {
    * @param {object} errors API Errors Object
    */
   record(errors) {
-    this.errors = errors;
+    let non_field_errors = errors.non_field_errors;
+    delete errors['non_field_errors'];
+    let field_errors = errors;
+
+    this.errors = {
+      field_errors: field_errors,
+      non_field_errors: non_field_errors,
+    };
   }
 
   /**
@@ -200,12 +248,12 @@ let Errors = class {
    */
   clear(field) {
     if (field) {
-      delete this.errors[field];
+      delete this.errors.field_errors[field];
 
       return;
     }
 
-    this.errors = {};
+    this.resetErrors();
   }
 };
 

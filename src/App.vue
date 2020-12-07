@@ -46,5 +46,8 @@ export default {
       }
     },
   },
+  mounted() {
+    this.$store.dispatch('refreshAuth');
+  },
 };
 </script>

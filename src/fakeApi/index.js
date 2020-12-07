@@ -86,7 +86,6 @@ export function makeServer({ environment = 'development' } = {}) {
       });
 
       server.create('user', {
-        username: 'admin',
         password: 'admin',
         email: 'admin@bristolsta.com',
         token: '36c86c19f8f8d73aa59c3a00814137bdee0ab8de',

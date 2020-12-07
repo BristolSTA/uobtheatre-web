@@ -3,7 +3,7 @@
     <div class="container flex flex-wrap items-center justify-between">
       <div class="flex items-center flex-shrink-0 mr-10 text-white">
         <router-link :to="{ name: 'home' }"
-          ><span class="text-4xl tracking-tight uppercase">{{
+          ><span class="text-4xl tracking-tight uppercase text-white">{{
             $appName
           }}</span></router-link
         >
@@ -43,39 +43,44 @@
           >
             {{ item[1] }}
           </router-link>
-          <template v-if="!isLoggedIn">
-            <router-link
-              to="/login"
-              class="inline-block mt-4 btn btn-orange btn-outline lg:mt-0"
-            >
-              Login
-            </router-link>
-          </template>
-          <form v-else @submit.prevent="logOut">
-            <button
-              href="/login"
-              type="submit"
-              class="inline-block mt-4 btn btn-orange btn-outline lg:mt-0"
-            >
-              Log Out
-            </button>
-          </form>
+          <router-link
+            v-if="!$store.state.auth.token"
+            to="/login"
+            class="auth-button btn btn-orange btn-outline lg:mt-0"
+          >
+            Login
+          </router-link>
+          <clickable-link
+            v-else
+            @click="authService.logout($store)"
+            class="auth-button btn btn-orange btn-outline lg:mt-0"
+          >
+            Log Out
+          </clickable-link>
         </div>
       </div>
     </div>
   </nav>
 </template>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 nav .router-link-exact-active {
-  color: @apply bg-sta-orange;
+  @apply text-sta-orange;
+}
+.auth-button {
+  @apply inline-block;
+  @apply mt-4;
 }
 </style>
 
 <script>
 import { authService } from '@/services';
+import ClickableLink from '@/components/ui/ClickableLink.vue';
 
 export default {
+  components: {
+    ClickableLink,
+  },
   data() {
     return {
       navItems: [
@@ -85,17 +90,8 @@ export default {
         ['/', 'Contact'],
       ],
       navHidden: true,
+      authService: authService,
     };
-  },
-  computed: {
-    isLoggedIn() {
-      return authService.isLoggedIn();
-    },
-  },
-  methods: {
-    logOut() {
-      authService.logout();
-    },
   },
 };
 </script>

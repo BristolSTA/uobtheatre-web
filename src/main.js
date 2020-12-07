@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import App from './App.vue';
 import router from './router';
+import { authService } from './services';
 import './registerServiceWorker';
 
 require('./extensions');
@@ -42,6 +43,11 @@ let store = new Vuex.Store({
     },
     SET_AUTH_TOKEN(state, token) {
       state.auth.token = token;
+    },
+  },
+  actions: {
+    refreshAuth(context) {
+      context.commit('SET_AUTH_TOKEN', authService.getAuthToken());
     },
   },
 });

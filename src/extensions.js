@@ -9,6 +9,7 @@ import {
   faChevronRight,
   faTicketAlt,
   faClock,
+  faCircleNotch,
 } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 
@@ -16,7 +17,14 @@ import { faFacebook } from '@fortawesome/free-brands-svg-icons';
  * Import FontAwesome
  */
 
-library.add(faChevronLeft, faChevronRight, faTicketAlt, faClock, faFacebook);
+library.add(
+  faChevronLeft,
+  faChevronRight,
+  faTicketAlt,
+  faClock,
+  faFacebook,
+  faCircleNotch
+);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 /**
