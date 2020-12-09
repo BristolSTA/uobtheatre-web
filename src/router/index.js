@@ -3,12 +3,10 @@ import VueRouter from 'vue-router';
 import Meta from 'vue-meta';
 import NProgress from 'nprogress';
 
-import { authService } from '../services';
-
-import Home from '../views/Home.vue';
-import Login from '../views/auth/Login.vue';
-import NotFoundError from '../views/errors/NotFound.vue';
-const Production = () => import('../views/production/Production.vue');
+import Home from '@/views/Home.vue';
+import Login from '@/views/auth/Login.vue';
+import NotFoundError from '@/views/errors/NotFound.vue';
+const Production = () => import('@/views/production/Production.vue');
 
 Vue.use(VueRouter);
 Vue.use(Meta);
@@ -28,10 +26,13 @@ const routes = [
     path: '/login',
     name: 'login',
     component: Login,
-    beforeEnter: (to, from, next) => {
-      if (authService.isLoggedIn()) return next({ name: 'home' });
-      return next();
-    },
+    props: { login: true },
+  },
+  {
+    path: '/signup',
+    name: 'signup',
+    component: Login,
+    props: { login: false },
   },
   { path: '/404', name: '404', component: NotFoundError },
   { path: '*', redirect: '/404' },

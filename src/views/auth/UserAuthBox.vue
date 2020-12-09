@@ -4,16 +4,16 @@
       <button
         class="w-1/2 py-3 font-semibold rounded-none focus:outline-none"
         :class="[login ? 'bg-sta-orange' : 'bg-gray-200']"
-        @click="login = true"
-        @keydown="login = true"
+        @click="$emit('go-login')"
+        @keydown="$emit('go-login')"
       >
         Login
       </button>
       <button
         class="w-1/2 py-3 font-semibold rounded-none focus:outline-none"
         :class="[login ? 'bg-gray-200' : ' bg-sta-orange']"
-        @click="login = false"
-        @keydown="login = false"
+        @click="$emit('go-signup')"
+        @keydown="$emit('go-signup')"
       >
         Sign Up
       </button>
@@ -32,7 +32,7 @@
       <div v-if="login_errors" class="text-sm font-semibold text-sta-rouge">
         <p>Error: {{ login_errors.getGenericErrors()[0] }}</p>
       </div>
-      <text-input name="Email" v-model="email" autocomplete="username email" />
+      <text-input name="Email" v-model="email" autocomplete="email" />
       <text-input
         name="Password"
         v-model="password"
@@ -59,7 +59,7 @@
       <hr class="border-t-2 border-sta-gray-dark" />
 
       <p class="mt-2 text-white">
-        <clickable-link @click="login = false">
+        <clickable-link @click="$emit('go-signup')">
           Don't have an account? <strong>Sign Up</strong>
         </clickable-link>
       </p>
@@ -101,7 +101,7 @@
       </button>
 
       <p class="mt-2 text-white">
-        <clickable-link @click.prevent="login = true">
+        <clickable-link @click="$emit('go-login')">
           Already have an account? <strong>Log In</strong>
         </clickable-link>
       </p>
@@ -117,9 +117,13 @@ import TextInput from '@/components/ui/TextInput.vue';
 export default {
   name: 'user-auth-box',
   components: { ClickableLink, TextInput },
+  props: {
+    login: {
+      default: true,
+    },
+  },
   data() {
     return {
-      login: true,
       name: null,
       password: null,
       email: null,
