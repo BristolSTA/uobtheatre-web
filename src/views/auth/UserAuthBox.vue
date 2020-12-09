@@ -138,12 +138,14 @@ export default {
       this.login_errors = null;
 
       try {
-        await authService.login(
-          this.$store,
-          this.email,
-          this.password,
-          this.remember_me
-        );
+        await authService.login(this.email, this.password, this.remember_me);
+
+        // Redirect to intended if has
+        if (this.$route.query.redirect) {
+          return this.$router.push(this.$route.query.redirect);
+        }
+
+        this.$router.push({ name: 'home' });
       } catch (errors) {
         this.login_errors = errors;
       }
