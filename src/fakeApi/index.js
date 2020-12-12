@@ -1,15 +1,14 @@
 import { createServer } from 'miragejs';
 
-import { DefaultSerializer } from './utils';
-
-import ProductionInterface from './production.model';
-import PerformanceInterface from './performance.model';
-import SocietyInterface from './society.model';
 import CastInterface from './cast.model';
 import CrewInterface from './crew.model';
+import PerformanceInterface from './performance.model';
+import ProductionInterface from './production.model';
 import ProductionTeamInterface from './productionTeam.model';
-import VenueInterface from './venue.model';
+import SocietyInterface from './society.model';
 import UserInterface from './user.model';
+import { DefaultSerializer } from './utils';
+import VenueInterface from './venue.model';
 
 let apiModels = [
   ProductionInterface,

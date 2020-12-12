@@ -1,5 +1,5 @@
 import faker from 'faker';
-import { Model, Factory } from 'miragejs';
+import { Factory,Model } from 'miragejs';
 
 export default {
   registerModels() {

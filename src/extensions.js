@@ -1,17 +1,18 @@
 // Use this file for extending any libraries, where the effect is also needed in testing
-import Vue from 'vue';
-import config from '@/config';
-import { DateTime } from 'luxon';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 import {
   faChevronLeft,
   faChevronRight,
-  faTicketAlt,
-  faClock,
   faCircleNotch,
+  faClock,
+  faTicketAlt,
 } from '@fortawesome/free-solid-svg-icons';
-import { faFacebook } from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { DateTime } from 'luxon';
+import Vue from 'vue';
+
+import config from '@/config';
 
 /**
  * Import FontAwesome

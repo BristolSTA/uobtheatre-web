@@ -1,9 +1,10 @@
-import { expect } from 'chai';
 import { mount } from '@vue/test-utils';
+import { expect } from 'chai';
 
 import { makeServer } from '@/fakeApi';
-import UserAuthBox from '@/views/auth/UserAuthBox.vue';
 import store from '@/store';
+import UserAuthBox from '@/views/auth/UserAuthBox.vue';
+
 import { waitFor } from '../../helpers';
 
 describe('AuthBox', function () {

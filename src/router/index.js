@@ -1,11 +1,11 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import Meta from 'vue-meta';
 import NProgress from 'nprogress';
+import Vue from 'vue';
+import Meta from 'vue-meta';
+import VueRouter from 'vue-router';
 
-import Home from '@/views/Home.vue';
 import Login from '@/views/auth/Login.vue';
 import NotFoundError from '@/views/errors/NotFound.vue';
+import Home from '@/views/Home.vue';
 const Production = () => import('@/views/production/Production.vue');
 
 Vue.use(VueRouter);

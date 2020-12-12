@@ -73,8 +73,8 @@ nav .router-link-exact-active {
 </style>
 
 <script>
-import { authService } from '@/services';
 import ClickableLink from '@/components/ui/ClickableLink.vue';
+import { authService } from '@/services';
 
 export default {
   components: {

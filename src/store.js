@@ -1,7 +1,8 @@
+import Cookie from 'js-cookie';
 import Vue from 'vue';
 import Vuex from 'vuex';
+
 import config from '@/config';
-import Cookie from 'js-cookie';
 
 Vue.use(Vuex);
 

@@ -1,6 +1,7 @@
 import faker from 'faker';
 import { DateTime } from 'luxon';
-import { Model, Factory, belongsTo } from 'miragejs';
+import { belongsTo,Factory, Model } from 'miragejs';
+
 import { RelationshipSerializer, updateIfDoesntHave } from './utils';
 
 export default {

@@ -1,9 +1,9 @@
-import { makeServer } from '@/fakeApi';
-import { expect } from 'chai';
-import ProductionPerformances from '@/views/production/ProductionPerformances.vue';
-
 import { mount, RouterLinkStub } from '@vue/test-utils';
+import { expect } from 'chai';
+
+import { makeServer } from '@/fakeApi';
 import { productionService } from '@/services';
+import ProductionPerformances from '@/views/production/ProductionPerformances.vue';
 
 describe('ProductionHeader', function () {
   let performancesContainer;

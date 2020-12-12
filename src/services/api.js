@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
+
 import config from '@/config';
 import store from '@/store';
 
@@ -257,4 +258,4 @@ let Errors = class {
   }
 };
 
-export { paginatedResource, Errors };
+export { Errors,paginatedResource };

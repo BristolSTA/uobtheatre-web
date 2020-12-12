@@ -1,9 +1,9 @@
-import { makeServer } from '@/fakeApi';
-import { expect } from 'chai';
-import ProductionCastCredits from '@/views/production/ProductionCastCredits.vue';
-
 import { mount } from '@vue/test-utils';
+import { expect } from 'chai';
+
+import { makeServer } from '@/fakeApi';
 import { productionService } from '@/services';
+import ProductionCastCredits from '@/views/production/ProductionCastCredits.vue';
 
 describe('CastCreditsContainer', function () {
   let castCreditsContainer;

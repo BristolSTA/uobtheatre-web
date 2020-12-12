@@ -1,4 +1,4 @@
-import { Serializer, Response } from 'miragejs';
+import { Response,Serializer } from 'miragejs';
 
 let paginatedResponse = (data) => {
   return {
@@ -57,10 +57,10 @@ let ValidationErrorResponse = (
 };
 
 export {
-  paginatedResponse,
-  updateIfDoesntHave,
-  RelationshipSerializer,
   DefaultSerializer,
   NotFoundResponse,
+  paginatedResponse,
+  RelationshipSerializer,
+  updateIfDoesntHave,
   ValidationErrorResponse,
 };

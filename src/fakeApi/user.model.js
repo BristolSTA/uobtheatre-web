@@ -1,5 +1,6 @@
 import faker from 'faker';
-import { Model, Factory, Response } from 'miragejs';
+import { Factory, Model, Response } from 'miragejs';
+
 import { ValidationErrorResponse } from './utils';
 
 export default {

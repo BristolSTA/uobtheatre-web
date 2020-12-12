@@ -12,6 +12,7 @@
 
 <script>
 import { authService } from '@/services';
+
 import UserAuthBox from './UserAuthBox.vue';
 
 export default {

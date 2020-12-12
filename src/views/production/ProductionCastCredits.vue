@@ -160,6 +160,7 @@
 
 <script>
 import lodash from 'lodash';
+
 import ClickableLink from '@/components/ui/ClickableLink.vue';
 import IconListItem from '@/components/ui/IconListItem.vue';
 export default {

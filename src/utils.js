@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon';
+
 import store from './store';
 
 let joinWithAnd = (array) => {
@@ -54,9 +55,9 @@ let handle404Mixin = {
 };
 
 export {
-  joinWithAnd,
-  duration,
   displayStartEnd,
+  duration,
   handle404Mixin,
+  joinWithAnd,
   runPromiseWithLoading,
 };

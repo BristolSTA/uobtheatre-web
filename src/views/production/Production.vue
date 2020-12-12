@@ -22,9 +22,10 @@
 
 <script>
 import { productionService } from '@/services';
-import { runPromiseWithLoading, handle404Mixin } from '@/utils';
-import ProductionHeader from './ProductionHeader.vue';
+import { handle404Mixin,runPromiseWithLoading } from '@/utils';
+
 import ProductionCastCredits from './ProductionCastCredits.vue';
+import ProductionHeader from './ProductionHeader.vue';
 import ProductionPerformances from './ProductionPerformances.vue';
 export default {
   components: {

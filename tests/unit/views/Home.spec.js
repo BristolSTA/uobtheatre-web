@@ -1,8 +1,10 @@
-import Home from '@/views/Home.vue';
-import { makeServer } from '@/fakeApi';
-import { expect } from 'chai';
 import { RouterLinkStub } from '@vue/test-utils';
-import { fixTextSpacing, waitFor, mountWithRouterMock } from '../helpers';
+import { expect } from 'chai';
+
+import { makeServer } from '@/fakeApi';
+import Home from '@/views/Home.vue';
+
+import { fixTextSpacing, mountWithRouterMock,waitFor } from '../helpers';
 
 describe('Home', function () {
   let homepageComponent;

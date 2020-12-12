@@ -1,5 +1,5 @@
 import faker from 'faker';
-import { Model, Factory, belongsTo } from 'miragejs';
+import { belongsTo,Factory, Model } from 'miragejs';
 
 export default {
   registerModels() {

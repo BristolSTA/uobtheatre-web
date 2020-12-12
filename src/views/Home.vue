@@ -130,9 +130,10 @@
 </style>
 
 <script>
+import lo from 'lodash';
+
 import { productionService } from '@/services';
 import { displayStartEnd, runPromiseWithLoading } from '@/utils';
-import lo from 'lodash';
 
 export default {
   name: 'Home',

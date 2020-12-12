@@ -55,10 +55,10 @@ const mountWithRouterMock = function (component, options = {}) {
 };
 
 export {
-  waitForDOM,
-  waitFor,
-  waitForTick,
   fixTextSpacing,
   mountWithRouterMock,
   RouterLinkStub,
+  waitFor,
+  waitForDOM,
+  waitForTick,
 };

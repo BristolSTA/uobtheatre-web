@@ -7,9 +7,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import Layout from '@/components/layout/Layout.vue';
 import NProgress from 'nprogress';
+import { mapState } from 'vuex';
+
+import Layout from '@/components/layout/Layout.vue';
 import { authService } from '@/services';
 
 export default {

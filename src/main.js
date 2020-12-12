@@ -1,7 +1,9 @@
+import './registerServiceWorker';
+
 import Vue from 'vue';
+
 import App from './App.vue';
 import router from './router';
-import './registerServiceWorker';
 import store from './store';
 
 require('./extensions');
@@ -14,7 +16,6 @@ import './assets/styles/app.scss';
 /**
  * Import server
  */
-
 import { makeServer } from './fakeApi';
 
 if (process.env.NODE_ENV === 'development' && !process.env.VUE_APP_API_BASE) {

@@ -109,9 +109,9 @@
 </template>
 
 <script>
-import { authService } from '@/services';
 import ClickableLink from '@/components/ui/ClickableLink.vue';
 import TextInput from '@/components/ui/TextInput.vue';
+import { authService } from '@/services';
 
 export default {
   name: 'user-auth-box',

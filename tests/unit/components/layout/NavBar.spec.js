@@ -1,8 +1,10 @@
 import { expect } from 'chai';
+
 import NavBar from '@/components/layout/NavBar.vue';
-import store from '@/store';
-import { authService } from '@/services';
 import ClickableLink from '@/components/ui/ClickableLink.vue';
+import { authService } from '@/services';
+import store from '@/store';
+
 import { mountWithRouterMock, RouterLinkStub } from '../../helpers';
 
 describe('NavBar', function () {

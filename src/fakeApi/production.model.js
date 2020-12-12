@@ -1,11 +1,12 @@
-import { DateTime } from 'luxon';
-import { Model, Factory, belongsTo, hasMany } from 'miragejs';
 import faker from 'faker';
+import { DateTime } from 'luxon';
+import { belongsTo, Factory, hasMany,Model } from 'miragejs';
+
 import {
+  NotFoundResponse,
+  paginatedResponse,
   RelationshipSerializer,
   updateIfDoesntHave,
-  paginatedResponse,
-  NotFoundResponse,
 } from './utils';
 
 export default {
