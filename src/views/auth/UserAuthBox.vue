@@ -72,11 +72,9 @@
     </form>
 
     <form v-else class="flex flex-col p-6 space-y-2">
-      <div class="text-sm font-semibold text-sta-rouge">
-        <p>Error: Email already exists</p>
-        <p>Error: Password does not match</p>
-      </div>
-      <text-input name="Full Name" v-model="name" autocomplete="name" />
+      <!-- TODO: Implement -->
+      Currently unavailable...
+      <!-- <text-input name="Full Name" v-model="name" autocomplete="name" />
       <text-input name="Email" v-model="email" autocomplete="username email" />
       <text-input
         name="Password"
@@ -99,7 +97,7 @@
         class="w-full text-xl font-semibold text-center btn btn-orange btn-outline"
       >
         Sign Up
-      </button>
+      </button> -->
 
       <p class="mt-2 text-white">
         <clickable-link @click="$emit('go-login')">
