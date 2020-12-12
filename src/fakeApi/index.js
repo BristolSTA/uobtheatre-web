@@ -9,6 +9,7 @@ import CastInterface from './cast.model';
 import CrewInterface from './crew.model';
 import ProductionTeamInterface from './productionTeam.model';
 import VenueInterface from './venue.model';
+import UserInterface from './user.model';
 
 let apiModels = [
   ProductionInterface,
@@ -18,12 +19,19 @@ let apiModels = [
   CrewInterface,
   ProductionTeamInterface,
   VenueInterface,
+  UserInterface,
 ];
 
 let models = {};
 let serializers = {};
 let factories = {};
 
+/**
+ * Creates and installs the Mirage JS mock API server
+ *
+ * @param {string} environment The environment the server is being used in
+ * @returns {createServer} MirageJS Server instance
+ */
 export function makeServer({ environment = 'development' } = {}) {
   apiModels.forEach((model) => {
     models = Object.assign(models, model.registerModels());
@@ -75,6 +83,12 @@ export function makeServer({ environment = 'development' } = {}) {
 
       server.create('production', {
         name: 'A Default Production',
+      });
+
+      server.create('user', {
+        password: 'admin',
+        email: 'admin@bristolsta.com',
+        token: '36c86c19f8f8d73aa59c3a00814137bdee0ab8de',
       });
     },
 

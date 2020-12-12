@@ -123,7 +123,7 @@
           <div
             v-for="(member, index) in sortedCast"
             :key="index"
-            class="flex items-center sm:justify-center w-full px-2 sm:w-1/3 md:w-1/4 xl:w-1/5 production-cast-member"
+            class="flex items-center w-full px-2 sm:justify-center sm:w-1/3 md:w-1/4 xl:w-1/5 production-cast-member"
           >
             <div v-if="member.profile_picture" class="flex-none w-20">
               <img
@@ -132,7 +132,7 @@
                 alt="profile image"
               />
             </div>
-            <div class="text-center flex-grow">
+            <div class="flex-grow text-center">
               <p>
                 <strong>{{ member.name }}</strong>
               </p>

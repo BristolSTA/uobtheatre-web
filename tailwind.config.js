@@ -51,6 +51,10 @@ module.exports = {
       },
     },
   },
-  variants: {},
+  variants: {
+    extend: {
+      backgroundColor: ['checked'],
+    },
+  },
   plugins: [],
 };

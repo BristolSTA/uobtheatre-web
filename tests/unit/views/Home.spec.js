@@ -2,7 +2,7 @@ import Home from '@/views/Home.vue';
 import { makeServer } from '@/fakeApi';
 import { expect } from 'chai';
 import { RouterLinkStub } from '@vue/test-utils';
-import { fixTextSpacing, waitFor, mountWithRouterMock } from '../../helpers';
+import { fixTextSpacing, waitFor, mountWithRouterMock } from '../helpers';
 
 describe('Home', function () {
   let homepageComponent;

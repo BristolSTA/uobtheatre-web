@@ -9,6 +9,7 @@ import {
   faChevronRight,
   faTicketAlt,
   faClock,
+  faCircleNotch,
 } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 
@@ -16,7 +17,14 @@ import { faFacebook } from '@fortawesome/free-brands-svg-icons';
  * Import FontAwesome
  */
 
-library.add(faChevronLeft, faChevronRight, faTicketAlt, faClock, faFacebook);
+library.add(
+  faChevronLeft,
+  faChevronRight,
+  faTicketAlt,
+  faClock,
+  faFacebook,
+  faCircleNotch
+);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 /**
@@ -39,21 +47,4 @@ Vue.filter('truncate', (text, length, clamp) => {
   node.innerHTML = text;
   var content = node.textContent;
   return content.length > length ? content.slice(0, length) + clamp : content;
-});
-
-Vue.mixin({
-  methods: {
-    runPromiseWithLoading(promise) {
-      if (!this.$store) return promise;
-      this.$store.commit('SET_LOADING');
-      return promise.then(() => {
-        this.$store.commit('SET_NOT_LOADING');
-      });
-    },
-    handle404(err) {
-      if (err.response && err.response.status == 404) {
-        this.$router.push({ name: '404' });
-      }
-    },
-  },
 });

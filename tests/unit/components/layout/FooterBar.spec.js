@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { mount } from '@vue/test-utils';
-import FooterBar from '@/layout/FooterBar.vue';
+import FooterBar from '@/components/layout/FooterBar.vue';
 import { fixTextSpacing } from '../../helpers';
 
 describe('FooterBar', function () {

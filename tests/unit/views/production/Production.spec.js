@@ -6,7 +6,7 @@ import ProductionCastCredits from '@/views/production/ProductionCastCredits.vue'
 import ProductionPerformances from '@/views/production/ProductionPerformances.vue';
 
 import { mount } from '@vue/test-utils';
-import { waitFor } from '../../../helpers';
+import { waitFor } from '../../helpers';
 
 describe('Production', function () {
   let productionPageComponent;
@@ -81,7 +81,25 @@ describe('Production', function () {
     expect(productionPageComponent.vm.production.name).to.eq('Legally Ginger');
   });
 
-  it('handles invalid production', () => {
-    // TODO: Implement after 404 ready
+  it('handles invalid production', async () => {
+    let fake404Handler = jest.fn();
+    productionPageComponent = mount(ProductionPage, {
+      mixins: [
+        {
+          methods: {
+            handle404: fake404Handler,
+          },
+        },
+      ],
+      mocks: {
+        $route: {
+          params: {
+            productionSlug: 'legally-not-allowed',
+          },
+        },
+      },
+    });
+    await waitFor(() => fake404Handler.mock.calls.length);
+    expect(fake404Handler.mock.calls.length).to.eq(1);
   });
 });
