@@ -44,15 +44,15 @@
             {{ item[1] }}
           </router-link>
           <router-link
-            v-if="!$store.state.auth.token"
-            to="/login"
+            v-if="!authService.isLoggedIn()"
+            :to="{ name: 'login' }"
             class="auth-button btn btn-orange btn-outline mt-4 lg:mt-0"
           >
             Login
           </router-link>
           <clickable-link
             v-else
-            @click="authService.logout($store)"
+            @click="authService.logout()"
             class="auth-button btn btn-orange btn-outline mt-4 lg:mt-0"
           >
             Log Out

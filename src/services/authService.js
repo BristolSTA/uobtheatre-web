@@ -1,6 +1,4 @@
 import api from '@/services/api';
-import config from '@/config';
-import Cookie from 'js-cookie';
 import store from '../store';
 
 export default {
@@ -8,14 +6,14 @@ export default {
    * @returns {boolean} Whether or not the user is logged in
    */
   isLoggedIn() {
-    return !!this.getAuthToken();
+    return !!store.state.auth.token;
   },
 
   /**
    * @returns {string|null} API Authentication Token
    */
-  getAuthToken() {
-    return Cookie.get(config.auth.cookie);
+  refreshAuthStatus() {
+    return store.dispatch('authRemember');
   },
 
   /**
@@ -30,20 +28,14 @@ export default {
     return api
       .post('api-token-auth/', { email: email, password: password })
       .then((data) => {
-        Cookie.set(config.auth.cookie, data.token, {
-          expires: remember ? 365 : null,
-        });
-        store.dispatch('refreshAuth');
+        store.dispatch('authLogin', data.token, remember);
       });
   },
 
   /**
    * Logs out the user by deleting the auth cookie
-   *
-   * @param {any} store Vuex Store
    */
-  logout(store) {
-    Cookie.remove(config.auth.cookie);
-    store.dispatch('refreshAuth');
+  logout() {
+    store.dispatch('authLogout');
   },
 };

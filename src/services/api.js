@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import config from '@/config';
-import authService from './authService';
+import store from '@/store';
 
 const api = new (class {
   axiosInstance;
@@ -112,9 +112,9 @@ const api = new (class {
    * @returns {object} Authorization headers
    */
   getAuthHeaders() {
-    if (!authService.getAuthToken()) return;
+    if (!store.state.auth.token) return;
     return {
-      Authorization: `Token ${authService.getAuthToken()}`,
+      Authorization: `Token ${store.state.auth.token}`,
     };
   }
 })();

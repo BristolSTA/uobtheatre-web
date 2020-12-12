@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { authService } from './services';
+import config from '@/config';
+import Cookie from 'js-cookie';
 
 Vue.use(Vuex);
 
@@ -23,8 +24,20 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    refreshAuth(context) {
-      context.commit('SET_AUTH_TOKEN', authService.getAuthToken());
+    authRemember(context) {
+      let cookieVal = Cookie.get(config.auth.cookie);
+      if (cookieVal) context.commit('SET_AUTH_TOKEN', cookieVal);
+      return cookieVal;
+    },
+    authLogin(context, token, remember = false) {
+      Cookie.set(config.auth.cookie, token, {
+        expires: remember ? 365 : null,
+      });
+      context.commit('SET_AUTH_TOKEN', token);
+    },
+    authLogout(context) {
+      Cookie.remove(config.auth.cookie);
+      context.commit('SET_AUTH_TOKEN', null);
     },
   },
 });
