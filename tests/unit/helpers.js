@@ -43,12 +43,15 @@ const fixTextSpacing = function (text) {
   return text.replace(/\s\s+/g, ' ');
 };
 
-const mountWithRouterMock = function (component) {
-  return mount(component, {
-    stubs: {
-      RouterLink: RouterLinkStub,
-    },
-  });
+const mountWithRouterMock = function (component, options = {}) {
+  return mount(
+    component,
+    Object.assign(options, {
+      stubs: {
+        RouterLink: RouterLinkStub,
+      },
+    })
+  );
 };
 
 export {
@@ -57,4 +60,5 @@ export {
   waitForTick,
   fixTextSpacing,
   mountWithRouterMock,
+  RouterLinkStub,
 };

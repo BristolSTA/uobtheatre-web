@@ -46,14 +46,14 @@
           <router-link
             v-if="!$store.state.auth.token"
             to="/login"
-            class="auth-button btn btn-orange btn-outline lg:mt-0"
+            class="auth-button btn btn-orange btn-outline mt-4 lg:mt-0"
           >
             Login
           </router-link>
           <clickable-link
             v-else
             @click="authService.logout($store)"
-            class="auth-button btn btn-orange btn-outline lg:mt-0"
+            class="auth-button btn btn-orange btn-outline mt-4 lg:mt-0"
           >
             Log Out
           </clickable-link>
@@ -69,7 +69,6 @@ nav .router-link-exact-active {
 }
 .auth-button {
   @apply inline-block;
-  @apply mt-4;
 }
 </style>
 

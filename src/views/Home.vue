@@ -131,7 +131,7 @@
 
 <script>
 import { productionService } from '@/services';
-import { displayStartEnd } from '@/utils';
+import { displayStartEnd, runPromiseWithLoading } from '@/utils';
 import lo from 'lodash';
 
 export default {
@@ -151,7 +151,7 @@ export default {
     };
   },
   created() {
-    this.runPromiseWithLoading(
+    runPromiseWithLoading(
       productionService
         .fetchUpcomingProductions()
         .then((results) => (this.upcomingProductions = results))

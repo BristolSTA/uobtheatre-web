@@ -23,7 +23,7 @@ export default {
       required: true,
     },
     input_type: {
-      required: false,
+      default: 'text',
     },
     autocomplete: {
       required: false,

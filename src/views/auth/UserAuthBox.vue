@@ -1,6 +1,6 @@
 <template>
   <div class="shadow-2xl bg-sta-gray w-80 relative">
-    <div class="flex items-center space-x-1">
+    <div role="navigation" class="flex items-center space-x-1">
       <button
         class="w-1/2 py-3 font-semibold rounded-none focus:outline-none"
         :class="[login ? 'bg-sta-orange' : 'bg-gray-200']"
@@ -20,6 +20,7 @@
     </div>
     <div
       v-if="loading"
+      ref="loading_overlay"
       class="flex items-center justify-center absolute w-full h-full bg-sta-gray-dark bg-opacity-95 top-0 text-white text-3xl z-10"
     >
       <font-awesome-icon class="animate-spin" icon="circle-notch" />
@@ -149,7 +150,7 @@ export default {
           return this.$router.push(this.$route.query.redirect);
         }
 
-        this.$router.push({ name: 'home' });
+        return this.$router.push({ name: 'home' });
       } catch (errors) {
         this.login_errors = errors;
       }

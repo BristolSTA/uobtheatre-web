@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import Layout from '@/layout/Layout.vue';
+import Layout from '@/components/layout/Layout.vue';
 import { mapState } from 'vuex';
 import NProgress from 'nprogress';
 

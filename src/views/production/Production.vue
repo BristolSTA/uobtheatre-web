@@ -22,6 +22,7 @@
 
 <script>
 import { productionService } from '@/services';
+import { runPromiseWithLoading, handle404Mixin } from '@/utils';
 import ProductionHeader from './ProductionHeader.vue';
 import ProductionCastCredits from './ProductionCastCredits.vue';
 import ProductionPerformances from './ProductionPerformances.vue';
@@ -32,6 +33,7 @@ export default {
     ProductionPerformances,
   },
   name: 'production',
+  mixins: [handle404Mixin],
   metaInfo() {
     const productionName = this.production
       ? this.production.name
@@ -46,7 +48,7 @@ export default {
     };
   },
   created() {
-    this.runPromiseWithLoading(
+    runPromiseWithLoading(
       productionService
         .fetchProductionBySlug(this.$route.params.productionSlug)
         .then((data) => (this.production = data))
