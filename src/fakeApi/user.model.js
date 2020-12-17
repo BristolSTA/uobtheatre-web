@@ -23,7 +23,7 @@ export default {
     };
   },
   registerRoutes() {
-    this.post('api-token-auth', function (schema, request) {
+    this.post('auth/login/', function (schema, request) {
       let user = schema.users.findBy({
         email: JSON.parse(request.requestBody).email,
       });
@@ -31,7 +31,7 @@ export default {
         return ValidationErrorResponse(null, [
           'Unable to log in with provided credentials.',
         ]);
-      return new Response(200, {}, { token: user.token });
+      return new Response(200, {}, { key: user.token });
     });
   },
 };

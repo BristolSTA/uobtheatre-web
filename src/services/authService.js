@@ -27,9 +27,9 @@ export default {
    */
   login(email, password, remember = false) {
     return api
-      .post('api-token-auth/', { email: email, password: password })
+      .post('auth/login/', { email: email, password: password })
       .then((data) => {
-        store.dispatch('authLogin', data.token, remember);
+        store.dispatch('authLogin', data.key, remember);
       });
   },
 
