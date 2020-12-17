@@ -110,7 +110,7 @@ const api = new (class {
   }
 
   /**
-   * @returns {object} Authorization headers
+   * @returns {object} Authorization Headers
    */
   getAuthHeaders() {
     if (!store.state.auth.token) return;
@@ -218,6 +218,13 @@ let Errors = class {
   }
 
   /**
+   * @returns {boolean} Whether there are generic errors
+   */
+  hasGenericErrors() {
+    return this.getGenericErrors().length !== 0;
+  }
+
+  /**
    * Retrieve the generic (i.e. non-field) errors
    *
    * @returns {Array | null} Array of generic errors
@@ -237,8 +244,8 @@ let Errors = class {
     let field_errors = errors;
 
     this.errors = {
-      field_errors: field_errors,
-      non_field_errors: non_field_errors,
+      field_errors: field_errors ?? {},
+      non_field_errors: non_field_errors ?? [],
     };
   }
 
@@ -258,4 +265,4 @@ let Errors = class {
   }
 };
 
-export { Errors,paginatedResource };
+export { Errors, paginatedResource };

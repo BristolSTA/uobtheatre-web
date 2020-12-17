@@ -4,11 +4,17 @@
     <input
       class="w-full p-1 rounded-sm focus:outline-none"
       :id="inputId"
+      :name="inputId"
+      :type="type"
       :value="value"
       :autocomplete="autocomplete"
-      @input="$emit('input', $event.target.value)"
-      :type="input_type"
+      @input="onInput"
     />
+    <span
+      class="text-sta-rouge text-xs font-semibold"
+      v-if="errors && errors.has(inputId)"
+      >{{ errors.get(inputId) }}</span
+    >
   </label>
 </template>
 
@@ -22,16 +28,27 @@ export default {
     name: {
       required: true,
     },
-    input_type: {
+    type: {
       default: 'text',
     },
     autocomplete: {
       required: false,
     },
+    errors: {
+      required: false,
+    },
+  },
+  methods: {
+    onInput(event) {
+      this.$emit('input', event.target.value);
+      if (this.errors) {
+        this.errors.clear(this.inputId);
+      }
+    },
   },
   computed: {
     inputId() {
-      return this.name.replace(' ', '_').toLowerCase();
+      return this.name.replace(/ /g, '_').toLowerCase();
     },
   },
 };

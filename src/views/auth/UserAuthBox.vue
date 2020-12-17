@@ -30,15 +30,24 @@
       class="flex flex-col p-6 space-y-2"
       @submit.prevent="attemptLogin"
     >
-      <div v-if="login_errors" class="text-sm font-semibold text-sta-rouge">
+      <div
+        v-if="login_errors && login_errors.hasGenericErrors()"
+        class="text-sm font-semibold text-sta-rouge"
+      >
         <p>Error: {{ login_errors.getGenericErrors()[0] }}</p>
       </div>
-      <text-input name="Email" v-model="email" autocomplete="email" />
+      <text-input
+        name="Email"
+        v-model="email"
+        autocomplete="email"
+        :errors="login_errors"
+      />
       <text-input
         name="Password"
         v-model="password"
-        input_type="password"
+        type="password"
         autocomplete="current-password"
+        :errors="login_errors"
       />
       <label for="remember_me" class="flex items-center space-x-2">
         <input
@@ -79,7 +88,7 @@
       <text-input
         name="Password"
         v-model="password"
-        input_type="password"
+        type="password"
         autocomplete="new-password"
       />
       <label for="accept_terms" class="flex items-center space-x-2">
