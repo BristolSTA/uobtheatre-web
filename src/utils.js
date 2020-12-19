@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 
-import store from './store';
+import store from '@/store';
 
 let joinWithAnd = (array) => {
   return array.join(', ').replace(/, ([^,]*)$/, ' and $1');
@@ -39,6 +39,11 @@ let runPromiseWithLoading = (promise) => {
   });
 };
 
+let handle404 = (err, next) => {
+  if (err.response && err.response.status == 404) {
+    next({ name: '404' });
+  }
+};
 let handle404Mixin = {
   methods: {
     /**
@@ -46,10 +51,9 @@ let handle404Mixin = {
      *
      * @param {any} err Axios error response object
      */
+
     handle404(err) {
-      if (err.response && err.response.status == 404) {
-        this.$router.push({ name: '404' });
-      }
+      handle404(err, this.$router.push);
     },
   },
 };
@@ -57,6 +61,7 @@ let handle404Mixin = {
 export {
   displayStartEnd,
   duration,
+  handle404,
   handle404Mixin,
   joinWithAnd,
   runPromiseWithLoading,

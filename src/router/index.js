@@ -4,9 +4,11 @@ import Meta from 'vue-meta';
 import VueRouter from 'vue-router';
 
 import Login from '@/views/auth/Login.vue';
+import { getRoutes } from '@/views/bookings/bookingStages';
 import NotFoundError from '@/views/errors/NotFound.vue';
 import Home from '@/views/Home.vue';
-const Production = () => import('@/views/production/Production.vue');
+
+import * as Bindings from './bindings';
 
 Vue.use(VueRouter);
 Vue.use(Meta);
@@ -17,11 +19,30 @@ const routes = [
     name: 'home',
     component: Home,
   },
-  {
-    path: '/production/:productionSlug',
-    name: 'production',
-    component: Production,
-  },
+
+  /**
+   * Production Pages
+   */
+  Bindings.routeWithBindings(
+    {
+      path: '/production/:productionSlug',
+      name: 'production',
+      component: () => import('@/views/production/Production.vue'),
+    },
+    [Bindings.bindProductionSlug]
+  ),
+  Bindings.routeWithBindings(
+    {
+      path: '/production/:productionSlug/book',
+      component: () => import('@/views/bookings/Book.vue'),
+      children: getRoutes(),
+    },
+    [Bindings.bindProductionSlug]
+  ),
+
+  /**
+   * Auth Pages
+   */
   {
     path: '/login',
     name: 'login',
@@ -34,6 +55,10 @@ const routes = [
     component: Login,
     props: { login: false },
   },
+
+  /**
+   * Error and Wildcard Pages
+   */
   { path: '/404', name: '404', component: NotFoundError },
   { path: '*', redirect: '/404' },
 ];
