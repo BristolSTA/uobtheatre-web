@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "playground": "vue-cli-service serve src/playground.js",
     "postinstall": "yarn husky install",
     "setup": "cp .env.example .env.local",
     "serve": "./node_modules/.bin/vue-cli-service serve",

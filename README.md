@@ -21,7 +21,7 @@ If you have the above, install the [VS Code Remote Containers extension](https:/
 
 You can now edit the project files, and the browser will reload the page automatically.
 
-You can run `yarn lint` to lint and fix files.
+You can run `yarn lint [--fix]` to lint and fix files.
 
 ## Project Structure and Form 🌴
 
@@ -37,7 +37,10 @@ Here are the important areas to take a look at:
 - `/src/` This folder contains all the JS and CSS for the application
   - `/src/views/` This folder contains all the pages for the application. These are later referenced by the router
   - `/src/router/` This folder contains the configuration for the router, which decides what to show to a user depending on their URI
-  - `/src/components/` This folder contains the Vue components utilised in the views
+  - `/src/components/` This folder contains reusable Vue components that are used across multiple views and pages
+  - `/src/services/` This folder contains the interfaces to the API, which are called inside Vue components / pages to fetch to put data to the API
+  - `/src/assets/` This folder currently only contains the SCSS entrypoint for the application. Because we are using Tailwind, you shouldn't really need to touch this at all
+  - `/src/Playground.example.vue` If you don't want to go through the effort of creating a page component, linking it in the router, etc. to test out a component, copy this file to `/src/Playground.vue` and run `yarn run playground`. This will serve a sandbox environment for you to tinker around with
 
 ## To build and deploy 🔨
 
