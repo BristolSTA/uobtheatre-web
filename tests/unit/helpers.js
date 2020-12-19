@@ -43,8 +43,8 @@ const fixTextSpacing = function (text) {
   return text.replace(/\s\s+/g, ' ');
 };
 
-const mountWithRouterMock = function (component, options = {}) {
-  return mount(
+const mountWithRouterMock = async function (component, options = {}) {
+  let mountedComponent = mount(
     component,
     Object.assign(options, {
       stubs: {
@@ -52,6 +52,18 @@ const mountWithRouterMock = function (component, options = {}) {
       },
     })
   );
+  if (component.beforeRouteEnter) {
+    await component.beforeRouteEnter.call(
+      mountedComponent.vm,
+      undefined,
+      undefined,
+      (callback) => {
+        callback(mountedComponent.vm);
+      }
+    );
+  }
+
+  return mountedComponent;
 };
 
 export {

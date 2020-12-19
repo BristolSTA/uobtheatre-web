@@ -42,6 +42,10 @@ export default {
       title: `${productionName}`,
     };
   },
-  props: ['production'],
+  props: {
+    production: {
+      required: true,
+    },
+  },
 };
 </script>

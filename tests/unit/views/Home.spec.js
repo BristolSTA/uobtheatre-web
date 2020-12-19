@@ -4,15 +4,15 @@ import { expect } from 'chai';
 import { makeServer } from '@/fakeApi';
 import Home from '@/views/Home.vue';
 
-import { fixTextSpacing, mountWithRouterMock,waitFor } from '../helpers';
+import { fixTextSpacing, mountWithRouterMock, waitFor } from '../helpers';
 
 describe('Home', function () {
   let homepageComponent;
   let server;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     server = makeServer({ environment: 'test' });
-    homepageComponent = mountWithRouterMock(Home);
+    homepageComponent = await mountWithRouterMock(Home);
   });
 
   afterEach(() => {
@@ -33,7 +33,7 @@ describe('Home', function () {
     it('shows featured production on splashscreen', async () => {
       seedProductions();
 
-      homepageComponent = mountWithRouterMock(Home);
+      homepageComponent = await mountWithRouterMock(Home);
       splashscreenContainer = homepageComponent.find('#splashscreen');
       await waitFor(() => homepageComponent.vm.featuredProduction);
 
@@ -74,7 +74,7 @@ describe('Home', function () {
     it('shows upcoming productions', async () => {
       seedProductions();
 
-      homepageComponent = mountWithRouterMock(Home);
+      homepageComponent = await mountWithRouterMock(Home);
 
       await waitFor(() => homepageComponent.vm.upcomingProductions.length > 0);
       let whatsOnProductions = homepageComponent

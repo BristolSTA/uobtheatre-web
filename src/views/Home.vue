@@ -151,11 +151,13 @@ export default {
       titleTemplate: null,
     };
   },
-  created() {
-    runPromiseWithLoading(
-      productionService
-        .fetchUpcomingProductions()
-        .then((results) => (this.upcomingProductions = results))
+  beforeRouteEnter(to, from, next) {
+    return runPromiseWithLoading(
+      productionService.fetchUpcomingProductions().then((results) => {
+        next((vm) => {
+          vm.upcomingProductions = results;
+        });
+      })
     );
   },
   computed: {
