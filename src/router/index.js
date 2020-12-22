@@ -33,7 +33,7 @@ const routes = [
   ),
   Bindings.routeWithBindings(
     {
-      path: '/production/:productionSlug/book',
+      path: '/production/:productionSlug/book/:performanceID?',
       component: () => import('@/views/bookings/Book.vue'),
       children: getRoutes(),
     },

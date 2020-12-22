@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-wrap items-center justify-center py-12 space-x-0 md:space-x-10"
+    class="flex flex-wrap items-center justify-center space-x-0 md:space-x-10"
   >
     <div class="relative inline-block w-full max-w-xl m-10 md:w-2/3">
       <img
@@ -28,7 +28,7 @@
       </span>
       <p>
         <template v-if="hasInPersonPerformances">Live at the</template>
-        <template v-else>View </template>
+        <template v-else>Watch </template>
         {{ venues }}
       </p>
       <p>
@@ -44,6 +44,7 @@
         <span class="font-semibold"> £{{ production.min_ticket_price }} </span>
       </icon-list-item>
       <button
+        v-if="showBuyTicketsButton"
         class="w-full mt-4 font-semibold btn btn-green"
         @click="$emit('on-buy-tickets-click')"
         @keydown="$emit('on-buy-tickets-click')"
@@ -67,6 +68,9 @@ export default {
   props: {
     production: {
       required: true,
+    },
+    showBuyTicketsButton: {
+      default: true,
     },
   },
   methods: {

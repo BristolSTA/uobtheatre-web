@@ -58,12 +58,24 @@ export function makeServer({ environment = 'development' } = {}) {
         logo_image: null,
       });
 
+      let performances = server.createList('performance', 3);
+      performances[0].sold_out = false;
+      performances[0].start = '2020-12-19T10:00:00';
+      performances[0].end = '2020-12-19T11:30:00';
+
+      performances[1].sold_out = false;
+      performances[1].start = '2020-12-20T14:15:00';
+      performances[1].end = '2020-12-20T15:15:00';
+
+      performances[2].sold_out = true;
+      performances[2].start = '2020-12-21T18:00:00';
+      performances[2].end = '2020-12-21T20:30:00';
       server.create('production', {
         name: 'Legally Blonde',
         society: server.create('society', {
           name: 'MTB',
         }),
-        performances: server.createList('performance', 3),
+        performances: performances,
       });
 
       server.create('production', {

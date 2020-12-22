@@ -1,16 +1,18 @@
 <template>
   <nav class="flex flex-col space-y-4">
-    <router-link
+    <button
       v-for="(stage, index) in stages"
       tag="button"
       :key="index"
       :class="stylesForButton(index)"
       class="btn block text-center"
-      :to="{ name: stage.getRouteName() }"
-      :disabled="stylesForButton(index).includes('disabled')"
+      @click="onSelectStage(stage)"
+      @keyup="onSelectStage(stage)"
     >
+      <!-- 
+      :disabled="stylesForButton(index).includes('disabled')" -->
       {{ stage.name }}
-    </router-link>
+    </button>
   </nav>
 </template>
 
@@ -22,6 +24,9 @@ export default {
     currentStageIndex: {
       required: true,
     },
+    maxAllowedStageIndex: {
+      required: true,
+    },
   },
   data() {
     return {
@@ -30,9 +35,16 @@ export default {
   },
   methods: {
     stylesForButton(stageIndex) {
-      if (this.currentStageIndex == stageIndex) return 'btn-green';
-      if (this.currentStageIndex > stageIndex) return 'btn-orange';
-      return 'btn-gray-light disabled';
+      if (this.currentStageIndex == stageIndex) return 'btn-orange';
+      if (
+        this.currentStageIndex > stageIndex ||
+        stageIndex <= this.maxAllowedStageIndex
+      )
+        return 'btn-green';
+      return 'btn-gray-light '; //disabled
+    },
+    onSelectStage(stage) {
+      this.$emit('goto-stage', stage);
     },
   },
 };

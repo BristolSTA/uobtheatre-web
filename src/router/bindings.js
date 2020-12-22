@@ -15,7 +15,7 @@ export function routeWithBindings(routeOptions, bindings) {
       await binding(to, next);
     }
     store.commit('SET_NOT_LOADING');
-    next();
+    return next();
   };
   return routeOptions;
 }

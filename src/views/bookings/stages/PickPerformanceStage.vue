@@ -1,10 +1,51 @@
 <template>
-  <div>Picking performance</div>
+  <div>
+    <div
+      v-for="(performanceGroup, time) in groupedPerformances"
+      :key="time"
+      class="mb-4"
+    >
+      <h2 class="text-2xl font-semibold text-white mb-2">{{ time }}</h2>
+      <div class="grid grid-cols-2 gap-2">
+        <performance-overview
+          v-for="(performance, index) in performanceGroup"
+          :key="index"
+          :performance="performance"
+          @select="$emit('select-performance', performance)"
+        >
+          <template v-slot:select-button>Select</template>
+        </performance-overview>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import BookingStage from '@/classes/BookingStage';
+import lo from 'lodash';
+import { DateTime } from 'luxon';
+
+import PerformanceOverview from '@/components/production/PerformanceOverview.vue';
 export default {
-  stage: new BookingStage('Performance'),
+  components: { PerformanceOverview },
+  props: {
+    production: {
+      required: true,
+    },
+  },
+  computed: {
+    availablePerformances() {
+      return this.production.performances.filter(
+        (performance) => !(performance.disabled || performance.sold_out)
+      );
+    },
+    groupedPerformances() {
+      return lo.groupBy(this.availablePerformances, (performance) => {
+        let time = DateTime.fromISO(performance.start);
+        if (time.hour < 12) return 'Morning';
+        if (time.hour < 17) return 'Afternoon';
+        return 'Evening';
+      });
+    },
+  },
 };
 </script>

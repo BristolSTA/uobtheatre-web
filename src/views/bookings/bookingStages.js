@@ -1,33 +1,19 @@
 import BookingStage from '@/classes/BookingStage';
+import AudienceWarningsStage from '@/views/bookings/stages/AudienceWarningsStage.vue';
 import PickPerformanceStage from '@/views/bookings/stages/PickPerformanceStage.vue';
+import TicketSelectionStage from '@/views/bookings/stages/TicketSelectionStage.vue';
 
 let stages = [
   new BookingStage('Select Performance', PickPerformanceStage, {
     path: '',
     name: 'production.book.select',
   }),
-  new BookingStage(
-    'Auidence Warnings',
-    {
-      render(createElement) {
-        return createElement('h1', 'Warnings Here');
-      },
-    },
-    {
-      path: 'warnings',
-    }
-  ),
-  new BookingStage(
-    'Ticket Selection',
-    {
-      render(createElement) {
-        return createElement('h1', 'Tcikets Here');
-      },
-    },
-    {
-      path: 'tickets',
-    }
-  ),
+  new BookingStage('Auidence Warnings', AudienceWarningsStage, {
+    path: 'warnings',
+  }),
+  new BookingStage('Ticket Selection', TicketSelectionStage, {
+    path: 'tickets',
+  }),
   new BookingStage(
     'Overview',
     {

@@ -1,5 +1,6 @@
 <template>
   <production-banner
+    class="py-12"
     :production="production"
     @on-buy-tickets-click="$emit('scroll-to-tickets')"
   />

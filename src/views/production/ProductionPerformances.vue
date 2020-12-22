@@ -7,52 +7,30 @@
     >
       No Upcoming Performances
     </div>
-    <div v-else class="flex flex-wrap justify-center">
-      <div
-        class="w-full performance md:w-1/2 lg:w-1/3 2xl:w-1/4"
+    <div v-else class="flex flex-wrap space-x-2 justify-center">
+      <performance-overview
+        class="md:w-1/2 lg:w-1/3 2xl:w-1/4 mt-2"
         v-for="performance in production.performances"
         :key="performance.id"
-      >
-        <div
-          class="p-3 pt-1 m-2"
-          :class="[
-            performanceDisabled(performance)
-              ? 'bg-sta-gray-dark'
-              : 'bg-sta-green',
-          ]"
-        >
-          <h2 class="text-h2">
-            {{ performance.start | dateFormat('cccc d MMM') }}
-          </h2>
-          <div>{{ performanceVenue(performance) }}</div>
-          <div>Starting at {{ performance.start | dateFormat('T') }}</div>
-          <div class="text-sm font-semibold">
-            <p v-if="performanceDisabled(performance)">No Tickets Available</p>
-            <p v-else>Tickets Available</p>
-          </div>
-          <button
-            class="w-2/3 mt-4 font-semibold text-center btn btn-rouge btn-outline disabled"
-            disabled
-            v-if="performanceDisabled(performance)"
-          >
-            {{ disabledReason(performance) }}
-          </button>
-          <router-link
-            to="/"
-            class="w-2/3 mt-4 font-semibold text-center btn btn-orange"
-            v-else
-          >
-            Book
-          </router-link>
-        </div>
-      </div>
+        :performance="performance"
+        @select="
+          $router.push({
+            name: 'production.book.select',
+            params: { productionSlug: production.slug },
+          })
+        "
+      />
     </div>
   </div>
 </template>
 
 <script>
+import PerformanceOverview from '@/components/production/PerformanceOverview.vue';
 export default {
   name: 'production-performances',
+  components: {
+    PerformanceOverview,
+  },
   props: {
     production: {
       required: true,
