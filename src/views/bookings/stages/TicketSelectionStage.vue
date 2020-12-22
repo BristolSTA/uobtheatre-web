@@ -1,10 +1,11 @@
 <template>
-  <div class="text-white">
+  <div class="space-y-1">
     <seat-location
       v-for="(location, locationIndex) in locations"
       :key="locationIndex"
       :location="location"
-      :expanded="true"
+      :expanded="selected_location_index == locationIndex"
+      @select-location="selected_location_index = locationIndex"
     />
   </div>
 </template>
@@ -23,6 +24,7 @@ export default {
   data() {
     return {
       expanded: true,
+      selected_location_index: null,
       locations: [
         {
           name: 'Standing',
@@ -51,7 +53,6 @@ export default {
           ],
         },
       ],
-      selected_location_index: null,
     };
   },
   methods: {},

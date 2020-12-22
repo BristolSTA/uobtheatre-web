@@ -1,10 +1,10 @@
 <template>
   <div>
     <div
-      class="pl-2 text-white"
+      class="pl-2 text-white hover:bg-opacity-80"
       :class="[expanded ? 'bg-sta-orange' : 'bg-sta-green']"
-      @click="$emit('select-location', true)"
-      @keyup="$emit('select-location', true)"
+      @click="$emit('select-location')"
+      @keyup="$emit('select-location')"
     >
       <h1 class="text-h2">{{ location.name }}</h1>
       <div v-if="expanded" class="p-2">
