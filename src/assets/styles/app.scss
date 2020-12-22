@@ -21,7 +21,8 @@
     @apply rounded-sm px-6 py-2 cursor-pointer inline-block;
     @apply text-white;
 
-    &.disabled {
+    &.disabled,
+    &[disabled] {
       @apply cursor-not-allowed;
     }
     &:hover:not(.disabled) {
