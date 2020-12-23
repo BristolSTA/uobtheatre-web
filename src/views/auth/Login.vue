@@ -23,6 +23,11 @@ export default {
       default: true,
     },
   },
+  metaInfo() {
+    return {
+      title: this.login ? 'Login' : 'Register',
+    };
+  },
   beforeRouteEnter: (to, from, next) => {
     if (authService.isLoggedIn()) return next({ name: 'home' });
     return next();
