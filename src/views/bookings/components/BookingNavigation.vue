@@ -1,11 +1,11 @@
 <template>
   <nav class="flex flex-col space-y-4">
     <button
-      v-for="(stage, index) in stages"
+      v-for="(stage, index) in applicableStages"
       tag="button"
       :key="index"
-      :class="stylesForButton(index)"
-      class="btn block text-center"
+      :class="stylesForButton(stage)"
+      class="block text-center btn"
       @click="onSelectStage(stage)"
       @keyup="onSelectStage(stage)"
     >
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import Stages from '../bookingStages';
+import Stages, { getStageIndex } from '../bookingStages';
 export default {
   name: 'booking-navigation',
   props: {
@@ -27,14 +27,16 @@ export default {
     maxAllowedStageIndex: {
       required: true,
     },
-  },
-  data() {
-    return {
-      stages: Stages,
-    };
+    production: {
+      required: true,
+    },
+    booking: {
+      required: true,
+    },
   },
   methods: {
-    stylesForButton(stageIndex) {
+    stylesForButton(stage) {
+      let stageIndex = getStageIndex(stage);
       if (this.currentStageIndex == stageIndex) return 'btn-orange';
       if (
         this.currentStageIndex > stageIndex ||
@@ -45,6 +47,13 @@ export default {
     },
     onSelectStage(stage) {
       this.$emit('goto-stage', stage);
+    },
+  },
+  computed: {
+    applicableStages() {
+      return Stages.filter((stage) => {
+        return stage.shouldBeUsed(this.production, this.booking);
+      });
     },
   },
 };

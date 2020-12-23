@@ -88,6 +88,7 @@ export function makeServer({ environment = 'development' } = {}) {
         society: dramsoc,
         start_date: '2020-11-19',
         end_date: '2020-11-19',
+        warnings: [],
         performances: server.createList('performance', 1),
       });
 

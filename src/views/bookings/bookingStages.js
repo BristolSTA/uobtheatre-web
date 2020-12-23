@@ -8,9 +8,14 @@ let stages = [
     path: '',
     name: 'production.book.select',
   }),
-  new BookingStage('Auidence Warnings', AudienceWarningsStage, {
-    path: 'warnings',
-  }),
+  new BookingStage(
+    'Auidence Warnings',
+    AudienceWarningsStage,
+    {
+      path: 'warnings',
+    },
+    (production) => production.warnings.length > 0
+  ),
   new BookingStage('Ticket Selection', TicketSelectionStage, {
     path: 'tickets',
   }),
@@ -53,6 +58,23 @@ export function getRoutes() {
  */
 export function getStageIndex(stage) {
   return stages.indexOf(stage);
+}
+
+/**
+ * @param {BookingStage|number} currentStage The current stage (object or index)
+ * @param {object} production Production Data Object
+ * @param {object|null} booking Booking Data Object
+ * @returns {BookingStage|null} Next booking stage
+ */
+export function getNextStage(currentStage, production, booking) {
+  return stages.find((stage, index) => {
+    return (
+      (!isNaN(currentStage)
+        ? index > currentStage
+        : index > getStageIndex(currentStage)) &&
+      stage.shouldBeUsed(production, booking)
+    );
+  });
 }
 
 export default stages;

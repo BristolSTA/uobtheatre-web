@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      class="pl-2 text-white hover:bg-opacity-80"
+      class="pl-2 text-white cursor-pointer hover:bg-opacity-80"
       :class="[expanded ? 'bg-sta-orange' : 'bg-sta-green']"
       @click="$emit('select-location')"
       @keyup="$emit('select-location')"

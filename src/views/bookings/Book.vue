@@ -10,6 +10,8 @@
           class="w-1/4"
           :currentStageIndex="currentStageIndex"
           :maxAllowedStageIndex="maxAllowedStageIndex"
+          :production="production"
+          :booking="booking"
           @goto-stage="navigateToStage"
         />
         <div class="flex-grow p-3 bg-sta-gray-dark">
@@ -29,7 +31,7 @@ import BookingStage from '@/classes/BookingStage';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
 import BookingNavigation from '@/views/bookings/components/BookingNavigation.vue';
 
-import stages, { getStageIndex } from './bookingStages';
+import { getNextStage, getStageIndex } from './bookingStages';
 export default {
   components: { BookingNavigation, ProductionBanner },
   props: {
@@ -69,7 +71,12 @@ export default {
      * @param {BookingStage|null} stage Stage to navigate to. If not provided, defaults to the next stage
      */
     navigateToStage(stage = null) {
-      if (!stage) stage = stages[this.currentStageIndex + 1];
+      if (!stage)
+        stage = getNextStage(
+          this.currentStageIndex,
+          this.production,
+          this.booking
+        );
 
       if (getStageIndex(stage) > this.maxAllowedStageIndex)
         this.maxAllowedStageIndex = getStageIndex(stage);
