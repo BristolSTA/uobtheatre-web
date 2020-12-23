@@ -1,8 +1,12 @@
 import faker from 'faker';
 import { DateTime } from 'luxon';
-import { belongsTo, Factory, Model } from 'miragejs';
+import { belongsTo, Factory, hasMany, Model } from 'miragejs';
 
-import { RelationshipSerializer, updateIfDoesntHave } from './utils';
+import {
+  NotFoundResponse,
+  RelationshipSerializer,
+  updateIfDoesntHave,
+} from './utils';
 
 export default {
   registerModels() {
@@ -10,6 +14,8 @@ export default {
       performance: Model.extend({
         venue: belongsTo(),
         production: belongsTo('performance'),
+        seatLocations: hasMany('seat_location'),
+        ticketTypes: hasMany('ticket_type'),
       }),
     };
   },
@@ -46,6 +52,14 @@ export default {
             venue: () => {
               return server.create('venue');
             },
+
+            seatLocations: () => {
+              return server.createList('seatLocation', 2);
+            },
+
+            ticketTypes: () => {
+              return server.createList('ticketType', 2);
+            },
           });
         },
       }),
@@ -53,5 +67,29 @@ export default {
   },
   registerRoutes() {
     this.resource('performances');
+    // Production by slug
+    this.get(
+      'productions/:slug/performances/:performance_id/ticket_types',
+      function (schema, request) {
+        let performance = schema.performances.find(
+          request.params.performance_id
+        );
+        if (!performance) {
+          return NotFoundResponse();
+        }
+
+        let seatLocations = this.serialize(performance.seatLocations)
+          .seatLocations;
+
+        let ticketTypes = this.serialize(performance.ticketTypes).ticketTypes;
+
+        return seatLocations.map((seatLocation) => {
+          return {
+            seat_group: seatLocation,
+            concession_types: ticketTypes,
+          };
+        });
+      }
+    );
   },
 };

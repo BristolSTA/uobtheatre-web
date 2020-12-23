@@ -5,7 +5,9 @@ import CrewInterface from './crew.model';
 import PerformanceInterface from './performance.model';
 import ProductionInterface from './production.model';
 import ProductionTeamInterface from './productionTeam.model';
+import SeatLocationInterface from './seatLocation.model';
 import SocietyInterface from './society.model';
+import TicketTypeInterface from './ticketType.model';
 import UserInterface from './user.model';
 import { DefaultSerializer } from './utils';
 import VenueInterface from './venue.model';
@@ -19,6 +21,8 @@ let apiModels = [
   ProductionTeamInterface,
   VenueInterface,
   UserInterface,
+  SeatLocationInterface,
+  TicketTypeInterface,
 ];
 
 let models = {};

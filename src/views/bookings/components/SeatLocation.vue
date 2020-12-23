@@ -6,16 +6,16 @@
       @click="$emit('select-location')"
       @keyup="$emit('select-location')"
     >
-      <h1 class="text-h2">{{ location.name }}</h1>
+      <h1 class="text-h2">{{ seat_location.seat_group.name }}</h1>
       <div v-if="expanded" class="p-2">
-        <p>Description</p>
+        <p>{{ seat_location.seat_group.description }}</p>
       </div>
     </div>
     <div v-if="expanded">
       <ticket-type
-        v-for="(ticket_type, index) in location.ticket_types"
+        v-for="(concession_type, index) in seat_location.concession_types"
         :key="index"
-        :ticket_type="ticket_type"
+        :concession_type="concession_type"
       />
     </div>
   </div>
@@ -31,7 +31,7 @@ export default {
     expanded: {
       required: true,
     },
-    location: {
+    seat_location: {
       required: true,
     },
   },

@@ -5,16 +5,17 @@
         :production="production"
         :showBuyTicketsButton="false"
       />
-      <div class="flex space-x-2 mb-2">
+      <div class="flex mb-2 space-x-2">
         <booking-navigation
           class="w-1/4"
           :currentStageIndex="currentStageIndex"
           :maxAllowedStageIndex="maxAllowedStageIndex"
           @goto-stage="navigateToStage"
         />
-        <div class="flex-grow bg-sta-gray-dark p-3">
+        <div class="flex-grow p-3 bg-sta-gray-dark">
           <router-view
             :production="production"
+            :booking="booking"
             @select-performance="onSelectPerformance"
           ></router-view>
         </div>

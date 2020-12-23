@@ -1,10 +1,13 @@
 <template>
   <div class="text-white bg-sta-gray-dark">
     <div class="flex items-center p-2">
-      <div class="w-3/4 pl-2">{{ ticket_type.name }}</div>
+      <div class="w-3/4 pl-2">
+        <p class="font-semibold">{{ concession_type.name }}</p>
+        <p class="text-sm">{{ concession_type.description }}</p>
+      </div>
       <div class="flex-col w-1/4 space-y-1">
         <div class="flex justify-center font-semibold font">
-          £{{ ticket_type.price_pounds }}
+          £{{ concession_type.price_pounds }}
         </div>
         <div class="flex justify-center space-x-1">
           <button
@@ -38,7 +41,7 @@
 export default {
   name: 'ticket-type',
   props: {
-    ticket_type: {
+    concession_type: {
       required: true,
     },
   },
