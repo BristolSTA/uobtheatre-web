@@ -79,14 +79,14 @@ export default {
           return NotFoundResponse();
         }
 
-        let seatGroups = this.serialize(performance.seatGroups).seatGroups;
+        let seatGroups = this.serialize(performance.seatGroups);
 
-        let ticketTypes = this.serialize(performance.ticketTypes).ticketTypes;
+        let concessionTypes = this.serialize(performance.concessionTypes);
 
         return seatGroups.map((seatGroup) => {
           return {
             seat_group: seatGroup,
-            concession_types: ticketTypes,
+            concession_types: concessionTypes,
           };
         });
       }

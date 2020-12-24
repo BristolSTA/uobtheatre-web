@@ -41,14 +41,65 @@ export default class Booking {
   }
 
   /**
-   * Removes a ticket by a given index in the tickets array
+   * Sets the number of tickets for a certain seat group and concession type to the given number
    *
-   * @param {number} ticketIndex Index of ticket to remove
+   * @param {object|null} seat_group Seat Group Object
+   * @param {object|null} concession_type Concession Type Object
+   * @param {number} count Number of tickets
    */
-  removeTicketByIndex(ticketIndex) {
-    this.tickets = this.tickets.filter((ticket, index) => {
-      return index !== ticketIndex;
+  setTicketCount(seat_group = null, concession_type = null, count) {
+    let rolling_total = 0;
+    this.tickets = this.tickets.filter((ticket) => {
+      if (ticket.matches(seat_group, concession_type)) {
+        rolling_total++;
+        if (rolling_total > count) return false;
+        return true;
+      }
+      return true;
     });
+
+    while (rolling_total < count) {
+      this.addTicket(new Ticket(seat_group, concession_type));
+      rolling_total++;
+    }
+  }
+
+  /**
+   * Finds tickets, optionally by seat group or concession type
+   *
+   * @param {object|null} seat_group Seat Group Object
+   * @param {object|null} concession_type Concession Type Object
+   * @returns {Ticket[]} Matching tickets
+   */
+  findTickets(seat_group = null, concession_type = null) {
+    return this.tickets.filter((ticket) => {
+      return ticket.matches(seat_group, concession_type);
+    });
+  }
+
+  /**
+   * Removes 1 ticket by seat group and concession type
+   *
+   * @param {object} seat_group Seat Group Object
+   * @param {object} concession_type Concession Type Object
+   */
+  removeTicket(seat_group, concession_type) {
+    this.setTicketCount(
+      seat_group,
+      concession_type,
+      this.ticketCount(seat_group, concession_type) - 1
+    );
+  }
+
+  /**
+   * Finds the number of tickets, optionally by seat group or concession type
+   *
+   * @param {object} seat_group Seat Group Object
+   * @param {object} concession_type Concession Type Object
+   * @returns {number} Number of matching tickets
+   */
+  ticketCount(seat_group = null, concession_type = null) {
+    return this.findTickets(seat_group, concession_type).length;
   }
 
   /**

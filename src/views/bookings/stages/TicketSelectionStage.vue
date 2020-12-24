@@ -8,9 +8,10 @@
       :current_tickets="booking.tickets"
       @select-location="selected_location_index = index"
       @add-ticket="onAddTicket"
+      @set-tickets="onSetTicketNum"
       @remove-ticket="onRemoveTicket"
     />
-    {{ booking.tickets.length }} tickets (£ {{ booking.total_pounds }})
+    {{ booking.ticketCount() }} tickets (£ {{ booking.total_price_pounds }})
   </div>
 </template>
 
@@ -53,14 +54,11 @@ export default {
     onAddTicket(location, concession_type) {
       this.booking.addTicket(new Ticket(location, concession_type));
     },
+    onSetTicketNum(location, concession_type, number) {
+      this.booking.setTicketCount(location, concession_type, number);
+    },
     onRemoveTicket(location, concession_type) {
-      // Find a SINGLE matching ticket (we don't want to remove all of them!)
-      let ticketIndex = this.booking.tickets.findIndex((ticket) => {
-        return ticket.matches(location, concession_type);
-      });
-      if (ticketIndex < 0) return;
-
-      this.booking.removeTicketByIndex(ticketIndex);
+      this.booking.removeTicket(location, concession_type);
     },
   },
 };

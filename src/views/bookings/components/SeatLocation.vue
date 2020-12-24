@@ -18,12 +18,14 @@
         :concession_type="concession_type"
         :current_tickets="currentLocationTickets"
         @add-ticket="
-          (concession_type) =>
-            $emit('add-ticket', seat_location.seat_group, concession_type)
+          $emit('add-ticket', seat_location.seat_group, concession_type)
+        "
+        @set-tickets="
+          (num) =>
+            $emit('set-tickets', seat_location.seat_group, concession_type, num)
         "
         @remove-ticket="
-          (concession_type) =>
-            $emit('remove-ticket', seat_location.seat_group, concession_type)
+          $emit('remove-ticket', seat_location.seat_group, concession_type)
         "
       />
     </div>

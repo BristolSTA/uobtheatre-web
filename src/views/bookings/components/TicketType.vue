@@ -7,7 +7,7 @@
       </div>
       <div class="flex-col w-1/4 space-y-1">
         <div class="flex justify-center font-semibold font">
-          £{{ concession_type.price_pounds }}
+          £{{ (concession_type.price / 100).toFixed(2) }}
         </div>
         <div class="flex justify-center space-x-1">
           <button
@@ -19,11 +19,18 @@
           >
             -
           </button>
-          <div
-            class="flex items-center justify-center w-8 h-8 text-black bg-white rounded-sm"
-          >
-            {{ numTickets }}
-          </div>
+          <input
+            type="text"
+            :value="numTickets"
+            aria-label="number of tickets"
+            @input.prevent="
+              (event) => {
+                if (isNaN(event.target.value)) return;
+                $emit('set-tickets', event.target.value);
+              }
+            "
+            class="w-8 h-8 text-center text-black bg-white rounded-sm"
+          />
           <button
             class="w-8 h-8 p-0 btn btn-orange"
             @click="addTicket"
@@ -50,10 +57,10 @@ export default {
   },
   methods: {
     addTicket() {
-      this.$emit('add-ticket', this.concession_type);
+      this.$emit('add-ticket');
     },
     minusTicket() {
-      this.$emit('remove-ticket', this.concession_type);
+      this.$emit('remove-ticket');
     },
   },
   computed: {

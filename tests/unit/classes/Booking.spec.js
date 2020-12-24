@@ -23,6 +23,7 @@ describe('Ticket Class', () => {
       'concessionType',
       1,
       {
+        id: 1,
         price: 100,
       },
       server
@@ -31,6 +32,7 @@ describe('Ticket Class', () => {
       'concessionType',
       1,
       {
+        id: 2,
         price: 1000,
       },
       server
@@ -39,6 +41,7 @@ describe('Ticket Class', () => {
       'concessionType',
       1,
       {
+        id: 3,
         price: 500,
       },
       server
@@ -77,18 +80,68 @@ describe('Ticket Class', () => {
     booking.addTicket(ticket);
     expect(booking.tickets).to.include(ticket);
   });
-  it('can remove a ticket by index', () => {
-    let ticket1 = fakeTicket();
-    let ticket2 = fakeTicket();
-    let ticket3 = fakeTicket();
-    booking.tickets = [ticket1, ticket2, ticket3];
 
-    booking.removeTicketByIndex(1);
+  it('can set number of tickets', () => {
+    booking.setTicketCount(seat_group, concession_100, 10);
+    expect(booking.ticketCount(seat_group, concession_100)).to.eq(10);
+
+    booking.setTicketCount(seat_group, concession_100, 5);
+    expect(booking.ticketCount(seat_group, concession_100)).to.eq(5);
+
+    booking.setTicketCount(seat_group, concession_100, 0);
+    expect(booking.ticketCount(seat_group, concession_100)).to.eq(0);
+  });
+
+  describe('Matching Tickets', () => {
+    let ticket1;
+    let ticket2;
+    let ticket3;
+    let ticket4;
+    beforeEach(() => {
+      ticket1 = fakeTicket(concession_100);
+      ticket2 = fakeTicket(concession_1000);
+      ticket3 = fakeTicket(concession_500);
+      ticket4 = new Ticket({ id: 2 }, concession_100);
+      booking.tickets = [ticket1, ticket2, ticket3, ticket4];
+    });
+
+    it('can find matching tickets', () => {
+      expect(booking.findTickets()).to.include(
+        ticket1,
+        ticket2,
+        ticket3,
+        ticket4
+      );
+
+      expect(booking.findTickets({ id: 2 })).to.include(ticket4);
+      expect(booking.findTickets(null, concession_100)).to.include(
+        ticket1,
+        ticket4
+      );
+      expect(booking.findTickets({ id: 4 }, { id: 100 })).to.be.empty;
+    });
+
+    it('can find number of matching tickets', () => {
+      expect(booking.ticketCount()).to.eq(4);
+
+      expect(booking.ticketCount({ id: 2 })).to.eq(1);
+      expect(booking.ticketCount(null, concession_100)).to.eq(2);
+      expect(booking.ticketCount({ id: 4 }, { id: 100 })).to.eq(0);
+    });
+  });
+
+  it('can remove a single ticket', () => {
+    let t1 = fakeTicket();
+    let t2 = fakeTicket();
+    let t3 = fakeTicket(concession_1000);
+    booking.tickets = [t1, t2, t3];
+
+    booking.removeTicket(seat_group, concession_100);
 
     expect(booking.tickets.length).to.eq(2);
-    expect(booking.tickets).to.include(ticket1, ticket3);
-    expect(booking.tickets).not.to.include(ticket2);
+    expect(booking.tickets).to.include(t1, t3);
   });
+
   it('can clear tickets', () => {
     booking.tickets = [1, 2, 3];
 
