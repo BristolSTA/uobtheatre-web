@@ -4,7 +4,7 @@ import { Factory, Model } from 'miragejs';
 export default {
   registerModels() {
     return {
-      ticketType: Model,
+      concessionType: Model,
     };
   },
   registerSerializers() {
@@ -12,9 +12,11 @@ export default {
   },
   registerFactories() {
     return {
-      ticketType: Factory.extend({
+      concessionType: Factory.extend({
         name: () => faker.random.arrayElement(['Adult', 'Student']),
-        price_pounds: () => faker.random.number({ min: 1, max: 10 }).toFixed(2),
+        price() {
+          return faker.random.number({ min: 1, max: 10 }) * 100;
+        },
         description: () => faker.lorem.words(5),
       }),
     };

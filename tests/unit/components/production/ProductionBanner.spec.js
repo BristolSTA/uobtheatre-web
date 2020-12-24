@@ -117,7 +117,7 @@ describe('ProductionBanner', function () {
     ]);
 
     // test online only
-    expect(fixTextSpacing(headerContainer.text())).to.contain('View Online');
+    expect(fixTextSpacing(headerContainer.text())).to.contain('Watch Online');
   });
 
   it('shows online and in person performances', async () => {

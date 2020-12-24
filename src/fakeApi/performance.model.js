@@ -14,8 +14,8 @@ export default {
       performance: Model.extend({
         venue: belongsTo(),
         production: belongsTo('performance'),
-        seatLocations: hasMany('seat_location'),
-        ticketTypes: hasMany('ticket_type'),
+        seatGroups: hasMany('seat_group'),
+        concessionTypes: hasMany('concession_type'),
       }),
     };
   },
@@ -34,7 +34,7 @@ export default {
           });
         },
         end() {
-          return this.start.plus({
+          return DateTime.fromISO(this.start).plus({
             hours: faker.random.number({ min: 1, max: 3 }),
           });
         },
@@ -53,12 +53,12 @@ export default {
               return server.create('venue');
             },
 
-            seatLocations: () => {
-              return server.createList('seatLocation', 2);
+            seatGroups: () => {
+              return server.createList('seatGroup', 2);
             },
 
-            ticketTypes: () => {
-              return server.createList('ticketType', 2);
+            concessionTypes: () => {
+              return server.createList('concessionType', 2);
             },
           });
         },
@@ -67,6 +67,7 @@ export default {
   },
   registerRoutes() {
     this.resource('performances');
+
     // Production by slug
     this.get(
       'productions/:slug/performances/:performance_id/ticket_types',
@@ -78,14 +79,13 @@ export default {
           return NotFoundResponse();
         }
 
-        let seatLocations = this.serialize(performance.seatLocations)
-          .seatLocations;
+        let seatGroups = this.serialize(performance.seatGroups).seatGroups;
 
         let ticketTypes = this.serialize(performance.ticketTypes).ticketTypes;
 
-        return seatLocations.map((seatLocation) => {
+        return seatGroups.map((seatGroup) => {
           return {
-            seat_group: seatLocation,
+            seat_group: seatGroup,
             concession_types: ticketTypes,
           };
         });

@@ -1,13 +1,13 @@
 import { createServer } from 'miragejs';
 
 import CastInterface from './cast.model';
+import ConcessionTypeInterface from './concessionType.model';
 import CrewInterface from './crew.model';
 import PerformanceInterface from './performance.model';
 import ProductionInterface from './production.model';
 import ProductionTeamInterface from './productionTeam.model';
-import SeatLocationInterface from './seatLocation.model';
+import SeatGroupInterface from './seatGroup.model';
 import SocietyInterface from './society.model';
-import TicketTypeInterface from './ticketType.model';
 import UserInterface from './user.model';
 import { DefaultSerializer } from './utils';
 import VenueInterface from './venue.model';
@@ -21,8 +21,8 @@ let apiModels = [
   ProductionTeamInterface,
   VenueInterface,
   UserInterface,
-  SeatLocationInterface,
-  TicketTypeInterface,
+  SeatGroupInterface,
+  ConcessionTypeInterface,
 ];
 
 let models = {};
@@ -47,14 +47,14 @@ export function makeServer({ environment = 'development' } = {}) {
 
     models: Object.assign({}, models),
 
-    serializers: Object.assign({}, serializers),
-
-    factories: Object.assign(
+    serializers: Object.assign(
       {
         application: DefaultSerializer,
       },
-      factories
+      serializers
     ),
+
+    factories: Object.assign({}, factories),
 
     seeds(server) {
       let dramsoc = server.create('society', {

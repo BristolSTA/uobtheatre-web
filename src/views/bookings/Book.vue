@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import Booking from '@/classes/Booking';
 import BookingStage from '@/classes/BookingStage';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
 import BookingNavigation from '@/views/bookings/components/BookingNavigation.vue';
@@ -59,10 +60,7 @@ export default {
   },
   data() {
     return {
-      booking: {
-        performance: null,
-        tickets: [],
-      },
+      booking: new Booking(),
       maxAllowedStageIndex: getStageIndex(this.$route.meta.stage),
     };
   },

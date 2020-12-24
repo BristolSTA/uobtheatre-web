@@ -16,6 +16,15 @@
         v-for="(concession_type, index) in seat_location.concession_types"
         :key="index"
         :concession_type="concession_type"
+        :current_tickets="currentLocationTickets"
+        @add-ticket="
+          (concession_type) =>
+            $emit('add-ticket', seat_location.seat_group, concession_type)
+        "
+        @remove-ticket="
+          (concession_type) =>
+            $emit('remove-ticket', seat_location.seat_group, concession_type)
+        "
       />
     </div>
   </div>
@@ -34,9 +43,16 @@ export default {
     seat_location: {
       required: true,
     },
+    current_tickets: {
+      required: true,
+    },
   },
-  data() {
-    return {};
+  computed: {
+    currentLocationTickets() {
+      return this.current_tickets.filter((ticket) => {
+        return ticket.matches(this.seat_location.seat_group);
+      });
+    },
   },
 };
 </script>

@@ -71,7 +71,7 @@ describe('ProductionHeader', function () {
       expect(performance.text()).to.contain('Winston Theatre and Online');
       expect(performance.text()).to.contain('Starting at 16:00');
       expect(performance.text()).to.contain('Tickets Available');
-      expect(performance.find('a').text()).to.eq('Book');
+      expect(performance.find('button').text()).to.eq('Book');
       //TODO: Test for link to booking page
     });
     it('second performance is unavailable and correct', () => {

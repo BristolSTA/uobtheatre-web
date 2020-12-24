@@ -14,15 +14,15 @@
             class="w-8 h-8 p-0 btn btn-orange"
             @click="minusTicket"
             @keyup="minusTicket"
-            :class="[!num_tickets ? 'btn-gray-light' : 'btn-orange']"
-            :disabled="!num_tickets"
+            :class="[!numTickets ? 'btn-gray-light' : 'btn-orange']"
+            :disabled="!numTickets"
           >
             -
           </button>
           <div
             class="flex items-center justify-center w-8 h-8 text-black bg-white rounded-sm"
           >
-            {{ num_tickets }}
+            {{ numTickets }}
           </div>
           <button
             class="w-8 h-8 p-0 btn btn-orange"
@@ -44,18 +44,23 @@ export default {
     concession_type: {
       required: true,
     },
-  },
-  data() {
-    return {
-      num_tickets: 0,
-    };
+    current_tickets: {
+      required: true,
+    },
   },
   methods: {
     addTicket() {
-      ++this.num_tickets;
+      this.$emit('add-ticket', this.concession_type);
     },
     minusTicket() {
-      --this.num_tickets;
+      this.$emit('remove-ticket', this.concession_type);
+    },
+  },
+  computed: {
+    numTickets() {
+      return this.current_tickets.filter((ticket) => {
+        return ticket.matches(null, this.concession_type);
+      }).length;
     },
   },
 };

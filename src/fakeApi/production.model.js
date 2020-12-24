@@ -1,6 +1,6 @@
 import faker from 'faker';
 import { DateTime } from 'luxon';
-import { belongsTo, Factory, hasMany,Model } from 'miragejs';
+import { belongsTo, Factory, hasMany, Model } from 'miragejs';
 
 import {
   NotFoundResponse,

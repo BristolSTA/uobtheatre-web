@@ -1,5 +1,7 @@
 import { mount, RouterLinkStub } from '@vue/test-utils';
 
+import { makeServer } from '@/fakeApi';
+
 const waitForDOM = function (wrapper, selector) {
   return new Promise((resolve) => {
     const timer = setInterval(() => {
@@ -66,10 +68,38 @@ const mountWithRouterMock = async function (component, options = {}) {
   return mountedComponent;
 };
 
+const serialize = (model, server) => {
+  return server.serializerOrRegistry.serialize(model);
+};
+
+const createFromFactoryAndSerialize = (
+  modelName,
+  count = 1,
+  overrides = {},
+  server = null
+) => {
+  let exisitingServer = server != null;
+  if (!exisitingServer) {
+    server = makeServer({ environment: 'test' });
+  }
+  let returnData;
+  if (count == 1) {
+    returnData = server.create(modelName, overrides);
+  } else {
+    returnData = server.createList(modelName, count, overrides);
+  }
+
+  let serialized = serialize(returnData, server);
+  if (!exisitingServer) server.shutdown();
+  return serialized;
+};
+
 export {
+  createFromFactoryAndSerialize,
   fixTextSpacing,
   mountWithRouterMock,
   RouterLinkStub,
+  serialize,
   waitFor,
   waitForDOM,
   waitForTick,

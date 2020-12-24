@@ -4,7 +4,7 @@ import { Factory, Model } from 'miragejs';
 export default {
   registerModels() {
     return {
-      seatLocation: Model,
+      seatGroup: Model,
     };
   },
   registerSerializers() {
@@ -12,7 +12,7 @@ export default {
   },
   registerFactories() {
     return {
-      seatLocation: Factory.extend({
+      seatGroup: Factory.extend({
         name: () => faker.random.arrayElement(['Front Row', 'Back Row']),
         description: () => faker.lorem.words(5),
       }),
