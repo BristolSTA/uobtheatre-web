@@ -44,7 +44,10 @@ export default {
         is_online: () => faker.random.arrayElement([true, false]),
         is_inperson: () => faker.random.arrayElement([true, false]),
         duration_mins() {
-          return Math.round((this.end - this.start) / (1000 * 60));
+          return Math.round(
+            (DateTime.fromISO(this.end) - DateTime.fromISO(this.start)) /
+              (1000 * 60)
+          );
         },
 
         afterCreate(performance, server) {

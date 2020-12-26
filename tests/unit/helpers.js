@@ -1,6 +1,6 @@
 import { mount, RouterLinkStub } from '@vue/test-utils';
 
-import { makeServer } from '@/fakeApi';
+import { makeServer as makeAPIServer } from '@/fakeApi';
 
 const waitForDOM = function (wrapper, selector) {
   return new Promise((resolve) => {
@@ -68,6 +68,16 @@ const mountWithRouterMock = async function (component, options = {}) {
   return mountedComponent;
 };
 
+const makeServer = () => {
+  return makeAPIServer({ environment: 'test' });
+};
+
+const executeWithServer = (callback) => {
+  let server = makeServer();
+  callback(server);
+  server.shutdown;
+};
+
 const serialize = (model, server) => {
   return server.serializerOrRegistry.serialize(model);
 };
@@ -80,7 +90,7 @@ const createFromFactoryAndSerialize = (
 ) => {
   let exisitingServer = server != null;
   if (!exisitingServer) {
-    server = makeServer({ environment: 'test' });
+    server = makeServer();
   }
   let returnData;
   if (count == 1) {
@@ -96,7 +106,9 @@ const createFromFactoryAndSerialize = (
 
 export {
   createFromFactoryAndSerialize,
+  executeWithServer,
   fixTextSpacing,
+  makeServer,
   mountWithRouterMock,
   RouterLinkStub,
   serialize,
