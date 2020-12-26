@@ -53,7 +53,6 @@ export default class Booking {
       if (ticket.matches(seat_group, concession_type)) {
         rolling_total++;
         if (rolling_total > count) return false;
-        return true;
       }
       return true;
     });

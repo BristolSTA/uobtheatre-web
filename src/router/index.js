@@ -4,7 +4,7 @@ import Meta from 'vue-meta';
 import VueRouter from 'vue-router';
 
 import Login from '@/views/auth/Login.vue';
-import { getRoutes } from '@/views/bookings/bookingStages';
+import { getRoutes } from '@/views/booking/bookingStages';
 import NotFoundError from '@/views/errors/NotFound.vue';
 import Home from '@/views/Home.vue';
 
@@ -34,7 +34,7 @@ const routes = [
   Bindings.routeWithBindings(
     {
       path: '/production/:productionSlug/book/:performanceID?',
-      component: () => import('@/views/bookings/Book.vue'),
+      component: () => import('@/views/booking/Book.vue'),
       children: getRoutes(),
     },
     [Bindings.bindProductionSlug]

@@ -1,7 +1,7 @@
 import BookingStage from '@/classes/BookingStage';
-import AudienceWarningsStage from '@/views/bookings/stages/AudienceWarningsStage.vue';
-import PickPerformanceStage from '@/views/bookings/stages/PickPerformanceStage.vue';
-import TicketSelectionStage from '@/views/bookings/stages/TicketSelectionStage.vue';
+import AudienceWarningsStage from '@/views/booking/stages/AudienceWarningsStage.vue';
+import PickPerformanceStage from '@/views/booking/stages/PickPerformanceStage.vue';
+import TicketSelectionStage from '@/views/booking/stages/TicketSelectionStage.vue';
 
 let stages = [
   new BookingStage('Select Performance', PickPerformanceStage, {

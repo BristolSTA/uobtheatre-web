@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import TicketType from '@/views/bookings/components/TicketType.vue';
+import TicketType from '@/components/booking/TicketType.vue';
 
 export default {
   name: 'seat-location',

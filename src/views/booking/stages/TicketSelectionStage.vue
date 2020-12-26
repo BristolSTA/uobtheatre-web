@@ -18,8 +18,8 @@
 <script>
 import Booking from '@/classes/Booking';
 import Ticket from '@/classes/Ticket';
+import SeatLocation from '@/components/booking/SeatLocation.vue';
 import { bookingService } from '@/services';
-import SeatLocation from '@/views/bookings/components/SeatLocation.vue';
 
 export default {
   name: 'ticket-selection-stage',

@@ -1,6 +1,6 @@
 <template>
-  <div class="min-h-full flex flex-col items-center justify-evenly">
-    <div class="bg-sta-rouge text-white mb-2 p-6 pt-3">
+  <div class="flex flex-col items-center min-h-full justify-evenly">
+    <div class="p-6 pt-3 mb-2 text-white bg-sta-rouge">
       <h2 class="text-h2">
         Please note the following warnings for this production:
       </h2>
@@ -11,7 +11,15 @@
         </li>
       </ul>
     </div>
-    <div><button class="btn btn-rouge btn-outline">I Understand</button></div>
+    <div>
+      <button
+        class="btn btn-rouge btn-outline"
+        @click="onUnderstood"
+        @keydown="onUnderstood"
+      >
+        I Understand
+      </button>
+    </div>
   </div>
 </template>
 
@@ -20,6 +28,11 @@ export default {
   props: {
     production: {
       required: true,
+    },
+  },
+  methods: {
+    onUnderstood() {
+      this.$emit('understood');
     },
   },
 };

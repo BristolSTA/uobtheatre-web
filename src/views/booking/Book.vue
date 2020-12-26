@@ -19,6 +19,7 @@
             :production="production"
             :booking="booking"
             @select-performance="onSelectPerformance"
+            @onUnderstood="navigateToStage()"
           ></router-view>
         </div>
       </div>
@@ -29,8 +30,8 @@
 <script>
 import Booking from '@/classes/Booking';
 import BookingStage from '@/classes/BookingStage';
+import BookingNavigation from '@/components/booking/BookingNavigation.vue';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
-import BookingNavigation from '@/views/bookings/components/BookingNavigation.vue';
 
 import { getNextStage, getStageIndex } from './bookingStages';
 export default {
