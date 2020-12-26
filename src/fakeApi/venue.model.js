@@ -20,9 +20,10 @@ export default {
           return this.name.toLowerCase().replace(/ /g, '-');
         },
         internal_capacity: () => faker.random.number({ min: 50, max: 200 }),
-        description: () => faker.lorem.paragraphs(3),
+        description: () => faker.lorem.paragraphs(1),
         address: () => faker.random.words(3),
         venue_image: 'https://via.placeholder.com/1920x960',
+        publicly_listed: true,
       }),
     };
   },

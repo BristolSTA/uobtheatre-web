@@ -1,17 +1,14 @@
 <template>
   <div class="h-full bg-sta-gray">
     <h1 class="container pt-4 text-left text-white text-h1">
-      The Winston Theatre
+      The {{ venue.name }}
     </h1>
     <div class="flex flex-wrap items-center justify-center">
       <div
         class="flex flex-col items-center w-full px-10 text-justify text-white md:block md:w-auto md:max-w-md"
       >
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.
+          {{ venue.description }}
         </p>
         <br />
         <p><strong>Address: </strong></p>
@@ -22,12 +19,11 @@
       <div class="w-full max-w-xl m-6 h-80 md:w-2/3">
         <img
           class="w-full p-8"
-          src="@/assets/images/placeholder-homepage-splash.jpg"
-          alt="feature_image"
+          :src="venue.venue_image"
+          :alt="`${venue.name} image`"
           ref="featured_image"
         />
       </div>
-      <p>{{ venue }}</p>
     </div>
 
     <!-- <div class="flex justify-center h-96">
@@ -66,7 +62,7 @@ export default {
     runPromiseWithLoading(
       venueService
         .fetchVenueBySlug(this.$route.params.venueSlug)
-        .then((data) => (this.venue = data))
+        .then((data) => (this.venue = data.venue))
         .catch(this.handle404)
     );
   },
