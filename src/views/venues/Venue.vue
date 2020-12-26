@@ -27,9 +27,10 @@
           ref="featured_image"
         />
       </div>
+      <p>{{ venue }}</p>
     </div>
 
-    <div class="flex justify-center h-96">
+    <!-- <div class="flex justify-center h-96">
       <iframe
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2218.0465457381238!2d-2.6128241361907865!3d51.45667798827902!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48718dc5ca9a5089%3A0xd52e92fe92092806!2sBristol%20SU%20(Richmond%20Building)!5e0!3m2!1sen!2suk!4v1607260466320!5m2!1sen!2suk"
         frameborder="0"
@@ -39,13 +40,35 @@
         title="SU-map"
         class="flex w-full h-full p-8 md:w-2/3"
       ></iframe>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
+import { venueService } from '@/services';
+import { handle404Mixin, runPromiseWithLoading } from '@/utils';
+
 export default {
-  name: 'Venues',
-  data() {},
+  name: 'venue',
+  mixins: [handle404Mixin],
+  metaInfo() {
+    const venueName = this.venue ? this.venue.name : 'Loading...';
+    return {
+      title: `${venueName}`,
+    };
+  },
+  data() {
+    return {
+      venue: null,
+    };
+  },
+  created() {
+    runPromiseWithLoading(
+      venueService
+        .fetchVenueBySlug(this.$route.params.venueSlug)
+        .then((data) => (this.venue = data))
+        .catch(this.handle404)
+    );
+  },
 };
 </script>

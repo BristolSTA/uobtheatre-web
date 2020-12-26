@@ -7,7 +7,7 @@ import Login from '@/views/auth/Login.vue';
 import NotFoundError from '@/views/errors/NotFound.vue';
 import Home from '@/views/Home.vue';
 
-import Venues from '../views/Venues.vue';
+const Venue = () => import('@/views/venues/Venue.vue');
 const Production = () => import('@/views/production/Production.vue');
 
 Vue.use(VueRouter);
@@ -25,9 +25,9 @@ const routes = [
     component: Production,
   },
   {
-    path: '/venues',
-    name: 'venues',
-    component: Venues,
+    path: '/venues/:venueSlug',
+    name: 'venue',
+    component: Venue,
   },
   {
     path: '/login',
