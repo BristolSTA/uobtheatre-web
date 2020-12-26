@@ -26,7 +26,6 @@
     "luxon": "^1.25.0",
     "nprogress": "^0.2.0",
     "postcss": "^7",
-    "prettier": "^2.1.2",
     "register-service-worker": "^1.7.1",
     "tailwindcss": "^2.0.1-compat",
     "vue": "^2.6.11",
@@ -59,6 +58,7 @@
     "sass": "^1.29.0",
     "sass-loader": "^10.1.0",
     "vue-cli-plugin-tailwind": "~1.5.0",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "prettier": "^2.1.2"
   }
 }
