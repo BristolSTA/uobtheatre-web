@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import Stages, { getStageIndex } from '../bookingStages';
+import Stages, { getStageIndex } from '@/views/booking/bookingStages';
 export default {
   name: 'booking-navigation',
   props: {

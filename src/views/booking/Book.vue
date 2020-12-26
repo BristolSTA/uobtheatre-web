@@ -19,7 +19,7 @@
             :production="production"
             :booking="booking"
             @select-performance="onSelectPerformance"
-            @onUnderstood="navigateToStage()"
+            @understood="navigateToStage()"
           ></router-view>
         </div>
       </div>
