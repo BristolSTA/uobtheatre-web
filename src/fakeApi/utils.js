@@ -1,4 +1,4 @@
-import { Response,Serializer } from 'miragejs';
+import { Response, Serializer } from 'miragejs';
 
 let paginatedResponse = (data) => {
   return {
@@ -29,11 +29,11 @@ let updateIfDoesntHave = function (model, keyValues, value) {
 
 let RelationshipSerializer = (relationships) =>
   DefaultSerializer.extend({
-    embed: true,
     include: relationships,
   });
 
 let DefaultSerializer = Serializer.extend({
+  embed: true,
   root: false,
 });
 
