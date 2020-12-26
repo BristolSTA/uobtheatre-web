@@ -43,14 +43,13 @@ export function makeServer({ environment = 'development' } = {}) {
 
     models: Object.assign({}, models),
 
-    serializers: Object.assign({}, serializers),
-
-    factories: Object.assign(
+    serializers: Object.assign(
       {
         application: DefaultSerializer,
-      },
-      factories
-    ),
+      }
+      , serializers),
+
+    factories: Object.assign({}, factories),
 
     seeds(server) {
       let dramsoc = server.create('society', {
