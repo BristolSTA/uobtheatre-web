@@ -1,10 +1,11 @@
-import { makeServer } from '@/fakeApi';
+import { mount } from '@vue/test-utils';
 import { expect } from 'chai';
+
+import { makeServer } from '@/fakeApi';
+import { productionService } from '@/services';
 import ProductionHeader from '@/views/production/ProductionHeader.vue';
 
-import { mount } from '@vue/test-utils';
-import { productionService } from '@/services';
-import { fixTextSpacing } from '../../../helpers.js';
+import { fixTextSpacing } from '../../helpers.js';
 
 describe('ProductionHeader', function () {
   let headerContainer;

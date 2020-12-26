@@ -3,7 +3,7 @@
     <div class="container flex flex-wrap items-center justify-between">
       <div class="flex items-center flex-shrink-0 mr-10 text-white">
         <router-link :to="{ name: 'home' }"
-          ><span class="text-4xl tracking-tight uppercase">{{
+          ><span class="text-4xl tracking-tight text-white uppercase">{{
             $appName
           }}</span></router-link
         >
@@ -38,30 +38,48 @@
           <router-link
             v-for="(item, index) in navItems"
             :key="index"
-            :to="navBarLink(item)"
+            :to="item[0]"
             class="block mt-4 mr-6 font-semibold tracking-wide text-white uppercase lg:inline-block lg:mt-0 hover:text-sta-orange"
           >
             {{ item[1] }}
           </router-link>
           <router-link
-            to="/login"
-            class="inline-block mt-4 btn btn-orange btn-outline lg:mt-0"
-            >Login</router-link
+            v-if="!authService.isLoggedIn()"
+            :to="{ name: 'login' }"
+            class="mt-4 auth-button btn btn-orange btn-outline lg:mt-0"
           >
+            Login
+          </router-link>
+          <clickable-link
+            v-else
+            @click="authService.logout()"
+            class="mt-4 auth-button btn btn-orange btn-outline lg:mt-0"
+          >
+            Log Out
+          </clickable-link>
         </div>
       </div>
     </div>
   </nav>
 </template>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 nav .router-link-exact-active {
-  color: @apply bg-sta-orange;
+  @apply text-sta-orange;
+}
+.auth-button {
+  @apply inline-block;
 }
 </style>
 
 <script>
+import ClickableLink from '@/components/ui/ClickableLink.vue';
+import { authService } from '@/services';
+
 export default {
+  components: {
+    ClickableLink,
+  },
   data() {
     return {
       navItems: [
@@ -71,6 +89,7 @@ export default {
         ['/', 'Contact'],
       ],
       navHidden: true,
+      authService: authService,
     };
   },
   methods: {

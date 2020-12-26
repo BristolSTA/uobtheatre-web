@@ -7,16 +7,20 @@ module.exports = {
     'plugin:vue/essential',
     'eslint:recommended',
     'plugin:vue-a11y/base',
+    'plugin:jsdoc/recommended',
   ],
   parserOptions: {
     parser: 'babel-eslint',
   },
   rules: {
-    'import/order': 2,
+    'simple-import-sort/imports': 'error',
+    'simple-import-sort/exports': 'error',
+    'sort-imports': 'off',
+    'import/order': 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
   },
-  plugins: ['prettier', 'vue-a11y', 'import'],
+  plugins: ['prettier', 'vue-a11y', 'simple-import-sort'],
   overrides: [
     {
       files: [
@@ -28,4 +32,11 @@ module.exports = {
       },
     },
   ],
+  settings: {
+    'import/resolver': {
+      alias: {
+        map: [['@', './src']],
+      },
+    },
+  },
 };

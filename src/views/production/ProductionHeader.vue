@@ -55,10 +55,11 @@
 </template>
 
 <script>
-import lo from 'lodash';
-import { joinWithAnd, displayStartEnd } from '@/utils';
-import IconListItem from '@/components/ui/IconListItem.vue';
 import humanizeDuration from 'humanize-duration';
+import lo from 'lodash';
+
+import IconListItem from '@/components/ui/IconListItem.vue';
+import { displayStartEnd,joinWithAnd } from '@/utils';
 
 export default {
   components: { IconListItem },

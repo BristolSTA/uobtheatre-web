@@ -7,14 +7,14 @@
     @apply rounded-sm px-6 py-2 cursor-pointer inline-block;
     @apply text-white;
 
+    &.disabled {
+      @apply cursor-not-allowed;
+    }
     &:hover:not(.disabled) {
       @apply bg-sta-gray-light;
     }
-    &.disabled {
-      @apply cursor-not-allowed;
-      &:focus {
-        @apply outline-none;
-      }
+    &:focus {
+      @apply outline-none;
     }
   }
 

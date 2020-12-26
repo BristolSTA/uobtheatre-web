@@ -41,7 +41,7 @@
         :class="{ 'flex-row-reverse': index % 2 == 1 }"
       >
         <div
-          class="w-full md:w-1/2 text-center p-2 md:px-6"
+          class="w-full p-2 text-center md:w-1/2 md:px-6"
           :class="[index % 2 == 0 ? 'md:text-right' : 'md:text-left']"
         >
           <router-link
@@ -55,10 +55,11 @@
               :alt="`${production.name} feature image`"
               class="inline-block"
               style="max-height: 300px"
-          /></router-link>
+            />
+          </router-link>
         </div>
         <div
-          class="w-full md:w-1/2 p-2 md:px-6 text-center"
+          class="w-full p-2 text-center md:w-1/2 md:px-6"
           :class="[index % 2 == 0 ? 'md:text-left' : 'md:text-right']"
         >
           <router-link
@@ -68,8 +69,8 @@
             }"
             ><h2 class="font-semibold text-h2 hover:text-gray-300">
               {{ production.name }}
-            </h2></router-link
-          >
+            </h2>
+          </router-link>
           <span v-if="production.subtitle">{{ production.subtitle }}</span>
           <p class="font-semibold text-sta-orange">
             {{
@@ -89,8 +90,8 @@
               params: { productionSlug: production.slug },
             }"
             class="mt-6 btn btn-rouge"
-            >More Information</router-link
-          >
+            >More Information
+          </router-link>
         </div>
       </div>
       <div
@@ -109,8 +110,8 @@
       >
         <div class="w-full">
           <router-link to="/" class="btn btn-outline btn-orange"
-            >View All Upcoming Productions</router-link
-          >
+            >View All Upcoming Productions
+          </router-link>
         </div>
       </div>
     </div>
@@ -129,9 +130,10 @@
 </style>
 
 <script>
-import { productionService } from '@/services';
-import { displayStartEnd } from '@/utils';
 import lo from 'lodash';
+
+import { productionService } from '@/services';
+import { displayStartEnd, runPromiseWithLoading } from '@/utils';
 
 export default {
   name: 'Home',
@@ -150,7 +152,7 @@ export default {
     };
   },
   created() {
-    this.runPromiseWithLoading(
+    runPromiseWithLoading(
       productionService
         .fetchUpcomingProductions()
         .then((results) => (this.upcomingProductions = results))

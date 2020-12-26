@@ -7,9 +7,11 @@
 </template>
 
 <script>
-import Layout from '@/layout/Layout.vue';
-import { mapState } from 'vuex';
 import NProgress from 'nprogress';
+import { mapState } from 'vuex';
+
+import Layout from '@/components/layout/Layout.vue';
+import { authService } from '@/services';
 
 export default {
   components: {
@@ -45,6 +47,9 @@ export default {
         NProgress.done();
       }
     },
+  },
+  mounted() {
+    authService.refreshAuthStatus();
   },
 };
 </script>

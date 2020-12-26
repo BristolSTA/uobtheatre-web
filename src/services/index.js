@@ -1,3 +1,4 @@
+import authService from './authService'
 import productionService from './productionService';
 
-export { productionService };
+export { authService,productionService };

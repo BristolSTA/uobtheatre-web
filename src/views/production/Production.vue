@@ -2,7 +2,7 @@
   <div class="min-h-full bg-sta-gray">
     <div
       v-if="!production"
-      class="justify-center py-20 text-xl font-semibold text-white text-center"
+      class="justify-center py-20 text-xl font-semibold text-center text-white"
     >
       Loading Production...
     </div>
@@ -22,8 +22,10 @@
 
 <script>
 import { productionService } from '@/services';
-import ProductionHeader from './ProductionHeader.vue';
+import { handle404Mixin,runPromiseWithLoading } from '@/utils';
+
 import ProductionCastCredits from './ProductionCastCredits.vue';
+import ProductionHeader from './ProductionHeader.vue';
 import ProductionPerformances from './ProductionPerformances.vue';
 export default {
   components: {
@@ -32,6 +34,7 @@ export default {
     ProductionPerformances,
   },
   name: 'production',
+  mixins: [handle404Mixin],
   metaInfo() {
     const productionName = this.production
       ? this.production.name
@@ -46,7 +49,7 @@ export default {
     };
   },
   created() {
-    this.runPromiseWithLoading(
+    runPromiseWithLoading(
       productionService
         .fetchProductionBySlug(this.$route.params.productionSlug)
         .then((data) => (this.production = data))

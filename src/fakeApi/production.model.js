@@ -1,10 +1,12 @@
-import { DateTime } from 'luxon';
-import { Model, Factory, belongsTo, hasMany } from 'miragejs';
 import faker from 'faker';
+import { DateTime } from 'luxon';
+import { belongsTo, Factory, hasMany,Model } from 'miragejs';
+
 import {
+  NotFoundResponse,
+  paginatedResponse,
   RelationshipSerializer,
   updateIfDoesntHave,
-  paginatedResponse,
 } from './utils';
 
 export default {
@@ -86,7 +88,10 @@ export default {
 
     // Production by slug
     this.get('productions/:slug', function (schema, request) {
-      return schema.productions.findBy({ slug: request.params.slug });
+      return (
+        schema.productions.findBy({ slug: request.params.slug }) ??
+        NotFoundResponse()
+      );
     });
   },
 };
