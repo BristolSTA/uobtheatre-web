@@ -6,8 +6,9 @@ module.exports = {
     'src/main.js',
     'src/registerServiceWorker.js',
     'src/extensions.js',
-    'src/server.js',
-    'src/fakeApi/',
+    'src/Playground.example.vue',
+    'src/playground.js',
+    'src/fakeApi/*.*',
   ],
   collectCoverageFrom: ['src/**/*.{js,vue}'],
 };

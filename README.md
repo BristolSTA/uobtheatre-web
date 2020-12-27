@@ -16,8 +16,9 @@ If you have the above, install the [VS Code Remote Containers extension](https:/
 ## Installing the application
 
 1. Run `yarn`
-2. Run `yarn serve`
-3. Visit the URL output in the command line
+2. Run `yarn setup` to copy the environment file
+3. Run `yarn serve`
+4. Visit the URL output in the command line
 
 You can now edit the project files, and the browser will reload the page automatically.
 

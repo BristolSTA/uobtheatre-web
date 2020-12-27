@@ -2,6 +2,7 @@ import faker from 'faker';
 import { Factory, Model } from 'miragejs';
 
 import { NotFoundResponse } from './utils';
+faker.locale = 'en_GB';
 
 export default {
   registerModels() {
@@ -21,9 +22,17 @@ export default {
         },
         internal_capacity: () => faker.random.number({ min: 50, max: 200 }),
         description: () => faker.lorem.paragraphs(1),
-        address: () => faker.random.words(3),
         venue_image: 'https://via.placeholder.com/1920x960',
         publicly_listed: true,
+        address: () => {
+          return {
+            street: faker.address.streetName(),
+            city: 'Bristol',
+            postcode: faker.address.zipCode(),
+            latitude: faker.address.latitude(),
+            longitude: faker.address.longitude(),
+          };
+        },
       }),
     };
   },
