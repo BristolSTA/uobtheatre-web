@@ -1,6 +1,6 @@
 <template>
   <div class="h-full bg-sta-gray">
-    <h1 class="container pt-4 text-left text-white text-h1">
+    <h1 class="pt-4 ml-10 text-left text-white lg:ml-20 xl:ml-40 text-h1">
       The {{ venue.name }}
     </h1>
     <div class="flex flex-wrap items-center justify-center">
