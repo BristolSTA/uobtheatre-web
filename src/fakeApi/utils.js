@@ -16,15 +16,22 @@ let updateIfDoesntHave = function (model, keyValues, value) {
       [keyValues]: value,
     };
   }
-  let updateObj = {};
-  Object.keys(keyValues).forEach((key) => {
-    if (!model[key] || model[key].length == 0) {
-      value = keyValues[key];
-      if (typeof value === 'function') value = value();
-      updateObj[key] = value;
-    }
+
+  if (keyValues.constructor == Object) {
+    keyValues = [keyValues];
+  }
+
+  keyValues.forEach((keyValuesSet) => {
+    let updateObj = {};
+    Object.keys(keyValuesSet).forEach((key) => {
+      if (!model[key] || model[key].length == 0) {
+        value = keyValuesSet[key];
+        if (typeof value === 'function') value = value();
+        updateObj[key] = value;
+      }
+    });
+    model.update(updateObj);
   });
-  model.update(updateObj);
 };
 
 let RelationshipSerializer = (relationships) =>
