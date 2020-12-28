@@ -26,7 +26,9 @@ export default {
         publicly_listed: true,
         address: () => {
           return {
+            building_name: `The ${faker.random.words(1)} Building`,
             street: faker.address.streetName(),
+            building_number: faker.random.number({ min: 100, max: 110 }),
             city: 'Bristol',
             postcode: faker.address.zipCode(),
             latitude: faker.address.latitude(),

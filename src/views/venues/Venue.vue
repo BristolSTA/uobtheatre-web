@@ -12,9 +12,16 @@
         </p>
         <br />
         <p><strong>Address: </strong></p>
-        <p>The Richmond Building</p>
-        <p>105 Queens Road</p>
-        <p>Bristol, BS8 1LN</p>
+        <p v-if="venue.address.building_name">
+          {{ venue.address.building_name }}
+        </p>
+        <p>
+          <template v-if="venue.address.building_number">
+            {{ venue.address.building_number }} </template
+          >{{ venue.address.street }}
+        </p>
+        <p>{{ venue.address.city }}, {{ venue.address.postcode }}</p>
+        <p>{{ venue.address.latitude }}, {{ venue.address.longitude }}</p>
       </div>
       <div class="w-full max-w-xl m-6 h-80 md:w-2/3">
         <img
@@ -62,7 +69,7 @@ export default {
     runPromiseWithLoading(
       venueService
         .fetchVenueBySlug(this.$route.params.venueSlug)
-        .then((data) => (this.venue = data.venue))
+        .then((data) => (this.venue = data))
         .catch(this.handle404)
     );
   },
