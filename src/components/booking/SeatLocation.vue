@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="text-white">
     <div
-      class="pl-2 text-white cursor-pointer hover:bg-opacity-80"
+      class="pl-2 cursor-pointer hover:bg-opacity-80"
       :class="[expanded ? 'bg-sta-orange' : 'bg-sta-green']"
       @click="$emit('select-location')"
       @keyup="$emit('select-location')"
@@ -28,6 +28,26 @@
           $emit('remove-ticket', seat_location.seat_group, concession_type)
         "
       />
+      <div class="inline-block px-4 py-2 text-center rounded-sm bg-sta-green">
+        <span class="font-semibold">Family Ticket:</span>
+        <div class="flex justify-center text-sm">
+          <table class="text-left table-auto">
+            <tr>
+              <td class="pr-2">Adult</td>
+              <td>x 2</td>
+            </tr>
+            <tr>
+              <td class="pr-2">Studentttttttt</td>
+              <td>x 10</td>
+            </tr>
+          </table>
+        </div>
+        <button
+          class="font-semibold text-sm btn w-full mt-1 px-2.5 py-1 rounded-sm btn-orange"
+        >
+          Add Tickets
+        </button>
+      </div>
     </div>
   </div>
 </template>
