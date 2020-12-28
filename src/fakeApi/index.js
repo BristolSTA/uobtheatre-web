@@ -1,5 +1,6 @@
 import { createServer } from 'miragejs';
 
+import BookingInterface from './booking.model';
 import CastInterface from './cast.model';
 import ConcessionTypeInterface from './concessionType.model';
 import CrewInterface from './crew.model';
@@ -11,7 +12,6 @@ import SocietyInterface from './society.model';
 import UserInterface from './user.model';
 import { DefaultSerializer } from './utils';
 import VenueInterface from './venue.model';
-
 let apiModels = [
   ProductionInterface,
   PerformanceInterface,
@@ -23,6 +23,7 @@ let apiModels = [
   UserInterface,
   SeatGroupInterface,
   ConcessionTypeInterface,
+  BookingInterface,
 ];
 
 let models = {};
@@ -106,6 +107,8 @@ export function makeServer({ environment = 'development' } = {}) {
         email: 'admin@bristolsta.com',
         token: '36c86c19f8f8d73aa59c3a00814137bdee0ab8de',
       });
+
+      server.create('booking');
     },
 
     routes() {
