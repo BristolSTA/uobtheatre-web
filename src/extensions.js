@@ -2,8 +2,10 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 import {
+  faChevronDown,
   faChevronLeft,
   faChevronRight,
+  faChevronUp,
   faCircleNotch,
   faClock,
   faTicketAlt,
@@ -21,6 +23,8 @@ import config from '@/config';
 library.add(
   faChevronLeft,
   faChevronRight,
+  faChevronUp,
+  faChevronDown,
   faTicketAlt,
   faClock,
   faFacebook,

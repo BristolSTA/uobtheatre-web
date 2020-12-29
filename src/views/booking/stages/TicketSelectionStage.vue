@@ -7,7 +7,10 @@
       :expanded="selected_location_index == index"
       :current_tickets="booking.tickets"
       :discounts="discounts"
-      @select-location="selected_location_index = index"
+      @select-location="
+        selected_location_index =
+          selected_location_index != index ? index : null
+      "
       @add-ticket="onAddTicket"
       @set-tickets="onSetTicketNum"
       @remove-ticket="onRemoveTicket"

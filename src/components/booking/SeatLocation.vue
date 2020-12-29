@@ -1,14 +1,19 @@
 <template>
   <div class="text-white">
     <div
-      class="pl-2 cursor-pointer hover:bg-opacity-80"
+      class="flex py-2 pl-4 cursor-pointer hover:bg-opacity-80"
       :class="[expanded ? 'bg-sta-orange' : 'bg-sta-green']"
       @click="$emit('select-location')"
       @keyup="$emit('select-location')"
     >
-      <h1 class="text-h2">{{ seat_location.seat_group.name }}</h1>
-      <div v-if="expanded" class="p-2">
-        <p>{{ seat_location.seat_group.description }}</p>
+      <div class="flex-grow">
+        <h1 class="text-h2">{{ seat_location.seat_group.name }}</h1>
+        <p v-if="expanded && seat_location.seat_group.description" class="p-2">
+          {{ seat_location.seat_group.description }}
+        </p>
+      </div>
+      <div class="flex items-center pr-4 text-3xl">
+        <font-awesome-icon :icon="expanded ? 'chevron-up' : 'chevron-down'" />
       </div>
     </div>
     <div v-if="expanded">
