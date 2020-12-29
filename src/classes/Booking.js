@@ -35,9 +35,12 @@ export default class Booking {
    * Adds a ticket to the booking
    *
    * @param {Ticket} ticket Ticket to add
+   * @param {number} number Number of tickets to add
    */
-  addTicket(ticket) {
-    this.tickets.push(ticket);
+  addTicket(ticket, number = 1) {
+    for (let i = 0; i < number; i++) {
+      this.tickets.push(ticket);
+    }
   }
 
   /**

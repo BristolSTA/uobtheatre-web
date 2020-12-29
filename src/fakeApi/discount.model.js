@@ -37,10 +37,10 @@ export default {
               },
             },
             {
-              //   seat_group: () =>
-              //     faker.random.arrayElement(
-              //       discount.performance.seatGroups.models
-              //     ),
+              // seat_group: () =>
+              //   faker.random.arrayElement(
+              //     discount.performance.seatGroups.models
+              //   ),
               discount_requirements: () => {
                 return server.createList('discountRequirement', 2, {
                   concession_type: () =>
@@ -67,6 +67,6 @@ export default {
     };
   },
   registerRoutes() {
-    this.get('/discount/:id');
+    this.get('productions/:slug/performances/:performance_id/discounts');
   },
 };

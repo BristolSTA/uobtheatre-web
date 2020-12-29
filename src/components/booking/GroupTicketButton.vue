@@ -1,22 +1,24 @@
 <template>
   <div class="px-4 py-2 text-center text-white rounded-sm bg-sta-green">
-    <span class="font-semibold">Family Ticket:</span>
+    <span class="font-semibold">{{ discount.name }}:</span>
     <div class="flex justify-center text-sm">
       <table class="text-left table-auto">
-        <tr>
-          <td class="pr-2">Adult</td>
-          <td>x 2</td>
-        </tr>
-        <tr>
-          <td class="pr-2">Studentttttttt</td>
-          <td>x 10</td>
+        <tr
+          v-for="(discount_requirement,
+          index) in discount.discount_requirements"
+          :key="index"
+        >
+          <td class="pr-2">{{ discount_requirement.concession_type.name }}</td>
+          <td>x {{ discount_requirement.number }}</td>
         </tr>
       </table>
     </div>
     <button
       class="font-semibold text-sm btn w-full mt-1 px-2.5 py-1 rounded-sm btn-orange"
+      @click="addTickets"
+      @keyup="addTickets"
     >
-      Add Ticket: £18.00
+      Add Ticket: £{{ total_price_pounds }}
     </button>
   </div>
 </template>
@@ -25,16 +27,19 @@
 export default {
   name: 'group-ticket-button',
   props: {
-    // concession_type: {
-    //   required: true,
-    // },
-    // current_tickets: {
-    //   required: true,
-    // },
+    discount: {
+      required: true,
+    },
   },
   methods: {
-    addTicket() {
-      this.$emit('add-tickets');
+    addTickets() {
+      this.$emit('add-discount-tickets');
+    },
+  },
+  computed: {
+    total_price_pounds() {
+      let price_pounds = this.discount.total_price / 100;
+      return price_pounds.toFixed(2);
     },
   },
 };

@@ -1,7 +1,11 @@
 import faker from 'faker';
 import { belongsTo, Factory, hasMany, Model } from 'miragejs';
 
-import { DefaultSerializer, updateIfDoesntHave } from './utils';
+import {
+  DefaultSerializer,
+  NotFoundResponse,
+  updateIfDoesntHave,
+} from './utils';
 
 export default {
   registerModels() {
@@ -76,6 +80,28 @@ export default {
     };
   },
   registerRoutes() {
-    this.get('/bookings/:id');
+    // All ticket (concession) types by performance by production
+    this.get(
+      'productions/:slug/performances/:performance_id/ticket_types',
+      function (schema, request) {
+        let performance = schema.performances.find(
+          request.params.performance_id
+        );
+        if (!performance) {
+          return NotFoundResponse();
+        }
+
+        let seatGroups = this.serialize(performance.seatGroups);
+
+        let concessionTypes = this.serialize(performance.concessionTypes);
+
+        return seatGroups.map((seatGroup) => {
+          return {
+            seat_group: seatGroup,
+            concession_types: concessionTypes,
+          };
+        });
+      }
+    );
   },
 };

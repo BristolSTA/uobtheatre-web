@@ -6,10 +6,12 @@
       :seat_location="seat_location"
       :expanded="selected_location_index == index"
       :current_tickets="booking.tickets"
+      :discounts="discounts"
       @select-location="selected_location_index = index"
       @add-ticket="onAddTicket"
       @set-tickets="onSetTicketNum"
       @remove-ticket="onRemoveTicket"
+      @add-discount-tickets="onAddDiscountTicket"
     />
     {{ booking.ticketCount() }} tickets (£ {{ booking.total_price_pounds }})
   </div>
@@ -38,7 +40,7 @@ export default {
       expanded: true,
       selected_location_index: null,
       seat_locations: null,
-      group_discounts: null,
+      discounts: null,
     };
   },
   created() {
@@ -56,18 +58,28 @@ export default {
         this.booking.performance.id
       )
       .then((results) => {
-        this.group_discounts = results;
+        this.discounts = results;
       });
   },
   methods: {
-    onAddTicket(location, concession_type) {
-      this.booking.addTicket(new Ticket(location, concession_type));
+    onAddTicket(location, concession_type, number = 1) {
+      this.booking.addTicket(new Ticket(location, concession_type), number);
+      console.log(this.booking);
     },
     onSetTicketNum(location, concession_type, number) {
       this.booking.setTicketCount(location, concession_type, number);
     },
     onRemoveTicket(location, concession_type) {
       this.booking.removeTicket(location, concession_type);
+    },
+    onAddDiscountTicket(location, discount_requirements) {
+      Object.values(discount_requirements).forEach((discount_requirement) => {
+        this.onAddTicket(
+          location,
+          discount_requirement.concession_type,
+          discount_requirement.number
+        );
+      });
     },
   },
 };

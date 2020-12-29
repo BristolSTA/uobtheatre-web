@@ -28,11 +28,19 @@
           $emit('remove-ticket', seat_location.seat_group, concession_type)
         "
       />
-      <div class="flex justify-center w-full mt-2 mb-4">
+      <div v-if="discounts" class="flex justify-center w-full mt-2 mb-4">
         <group-ticket-button
-          v-for="index in [1, 2]"
+          v-for="(discount, index) in discounts"
           :key="index"
+          :discount="discount"
           class="inline-block mx-1"
+          @add-discount-tickets="
+            $emit(
+              'add-discount-tickets',
+              seat_location.seat_group,
+              discount.discount_requirements
+            )
+          "
         />
       </div>
     </div>
@@ -54,6 +62,9 @@ export default {
       required: true,
     },
     current_tickets: {
+      required: true,
+    },
+    discounts: {
       required: true,
     },
   },
