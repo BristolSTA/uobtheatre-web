@@ -103,5 +103,6 @@ export default {
         });
       }
     );
+    this.resource('/bookings');
   },
 };
