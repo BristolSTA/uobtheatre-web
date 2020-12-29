@@ -35,6 +35,22 @@ export default {
           });
           return json;
         },
+        normalize() {
+          if (arguments[0].booking.tickets) {
+            arguments[0].booking.tickets = arguments[0].booking.tickets.map(
+              (ticket) => {
+                let ticketModel = this.schema.tickets.create({
+                  seatGroup: this.schema.seatGroups.find(ticket.seat_group_id),
+                  concessionType: this.schema.concessionTypes.find(
+                    ticket.concession_type_id
+                  ),
+                });
+                return ticketModel.id;
+              }
+            );
+          }
+          return DefaultSerializer.prototype.normalize.apply(this, arguments);
+        },
       }),
     };
   },
@@ -103,6 +119,20 @@ export default {
         });
       }
     );
-    this.resource('/bookings');
+    this.resource('bookings', { except: ['create', 'update'] });
+    this.post('bookings', function (schema, request) {
+      request.requestBody = JSON.stringify({
+        booking: JSON.parse(request.requestBody),
+      });
+      let attrs = this.normalizedRequestAttrs('booking');
+      return schema.bookings.create(attrs);
+    });
+    this.put('bookings/:id', function (schema, request) {
+      request.requestBody = JSON.stringify({
+        booking: JSON.parse(request.requestBody),
+      });
+      let attrs = this.normalizedRequestAttrs('booking');
+      return schema.bookings.find(request.params.id).update(attrs);
+    });
   },
 };
