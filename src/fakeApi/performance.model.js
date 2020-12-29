@@ -71,7 +71,7 @@ export default {
   registerRoutes() {
     this.resource('performances');
 
-    // Production by slug
+    // All ticket (concession) types by performance by production
     this.get(
       'productions/:slug/performances/:performance_id/ticket_types',
       function (schema, request) {

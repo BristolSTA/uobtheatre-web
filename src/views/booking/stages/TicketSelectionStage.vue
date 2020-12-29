@@ -38,6 +38,7 @@ export default {
       expanded: true,
       selected_location_index: null,
       seat_locations: null,
+      group_discounts: null,
     };
   },
   created() {
@@ -48,6 +49,14 @@ export default {
       )
       .then((results) => {
         this.seat_locations = results;
+      });
+    bookingService
+      .fetchGroupDiscountOptionsForPerformance(
+        this.production.slug,
+        this.booking.performance.id
+      )
+      .then((results) => {
+        this.group_discounts = results;
       });
   },
   methods: {

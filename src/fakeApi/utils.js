@@ -1,4 +1,4 @@
-import { Response, Serializer } from 'miragejs';
+import { ActiveModelSerializer, Response } from 'miragejs';
 
 let paginatedResponse = (data) => {
   return {
@@ -39,7 +39,7 @@ let RelationshipSerializer = (relationships) =>
     include: relationships,
   });
 
-let DefaultSerializer = Serializer.extend({
+let DefaultSerializer = ActiveModelSerializer.extend({
   embed: true,
   root: false,
 });
