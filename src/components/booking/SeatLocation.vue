@@ -28,25 +28,12 @@
           $emit('remove-ticket', seat_location.seat_group, concession_type)
         "
       />
-      <div class="inline-block px-4 py-2 text-center rounded-sm bg-sta-green">
-        <span class="font-semibold">Family Ticket:</span>
-        <div class="flex justify-center text-sm">
-          <table class="text-left table-auto">
-            <tr>
-              <td class="pr-2">Adult</td>
-              <td>x 2</td>
-            </tr>
-            <tr>
-              <td class="pr-2">Studentttttttt</td>
-              <td>x 10</td>
-            </tr>
-          </table>
-        </div>
-        <button
-          class="font-semibold text-sm btn w-full mt-1 px-2.5 py-1 rounded-sm btn-orange"
-        >
-          Add Tickets
-        </button>
+      <div class="flex justify-center w-full mt-2 mb-4">
+        <group-ticket-button
+          v-for="index in [1, 2]"
+          :key="index"
+          class="inline-block mx-1"
+        />
       </div>
     </div>
   </div>
@@ -54,10 +41,11 @@
 
 <script>
 import ConcessionType from '@/components/booking/ConcessionType.vue';
+import GroupTicketButton from '@/components/booking/GroupTicketButton.vue';
 
 export default {
   name: 'seat-location',
-  components: { ConcessionType },
+  components: { ConcessionType, GroupTicketButton },
   props: {
     expanded: {
       required: true,
