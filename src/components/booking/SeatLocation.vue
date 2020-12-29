@@ -12,7 +12,7 @@
       </div>
     </div>
     <div v-if="expanded">
-      <ticket-type
+      <concession-type
         v-for="(concession_type, index) in seat_location.concession_types"
         :key="index"
         :concession_type="concession_type"
@@ -53,11 +53,11 @@
 </template>
 
 <script>
-import TicketType from '@/components/booking/TicketType.vue';
+import ConcessionType from '@/components/booking/ConcessionType.vue';
 
 export default {
   name: 'seat-location',
-  components: { TicketType },
+  components: { ConcessionType },
   props: {
     expanded: {
       required: true,

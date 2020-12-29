@@ -46,7 +46,7 @@
 
 <script>
 export default {
-  name: 'ticket-type',
+  name: 'concession-type',
   props: {
     concession_type: {
       required: true,
