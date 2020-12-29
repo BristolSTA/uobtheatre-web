@@ -34,13 +34,7 @@
           :key="index"
           :discount="discount"
           class="inline-block mx-1"
-          @add-discount-tickets="
-            $emit(
-              'add-discount-tickets',
-              seat_location.seat_group,
-              discount.discount_requirements
-            )
-          "
+          @add-discount-tickets="onAddDiscountTickets(discount)"
         />
       </div>
     </div>
@@ -66,6 +60,18 @@ export default {
     },
     discounts: {
       required: true,
+    },
+  },
+  methods: {
+    onAddDiscountTickets(discount) {
+      discount.discount_requirements.forEach((requirement) => {
+        this.$emit(
+          'add-ticket',
+          this.seat_location.seat_group,
+          requirement.concession_type,
+          requirement.number
+        );
+      });
     },
   },
   computed: {

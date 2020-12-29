@@ -9,9 +9,10 @@ export default {
     return {
       performance: Model.extend({
         venue: belongsTo(),
-        production: belongsTo('performance'),
+        production: belongsTo('production'),
         seatGroups: hasMany('seat_group'),
         concessionTypes: hasMany('concession_type'),
+        discounts: hasMany('discount'),
       }),
     };
   },

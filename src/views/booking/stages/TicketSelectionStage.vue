@@ -11,7 +11,6 @@
       @add-ticket="onAddTicket"
       @set-tickets="onSetTicketNum"
       @remove-ticket="onRemoveTicket"
-      @add-discount-tickets="onAddDiscountTicket"
     />
     {{ booking.ticketCount() }} tickets (£ {{ booking.total_price_pounds }})
   </div>
@@ -64,22 +63,12 @@ export default {
   methods: {
     onAddTicket(location, concession_type, number = 1) {
       this.booking.addTicket(new Ticket(location, concession_type), number);
-      console.log(this.booking);
     },
     onSetTicketNum(location, concession_type, number) {
       this.booking.setTicketCount(location, concession_type, number);
     },
     onRemoveTicket(location, concession_type) {
       this.booking.removeTicket(location, concession_type);
-    },
-    onAddDiscountTicket(location, discount_requirements) {
-      Object.values(discount_requirements).forEach((discount_requirement) => {
-        this.onAddTicket(
-          location,
-          discount_requirement.concession_type,
-          discount_requirement.number
-        );
-      });
     },
   },
 };

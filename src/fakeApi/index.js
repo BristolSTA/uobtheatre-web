@@ -60,15 +60,41 @@ export function makeServer({ environment = 'development' } = {}) {
     factories: Object.assign({}, factories),
 
     seeds(server) {
-      let dramsoc = server.create('society', {
-        name: 'Dramsoc',
-        logo_image: null,
-      });
+      /**
+       * Fake Performance 1 - Legally Blonde, MTB, with 3 performances (19th,20th,21st (sold out))
+       */
 
       let performances = server.createList('performance', 3);
       performances[0].sold_out = false;
       performances[0].start = '2020-12-19T10:00:00';
       performances[0].end = '2020-12-19T11:30:00';
+      performances[0].seatGroups = [
+        server.create('seatGroup', {
+          name: 'The best seats in the house',
+          description: 'They are sooooo good',
+        }),
+        server.create('seatGroup', {
+          name: 'Proj Seats',
+          description: null,
+        }),
+      ];
+      performances[0].concessionTypes = [
+        server.create('concessionType', {
+          name: 'Adult',
+          description: null,
+        }),
+        server.create('concessionType', {
+          name: 'Child',
+          description: 'Under 17.5 years',
+        }),
+        server.create('concessionType', {
+          name: 'Student',
+          description: 'Valid ID not required',
+        }),
+      ];
+      performances[0].discounts = server.createList('discount', 2, {
+        performance: performances[0],
+      });
 
       performances[1].sold_out = false;
       performances[1].start = '2020-12-20T14:15:00';
@@ -85,6 +111,15 @@ export function makeServer({ environment = 'development' } = {}) {
         performances: performances,
       });
 
+      /**
+       * Fake Performance 2 - TRASh, Dramsoc, 1 performance, no warnings
+       */
+
+      let dramsoc = server.create('society', {
+        name: 'Dramsoc',
+        logo_image: null,
+      });
+
       server.create('production', {
         name: 'TRASh',
         subtitle: 'The Really Artsy Show',
@@ -95,24 +130,31 @@ export function makeServer({ environment = 'development' } = {}) {
         performances: server.createList('performance', 1),
       });
 
+      /**
+       * Fake Performance 3 - Present laughter
+       */
+
       server.create('production', {
         name: 'Present Laughter',
         society: dramsoc,
       });
 
+      /**
+       * Fake Performance 4 - A complete random production called A Default Production
+       */
       server.create('production', {
         name: 'A Default Production',
       });
+
+      /**
+       * A user
+       */
 
       server.create('user', {
         password: 'admin',
         email: 'admin@bristolsta.com',
         token: '36c86c19f8f8d73aa59c3a00814137bdee0ab8de',
       });
-
-      server.create('booking');
-
-      server.create('discount');
     },
 
     routes() {

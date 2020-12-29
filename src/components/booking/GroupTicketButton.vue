@@ -4,8 +4,9 @@
     <div class="flex justify-center text-sm">
       <table class="text-left table-auto">
         <tr
-          v-for="(discount_requirement,
-          index) in discount.discount_requirements"
+          v-for="(
+            discount_requirement, index
+          ) in discount.discount_requirements"
           :key="index"
         >
           <td class="pr-2">{{ discount_requirement.concession_type.name }}</td>
@@ -18,7 +19,7 @@
       @click="addTickets"
       @keyup="addTickets"
     >
-      Add Ticket: £{{ total_price_pounds }}
+      Add Tickets: £{{ total_price_pounds }}
     </button>
   </div>
 </template>

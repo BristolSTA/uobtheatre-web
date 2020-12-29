@@ -1,7 +1,11 @@
 import faker from 'faker';
 import { belongsTo, Factory, hasMany, Model } from 'miragejs';
 
-import { RelationshipSerializer, updateIfDoesntHave } from './utils';
+import {
+  NotFoundResponse,
+  RelationshipSerializer,
+  updateIfDoesntHave,
+} from './utils';
 
 export default {
   registerModels() {
@@ -26,7 +30,11 @@ export default {
     return {
       discount: Factory.extend({
         name: () =>
-          faker.random.arrayElement(['Group Discount', 'Family Discount']),
+          faker.random.arrayElement([
+            'Group Discount',
+            'Family Discount',
+            'Mates Rate Discount',
+          ]),
         discount: () => faker.random.float({ max: 0.5, min: 0 }),
         total_price: () => faker.random.number({ max: 2000, min: 100 }),
         afterCreate(discount, server) {
@@ -67,6 +75,18 @@ export default {
     };
   },
   registerRoutes() {
-    this.get('productions/:slug/performances/:performance_id/discounts');
+    this.get(
+      'productions/:slug/performances/:performance_id/discounts',
+      function (schema, request) {
+        let performance = schema.performances.find(
+          request.params.performance_id
+        );
+        if (!performance) {
+          return NotFoundResponse();
+        }
+
+        return performance.discounts;
+      }
+    );
   },
 };
