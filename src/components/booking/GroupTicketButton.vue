@@ -19,7 +19,7 @@
       @click="addTickets"
       @keyup="addTickets"
     >
-      Add Tickets: £{{ total_price_pounds }}
+      Add Tickets
     </button>
   </div>
 </template>

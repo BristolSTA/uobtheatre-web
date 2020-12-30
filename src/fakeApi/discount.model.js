@@ -36,7 +36,6 @@ export default {
             'Mates Rate Discount',
           ]),
         discount: () => faker.random.float({ max: 0.5, min: 0 }),
-        total_price: () => faker.random.number({ max: 2000, min: 100 }),
         afterCreate(discount, server) {
           updateIfDoesntHave(discount, [
             {
