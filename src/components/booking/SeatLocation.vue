@@ -4,7 +4,7 @@
       class="flex py-2 pl-4 cursor-pointer hover:bg-opacity-80"
       :class="[expanded ? 'bg-sta-orange' : 'bg-sta-green']"
       @click="$emit('select-location')"
-      @keyup="$emit('select-location')"
+      @keypress="$emit('select-location')"
     >
       <div class="flex-grow">
         <h1 class="text-h2">{{ seat_location.seat_group.name }}</h1>

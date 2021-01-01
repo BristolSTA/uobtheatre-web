@@ -22,7 +22,7 @@
     </button>
     <button
       @click="onBook"
-      @keyup="onBook"
+      @keypress="onBook"
       class="w-2/3 mt-4 font-semibold text-center btn btn-orange"
       v-else
     >

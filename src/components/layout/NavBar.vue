@@ -13,7 +13,7 @@
           class="px-3 py-2 text-white border rounded border-sta-orange"
           role="toggle"
           @click="navHidden = !navHidden"
-          @keydown="
+          @keypress="
             (e) => {
               e.target.click();
             }

@@ -15,7 +15,7 @@
       <button
         class="btn btn-rouge btn-outline"
         @click="onUnderstood"
-        @keydown="onUnderstood"
+        @keypress="onUnderstood"
       >
         I Understand
       </button>

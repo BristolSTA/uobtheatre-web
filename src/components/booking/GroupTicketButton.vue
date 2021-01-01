@@ -17,7 +17,7 @@
     <button
       class="font-semibold text-sm btn w-full mt-1 px-2.5 py-1 rounded-sm btn-orange"
       @click="addTickets"
-      @keyup="addTickets"
+      @keypress="addTickets"
     >
       Add Tickets
     </button>

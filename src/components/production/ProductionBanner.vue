@@ -47,7 +47,7 @@
         v-if="showBuyTicketsButton"
         class="w-full mt-4 font-semibold btn btn-green"
         @click="$emit('on-buy-tickets-click')"
-        @keydown="$emit('on-buy-tickets-click')"
+        @keypress="$emit('on-buy-tickets-click')"
       >
         Buy Tickets
       </button>

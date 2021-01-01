@@ -7,7 +7,7 @@
       :class="stylesForButton(stage)"
       class="block text-center btn"
       @click="onSelectStage(stage)"
-      @keyup="onSelectStage(stage)"
+      @keypress="onSelectStage(stage)"
     >
       <!-- 
       :disabled="stylesForButton(index).includes('disabled')" -->

@@ -13,7 +13,7 @@
           <button
             class="w-8 h-8 p-0 btn btn-orange"
             @click="minusTicket"
-            @keyup="minusTicket"
+            @keypress="minusTicket"
             :class="[!numTickets ? 'btn-gray-light' : 'btn-orange']"
             :disabled="!numTickets"
           >
@@ -34,7 +34,7 @@
           <button
             class="w-8 h-8 p-0 btn btn-orange"
             @click="addTicket"
-            @keyup="addTicket"
+            @keypress="addTicket"
           >
             +
           </button>
