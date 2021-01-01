@@ -1,26 +1,40 @@
 <template>
-  <div class="h-full bg-sta-gray">
+  <div class="h-full text-white bg-sta-gray">
     <div
       v-if="!venue"
-      class="justify-center py-20 text-xl font-semibold text-center text-white"
+      class="justify-center py-20 text-xl font-semibold text-center"
     >
       Loading Venue...
     </div>
     <template v-else>
-      <h1 class="pt-4 ml-10 text-left text-white lg:ml-20 xl:ml-40 text-h1">
+      <h1 class="pt-4 ml-10 text-left lg:ml-20 xl:ml-40 text-h1">
         The {{ venue.name }}
       </h1>
       <div class="flex flex-wrap items-center justify-center">
         <div
-          class="flex flex-col items-center w-full px-10 text-justify text-white md:block md:w-auto md:max-w-md"
+          class="flex flex-col items-center w-full px-8 text-justify md:block md:w-auto md:max-w-md"
         >
           <p>
             {{ venue.description }}
           </p>
-          <div class="mt-4" ref="address">
+          <div class="mt-4">
             <p><strong>Capacity: </strong> Max {{ venue.internal_capacity }}</p>
           </div>
-          <div class="mt-4" ref="address">
+        </div>
+        <div class="w-full max-w-xl h-80 md:w-2/3 md:m-4">
+          <img
+            class="w-full p-8"
+            :src="venue.image"
+            :alt="`${venue.name} image`"
+            ref="image"
+          />
+        </div>
+      </div>
+      <div class="flex flex-wrap items-center justify-center">
+        <div
+          class="flex items-center justify-center w-full mb-4 lg:mb-0 lg:w-1/4 lg:order-last"
+        >
+          <div ref="address">
             <p class="font-semibold">Address:</p>
             <p v-if="venue.address.building_name">
               {{ venue.address.building_name }}
@@ -31,34 +45,22 @@
               >{{ venue.address.street }}
             </p>
             <p>{{ venue.address.city }}, {{ venue.address.postcode }}</p>
-            <p>{{ venue.address.latitude }}, {{ venue.address.longitude }}</p>
+            <!-- <p>{{ venue.address.latitude }}, {{ venue.address.longitude }}</p> -->
           </div>
         </div>
-        <div class="w-full max-w-xl m-6 h-80 md:w-2/3">
-          <img
-            class="w-full p-8"
-            :src="venue.image"
-            :alt="`${venue.name} image`"
-            ref="image"
-          />
+        <div class="flex justify-center w-full lg:w-3/5 h-96 lg:mb-4">
+          <div class="w-full" id="mapContainer"></div>
         </div>
       </div>
-      <!-- <div class="flex justify-center h-96">
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2218.0465457381238!2d-2.6128241361907865!3d51.45667798827902!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48718dc5ca9a5089%3A0xd52e92fe92092806!2sBristol%20SU%20(Richmond%20Building)!5e0!3m2!1sen!2suk!4v1607260466320!5m2!1sen!2suk"
-        frameborder="0"
-        allowfullscreen=""
-        aria-hidden="false"
-        tabindex="0"
-        title="SU-map"
-        class="flex w-full h-full p-8 md:w-2/3"
-      ></iframe>
-    </div> -->
     </template>
   </div>
 </template>
 
 <script>
+import 'leaflet/dist/leaflet.css';
+
+import L from 'leaflet';
+
 import { venueService } from '@/services';
 import { handle404Mixin, runPromiseWithLoading } from '@/utils';
 
@@ -81,8 +83,26 @@ export default {
       venueService
         .fetchVenueBySlug(this.$route.params.venueSlug)
         .then((data) => (this.venue = data))
+        .then(async () => {
+          await this.$nextTick();
+          this.createMap(this.venue);
+        })
         .catch(this.handle404)
     );
+  },
+  methods: {
+    createMap(venue) {
+      const map = L.map('mapContainer').setView([51.505, -0.09], 14);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(map);
+
+      L.popup({ closeButton: false })
+        .setLatLng(L.latLng(51.505, -0.09))
+        .setContent(`${venue.name}`)
+        .openOn(map);
+    },
   },
 };
 </script>
