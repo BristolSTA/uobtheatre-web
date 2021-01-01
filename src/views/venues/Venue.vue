@@ -45,10 +45,12 @@
               >{{ venue.address.street }}
             </p>
             <p>{{ venue.address.city }}, {{ venue.address.postcode }}</p>
-            <!-- <p>{{ venue.address.latitude }}, {{ venue.address.longitude }}</p> -->
           </div>
         </div>
-        <div class="flex justify-center w-full lg:w-3/5 h-96 lg:mb-4">
+        <div
+          v-if="!(!venue.address.latitude & !venue.address.longitude)"
+          class="flex justify-center w-full lg:w-3/5 h-96 lg:mb-4"
+        >
           <div class="w-full" id="mapContainer"></div>
         </div>
       </div>
@@ -92,16 +94,21 @@ export default {
   },
   methods: {
     createMap(venue) {
-      const map = L.map('mapContainer').setView([51.505, -0.09], 14);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(map);
+      if (!venue.latitude | !venue.longitude) {
+        const map = L.map('mapContainer').setView(
+          [venue.address.latitude, venue.address.longitude],
+          14
+        );
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }).addTo(map);
 
-      L.popup({ closeButton: false })
-        .setLatLng(L.latLng(51.505, -0.09))
-        .setContent(`${venue.name}`)
-        .openOn(map);
+        L.popup({ closeButton: false })
+          .setLatLng(L.latLng(venue.address.latitude, venue.address.longitude))
+          .setContent(`${venue.name}`)
+          .openOn(map);
+      } else return;
     },
   },
 };
