@@ -17,25 +17,29 @@
           <p>
             {{ venue.description }}
           </p>
-          <br />
-          <p><strong>Address: </strong></p>
-          <p v-if="venue.address.building_name">
-            {{ venue.address.building_name }}
-          </p>
-          <p>
-            <template v-if="venue.address.building_number">
-              {{ venue.address.building_number }} </template
-            >{{ venue.address.street }}
-          </p>
-          <p>{{ venue.address.city }}, {{ venue.address.postcode }}</p>
-          <p>{{ venue.address.latitude }}, {{ venue.address.longitude }}</p>
+          <div class="mt-4" ref="address">
+            <p><strong>Capacity: </strong> Max {{ venue.internal_capacity }}</p>
+          </div>
+          <div class="mt-4" ref="address">
+            <p class="font-semibold">Address:</p>
+            <p v-if="venue.address.building_name">
+              {{ venue.address.building_name }}
+            </p>
+            <p>
+              <template v-if="venue.address.building_number">
+                {{ venue.address.building_number }} </template
+              >{{ venue.address.street }}
+            </p>
+            <p>{{ venue.address.city }}, {{ venue.address.postcode }}</p>
+            <p>{{ venue.address.latitude }}, {{ venue.address.longitude }}</p>
+          </div>
         </div>
         <div class="w-full max-w-xl m-6 h-80 md:w-2/3">
           <img
             class="w-full p-8"
-            :src="venue.venue_image"
+            :src="venue.image"
             :alt="`${venue.name} image`"
-            ref="featured_image"
+            ref="image"
           />
         </div>
       </div>

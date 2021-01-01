@@ -22,7 +22,7 @@ export default {
         },
         internal_capacity: () => faker.random.number({ min: 50, max: 200 }),
         description: () => faker.lorem.paragraphs(1),
-        venue_image: 'https://via.placeholder.com/1920x960',
+        image: 'https://via.placeholder.com/1920x960',
         publicly_listed: true,
         address: () => {
           return {
