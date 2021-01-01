@@ -5,7 +5,7 @@
         :production="production"
         :showBuyTicketsButton="false"
       />
-      <div class="flex mb-2 space-x-2">
+      <div class="flex my-2 space-x-2">
         <booking-navigation
           class="w-1/4"
           :currentStageIndex="currentStageIndex"
