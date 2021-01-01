@@ -182,18 +182,20 @@ describe('Booking Class', () => {
     expect(booking.tickets.length).to.eq(0);
     expect(booking.dirty).to.be.true;
   });
-  it('can get tickets total price in pennies', () => {
-    expect(booking.tickets_total_price(ticket_types)).to.eq(0);
+  it('can get tickets total price estimate in pennies', () => {
+    expect(booking.tickets_total_price_estimate(ticket_types)).to.eq(0);
 
     booking.tickets = [
       fakeTicket(concession_100),
       fakeTicket(concession_1000),
       fakeTicket(concession_500),
     ];
-    expect(booking.tickets_total_price(ticket_types)).to.eq(1600);
+    expect(booking.tickets_total_price_estimate(ticket_types)).to.eq(1600);
   });
-  it('can get tickets total price in pounds', () => {
-    expect(booking.tickets_total_price_pounds(ticket_types)).to.eq('0.00');
+  it('can get tickets total price estimate in pounds', () => {
+    expect(booking.tickets_total_price_pounds_estimate(ticket_types)).to.eq(
+      '0.00'
+    );
 
     booking.tickets = [
       fakeTicket(concession_100),
@@ -201,7 +203,9 @@ describe('Booking Class', () => {
       fakeTicket(concession_500),
     ];
 
-    expect(booking.tickets_total_price_pounds(ticket_types)).to.eq('16.00');
+    expect(booking.tickets_total_price_pounds_estimate(ticket_types)).to.eq(
+      '16.00'
+    );
   });
   it('can get total booking price in pounds', () => {
     expect(booking.total_price_pounds).to.eq('0.00');
@@ -210,12 +214,26 @@ describe('Booking Class', () => {
 
     expect(booking.total_price_pounds).to.eq('22.58');
   });
+  it('can get sub total booking price in pounds', () => {
+    expect(booking.sub_total_price_pounds).to.eq('0.00');
+
+    booking.price_breakdown = FakePriceBreakdown;
+
+    expect(booking.sub_total_price_pounds).to.eq('21.50');
+  });
   it('can get tickets price in pounds', () => {
     expect(booking.tickets_price_pounds).to.eq('0.00');
 
     booking.price_breakdown = FakePriceBreakdown;
 
     expect(booking.tickets_price_pounds).to.eq('22.50');
+  });
+  it('can tell if booking has discounts applied', () => {
+    expect(booking.has_discounts).to.be.false;
+
+    booking.price_breakdown = FakePriceBreakdown;
+
+    expect(booking.has_discounts).to.be.true;
   });
   it('can get discounts value in pounds', () => {
     expect(booking.discounts_value_pounds).to.eq('0.00');
@@ -225,11 +243,48 @@ describe('Booking Class', () => {
     expect(booking.discounts_value_pounds).to.eq('1.00');
   });
   it('can get ticket overview', () => {
-    expect(booking.ticket_overview).to.be.empty;
+    expect(booking.ticket_overview(ticket_types)).to.be.empty;
 
     booking.price_breakdown = FakePriceBreakdown;
+    booking.tickets = [fakeTicket(concession_100)];
 
-    expect(booking.ticket_overview).to.eq(FakePriceBreakdown.tickets);
+    expect(booking.dirty).to.be.true;
+    expect(JSON.stringify(booking.ticket_overview(ticket_types))).to.equal(
+      JSON.stringify(booking.ticket_overview_estimate(ticket_types))
+    ); // Stringified here due to not being visually difference, but generated at different times through mapping
+
+    booking.dirty = false;
+
+    expect(booking.ticket_overview(ticket_types)).to.eq(
+      FakePriceBreakdown.tickets
+    );
+  });
+  it('can generate ticket overview estimate', () => {
+    expect(booking.ticket_overview_estimate(ticket_types)).to.be.empty;
+
+    booking.tickets = [
+      fakeTicket(concession_100),
+      fakeTicket(concession_1000),
+      fakeTicket(concession_1000),
+      fakeTicket(concession_500),
+    ];
+    expect(booking.ticket_overview_estimate(ticket_types).length).to.eq(3);
+    expect(booking.ticket_overview_estimate(ticket_types)[0]).to.include({
+      number: 1,
+      total_price: 100,
+      ticket_price: 100,
+    });
+    expect(
+      booking.ticket_overview_estimate(ticket_types)[0].seat_group
+    ).to.include(seat_group);
+    expect(
+      booking.ticket_overview_estimate(ticket_types)[0].concession_type
+    ).to.include(concession_100);
+    expect(booking.ticket_overview_estimate(ticket_types)[1]).to.include({
+      number: 2,
+      total_price: 2000,
+      ticket_price: 1000,
+    });
   });
   it('can get misc costs', () => {
     expect(booking.misc_costs).to.be.empty;

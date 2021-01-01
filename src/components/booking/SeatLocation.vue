@@ -35,7 +35,9 @@
       />
       <div v-if="discounts" class="flex justify-center w-full mt-2 mb-4">
         <group-ticket-button
-          v-for="(discount, index) in discounts.filter(discount => !discount.seat_group)"
+          v-for="(discount, index) in discounts.filter(
+            (discount) => !discount.seat_group
+          )"
           :key="index"
           :discount="discount"
           class="inline-block mx-1"

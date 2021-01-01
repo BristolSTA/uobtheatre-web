@@ -10,11 +10,13 @@ export default {
       booking: Model.extend({
         performance: belongsTo('performance'),
         tickets: hasMany('ticket'),
+        misc_costs: hasMany('miscCost'),
       }),
       ticket: Model.extend({
         seatGroup: belongsTo('seatGroup'),
         concessionType: belongsTo('concessionType'),
       }),
+      miscCost: Model,
     };
   },
   registerSerializers() {
@@ -60,15 +62,26 @@ export default {
 
           // A bit of a bodge...
           let discounts_price = object.performance.discounts.models.length
-            ? object.performance.discounts.models[0].discount * 100
+            ? Math.round(object.performance.discounts.models[0].discount * 100)
+            : 0;
+
+          let subtotal_price = ticket_price - discounts_price;
+
+          let misc_costs = this.buildPayload(object.misc_costs);
+          let misc_costs_price = misc_costs.length
+            ? misc_costs
+                .map((misc_cost) => misc_cost.value)
+                .sum((a, b) => a + b)
             : 0;
 
           json.price_breakdown = {
             tickets: tickets_pricebreakdown,
             tickets_price: ticket_price,
             discounts_value: discounts_price,
-            misc_costs: [],
-            total_price: ticket_price - discounts_price,
+            misc_costs: misc_costs,
+            misc_costs_value: misc_costs_price,
+            subtotal_price: subtotal_price,
+            total_price: subtotal_price,
           };
 
           return json;
@@ -130,6 +143,16 @@ export default {
             },
           });
         },
+      }),
+      miscCost: Factory.extend({
+        name: () =>
+          faker.random.arrayElement([
+            'Theatre Improvement Levy',
+            'Booking Charge',
+          ]),
+        description: () => faker.lorem.words(5),
+        percentage: () => faker.random.arrayElement([null, 0.05]),
+        value: () => faker.random.number({ min: 50, max: 400 }),
       }),
     };
   },

@@ -1,3 +1,5 @@
+import lo from 'lodash';
+
 import Ticket from './Ticket';
 export default class Booking {
   /** @member {number} */
@@ -154,7 +156,7 @@ export default class Booking {
    * @param {object} ticket_options Raw data from the ticket_types endpoint (i.e. grouped Seat Group -> Concession Types data) which contains the price data
    * @returns {number} Total price of the tickets (without discounts), in pennies
    */
-  tickets_total_price(ticket_options) {
+  tickets_total_price_estimate(ticket_options) {
     return this.tickets
       .map((ticket) => ticket.price(ticket_options))
       .reduce((a, b) => a + b, 0);
@@ -166,8 +168,8 @@ export default class Booking {
    * @param {object} ticket_options Raw data from the ticket_types endpoint (i.e. grouped Seat Group -> Concession Types data) which contains the price data
    * @returns {number} Total price of the booking, in pounds to 2 d.p.
    */
-  tickets_total_price_pounds(ticket_options) {
-    return (this.tickets_total_price(ticket_options) / 100).toFixed(2);
+  tickets_total_price_pounds_estimate(ticket_options) {
+    return (this.tickets_total_price_estimate(ticket_options) / 100).toFixed(2);
   }
 
   /**
@@ -179,11 +181,27 @@ export default class Booking {
   }
 
   /**
+   * @returns {string} Price of tickets minus any discounts in pounds
+   */
+  get sub_total_price_pounds() {
+    if (!this.price_breakdown) return (0).toFixed(2);
+    return (this.price_breakdown.subtotal_price / 100).toFixed(2);
+  }
+
+  /**
    * @returns {string} Total cost / price of the tickets in pounds
    */
   get tickets_price_pounds() {
     if (!this.price_breakdown) return (0).toFixed(2);
     return (this.price_breakdown.tickets_price / 100).toFixed(2);
+  }
+
+  /**
+   * @returns {boolean} True if the booking has discounts applied
+   */
+  get has_discounts() {
+    if (!this.price_breakdown) return false;
+    return this.price_breakdown.discounts_value != 0;
   }
 
   /**
@@ -195,11 +213,42 @@ export default class Booking {
   }
 
   /**
+   * @param {object} ticket_options Raw data from the ticket_types endpoint (i.e. grouped Seat Group -> Concession Types data) which contains the price data
    * @returns {Array} List of tickets grouped by seat group & concession type, giving capacity and price
    */
-  get ticket_overview() {
-    if (!this.price_breakdown) return [];
+  ticket_overview(ticket_options) {
+    if (!this.price_breakdown || this.dirty)
+      return this.ticket_overview_estimate(ticket_options);
     return this.price_breakdown.tickets;
+  }
+
+  /**
+   * @param {object} ticket_options Raw data from the ticket_types endpoint (i.e. grouped Seat Group -> Concession Types data) which contains the price data
+   * @returns {Array} List of tickets grouped by seat group & concession type, giving capacity and price (based on selected tickets and not API data)
+   */
+  ticket_overview_estimate(ticket_options) {
+    return lo
+      .chain(this.tickets)
+      .groupBy((ticket) => [ticket.seat_group_id, ticket.concession_type_id])
+      .values()
+      .map((groupedTickets) => {
+        let seatLocation = ticket_options.find(
+          (location) =>
+            location.seat_group.id == groupedTickets[0].seat_group_id
+        );
+        let seatGroup = seatLocation.seat_group;
+        let concessionType = seatLocation.concession_types.find(
+          (type) => type.id == groupedTickets[0].concession_type_id
+        );
+        return {
+          number: groupedTickets.length,
+          concession_type: concessionType,
+          seat_group: seatGroup,
+          ticket_price: concessionType.price,
+          total_price: concessionType.price * groupedTickets.length,
+        };
+      })
+      .value();
   }
 
   /**

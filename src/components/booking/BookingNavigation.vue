@@ -8,9 +8,8 @@
       class="block text-center btn"
       @click="onSelectStage(stage)"
       @keypress="onSelectStage(stage)"
+      :disabled="stylesForButton(stage).includes('disabled')"
     >
-      <!-- 
-      :disabled="stylesForButton(index).includes('disabled')" -->
       {{ stage.name }}
     </button>
   </nav>
@@ -43,9 +42,10 @@ export default {
         stageIndex <= this.maxAllowedStageIndex
       )
         return 'btn-green';
-      return 'btn-gray-light '; //disabled
+      return 'btn-gray-light disabled';
     },
     onSelectStage(stage) {
+      if (getStageIndex(stage) == this.currentStageIndex) return;
       this.$emit('goto-stage', stage);
     },
   },

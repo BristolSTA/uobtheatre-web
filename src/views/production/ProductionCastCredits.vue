@@ -69,7 +69,7 @@
     <div v-else class="flex flex-wrap justify-center" ref="cast_credits">
       <div
         class="cast-credit-section lg:w-1/2"
-        v-if="this.production.productionTeam.length"
+        v-if="this.production.production_team.length"
       >
         <h1 class="crew-section-header">Production Team</h1>
         <div class="flex flex-wrap justify-center">
@@ -180,7 +180,7 @@ export default {
     productionTeamSplit() {
       let i = 0;
       return lodash
-        .chain(this.production.productionTeam)
+        .chain(this.production.production_team)
         .groupBy('role')
         .groupBy(() => {
           let res = Math.floor(i % 2);

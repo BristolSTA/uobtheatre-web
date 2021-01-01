@@ -49,11 +49,14 @@ module.exports = {
       padding: {
         0.5: '0.125rem',
       },
+      minWidth: {
+        '1/2': '50%',
+      },
     },
   },
   variants: {
     extend: {
-      backgroundColor: ['checked'],
+      backgroundColor: ['checked', 'odd', 'even'],
     },
   },
   plugins: [],

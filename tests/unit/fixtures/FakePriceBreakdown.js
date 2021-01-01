@@ -17,6 +17,7 @@ export default {
   ],
   tickets_price: 2250,
   discounts_value: 100,
-  misc_costs: [{ name: 'Admin Charge', perctange_value: 0.05, price: 108 }],
+  subtotal_price: 2150,
+  misc_costs: [{ name: 'Admin Charge', percentage: 0.05, value: 108 }],
   total_price: 2258,
 };

@@ -1,21 +1,77 @@
 <template>
-  <div class="space-y-1">
-    <seat-location
-      v-for="(seat_location, index) in seat_locations"
-      :key="index"
-      :seat_location="seat_location"
-      :expanded="selected_location_index == index"
-      :current_tickets="booking.tickets"
-      :discounts="discounts"
-      @select-location="
-        selected_location_index =
-          selected_location_index != index ? index : null
-      "
-      @add-ticket="onAddTicket"
-      @set-tickets="onSetTicketNum"
-      @remove-ticket="onRemoveTicket"
-    />
-    {{ booking.ticketCount() }} tickets (£ {{ booking.total_price_pounds }})
+  <div class="text-white">
+    <div class="space-y-1">
+      <seat-location
+        v-for="(seat_location, index) in seat_locations"
+        :key="index"
+        :seat_location="seat_location"
+        :expanded="
+          selected_location_index == index || seat_locations.length == 1
+        "
+        :current_tickets="booking.tickets"
+        :discounts="discounts"
+        @select-location="
+          selected_location_index =
+            selected_location_index != index ? index : null
+        "
+        @add-ticket="onAddTicket"
+        @set-tickets="onSetTicketNum"
+        @remove-ticket="onRemoveTicket"
+      />
+    </div>
+    <div v-if="booking.tickets.length" class="flex my-4">
+      <div
+        class="px-4 pb-2 mx-auto text-center border-4 border-dashed rounded-md min-w-1/2 border-sta-gray"
+      >
+        <h2 class="text-h2">Selected Tickets</h2>
+        <table class="w-full text-left table-auto">
+          <thead>
+            <tr>
+              <th class="p-2" v-if="seat_locations.length > 1">Location</th>
+              <th class="p-2">Type</th>
+              <th class="w-24 p-2">Quantity</th>
+              <th class="w-24 p-2">Line Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="even:bg-sta-gray-light odd:bg-sta-gray"
+              v-for="(ticket, index) in booking.ticket_overview(seat_locations)"
+              :key="index"
+            >
+              <td class="p-2" v-if="seat_locations.length > 1">
+                {{ ticket.seat_group.name }}
+              </td>
+              <td class="p-2">{{ ticket.concession_type.name }}</td>
+              <td class="p-2 text-center">{{ ticket.number }}</td>
+              <td class="p-2 text-right">
+                £{{ (ticket.total_price / 100).toFixed(2) }}
+              </td>
+            </tr>
+          </tbody>
+          <tfoot v-if="!booking.dirty">
+            <tr v-if="booking.has_discounts">
+              <td></td>
+              <th class="p-2">Discounts</th>
+              <td></td>
+              <td class="p-2 text-right">
+                -£{{ booking.discounts_value_pounds }}
+              </td>
+            </tr>
+            <tr>
+              <th></th>
+              <th class="p-2">Subtotal</th>
+              <td class="p-2 text-center">
+                {{ booking.tickets.length }}
+              </td>
+              <td class="p-2 text-right">
+                £{{ booking.sub_total_price_pounds }}
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
   </div>
 </template>
 

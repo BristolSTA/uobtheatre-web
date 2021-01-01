@@ -23,7 +23,10 @@
             type="text"
             :value="numTickets"
             aria-label="number of tickets"
-            @input.prevent="
+            @keypress.stop="
+              if (!/^[0-9]$/i.test($event.key)) $event.preventDefault();
+            "
+            @input="
               (event) => {
                 if (isNaN(event.target.value)) return;
                 $emit('set-tickets', event.target.value);

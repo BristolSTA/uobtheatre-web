@@ -17,7 +17,7 @@ export default {
         performances: hasMany(),
         cast: hasMany('cast'),
         crew: hasMany('crew'),
-        productionTeam: hasMany('production_team'),
+        production_team: hasMany('production_team'),
       }),
     };
   },
@@ -28,7 +28,7 @@ export default {
         'performances',
         'cast',
         'crew',
-        'productionTeam',
+        'production_team',
       ]),
     };
   },
@@ -62,7 +62,7 @@ export default {
             crew: () => {
               return server.createList('crew', 4);
             },
-            productionTeam: () => {
+            production_team: () => {
               return server.createList('productionTeam', 3);
             },
             society: () => {

@@ -229,7 +229,7 @@ describe('CastCreditsContainer', function () {
             server.create('crew', { name: 'Tom', department: 'Sound' }),
             server.create('crew', { name: 'Millie', department: 'Lighting' }),
           ],
-          productionTeam: [
+          production_team: [
             server.create('productionTeam', {
               name: 'James',
               role: 'Producer',
