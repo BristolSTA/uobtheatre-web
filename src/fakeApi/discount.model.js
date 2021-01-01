@@ -1,11 +1,7 @@
 import faker from 'faker';
 import { belongsTo, Factory, hasMany, Model } from 'miragejs';
 
-import {
-  NotFoundResponse,
-  RelationshipSerializer,
-  updateIfDoesntHave,
-} from './utils';
+import { RelationshipSerializer, updateIfDoesntHave } from './utils';
 
 export default {
   registerModels() {
@@ -73,19 +69,5 @@ export default {
       }),
     };
   },
-  registerRoutes() {
-    this.get(
-      'productions/:slug/performances/:performance_id/discounts',
-      function (schema, request) {
-        let performance = schema.performances.find(
-          request.params.performance_id
-        );
-        if (!performance) {
-          return NotFoundResponse();
-        }
-
-        return performance.discounts;
-      }
-    );
-  },
+  registerRoutes() {},
 };

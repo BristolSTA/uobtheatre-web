@@ -4,26 +4,38 @@ export default {
   /**
    * Fetches ticket options for specified performance
    *
-   * @param {string} production_slug Production's slug
    * @param {string} performance_id Performance ID
    * @returns {Promise} API Response Promise
    */
-  fetchTicketOptionsForPerformance(production_slug, performance_id) {
-    return api.get(
-      `productions/${production_slug}/performances/${performance_id}/ticket_types/`
-    );
+  fetchDraftBooking(performance_id) {
+    //TODO
+    return api.get(performance_id);
   },
 
   /**
-   * Fetches group discount options for specified performance
+   * Creates a new draft booking for a performance for the user
    *
-   * @param {string} production_slug Production's slug
    * @param {string} performance_id Performance ID
+   * @param {Array} tickets Array of tickets
    * @returns {Promise} API Response Promise
    */
-  fetchGroupDiscountOptionsForPerformance(production_slug, performance_id) {
-    return api.get(
-      `productions/${production_slug}/performances/${performance_id}/discounts/`
-    );
+  startNewBooking(performance_id, tickets = []) {
+    return api.post('bookings', {
+      performance_id: performance_id,
+      tickets: tickets,
+    });
+  },
+
+  /**
+   * Updates the draft booking
+   *
+   * @param {number} booking_id Booking ID
+   * @param {Array} tickets Array of tickets
+   * @returns {Promise} API Response Promise
+   */
+  updateBooking(booking_id, tickets = []) {
+    return api.put(`bookings/${booking_id}`, {
+      tickets: tickets,
+    });
   },
 };

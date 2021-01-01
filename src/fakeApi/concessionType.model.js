@@ -1,10 +1,12 @@
 import faker from 'faker';
-import { Factory, Model } from 'miragejs';
+import { belongsTo, Factory, Model } from 'miragejs';
 
 export default {
   registerModels() {
     return {
-      concessionType: Model,
+      concessionType: Model.extend({
+        performance: belongsTo('performance'),
+      }),
     };
   },
   registerSerializers() {

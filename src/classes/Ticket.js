@@ -1,12 +1,18 @@
 export default class {
   /**
-   *
-   * @param {object} seat_group Seat Group / Location Data Object
-   * @param {object} concession_type Concession Data Object
+   * @param {object} seat_group_id Seat Group / Location ID
+   * @param {object} concession_type_id Concession Type ID
    */
-  constructor(seat_group, concession_type) {
-    this.seat_group = seat_group;
-    this.concession_type = concession_type;
+  constructor(seat_group_id, concession_type_id) {
+    this.seat_group_id = seat_group_id;
+    this.concession_type_id = concession_type_id;
+  }
+
+  static fromAPIData(ticketAPIData) {
+    return new this(
+      ticketAPIData.seat_group_id,
+      ticketAPIData.concession_type_id
+    );
   }
 
   /**
@@ -18,35 +24,37 @@ export default class {
    */
   matches(seat_group, concession_type) {
     let matches_seat_group = seat_group
-      ? this.seat_group.id == seat_group.id
+      ? this.seat_group_id == seat_group.id
       : true;
     let matches_concession_type = concession_type
-      ? this.concession_type.id == concession_type.id
+      ? this.concession_type_id == concession_type.id
       : true;
     return matches_seat_group && matches_concession_type;
   }
 
   /**
+   * Returns the price for one of this ticket, based on the concession applied to the seat group
+   *
+   * @param {object} ticket_options Raw data from the ticket_types endpoint (i.e. grouped Seat Group -> Concession Types data) which contains the price data
    * @returns {number} Price of the ticket in pennies
    */
-  get price() {
-    return this.concession_type.price;
-  }
-
-  /**
-   * @returns {number} Price of the ticket in pounds (2 d.p.)
-   */
-  get price_pounds() {
-    return this.concession_type.price_pounds;
+  price(ticket_options) {
+    return ticket_options
+      .find(
+        (seat_location) => seat_location.seat_group.id == this.seat_group_id
+      )
+      .concession_types.find(
+        (concession) => concession.id == this.concession_type_id
+      ).price;
   }
 
   /**
    * @returns {object} API Data object that represents the ticket
    */
-  get apiSchema() {
+  get apiData() {
     return {
-      seat_group_id: this.seat_group.id,
-      concession_type_id: this.concession_type.id,
+      seat_group_id: this.seat_group_id,
+      concession_type_id: this.concession_type_id,
     };
   }
 }

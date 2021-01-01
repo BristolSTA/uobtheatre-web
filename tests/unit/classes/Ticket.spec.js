@@ -27,6 +27,17 @@ describe('Ticket Class', () => {
     price_pounds: '1.00',
   };
 
+  let ticket_types_data = [
+    {
+      seat_group: incorrectSeatGroup,
+      concession_types: [correctConcessionType, incorrectConcessionType],
+    },
+    {
+      seat_group: correctSeatGroup,
+      concession_types: [correctConcessionType, incorrectConcessionType],
+    },
+  ];
+
   beforeEach(() => {
     ticket = new Ticket(correctSeatGroup, correctConcessionType);
   });
@@ -43,11 +54,7 @@ describe('Ticket Class', () => {
   });
 
   it('can give the price in pennies', () => {
-    expect(ticket.price == 100);
-  });
-
-  it('can give the price in pounds', () => {
-    expect(ticket.price_pounds == '1.00');
+    expect(ticket.price(ticket_types_data) == 100);
   });
 
   it('can convert to API schema', () => {

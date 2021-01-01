@@ -2,7 +2,11 @@ import faker from 'faker';
 import { DateTime } from 'luxon';
 import { belongsTo, Factory, hasMany, Model } from 'miragejs';
 
-import { RelationshipSerializer, updateIfDoesntHave } from './utils';
+import {
+  NotFoundResponse,
+  RelationshipSerializer,
+  updateIfDoesntHave,
+} from './utils';
 
 export default {
   registerModels() {
@@ -67,5 +71,44 @@ export default {
   },
   registerRoutes() {
     this.resource('performances');
+
+    // All ticket (concession) types by performance by production
+    this.get(
+      'productions/:slug/performances/:performance_id/ticket_types',
+      function (schema, request) {
+        let performance = schema.performances.find(
+          request.params.performance_id
+        );
+        if (!performance) {
+          return NotFoundResponse();
+        }
+
+        let seatGroups = this.serialize(performance.seatGroups);
+
+        let concessionTypes = this.serialize(performance.concessionTypes);
+
+        return seatGroups.map((seatGroup) => {
+          return {
+            seat_group: seatGroup,
+            concession_types: concessionTypes,
+          };
+        });
+      }
+    );
+
+    // All discounts for performance
+    this.get(
+      'productions/:slug/performances/:performance_id/discounts',
+      function (schema, request) {
+        let performance = schema.performances.find(
+          request.params.performance_id
+        );
+        if (!performance) {
+          return NotFoundResponse();
+        }
+
+        return performance.discounts;
+      }
+    );
   },
 };

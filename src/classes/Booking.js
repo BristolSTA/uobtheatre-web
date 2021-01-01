@@ -1,11 +1,15 @@
 import Ticket from './Ticket';
 export default class Booking {
-  /** @member {string} */
-  reference;
+  /** @member {number} */
+  id;
   /** @member {object} */
   performance;
   /** @member {Ticket} */
   tickets;
+  /** @member {object} */
+  price_breakdown;
+  /** @member {boolean} dirty Whether the booking class is in sync with the API or not */
+  dirty = true;
 
   constructor() {
     this.tickets = [];
@@ -20,10 +24,39 @@ export default class Booking {
    */
   static fromAPIData(bookingData) {
     let booking = new this();
-    booking.performance = bookingData.performance;
-    booking.reference = bookingData.booking_reference;
+    booking.updateFromAPIData(bookingData);
     return booking;
   }
+
+  /**
+   * Updates the booking object from an API response
+   *
+   * @param {object} bookingData API Booking Data
+   */
+  updateFromAPIData(bookingData) {
+    this.price_breakdown = bookingData.price_breakdown;
+    if (bookingData.tickets) {
+      this.tickets = bookingData.tickets.map((ticketAPIData) =>
+        Ticket.fromAPIData(ticketAPIData)
+      );
+    }
+    this.id = bookingData.id;
+    this.dirty = false;
+  }
+
+  /**
+   * Returns the booking in the API booking model schema
+   *
+   * @returns {object} Booking Object
+   */
+  toAPIData() {
+    return {
+      tickets: this.tickets.map((ticket) => {
+        return ticket.apiData;
+      }),
+    };
+  }
+
   /**
    * @returns {Ticket[]} Array of tickets
    */
@@ -41,6 +74,7 @@ export default class Booking {
     for (let i = 0; i < number; i++) {
       this.tickets.push(ticket);
     }
+    this.dirty = true;
   }
 
   /**
@@ -61,9 +95,10 @@ export default class Booking {
     });
 
     while (rolling_total < count) {
-      this.addTicket(new Ticket(seat_group, concession_type));
+      this.addTicket(new Ticket(seat_group.id, concession_type.id));
       rolling_total++;
     }
+    this.dirty = true;
   }
 
   /**
@@ -91,6 +126,7 @@ export default class Booking {
       concession_type,
       this.ticketCount(seat_group, concession_type) - 1
     );
+    this.dirty = true;
   }
 
   /**
@@ -109,21 +145,68 @@ export default class Booking {
    */
   clearTickets() {
     this.tickets = [];
+    this.dirty = true;
   }
 
   /**
-   * @returns {number} Total price of the booking, in pennies
+   * Calculates the total price (in pennies) of the tickets (pre-discounts/charges)
+   *
+   * @param {object} ticket_options Raw data from the ticket_types endpoint (i.e. grouped Seat Group -> Concession Types data) which contains the price data
+   * @returns {number} Total price of the tickets (without discounts), in pennies
    */
-  get total_price() {
+  tickets_total_price(ticket_options) {
     return this.tickets
-      .map((ticket) => ticket.price)
+      .map((ticket) => ticket.price(ticket_options))
       .reduce((a, b) => a + b, 0);
   }
 
   /**
+   * Calculates the total price (in pounds) of the tickets (pre-discounts/charges)
+   *
+   * @param {object} ticket_options Raw data from the ticket_types endpoint (i.e. grouped Seat Group -> Concession Types data) which contains the price data
    * @returns {number} Total price of the booking, in pounds to 2 d.p.
    */
+  tickets_total_price_pounds(ticket_options) {
+    return (this.tickets_total_price(ticket_options) / 100).toFixed(2);
+  }
+
+  /**
+   * @returns {string} Total cost / price of the booking in pounds
+   */
   get total_price_pounds() {
-    return (this.total_price / 100).toFixed(2);
+    if (!this.price_breakdown) return (0).toFixed(2);
+    return (this.price_breakdown.total_price / 100).toFixed(2);
+  }
+
+  /**
+   * @returns {string} Total cost / price of the tickets in pounds
+   */
+  get tickets_price_pounds() {
+    if (!this.price_breakdown) return (0).toFixed(2);
+    return (this.price_breakdown.tickets_price / 100).toFixed(2);
+  }
+
+  /**
+   * @returns {string} Total cost / price of the group discounts in pounds
+   */
+  get discounts_value_pounds() {
+    if (!this.price_breakdown) return (0).toFixed(2);
+    return (this.price_breakdown.discounts_value / 100).toFixed(2);
+  }
+
+  /**
+   * @returns {Array} List of tickets grouped by seat group & concession type, giving capacity and price
+   */
+  get ticket_overview() {
+    if (!this.price_breakdown) return [];
+    return this.price_breakdown.tickets;
+  }
+
+  /**
+   * @returns {Array} List of misc costs, giving name, description, an optional perctange value and the calcualted additional cost
+   */
+  get misc_costs() {
+    if (!this.price_breakdown) return [];
+    return this.price_breakdown.misc_costs;
   }
 }

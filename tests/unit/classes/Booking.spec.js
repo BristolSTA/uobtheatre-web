@@ -1,12 +1,12 @@
 import { expect } from 'chai';
-import { fake } from 'faker';
 
 import Booking from '@/classes/Booking';
 import Ticket from '@/classes/Ticket';
 import { makeServer } from '@/fakeApi';
 
+import FakePriceBreakdown from '../fixtures/FakePriceBreakdown';
 import { createFromFactoryAndSerialize } from '../helpers';
-describe('Ticket Class', () => {
+describe('Booking Class', () => {
   /** @member {Booking} */
   let booking;
   let performance;
@@ -14,17 +14,26 @@ describe('Ticket Class', () => {
   let concession_100;
   let concession_1000;
   let concession_500;
+  let ticket_types;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     let server = makeServer({ environment: 'test' });
     performance = createFromFactoryAndSerialize('performance', 1, null, server);
-    seat_group = createFromFactoryAndSerialize('seatGroup', 1, null, server);
+    seat_group = createFromFactoryAndSerialize(
+      'seatGroup',
+      1,
+      {
+        performance: server.schema.performances.first(),
+      },
+      server
+    );
     concession_100 = createFromFactoryAndSerialize(
       'concessionType',
       1,
       {
         id: 1,
         price: 100,
+        performance: server.schema.performances.first(),
       },
       server
     );
@@ -34,6 +43,7 @@ describe('Ticket Class', () => {
       {
         id: 2,
         price: 1000,
+        performance: server.schema.performances.first(),
       },
       server
     );
@@ -43,9 +53,14 @@ describe('Ticket Class', () => {
       {
         id: 3,
         price: 500,
+        performance: server.schema.performances.first(),
       },
       server
     );
+    ticket_types = await fetch(
+      `api/productions/myperf/performances/${performance.id}/ticket_types`
+    );
+    ticket_types = await ticket_types.json();
     server.shutdown();
   });
 
@@ -54,18 +69,32 @@ describe('Ticket Class', () => {
   });
 
   let fakeTicket = (concession = null) => {
-    return new Ticket(seat_group, concession ?? concession_100);
+    return new Ticket(
+      seat_group.id,
+      concession ? concession.id : concession_100.id
+    );
   };
 
   it('can be constructed from API data', () => {
     let apiData = {
-      performance: performance,
-      booking_reference: 'abcd-1234',
+      price_breakdown: FakePriceBreakdown,
     };
     let booking = Booking.fromAPIData(apiData);
     expect(booking).to.be.instanceOf(Booking);
-    expect(booking.reference).to.eq(apiData.booking_reference);
-    expect(booking.performance).to.eq(apiData.performance);
+    expect(booking.price_breakdown).to.eq(FakePriceBreakdown);
+
+    apiData = {
+      price_breakdown: FakePriceBreakdown,
+      tickets: [
+        { seat_group_id: 1, concession_type_id: 2 },
+        { seat_group_id: 3, concession_type_id: 4 },
+        { seat_group_id: 5, concession_type_id: 6 },
+      ],
+    };
+    booking = Booking.fromAPIData(apiData);
+    expect(booking).to.be.instanceOf(Booking);
+    expect(booking.tickets.length).to.eq(3);
+    expect(booking.dirty).to.be.false;
   });
   it('can get tickets', () => {
     expect(booking.tickets).to.be.instanceOf(Array);
@@ -79,6 +108,7 @@ describe('Ticket Class', () => {
     let ticket = fakeTicket();
     booking.addTicket(ticket);
     expect(booking.tickets).to.include(ticket);
+    expect(booking.dirty).to.be.true;
   });
 
   it('can set number of tickets', () => {
@@ -90,6 +120,7 @@ describe('Ticket Class', () => {
 
     booking.setTicketCount(seat_group, concession_100, 0);
     expect(booking.ticketCount(seat_group, concession_100)).to.eq(0);
+    expect(booking.dirty).to.be.true;
   });
 
   describe('Matching Tickets', () => {
@@ -101,7 +132,7 @@ describe('Ticket Class', () => {
       ticket1 = fakeTicket(concession_100);
       ticket2 = fakeTicket(concession_1000);
       ticket3 = fakeTicket(concession_500);
-      ticket4 = new Ticket({ id: 2 }, concession_100);
+      ticket4 = new Ticket(2, concession_100.id);
       booking.tickets = [ticket1, ticket2, ticket3, ticket4];
     });
 
@@ -140,6 +171,7 @@ describe('Ticket Class', () => {
 
     expect(booking.tickets.length).to.eq(2);
     expect(booking.tickets).to.include(t1, t3);
+    expect(booking.dirty).to.be.true;
   });
 
   it('can clear tickets', () => {
@@ -148,9 +180,20 @@ describe('Ticket Class', () => {
     booking.clearTickets();
 
     expect(booking.tickets.length).to.eq(0);
+    expect(booking.dirty).to.be.true;
   });
-  it('can get total price in pennies', () => {
-    expect(booking.total_price).to.eq(0);
+  it('can get tickets total price in pennies', () => {
+    expect(booking.tickets_total_price(ticket_types)).to.eq(0);
+
+    booking.tickets = [
+      fakeTicket(concession_100),
+      fakeTicket(concession_1000),
+      fakeTicket(concession_500),
+    ];
+    expect(booking.tickets_total_price(ticket_types)).to.eq(1600);
+  });
+  it('can get tickets total price in pounds', () => {
+    expect(booking.tickets_total_price_pounds(ticket_types)).to.eq('0.00');
 
     booking.tickets = [
       fakeTicket(concession_100),
@@ -158,17 +201,41 @@ describe('Ticket Class', () => {
       fakeTicket(concession_500),
     ];
 
-    expect(booking.total_price).to.eq(1600);
+    expect(booking.tickets_total_price_pounds(ticket_types)).to.eq('16.00');
   });
-  it('can get total price in pounds', () => {
+  it('can get total booking price in pounds', () => {
     expect(booking.total_price_pounds).to.eq('0.00');
 
-    booking.tickets = [
-      fakeTicket(concession_100),
-      fakeTicket(concession_1000),
-      fakeTicket(concession_500),
-    ];
+    booking.price_breakdown = FakePriceBreakdown;
 
-    expect(booking.total_price_pounds).to.eq('16.00');
+    expect(booking.total_price_pounds).to.eq('22.58');
+  });
+  it('can get tickets price in pounds', () => {
+    expect(booking.tickets_price_pounds).to.eq('0.00');
+
+    booking.price_breakdown = FakePriceBreakdown;
+
+    expect(booking.tickets_price_pounds).to.eq('22.50');
+  });
+  it('can get discounts value in pounds', () => {
+    expect(booking.discounts_value_pounds).to.eq('0.00');
+
+    booking.price_breakdown = FakePriceBreakdown;
+
+    expect(booking.discounts_value_pounds).to.eq('1.00');
+  });
+  it('can get ticket overview', () => {
+    expect(booking.ticket_overview).to.be.empty;
+
+    booking.price_breakdown = FakePriceBreakdown;
+
+    expect(booking.ticket_overview).to.eq(FakePriceBreakdown.tickets);
+  });
+  it('can get misc costs', () => {
+    expect(booking.misc_costs).to.be.empty;
+
+    booking.price_breakdown = FakePriceBreakdown;
+
+    expect(booking.misc_costs).to.eq(FakePriceBreakdown.misc_costs);
   });
 });

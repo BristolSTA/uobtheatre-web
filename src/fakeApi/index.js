@@ -155,6 +155,7 @@ export function makeServer({ environment = 'development' } = {}) {
         email: 'admin@bristolsta.com',
         token: '36c86c19f8f8d73aa59c3a00814137bdee0ab8de',
       });
+      console.log(server);
     },
 
     routes() {

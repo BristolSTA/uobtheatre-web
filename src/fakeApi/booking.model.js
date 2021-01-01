@@ -1,11 +1,8 @@
 import faker from 'faker';
+import lo from 'lodash';
 import { belongsTo, Factory, hasMany, Model } from 'miragejs';
 
-import {
-  DefaultSerializer,
-  NotFoundResponse,
-  updateIfDoesntHave,
-} from './utils';
+import { DefaultSerializer, updateIfDoesntHave } from './utils';
 
 export default {
   registerModels() {
@@ -33,6 +30,47 @@ export default {
               concession_type_id: ticket.concessionTypeId,
             };
           });
+
+          let tickets_pricebreakdown = lo
+            .chain(json.tickets)
+            .groupBy((ticket) => [
+              ticket.seat_group_id,
+              ticket.concession_type_id,
+            ])
+            .values()
+            .map((groupedTickets) => {
+              let concessionType = this.schema.concessionTypes.find(
+                groupedTickets[0].concession_type_id
+              );
+              return {
+                number: groupedTickets.length,
+                concession_type: concessionType,
+                seat_group: this.schema.seatGroups.find(
+                  groupedTickets[0].seat_group_id
+                ),
+                ticket_price: concessionType.price,
+                total_price: concessionType.price * groupedTickets.length,
+              };
+            })
+            .value();
+
+          let ticket_price = tickets_pricebreakdown
+            .map((tickets) => tickets.total_price)
+            .reduce((a, b) => a + b, 0);
+
+          // A bit of a bodge...
+          let discounts_price = object.performance.discounts.models.length
+            ? object.performance.discounts.models[0].discount * 100
+            : 0;
+
+          json.price_breakdown = {
+            tickets: tickets_pricebreakdown,
+            tickets_price: ticket_price,
+            discounts_value: discounts_price,
+            misc_costs: [],
+            total_price: ticket_price - discounts_price,
+          };
+
           return json;
         },
         normalize() {
@@ -96,29 +134,7 @@ export default {
     };
   },
   registerRoutes() {
-    // All ticket (concession) types by performance by production
-    this.get(
-      'productions/:slug/performances/:performance_id/ticket_types',
-      function (schema, request) {
-        let performance = schema.performances.find(
-          request.params.performance_id
-        );
-        if (!performance) {
-          return NotFoundResponse();
-        }
-
-        let seatGroups = this.serialize(performance.seatGroups);
-
-        let concessionTypes = this.serialize(performance.concessionTypes);
-
-        return seatGroups.map((seatGroup) => {
-          return {
-            seat_group: seatGroup,
-            concession_types: concessionTypes,
-          };
-        });
-      }
-    );
+    // Booking resource endpoints
     this.resource('bookings', { except: ['create', 'update'] });
     this.post('bookings', function (schema, request) {
       request.requestBody = JSON.stringify({
