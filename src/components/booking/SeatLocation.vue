@@ -1,6 +1,7 @@
 <template>
   <div class="text-white">
     <div
+      ref="header"
       class="flex py-2 pl-4 cursor-pointer hover:bg-opacity-80"
       :class="[expanded ? 'bg-sta-orange' : 'bg-sta-green']"
       @click="$emit('select-location')"

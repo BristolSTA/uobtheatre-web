@@ -37,11 +37,5 @@ export default {
       this.$emit('add-discount-tickets');
     },
   },
-  computed: {
-    total_price_pounds() {
-      let price_pounds = this.discount.total_price / 100;
-      return price_pounds.toFixed(2);
-    },
-  },
 };
 </script>

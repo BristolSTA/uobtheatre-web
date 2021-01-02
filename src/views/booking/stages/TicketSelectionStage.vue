@@ -104,6 +104,7 @@ export default {
       discounts: null,
 
       interaction_timer: lo.debounce(this.updateAPI, 2 * 1000),
+      running_updates: 0,
     };
   },
   created() {
@@ -141,21 +142,29 @@ export default {
       this.interaction_timer();
     },
     async updateAPI() {
+      this.running_updates++;
       let bookingResponse;
-      if (!this.booking.id) {
-        // We haven't got a booking yet, lets create one
-        bookingResponse = await bookingService.startNewBooking(
-          this.booking.performance.id,
-          this.booking.toAPIData().tickets
-        );
-      } else {
-        // We have a booking, lets update it
-        bookingResponse = await bookingService.updateBooking(
-          this.booking.id,
-          this.booking.toAPIData().tickets
-        );
+      try {
+        if (!this.booking.id) {
+          // We haven't got a booking yet, lets create one
+          bookingResponse = await bookingService.startNewBooking(
+            this.booking.performance.id,
+            this.booking.toAPIData().tickets
+          );
+        } else {
+          // We have a booking, lets update it
+          bookingResponse = await bookingService.updateBooking(
+            this.booking.id,
+            this.booking.toAPIData().tickets
+          );
+        }
+      } catch (e) {
+        console.error(e);
       }
-      this.booking.updateFromAPIData(bookingResponse);
+
+      this.running_updates--;
+      if (!this.running_updates && bookingResponse)
+        this.booking.updateFromAPIData(bookingResponse);
     },
   },
 };
