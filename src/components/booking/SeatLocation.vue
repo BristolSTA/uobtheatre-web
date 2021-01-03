@@ -17,7 +17,7 @@
         <font-awesome-icon :icon="expanded ? 'chevron-up' : 'chevron-down'" />
       </div>
     </div>
-    <div v-if="expanded">
+    <div v-if="expanded" class="border-4 border-t-0 border-sta-gray">
       <concession-type
         v-for="(concession_type, index) in seat_location.concession_types"
         :key="index"

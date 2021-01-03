@@ -33,6 +33,11 @@ describe('Seat Location Component', () => {
       seatLocationComponent.findComponent({ ref: 'header' }).text()
     ).to.contain('Best Seats in the House');
   });
+  it('doesnt display concession types if not exapnded', async () => {
+    expect(
+      seatLocationComponent.findAllComponents(ConcessionType).length
+    ).to.eq(0);
+  });
   it('displays seat group description if expanded', async () => {
     let header = seatLocationComponent.findComponent({ ref: 'header' });
     expect(header.text()).not.to.contain('The best seats obviously');

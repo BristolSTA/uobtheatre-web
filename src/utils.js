@@ -29,14 +29,16 @@ let displayStartEnd = (start, end, format) => {
 /**
  * Handles setting the Vuex global loading state on / off based on a promise
  *
- * @param {Promise} promise The promise to use to dictate when loading has finished
+ * @param {Promise|Promise[]} promises The promise(s) to use to dictate when loading has finished
  * @returns {Promise} The original promise
  */
-let runPromiseWithLoading = (promise) => {
+let runPromiseWithLoading = async (promises) => {
   store.commit('SET_LOADING');
-  return promise.then(() => {
-    store.commit('SET_NOT_LOADING');
-  });
+  if (!(promises instanceof Array)) {
+    promises = [promises];
+  }
+  await Promise.all(promises);
+  store.commit('SET_NOT_LOADING');
 };
 
 let handle404 = (err, next) => {

@@ -19,7 +19,7 @@
         @remove-ticket="onRemoveTicket"
       />
     </div>
-    <div v-if="booking.tickets.length" class="flex my-4">
+    <div v-if="booking.tickets.length" class="flex pt-2 my-4">
       <div
         class="px-4 pb-2 mx-auto text-center border-4 border-dashed rounded-md min-w-1/2 border-sta-gray"
       >
@@ -49,8 +49,8 @@
               </td>
             </tr>
           </tbody>
-          <tfoot v-if="!booking.dirty">
-            <tr v-if="booking.has_discounts">
+          <tfoot>
+            <tr v-if="booking.has_discounts && !booking.dirty">
               <td></td>
               <th class="p-2">Discounts</th>
               <td></td>
@@ -65,11 +65,21 @@
                 {{ booking.tickets.length }}
               </td>
               <td class="p-2 text-right">
-                £{{ booking.sub_total_price_pounds }}
+                <template v-if="!booking.dirty"
+                  >£{{ booking.sub_total_price_pounds }}</template
+                >
+                <font-awesome-icon
+                  v-else
+                  class="animate-spin"
+                  icon="circle-notch"
+                />
               </td>
             </tr>
           </tfoot>
         </table>
+      </div>
+      <div class="mt-2 text-center">
+        <button class="btn btn-orange">Next</button>
       </div>
     </div>
   </div>
@@ -83,6 +93,7 @@ import Booking from '@/classes/Booking';
 import Ticket from '@/classes/Ticket';
 import SeatLocation from '@/components/booking/SeatLocation.vue';
 import { bookingService, performanceService } from '@/services';
+import { runPromiseWithLoading } from '@/utils';
 
 export default {
   name: 'ticket-selection-stage',
@@ -104,26 +115,27 @@ export default {
       discounts: null,
 
       interaction_timer: lo.debounce(this.updateAPI, 2 * 1000),
-      running_updates: 0,
     };
   },
   created() {
-    performanceService
-      .fetchTicketOptionsForPerformance(
-        this.production.slug,
-        this.booking.performance.id
-      )
-      .then((results) => {
-        this.seat_locations = results;
-      });
-    performanceService
-      .fetchGroupDiscountOptionsForPerformance(
-        this.production.slug,
-        this.booking.performance.id
-      )
-      .then((results) => {
-        this.discounts = results;
-      });
+    runPromiseWithLoading([
+      performanceService
+        .fetchTicketOptionsForPerformance(
+          this.production.slug,
+          this.booking.performance.id
+        )
+        .then((results) => {
+          this.seat_locations = results;
+        }),
+      performanceService
+        .fetchGroupDiscountOptionsForPerformance(
+          this.production.slug,
+          this.booking.performance.id
+        )
+        .then((results) => {
+          this.discounts = results;
+        }),
+    ]);
   },
   methods: {
     onAddTicket(location, concession_type, number = 1) {
@@ -142,29 +154,26 @@ export default {
       this.interaction_timer();
     },
     async updateAPI() {
-      this.running_updates++;
       let bookingResponse;
-      try {
-        if (!this.booking.id) {
-          // We haven't got a booking yet, lets create one
-          bookingResponse = await bookingService.startNewBooking(
-            this.booking.performance.id,
-            this.booking.toAPIData().tickets
-          );
-        } else {
-          // We have a booking, lets update it
-          bookingResponse = await bookingService.updateBooking(
-            this.booking.id,
-            this.booking.toAPIData().tickets
-          );
-        }
-      } catch (e) {
-        console.error(e);
+
+      if (!this.booking.id) {
+        // We haven't got a booking yet, lets create one
+        bookingResponse = await bookingService.startNewBooking(
+          this.booking.performance.id,
+          this.booking.toAPIData().tickets
+        );
+      } else {
+        // We have a booking, lets update it
+        bookingResponse = await bookingService.updateBooking(
+          this.booking.id,
+          this.booking.toAPIData().tickets
+        );
       }
 
-      this.running_updates--;
-      if (!this.running_updates && bookingResponse)
-        this.booking.updateFromAPIData(bookingResponse);
+      // Check for changes since API called
+      if (this.booking.tickets.length == bookingResponse.tickets.length) {
+        return this.booking.updateFromAPIData(bookingResponse);
+      }
     },
   },
 };

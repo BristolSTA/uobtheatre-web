@@ -21,7 +21,7 @@ const waitFor = function (callback) {
         clearInterval(timer);
         resolve();
       }
-    }, 100);
+    }, 2);
   });
 };
 
@@ -72,10 +72,11 @@ const makeServer = () => {
   return makeAPIServer({ environment: 'test' });
 };
 
-const executeWithServer = (callback) => {
+const executeWithServer = (callback, closeServer = true) => {
   let server = makeServer();
   callback(server);
-  server.shutdown;
+  if (closeServer) server.shutdown();
+  return server;
 };
 
 const serialize = (model, server) => {

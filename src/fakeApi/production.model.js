@@ -38,7 +38,10 @@ export default {
         name: () => faker.random.words(3),
         subtitle: null,
         slug() {
-          return this.name.toLowerCase().replace(/ /g, '-');
+          return this.name
+            .toLowerCase()
+            .replace(/[^A-z ]/g, '')
+            .replace(/ /g, '-');
         },
         poster_image: 'https://via.placeholder.com/400x566',
         featured_image: 'https://via.placeholder.com/1920x960',
