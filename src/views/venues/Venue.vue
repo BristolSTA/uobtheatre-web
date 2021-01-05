@@ -10,20 +10,15 @@
       <h1 class="pt-4 ml-10 text-left lg:ml-20 xl:ml-40 text-h1">
         The {{ venue.name }}
       </h1>
-      <div class="flex flex-wrap items-center justify-center">
+      <div class="flex flex-wrap items-center justify-center mt-2 lg:mb-8">
         <div
           class="flex flex-col items-center w-full px-8 text-justify md:block md:w-auto md:max-w-md"
         >
-          <p>
-            {{ venue.description }}
-          </p>
-          <div class="mt-4">
-            <p><strong>Capacity: </strong> Max {{ venue.internal_capacity }}</p>
-          </div>
+          {{ venue.description }}
         </div>
-        <div class="w-full max-w-xl h-80 md:w-2/3 md:m-4">
+        <div class="w-full h-full max-w-xl lg:w-2/3 md:m-4">
           <img
-            class="w-full p-8"
+            class="w-full p-3 md:p-0"
             :src="venue.image"
             :alt="`${venue.name} image`"
             ref="image"
@@ -32,19 +27,36 @@
       </div>
       <div class="flex flex-wrap items-center justify-center">
         <div
-          class="flex items-center justify-center w-full mb-4 lg:mb-0 lg:w-1/4 lg:order-last"
+          class="flex justify-center w-full py-4 space-y-1 lg:w-1/4 lg:order-last lg:mb-0 lg:ml-4 bg-sta-gray-dark"
         >
-          <div ref="address">
-            <p class="font-semibold">Address:</p>
-            <p v-if="venue.address.building_name">
-              {{ venue.address.building_name }}
-            </p>
-            <p>
-              <template v-if="venue.address.building_number">
-                {{ venue.address.building_number }} </template
-              >{{ venue.address.street }}
-            </p>
-            <p>{{ venue.address.city }}, {{ venue.address.postcode }}</p>
+          <div>
+            <h2 class="text-3xl font-semibold text-sta-orange">Venue Info:</h2>
+            <table class="table-auto">
+              <tbody>
+                <tr>
+                  <th class="pb-2 pr-2 align-top">Capacity:</th>
+                  <td class="align-top">Max {{ venue.internal_capacity }}</td>
+                </tr>
+                <tr class="">
+                  <th class="pr-2 align-top">Address:</th>
+                  <td class="align-top">
+                    <div ref="address">
+                      <p v-if="venue.address.building_name">
+                        {{ venue.address.building_name }}
+                      </p>
+                      <p>
+                        <template v-if="venue.address.building_number">
+                          {{ venue.address.building_number }} </template
+                        >{{ venue.address.street }}
+                      </p>
+                      <p>
+                        {{ venue.address.city }}, {{ venue.address.postcode }}
+                      </p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
         <div
