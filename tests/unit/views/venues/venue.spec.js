@@ -59,7 +59,7 @@ describe('Venue page', function () {
 
     expect(venuePageComponent.text()).to.contain('not the anson rooms');
 
-    expect(venuePageComponent.text()).to.contain('Capacity:  Max 420');
+    expect(venuePageComponent.text()).to.contain('Capacity: Max 420');
 
     expect(
       venuePageComponent

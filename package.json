@@ -55,11 +55,18 @@
     "eslint-plugin-vue-a11y": "^0.0.31",
     "faker": "^5.1.0",
     "husky": "^5.0.0-beta.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest-transform-stub": "^2.0.0",
     "miragejs": "^0.1.41",
     "prettier": "^2.1.2",
     "sass": "^1.29.0",
     "sass-loader": "^10.1.0",
     "vue-cli-plugin-tailwind": "~1.5.0",
     "vue-template-compiler": "^2.6.11"
+  },
+  "jest": {
+    "transform": {
+      ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "jest-transform-stub"
+    }
   }
 }
