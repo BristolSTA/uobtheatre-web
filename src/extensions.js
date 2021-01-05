@@ -6,6 +6,7 @@ import {
   faChevronRight,
   faCircleNotch,
   faClock,
+  faMapMarkedAlt,
   faTicketAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -24,7 +25,8 @@ library.add(
   faTicketAlt,
   faClock,
   faFacebook,
-  faCircleNotch
+  faCircleNotch,
+  faMapMarkedAlt
 );
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 

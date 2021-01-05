@@ -27,7 +27,7 @@
       </div>
       <div class="flex flex-wrap items-center justify-center">
         <div
-          class="flex justify-center w-full py-4 space-y-1 lg:w-1/4 lg:order-last lg:mb-0 lg:ml-4 bg-sta-gray-dark"
+          class="flex justify-center w-full p-4 space-y-1 lg:w-1/4 lg:order-last lg:mb-0 lg:ml-4 bg-sta-gray-dark"
         >
           <div>
             <h2 class="text-3xl font-semibold text-sta-orange">Venue Info:</h2>
@@ -46,8 +46,9 @@
                       </p>
                       <p>
                         <template v-if="venue.address.building_number">
-                          {{ venue.address.building_number }} </template
-                        >{{ venue.address.street }}
+                          {{ venue.address.building_number }}
+                        </template>
+                        {{ venue.address.street }}
                       </p>
                       <p>
                         {{ venue.address.city }}, {{ venue.address.postcode }}
@@ -57,6 +58,13 @@
                 </tr>
               </tbody>
             </table>
+            <div class="text-sm font-semibold text-sta-orange">
+              <a target="_blank" :href="googleMapsLink">
+                <icon-list-item icon="map-marked-alt"
+                  >Open in Google Maps
+                </icon-list-item>
+              </a>
+            </div>
           </div>
         </div>
         <div
@@ -75,12 +83,14 @@ import 'leaflet/dist/leaflet.css';
 
 import L from 'leaflet';
 
+import IconListItem from '@/components/ui/IconListItem.vue';
 import { venueService } from '@/services';
 import { handle404Mixin, runPromiseWithLoading } from '@/utils';
 
 export default {
+  components: { IconListItem },
   name: 'venue-page',
-  mixins: [handle404Mixin],
+  mixins: [IconListItem, handle404Mixin],
   metaInfo() {
     const venueName = this.venue ? this.venue.name : 'Loading...';
     return {
@@ -103,6 +113,11 @@ export default {
         })
         .catch(this.handle404)
     );
+  },
+  computed: {
+    googleMapsLink() {
+      return `https://maps.google.com/?q=${this.venue.name},${this.venue.address.street},${this.venue.address.city}`;
+    },
   },
   methods: {
     createMap(venue) {
