@@ -12,6 +12,7 @@ require('./extensions');
  * Import styles
  */
 import './assets/styles/app.scss';
+import 'leaflet/dist/leaflet.css';
 
 /**
  * Import server
