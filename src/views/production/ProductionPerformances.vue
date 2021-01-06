@@ -25,25 +25,19 @@
             {{ performance.start | dateFormat('cccc d MMM') }}
           </h2>
           <div>
-            <span
-              v-if="
-                performance.is_inperson ||
-                (!performance.is_online && !performance.is_inperson)
-              "
+            <router-link
+              v-if="performance.is_inperson"
+              :to="{
+                name: 'venue',
+                params: { venueSlug: performance.venue.slug },
+              }"
             >
-              <router-link
-                :to="{
-                  name: 'venue',
-                  params: { venueSlug: performance.venue.slug },
-                }"
-              >
-                {{ performance.venue.name }}
-              </router-link>
-            </span>
-            <span v-if="performance.is_online && performance.is_inperson"
+              {{ performance.venue.name }}
+            </router-link>
+            <template v-if="performance.is_online && performance.is_inperson"
               >and
-            </span>
-            <span v-if="performance.is_online">Online</span>
+            </template>
+            <template v-if="performance.is_online">Online</template>
           </div>
           <div>Starting at {{ performance.start | dateFormat('T') }}</div>
           <div class="text-sm font-semibold">

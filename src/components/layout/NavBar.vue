@@ -92,10 +92,6 @@ export default {
       authService: authService,
     };
   },
-  methods: {
-    navBarLink(item) {
-      return item[0].concat(item[1]).toLowerCase();
-    },
-  },
+  methods: {},
 };
 </script>

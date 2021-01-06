@@ -7,9 +7,7 @@
       Loading Venue...
     </div>
     <template v-else>
-      <h1 class="pt-4 ml-10 text-left lg:ml-20 xl:ml-40 text-h1">
-        The {{ venue.name }}
-      </h1>
+      <h1 class="container pt-2 text-left text-h1">The {{ venue.name }}</h1>
       <div class="flex flex-wrap items-center justify-center mt-2 lg:mb-8">
         <div
           class="flex flex-col items-center w-full px-8 text-justify md:block md:w-auto md:max-w-md"
@@ -68,7 +66,7 @@
           </div>
         </div>
         <div
-          v-if="!(!venue.address.latitude & !venue.address.longitude)"
+          v-if="venue.address.latitude && venue.address.longitude"
           class="flex justify-center w-full lg:w-3/5 h-96 lg:mb-4"
         >
           <div class="w-full" id="mapContainer"></div>
@@ -119,7 +117,7 @@ export default {
   },
   methods: {
     createMap(venue) {
-      if (!venue.latitude | !venue.longitude) {
+      if (!venue.latitude || !venue.longitude) {
         const map = L.map('mapContainer').setView(
           [venue.address.latitude, venue.address.longitude],
           14
