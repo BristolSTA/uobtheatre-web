@@ -40,29 +40,18 @@ describe('ProductionBanner', function () {
       },
     ]);
 
-    // test correct show title
     expect(headerContainer.text()).to.contain('Legally Ginger');
-
-    // test correct society performing show
     expect(headerContainer.text()).to.contain('by Joe Bloggs Productions');
-
-    // test combination of two venues
     expect(fixTextSpacing(headerContainer.text())).to.contain(
       'The New Vic and The Newer Vic'
     );
 
-    // test production start and end dates
     expect(headerContainer.text()).to.contain('14 Nov - 18 Nov 2020');
-
-    // test for performance time to be the minimum length, in human format
     expect(headerContainer.text()).to.contain('1 hour, 42 minutes');
-
-    // test for correct ticket price
     expect(fixTextSpacing(headerContainer.text())).to.contain(
       'Tickets available from £4.34'
     );
 
-    // correct feature image
     expect(
       headerContainer
         .findComponent({
@@ -71,7 +60,6 @@ describe('ProductionBanner', function () {
         .attributes('src')
     ).to.equal('http://pathto.example/featured-image.png');
 
-    // correct society image
     expect(
       headerContainer
         .findComponent({
@@ -115,8 +103,6 @@ describe('ProductionBanner', function () {
         is_online: true,
       },
     ]);
-
-    // test online only
     expect(fixTextSpacing(headerContainer.text())).to.contain('Watch Online');
   });
 
@@ -137,8 +123,6 @@ describe('ProductionBanner', function () {
         is_online: false,
       },
     ]);
-
-    // test online and live
     expect(fixTextSpacing(headerContainer.text())).to.contain(
       'Live at the New Vic and Online '
     );

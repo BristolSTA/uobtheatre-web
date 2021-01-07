@@ -7,7 +7,7 @@ import ProductionPerformances from '@/views/production/ProductionPerformances.vu
 
 import { fixTextSpacing } from '../../helpers.js';
 
-describe('ProductionHeader', function () {
+describe('ProductionPerformance', function () {
   let performancesContainer;
   let server;
   beforeEach(async () => {
@@ -77,6 +77,8 @@ describe('ProductionHeader', function () {
       expect(performance.text()).to.contain('Starting at 16:00');
       expect(performance.text()).to.contain('Tickets Available');
       expect(performance.find('button').text()).to.eq('Book');
+
+      performancesContainer.findAllComponents(RouterLinkStub);
       //TODO: Test for link to booking page
       //TODO: Test for link to venue page
     });

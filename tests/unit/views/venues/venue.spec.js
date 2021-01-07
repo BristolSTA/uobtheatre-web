@@ -1,6 +1,5 @@
 import { mount } from '@vue/test-utils';
 import { expect } from 'chai';
-import L from 'leaflet';
 
 import { makeServer } from '@/fakeApi';
 import Venue from '@/views/venues/Venue.vue';
