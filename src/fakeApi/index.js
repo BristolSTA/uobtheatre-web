@@ -57,6 +57,10 @@ export function makeServer({ environment = 'development' } = {}) {
         logo_image: null,
       });
 
+      let winston = server.create('venue', {
+        name: 'Winston Theatre',
+      });
+
       server.create('production', {
         name: 'Legally Blonde',
         society: server.create('society', {
@@ -71,7 +75,9 @@ export function makeServer({ environment = 'development' } = {}) {
         society: dramsoc,
         start_date: '2020-11-19',
         end_date: '2020-11-19',
-        performances: server.createList('performance', 1),
+        performances: server.createList('performance', 1, {
+          venue: winston,
+        }),
       });
 
       server.create('production', {

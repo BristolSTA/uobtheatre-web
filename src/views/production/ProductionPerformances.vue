@@ -24,7 +24,21 @@
           <h2 class="text-h2">
             {{ performance.start | dateFormat('cccc d MMM') }}
           </h2>
-          <div>{{ performanceVenue(performance) }}</div>
+          <div>
+            <router-link
+              v-if="performance.is_inperson"
+              :to="{
+                name: 'venue',
+                params: { venueSlug: performance.venue.slug },
+              }"
+            >
+              {{ performance.venue.name }}
+            </router-link>
+            <template v-if="performance.is_online && performance.is_inperson"
+              >and
+            </template>
+            <template v-if="performance.is_online">Online</template>
+          </div>
           <div>Starting at {{ performance.start | dateFormat('T') }}</div>
           <div class="text-sm font-semibold">
             <p v-if="performanceDisabled(performance)">No Tickets Available</p>
@@ -65,12 +79,6 @@ export default {
     disabledReason(performance) {
       if (performance.sold_out) return 'SOLD OUT';
       return 'Unavailable';
-    },
-    performanceVenue(performance) {
-      if (performance.is_inperson && performance.is_online)
-        return performance.venue.name + ' and Online';
-      if (performance.is_online) return 'Online';
-      return performance.venue.name;
     },
   },
 };
