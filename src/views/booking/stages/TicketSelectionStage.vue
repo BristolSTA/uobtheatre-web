@@ -1,5 +1,12 @@
 <template>
   <div class="text-white">
+    <div class="px-4 py-2 mb-2 md:text-center bg-sta-gray-light">
+      <p class="text-h3">Selected Performance:</p>
+      <p class="text-sta-orange">
+        {{ booking.performance.start | dateFormat('cccc d MMM') }}, Starting at
+        {{ booking.performance.start | dateFormat('T') }}
+      </p>
+    </div>
     <div class="space-y-1">
       <seat-location
         v-for="(seat_location, index) in seat_locations"
@@ -78,9 +85,9 @@
           </tfoot>
         </table>
       </div>
-      <div class="mt-2 text-center">
-        <button class="btn btn-orange">Next</button>
-      </div>
+    </div>
+    <div class="mt-2 text-center">
+      <button class="font-semibold btn btn-orange">Next</button>
     </div>
   </div>
 </template>
