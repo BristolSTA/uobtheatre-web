@@ -7,6 +7,7 @@ import Login from '@/views/auth/Login.vue';
 import { getRoutes } from '@/views/booking/bookingStages';
 import NotFoundError from '@/views/errors/NotFound.vue';
 import Home from '@/views/Home.vue';
+const Venue = () => import('@/views/venues/Venue.vue');
 
 import * as Bindings from './bindings';
 
@@ -39,6 +40,15 @@ const routes = [
     },
     [Bindings.bindProductionSlug]
   ),
+
+  /**
+   * Venue Pages
+   */
+  {
+    path: '/venues/:venueSlug',
+    name: 'venue',
+    component: Venue,
+  },
 
   /**
    * Auth Pages

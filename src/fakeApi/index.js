@@ -103,6 +103,11 @@ export function makeServer({ environment = 'development' } = {}) {
       performances[2].sold_out = true;
       performances[2].start = '2020-12-21T18:00:00';
       performances[2].end = '2020-12-21T20:30:00';
+
+      let winston = server.create('venue', {
+        name: 'Winston Theatre',
+      });
+
       server.create('production', {
         name: 'Legally Blonde',
         society: server.create('society', {
@@ -127,7 +132,9 @@ export function makeServer({ environment = 'development' } = {}) {
         start_date: '2020-11-19',
         end_date: '2020-11-19',
         warnings: [],
-        performances: server.createList('performance', 1),
+        performances: server.createList('performance', 1, {
+          venue: winston,
+        }),
       });
 
       /**

@@ -44,12 +44,6 @@ export default {
       if (performance.sold_out) return 'SOLD OUT';
       return 'Unavailable';
     },
-    performanceVenue(performance) {
-      if (performance.is_inperson && performance.is_online)
-        return performance.venue.name + ' and Online';
-      if (performance.is_online) return 'Online';
-      return performance.venue.name;
-    },
   },
 };
 </script>

@@ -4,6 +4,7 @@ import { expect } from 'chai';
 import PerformanceOverview from '@/components/production/PerformanceOverview.vue';
 import PickPerformanceStage from '@/views/booking/stages/PickPerformanceStage.vue';
 
+import { mountWithRouterMock } from '../../helpers';
 import {
   createFromFactoryAndSerialize,
   executeWithServer,
@@ -13,7 +14,7 @@ describe('Pick Performance Stage', () => {
   let stageComponent;
   let production;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     executeWithServer((server) => {
       production = createFromFactoryAndSerialize(
         'production',
@@ -40,7 +41,7 @@ describe('Pick Performance Stage', () => {
         server
       );
     });
-    stageComponent = mount(PickPerformanceStage, {
+    stageComponent = await mountWithRouterMock(PickPerformanceStage, {
       propsData: {
         production: production,
       },

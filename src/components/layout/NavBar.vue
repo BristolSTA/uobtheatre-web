@@ -3,7 +3,7 @@
     <div class="container flex flex-wrap items-center justify-between">
       <div class="flex items-center flex-shrink-0 mr-10 text-white">
         <router-link :to="{ name: 'home' }"
-          ><span class="text-4xl tracking-tight uppercase text-white">{{
+          ><span class="text-4xl tracking-tight text-white uppercase">{{
             $appName
           }}</span></router-link
         >
@@ -46,14 +46,14 @@
           <router-link
             v-if="!authService.isLoggedIn()"
             :to="{ name: 'login' }"
-            class="auth-button btn btn-orange btn-outline mt-4 lg:mt-0"
+            class="mt-4 auth-button btn btn-orange btn-outline lg:mt-0"
           >
             Login
           </router-link>
           <clickable-link
             v-else
             @click="authService.logout()"
-            class="auth-button btn btn-orange btn-outline mt-4 lg:mt-0"
+            class="mt-4 auth-button btn btn-orange btn-outline lg:mt-0"
           >
             Log Out
           </clickable-link>

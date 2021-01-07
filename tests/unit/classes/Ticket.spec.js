@@ -39,7 +39,7 @@ describe('Ticket Class', () => {
   ];
 
   beforeEach(() => {
-    ticket = new Ticket(correctSeatGroup, correctConcessionType);
+    ticket = new Ticket(correctSeatGroup.id, correctConcessionType.id);
   });
 
   it('can report if it matches', () => {
@@ -57,8 +57,8 @@ describe('Ticket Class', () => {
     expect(ticket.price(ticket_types_data) == 100);
   });
 
-  it('can convert to API schema', () => {
-    expect(ticket.apiSchema).to.include({
+  it('can convert to API data', () => {
+    expect(ticket.apiData).to.include({
       seat_group_id: 2,
       concession_type_id: 4,
     });

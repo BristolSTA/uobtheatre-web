@@ -5,6 +5,8 @@ import { makeServer } from '@/fakeApi';
 import { productionService } from '@/services';
 import ProductionPerformances from '@/views/production/ProductionPerformances.vue';
 
+import { fixTextSpacing } from '../../helpers.js';
+
 describe('ProductionHeader', function () {
   let performancesContainer;
   let server;
@@ -68,30 +70,36 @@ describe('ProductionHeader', function () {
 
       expect(performance.text()).to.contain('Saturday 28 Nov');
       expect(performance.find('div.bg-sta-green').exists()).to.be.true;
-      expect(performance.text()).to.contain('Winston Theatre and Online');
+      expect(fixTextSpacing(performance.text())).to.contain(
+        'Winston Theatre and Online'
+      );
+      expect(performance.find('a').text()).to.eq('Winston Theatre');
       expect(performance.text()).to.contain('Starting at 16:00');
       expect(performance.text()).to.contain('Tickets Available');
       expect(performance.find('button').text()).to.eq('Book');
       //TODO: Test for link to booking page
+      //TODO: Test for link to venue page
     });
+
     it('second performance is unavailable and correct', () => {
       let performance = performancesContainer.findAll('.performance').at(1);
 
       expect(performance.text()).to.contain('Sunday 29 Nov');
       expect(performance.find('div.bg-sta-green').exists()).to.be.false;
       expect(performance.find('div.bg-sta-gray-dark').exists()).to.be.true;
-      expect(performance.text()).to.contain('Pegg Theatre');
+      expect(fixTextSpacing(performance.text())).to.contain('Pegg Theatre');
       expect(performance.text()).to.contain('Starting at 17:00');
       expect(performance.text()).to.contain('No Tickets Available');
       expect(performance.find('button').text()).to.eq('Unavailable');
     });
+
     it('third performance is sold out and correct', () => {
       let performance = performancesContainer.findAll('.performance').at(2);
 
       expect(performance.text()).to.contain('Monday 30 Nov');
       expect(performance.find('div.bg-sta-green').exists()).to.be.false;
       expect(performance.find('div.bg-sta-gray-dark').exists()).to.be.true;
-      expect(performance.text()).to.contain('Online');
+      expect(fixTextSpacing(performance.text())).to.contain('Online');
       expect(performance.text()).to.contain('Starting at 18:00');
       expect(performance.text()).to.contain('No Tickets Available');
       expect(performance.find('button').text()).to.eq('SOLD OUT');
