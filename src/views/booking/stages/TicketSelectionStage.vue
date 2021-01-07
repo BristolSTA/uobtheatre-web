@@ -86,7 +86,7 @@
         </table>
       </div>
     </div>
-    <div class="mt-2 text-center">
+    <div v-if="booking.tickets.length" class="mt-2 text-center">
       <button class="font-semibold btn btn-orange">Next</button>
     </div>
   </div>
