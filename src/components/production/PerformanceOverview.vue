@@ -1,6 +1,6 @@
 <template>
   <div
-    class="performance text-white p-3"
+    class="p-3 text-white performance"
     :class="[performanceDisabled ? 'bg-sta-gray-dark' : 'bg-sta-green']"
   >
     <h2 class="text-h2">
@@ -9,25 +9,27 @@
     <div>{{ performanceVenue }}</div>
     <div>Starting at {{ performance.start | dateFormat('T') }}</div>
     <div>{{ humanDuration }}</div>
-    <div class="text-sm font-semibold">
+    <div v-if="!overview_info" class="text-sm font-semibold">
       <p v-if="performanceDisabled">No Tickets Available</p>
       <p v-else>Tickets Available</p>
     </div>
-    <button
-      class="w-2/3 mt-4 font-semibold text-center btn btn-rouge btn-outline disabled"
-      disabled
-      v-if="performanceDisabled"
-    >
-      {{ disabledReason }}
-    </button>
-    <button
-      @click="onBook"
-      @keypress="onBook"
-      class="w-2/3 mt-4 font-semibold text-center btn btn-orange"
-      v-else
-    >
-      <slot name="select-button">Book</slot>
-    </button>
+    <template v-if="!overview_info">
+      <button
+        class="w-2/3 mt-4 font-semibold text-center btn btn-rouge btn-outline disabled"
+        disabled
+        v-if="performanceDisabled"
+      >
+        {{ disabledReason }}
+      </button>
+      <button
+        @click="onBook"
+        @keypress="onBook"
+        class="w-2/3 mt-4 font-semibold text-center btn btn-orange"
+        v-else
+      >
+        <slot name="select-button">Book</slot>
+      </button>
+    </template>
   </div>
 </template>
 
@@ -37,6 +39,9 @@ export default {
   props: {
     performance: {
       required: true,
+    },
+    overview_info: {
+      required: false,
     },
   },
   methods: {
