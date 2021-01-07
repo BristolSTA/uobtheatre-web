@@ -1,11 +1,22 @@
 <template>
   <div class="min-h-full bg-sta-gray">
     <div class="container">
+      <div class="pt-2 text-white">
+        <router-link
+          :to="{
+            name: 'production',
+            params: { productionSlug: production.slug },
+          }"
+          ><font-awesome-icon icon="chevron-left" />
+          Back to Production
+        </router-link>
+      </div>
       <production-banner
+        class="pb-8"
         :production="production"
         :showBuyTicketsButton="false"
       />
-      <div class="flex my-2 space-x-2">
+      <div class="flex mb-2 space-x-2">
         <booking-navigation
           class="w-1/4"
           :currentStageIndex="currentStageIndex"

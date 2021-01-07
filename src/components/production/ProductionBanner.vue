@@ -2,7 +2,7 @@
   <div
     class="flex flex-wrap items-center justify-center space-x-0 md:space-x-10"
   >
-    <div class="relative inline-block w-full max-w-xl m-10 md:w-2/3">
+    <div class="relative inline-block w-full max-w-xl m-8 md:w-2/3">
       <img
         class="w-full p-8"
         :src="production.featured_image"
