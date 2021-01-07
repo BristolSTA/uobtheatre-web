@@ -44,13 +44,18 @@ module.exports = {
       fontSize: {
         h1: '3rem',
         h2: '2rem',
-        h3: '1rem',
+        h3: '1.5rem',
+        h4: '1rem',
       },
       padding: {
         0.5: '0.125rem',
       },
       minWidth: {
         '1/2': '50%',
+      },
+      width: {
+        '11/20': '55%',
+        '9/20': '45%',
       },
     },
   },

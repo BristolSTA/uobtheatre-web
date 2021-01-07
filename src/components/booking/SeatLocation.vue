@@ -8,7 +8,7 @@
       @keypress="$emit('select-location')"
     >
       <div class="flex-grow">
-        <h1 class="text-h2">{{ seat_location.seat_group.name }}</h1>
+        <h1 class="text-h3 lg:text-h2">{{ seat_location.seat_group.name }}</h1>
         <p v-if="expanded && seat_location.seat_group.description" class="p-2">
           {{ seat_location.seat_group.description }}
         </p>

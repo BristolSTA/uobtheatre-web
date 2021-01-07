@@ -7,9 +7,9 @@
     >
       No Upcoming Performances
     </div>
-    <div v-else class="flex flex-wrap space-x-2 justify-center">
+    <div v-else class="flex flex-wrap justify-center md:space-x-2">
       <performance-overview
-        class="md:w-1/2 lg:w-1/3 2xl:w-1/4 mt-2"
+        class="w-3/4 mt-2 md:w-9/20 lg:w-1/3 2xl:w-1/4"
         v-for="performance in production.performances"
         :key="performance.id"
         :performance="performance"

@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col items-center min-h-full justify-evenly">
     <div class="p-6 pt-3 mb-2 text-white bg-sta-rouge">
-      <h2 class="text-h2">
+      <h2 class="text-h3 sm:text-h2">
         Please note the following warnings for this production:
       </h2>
 

@@ -9,7 +9,7 @@
       <h2 class="mb-2 text-2xl font-semibold text-white">
         {{ time }}
       </h2>
-      <div class="grid grid-cols-2 gap-2">
+      <div class="grid gap-2 md:grid-cols-2">
         <performance-overview
           v-for="(performance, index) in performanceGroup"
           :key="index"
