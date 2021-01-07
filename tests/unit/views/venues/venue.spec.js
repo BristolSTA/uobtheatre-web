@@ -89,7 +89,7 @@ describe('Venue page', function () {
     });
   });
 
-  it('checks map doesnt exist with valid lat or long', async () => {
+  it('checks map doesnt exist with invalid lat or long', async () => {
     await waitFor(() => venuePageComponent.vm.venue);
     await venuePageComponent.setData({
       venue: { address: { latitude: null } },
