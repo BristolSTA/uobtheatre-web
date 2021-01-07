@@ -68,8 +68,9 @@
         <div
           v-if="venue.address.latitude && venue.address.longitude"
           class="flex justify-center w-full lg:w-3/5 h-96 lg:mb-4"
+          ref="mapContainer"
         >
-          <div class="w-full" id="mapContainer"></div>
+          <div class="w-full" id="venueMap"></div>
         </div>
       </div>
     </template>
@@ -117,21 +118,20 @@ export default {
   },
   methods: {
     createMap(venue) {
-      if (!venue.latitude || !venue.longitude) {
-        const map = L.map('mapContainer').setView(
-          [venue.address.latitude, venue.address.longitude],
-          14
-        );
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        }).addTo(map);
+      if (!venue.address.latitude || !venue.address.longitude) return;
+      const map = L.map('venueMap').setView(
+        [venue.address.latitude, venue.address.longitude],
+        14
+      );
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(map);
 
-        L.popup({ closeButton: false })
-          .setLatLng(L.latLng(venue.address.latitude, venue.address.longitude))
-          .setContent(`${venue.name}`)
-          .openOn(map);
-      } else return;
+      L.popup({ closeButton: false })
+        .setLatLng(L.latLng(venue.address.latitude, venue.address.longitude))
+        .setContent(`${venue.name}`)
+        .openOn(map);
     },
   },
 };

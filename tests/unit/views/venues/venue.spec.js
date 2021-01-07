@@ -68,6 +68,9 @@ describe('Venue page', function () {
         })
         .attributes('src')
     ).to.equal('http://pathto.example/venue-image.png');
+
+    expect(venuePageComponent.findComponent({ ref: 'mapContainer' }).exists())
+      .to.be.true;
   });
 
   describe('venue address', () => {
@@ -84,6 +87,16 @@ describe('Venue page', function () {
       expect(addressContainer.text()).to.contain('London');
       expect(addressContainer.text()).to.contain('BS69 420');
     });
+  });
+
+  it('checks map doesnt exist with valid lat or long', async () => {
+    await waitFor(() => venuePageComponent.vm.venue);
+    await venuePageComponent.setData({
+      venue: { address: { latitude: null } },
+    });
+
+    expect(venuePageComponent.findComponent({ ref: 'mapContainer' }).exists())
+      .to.be.false;
   });
 
   it('handles invalid venue', async () => {
