@@ -5,7 +5,7 @@
       tag="button"
       :key="index"
       :class="stylesForButton(stage)"
-      class="block px-1 text-center btn"
+      class="block text-center btn"
       @click="onSelectStage(stage)"
       @keypress="onSelectStage(stage)"
       :disabled="stylesForButton(stage).includes('disabled')"

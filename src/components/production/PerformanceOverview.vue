@@ -1,6 +1,6 @@
 <template>
   <div
-    class="p-3 text-white performance"
+    class="flex flex-col p-3 text-white performance"
     :class="[performanceDisabled ? 'bg-sta-gray-dark' : 'bg-sta-green']"
   >
     <h2 class="text-h2">
@@ -28,6 +28,7 @@
       <p v-else>Tickets Available</p>
     </div>
     <template v-if="!overview_info">
+      <div class="flex-grow"></div>
       <button
         class="w-2/3 mt-4 font-semibold text-center btn btn-rouge btn-outline disabled"
         disabled

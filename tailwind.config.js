@@ -53,10 +53,6 @@ module.exports = {
       minWidth: {
         '1/2': '50%',
       },
-      width: {
-        '11/20': '55%',
-        '9/20': '45%',
-      },
     },
   },
   variants: {
