@@ -92,6 +92,5 @@ export default {
       authService: authService,
     };
   },
-  methods: {},
 };
 </script>
