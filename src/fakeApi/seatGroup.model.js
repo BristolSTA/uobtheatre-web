@@ -17,6 +17,7 @@ export default {
       seatGroup: Factory.extend({
         name: () => faker.random.arrayElement(['Front Row', 'Back Row']),
         description: () => faker.lorem.words(5),
+        capacity_remaining: () => faker.random.number({ min: 0, max: 100 }),
       }),
     };
   },

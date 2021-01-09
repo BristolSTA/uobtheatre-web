@@ -132,7 +132,7 @@ export default {
           this.booking.performance.id
         )
         .then((results) => {
-          this.seat_locations = results;
+          this.seat_locations = results.ticket_types;
         }),
       performanceService
         .fetchGroupDiscountOptionsForPerformance(

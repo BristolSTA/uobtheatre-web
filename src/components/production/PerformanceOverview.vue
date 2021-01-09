@@ -23,28 +23,26 @@
     </div>
     <div>Starting at {{ performance.start | dateFormat('T') }}</div>
     <div>{{ humanDuration }}</div>
-    <div v-if="!overview_info" class="text-sm font-semibold">
+    <div class="text-sm font-semibold">
       <p v-if="performanceDisabled">No Tickets Available</p>
       <p v-else>Tickets Available</p>
     </div>
-    <template v-if="!overview_info">
-      <div class="flex-grow"></div>
-      <button
-        class="w-2/3 mt-4 font-semibold text-center btn btn-rouge btn-outline disabled"
-        disabled
-        v-if="performanceDisabled"
-      >
-        {{ disabledReason }}
-      </button>
-      <button
-        @click="onBook"
-        @keypress="onBook"
-        class="w-2/3 mt-4 font-semibold text-center btn btn-orange"
-        v-else
-      >
-        <slot name="select-button">Book</slot>
-      </button>
-    </template>
+    <div class="flex-grow"></div>
+    <button
+      class="w-2/3 mt-4 font-semibold text-center btn btn-rouge btn-outline disabled"
+      disabled
+      v-if="performanceDisabled"
+    >
+      {{ disabledReason }}
+    </button>
+    <button
+      @click="onBook"
+      @keypress="onBook"
+      class="w-2/3 mt-4 font-semibold text-center btn btn-orange"
+      v-else
+    >
+      <slot name="select-button">Book</slot>
+    </button>
   </div>
 </template>
 
@@ -54,9 +52,6 @@ export default {
   props: {
     performance: {
       required: true,
-    },
-    overview_info: {
-      required: false,
     },
   },
   methods: {

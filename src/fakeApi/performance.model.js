@@ -87,12 +87,18 @@ export default {
 
         let concessionTypes = this.serialize(performance.concessionTypes);
 
-        return seatGroups.map((seatGroup) => {
-          return {
-            seat_group: seatGroup,
-            concession_types: concessionTypes,
-          };
-        });
+        /*  */
+        return {
+          ticket_types: seatGroups.map((seatGroup) => {
+            return {
+              seat_group: seatGroup,
+              concession_types: concessionTypes,
+            };
+          }),
+          capacity_remaining: seatGroups
+            .map((seat_group) => seat_group.capacity_remaining)
+            .reduce((a, b) => a + b, 0),
+        };
       }
     );
 
