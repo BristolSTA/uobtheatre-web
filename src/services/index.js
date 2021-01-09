@@ -4,4 +4,4 @@ import performanceService from './performanceService';
 import productionService from './productionService';
 import venueService from './venueService';
 
-export { authService, productionService, bookingService, performanceService, venueService };
+export { authService, bookingService, performanceService, productionService, venueService };

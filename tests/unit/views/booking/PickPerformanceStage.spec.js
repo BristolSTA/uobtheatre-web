@@ -1,4 +1,3 @@
-import { mount } from '@vue/test-utils';
 import { expect } from 'chai';
 
 import PerformanceOverview from '@/components/production/PerformanceOverview.vue';

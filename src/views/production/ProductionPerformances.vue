@@ -7,19 +7,23 @@
     >
       No Upcoming Performances
     </div>
-    <div v-else class="flex flex-wrap justify-center space-x-2">
-      <performance-overview
-        class="px-10"
+    <div v-else class="flex flex-wrap justify-center lg:flex-nowrap">
+      <div
         v-for="performance in production.performances"
         :key="performance.id"
-        :performance="performance"
-        @select="
-          $router.push({
-            name: 'production.book.select',
-            params: { productionSlug: production.slug },
-          })
-        "
-      />
+        class="w-full p-4 md:w-1/2 lg:flex-1"
+      >
+        <performance-overview
+          :performance="performance"
+          class="h-full"
+          @select="
+            $router.push({
+              name: 'production.book.select',
+              params: { productionSlug: production.slug },
+            })
+          "
+        />
+      </div>
     </div>
   </div>
 </template>
