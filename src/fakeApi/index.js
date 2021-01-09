@@ -97,6 +97,7 @@ export function makeServer({ environment = 'development' } = {}) {
       });
 
       performances[1].sold_out = false;
+      performances[1].doors_open = '2020-12-20T14:14:00';
       performances[1].start = '2020-12-20T14:15:00';
       performances[1].end = '2020-12-20T15:15:00';
 

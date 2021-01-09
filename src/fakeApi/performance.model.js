@@ -39,6 +39,11 @@ export default {
             hours: faker.random.number({ min: 1, max: 3 }),
           });
         },
+        doors_open() {
+          return DateTime.fromISO(this.start).minus({
+            hours: faker.random.number({ min: 1, max: 2 }),
+          });
+        },
         description: faker.lorem.words(4),
         sold_out: () => faker.random.arrayElement([true, false]),
         disabled: () => false,
