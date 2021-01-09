@@ -7,10 +7,7 @@
       </p>
     </div>
     <div class="grid gap-2 md:grid-cols-2 justify-evenly">
-      <performance-overview
-        :performance="booking.performance"
-        :overview_info="true"
-      />
+      <performance-overview :performance="booking.performance" />
       <div
         v-if="production.warnings"
         class="p-3 border bg-sta-gray text-sta-rouge border-sta-rouge"
