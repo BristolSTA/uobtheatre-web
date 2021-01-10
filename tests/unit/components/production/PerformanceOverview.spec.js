@@ -76,11 +76,14 @@ describe('Pick Performance Stage', () => {
 
   //TODO: Test for link to booking page
 
-  // it('has correct booking link', async () => {
-  //   await performanceOverviewComponent.find('button').trigger('click');
-  //   await performanceOverviewComponent.vm.$nextTick();
-  //   expect(performanceOverviewComponent.emitted().performance).to.be.true;
-  // });
+  it('has correct booking link', async () => {
+    await performanceOverviewComponent.find('button').trigger('click');
+
+    expect(performanceOverviewComponent.emitted('select').length).to.eq(1);
+    expect(performanceOverviewComponent.emitted('select')[0][0]).to.equal(
+      performance
+    );
+  });
 
   it('A disabled, in-person performance', async () => {
     await performanceOverviewComponent.setProps({
@@ -95,7 +98,7 @@ describe('Pick Performance Stage', () => {
       .false;
     expect(performanceOverviewComponent.find('div.bg-sta-gray-dark').exists())
       .to.be.true;
-    expect(fixTextSpacing(performanceOverviewComponent.text())).to.contain(
+    expect(performanceOverviewComponent.find('a').text()).to.eq(
       'Winston Theatre'
     );
     expect(performanceOverviewComponent.text()).to.contain(
@@ -104,6 +107,9 @@ describe('Pick Performance Stage', () => {
     expect(performanceOverviewComponent.find('button').text()).to.eq(
       'Unavailable'
     );
+    expect(
+      performanceOverviewComponent.find('button').attributes('disabled')
+    ).to.eq('disabled');
   });
 
   it('A disabled, in-person performance', async () => {
@@ -123,11 +129,17 @@ describe('Pick Performance Stage', () => {
     expect(fixTextSpacing(performanceOverviewComponent.text())).to.contain(
       'Online'
     );
+    expect(
+      performanceOverviewComponent.findAllComponents(RouterLinkStub).length
+    ).to.eq(0);
     expect(performanceOverviewComponent.text()).to.contain(
       'No Tickets Available'
     );
     expect(performanceOverviewComponent.find('button').text()).to.eq(
       'SOLD OUT'
     );
+    expect(
+      performanceOverviewComponent.find('button').attributes('disabled')
+    ).to.eq('disabled');
   });
 });
