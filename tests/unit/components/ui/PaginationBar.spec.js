@@ -26,6 +26,12 @@ describe('Pagination Bar', () => {
 
     await setProps(null, 3, null);
     assertPagesInOrder([1, 2, 3, 4, 5]);
+
+    await setProps(1, 1, null);
+    assertPagesInOrder([1]);
+
+    await setProps(2, 1, null);
+    assertPagesInOrder([1, 2]);
   });
 
   it('truncates when required', async () => {
@@ -108,5 +114,6 @@ describe('Pagination Bar', () => {
       expect(button.text()).to.eq(expectedOrder[index].toString());
     });
     expect(i).to.eq(buttons.length); // Gross error check for assertion
+    expect(i).to.eq(component.findAll('button').length - 2); // Gross error check for checking all the page buttons
   };
 });
