@@ -5,15 +5,26 @@ import { makeServer } from '@/fakeApi';
 import Venue from '@/views/venues/Venue.vue';
 
 import { waitFor } from '../../helpers';
+import { fixTextSpacing } from '../../helpers.js';
 
 describe('Venue page', function () {
   let venuePageComponent;
   let server;
+  let address;
 
   beforeEach(() => {
     server = makeServer({ environment: 'test' });
 
-    // Create a venue
+    // Create a venue and address
+    address = {
+      building_name: 'Wills Memorial Building',
+      street: 'Queens Road',
+      building_number: '69',
+      city: 'London',
+      postcode: 'BS69 420',
+      latitude: '123.4567',
+      longitude: '987.654',
+    };
     server.create('venue', {
       name: 'Anson Theatre',
       slug: 'anson-theatre',
@@ -21,15 +32,7 @@ describe('Venue page', function () {
       image: 'http://pathto.example/venue-image.png',
       publicly_listed: true,
       internal_capacity: '420',
-      address: {
-        building_name: 'Wills Memorial Building',
-        street: 'Queens Road',
-        building_number: '69',
-        city: 'London',
-        postcode: 'BS69 420',
-        latitude: '123.4567',
-        longitude: '987.654',
-      },
+      address: address,
     });
 
     venuePageComponent = mount(Venue, {
@@ -54,11 +57,8 @@ describe('Venue page', function () {
   it('fetches the venue', async () => {
     await waitFor(() => venuePageComponent.vm.venue);
     expect(venuePageComponent.vm.venue.name).to.eq('Anson Theatre');
-
     expect(venuePageComponent.text()).to.contain('Anson Theatre');
-
     expect(venuePageComponent.text()).to.contain('not the anson rooms');
-
     expect(venuePageComponent.text()).to.contain('Capacity: Max 420');
 
     expect(
@@ -79,12 +79,56 @@ describe('Venue page', function () {
       addressContainer = venuePageComponent.findComponent({ ref: 'address' });
     });
 
+    // building number and name
     it('has the correct address', async () => {
-      expect(addressContainer.text()).to.contain('Wills Memorial Building');
-      expect(addressContainer.text()).to.contain('69');
-      expect(addressContainer.text()).to.contain('Queens Road');
+      expect(fixTextSpacing(addressContainer.text())).to.contain(
+        'Wills Memorial Building 69 Queens Road'
+      );
       expect(addressContainer.text()).to.contain('London');
       expect(addressContainer.text()).to.contain('BS69 420');
+    });
+
+    // no building number
+    it('has the correct address', async () => {
+      await venuePageComponent.setData({
+        venue: {
+          address: Object.assign({}, address, {
+            building_name: 'Wills Memorial Building',
+            building_number: null,
+          }),
+        },
+      });
+      expect(fixTextSpacing(addressContainer.text())).to.contain(
+        'Wills Memorial Building Queens Road'
+      );
+    });
+
+    // no building name
+    it('has the correct address', async () => {
+      await venuePageComponent.setData({
+        venue: {
+          address: Object.assign({}, address, {
+            building_name: null,
+            building_number: '69',
+          }),
+        },
+      });
+      expect(fixTextSpacing(addressContainer.text())).to.contain(
+        '69 Queens Road'
+      );
+    });
+
+    // no building name or number
+    it('has the correct address', async () => {
+      await venuePageComponent.setData({
+        venue: {
+          address: Object.assign({}, address, {
+            building_name: null,
+            building_number: null,
+          }),
+        },
+      });
+      expect(fixTextSpacing(addressContainer.text())).to.contain('Queens Road');
     });
   });
 
