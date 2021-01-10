@@ -1,27 +1,24 @@
-import { mount, RouterLinkStub } from '@vue/test-utils';
+import { RouterLinkStub } from '@vue/test-utils';
 import { expect } from 'chai';
 
-import { makeServer } from '@/fakeApi';
-import { productionService } from '@/services';
-import ProductionPerformances from '@/views/production/ProductionPerformances.vue';
+import PerformanceOverview from '@/components/production/PerformanceOverview.vue';
 
+import { mountWithRouterMock } from '../../helpers';
+import {
+  createFromFactoryAndSerialize,
+  executeWithServer,
+} from '../../helpers';
 import { fixTextSpacing } from '../../helpers.js';
 
-describe('PerformanceOverview', function () {
-  let performancesContainer;
-  let server;
-  beforeEach(async () => {
-    server = makeServer({ environment: 'test' });
-  });
+describe('Pick Performance Stage', () => {
+  let performanceOverviewComponent;
+  let performance;
 
-  afterEach(() => {
-    server.shutdown();
-  });
-
-  describe('With performances', () => {
-    beforeEach(async () => {
-      await createWithPerformances([
-        // An available in-person & online performance
+  beforeAll(async () => {
+    executeWithServer((server) => {
+      performance = createFromFactoryAndSerialize(
+        'performance',
+        1,
         {
           start: new Date('28 November 2020 16:00:00 GMT').toISOString(),
           end: new Date('28 November 2020 18:00:00 GMT').toISOString(),
@@ -31,105 +28,106 @@ describe('PerformanceOverview', function () {
           is_inperson: true,
           venue: server.create('venue', {
             name: 'Winston Theatre',
+            slug: 'winston-theatre',
           }),
         },
-        // A disabled, in-person performance
-        {
-          start: new Date('29 November 2020 17:00:00 GMT').toISOString(),
-          end: new Date('29 November 2020 19:00:00 GMT').toISOString(),
-          sold_out: false,
-          disabled: true,
-          is_online: false,
-          is_inperson: true,
-          venue: server.create('venue', {
-            name: 'Pegg Theatre',
-          }),
-        },
-        // A sold out performance
-        {
-          start: new Date('30 November 2020 18:00:00 GMT').toISOString(),
-          end: new Date('30 November 2020 20:00:00 GMT').toISOString(),
-          sold_out: true,
-          disabled: false,
-          is_online: true,
-          is_inperson: false,
-        },
-      ]);
-    });
-
-    it('displays three performances', () => {
-      expect(performancesContainer.findAll('.performance').length).to.eq(3);
-    });
-    it('first performance is available and correct', () => {
-      let performance = performancesContainer.findAll('.performance').at(0);
-
-      expect(performance.text()).to.contain('Saturday 28 Nov');
-      expect(performance.find('div.bg-sta-green').exists()).to.be.true;
-      expect(fixTextSpacing(performance.text())).to.contain(
-        'Winston Theatre and Online'
+        server
       );
-      expect(performance.find('a').text()).to.eq('Winston Theatre');
-      expect(performance.text()).to.contain('Starting at 16:00');
-      expect(performance.text()).to.contain('Tickets Available');
-      expect(performance.find('button').text()).to.eq('Book');
-      //TODO: Test for link to booking page
-      //TODO: Test for link to venue page
     });
-
-    it('second performance is unavailable and correct', () => {
-      let performance = performancesContainer.findAll('.performance').at(1);
-
-      expect(performance.text()).to.contain('Sunday 29 Nov');
-      expect(performance.find('div.bg-sta-green').exists()).to.be.false;
-      expect(performance.find('div.bg-sta-gray-dark').exists()).to.be.true;
-      expect(fixTextSpacing(performance.text())).to.contain('Pegg Theatre');
-      expect(performance.text()).to.contain('Starting at 17:00');
-      expect(performance.text()).to.contain('No Tickets Available');
-      expect(performance.find('button').text()).to.eq('Unavailable');
-    });
-
-    it('third performance is sold out and correct', () => {
-      let performance = performancesContainer.findAll('.performance').at(2);
-
-      expect(performance.text()).to.contain('Monday 30 Nov');
-      expect(performance.find('div.bg-sta-green').exists()).to.be.false;
-      expect(performance.find('div.bg-sta-gray-dark').exists()).to.be.true;
-      expect(fixTextSpacing(performance.text())).to.contain('Online');
-      expect(performance.text()).to.contain('Starting at 18:00');
-      expect(performance.text()).to.contain('No Tickets Available');
-      expect(performance.find('button').text()).to.eq('SOLD OUT');
-    });
+    performanceOverviewComponent = await mountWithRouterMock(
+      PerformanceOverview,
+      {
+        propsData: {
+          performance: performance,
+        },
+      }
+    );
   });
 
-  let createWithPerformances = (performances, productionOverrides) => {
-    let perfs = [];
-    performances.forEach((perf) => {
-      perfs.push(server.create('performance', perf));
+  it('An available in-person & online performance', async () => {
+    expect(performanceOverviewComponent.text()).to.contain('Saturday 28 Nov');
+    expect(performanceOverviewComponent.find('div.bg-sta-green').exists()).to.be
+      .true;
+    expect(fixTextSpacing(performanceOverviewComponent.text())).to.contain(
+      'Winston Theatre and Online'
+    );
+    expect(performanceOverviewComponent.find('a').text()).to.eq(
+      'Winston Theatre'
+    );
+    expect(performanceOverviewComponent.text()).to.contain('Starting at 16:00');
+    expect(performanceOverviewComponent.text()).to.contain('Tickets Available');
+    expect(performanceOverviewComponent.find('button').text()).to.eq('Book');
+  });
+
+  it('has working venue link', async () => {
+    expect(
+      performanceOverviewComponent
+        .findAllComponents(RouterLinkStub)
+        .at(0)
+        .props('to').name
+    ).to.equal('venue');
+    expect(
+      performanceOverviewComponent
+        .findAllComponents(RouterLinkStub)
+        .at(0)
+        .props('to').params.venueSlug
+    ).to.equal('winston-theatre');
+  });
+
+  //TODO: Test for link to booking page
+
+  // it('has correct booking link', async () => {
+  //   await performanceOverviewComponent.find('button').trigger('click');
+  //   await performanceOverviewComponent.vm.$nextTick();
+  //   expect(performanceOverviewComponent.emitted().performance).to.be.true;
+  // });
+
+  it('A disabled, in-person performance', async () => {
+    await performanceOverviewComponent.setProps({
+      performance: Object.assign({}, performance, {
+        disabled: true,
+        is_online: false,
+        is_inperson: true,
+      }),
     });
 
-    server.create(
-      'production',
-      Object.assign(
-        {
-          name: 'Legally Ginger',
-          slug: 'legally-ginger',
-          performances: perfs,
-        },
-        productionOverrides
-      )
+    expect(performanceOverviewComponent.find('div.bg-sta-green').exists()).to.be
+      .false;
+    expect(performanceOverviewComponent.find('div.bg-sta-gray-dark').exists())
+      .to.be.true;
+    expect(fixTextSpacing(performanceOverviewComponent.text())).to.contain(
+      'Winston Theatre'
     );
+    expect(performanceOverviewComponent.text()).to.contain(
+      'No Tickets Available'
+    );
+    expect(performanceOverviewComponent.find('button').text()).to.eq(
+      'Unavailable'
+    );
+  });
 
-    return productionService
-      .fetchProductionBySlug('legally-ginger')
-      .then((production) => {
-        performancesContainer = mount(ProductionPerformances, {
-          propsData: {
-            production: production,
-          },
-          stubs: {
-            RouterLink: RouterLinkStub,
-          },
-        });
-      });
-  };
+  it('A disabled, in-person performance', async () => {
+    await performanceOverviewComponent.setProps({
+      performance: Object.assign({}, performance, {
+        sold_out: true,
+        disabled: false,
+        is_online: true,
+        is_inperson: false,
+      }),
+    });
+
+    expect(performanceOverviewComponent.find('div.bg-sta-green').exists()).to.be
+      .false;
+    expect(performanceOverviewComponent.find('div.bg-sta-gray-dark').exists())
+      .to.be.true;
+    expect(fixTextSpacing(performanceOverviewComponent.text())).to.contain(
+      'Online'
+    );
+    expect(performanceOverviewComponent.text()).to.contain(
+      'No Tickets Available'
+    );
+    expect(performanceOverviewComponent.find('button').text()).to.eq(
+      'SOLD OUT'
+    );
+  });
 });
