@@ -2,7 +2,8 @@
   <div>
     <overview-box :subtitle="true">
       <template v-slot:title>Venue</template>
-      <template v-slot:subtitle>
+      <template v-if="!venue" v-slot:subtitle>Loading Venue...</template>
+      <template v-else v-slot:subtitle>
         <router-link
           :to="{
             name: 'venue',
@@ -13,7 +14,7 @@
           The {{ venue.name }}
         </router-link>
       </template>
-      <div>
+      <div v-if="venue">
         <p v-if="venue.address.building_name">
           {{ venue.address.building_name }}
         </p>
@@ -34,10 +35,12 @@
 import OverviewBox from '@/components/overview/OverviewBox.vue';
 import { venueService } from '@/services';
 import { runPromiseWithLoading } from '@/utils';
+import { handle404Mixin } from '@/utils';
 
 export default {
   name: 'venue-overview',
   components: { OverviewBox },
+  mixins: [handle404Mixin],
   props: {
     venue_slug: {
       required: true,
@@ -54,9 +57,6 @@ export default {
         .fetchVenueBySlug(this.venue_slug)
         .then((data) => {
           this.venue = data;
-          this.$nextTick(() => {
-            this.createMap(this.venue);
-          });
         })
         .catch(this.handle404)
     );
