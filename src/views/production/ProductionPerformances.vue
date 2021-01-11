@@ -40,14 +40,5 @@ export default {
       required: true,
     },
   },
-  methods: {
-    performanceDisabled(performance) {
-      return performance.disabled || performance.sold_out;
-    },
-    disabledReason(performance) {
-      if (performance.sold_out) return 'SOLD OUT';
-      return 'Unavailable';
-    },
-  },
 };
 </script>
