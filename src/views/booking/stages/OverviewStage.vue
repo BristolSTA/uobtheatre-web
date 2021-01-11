@@ -5,14 +5,14 @@
         :production="production"
         :performance="booking.performance"
       />
-      <div class="grid gap-4 md:grid-cols-2 justify-evenly">
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 justify-evenly">
         <venue-overview :venue_slug="booking.performance.venue.slug" />
         <user-overview :booking="booking" />
       </div>
-      <tickets-overview :booking="booking" />
+      <tickets-overview :booking="booking" :seat_locations="seat_locations" />
       <booking-price-overview :booking="booking" />
     </div>
-    <div class="mt-2 text-center">
+    <div class="mt-4 text-center">
       <button class="font-semibold btn btn-orange">Pay Now</button>
     </div>
   </div>
@@ -42,6 +42,9 @@ export default {
     booking: {
       required: true,
       type: Booking,
+    },
+    seat_locations: {
+      required: true,
     },
   },
 };
