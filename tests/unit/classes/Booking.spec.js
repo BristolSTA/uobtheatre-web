@@ -60,7 +60,7 @@ describe('Booking Class', () => {
     ticket_types = await fetch(
       `api/productions/myperf/performances/${performance.id}/ticket_types`
     );
-    ticket_types = await ticket_types.json();
+    ticket_types = (await ticket_types.json()).ticket_types;
     server.shutdown();
   });
 

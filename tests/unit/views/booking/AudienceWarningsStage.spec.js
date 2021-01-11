@@ -37,6 +37,6 @@ describe('Pick Performance Stage', () => {
 
   it('emits event on understood', () => {
     stageComponent.find('button').trigger('click');
-    expect(stageComponent.emitted('understood')).to.be.ok;
+    expect(stageComponent.emitted('next-stage').length).to.eq(1);
   });
 });

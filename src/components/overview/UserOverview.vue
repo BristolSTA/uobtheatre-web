@@ -1,11 +1,9 @@
 <template>
-  <div>
-    <overview-box :subtitle="true">
-      <template v-slot:title>Your Details</template>
-      <template v-slot:subtitle> Joe Bloogs </template>
-      <div>joe.bloggs@example.org</div>
-    </overview-box>
-  </div>
+  <overview-box :subtitle="true">
+    <template v-slot:title>Your Details</template>
+    <template v-slot:subtitle> Joe Bloogs </template>
+    <div>joe.bloggs@example.org</div>
+  </overview-box>
 </template>
 
 <script>

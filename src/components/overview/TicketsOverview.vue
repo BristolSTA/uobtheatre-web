@@ -1,11 +1,9 @@
 <template>
-  <div>
-    <overview-box :subtitle="false">
-      <template v-slot:title>Tickets</template>
-      <div>Warning message</div>
-      <div>Ticket breakdown</div>
-    </overview-box>
-  </div>
+  <overview-box :subtitle="false">
+    <template v-slot:title>Tickets</template>
+    <div>Warning message</div>
+    <div>Ticket breakdown</div>
+  </overview-box>
 </template>
 
 <script>

@@ -1,15 +1,18 @@
 <template>
   <div>
     <div class="space-y-4">
-      <performance-overview-box
+      <performance-overview
         :production="production"
         :performance="booking.performance"
       />
       <div class="grid grid-cols-1 gap-4 md:grid-cols-2 justify-evenly">
-        <venue-overview :venue_slug="booking.performance.venue.slug" />
+        <venue-overview :venue_data="booking.performance.venue.slug" />
         <user-overview :booking="booking" />
       </div>
-      <tickets-overview :booking="booking" :seat_locations="seat_locations" />
+      <tickets-overview
+        :booking="booking"
+        :ticket_types_data="ticket_types_data"
+      />
       <booking-price-overview :booking="booking" />
     </div>
     <div class="mt-4 text-center">
@@ -21,7 +24,7 @@
 <script>
 import Booking from '@/classes/Booking';
 import BookingPriceOverview from '@/components/overview/BookingPriceOverview.vue';
-import PerformanceOverviewBox from '@/components/overview/PerformanceOverviewBox.vue';
+import PerformanceOverview from '@/components/overview/PerformanceOverview.vue';
 import TicketsOverview from '@/components/overview/TicketsOverview.vue';
 import UserOverview from '@/components/overview/UserOverview.vue';
 import VenueOverview from '@/components/overview/VenueOverview.vue';
@@ -30,7 +33,7 @@ export default {
   name: 'overview-stage',
   components: {
     VenueOverview,
-    PerformanceOverviewBox,
+    PerformanceOverview,
     UserOverview,
     TicketsOverview,
     BookingPriceOverview,
@@ -43,7 +46,7 @@ export default {
       required: true,
       type: Booking,
     },
-    seat_locations: {
+    ticket_types_data: {
       required: true,
     },
   },

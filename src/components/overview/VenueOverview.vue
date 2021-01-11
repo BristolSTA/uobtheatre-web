@@ -1,34 +1,34 @@
 <template>
-  <div>
-    <overview-box :subtitle="true">
-      <template v-slot:title>Venue</template>
-      <template v-if="!venue" v-slot:subtitle>Loading Venue...</template>
-      <template v-else v-slot:subtitle>
-        <router-link
-          :to="{
-            name: 'venue',
-            params: { venueSlug: venue.slug },
-          }"
-          target="_blank"
-        >
-          The {{ venue.name }}
-        </router-link>
-      </template>
-      <div v-if="venue">
-        <p v-if="venue.address.building_name">
-          {{ venue.address.building_name }}
-        </p>
-        <p>
-          <template v-if="venue.address.building_number">
-            {{ venue.address.building_number }}
-          </template>
-          {{ venue.address.street }}
-        </p>
-        <p>{{ venue.address.city }}</p>
-        <p>{{ venue.address.postcode }}</p>
-      </div>
-    </overview-box>
-  </div>
+  <overview-box :subtitle="true">
+    <template v-slot:title>Venue</template>
+    <template v-if="!venue" v-slot:subtitle>
+      <font-awesome-icon class="animate-spin" icon="circle-notch" />
+    </template>
+    <template v-else v-slot:subtitle>
+      <router-link
+        :to="{
+          name: 'venue',
+          params: { venueSlug: venue.slug },
+        }"
+        target="_blank"
+      >
+        The {{ venue.name }}
+      </router-link>
+    </template>
+    <div v-if="venue">
+      <p v-if="venue.address.building_name">
+        {{ venue.address.building_name }}
+      </p>
+      <p>
+        <template v-if="venue.address.building_number">
+          {{ venue.address.building_number }}
+        </template>
+        {{ venue.address.street }}
+      </p>
+      <p>{{ venue.address.city }}</p>
+      <p>{{ venue.address.postcode }}</p>
+    </div>
+  </overview-box>
 </template>
 
 <script>
@@ -42,8 +42,8 @@ export default {
   components: { OverviewBox },
   mixins: [handle404Mixin],
   props: {
-    venue_slug: {
-      required: true,
+    venue_data: {
+      requried: true,
     },
   },
   data() {
@@ -52,14 +52,14 @@ export default {
     };
   },
   created() {
-    runPromiseWithLoading(
-      venueService
-        .fetchVenueBySlug(this.venue_slug)
-        .then((data) => {
+    if (typeof this.venue_data == 'string') {
+      return runPromiseWithLoading(
+        venueService.fetchVenueBySlug(this.venue_data).then((data) => {
           this.venue = data;
         })
-        .catch(this.handle404)
-    );
+      );
+    }
+    this.venue = this.venue_data;
   },
 };
 </script>

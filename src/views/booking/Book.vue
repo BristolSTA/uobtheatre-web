@@ -29,8 +29,9 @@
           <router-view
             :production="production"
             :booking="booking"
+            :ticket_types_data="ticket_types"
             @select-performance="onSelectPerformance"
-            @understood="navigateToStage()"
+            @next-stage="navigateToStage()"
           ></router-view>
         </div>
       </div>
@@ -43,6 +44,8 @@ import Booking from '@/classes/Booking';
 import BookingStage from '@/classes/BookingStage';
 import BookingNavigation from '@/components/booking/BookingNavigation.vue';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
+import { performanceService } from '@/services';
+import { runPromiseWithLoading } from '@/utils';
 
 import { getNextStage, getStageIndex } from './bookingStages';
 export default {
@@ -51,6 +54,10 @@ export default {
     production: {
       required: true,
     },
+  },
+  beforeRouteEnter(to, from, next) {
+    // TODO: Check here if the user has an exisiting booking (can see if they can enter the route they are trying to go to)
+    next();
   },
   beforeRouteUpdate(to, from, next) {
     // This is required incase the user navigated internally within the children ("nested") rotues or, for example, goes back, as the beforeEnter on the main route is not called (therefore slug not resolved)
@@ -63,6 +70,16 @@ export default {
       this.booking.performance = this.production.performances.find(
         (performance) => performance.id === this.$route.params.performanceID
       );
+      runPromiseWithLoading(
+        performanceService
+          .fetchTicketOptionsForPerformance(
+            this.production.slug,
+            this.booking.performance.id
+          )
+          .then((results) => {
+            this.ticket_types = results.ticket_types;
+          })
+      );
     }
   },
   metaInfo() {
@@ -73,6 +90,7 @@ export default {
   data() {
     return {
       booking: new Booking(),
+      ticket_types: null,
       maxAllowedStageIndex: getStageIndex(this.$route.meta.stage),
     };
   },

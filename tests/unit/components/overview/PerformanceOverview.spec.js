@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import OverviewBox from '@/components/overview/OverviewBox.vue';
-import PerformanceOverviewBox from '@/components/overview/PerformanceOverviewBox.vue';
+import PerformanceOverview from '@/components/overview/PerformanceOverview.vue';
 
 import { mountWithRouterMock } from '../../helpers';
 import {
@@ -39,7 +39,7 @@ describe('performance overview box', function () {
       );
     });
     performanceOverviewBoxComponent = await mountWithRouterMock(
-      PerformanceOverviewBox,
+      PerformanceOverview,
       {
         propsData: {
           production: production,

@@ -74,7 +74,7 @@ const makeServer = () => {
 
 const executeWithServer = (callback, closeServer = true) => {
   let server = makeServer();
-  callback(server);
+  if (callback) callback(server);
   if (closeServer) server.shutdown();
   return server;
 };

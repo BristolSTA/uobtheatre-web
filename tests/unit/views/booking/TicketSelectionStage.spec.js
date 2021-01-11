@@ -19,8 +19,9 @@ describe('Ticket Selection Stage', () => {
   let production;
   let performance;
   let server;
+  let ticket_types;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     server = executeWithServer((server) => {
       let productionModel = server.create('production');
       production = serialize(productionModel, server);
@@ -58,6 +59,10 @@ describe('Ticket Selection Stage', () => {
       );
     }, false);
 
+    ticket_types = await fetch(
+      `api/productions/myperf/performances/${performance.id}/ticket_types`
+    );
+    ticket_types = (await ticket_types.json()).ticket_types;
     let booking = new Booking();
     booking.performance = performance;
 
@@ -65,17 +70,13 @@ describe('Ticket Selection Stage', () => {
       propsData: {
         production: production,
         booking: booking,
+        ticket_types_data: ticket_types,
       },
     });
   });
 
   afterEach(() => {
     server.shutdown();
-  });
-
-  it('fetches seat locations on created', async () => {
-    await waitFor(() => stageComponent.vm.seat_locations);
-    expect(stageComponent.vm.seat_locations.length).to.eq(2);
   });
 
   it('fetches discount options on created', async () => {
@@ -85,9 +86,7 @@ describe('Ticket Selection Stage', () => {
 
   describe('with api calls complete', () => {
     beforeEach(async () => {
-      await waitFor(
-        () => stageComponent.vm.seat_locations && stageComponent.vm.discounts
-      );
+      await waitFor(() => stageComponent.vm.discounts);
     });
     it('displays the available seat locations', async () => {
       let seatLocationComponents = stageComponent.findAllComponents(
@@ -142,8 +141,8 @@ describe('Ticket Selection Stage', () => {
         .findComponent(SeatLocation)
         .vm.$emit(
           'add-ticket',
-          stageComponent.vm.seat_locations[0].seat_group,
-          stageComponent.vm.seat_locations[0].concession_types[0]
+          ticket_types[0].seat_group,
+          ticket_types[0].concession_types[0]
         );
       expect(stageComponent.vm.booking.tickets.length).to.eq(1);
       expect(stageComponent.vm.booking.tickets[0].seat_group_id).to.eq('1');
@@ -159,8 +158,8 @@ describe('Ticket Selection Stage', () => {
         .findComponent(SeatLocation)
         .vm.$emit(
           'add-ticket',
-          stageComponent.vm.seat_locations[0].seat_group,
-          stageComponent.vm.seat_locations[0].concession_types[0],
+          ticket_types[0].seat_group,
+          ticket_types[0].concession_types[0],
           3
         );
       expect(stageComponent.vm.booking.tickets.length).to.eq(3);
@@ -177,8 +176,8 @@ describe('Ticket Selection Stage', () => {
         .findComponent(SeatLocation)
         .vm.$emit(
           'set-tickets',
-          stageComponent.vm.seat_locations[0].seat_group,
-          stageComponent.vm.seat_locations[0].concession_types[0],
+          ticket_types[0].seat_group,
+          ticket_types[0].concession_types[0],
           2
         );
       expect(stageComponent.vm.booking.tickets.length).to.eq(2);
@@ -196,8 +195,8 @@ describe('Ticket Selection Stage', () => {
         .findComponent(SeatLocation)
         .vm.$emit(
           'remove-ticket',
-          stageComponent.vm.seat_locations[0].seat_group,
-          stageComponent.vm.seat_locations[0].concession_types[0]
+          ticket_types[0].seat_group,
+          ticket_types[0].concession_types[0]
         );
       expect(stageComponent.vm.booking.tickets.length).to.eq(0);
       expect(stageComponent.vm.interaction_timer.mock.calls.length).to.eq(1);
@@ -210,6 +209,7 @@ describe('Ticket Selection Stage', () => {
         propsData: {
           production: production,
           booking: stageComponent.vm.booking,
+          ticket_types_data: ticket_types,
         },
       });
       expect(lo.debounce.mock.calls.length).to.eq(1);

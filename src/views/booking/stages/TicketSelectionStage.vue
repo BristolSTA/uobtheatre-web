@@ -9,12 +9,10 @@
     </div>
     <div class="space-y-1">
       <seat-location
-        v-for="(seat_location, index) in seat_locations"
+        v-for="(seat_location, index) in ticket_types_data"
         :key="index"
         :seat_location="seat_location"
-        :expanded="
-          selected_location_index == index || seat_locations.length == 1
-        "
+        :expanded="selected_location_index == index || ticket_types_data.length == 1"
         :current_tickets="booking.tickets"
         :discounts="discounts"
         @select-location="
@@ -34,7 +32,7 @@
         <table class="w-full text-left table-auto">
           <thead>
             <tr>
-              <th class="p-2" v-if="seat_locations.length > 1">Location</th>
+              <th class="p-2" v-if="ticket_types_data.length > 1">Location</th>
               <th class="p-2">Type</th>
               <th class="w-24 p-2">Quantity</th>
               <th class="w-24 p-2">Line Total</th>
@@ -43,10 +41,10 @@
           <tbody>
             <tr
               class="even:bg-sta-gray-light odd:bg-sta-gray"
-              v-for="(ticket, index) in booking.ticket_overview(seat_locations)"
+              v-for="(ticket, index) in booking.ticket_overview(ticket_types_data)"
               :key="index"
             >
-              <td class="p-2" v-if="seat_locations.length > 1">
+              <td class="p-2" v-if="ticket_types_data.length > 1">
                 {{ ticket.seat_group.name }}
               </td>
               <td class="p-2">{{ ticket.concession_type.name }}</td>
@@ -87,7 +85,14 @@
       </div>
     </div>
     <div v-if="booking.tickets.length" class="mt-2 text-center">
-      <button class="font-semibold btn btn-orange">Next</button>
+      <button
+        class="font-semibold btn btn-orange"
+        :disabled="booking.dirty"
+        @click="$emit('next-stage')"
+        @keypress="$emit('next-stage')"
+      >
+        Next
+      </button>
     </div>
   </div>
 </template>
@@ -113,27 +118,21 @@ export default {
       required: true,
       type: Booking,
     },
+    ticket_types_data: {
+      required: true,
+    },
   },
   data() {
     return {
       expanded: true,
       selected_location_index: null,
-      seat_locations: null,
       discounts: null,
 
       interaction_timer: lo.debounce(this.updateAPI, 2 * 1000),
     };
   },
   created() {
-    runPromiseWithLoading([
-      performanceService
-        .fetchTicketOptionsForPerformance(
-          this.production.slug,
-          this.booking.performance.id
-        )
-        .then((results) => {
-          this.seat_locations = results.ticket_types;
-        }),
+    runPromiseWithLoading(
       performanceService
         .fetchGroupDiscountOptionsForPerformance(
           this.production.slug,
@@ -141,8 +140,8 @@ export default {
         )
         .then((results) => {
           this.discounts = results;
-        }),
-    ]);
+        })
+    );
   },
   methods: {
     onAddTicket(location, concession_type, number = 1) {

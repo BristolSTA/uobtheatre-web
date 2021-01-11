@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     onUnderstood() {
-      this.$emit('understood');
+      this.$emit('next-stage');
     },
   },
 };

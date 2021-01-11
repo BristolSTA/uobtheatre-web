@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { RouterLinkStub } from '@vue/test-utils';
 import { expect } from 'chai';
 
@@ -39,7 +40,7 @@ describe('Venue page', function () {
 
     venueOverviewComponent = await mountWithRouterMock(VenueOverview, {
       propsData: {
-        venue_slug: venue.slug,
+        venue_data: venue.slug,
       },
     });
   });
@@ -48,8 +49,8 @@ describe('Venue page', function () {
     server.shutdown();
   });
 
-  it('starts by showing loading screen', () => {
-    expect(venueOverviewComponent.text()).to.contain('Loading Venue...');
+  it('starts by showing loading spinner', () => {
+    expect(venueOverviewComponent.findComponent(FontAwesomeIcon).exists());
   });
 
   it('has overview box component', async () => {
@@ -129,23 +130,5 @@ describe('Venue page', function () {
       });
       expect(fixTextSpacing(infoBox.text())).to.contain('Queens Road');
     });
-  });
-
-  it('handles invalid venue', async () => {
-    let fake404Handler = jest.fn();
-    venueOverviewComponent = await mountWithRouterMock(VenueOverview, {
-      mixins: [
-        {
-          methods: {
-            handle404: fake404Handler,
-          },
-        },
-      ],
-      propsData: {
-        venue_slug: 'anson-not-theatre',
-      },
-    });
-    await waitFor(() => fake404Handler.mock.calls.length);
-    expect(fake404Handler.mock.calls.length).to.eq(1);
   });
 });
