@@ -70,4 +70,21 @@ export function getNextStage(currentStage, production, booking) {
   });
 }
 
+/**
+ * @param {BookingStage|number} currentStage The current stage (object or index)
+ * @param {object} production Production Data Object
+ * @param {object|null} booking Booking Data Object
+ * @returns {BookingStage|null} Next booking stage
+ */
+export function getPreviousStage(currentStage, production, booking) {
+  return stages.reverse().find((stage, index) => {
+    return (
+      (!isNaN(currentStage)
+        ? index < currentStage
+        : index < getStageIndex(currentStage)) &&
+      stage.shouldBeUsed(production, booking)
+    );
+  });
+}
+
 export default stages;

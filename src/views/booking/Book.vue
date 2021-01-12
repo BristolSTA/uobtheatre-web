@@ -16,15 +16,23 @@
         :production="production"
         :showBuyTicketsButton="false"
       />
-      <div class="flex mb-2 space-x-2">
+      <div class="flex flex-wrap mb-2 space-x-2 md:flex-nowrap">
         <booking-navigation
-          class="w-1/4"
+          class="hidden md:flex md:w-1/4"
           :currentStageIndex="currentStageIndex"
           :maxAllowedStageIndex="maxAllowedStageIndex"
           :production="production"
           :booking="booking"
           @goto-stage="navigateToStage"
         />
+        <div class="w-full text-center md:hidden">
+          <h1 class="text-h1 text-sta-green">{{ $route.meta.stage.name }}</h1>
+          <clickable-link
+            class="text-white"
+            @click="gotoPreviousStage"
+            ><font-awesome-icon icon="chevron-left" /> Back</clickable-link
+          >
+        </div>
         <div class="flex-grow p-3 bg-sta-gray-dark">
           <router-view
             :production="production"
@@ -44,12 +52,13 @@ import Booking from '@/classes/Booking';
 import BookingStage from '@/classes/BookingStage';
 import BookingNavigation from '@/components/booking/BookingNavigation.vue';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
+import ClickableLink from '@/components/ui/ClickableLink.vue';
 import { performanceService } from '@/services';
 import { runPromiseWithLoading } from '@/utils';
 
-import { getNextStage, getStageIndex } from './bookingStages';
+import { getNextStage, getPreviousStage, getStageIndex } from './bookingStages';
 export default {
-  components: { BookingNavigation, ProductionBanner },
+  components: { BookingNavigation, ProductionBanner, ClickableLink },
   props: {
     production: {
       required: true,
@@ -87,6 +96,13 @@ export default {
     };
   },
   methods: {
+    gotoPreviousStage() {
+      this.navigateToStage(getPreviousStage(
+        this.currentStageIndex,
+        this.production,
+        this.booking
+      ))
+    },
     /**
      * @param {BookingStage|null} stage Stage to navigate to. If not provided, defaults to the next stage
      */
