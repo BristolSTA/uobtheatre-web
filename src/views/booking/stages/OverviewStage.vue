@@ -9,10 +9,7 @@
         <venue-overview :venue_data="booking.performance.venue.slug" />
         <user-overview :booking="booking" />
       </div>
-      <tickets-overview
-        :booking="booking"
-        :ticket_types_data="ticket_types_data"
-      />
+      <tickets-overview :booking="booking" />
       <booking-price-overview :booking="booking" />
     </div>
     <div class="mt-4 text-center">
@@ -45,9 +42,6 @@ export default {
     booking: {
       required: true,
       type: Booking,
-    },
-    ticket_types_data: {
-      required: true,
     },
   },
 };
