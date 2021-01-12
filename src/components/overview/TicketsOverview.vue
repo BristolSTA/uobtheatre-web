@@ -1,8 +1,23 @@
 <template>
-  <overview-box :subtitle="false">
+  <overview-box :subtitle="false" :msgbox="true">
     <template v-slot:title>Tickets</template>
-    <div>Warning message</div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
+    <template v-slot:msgbox>
+      <table>
+        <tr>
+          <td>
+            <font-awesome-icon
+              icon="info-circle"
+              class="flex items-center text-h3 lg:text-h2"
+            />
+          </td>
+          <td class="text-xs lg:text-sm">
+            <p>All our tickets are fulfilled digitally.</p>
+            <p>Display on your phone or in print</p>
+          </td>
+        </tr>
+      </table>
+    </template>
+    <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
       <div
         v-for="(seatgroup_group, sg_index) in grp_by_seatgroup_and_conc"
         :key="sg_index"
@@ -36,17 +51,11 @@ export default {
       required: true,
       type: Booking,
     },
-    ticket_types_data: {
-      required: true,
-    },
   },
   computed: {
     grp_by_seatgroup_and_conc() {
       return lo.map(
-        lo.groupBy(
-          this.expected_output_data.tickets,
-          (ticket) => ticket.seat_group.id
-        ),
+        lo.groupBy(this.booking.tickets, (ticket) => ticket.seat_group.id),
         (tickets) =>
           lo.map(
             lo.groupBy(tickets, (ticket) => ticket.concession_type.id),
