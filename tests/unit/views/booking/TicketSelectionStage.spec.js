@@ -30,7 +30,7 @@ describe('Ticket Selection Stage', () => {
         1,
         {
           production: productionModel,
-          seatGroups: [
+          seat_groups: [
             server.create('seatGroup', {
               name: 'Best seats in the house',
               description: 'Right up close to the action',
@@ -39,7 +39,7 @@ describe('Ticket Selection Stage', () => {
               name: 'The Meh Seats',
             }),
           ],
-          concessionTypes: [
+          concession_types: [
             server.create('concessionType', {
               name: 'Adult',
               price: 100,
@@ -145,8 +145,8 @@ describe('Ticket Selection Stage', () => {
           ticket_types[0].concession_types[0]
         );
       expect(stageComponent.vm.booking.tickets.length).to.eq(1);
-      expect(stageComponent.vm.booking.tickets[0].seat_group_id).to.eq('1');
-      expect(stageComponent.vm.booking.tickets[0].concession_type_id).to.eq(
+      expect(stageComponent.vm.booking.tickets[0].seat_group.id).to.eq('1');
+      expect(stageComponent.vm.booking.tickets[0].concession_type.id).to.eq(
         '1'
       );
       expect(stageComponent.vm.interaction_timer.mock.calls.length).to.eq(1);
@@ -163,8 +163,8 @@ describe('Ticket Selection Stage', () => {
           3
         );
       expect(stageComponent.vm.booking.tickets.length).to.eq(3);
-      expect(stageComponent.vm.booking.tickets[0].seat_group_id).to.eq('1');
-      expect(stageComponent.vm.booking.tickets[0].concession_type_id).to.eq(
+      expect(stageComponent.vm.booking.tickets[0].seat_group.id).to.eq('1');
+      expect(stageComponent.vm.booking.tickets[0].concession_type.id).to.eq(
         '1'
       );
       expect(stageComponent.vm.interaction_timer.mock.calls.length).to.eq(1);
@@ -181,8 +181,8 @@ describe('Ticket Selection Stage', () => {
           2
         );
       expect(stageComponent.vm.booking.tickets.length).to.eq(2);
-      expect(stageComponent.vm.booking.tickets[0].seat_group_id).to.eq('1');
-      expect(stageComponent.vm.booking.tickets[0].concession_type_id).to.eq(
+      expect(stageComponent.vm.booking.tickets[0].seat_group.id).to.eq('1');
+      expect(stageComponent.vm.booking.tickets[0].concession_type.id).to.eq(
         '1'
       );
       expect(stageComponent.vm.interaction_timer.mock.calls.length).to.eq(1);

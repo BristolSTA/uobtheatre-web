@@ -68,7 +68,7 @@ export function makeServer({ environment = 'development' } = {}) {
       performances[0].sold_out = false;
       performances[0].start = '2020-12-19T10:00:00';
       performances[0].end = '2020-12-19T11:30:00';
-      performances[0].seatGroups = [
+      performances[0].seat_groups = [
         server.create('seatGroup', {
           name: 'The best seats in the house',
           description: 'They are sooooo good',
@@ -78,7 +78,7 @@ export function makeServer({ environment = 'development' } = {}) {
           description: null,
         }),
       ];
-      performances[0].concessionTypes = [
+      performances[0].concession_types = [
         server.create('concessionType', {
           name: 'Adult',
           description: null,

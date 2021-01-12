@@ -2,7 +2,11 @@ import faker from 'faker';
 import lo from 'lodash';
 import { belongsTo, Factory, hasMany, Model } from 'miragejs';
 
-import { DefaultSerializer, updateIfDoesntHave } from './utils';
+import {
+  DefaultSerializer,
+  RelationshipSerializer,
+  updateIfDoesntHave,
+} from './utils';
 
 export default {
   registerModels() {
@@ -13,45 +17,35 @@ export default {
         misc_costs: hasMany('miscCost'),
       }),
       ticket: Model.extend({
-        seatGroup: belongsTo('seatGroup'),
-        concessionType: belongsTo('concessionType'),
+        seat_group: belongsTo('seatGroup'),
+        concession_type: belongsTo('concessionType'),
       }),
       miscCost: Model,
     };
   },
   registerSerializers() {
     return {
-      booking: DefaultSerializer.extend({
-        include: ['tickets'],
+      booking: RelationshipSerializer(['tickets']).extend({
         serialize(object) {
           let json = this.buildPayload(object);
           json.performance_id = object.performanceId;
-          json.tickets = object.tickets.models.map((ticket) => {
-            return {
-              seat_group_id: ticket.seatGroupId,
-              concession_type_id: ticket.concessionTypeId,
-            };
-          });
 
           let tickets_pricebreakdown = lo
-            .chain(json.tickets)
+            .chain(object.tickets.models)
             .groupBy((ticket) => [
-              ticket.seat_group_id,
-              ticket.concession_type_id,
+              ticket.seat_group.id,
+              ticket.concession_type.id,
             ])
             .values()
             .map((groupedTickets) => {
-              let concessionType = this.schema.concessionTypes.find(
-                groupedTickets[0].concession_type_id
-              );
               return {
                 number: groupedTickets.length,
-                concession_type: concessionType,
-                seat_group: this.schema.seatGroups.find(
-                  groupedTickets[0].seat_group_id
-                ),
-                ticket_price: concessionType.price,
-                total_price: concessionType.price * groupedTickets.length,
+                concession_type: groupedTickets[0].concession_type,
+                seat_group: groupedTickets[0].seat_group,
+                ticket_price: groupedTickets[0].concession_type.price,
+                total_price:
+                  groupedTickets[0].concession_type.price *
+                  groupedTickets.length,
               };
             })
             .value();
@@ -91,8 +85,8 @@ export default {
             arguments[0].booking.tickets = arguments[0].booking.tickets.map(
               (ticket) => {
                 let ticketModel = this.schema.tickets.create({
-                  seatGroup: this.schema.seatGroups.find(ticket.seat_group_id),
-                  concessionType: this.schema.concessionTypes.find(
+                  seat_group: this.schema.seatGroups.find(ticket.seat_group_id),
+                  concession_type: this.schema.concessionTypes.find(
                     ticket.concession_type_id
                   ),
                 });
@@ -103,6 +97,7 @@ export default {
           return DefaultSerializer.prototype.normalize.apply(this, arguments);
         },
       }),
+      ticket: RelationshipSerializer(['seat_group', 'concession_type']),
     };
   },
   registerFactories() {
@@ -118,13 +113,13 @@ export default {
             {
               tickets: () => {
                 return server.createList('ticket', 2, {
-                  seatGroup: () =>
+                  seat_group: () =>
                     faker.random.arrayElement(
-                      booking.performance.seatGroups.models
+                      booking.performance.seat_groups.models
                     ),
-                  concessionType: () =>
+                  concession_type: () =>
                     faker.random.arrayElement(
-                      booking.performance.concessionTypes.models
+                      booking.performance.concession_types.models
                     ),
                 });
               },
@@ -135,10 +130,10 @@ export default {
       ticket: Factory.extend({
         afterCreate(booking, server) {
           updateIfDoesntHave(booking, {
-            seatGroup: () => {
+            seat_group: () => {
               return server.create('seatGroup');
             },
-            concessionType: () => {
+            concession_type: () => {
               return server.create('concessionType');
             },
           });

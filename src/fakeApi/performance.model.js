@@ -14,8 +14,8 @@ export default {
       performance: Model.extend({
         venue: belongsTo(),
         production: belongsTo('production'),
-        seatGroups: hasMany('seat_group'),
-        concessionTypes: hasMany('concession_type'),
+        seat_groups: hasMany('seat_group'),
+        concession_types: hasMany('concession_type'),
         discounts: hasMany('discount'),
       }),
     };
@@ -62,11 +62,11 @@ export default {
               return server.create('venue');
             },
 
-            seatGroups: () => {
+            seat_groups: () => {
               return server.createList('seatGroup', 2);
             },
 
-            concessionTypes: () => {
+            concession_types: () => {
               return server.createList('concessionType', 2);
             },
           });
@@ -88,9 +88,9 @@ export default {
           return NotFoundResponse();
         }
 
-        let seatGroups = this.serialize(performance.seatGroups);
+        let seatGroups = this.serialize(performance.seat_groups);
 
-        let concessionTypes = this.serialize(performance.concessionTypes);
+        let concessionTypes = this.serialize(performance.concession_types);
 
         /*  */
         return {

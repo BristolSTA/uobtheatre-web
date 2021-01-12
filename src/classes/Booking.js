@@ -229,16 +229,16 @@ export default class Booking {
   ticket_overview_estimate(ticket_options) {
     return lo
       .chain(this.tickets)
-      .groupBy((ticket) => [ticket.seat_group_id, ticket.concession_type_id])
+      .groupBy((ticket) => [ticket.seat_group.id, ticket.concession_type.id])
       .values()
       .map((groupedTickets) => {
         let seatLocation = ticket_options.find(
           (location) =>
-            location.seat_group.id == groupedTickets[0].seat_group_id
+            location.seat_group.id == groupedTickets[0].seat_group.id
         );
         let seatGroup = seatLocation.seat_group;
         let concessionType = seatLocation.concession_types.find(
-          (type) => type.id == groupedTickets[0].concession_type_id
+          (type) => type.id == groupedTickets[0].concession_type.id
         );
         return {
           number: groupedTickets.length,

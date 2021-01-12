@@ -66,26 +66,18 @@ export default {
     return next();
   },
   created() {
-    if (this.$route.params.performanceID) {
-      this.booking.performance = this.production.performances.find(
-        (performance) => performance.id === this.$route.params.performanceID
-      );
-      runPromiseWithLoading(
-        performanceService
-          .fetchTicketOptionsForPerformance(
-            this.production.slug,
-            this.booking.performance.id
-          )
-          .then((results) => {
-            this.ticket_types = results.ticket_types;
-          })
-      );
-    }
+    this.loadDataForStage();
   },
   metaInfo() {
     return {
       title: `Book ${this.production.name}`,
     };
+  },
+  watch: {
+    currentStageIndex() {
+      console.log('changed');
+      this.loadDataForStage();
+    },
   },
   data() {
     return {
@@ -118,6 +110,27 @@ export default {
             : null,
         },
       });
+    },
+    loadDataForStage() {
+      if (this.$route.params.performanceID) {
+        if (!this.booking.performance) {
+          this.booking.performance = this.production.performances.find(
+            (performance) => performance.id === this.$route.params.performanceID
+          );
+        }
+        if (!this.ticket_types) {
+          runPromiseWithLoading(
+            performanceService
+              .fetchTicketOptionsForPerformance(
+                this.production.slug,
+                this.booking.performance.id
+              )
+              .then((results) => {
+                this.ticket_types = results.ticket_types;
+              })
+          );
+        }
+      }
     },
     onSelectPerformance(performance) {
       this.booking.performance = performance;

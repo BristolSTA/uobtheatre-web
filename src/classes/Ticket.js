@@ -1,18 +1,23 @@
 export default class {
+  seat_group = {};
+  concession_type = {};
   /**
    * @param {object} seat_group_id Seat Group / Location ID
    * @param {object} concession_type_id Concession Type ID
    */
   constructor(seat_group_id, concession_type_id) {
-    this.seat_group_id = seat_group_id;
-    this.concession_type_id = concession_type_id;
+    this.seat_group.id = seat_group_id;
+    this.concession_type.id = concession_type_id;
   }
 
   static fromAPIData(ticketAPIData) {
-    return new this(
-      ticketAPIData.seat_group_id,
-      ticketAPIData.concession_type_id
+    let ticket = new this(
+      ticketAPIData.seat_group.id,
+      ticketAPIData.concession_type.id
     );
+    ticket.seat_group = ticketAPIData.seat_group;
+    ticket.concession_type = ticketAPIData.concession_type;
+    return ticket;
   }
 
   /**
@@ -24,10 +29,10 @@ export default class {
    */
   matches(seat_group, concession_type) {
     let matches_seat_group = seat_group
-      ? this.seat_group_id == seat_group.id
+      ? this.seat_group.id == seat_group.id
       : true;
     let matches_concession_type = concession_type
-      ? this.concession_type_id == concession_type.id
+      ? this.concession_type.id == concession_type.id
       : true;
     return matches_seat_group && matches_concession_type;
   }
@@ -41,10 +46,10 @@ export default class {
   price(ticket_options) {
     return ticket_options
       .find(
-        (seat_location) => seat_location.seat_group.id == this.seat_group_id
+        (seat_location) => seat_location.seat_group.id == this.seat_group.id
       )
       .concession_types.find(
-        (concession) => concession.id == this.concession_type_id
+        (concession) => concession.id == this.concession_type.id
       ).price;
   }
 
@@ -53,8 +58,8 @@ export default class {
    */
   get apiData() {
     return {
-      seat_group_id: this.seat_group_id,
-      concession_type_id: this.concession_type_id,
+      seat_group_id: this.seat_group.id,
+      concession_type_id: this.concession_type.id,
     };
   }
 }

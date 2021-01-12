@@ -12,7 +12,9 @@
         v-for="(seat_location, index) in ticket_types_data"
         :key="index"
         :seat_location="seat_location"
-        :expanded="selected_location_index == index || ticket_types_data.length == 1"
+        :expanded="
+          selected_location_index == index || ticket_types_data.length == 1
+        "
         :current_tickets="booking.tickets"
         :discounts="discounts"
         @select-location="
@@ -41,7 +43,9 @@
           <tbody>
             <tr
               class="even:bg-sta-gray-light odd:bg-sta-gray"
-              v-for="(ticket, index) in booking.ticket_overview(ticket_types_data)"
+              v-for="(ticket, index) in booking.ticket_overview(
+                ticket_types_data
+              )"
               :key="index"
             >
               <td class="p-2" v-if="ticket_types_data.length > 1">

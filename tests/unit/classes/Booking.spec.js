@@ -5,6 +5,7 @@ import Ticket from '@/classes/Ticket';
 import { makeServer } from '@/fakeApi';
 
 import FakePriceBreakdown from '../fixtures/FakePriceBreakdown';
+import FakeTickets from '../fixtures/FakeTickets';
 import { createFromFactoryAndSerialize } from '../helpers';
 describe('Booking Class', () => {
   /** @member {Booking} */
@@ -85,11 +86,7 @@ describe('Booking Class', () => {
 
     apiData = {
       price_breakdown: FakePriceBreakdown,
-      tickets: [
-        { seat_group_id: 1, concession_type_id: 2 },
-        { seat_group_id: 3, concession_type_id: 4 },
-        { seat_group_id: 5, concession_type_id: 6 },
-      ],
+      tickets: [FakeTickets[0], FakeTickets[0], FakeTickets[1]],
     };
     booking = Booking.fromAPIData(apiData);
     expect(booking).to.be.instanceOf(Booking);

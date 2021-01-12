@@ -48,7 +48,7 @@ export default {
                 return server.createList('discountRequirement', 2, {
                   concession_type: () =>
                     faker.random.arrayElement(
-                      discount.performance.concessionTypes.models
+                      discount.performance.concession_types.models
                     ),
                 });
               },
