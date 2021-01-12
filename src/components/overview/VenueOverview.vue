@@ -1,5 +1,5 @@
 <template>
-  <overview-box :subtitle="true">
+  <overview-box>
     <template v-slot:title>Venue</template>
     <template v-if="!venue" v-slot:subtitle>
       <font-awesome-icon class="animate-spin" icon="circle-notch" />

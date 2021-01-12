@@ -1,5 +1,5 @@
 <template>
-  <overview-box :subtitle="true">
+  <overview-box>
     <template v-slot:title>{{ production.name }}</template>
     <template v-slot:subtitle>
       {{ performance.start | dateFormat('EEEE d MMMM kkkk') }}

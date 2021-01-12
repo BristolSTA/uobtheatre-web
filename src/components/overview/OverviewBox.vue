@@ -15,8 +15,7 @@ export default {
   name: 'overview-box',
   props: {
     subtitle: {
-      defualt: true,
-      required: false,
+      default: true,
     },
   },
 };
