@@ -1,6 +1,8 @@
 <template>
   <overview-box>
-    <template v-slot:title>Venue</template>
+    <template v-slot:title>
+      <font-awesome-icon icon="building" class="mr-2" /> Venue</template
+    >
     <template v-slot:subtitle>
       <font-awesome-icon
         v-if="!venue"

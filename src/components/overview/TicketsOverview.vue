@@ -1,6 +1,8 @@
 <template>
   <overview-box>
-    <template v-slot:title>Tickets</template>
+    <template v-slot:title
+      ><font-awesome-icon icon="ticket-alt" class="mr-2" /> Tickets</template
+    >
     <template v-slot:message_box>
       <table class="ml-auto table-auto">
         <tr>

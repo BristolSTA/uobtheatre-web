@@ -2,6 +2,7 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 import {
+  faBuilding,
   faChevronDown,
   faChevronLeft,
   faChevronRight,
@@ -11,7 +12,9 @@ import {
   faInfoCircle,
   faLink,
   faMapMarkedAlt,
+  faMoneyCheckAlt,
   faTicketAlt,
+  faUserEdit,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { DateTime } from 'luxon';
@@ -34,7 +37,10 @@ library.add(
   faCircleNotch,
   faMapMarkedAlt,
   faInfoCircle,
-  faLink
+  faLink,
+  faBuilding,
+  faUserEdit,
+  faMoneyCheckAlt
 );
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 

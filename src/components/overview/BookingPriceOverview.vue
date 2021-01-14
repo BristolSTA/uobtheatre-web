@@ -1,6 +1,8 @@
 <template>
   <overview-box>
-    <template v-slot:title>Price</template>
+    <template v-slot:title
+      ><font-awesome-icon icon="money-check-alt" class="mr-2" /> Price</template
+    >
     <table>
       <tr v-for="(cost, index) in costs" :key="index">
         <td class="pr-4">
