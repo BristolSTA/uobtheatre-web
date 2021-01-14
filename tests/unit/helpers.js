@@ -1,4 +1,5 @@
 import { mount, RouterLinkStub } from '@vue/test-utils';
+import { expect } from 'chai';
 
 import { makeServer as makeAPIServer } from '@/fakeApi';
 
@@ -105,7 +106,12 @@ const createFromFactoryAndSerialize = (
   return serialized;
 };
 
+let assertNoVisualDifference = (recieved, expected) => {
+  expect(JSON.stringify(recieved)).to.eq(JSON.stringify(expected));
+};
+
 export {
+  assertNoVisualDifference,
   createFromFactoryAndSerialize,
   executeWithServer,
   fixTextSpacing,

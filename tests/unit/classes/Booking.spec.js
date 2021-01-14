@@ -6,7 +6,10 @@ import { makeServer } from '@/fakeApi';
 
 import FakePriceBreakdown from '../fixtures/FakePriceBreakdown';
 import FakeTickets from '../fixtures/FakeTickets';
-import { createFromFactoryAndSerialize } from '../helpers';
+import {
+  assertNoVisualDifference,
+  createFromFactoryAndSerialize,
+} from '../helpers';
 describe('Booking Class', () => {
   /** @member {Booking} */
   let booking;
@@ -225,6 +228,13 @@ describe('Booking Class', () => {
 
     expect(booking.tickets_price_pounds).to.eq('22.50');
   });
+  it('can get tickets discoutned price in pounds', () => {
+    expect(booking.tickets_discounted_price_pounds).to.eq('0.00');
+
+    booking.price_breakdown = FakePriceBreakdown;
+
+    expect(booking.tickets_discounted_price_pounds).to.eq('21.50');
+  });
   it('can tell if booking has discounts applied', () => {
     expect(booking.has_discounts).to.be.false;
 
@@ -288,6 +298,6 @@ describe('Booking Class', () => {
 
     booking.price_breakdown = FakePriceBreakdown;
 
-    expect(booking.misc_costs).to.eq(FakePriceBreakdown.misc_costs);
+    assertNoVisualDifference(booking.misc_costs, FakePriceBreakdown.misc_costs);
   });
 });

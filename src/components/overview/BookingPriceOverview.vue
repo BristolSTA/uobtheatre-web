@@ -35,7 +35,7 @@ export default {
         {
           name: 'Tickets',
           subtext: 'Including any discounts',
-          cost: this.booking.sub_total_price_pounds,
+          cost: this.booking.tickets_discounted_price_pounds,
         },
       ];
 

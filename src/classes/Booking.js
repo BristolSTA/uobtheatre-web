@@ -197,6 +197,14 @@ export default class Booking {
   }
 
   /**
+   * @returns {string} Total cost / price of the tickets in pounds taking into account any discounts
+   */
+  get tickets_discounted_price_pounds() {
+    if (!this.price_breakdown) return (0).toFixed(2);
+    return (this.price_breakdown.tickets_discounted_price / 100).toFixed(2);
+  }
+
+  /**
    * @returns {boolean} True if the booking has discounts applied
    */
   get has_discounts() {

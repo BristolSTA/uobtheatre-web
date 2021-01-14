@@ -17,6 +17,7 @@ export default {
         seat_groups: hasMany('seat_group'),
         concession_types: hasMany('concession_type'),
         discounts: hasMany('discount'),
+        misc_costs: hasMany('miscCost'),
       }),
     };
   },

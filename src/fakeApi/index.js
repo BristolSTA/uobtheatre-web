@@ -95,6 +95,7 @@ export function makeServer({ environment = 'development' } = {}) {
       performances[0].discounts = server.createList('discount', 2, {
         performance: performances[0],
       });
+      performances[0].misc_costs = server.createList('miscCost', 1);
 
       performances[1].sold_out = false;
       performances[1].doors_open = '2020-12-20T14:14:00';

@@ -59,23 +59,29 @@ export default {
             ? Math.round(object.performance.discounts.models[0].discount * 100)
             : 0;
 
-          let subtotal_price = ticket_price - discounts_price;
+          let tickets_inc_discount_price = ticket_price - discounts_price;
 
-          let misc_costs = this.buildPayload(object.misc_costs);
+          let misc_costs = this.buildPayload(object.performance.misc_costs);
           let misc_costs_price = misc_costs.length
             ? misc_costs
                 .map((misc_cost) => misc_cost.value)
-                .sum((a, b) => a + b)
+                .reduce((a, b) => a + b)
             : 0;
 
           json.price_breakdown = {
+            // Tickets
             tickets: tickets_pricebreakdown,
             tickets_price: ticket_price,
+            tickets_discounted_price: tickets_inc_discount_price,
             discounts_value: discounts_price,
+
+            // Misc Costs
             misc_costs: misc_costs,
             misc_costs_value: misc_costs_price,
-            subtotal_price: subtotal_price,
-            total_price: subtotal_price,
+
+            // Totals
+            subtotal_price: tickets_inc_discount_price,
+            total_price: tickets_inc_discount_price + misc_costs_price,
           };
 
           return json;
