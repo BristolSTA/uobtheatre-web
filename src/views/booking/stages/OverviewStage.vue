@@ -35,6 +35,10 @@ export default {
     TicketsOverview,
     BookingPriceOverview,
   },
+  created() {
+    // Check eligability for this stage
+    if (this.booking.dirty) return this.$emit('stage-unable');
+  },
   props: {
     production: {
       required: true,

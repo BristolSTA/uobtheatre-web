@@ -38,6 +38,7 @@
             :ticket_types_data="ticket_types"
             @select-performance="onSelectPerformance"
             @next-stage="navigateToStage()"
+            @stage-unable="gotoPreviousStage()"
           ></router-view>
         </div>
       </div>
@@ -94,6 +95,7 @@ export default {
   },
   methods: {
     gotoPreviousStage() {
+      console.log(this.currentStageIndex, this.$route.meta);
       this.navigateToStage(
         getPreviousStage(this.currentStageIndex, this.production, this.booking)
       );

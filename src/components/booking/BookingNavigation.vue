@@ -38,8 +38,9 @@ export default {
       let stageIndex = getStageIndex(stage);
       if (this.currentStageIndex == stageIndex) return 'btn-orange';
       if (
-        this.currentStageIndex > stageIndex ||
-        stageIndex <= this.maxAllowedStageIndex
+        (this.currentStageIndex > stageIndex ||
+          stageIndex <= this.maxAllowedStageIndex) &&
+        stage.eligable(this.production, this.booking)
       )
         return 'btn-green';
       return 'btn-gray-light disabled';

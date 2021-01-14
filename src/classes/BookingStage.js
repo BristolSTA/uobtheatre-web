@@ -14,12 +14,20 @@ export default class {
    * @param {any} pageComponent Vue Page Component
    * @param {object} routeOptions Route options and parameters for Vue Router
    * @param {ShouldBeUsedFunction} shouldBeUsed Function to determine whether the stage should be used in the booking process.
+   * @param {ShouldBeUsedFunction} eligableFn Function to determine whether the stage is eligable at the moment
    */
-  constructor(name, pageComponent, routeOptions = {}, shouldBeUsed = null) {
+  constructor(
+    name,
+    pageComponent,
+    routeOptions = {},
+    shouldBeUsed = null,
+    eligableFn = null
+  ) {
     this.name = name;
     this.pageComponent = pageComponent;
     this.routeOptions = routeOptions;
     this.shouldBeUsedFn = shouldBeUsed;
+    this.eligableFn = eligableFn;
   }
 
   /**
@@ -57,5 +65,14 @@ export default class {
     return this.shouldBeUsedFn
       ? this.shouldBeUsedFn(production, booking)
       : true;
+  }
+
+  /**
+   * @param {object} production Production Data Object
+   * @param {object|null} booking Booking Data Object
+   * @returns {boolean} Whether the stage can be naviagated to
+   */
+  eligable(production, booking = null) {
+    return this.eligableFn ? this.eligableFn(production, booking) : true;
   }
 }

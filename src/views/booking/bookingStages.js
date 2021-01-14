@@ -20,9 +20,15 @@ let stages = [
   new BookingStage('Ticket Selection', TicketSelectionStage, {
     path: 'tickets',
   }),
-  new BookingStage('Overview', OverviewStage, {
-    path: 'overview',
-  }),
+  new BookingStage(
+    'Overview',
+    OverviewStage,
+    {
+      path: 'overview',
+    },
+    null,
+    (production, booking) => !booking.dirty
+  ),
   new BookingStage(
     'Payment',
     {
@@ -32,7 +38,9 @@ let stages = [
     },
     {
       path: 'pay',
-    }
+    },
+    null,
+    (production, booking) => !booking.dirty
   ),
 ];
 
@@ -77,12 +85,27 @@ export function getNextStage(currentStage, production, booking) {
  * @returns {BookingStage|null} Next booking stage
  */
 export function getPreviousStage(currentStage, production, booking) {
-  return stages.reverse().find((stage, index) => {
+  let currentStageIndex = isNaN(currentStage)
+    ? getStageIndex(currentStage)
+    : currentStage;
+  let stagesInReverse = stages.slice().reverse();
+  console.log(
+    stagesInReverse.map((stage) => {
+      return [
+        stage,
+        getStageIndex(stage),
+        currentStageIndex,
+        getStageIndex(stage) < currentStageIndex &&
+          stage.shouldBeUsed(production, booking) &&
+          stage.eligable(production, booking),
+      ];
+    })
+  );
+  return stagesInReverse.find((stage) => {
     return (
-      (!isNaN(currentStage)
-        ? index < currentStage
-        : index < getStageIndex(currentStage)) &&
-      stage.shouldBeUsed(production, booking)
+      getStageIndex(stage) < currentStageIndex &&
+      stage.shouldBeUsed(production, booking) &&
+      stage.eligable(production, booking)
     );
   });
 }
