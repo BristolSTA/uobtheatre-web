@@ -89,18 +89,6 @@ export function getPreviousStage(currentStage, production, booking) {
     ? getStageIndex(currentStage)
     : currentStage;
   let stagesInReverse = stages.slice().reverse();
-  console.log(
-    stagesInReverse.map((stage) => {
-      return [
-        stage,
-        getStageIndex(stage),
-        currentStageIndex,
-        getStageIndex(stage) < currentStageIndex &&
-          stage.shouldBeUsed(production, booking) &&
-          stage.eligable(production, booking),
-      ];
-    })
-  );
   return stagesInReverse.find((stage) => {
     return (
       getStageIndex(stage) < currentStageIndex &&

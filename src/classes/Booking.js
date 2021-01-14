@@ -1,6 +1,7 @@
 import lo from 'lodash';
 
 import Ticket from './Ticket';
+import TicketsMatrix from './TicketsMatrix';
 export default class Booking {
   /** @member {number} */
   id;
@@ -153,23 +154,23 @@ export default class Booking {
   /**
    * Calculates the total price (in pennies) of the tickets (pre-discounts/charges)
    *
-   * @param {object} ticket_options Raw data from the ticket_types endpoint (i.e. grouped Seat Group -> Concession Types data) which contains the price data
+   * @param {TicketsMatrix} ticket_matrix Ticket Matrix instance
    * @returns {number} Total price of the tickets (without discounts), in pennies
    */
-  tickets_total_price_estimate(ticket_options) {
+  tickets_total_price_estimate(ticket_matrix) {
     return this.tickets
-      .map((ticket) => ticket.price(ticket_options))
+      .map((ticket) => ticket.price(ticket_matrix.ticket_options))
       .reduce((a, b) => a + b, 0);
   }
 
   /**
    * Calculates the total price (in pounds) of the tickets (pre-discounts/charges)
    *
-   * @param {object} ticket_options Raw data from the ticket_types endpoint (i.e. grouped Seat Group -> Concession Types data) which contains the price data
+   * @param {TicketsMatrix} ticket_matrix Ticket Matrix instance
    * @returns {number} Total price of the booking, in pounds to 2 d.p.
    */
-  tickets_total_price_pounds_estimate(ticket_options) {
-    return (this.tickets_total_price_estimate(ticket_options) / 100).toFixed(2);
+  tickets_total_price_pounds_estimate(ticket_matrix) {
+    return (this.tickets_total_price_estimate(ticket_matrix) / 100).toFixed(2);
   }
 
   /**
@@ -221,26 +222,26 @@ export default class Booking {
   }
 
   /**
-   * @param {object} ticket_options Raw data from the ticket_types endpoint (i.e. grouped Seat Group -> Concession Types data) which contains the price data
+   * @param {TicketsMatrix} ticket_matrix Ticket Matrix instance
    * @returns {Array} List of tickets grouped by seat group & concession type, giving capacity and price
    */
-  ticket_overview(ticket_options = null) {
+  ticket_overview(ticket_matrix = null) {
     if (!this.price_breakdown || this.dirty)
-      return this.ticket_overview_estimate(ticket_options);
+      return this.ticket_overview_estimate(ticket_matrix);
     return this.price_breakdown.tickets;
   }
 
   /**
-   * @param {object} ticket_options Raw data from the ticket_types endpoint (i.e. grouped Seat Group -> Concession Types data) which contains the price data
+   * @param {TicketsMatrix} ticket_matrix Ticket Matrix instance
    * @returns {Array} List of tickets grouped by seat group & concession type, giving capacity and price (based on selected tickets and not API data)
    */
-  ticket_overview_estimate(ticket_options) {
+  ticket_overview_estimate(ticket_matrix) {
     return lo
       .chain(this.tickets)
       .groupBy((ticket) => [ticket.seat_group.id, ticket.concession_type.id])
       .values()
       .map((groupedTickets) => {
-        let seatLocation = ticket_options.find(
+        let seatLocation = ticket_matrix.ticket_options.find(
           (location) =>
             location.seat_group.id == groupedTickets[0].seat_group.id
         );

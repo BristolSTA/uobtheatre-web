@@ -2,6 +2,7 @@ import { expect } from 'chai';
 
 import Booking from '@/classes/Booking';
 import Ticket from '@/classes/Ticket';
+import TicketsMatrix from '@/classes/TicketsMatrix';
 import { makeServer } from '@/fakeApi';
 
 import FakePriceBreakdown from '../fixtures/FakePriceBreakdown';
@@ -64,7 +65,7 @@ describe('Booking Class', () => {
     ticket_types = await fetch(
       `api/productions/myperf/performances/${performance.id}/ticket_types`
     );
-    ticket_types = (await ticket_types.json()).ticket_types;
+    ticket_types = new TicketsMatrix(await ticket_types.json());
     server.shutdown();
   });
 

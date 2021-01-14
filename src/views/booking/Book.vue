@@ -35,7 +35,7 @@
           <router-view
             :production="production"
             :booking="booking"
-            :ticket_types_data="ticket_types"
+            :ticket_matrix="ticket_matrix"
             @select-performance="onSelectPerformance"
             @next-stage="navigateToStage()"
             @stage-unable="gotoPreviousStage()"
@@ -49,6 +49,7 @@
 <script>
 import Booking from '@/classes/Booking';
 import BookingStage from '@/classes/BookingStage';
+import TicketsMatrix from '@/classes/TicketsMatrix';
 import BookingNavigation from '@/components/booking/BookingNavigation.vue';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
 import ClickableLink from '@/components/ui/ClickableLink.vue';
@@ -89,13 +90,12 @@ export default {
   data() {
     return {
       booking: new Booking(),
-      ticket_types: null,
+      ticket_matrix: null,
       maxAllowedStageIndex: getStageIndex(this.$route.meta.stage),
     };
   },
   methods: {
     gotoPreviousStage() {
-      console.log(this.currentStageIndex, this.$route.meta);
       this.navigateToStage(
         getPreviousStage(this.currentStageIndex, this.production, this.booking)
       );
@@ -131,15 +131,15 @@ export default {
             (performance) => performance.id === this.$route.params.performanceID
           );
         }
-        if (!this.ticket_types) {
+        if (!this.ticket_matrix) {
           runPromiseWithLoading(
             performanceService
               .fetchTicketOptionsForPerformance(
                 this.production.slug,
                 this.booking.performance.id
               )
-              .then((results) => {
-                this.ticket_types = results.ticket_types;
+              .then((result) => {
+                this.ticket_matrix = new TicketsMatrix(result);
               })
           );
         }

@@ -4,6 +4,7 @@ import lo from 'lodash';
 
 import Booking from '@/classes/Booking';
 import Ticket from '@/classes/Ticket';
+import TicketsMatrix from '@/classes/TicketsMatrix';
 import SeatLocation from '@/components/booking/SeatLocation.vue';
 import TicketSelectionStage from '@/views/booking/stages/TicketSelectionStage.vue';
 
@@ -62,7 +63,7 @@ describe('Ticket Selection Stage', () => {
     ticket_types = await fetch(
       `api/productions/myperf/performances/${performance.id}/ticket_types`
     );
-    ticket_types = (await ticket_types.json()).ticket_types;
+    ticket_types = new TicketsMatrix(await ticket_types.json());
     let booking = new Booking();
     booking.performance = performance;
 
@@ -70,7 +71,7 @@ describe('Ticket Selection Stage', () => {
       propsData: {
         production: production,
         booking: booking,
-        ticket_types_data: ticket_types,
+        ticket_matrix: ticket_types,
       },
     });
   });
@@ -141,8 +142,8 @@ describe('Ticket Selection Stage', () => {
         .findComponent(SeatLocation)
         .vm.$emit(
           'add-ticket',
-          ticket_types[0].seat_group,
-          ticket_types[0].concession_types[0]
+          ticket_types.ticket_options[0].seat_group,
+          ticket_types.ticket_options[0].concession_types[0]
         );
       expect(stageComponent.vm.booking.tickets.length).to.eq(1);
       expect(stageComponent.vm.booking.tickets[0].seat_group.id).to.eq('1');
@@ -158,8 +159,8 @@ describe('Ticket Selection Stage', () => {
         .findComponent(SeatLocation)
         .vm.$emit(
           'add-ticket',
-          ticket_types[0].seat_group,
-          ticket_types[0].concession_types[0],
+          ticket_types.ticket_options[0].seat_group,
+          ticket_types.ticket_options[0].concession_types[0],
           3
         );
       expect(stageComponent.vm.booking.tickets.length).to.eq(3);
@@ -176,8 +177,8 @@ describe('Ticket Selection Stage', () => {
         .findComponent(SeatLocation)
         .vm.$emit(
           'set-tickets',
-          ticket_types[0].seat_group,
-          ticket_types[0].concession_types[0],
+          ticket_types.ticket_options[0].seat_group,
+          ticket_types.ticket_options[0].concession_types[0],
           2
         );
       expect(stageComponent.vm.booking.tickets.length).to.eq(2);
@@ -195,8 +196,8 @@ describe('Ticket Selection Stage', () => {
         .findComponent(SeatLocation)
         .vm.$emit(
           'remove-ticket',
-          ticket_types[0].seat_group,
-          ticket_types[0].concession_types[0]
+          ticket_types.ticket_options[0].seat_group,
+          ticket_types.ticket_options[0].concession_types[0]
         );
       expect(stageComponent.vm.booking.tickets.length).to.eq(0);
       expect(stageComponent.vm.interaction_timer.mock.calls.length).to.eq(1);
@@ -209,7 +210,7 @@ describe('Ticket Selection Stage', () => {
         propsData: {
           production: production,
           booking: stageComponent.vm.booking,
-          ticket_types_data: ticket_types,
+          ticket_matrix: ticket_types,
         },
       });
       expect(lo.debounce.mock.calls.length).to.eq(1);

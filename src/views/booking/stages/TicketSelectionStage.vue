@@ -7,13 +7,14 @@
         {{ booking.performance.start | dateFormat('T') }}
       </p>
     </div>
-    <div class="space-y-1">
+    <div class="space-y-1" v-if="ticket_matrix">
       <seat-location
-        v-for="(seat_location, index) in ticket_types_data"
+        v-for="(seat_location, index) in ticket_matrix.ticket_options"
         :key="index"
         :seat_location="seat_location"
         :expanded="
-          selected_location_index == index || ticket_types_data.length == 1
+          selected_location_index == index ||
+          ticket_matrix.ticket_options.length == 1
         "
         :current_tickets="booking.tickets"
         :discounts="discounts"
@@ -34,7 +35,7 @@
         <table class="w-full text-left table-auto">
           <thead>
             <tr>
-              <th class="p-2" v-if="ticket_types_data.length > 1">Location</th>
+              <th class="p-2">Location</th>
               <th class="p-2">Type</th>
               <th class="w-24 p-2">Quantity</th>
               <th class="w-24 p-2">Line Total</th>
@@ -43,12 +44,10 @@
           <tbody>
             <tr
               class="even:bg-sta-gray-light odd:bg-sta-gray"
-              v-for="(ticket, index) in booking.ticket_overview(
-                ticket_types_data
-              )"
+              v-for="(ticket, index) in booking.ticket_overview(ticket_matrix)"
               :key="index"
             >
-              <td class="p-2" v-if="ticket_types_data.length > 1">
+              <td class="p-2">
                 {{ ticket.seat_group.name }}
               </td>
               <td class="p-2">{{ ticket.concession_type.name }}</td>
@@ -122,7 +121,7 @@ export default {
       required: true,
       type: Booking,
     },
-    ticket_types_data: {
+    ticket_matrix: {
       required: true,
     },
   },
