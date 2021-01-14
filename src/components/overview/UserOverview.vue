@@ -13,14 +13,9 @@ export default {
   name: 'user-overview',
   components: { OverviewBox },
   props: {
-    booking: {
+    user: {
       required: true,
     },
-  },
-  data() {
-    return {
-      user: null,
-    };
   },
 };
 </script>

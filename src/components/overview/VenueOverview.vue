@@ -1,18 +1,22 @@
 <template>
   <overview-box>
     <template v-slot:title>Venue</template>
-    <template v-if="!venue" v-slot:subtitle>
-      <font-awesome-icon class="animate-spin" icon="circle-notch" />
-    </template>
-    <template v-else v-slot:subtitle>
+    <template v-slot:subtitle>
+      <font-awesome-icon
+        v-if="!venue"
+        class="animate-spin"
+        icon="circle-notch"
+      />
       <router-link
+        v-else
         :to="{
           name: 'venue',
           params: { venueSlug: venue.slug },
         }"
         target="_blank"
+        title="Opens in a new tab"
       >
-        The {{ venue.name }}
+        <icon-list-item icon="link">The {{ venue.name }}</icon-list-item>
       </router-link>
     </template>
     <div v-if="venue">
@@ -37,9 +41,11 @@ import { venueService } from '@/services';
 import { runPromiseWithLoading } from '@/utils';
 import { handle404Mixin } from '@/utils';
 
+import IconListItem from '../ui/IconListItem.vue';
+
 export default {
   name: 'venue-overview',
-  components: { OverviewBox },
+  components: { OverviewBox, IconListItem },
   mixins: [handle404Mixin],
   props: {
     venue_data: {

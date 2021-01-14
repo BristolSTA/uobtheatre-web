@@ -27,9 +27,7 @@
         />
         <div class="w-full text-center md:hidden">
           <h1 class="text-h1 text-sta-green">{{ $route.meta.stage.name }}</h1>
-          <clickable-link
-            class="text-white"
-            @click="gotoPreviousStage"
+          <clickable-link class="text-white" @click="gotoPreviousStage"
             ><font-awesome-icon icon="chevron-left" /> Back</clickable-link
           >
         </div>
@@ -84,7 +82,6 @@ export default {
   },
   watch: {
     currentStageIndex() {
-      console.log('changed');
       this.loadDataForStage();
     },
   },
@@ -97,11 +94,9 @@ export default {
   },
   methods: {
     gotoPreviousStage() {
-      this.navigateToStage(getPreviousStage(
-        this.currentStageIndex,
-        this.production,
-        this.booking
-      ))
+      this.navigateToStage(
+        getPreviousStage(this.currentStageIndex, this.production, this.booking)
+      );
     },
     /**
      * @param {BookingStage|null} stage Stage to navigate to. If not provided, defaults to the next stage

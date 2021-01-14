@@ -7,7 +7,7 @@
       />
       <div class="grid grid-cols-1 gap-4 md:grid-cols-2 justify-evenly">
         <venue-overview :venue_data="booking.performance.venue.slug" />
-        <user-overview :booking="booking" />
+        <user-overview :user="{}" />
       </div>
       <tickets-overview :booking="booking" />
       <booking-price-overview :booking="booking" />

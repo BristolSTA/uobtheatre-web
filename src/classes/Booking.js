@@ -216,7 +216,7 @@ export default class Booking {
    * @param {object} ticket_options Raw data from the ticket_types endpoint (i.e. grouped Seat Group -> Concession Types data) which contains the price data
    * @returns {Array} List of tickets grouped by seat group & concession type, giving capacity and price
    */
-  ticket_overview(ticket_options) {
+  ticket_overview(ticket_options = null) {
     if (!this.price_breakdown || this.dirty)
       return this.ticket_overview_estimate(ticket_options);
     return this.price_breakdown.tickets;
@@ -252,10 +252,14 @@ export default class Booking {
   }
 
   /**
-   * @returns {Array} List of misc costs, giving name, description, an optional perctange value and the calcualted additional cost
+   * @returns {Array} List of misc costs, giving name, description, an optional perctange value and the additional cost (in pounds)
    */
   get misc_costs() {
     if (!this.price_breakdown) return [];
-    return this.price_breakdown.misc_costs;
+    return this.price_breakdown.misc_costs.map((misc_cost) => {
+      return Object.assign(misc_cost, {
+        value_pounds: (misc_cost.value / 100).toFixed(2),
+      });
+    });
   }
 }

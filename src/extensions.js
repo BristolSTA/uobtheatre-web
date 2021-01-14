@@ -9,6 +9,7 @@ import {
   faCircleNotch,
   faClock,
   faInfoCircle,
+  faLink,
   faMapMarkedAlt,
   faTicketAlt,
 } from '@fortawesome/free-solid-svg-icons';
@@ -32,7 +33,8 @@ library.add(
   faFacebook,
   faCircleNotch,
   faMapMarkedAlt,
-  faInfoCircle
+  faInfoCircle,
+  faLink
 );
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
