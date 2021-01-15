@@ -27,7 +27,10 @@
         />
         <div class="w-full text-center md:hidden">
           <h1 class="text-h1 text-sta-green">{{ $route.meta.stage.name }}</h1>
-          <clickable-link class="text-white" @click="gotoPreviousStage"
+          <clickable-link
+            v-if="currentStageIndex > 0"
+            class="text-white"
+            @click="gotoPreviousStage"
             ><font-awesome-icon icon="chevron-left" /> Back</clickable-link
           >
         </div>
