@@ -10,7 +10,7 @@ import {
 } from '../../helpers';
 
 describe('performance overview box', function () {
-  let performanceOverviewBoxComponent;
+  let performanceOverviewComponent;
   let production;
   let performance;
 
@@ -38,7 +38,7 @@ describe('performance overview box', function () {
         server
       );
     });
-    performanceOverviewBoxComponent = await mountWithRouterMock(
+    performanceOverviewComponent = await mountWithRouterMock(
       PerformanceOverview,
       {
         propsData: {
@@ -50,14 +50,14 @@ describe('performance overview box', function () {
   });
 
   it('has overview box component', async () => {
-    expect(performanceOverviewBoxComponent.findComponent(OverviewBox).exists())
-      .to.be.true;
+    expect(performanceOverviewComponent.findComponent(OverviewBox).exists()).to
+      .be.true;
   });
 
   describe('overview box component', () => {
     let infoBox;
     beforeEach(() => {
-      infoBox = performanceOverviewBoxComponent.findComponent(OverviewBox);
+      infoBox = performanceOverviewComponent.findComponent(OverviewBox);
     });
 
     it('has the correct performance information', async () => {
