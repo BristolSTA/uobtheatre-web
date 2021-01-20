@@ -24,8 +24,6 @@ describe('performance overview box', function () {
         },
         server
       );
-    });
-    executeWithServer((server) => {
       performance = createFromFactoryAndSerialize(
         'performance',
         1,
@@ -55,16 +53,17 @@ describe('performance overview box', function () {
   });
 
   describe('overview box component', () => {
-    let infoBox;
-    beforeEach(() => {
-      infoBox = performanceOverviewComponent.findComponent(OverviewBox);
-    });
-
     it('has the correct performance information', async () => {
-      expect(infoBox.text()).to.contain('Legally Ginger');
-      expect(infoBox.text()).to.contain('Friday 25 December 2020');
-      expect(infoBox.text()).to.contain('Doors Open: 09:00');
-      expect(infoBox.text()).to.contain('Performance Starts: 10:00');
+      expect(performanceOverviewComponent.text()).to.contain('Legally Ginger');
+      expect(performanceOverviewComponent.text()).to.contain(
+        'Friday 25 December 2020'
+      );
+      expect(performanceOverviewComponent.text()).to.contain(
+        'Doors Open: 09:00'
+      );
+      expect(performanceOverviewComponent.text()).to.contain(
+        'Performance Starts: 10:00'
+      );
     });
   });
 });

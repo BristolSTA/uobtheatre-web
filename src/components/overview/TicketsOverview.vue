@@ -13,7 +13,7 @@
             />
           </th>
           <td class="text-xs lg:text-sm">
-            <p>All our tickets are fulfilled digitally.</p>
+            <p>All our tickets are fulfilled digitally</p>
             <p>Display on your phone or print</p>
           </td>
         </tr>

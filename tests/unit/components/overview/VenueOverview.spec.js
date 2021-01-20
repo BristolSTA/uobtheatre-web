@@ -62,32 +62,34 @@ describe('Venue page', function () {
     expect(venueOverviewComponent.text()).to.contain('Venue');
   });
 
-  describe('overview box component', () => {
-    let infoBox;
+  describe('correct venue information', () => {
     beforeEach(async () => {
       await waitFor(() => venueOverviewComponent.vm.venue);
-
-      infoBox = venueOverviewComponent.findComponent(OverviewBox);
     });
 
     it('has working links', async () => {
       expect(
-        infoBox.findAllComponents(RouterLinkStub).at(0).props('to').name
+        venueOverviewComponent
+          .findAllComponents(RouterLinkStub)
+          .at(0)
+          .props('to').name
       ).to.equal('venue');
       expect(
-        infoBox.findAllComponents(RouterLinkStub).at(0).props('to').params
-          .venueSlug
+        venueOverviewComponent
+          .findAllComponents(RouterLinkStub)
+          .at(0)
+          .props('to').params.venueSlug
       ).to.equal('anson-theatre');
     });
 
     // building number and name
     it('has the correct address and name', async () => {
-      expect(infoBox.text()).to.contain('Anson Theatre');
-      expect(fixTextSpacing(infoBox.text())).to.contain(
+      expect(venueOverviewComponent.text()).to.contain('Anson Theatre');
+      expect(fixTextSpacing(venueOverviewComponent.text())).to.contain(
         'Wills Memorial Building 69 Queens Road'
       );
-      expect(infoBox.text()).to.contain('London');
-      expect(infoBox.text()).to.contain('BS69 420');
+      expect(venueOverviewComponent.text()).to.contain('London');
+      expect(venueOverviewComponent.text()).to.contain('BS69 420');
     });
 
     // no building number
@@ -100,7 +102,7 @@ describe('Venue page', function () {
           }),
         },
       });
-      expect(fixTextSpacing(infoBox.text())).to.contain(
+      expect(fixTextSpacing(venueOverviewComponent.text())).to.contain(
         'Wills Memorial Building Queens Road'
       );
     });
@@ -115,7 +117,9 @@ describe('Venue page', function () {
           }),
         },
       });
-      expect(fixTextSpacing(infoBox.text())).to.contain('69 Queens Road');
+      expect(fixTextSpacing(venueOverviewComponent.text())).to.contain(
+        '69 Queens Road'
+      );
     });
 
     // no building name or number
@@ -128,7 +132,9 @@ describe('Venue page', function () {
           }),
         },
       });
-      expect(fixTextSpacing(infoBox.text())).to.contain('Queens Road');
+      expect(fixTextSpacing(venueOverviewComponent.text())).to.contain(
+        'Queens Road'
+      );
     });
   });
 });
