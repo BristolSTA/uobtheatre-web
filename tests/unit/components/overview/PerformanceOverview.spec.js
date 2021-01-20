@@ -47,12 +47,12 @@ describe('performance overview box', function () {
     );
   });
 
-  it('has overview box component', async () => {
+  it('has overview box component', () => {
     expect(performanceOverviewComponent.findComponent(OverviewBox).exists()).to
       .be.true;
   });
 
-  describe('overview box component', () => {
+  describe('performance overview component', () => {
     it('has the correct performance information', async () => {
       expect(performanceOverviewComponent.text()).to.contain('Legally Ginger');
       expect(performanceOverviewComponent.text()).to.contain(

@@ -12,7 +12,7 @@ import {
   fixTextSpacing,
 } from '../../helpers';
 
-describe('performance overview box', function () {
+describe('ticket overview box', function () {
   let ticketOverviewComponent;
   let booking = new Booking();
 
@@ -69,10 +69,12 @@ describe('performance overview box', function () {
     });
   });
 
-  it('has overview box component', async () => {
+  it('has overview box component', () => {
     expect(ticketOverviewComponent.findComponent(OverviewBox).exists()).to.be
       .true;
+  });
 
+  it('has correct header info', () => {
     expect(ticketOverviewComponent.text()).to.contain('Tickets');
 
     expect(

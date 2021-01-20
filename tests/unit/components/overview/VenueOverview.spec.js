@@ -9,7 +9,7 @@ import { makeServer } from '@/fakeApi';
 import { mountWithRouterMock, waitFor } from '../../helpers';
 import { fixTextSpacing } from '../../helpers.js';
 
-describe('Venue page', function () {
+describe('Venue overview box', function () {
   let venueOverviewComponent;
   let server;
   let venue;
