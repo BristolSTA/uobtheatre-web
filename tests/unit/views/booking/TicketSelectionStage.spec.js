@@ -5,7 +5,7 @@ import lo from 'lodash';
 import Booking from '@/classes/Booking';
 import Ticket from '@/classes/Ticket';
 import TicketsMatrix from '@/classes/TicketsMatrix';
-import SeatLocation from '@/components/booking/SeatLocation.vue';
+import SeatGroup from '@/components/booking/SeatGroup.vue';
 import TicketSelectionStage from '@/views/booking/stages/TicketSelectionStage.vue';
 
 import {
@@ -90,56 +90,52 @@ describe('Ticket Selection Stage', () => {
       await waitFor(() => stageComponent.vm.discounts);
     });
     it('displays the available seat locations', async () => {
-      let seatLocationComponents = stageComponent.findAllComponents(
-        SeatLocation
-      );
-      expect(seatLocationComponents.length).to.eq(2);
+      let seatGroupComponents = stageComponent.findAllComponents(SeatGroup);
+      expect(seatGroupComponents.length).to.eq(2);
       expect(
-        seatLocationComponents.at(0).props('seat_location').seat_group.name
+        seatGroupComponents.at(0).props('ticket_option').seat_group.name
       ).to.eq('Best seats in the house');
       expect(
-        seatLocationComponents.at(1).props('seat_location').seat_group.name
+        seatGroupComponents.at(1).props('ticket_option').seat_group.name
       ).to.eq('The Meh Seats');
-      expect(seatLocationComponents.at(1).props('discounts').length).to.eq(1);
-      expect(
-        seatLocationComponents.at(1).props('current_tickets').length
-      ).to.eq(0);
+      expect(seatGroupComponents.at(1).props('discounts').length).to.eq(1);
+      expect(seatGroupComponents.at(1).props('current_tickets').length).to.eq(
+        0
+      );
 
       await stageComponent.vm.booking.tickets.push(new Ticket(1, 1));
 
-      expect(
-        seatLocationComponents.at(1).props('current_tickets').length
-      ).to.eq(1);
+      expect(seatGroupComponents.at(1).props('current_tickets').length).to.eq(
+        1
+      );
     });
 
     it('reacts to select location event and toggles accordion', async () => {
       // By default, all should be collpased
-      let seatLocationComponents = stageComponent.findAllComponents(
-        SeatLocation
-      );
+      let seatGroupComponents = stageComponent.findAllComponents(SeatGroup);
       expect(
-        !seatLocationComponents.at(0).props('expanded') &&
-          !seatLocationComponents.at(0).props('expanded')
+        !seatGroupComponents.at(0).props('expanded') &&
+          !seatGroupComponents.at(0).props('expanded')
       ).to.be.true;
 
-      await seatLocationComponents.at(0).vm.$emit('select-location');
+      await seatGroupComponents.at(0).vm.$emit('select-location');
 
-      expect(seatLocationComponents.at(0).props('expanded')).to.be.true;
-      expect(seatLocationComponents.at(1).props('expanded')).to.be.false;
+      expect(seatGroupComponents.at(0).props('expanded')).to.be.true;
+      expect(seatGroupComponents.at(1).props('expanded')).to.be.false;
 
-      await seatLocationComponents.at(1).vm.$emit('select-location');
-      expect(seatLocationComponents.at(0).props('expanded')).to.be.false;
-      expect(seatLocationComponents.at(1).props('expanded')).to.be.true;
+      await seatGroupComponents.at(1).vm.$emit('select-location');
+      expect(seatGroupComponents.at(0).props('expanded')).to.be.false;
+      expect(seatGroupComponents.at(1).props('expanded')).to.be.true;
 
-      await seatLocationComponents.at(1).vm.$emit('select-location');
-      expect(seatLocationComponents.at(0).props('expanded')).to.be.false;
-      expect(seatLocationComponents.at(1).props('expanded')).to.be.false;
+      await seatGroupComponents.at(1).vm.$emit('select-location');
+      expect(seatGroupComponents.at(0).props('expanded')).to.be.false;
+      expect(seatGroupComponents.at(1).props('expanded')).to.be.false;
     });
 
     it('reacts to add ticket event', async () => {
       stageComponent.vm.interaction_timer = jest.fn();
       await stageComponent
-        .findComponent(SeatLocation)
+        .findComponent(SeatGroup)
         .vm.$emit(
           'add-ticket',
           ticket_types.ticket_options[0].seat_group,
@@ -156,7 +152,7 @@ describe('Ticket Selection Stage', () => {
     it('reacts to add ticket event (multiple)', async () => {
       stageComponent.vm.interaction_timer = jest.fn();
       await stageComponent
-        .findComponent(SeatLocation)
+        .findComponent(SeatGroup)
         .vm.$emit(
           'add-ticket',
           ticket_types.ticket_options[0].seat_group,
@@ -174,7 +170,7 @@ describe('Ticket Selection Stage', () => {
     it('reacts to set ticket number event', async () => {
       stageComponent.vm.interaction_timer = jest.fn();
       await stageComponent
-        .findComponent(SeatLocation)
+        .findComponent(SeatGroup)
         .vm.$emit(
           'set-tickets',
           ticket_types.ticket_options[0].seat_group,
@@ -193,7 +189,7 @@ describe('Ticket Selection Stage', () => {
       stageComponent.vm.interaction_timer = jest.fn();
       stageComponent.vm.booking.tickets = [new Ticket(1, 1)];
       await stageComponent
-        .findComponent(SeatLocation)
+        .findComponent(SeatGroup)
         .vm.$emit(
           'remove-ticket',
           ticket_types.ticket_options[0].seat_group,
@@ -219,6 +215,8 @@ describe('Ticket Selection Stage', () => {
 
       lo.debounce.mockReset();
     });
+
+    //TODO: Test ticket capacities (correct capacity passed to seat group, check it wont add ticket if not able, etc)
 
     describe('with selected tickets', () => {
       beforeEach(async () => {

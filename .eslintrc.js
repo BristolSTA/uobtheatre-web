@@ -3,7 +3,7 @@ module.exports = {
   env: {
     node: true,
   },
-  ignorePatterns: ['tests/test.spec.example.js'],
+  ignorePatterns: ['tests/unit/test.spec.example.js'],
   extends: [
     'plugin:vue/essential',
     'eslint:recommended',

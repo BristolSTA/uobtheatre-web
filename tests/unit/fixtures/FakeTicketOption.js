@@ -3,6 +3,7 @@ export default {
     id: 1,
     name: 'Best Seats in the House',
     description: 'The best seats obviously',
+    capacity_remaining: 10,
   },
   concession_types: [
     {

@@ -19,7 +19,7 @@ describe('Booking Class', () => {
   let concession_100;
   let concession_1000;
   let concession_500;
-  let ticket_types;
+  let tickets_matrix;
 
   beforeAll(async () => {
     let server = makeServer({ environment: 'test' });
@@ -62,10 +62,10 @@ describe('Booking Class', () => {
       },
       server
     );
-    ticket_types = await fetch(
+    tickets_matrix = await fetch(
       `api/productions/myperf/performances/${performance.id}/ticket_types`
     );
-    ticket_types = new TicketsMatrix(await ticket_types.json());
+    tickets_matrix = new TicketsMatrix(await tickets_matrix.json());
     server.shutdown();
   });
 
@@ -107,19 +107,19 @@ describe('Booking Class', () => {
   });
   it('can add a ticket', () => {
     let ticket = fakeTicket();
-    booking.addTicket(ticket);
+    booking.addTicket(ticket, tickets_matrix);
     expect(booking.tickets).to.include(ticket);
     expect(booking.dirty).to.be.true;
   });
 
   it('can set number of tickets', () => {
-    booking.setTicketCount(seat_group, concession_100, 10);
+    booking.setTicketCount(seat_group, concession_100, 10, tickets_matrix);
     expect(booking.ticketCount(seat_group, concession_100)).to.eq(10);
 
-    booking.setTicketCount(seat_group, concession_100, 5);
+    booking.setTicketCount(seat_group, concession_100, 5, tickets_matrix);
     expect(booking.ticketCount(seat_group, concession_100)).to.eq(5);
 
-    booking.setTicketCount(seat_group, concession_100, 0);
+    booking.setTicketCount(seat_group, concession_100, 0, tickets_matrix);
     expect(booking.ticketCount(seat_group, concession_100)).to.eq(0);
     expect(booking.dirty).to.be.true;
   });
@@ -168,7 +168,7 @@ describe('Booking Class', () => {
     let t3 = fakeTicket(concession_1000);
     booking.tickets = [t1, t2, t3];
 
-    booking.removeTicket(seat_group, concession_100);
+    booking.removeTicket(seat_group, concession_100, tickets_matrix);
 
     expect(booking.tickets.length).to.eq(2);
     expect(booking.tickets).to.include(t1, t3);
@@ -184,17 +184,17 @@ describe('Booking Class', () => {
     expect(booking.dirty).to.be.true;
   });
   it('can get tickets total price estimate in pennies', () => {
-    expect(booking.tickets_total_price_estimate(ticket_types)).to.eq(0);
+    expect(booking.tickets_total_price_estimate(tickets_matrix)).to.eq(0);
 
     booking.tickets = [
       fakeTicket(concession_100),
       fakeTicket(concession_1000),
       fakeTicket(concession_500),
     ];
-    expect(booking.tickets_total_price_estimate(ticket_types)).to.eq(1600);
+    expect(booking.tickets_total_price_estimate(tickets_matrix)).to.eq(1600);
   });
   it('can get tickets total price estimate in pounds', () => {
-    expect(booking.tickets_total_price_pounds_estimate(ticket_types)).to.eq(
+    expect(booking.tickets_total_price_pounds_estimate(tickets_matrix)).to.eq(
       '0.00'
     );
 
@@ -204,7 +204,7 @@ describe('Booking Class', () => {
       fakeTicket(concession_500),
     ];
 
-    expect(booking.tickets_total_price_pounds_estimate(ticket_types)).to.eq(
+    expect(booking.tickets_total_price_pounds_estimate(tickets_matrix)).to.eq(
       '16.00'
     );
   });
@@ -251,24 +251,24 @@ describe('Booking Class', () => {
     expect(booking.discounts_value_pounds).to.eq('1.00');
   });
   it('can get ticket overview', () => {
-    expect(booking.ticket_overview(ticket_types)).to.be.empty;
+    expect(booking.ticket_overview(tickets_matrix)).to.be.empty;
 
     booking.price_breakdown = FakePriceBreakdown;
     booking.tickets = [fakeTicket(concession_100)];
 
     expect(booking.dirty).to.be.true;
-    expect(JSON.stringify(booking.ticket_overview(ticket_types))).to.equal(
-      JSON.stringify(booking.ticket_overview_estimate(ticket_types))
+    expect(JSON.stringify(booking.ticket_overview(tickets_matrix))).to.equal(
+      JSON.stringify(booking.ticket_overview_estimate(tickets_matrix))
     ); // Stringified here due to not being visually difference, but generated at different times through mapping
 
     booking.dirty = false;
 
-    expect(booking.ticket_overview(ticket_types)).to.eq(
+    expect(booking.ticket_overview(tickets_matrix)).to.eq(
       FakePriceBreakdown.tickets
     );
   });
   it('can generate ticket overview estimate', () => {
-    expect(booking.ticket_overview_estimate(ticket_types)).to.be.empty;
+    expect(booking.ticket_overview_estimate(tickets_matrix)).to.be.empty;
 
     booking.tickets = [
       fakeTicket(concession_100),
@@ -276,19 +276,19 @@ describe('Booking Class', () => {
       fakeTicket(concession_1000),
       fakeTicket(concession_500),
     ];
-    expect(booking.ticket_overview_estimate(ticket_types).length).to.eq(3);
-    expect(booking.ticket_overview_estimate(ticket_types)[0]).to.include({
+    expect(booking.ticket_overview_estimate(tickets_matrix).length).to.eq(3);
+    expect(booking.ticket_overview_estimate(tickets_matrix)[0]).to.include({
       number: 1,
       total_price: 100,
       ticket_price: 100,
     });
     expect(
-      booking.ticket_overview_estimate(ticket_types)[0].seat_group
+      booking.ticket_overview_estimate(tickets_matrix)[0].seat_group
     ).to.include(seat_group);
     expect(
-      booking.ticket_overview_estimate(ticket_types)[0].concession_type
+      booking.ticket_overview_estimate(tickets_matrix)[0].concession_type
     ).to.include(concession_100);
-    expect(booking.ticket_overview_estimate(ticket_types)[1]).to.include({
+    expect(booking.ticket_overview_estimate(tickets_matrix)[1]).to.include({
       number: 2,
       total_price: 2000,
       ticket_price: 1000,

@@ -1,6 +1,4 @@
-// Copy and rename this file to <testname>.spec.js AND remove the line below
-/* eslint-disable  */
-
+// Copy and rename this file to <testname>.spec.js
 import { expect } from 'chai';
 
 describe('My Component', () => {

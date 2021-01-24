@@ -8,10 +8,18 @@
       </p>
     </div>
     <div class="space-y-1" v-if="ticket_matrix">
-      <seat-location
-        v-for="(seat_location, index) in ticket_matrix.ticket_options"
+      <seat-group
+        v-for="(ticket_option, index) in ticket_matrix.ticket_options"
         :key="index"
-        :seat_location="seat_location"
+        :ticket_option="ticket_option"
+        :group_capacity_remaining="
+          Math.min(
+            ticket_matrix.capacityRemainingForSeatGroup(
+              ticket_option.seat_group.id
+            ),
+            ticket_matrix.performance_capacity_remaining
+          )
+        "
         :expanded="
           selected_location_index == index ||
           ticket_matrix.ticket_options.length == 1
@@ -106,13 +114,13 @@ import lo from 'lodash';
 
 import Booking from '@/classes/Booking';
 import Ticket from '@/classes/Ticket';
-import SeatLocation from '@/components/booking/SeatLocation.vue';
+import SeatGroup from '@/components/booking/SeatGroup.vue';
 import { bookingService, performanceService } from '@/services';
 import { runPromiseWithLoading } from '@/utils';
 
 export default {
   name: 'ticket-selection-stage',
-  components: { SeatLocation },
+  components: { SeatGroup },
   props: {
     production: {
       required: true,
@@ -150,16 +158,22 @@ export default {
     onAddTicket(location, concession_type, number = 1) {
       this.booking.addTicket(
         new Ticket(location.id, concession_type.id),
+        this.ticket_matrix,
         number
       );
       this.interaction_timer();
     },
     onSetTicketNum(location, concession_type, number) {
-      this.booking.setTicketCount(location, concession_type, number);
+      this.booking.setTicketCount(
+        location,
+        concession_type,
+        number,
+        this.ticket_matrix
+      );
       this.interaction_timer();
     },
     onRemoveTicket(location, concession_type) {
-      this.booking.removeTicket(location, concession_type);
+      this.booking.removeTicket(location, concession_type, this.ticket_matrix);
       this.interaction_timer();
     },
     async updateAPI() {

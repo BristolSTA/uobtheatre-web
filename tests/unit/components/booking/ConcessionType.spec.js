@@ -14,6 +14,7 @@ describe('Concession Type', () => {
           description: 'A adult human',
           price: 1000,
         },
+        max_add_allowed: 10,
         current_tickets: [new Ticket(1, 1), new Ticket(1, 1), new Ticket(1, 2)], // Assumes that seat_group filtering already done as required
       },
     });
@@ -69,4 +70,5 @@ describe('Concession Type', () => {
 
     expect(input.element.value).to.eq('0');
   });
+  //TODO: Test it disables adding ticket if capacity doesn't allow
 });

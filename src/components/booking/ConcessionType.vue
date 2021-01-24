@@ -35,9 +35,11 @@
             class="w-8 h-8 text-center text-black bg-white rounded-sm"
           />
           <button
-            class="w-8 h-8 p-0 btn btn-orange"
+            class="w-8 h-8 p-0 btn"
             @click="addTicket"
             @keypress="addTicket"
+            :class="[max_add_allowed < 1 ? 'btn-gray-light' : 'btn-orange']"
+            :disabled="max_add_allowed < 1"
           >
             +
           </button>
@@ -55,6 +57,9 @@ export default {
       required: true,
     },
     current_tickets: {
+      required: true,
+    },
+    max_add_allowed: {
       required: true,
     },
   },

@@ -2,6 +2,7 @@ import lo from 'lodash';
 
 import Ticket from './Ticket';
 import TicketsMatrix from './TicketsMatrix';
+
 export default class Booking {
   /** @member {number} */
   id;
@@ -71,11 +72,16 @@ export default class Booking {
    * Adds a ticket to the booking
    *
    * @param {Ticket} ticket Ticket to add
+   * @param {TicketsMatrix} ticketMatrix TicketMatrix Object
    * @param {number} number Number of tickets to add
    */
-  addTicket(ticket, number = 1) {
+  addTicket(ticket, ticketMatrix, number = 1) {
+    if (!ticketMatrix.canAddTickets(number, ticket.seat_group.id)) return;
+
     for (let i = 0; i < number; i++) {
       this.tickets.push(ticket);
+      ticketMatrix.decrementPerformanceCapacity();
+      ticketMatrix.decrementSeatGroupCapacity(ticket.seat_group.id);
     }
     this.dirty = true;
   }
@@ -86,19 +92,35 @@ export default class Booking {
    * @param {object|null} seat_group Seat Group Object
    * @param {object|null} concession_type Concession Type Object
    * @param {number} count Number of tickets
+   * @param {TicketsMatrix} ticketMatrix TicketMatrix Object
    */
-  setTicketCount(seat_group = null, concession_type = null, count) {
+  setTicketCount(
+    seat_group = null,
+    concession_type = null,
+    count,
+    ticketMatrix
+  ) {
     let rolling_total = 0;
+
+    // Step 1 - Check how many matching tickets we have for the criteria. Remove if required (and update TicketMatrix)
     this.tickets = this.tickets.filter((ticket) => {
       if (ticket.matches(seat_group, concession_type)) {
         rolling_total++;
-        if (rolling_total > count) return false;
+        if (rolling_total > count) {
+          // Remove this ticket
+          ticketMatrix.incrementPerformanceCapacity();
+          ticketMatrix.incrementSeatGroupCapacity(seat_group.id);
+          return false;
+        }
       }
       return true;
     });
 
     while (rolling_total < count) {
-      this.addTicket(new Ticket(seat_group.id, concession_type.id));
+      this.addTicket(
+        new Ticket(seat_group.id, concession_type.id),
+        ticketMatrix
+      );
       rolling_total++;
     }
     this.dirty = true;
@@ -122,12 +144,14 @@ export default class Booking {
    *
    * @param {object} seat_group Seat Group Object
    * @param {object} concession_type Concession Type Object
+   * @param {TicketsMatrix} ticketMatrix TicketMatrix Object
    */
-  removeTicket(seat_group, concession_type) {
+  removeTicket(seat_group, concession_type, ticketMatrix) {
     this.setTicketCount(
       seat_group,
       concession_type,
-      this.ticketCount(seat_group, concession_type) - 1
+      this.ticketCount(seat_group, concession_type) - 1,
+      ticketMatrix
     );
     this.dirty = true;
   }
