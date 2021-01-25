@@ -27,16 +27,19 @@ describe('Seat Location Component', () => {
     await seatGroupComponent.findComponent({ ref: 'header' }).trigger('click');
     expect(seatGroupComponent.emitted()['select-location'].length).to.eq(1);
   });
+
   it('displays seat group name', () => {
     expect(
       seatGroupComponent.findComponent({ ref: 'header' }).text()
     ).to.contain('Best Seats in the House');
   });
+
   it('doesnt display concession types if not exapnded', async () => {
     expect(seatGroupComponent.findAllComponents(ConcessionType).length).to.eq(
       0
     );
   });
+
   it('displays seat group description if expanded', async () => {
     let header = seatGroupComponent.findComponent({ ref: 'header' });
     expect(header.text()).not.to.contain('The best seats obviously');
@@ -45,6 +48,7 @@ describe('Seat Location Component', () => {
     });
     expect(header.text()).to.contain('The best seats obviously');
   });
+
   it('contains the correct ammount of concession type components', async () => {
     let tickets = [new Ticket(1, 1), new Ticket(1, 1), new Ticket(1, 2)];
     await seatGroupComponent.setProps({
@@ -67,6 +71,7 @@ describe('Seat Location Component', () => {
     );
     expect(components.at(1).props('current_tickets').length).to.eq(3);
   });
+
   it('contains the correct amount of group ticket buttons', async () => {
     await seatGroupComponent.setProps({
       expanded: true,
@@ -77,6 +82,7 @@ describe('Seat Location Component', () => {
     expect(discountComponents.length).to.eq(1);
     expect(discountComponents.at(0).props('discount')).to.eq(FakeDiscount);
   });
+
   it('handles add discount tickets event and emits add ticket(s) event', async () => {
     await seatGroupComponent.setProps({
       expanded: true,

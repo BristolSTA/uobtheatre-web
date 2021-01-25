@@ -18,10 +18,12 @@ describe('Group Ticket Button', () => {
   it('displays the discounts name', () => {
     expect(buttonComponent.text()).to.contain('Family Discount');
   });
+
   it('displays the discounts requirements', () => {
     expect(buttonComponent.text()).to.contain('Adult x 1');
     expect(buttonComponent.text()).to.contain('Student x 2');
   });
+
   it('emits an event when add tickets button clicked', async () => {
     await buttonComponent.find('button').trigger('click');
 

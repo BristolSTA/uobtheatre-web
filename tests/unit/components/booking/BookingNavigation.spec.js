@@ -108,6 +108,7 @@ describe('Booking Navigation', () => {
       await navigationComponent.findAll('button').at(0).trigger('click');
       expect(navigationComponent.emitted()['goto-stage']).to.not.be.ok;
     });
+
     it('emits event when valid navigation block clicked', async () => {
       await navigationComponent.setProps({
         currentStageIndex: 1,
