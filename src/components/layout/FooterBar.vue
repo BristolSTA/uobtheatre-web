@@ -1,25 +1,21 @@
 <template>
   <div class="bg-sta-gray-light">
-    <div class="container flex flex-wrap p-4">
+    <div class="container flex flex-wrap p-4 mt-2">
       <div class="flex items-center w-full md:w-1/3 lg:w-1/2">
         <nav class="w-full">
-          <ul class="flex justify-evenly md:block">
+          <ul class="flex space-x-2 md:space-x-0 justify-evenly md:block">
             <li
               v-for="(item, index) in navItems"
               :key="index"
-              class="mt-2 inline-block md:block"
+              class="flex mt-2 text-center text-white md:text-left hover:text-sta-orange md:block"
             >
-              <router-link
-                :to="item[0]"
-                class="text-white hover:text-sta-orange"
-                >{{ item[1] }}</router-link
-              >
+              <router-link :to="item[0]">{{ item[1] }}</router-link>
             </li>
           </ul>
         </nav>
       </div>
-      <div class="flex items-center w-full mt-4 flex-1 flex-wrap">
-        <div class="w-1/2 md:w-32 text-center">
+      <div class="flex flex-wrap items-center flex-1 w-full mt-4 md:mt-0">
+        <div class="w-1/2 text-center md:w-32">
           <a href="https://bristolsta.com" target="_blank"
             ><img
               src="@/assets/images/sta-logo-white.png"
@@ -28,7 +24,7 @@
               alt="Stage Technicians' Association Logo"
           /></a>
         </div>
-        <div class="w-1/2 md:w-32 text-center">
+        <div class="w-1/2 text-center md:w-32">
           <a href="https://bristolsu.org" target="_blank">
             <img
               src="@/assets/images/bristol-su-logo.png"
@@ -38,8 +34,10 @@
           /></a>
         </div>
 
-        <div class="text-white ml-10 flex-1 text-center md:text-left">
-          <p class="mb-4">
+        <div
+          class="flex-1 mt-2 text-center text-white md:mt-0 md:ml-10 md:text-left"
+        >
+          <p class="mb-2 md:mb-4">
             &copy; Bristol Stage Technicians' Association
             {{ new Date().getFullYear() }}
           </p>

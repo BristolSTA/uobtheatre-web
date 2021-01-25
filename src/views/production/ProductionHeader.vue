@@ -41,7 +41,7 @@
       </icon-list-item>
       <icon-list-item icon="ticket-alt" v-if="production.min_ticket_price">
         Tickets available from
-        <span class="font-semibold"> £{{ production.min_ticket_price }} </span>
+        <strong> £{{ production.min_ticket_price }} </strong>
       </icon-list-item>
       <button
         class="w-full mt-4 font-semibold btn btn-green"
