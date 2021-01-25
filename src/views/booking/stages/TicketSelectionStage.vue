@@ -32,7 +32,7 @@
         @remove-ticket="onRemoveTicket"
       />
     </div>
-    <div v-if="booking.tickets.length" class="flex pt-2 my-4">
+    <div v-if="booking.tickets.length" class="flex my-4">
       <div
         class="px-4 pb-2 mx-auto text-center border-4 border-dashed rounded-md min-w-1/2 border-sta-gray"
       >
@@ -43,7 +43,8 @@
               <tr>
                 <th class="p-2">Location</th>
                 <th class="p-2">Type</th>
-                <th class="w-24 p-2">Quantity</th>
+                <th class="hidden w-24 p-2 sm:table-cell">Quantity</th>
+                <th class="w-24 p-2 text-center sm:hidden">Qty</th>
                 <th class="w-24 p-2">Line Total</th>
               </tr>
             </thead>

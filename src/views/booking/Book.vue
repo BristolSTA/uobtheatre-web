@@ -12,7 +12,7 @@
         </router-link>
       </div>
       <production-banner
-        class="pb-8"
+        class="pb-2 md:pb-8"
         :production="production"
         :showBuyTicketsButton="false"
       />
@@ -25,7 +25,7 @@
           :booking="booking"
           @goto-stage="navigateToStage"
         />
-        <div class="w-full text-center md:hidden">
+        <div class="w-full mb-1 text-center md:hidden">
           <h1 class="text-h1 text-sta-green">{{ $route.meta.stage.name }}</h1>
           <clickable-link
             v-if="currentStageIndex > 0"
@@ -34,7 +34,7 @@
             ><font-awesome-icon icon="chevron-left" /> Back</clickable-link
           >
         </div>
-        <div class="flex-grow max-w-full p-1 sm:p-3 bg-sta-gray-dark">
+        <div class="flex-grow max-w-full p-1 pb-4 sm:p-3 bg-sta-gray-dark">
           <router-view
             :production="production"
             :booking="booking"

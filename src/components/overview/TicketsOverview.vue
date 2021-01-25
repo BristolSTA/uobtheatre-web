@@ -4,7 +4,7 @@
       ><font-awesome-icon icon="ticket-alt" class="mr-2" /> Tickets</template
     >
     <template v-slot:message_box>
-      <table class="ml-auto table-auto">
+      <table class="flex ml-auto table-auto">
         <tr>
           <th class="pr-4">
             <font-awesome-icon
