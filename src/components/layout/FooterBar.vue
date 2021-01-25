@@ -1,7 +1,7 @@
 <template>
   <div class="bg-sta-gray-light">
-    <div class="container flex flex-wrap p-4 mt-2">
-      <div class="flex items-center w-full md:w-1/3 lg:w-1/2">
+    <div class="container flex flex-wrap p-4 md:my-2">
+      <div class="flex items-center w-full md:w-1/3 lg:w-2/5">
         <nav class="w-full">
           <ul class="flex space-x-2 md:space-x-0 justify-evenly md:block">
             <li
@@ -35,7 +35,7 @@
         </div>
 
         <div
-          class="flex-1 mt-2 text-center text-white md:mt-0 md:ml-10 md:text-left"
+          class="flex-1 mt-2 text-center text-white md:mt-0 md:ml-12 md:text-left"
         >
           <p class="mb-2 md:mb-4">
             &copy; Bristol Stage Technicians' Association
