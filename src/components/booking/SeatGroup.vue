@@ -20,6 +20,21 @@
       </div>
     </div>
     <div v-if="expanded" class="border-4 border-t-0 border-sta-gray">
+      <div
+        v-if="group_capacity_remaining <= 10"
+        class="flex justify-center pt-4 font-semibold text-sta-rouge"
+        ref="ticket-warning"
+      >
+        <template v-if="group_capacity_remaining == 0">
+          No More Tickets Remaining
+        </template>
+        <template v-else-if="group_capacity_remaining == 1">
+          Hurry, Only {{ group_capacity_remaining }} ticket remaining!
+        </template>
+        <template v-else>
+          Hurry, Only {{ group_capacity_remaining }} tickets remaining!
+        </template>
+      </div>
       <concession-type
         v-for="(concession_type, index) in ticket_option.concession_types"
         :key="index"
@@ -55,7 +70,7 @@
 <script>
 import ConcessionType from '@/components/booking/ConcessionType.vue';
 import GroupTicketButton from '@/components/booking/GroupTicketButton.vue';
-//TODO: Some kind of "hurry, only X tickets remaining"
+
 export default {
   name: 'seat-location',
   components: { ConcessionType, GroupTicketButton },

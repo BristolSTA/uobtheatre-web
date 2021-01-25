@@ -25,19 +25,23 @@ describe('Concession Type', () => {
       'Adult'
     );
   });
+
   it('displays description', () => {
     expect(concessionTypeComponent.find('p.text-sm').text()).to.eq(
       'A adult human'
     );
   });
+
   it('displays price in pounds to 2 d.p.', () => {
     expect(concessionTypeComponent.text()).to.contain('£10.00');
   });
+
   it('emits an event on adding a ticket', async () => {
     expect(concessionTypeComponent.emitted()['add-ticket']).to.be.not.ok;
     await concessionTypeComponent.findAll('button').at(1).trigger('click');
     expect(concessionTypeComponent.emitted()['add-ticket']).to.be.ok;
   });
+
   it('disables removing a ticket if current quantity 0', async () => {
     await concessionTypeComponent.setProps({
       current_tickets: [],
@@ -47,19 +51,23 @@ describe('Concession Type', () => {
     await button.trigger('click');
     expect(concessionTypeComponent.emitted()['remove-ticket']).to.be.not.ok;
   });
+
   it('emits an event on removing ticket', async () => {
     expect(concessionTypeComponent.emitted()['remove-ticket']).to.be.not.ok;
     await concessionTypeComponent.findAll('button').at(0).trigger('click');
     expect(concessionTypeComponent.emitted()['remove-ticket']).to.be.ok;
   });
+
   it('emits an event on changing quantity', async () => {
     await concessionTypeComponent.find('input').setValue(4);
     expect(concessionTypeComponent.emitted()['set-tickets'][0][0]).to.eq('4');
   });
+
   it('doesnt emit quantity if NaN', async () => {
     await concessionTypeComponent.find('input').setValue('nAn');
     expect(concessionTypeComponent.emitted()['set-tickets']).to.not.be.ok;
   });
+
   it('displays the current quantity of this ticket', async () => {
     let input = concessionTypeComponent.find('input');
     expect(input.element.value).to.eq('2');
