@@ -16,6 +16,7 @@
 </template>
 
 <script>
+// TODO: Fix mobile navigation here
 import Stages, { getStageIndex } from '@/views/booking/bookingStages';
 export default {
   name: 'booking-navigation',

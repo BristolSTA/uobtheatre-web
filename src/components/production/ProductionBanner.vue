@@ -4,7 +4,7 @@
   >
     <div class="relative inline-block w-full max-w-xl m-8 md:w-2/3">
       <img
-        class="w-full p-8"
+        class="w-full p-4 sm:p-8"
         :src="production.featured_image"
         :alt="`${production.name} feature image`"
         ref="featured_image"
@@ -12,15 +12,15 @@
       <img
         :src="production.society.logo_image"
         :alt="`${production.society.name} logo`"
-        class="absolute bottom-0 left-0 w-20"
+        class="absolute bottom-0 left-0 w-10 sm:w-20"
         v-if="production.society.logo_image"
         ref="society_image"
       />
     </div>
     <div
-      class="flex flex-col items-center w-full px-10 text-white md:block md:text-left md:w-auto md:max-w-md"
+      class="flex flex-col items-center w-full px-10 text-center text-white md:block md:text-left md:w-auto md:max-w-md"
     >
-      <span class="font-semibold text-center md:text-left">
+      <span class="font-semibold">
         <span class="text-h2">{{ production.name }}</span>
         <p class="mb-1 -mt-2 text-sta-gray-lighter">
           {{ production.subtitle }} by {{ production.society.name }}

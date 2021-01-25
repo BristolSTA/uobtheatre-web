@@ -16,7 +16,7 @@
         :production="production"
         :showBuyTicketsButton="false"
       />
-      <div class="flex flex-wrap mb-2 space-x-2 md:flex-nowrap">
+      <div class="flex flex-wrap mb-2 md:space-x-2 md:flex-nowrap">
         <booking-navigation
           class="hidden md:flex md:w-1/4"
           :currentStageIndex="currentStageIndex"
@@ -34,7 +34,7 @@
             ><font-awesome-icon icon="chevron-left" /> Back</clickable-link
           >
         </div>
-        <div class="flex-grow p-3 bg-sta-gray-dark">
+        <div class="flex-grow max-w-full p-1 sm:p-3 bg-sta-gray-dark">
           <router-view
             :production="production"
             :booking="booking"

@@ -1,11 +1,11 @@
 <template>
-  <div class="text-white bg-sta-gray-dark">
+  <div class="text-white">
     <div class="flex items-center p-2">
       <div class="w-3/4 pl-2">
         <p class="font-semibold">{{ concession_type.name }}</p>
         <p class="text-sm">{{ concession_type.description }}</p>
       </div>
-      <div class="flex-col w-1/4 space-y-1">
+      <div class="flex-col w-1/2 space-y-1 sm:w-1/4">
         <div class="flex justify-center font-semibold font">
           £{{ (concession_type.price / 100).toFixed(2) }}
         </div>
