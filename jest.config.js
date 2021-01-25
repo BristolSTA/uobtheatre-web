@@ -7,6 +7,7 @@ module.exports = {
     'src/registerServiceWorker.js',
     'src/extensions.js',
     'src/Playground.example.vue',
+    'src/Playground.vue',
     'src/playground.js',
     'src/fakeApi/*.*',
   ],
