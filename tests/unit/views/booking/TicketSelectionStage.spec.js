@@ -35,9 +35,11 @@ describe('Ticket Selection Stage', () => {
             server.create('seatGroup', {
               name: 'Best seats in the house',
               description: 'Right up close to the action',
+              capacity_remaining: 10,
             }),
             server.create('seatGroup', {
               name: 'The Meh Seats',
+              capacity_remaining: 10,
             }),
           ],
           concession_types: [
@@ -101,6 +103,16 @@ describe('Ticket Selection Stage', () => {
       expect(seatGroupComponents.at(1).props('discounts').length).to.eq(1);
       expect(seatGroupComponents.at(1).props('current_tickets').length).to.eq(
         0
+      );
+      expect(seatGroupComponents.at(1).props('group_capacity_remaining')).to.eq(
+        10
+      );
+
+      ticket_types.performance_capacity_remaining = 5;
+      await stageComponent.vm.$forceUpdate();
+
+      expect(seatGroupComponents.at(1).props('group_capacity_remaining')).to.eq(
+        5
       );
 
       await stageComponent.vm.booking.tickets.push(new Ticket(1, 1));
@@ -215,8 +227,6 @@ describe('Ticket Selection Stage', () => {
 
       lo.debounce.mockReset();
     });
-
-    //TODO: Test ticket capacities (correct capacity passed to seat group, check it wont add ticket if not able, etc)
 
     describe('with selected tickets', () => {
       beforeEach(async () => {

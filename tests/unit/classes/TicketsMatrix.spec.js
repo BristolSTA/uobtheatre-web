@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import lo from 'lodash';
 
 import TicketsMatrix from '@/classes/TicketsMatrix';
 
@@ -9,7 +8,7 @@ describe('TicketsMatrix', () => {
   let matrix;
   let ticketOption;
   beforeEach(() => {
-    ticketOption = lo.cloneDeep(FakeTicketOption);
+    ticketOption = FakeTicketOption();
     matrix = new TicketsMatrix({
       capacity_remaining: 100,
       ticket_types: [ticketOption],
@@ -36,6 +35,11 @@ describe('TicketsMatrix', () => {
   });
   it('can get capacity remaining for a seat group', () => {
     expect(matrix.capacityRemainingForSeatGroup(1)).to.eq(10);
+
+    // Test that is uses minimum between performance and seat group
+    matrix.performance_capacity_remaining = 5;
+
+    expect(matrix.capacityRemainingForSeatGroup(1)).to.eq(5);
   });
   it('can decrement capacity remaining for a seat group', () => {
     matrix.decrementSeatGroupCapacity(1);

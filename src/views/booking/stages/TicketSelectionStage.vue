@@ -13,11 +13,8 @@
         :key="index"
         :ticket_option="ticket_option"
         :group_capacity_remaining="
-          Math.min(
-            ticket_matrix.capacityRemainingForSeatGroup(
-              ticket_option.seat_group.id
-            ),
-            ticket_matrix.performance_capacity_remaining
+          ticket_matrix.capacityRemainingForSeatGroup(
+            ticket_option.seat_group.id
           )
         "
         :expanded="

@@ -77,6 +77,10 @@ export function makeServer({ environment = 'development' } = {}) {
           name: 'Proj Seats',
           description: null,
         }),
+        server.create('seatGroup', {
+          name: 'Sold out group',
+          capacity_remaining: 0,
+        }),
       ];
       performances[0].concession_types = [
         server.create('concessionType', {

@@ -8,14 +8,16 @@ import SeatGroup from '@/components/booking/SeatGroup.vue';
 
 import FakeDiscount from '../../fixtures/FakeDiscount';
 import FakeTicketOption from '../../fixtures/FakeTicketOption';
+import { fixTextSpacing } from '../../helpers';
 
 describe('Seat Location Component', () => {
   let seatGroupComponent;
+  let ticketOption;
   beforeEach(() => {
     seatGroupComponent = mount(SeatGroup, {
       propsData: {
         expanded: false,
-        ticket_option: FakeTicketOption,
+        ticket_option: (ticketOption = FakeTicketOption()),
         group_capacity_remaining: 100,
         current_tickets: [],
         discounts: [FakeDiscount],
@@ -55,27 +57,26 @@ describe('Seat Location Component', () => {
   it('displays correct ticket warnings', async () => {
     await seatGroupComponent.setProps({
       expanded: true,
-      group_capacity_remaining: 10,
+      group_capacity_remaining: 9,
     });
-    expect(
-      seatGroupComponent.findComponent({ ref: 'ticket-warning' }).text()
-    ).to.contain('Hurry, Only 10 tickets remaining!');
+    expect(fixTextSpacing(seatGroupComponent.text())).to.contain(
+      'Hurry! Only 9 tickets remaining in this location'
+    );
 
     //check for upper limit
-    await seatGroupComponent.setProps({ group_capacity_remaining: 11 });
-    expect(seatGroupComponent.findComponent({ ref: 'ticket-warning' }).exists())
-      .to.be.false;
+    await seatGroupComponent.setProps({ group_capacity_remaining: 10 });
+    expect(seatGroupComponent.text()).not.to.contain('Hurry!');
 
     //check for lower limit
     await seatGroupComponent.setProps({ group_capacity_remaining: 1 });
-    expect(
-      seatGroupComponent.findComponent({ ref: 'ticket-warning' }).text()
-    ).to.contain('Hurry, Only 1 ticket remaining!');
+    expect(fixTextSpacing(seatGroupComponent.text())).to.contain(
+      'Hurry! Only 1 ticket remaining in this location'
+    );
 
     await seatGroupComponent.setProps({ group_capacity_remaining: 0 });
-    expect(
-      seatGroupComponent.findComponent({ ref: 'ticket-warning' }).text()
-    ).to.contain('No More Tickets Remaining');
+    expect(fixTextSpacing(seatGroupComponent.text())).to.contain(
+      'No more tickets available at this location'
+    );
   });
 
   it('contains the correct ammount of concession type components', async () => {
@@ -91,16 +92,16 @@ describe('Seat Location Component', () => {
     let components = seatGroupComponent.findAllComponents(ConcessionType);
     expect(components.length).to.eq(2);
 
-    expect(components.at(0).props('concession_type')).to.eq(
-      FakeTicketOption.concession_types[0]
+    expect(components.at(0).props('concession_type')).to.include(
+      FakeTicketOption().concession_types[0]
     );
 
     expect(components.at(0).props('max_add_allowed')).to.eq(100);
 
     expect(components.at(0).props('current_tickets').length).to.eq(3);
 
-    expect(components.at(1).props('concession_type')).to.eq(
-      FakeTicketOption.concession_types[1]
+    expect(components.at(1).props('concession_type')).to.include(
+      FakeTicketOption().concession_types[1]
     );
     expect(components.at(1).props('current_tickets').length).to.eq(3);
   });
@@ -124,21 +125,72 @@ describe('Seat Location Component', () => {
       .findAllComponents(GroupTicketButton)
       .at(0)
       .vm.$emit('add-discount-tickets');
-
     expect(seatGroupComponent.emitted()['add-ticket'].length).to.eq(2);
     expect(JSON.stringify(seatGroupComponent.emitted()['add-ticket'][0])).to.eq(
       JSON.stringify([
-        FakeTicketOption.seat_group,
+        FakeTicketOption().seat_group,
         FakeDiscount.discount_requirements[0].concession_type,
         FakeDiscount.discount_requirements[0].number,
       ])
     );
     expect(JSON.stringify(seatGroupComponent.emitted()['add-ticket'][1])).to.eq(
       JSON.stringify([
-        FakeTicketOption.seat_group,
+        FakeTicketOption().seat_group,
         FakeDiscount.discount_requirements[1].concession_type,
         FakeDiscount.discount_requirements[1].number,
       ])
     );
+  });
+  it('doesnt display group ticket buttons if the remaining capacity doesnt allow for it', async () => {
+    await seatGroupComponent.setProps({
+      group_capacity_remaining: 2,
+    });
+    expect(
+      seatGroupComponent.findAllComponents(GroupTicketButton).length
+    ).to.eq(0);
+  });
+  describe('sold out group', () => {
+    beforeEach(() => {
+      seatGroupComponent.setProps({
+        group_capacity_remaining: 0,
+      });
+    });
+
+    it('doesnt emit on header click', async () => {
+      await seatGroupComponent
+        .findComponent({ ref: 'header' })
+        .trigger('click');
+      expect(seatGroupComponent.emitted()['select-location']).to.not.be.ok;
+    });
+    it('shows sold out', async () => {
+      expect(
+        seatGroupComponent.findComponent({ ref: 'header' }).text()
+      ).to.contain('Sold Out');
+    });
+
+    describe('with tickets from group', () => {
+      beforeEach(async () => {
+        await seatGroupComponent.setProps({
+          current_tickets: [
+            new Ticket(
+              ticketOption.seat_group.id,
+              ticketOption.concession_types[0].id
+            ),
+          ],
+        });
+      });
+
+      it('allows header click', async () => {
+        await seatGroupComponent
+          .findComponent({ ref: 'header' })
+          .trigger('click');
+        expect(seatGroupComponent.emitted()['select-location'].length).to.eq(1);
+      });
+      it('doesnt show sold out', async () => {
+        expect(
+          seatGroupComponent.findComponent({ ref: 'header' }).text()
+        ).not.to.contain('Sold Out');
+      });
+    });
   });
 });

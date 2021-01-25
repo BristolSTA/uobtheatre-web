@@ -28,7 +28,11 @@
             "
             @input="
               (event) => {
-                if (isNaN(event.target.value)) return;
+                if (
+                  isNaN(event.target.value) ||
+                  (event.target.value - numTickets) > max_add_allowed
+                )
+                  return;
                 $emit('set-tickets', event.target.value);
               }
             "

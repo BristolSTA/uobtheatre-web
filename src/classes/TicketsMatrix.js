@@ -28,9 +28,12 @@ export default class {
    * @returns {number} Capacity remaining
    */
   capacityRemainingForSeatGroup(seat_group_id) {
-    return this.ticket_options.find(
-      (option) => option.seat_group.id === seat_group_id
-    ).seat_group.capacity_remaining;
+    return Math.min(
+      this.ticket_options.find(
+        (option) => parseInt(option.seat_group.id) == seat_group_id
+      ).seat_group.capacity_remaining,
+      this.performance_capacity_remaining
+    );
   }
 
   /**

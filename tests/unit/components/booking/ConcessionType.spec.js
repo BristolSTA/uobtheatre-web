@@ -78,5 +78,27 @@ describe('Concession Type', () => {
 
     expect(input.element.value).to.eq('0');
   });
-  //TODO: Test it disables adding ticket if capacity doesn't allow
+  it('disables add ticket button if not allowed', async () => {
+    await concessionTypeComponent.setProps({
+      max_add_allowed: 0,
+    });
+
+    let button = concessionTypeComponent.findAll('button').at(1); // Add buttton
+    expect(button.attributes().disabled).to.be.ok;
+    await button.trigger('click');
+    expect(concessionTypeComponent.emitted()['add-ticket']).to.be.not.ok;
+  });
+  it('wont emit set tickets if value over allowed value', async () => {
+    await concessionTypeComponent.setProps({
+      max_add_allowed: 0,
+    });
+    await concessionTypeComponent.find('input').setValue(4);
+    expect(concessionTypeComponent.emitted()['set-tickets']).not.to.be.ok;
+
+    await concessionTypeComponent.setProps({
+      max_add_allowed: 3,
+    });
+    await concessionTypeComponent.find('input').setValue(6); // Currently have 2 tickets of this type. 3 more can be added, so by changing to 6, this should fail
+    expect(concessionTypeComponent.emitted()['set-tickets']).not.to.be.ok;
+  });
 });

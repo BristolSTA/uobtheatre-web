@@ -74,8 +74,6 @@ describe('Pick Performance Stage', () => {
     ).to.equal('winston-theatre');
   });
 
-  //TODO: Test for link to booking page
-
   it('has correct booking link', async () => {
     await performanceOverviewComponent.find('button').trigger('click');
 

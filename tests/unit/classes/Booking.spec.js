@@ -29,6 +29,7 @@ describe('Booking Class', () => {
       1,
       {
         performance: server.schema.performances.first(),
+        capacity_remaining: 100,
       },
       server
     );
