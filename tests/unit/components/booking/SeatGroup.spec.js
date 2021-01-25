@@ -34,10 +34,13 @@ describe('Seat Location Component', () => {
     ).to.contain('Best Seats in the House');
   });
 
-  it('doesnt display concession types if not exapnded', async () => {
+  it('doesnt display concession types + ticket warnings if not exapnded', async () => {
     expect(seatGroupComponent.findAllComponents(ConcessionType).length).to.eq(
       0
     );
+
+    expect(seatGroupComponent.findComponent({ ref: 'ticket-warning' }).exists())
+      .to.be.false;
   });
 
   it('displays seat group description if expanded', async () => {
@@ -49,12 +52,42 @@ describe('Seat Location Component', () => {
     expect(header.text()).to.contain('The best seats obviously');
   });
 
+  it('displays correct ticket warnings', async () => {
+    await seatGroupComponent.setProps({
+      expanded: true,
+      group_capacity_remaining: 10,
+    });
+    expect(
+      seatGroupComponent.findComponent({ ref: 'ticket-warning' }).text()
+    ).to.contain('Hurry, Only 10 tickets remaining!');
+
+    //check for upper limit
+    await seatGroupComponent.setProps({ group_capacity_remaining: 11 });
+    expect(seatGroupComponent.findComponent({ ref: 'ticket-warning' }).exists())
+      .to.be.false;
+
+    //check for lower limit
+    await seatGroupComponent.setProps({ group_capacity_remaining: 1 });
+    expect(
+      seatGroupComponent.findComponent({ ref: 'ticket-warning' }).text()
+    ).to.contain('Hurry, Only 1 ticket remaining!');
+
+    await seatGroupComponent.setProps({ group_capacity_remaining: 0 });
+    expect(
+      seatGroupComponent.findComponent({ ref: 'ticket-warning' }).text()
+    ).to.contain('No More Tickets Remaining');
+  });
+
   it('contains the correct ammount of concession type components', async () => {
     let tickets = [new Ticket(1, 1), new Ticket(1, 1), new Ticket(1, 2)];
     await seatGroupComponent.setProps({
       expanded: true,
       current_tickets: tickets,
     });
+
+    expect(seatGroupComponent.findComponent({ ref: 'ticket-warning' }).exists())
+      .to.be.false;
+
     let components = seatGroupComponent.findAllComponents(ConcessionType);
     expect(components.length).to.eq(2);
 
