@@ -6,6 +6,8 @@ node_modules
 /tests/e2e/videos/
 /tests/e2e/screenshots/
 
+# Fake API Temp Files
+src/fakeAPI/schema.gql
 
 # local env files
 .env.local
