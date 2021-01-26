@@ -1,5 +1,7 @@
 import faker from 'faker';
-import { Factory,Model } from 'miragejs';
+import { Factory, Model } from 'miragejs';
+
+import { NotFoundResponse } from './utils';
 
 export default {
   registerModels() {
@@ -14,11 +16,21 @@ export default {
     return {
       society: Factory.extend({
         name: () => faker.name.findName(),
+        slug() {
+          return this.name.toLowerCase().replace(/ /g, '-');
+        },
         logo_image: 'https://via.placeholder.com/500x500/0000FF',
+        banner_image: 'https://via.placeholder.com/1800x480',
       }),
     };
   },
   registerRoutes() {
     this.resource('societies');
+    this.get('societies/:slug', function (schema, request) {
+      return (
+        schema.societies.findBy({ slug: request.params.slug }) ??
+        NotFoundResponse()
+      );
+    });
   },
 };
