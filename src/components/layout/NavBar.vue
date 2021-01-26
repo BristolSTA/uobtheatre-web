@@ -3,9 +3,10 @@
     <div class="container flex flex-wrap items-center justify-between">
       <div class="flex items-center flex-shrink-0 mr-2 text-white">
         <router-link :to="{ name: 'home' }">
-          <span class="text-4xl tracking-tight text-white uppercase">{{
-            $appName
-          }}</span>
+          <span
+            class="text-3xl tracking-tight text-white uppercase sm:text-4xl"
+            >{{ $appName }}</span
+          >
         </router-link>
       </div>
       <div class="block lg:hidden">
