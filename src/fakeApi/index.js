@@ -7,7 +7,7 @@ import CrewInterface from './crew.model';
 import PerformanceInterface from './performance.model';
 import ProductionInterface from './production.model';
 import ProductionTeamInterface from './productionTeam.model';
-import BaseGQLSchema from './schema.gql';
+import BaseGQLSchema from './schema.graphql';
 import SocietyInterface from './society.model';
 import UserInterface from './user.model';
 import { DefaultSerializer } from './utils';

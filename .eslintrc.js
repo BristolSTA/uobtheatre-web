@@ -20,15 +20,8 @@ module.exports = {
     'import/order': 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'graphql/template-strings': [
-      'error',
-      {
-        env: 'apollo',
-        schemaJson: require('./src/fakeApi/schema.gql'),
-      },
-    ],
   },
-  plugins: ['prettier', 'vue-a11y', 'simple-import-sort'],
+  plugins: ['prettier', 'vue-a11y', 'simple-import-sort', 'graphql'],
   overrides: [
     {
       files: [

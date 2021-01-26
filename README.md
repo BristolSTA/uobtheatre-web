@@ -31,6 +31,7 @@ This project utilises the following:
 - [Vue CLI](https://cli.vuejs.org/) - Handles the compiliation and chores in the repository
 - [Vue JS](https://vuejs.org/) - A progressive JavaScript framework for reactive content
 - [Tailwindcss](https://tailwindcss.com/) - A utility-first CSS framework
+- [MirageJS](https://miragejs.com/) - Provides a client-side framework to "mock" the real API server ([uobtheatre-api](https://github.com/BristolSTA/uobtheatre-api))
 
 Here are the important areas to take a look at:
 
@@ -39,6 +40,7 @@ Here are the important areas to take a look at:
   - `/src/views/` This folder contains all the pages for the application. These are later referenced by the router
   - `/src/router/` This folder contains the configuration for the router, which decides what to show to a user depending on their URI
   - `/src/components/` This folder contains reusable Vue components that are used across multiple views and pages
+  - `/src/fakeApi/` This folder contains the files that setup the fake "mock" api instance for development environments
   - `/src/services/` This folder contains the interfaces to the API, which are called inside Vue components / pages to fetch to put data to the API
   - `/src/assets/` This folder currently only contains the SCSS entrypoint for the application. Because we are using Tailwind, you shouldn't really need to touch this at all
   - `/src/Playground.example.vue` If you don't want to go through the effort of creating a page component, linking it in the router, etc. to test out a component, copy this file to `/src/Playground.vue` and run `yarn run playground`. This will serve a sandbox environment for you to tinker around with
