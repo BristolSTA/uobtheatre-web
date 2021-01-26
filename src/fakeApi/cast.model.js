@@ -1,20 +1,17 @@
 import faker from 'faker';
-import { belongsTo,Factory, Model } from 'miragejs';
+import { belongsTo, Factory, Model } from 'miragejs';
 
 export default {
   registerModels() {
     return {
-      cast: Model.extend({
+      CastNode: Model.extend({
         production: belongsTo(),
       }),
     };
   },
-  registerSerializers() {
-    return {};
-  },
   registerFactories() {
     return {
-      cast: Factory.extend({
+      CastNode: Factory.extend({
         name: () => faker.name.findName(),
         profile_picture: () =>
           faker.random.arrayElement([
@@ -26,5 +23,15 @@ export default {
       }),
     };
   },
-  registerRoutes() {},
+  registerGQLTypes() {
+    return `
+      type CastNode implements Node {
+        id: ID!
+        production: ProductionNode
+        name: String!
+        profile_picture: String
+        role: String!
+      }
+    `;
+  },
 };

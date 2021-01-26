@@ -51,7 +51,7 @@
             }"
           >
             <img
-              :src="production.featured_image"
+              :src="production.featuredImage.url"
               :alt="`${production.name} feature image`"
               class="inline-block"
               style="max-height: 300px"
@@ -130,10 +130,10 @@
 </style>
 
 <script>
+import gql from 'graphql-tag';
 import lo from 'lodash';
 
-import { productionService } from '@/services';
-import { displayStartEnd, runPromiseWithLoading } from '@/utils';
+import { displayStartEnd } from '@/utils';
 
 export default {
   name: 'Home',
@@ -151,12 +151,37 @@ export default {
       titleTemplate: null,
     };
   },
+  apollo: {
+    upcomingProductions: {
+      query: gql`
+        {
+          productions {
+            edges {
+              node {
+                id
+                name
+                slug
+                subtitle
+                description
+                featuredImage {
+                  url
+                }
+                start_date
+                end_date
+              }
+            }
+          }
+        }
+      `,
+      update: (data) => data.productions.edges.map((edge) => edge.node),
+    },
+  },
   created() {
-    runPromiseWithLoading(
-      productionService
-        .fetchUpcomingProductions()
-        .then((results) => (this.upcomingProductions = results))
-    );
+    // runPromiseWithLoading(
+    //   productionService
+    //     .fetchUpcomingProductions()
+    //     .then((results) => (this.upcomingProductions = results))
+    // );
   },
   computed: {
     featuredProduction() {

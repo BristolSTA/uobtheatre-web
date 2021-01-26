@@ -1,21 +1,11 @@
 import faker from 'faker';
-import { Factory, Model } from 'miragejs';
-
-import { NotFoundResponse } from './utils';
+import { Factory } from 'miragejs';
 faker.locale = 'en_GB';
 
 export default {
-  registerModels() {
-    return {
-      venue: Model,
-    };
-  },
-  registerSerializers() {
-    return {};
-  },
   registerFactories() {
     return {
-      venue: Factory.extend({
+      VenueNode: Factory.extend({
         name: () => `${faker.random.arrayElement(['Winston', 'Pegg'])} Theatre`,
         slug() {
           return this.name.toLowerCase().replace(/ /g, '-');
@@ -37,13 +27,5 @@ export default {
         },
       }),
     };
-  },
-  registerRoutes() {
-    this.get('venues/:slug', function (schema, request) {
-      return (
-        schema.venues.findBy({ slug: request.params.slug }) ??
-        NotFoundResponse()
-      );
-    });
   },
 };

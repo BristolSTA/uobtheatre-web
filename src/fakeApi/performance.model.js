@@ -1,26 +1,13 @@
 import faker from 'faker';
 import { DateTime } from 'luxon';
-import { belongsTo,Factory, Model } from 'miragejs';
+import { Factory } from 'miragejs';
 
-import { RelationshipSerializer, updateIfDoesntHave } from './utils';
+import { updateIfDoesntHave } from './utils';
 
 export default {
-  registerModels() {
-    return {
-      performance: Model.extend({
-        venue: belongsTo(),
-        production: belongsTo('performance'),
-      }),
-    };
-  },
-  registerSerializers() {
-    return {
-      performance: RelationshipSerializer(['venue']),
-    };
-  },
   registerFactories() {
     return {
-      performance: Factory.extend({
+      PerformanceNode: Factory.extend({
         start: () => DateTime.local(),
         end: () =>
           DateTime.local().plus({
@@ -41,14 +28,11 @@ export default {
         afterCreate(performance, server) {
           updateIfDoesntHave(performance, {
             venue: () => {
-              return server.create('venue');
+              return server.create('VenueNode');
             },
           });
         },
       }),
     };
-  },
-  registerRoutes() {
-    this.resource('performances');
   },
 };

@@ -1,25 +1,31 @@
 import faker from 'faker';
-import { belongsTo,Factory, Model } from 'miragejs';
+import { belongsTo, Factory, Model } from 'miragejs';
 
 export default {
   registerModels() {
     return {
-      crew: Model.extend({
+      CrewNode: Model.extend({
         production: belongsTo(),
       }),
     };
   },
-  registerSerializers() {
-    return {};
-  },
   registerFactories() {
     return {
-      crew: Factory.extend({
+      CrewNode: Factory.extend({
         department: () =>
           faker.random.arrayElement(['Stage Management', 'Lighting', 'Sound']),
         name: () => faker.name.findName(),
       }),
     };
   },
-  registerRoutes() {},
+  registerGQLTypes() {
+    return `
+      type CrewNode implements Node {
+        id: ID!
+        production: ProductionNode
+        name: String!
+        deparment: String!
+      }
+    `;
+  },
 };
