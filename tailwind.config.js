@@ -47,9 +47,6 @@ module.exports = {
         h3: '1.5rem',
         h4: '1rem',
       },
-      padding: {
-        0.5: '0.125rem',
-      },
       minWidth: {
         '1/2': '50%',
       },

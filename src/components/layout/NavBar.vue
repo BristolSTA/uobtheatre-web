@@ -1,12 +1,13 @@
 <template>
-  <nav class="p-6 bg-sta-gray-dark">
+  <nav class="px-1 py-6 sm:p-6 bg-sta-gray-dark">
     <div class="container flex flex-wrap items-center justify-between">
-      <div class="flex items-center flex-shrink-0 mr-10 text-white">
-        <router-link :to="{ name: 'home' }"
-          ><span class="text-4xl tracking-tight text-white uppercase">{{
-            $appName
-          }}</span></router-link
-        >
+      <div class="flex items-center flex-shrink-0 mr-2 text-white">
+        <router-link :to="{ name: 'home' }">
+          <span
+            class="text-3xl tracking-tight text-white uppercase sm:text-4xl"
+            >{{ $appName }}</span
+          >
+        </router-link>
       </div>
       <div class="block lg:hidden">
         <button
