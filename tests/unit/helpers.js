@@ -1,6 +1,7 @@
 import { mount, RouterLinkStub } from '@vue/test-utils';
 
 import { makeServer as makeAPIServer } from '@/fakeApi';
+import { createProvider } from '@/vue-apollo';
 
 const waitForDOM = function (wrapper, selector) {
   return new Promise((resolve) => {
@@ -45,15 +46,22 @@ const fixTextSpacing = function (text) {
   return text.replace(/\s\s+/g, ' ');
 };
 
+const mountOptionsWithRouter = function (options = {}) {
+  return Object.assign(options, {
+    stubs: {
+      RouterLink: RouterLinkStub,
+    },
+  });
+};
+
+const mountOptionsWithApollo = function (options = {}) {
+  return Object.assign(options, {
+    apolloProvider: createProvider(),
+  });
+};
+
 const mountWithRouterMock = function (component, options = {}) {
-  return mount(
-    component,
-    Object.assign(options, {
-      stubs: {
-        RouterLink: RouterLinkStub,
-      },
-    })
-  );
+  return mount(component, mountOptionsWithRouter(options));
 };
 
 const makeServer = () => {
@@ -97,6 +105,8 @@ export {
   executeWithServer,
   fixTextSpacing,
   makeServer,
+  mountOptionsWithApollo,
+  mountOptionsWithRouter,
   mountWithRouterMock,
   RouterLinkStub,
   waitFor,

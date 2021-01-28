@@ -47,6 +47,13 @@ export default {
         NProgress.done();
       }
     },
+    '$apollo.loading'(newValue) {
+      if (newValue) {
+        NProgress.start();
+      } else {
+        NProgress.done();
+      }
+    },
   },
   mounted() {
     authService.refreshAuthStatus();

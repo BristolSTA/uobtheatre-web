@@ -29,9 +29,9 @@ export default {
         },
       }),
       addressNode: Factory.extend({
-        building_name: () => `The ${faker.random.words(1)} Building`,
+        buildingName: () => `The ${faker.random.words(1)} Building`,
         street: () => faker.address.streetName(),
-        building_number: () => faker.random.number({ min: 100, max: 110 }),
+        buildingNumber: () => faker.random.number({ min: 100, max: 110 }),
         city: 'Bristol',
         postcode: () => faker.address.zipCode(),
         latitude: () => faker.address.latitude(),
@@ -82,6 +82,10 @@ export default {
   },
   registerGQLQueries() {
     return `
+      venue(
+        id: ID
+        slug: String
+      ): VenueNode
       venues(
         offset: Int
         before: String
