@@ -7,7 +7,7 @@ node_modules
 /tests/e2e/screenshots/
 
 # Fake API Temp Files
-src/fakeAPI/schema.graphql
+src/fakeApi/schema.graphql
 
 # local env files
 .env.local
