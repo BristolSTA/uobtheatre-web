@@ -14,7 +14,7 @@ module.exports = {
   },
   service: {
     name: env.VUE_APP_APOLLO_ENGINE_SERVICE,
-    localSchemaFile: path.resolve(__dirname, './src/fakeApi/schema.gql'),
+    localSchemaFile: path.resolve(__dirname, './src/fakeApi/schema.graphql'),
   },
   engine: {
     endpoint: process.env.APOLLO_ENGINE_API_ENDPOINT,
