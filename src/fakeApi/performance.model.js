@@ -7,18 +7,18 @@ import { updateIfDoesntHave } from './utils';
 export default {
   registerFactories() {
     return {
-      PerformanceNode: Factory.extend({
+      performanceNode: Factory.extend({
         start: () => DateTime.local(),
         end: () =>
           DateTime.local().plus({
             hours: faker.random.number({ min: 1, max: 3 }),
           }),
         description: faker.lorem.words(4),
-        sold_out: () => faker.random.arrayElement([true, false]),
+        soldOut: () => faker.random.arrayElement([true, false]),
         disabled: () => false,
-        is_online: () => faker.random.arrayElement([true, false]),
-        is_inperson: () => faker.random.arrayElement([true, false]),
-        duration_mins() {
+        isOnline: () => faker.random.arrayElement([true, false]),
+        isInperson: () => faker.random.arrayElement([true, false]),
+        durationMins() {
           return Math.round(
             (DateTime.fromISO(this.end) - DateTime.fromISO(this.start)) /
               (1000 * 60)
@@ -34,5 +34,25 @@ export default {
         },
       }),
     };
+  },
+  registerGQLTypes() {
+    return `
+      type PerformanceNode implements Node {
+        id: ID!
+        production: ProductionNode!
+        venue: VenueNode
+        doorsOpen: DateTime
+        start: DateTime
+        end: DateTime
+        extraInformation: String
+        capacity: Int
+        capacityRemaining: Int
+        durationMins: Int
+        isInperson: Boolean!
+        isOnline: Boolean!
+        soldOut: Boolean!
+        ticketOptions: [PerformanceSeatGroupNode]
+      }
+    `;
   },
 };

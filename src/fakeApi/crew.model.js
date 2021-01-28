@@ -4,14 +4,14 @@ import { belongsTo, Factory, Model } from 'miragejs';
 export default {
   registerModels() {
     return {
-      CrewNode: Model.extend({
+      crewNode: Model.extend({
         production: belongsTo(),
       }),
     };
   },
   registerFactories() {
     return {
-      CrewNode: Factory.extend({
+      crewNode: Factory.extend({
         department: () =>
           faker.random.arrayElement(['Stage Management', 'Lighting', 'Sound']),
         name: () => faker.name.findName(),
@@ -24,7 +24,15 @@ export default {
         id: ID!
         production: ProductionNode
         name: String!
-        deparment: String!
+        department: String!
+      }
+      type CrewNodeConnection {
+        pageInfo: PageInfo!
+        edges: [CrewNodeEdge]!
+      }
+      type CrewNodeEdge {
+        node: CrewNode
+        cursor: String!
       }
     `;
   },

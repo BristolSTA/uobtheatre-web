@@ -18,7 +18,10 @@ let updateIfDoesntHave = function (model, keyValues, value) {
   }
   let updateObj = {};
   Object.keys(keyValues).forEach((key) => {
-    if (!model[key] || model[key].length == 0) {
+    let shouldGenerateIfCan =
+      !model._dont_factory || !(key in model.__dont_factory);
+    let attributeIsNotFilled = !model[key] || model[key].length == 0;
+    if (shouldGenerateIfCan && attributeIsNotFilled) {
       value = keyValues[key];
       if (typeof value === 'function') value = value();
       updateObj[key] = value;

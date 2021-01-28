@@ -1,5 +1,6 @@
 import { mergeTypeDefs } from '@graphql-tools/merge';
 import { createGraphQLHandler } from '@miragejs/graphql';
+import { DateTime } from 'luxon';
 import { createServer } from 'miragejs';
 
 import CastInterface from './cast.model';
@@ -80,8 +81,9 @@ export function makeServer({ environment = 'development' } = {}) {
         name: 'Winston Theatre',
       });
 
-      server.create('ProductionNode', {
+      server.create('ProductionNode', 'withCoverImage', {
         name: 'Legally Blonde',
+        ageRating: 10,
         society: server.create('SocietyNode', {
           name: 'MTB',
         }),
@@ -92,8 +94,8 @@ export function makeServer({ environment = 'development' } = {}) {
         name: 'TRASh',
         subtitle: 'The Really Artsy Show',
         society: dramsoc,
-        start_date: '2020-11-19',
-        end_date: '2020-11-19',
+        start: DateTime.fromISO('2020-11-19'),
+        end: DateTime.fromISO('2020-11-19'),
         performances: server.createList('PerformanceNode', 1, {
           venue: winston,
         }),

@@ -4,14 +4,14 @@ import { belongsTo, Factory, Model } from 'miragejs';
 export default {
   registerModels() {
     return {
-      CastNode: Model.extend({
+      castNode: Model.extend({
         production: belongsTo(),
       }),
     };
   },
   registerFactories() {
     return {
-      CastNode: Factory.extend({
+      castNode: Factory.extend({
         name: () => faker.name.findName(),
         profile_picture: () =>
           faker.random.arrayElement([
@@ -31,6 +31,14 @@ export default {
         name: String!
         profile_picture: String
         role: String!
+      }
+      type CastNodeConnection {
+        pageInfo: PageInfo!
+        edges: [CastNodeEdge]!
+      }
+      type CastNodeEdge {
+        node: CastNode
+        cursor: String!
       }
     `;
   },
