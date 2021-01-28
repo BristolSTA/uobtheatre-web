@@ -18,8 +18,8 @@
             <div class="text-2xl">{{ featuredProduction.society.name }}</div>
             <div class="text-h1">{{ featuredProduction.name }}</div>
             <div class="text-2xl">
-              {{ featuredProduction.start_date | dateFormat('d MMMM') }} -
-              {{ featuredProduction.end_date | dateFormat('d MMMM y') }}
+              {{ featuredProduction.start | dateFormat('d MMMM') }} -
+              {{ featuredProduction.end | dateFormat('d MMMM y') }}
             </div>
           </router-link>
           <template v-else>
@@ -73,13 +73,7 @@
           </router-link>
           <span v-if="production.subtitle">{{ production.subtitle }}</span>
           <p class="font-semibold text-sta-orange">
-            {{
-              displayStartEnd(
-                production.start_date,
-                production.end_date,
-                'd MMMM'
-              )
-            }}
+            {{ displayStartEnd(production.start, production.end, 'd MMMM') }}
           </p>
           <p class="mt-2">
             {{ production.description | truncate(230) }}
@@ -130,7 +124,6 @@
 </style>
 
 <script>
-import gql from 'graphql-tag';
 import lo from 'lodash';
 
 import { displayStartEnd } from '@/utils';
@@ -153,40 +146,14 @@ export default {
   },
   apollo: {
     upcomingProductions: {
-      query: gql`
-        {
-          productions {
-            edges {
-              node {
-                id
-                name
-                slug
-                subtitle
-                description
-                featuredImage {
-                  url
-                }
-                start_date
-                end_date
-              }
-            }
-          }
-        }
-      `,
+      query: require('./HomeUpcomingProductions.gql'),
       update: (data) => data.productions.edges.map((edge) => edge.node),
     },
   },
-  created() {
-    // runPromiseWithLoading(
-    //   productionService
-    //     .fetchUpcomingProductions()
-    //     .then((results) => (this.upcomingProductions = results))
-    // );
-  },
   computed: {
     featuredProduction() {
-      return this.upcomingProductions.find((production) => {
-        return !!production.cover_image;
+      return this.upcomingProductionsToShow.find((production) => {
+        return !!production.coverImage;
       });
     },
     upcomingProductionsToShow() {
@@ -194,7 +161,7 @@ export default {
     },
     splashBackground() {
       return this.featuredProduction
-        ? `url("${this.featuredProduction.cover_image}")`
+        ? `url("${this.featuredProduction.coverImage.url}")`
         : null;
     },
   },

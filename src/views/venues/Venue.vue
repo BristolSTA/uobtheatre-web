@@ -17,7 +17,7 @@
         <div class="w-full h-full max-w-xl lg:w-2/3 md:m-4">
           <img
             class="w-full p-3 md:p-0"
-            :src="venue.image"
+            :src="venue.image.url"
             :alt="`${venue.name} image`"
             ref="image"
           />
@@ -33,18 +33,18 @@
               <tbody>
                 <tr>
                   <th class="pb-2 pr-2 align-top">Capacity:</th>
-                  <td class="align-top">Max {{ venue.internal_capacity }}</td>
+                  <td class="align-top">Max {{ venue.internalCapacity }}</td>
                 </tr>
                 <tr class="">
                   <th class="pr-2 align-top">Address:</th>
                   <td class="align-top">
                     <div ref="address">
-                      <p v-if="venue.address.building_name">
-                        {{ venue.address.building_name }}
+                      <p v-if="venue.address.buildingName">
+                        {{ venue.address.buildingName }}
                       </p>
                       <p>
-                        <template v-if="venue.address.building_number">
-                          {{ venue.address.building_number }}
+                        <template v-if="venue.address.buildingNumber">
+                          {{ venue.address.buildingNumber }}
                         </template>
                         {{ venue.address.street }}
                       </p>
@@ -70,7 +70,7 @@
           class="flex justify-center w-full lg:w-3/5 h-96 lg:mb-4"
           ref="mapContainer"
         >
-          <div class="w-full" id="venueMap"></div>
+          <div class="w-full" ref="venue-map"></div>
         </div>
       </div>
     </template>
@@ -78,11 +78,12 @@
 </template>
 
 <script>
+import gql from 'graphql-tag';
 import L from 'leaflet';
 
 import IconListItem from '@/components/ui/IconListItem.vue';
-import { venueService } from '@/services';
-import { handle404Mixin, runPromiseWithLoading } from '@/utils';
+import AddressFragment from '@/graphql/AddressFragment.gql';
+import { handle404Mixin } from '@/utils';
 
 export default {
   components: { IconListItem },
@@ -99,17 +100,39 @@ export default {
       venue: null,
     };
   },
-  created() {
-    runPromiseWithLoading(
-      venueService
-        .fetchVenueBySlug(this.$route.params.venueSlug)
-        .then((data) => (this.venue = data))
-        .then(async () => {
-          await this.$nextTick();
-          this.createMap(this.venue);
-        })
-        .catch(this.handle404)
-    );
+  apollo: {
+    venue: {
+      query: gql`
+        query venue($slug: String!) {
+          venue(slug: $slug) {
+            name
+            internalCapacity
+            description
+            image {
+              url
+            }
+            address {
+              ...AddressFields
+            }
+          }
+        }
+        ${AddressFragment}
+      `,
+      manual: true,
+      result(result) {
+        this.venue = result.data.venue;
+        this.check404(this.venue);
+        if (this.venue)
+          this.$nextTick(() => {
+            this.createMap(this.venue);
+          });
+      },
+      variables() {
+        return {
+          slug: this.$route.params.venueSlug,
+        };
+      },
+    },
   },
   computed: {
     googleMapsLink() {
@@ -119,7 +142,7 @@ export default {
   methods: {
     createMap(venue) {
       if (!venue.address.latitude || !venue.address.longitude) return;
-      const map = L.map('venueMap').setView(
+      const map = L.map(this.$refs['venue-map']).setView(
         [venue.address.latitude, venue.address.longitude],
         14
       );

@@ -1,0 +1,24 @@
+query upcomingProductions {
+  productions(first: 5, orderBy: "+start") {
+    edges {
+      node {
+        id
+        name
+        slug
+        subtitle
+        description
+        featuredImage {
+          url
+        }
+        coverImage {
+          url
+        }
+        society {
+          name
+        }
+        start
+        end
+      }
+    }
+  }
+}
