@@ -95,7 +95,7 @@
       >
         <div class="w-full">
           <h2 class="text-h2">There are currently no upcoming productions</h2>
-          <p>Please be sure to check back soon for more original content</p>
+          <p>Please be sure to check back soon!</p>
         </div>
       </div>
       <div

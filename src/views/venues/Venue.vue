@@ -84,6 +84,7 @@ import L from 'leaflet';
 import IconListItem from '@/components/ui/IconListItem.vue';
 import AddressFragment from '@/graphql/AddressFragment.gql';
 import { handle404Mixin } from '@/utils';
+import { createClient } from '@/vue-apollo';
 
 export default {
   components: { IconListItem },
@@ -100,7 +101,39 @@ export default {
       venue: null,
     };
   },
-  apollo: {
+  beforeRouteEnter(to, from, next) {
+    const { apolloClient } = createClient();
+    apolloClient
+      .query({
+        query: gql`
+          query venue($slug: String!) {
+            venue(slug: $slug) {
+              name
+              internalCapacity
+              description
+              image {
+                url
+              }
+              address {
+                ...AddressFields
+              }
+            }
+          }
+          ${AddressFragment}
+        `,
+        variables: {
+          slug: to.params.venueSlug,
+        },
+      })
+      .then((result) => {
+        let venue = result.data.venue;
+        if (!venue) return next({ name: '404' });
+        return next((vm) => {
+          vm.venue = venue;
+        });
+      });
+  },
+  apollo1: {
     venue: {
       query: gql`
         query venue($slug: String!) {
@@ -134,13 +167,18 @@ export default {
       },
     },
   },
+  async mounted() {
+    await this.$nextTick();
+    this.createMap();
+  },
   computed: {
     googleMapsLink() {
       return `https://maps.google.com/?q=${this.venue.name},${this.venue.address.street},${this.venue.address.city}`;
     },
   },
   methods: {
-    createMap(venue) {
+    createMap() {
+      let venue = this.venue;
       if (!venue.address.latitude || !venue.address.longitude) return;
       const map = L.map(this.$refs['venue-map']).setView(
         [venue.address.latitude, venue.address.longitude],
