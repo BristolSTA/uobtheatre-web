@@ -81,7 +81,7 @@ export function makeServer({ environment = 'development' } = {}) {
         name: 'Winston Theatre',
       });
 
-      let prod = server.create('ProductionNode', 'withCoverImage', {
+      server.create('ProductionNode', 'withCoverImage', {
         name: 'Legally Blonde',
         ageRating: 10,
         society: server.create('SocietyNode', {
@@ -89,7 +89,6 @@ export function makeServer({ environment = 'development' } = {}) {
         }),
         performances: server.createList('PerformanceNode', 3),
       });
-      console.log(prod);
 
       server.create('ProductionNode', {
         name: 'TRASh',

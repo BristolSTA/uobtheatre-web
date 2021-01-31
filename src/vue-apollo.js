@@ -6,12 +6,13 @@ import {
   restartWebsockets,
 } from 'vue-cli-plugin-apollo/graphql-client';
 import config from '@/config';
+import store from '@/store';
 
 // Install the vue plugin
 Vue.use(VueApollo);
 
 // Name of the localStorage item
-const AUTH_TOKEN = 'apollo-token';
+const AUTH_TOKEN = config.auth.cookie;
 
 // Http endpoint
 const httpEndpoint = config.api.graphql_endpoint;
@@ -48,7 +49,10 @@ const defaultOptions = {
   // cache: myCache
 
   // Override the way the Authorization header is set
-  // getAuth: (tokenName) => ...
+  getAuth: (tokenName) => {
+    if (!store.state.auth.token) return;
+    return `Token ${store.state.auth.token}`;
+  },
 
   // Additional ApolloClient options
   // apollo: { ... }
