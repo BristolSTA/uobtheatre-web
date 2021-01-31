@@ -17,14 +17,12 @@ export default {
         ageRating: null,
         facebookEvent: 'https://facebook.com',
         description: () => faker.lorem.paragraphs(3),
-        warnings: ['Strobe Lighting', 'Nudity'],
         start: () => DateTime.local(),
         end: () =>
           DateTime.local().plus({
             day: faker.random.number({ min: 1, max: 3 }),
           }),
-        minTicketPrice: () =>
-          faker.random.number({ min: 1, max: 10 }).toFixed(2),
+        minSeatPrice: () => faker.random.number({ min: 1, max: 10 }).toFixed(2),
 
         withCoverImage: trait({
           afterCreate(production, server) {
@@ -49,16 +47,26 @@ export default {
               });
             },
             cast: () => {
-              return server.createList('CastNode', 30);
+              return server.createList('CastMemberNode', 30);
             },
             crew: () => {
-              return server.createList('CrewNode', 4);
+              return server.createList('CrewMemberNode', 4);
             },
             productionTeam: () => {
-              return server.createList('ProductionTeamNode', 3);
+              return server.createList('ProductionTeamMemberNode', 3);
             },
             society: () => {
               return server.create('SocietyNode');
+            },
+            warnings: () => {
+              return [
+                server.create('warningNode', {
+                  warning: 'Strobe Lighting',
+                }),
+                server.create('warningNode', {
+                  warning: 'Nudity',
+                }),
+              ];
             },
           });
         },
@@ -78,25 +86,17 @@ export default {
       coverImage: GrapheneImageFieldNode
       ageRating: Int
       facebookEvent: String
+      warnings: [WarningNode!]
       slug: String!
-      warnings: [String]!
-      cast: CastNodeConnection
-      crew: CrewNodeConnection
-      minTicketPrice: Int
-      productionTeam: ProductionTeamNodeConnection
+      cast: [CastMemberNode!]
+      productionTeam: [ProductionTeamMemberNode!]
+      crew: [CrewMemberNode!]
+      performances(offset: Int, before: String, after: String, first: Int, last: Int, id: ID, start: DateTime, start_Year_Gt: DateTime): PerformanceNodeConnection!
       start: DateTime
       end: DateTime
-      performances(
-        offset: Int
-        before: String
-        after: String
-        first: Int
-        last: Int
-        id: ID
-        start: DateTime
-        start_Year_Gt: DateTime
-      ): PerformanceNodeConnection!
-    }`;
+      minSeatPrice: Int
+    }
+    `;
   },
   registerGQLQueries() {
     return `

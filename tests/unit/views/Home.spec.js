@@ -15,9 +15,12 @@ describe('Home', function () {
   let homepageComponent;
   let server;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     server = makeServer({ environment: 'test' });
-    homepageComponent = mountWithRouterMock(Home, mountOptionsWithApollo());
+    homepageComponent = await mountWithRouterMock(
+      Home,
+      mountOptionsWithApollo()
+    );
   });
   afterEach(() => {
     server.shutdown();
@@ -37,7 +40,10 @@ describe('Home', function () {
     it('shows featured production on splashscreen', async () => {
       seedProductions();
 
-      homepageComponent = mountWithRouterMock(Home, mountOptionsWithApollo());
+      homepageComponent = await mountWithRouterMock(
+        Home,
+        mountOptionsWithApollo()
+      );
       splashscreenContainer = homepageComponent.find('#splashscreen');
       await waitFor(() => homepageComponent.vm.featuredProduction);
 
@@ -78,7 +84,10 @@ describe('Home', function () {
     it('shows upcoming productions', async () => {
       seedProductions();
 
-      homepageComponent = mountWithRouterMock(Home, mountOptionsWithApollo());
+      homepageComponent = await mountWithRouterMock(
+        Home,
+        mountOptionsWithApollo()
+      );
 
       await waitFor(() => homepageComponent.vm.upcomingProductions.length > 0);
       let whatsOnProductions = homepageComponent

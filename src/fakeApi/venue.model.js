@@ -39,62 +39,12 @@ export default {
       }),
     };
   },
-  registerGQLTypes() {
-    return `
-      type VenueNode implements Node {
-        id: ID!
-        name: String!
-        internalCapacity: Int!
-        description: String
-        image: GrapheneImageFieldNode
-        publiclyListed: Boolean!
-        slug: String!
-        address: AddressNode
-        seatGroups(
-          offset: Int
-          before: String
-          after: String
-          first: Int
-          last: Int
-        ): SeatGroupNodeConnection!
-        performances(
-          offset: Int
-          before: String
-          after: String
-          first: Int
-          last: Int
-          id: ID
-          start: DateTime
-          start_Year_Gt: DateTime
-        ): PerformanceNodeConnection!
-      }
-      type AddressNode implements Node {
-        id: ID!
-        buildingNumber: String
-        buildingName: String
-        street: String
-        city: String!
-        postcode: String!
-        latitude: Float
-        longitude: Float
-      }
-    `;
-  },
   registerGQLQueries() {
     return `
       venue(
         id: ID
         slug: String
       ): VenueNode
-      venues(
-        offset: Int
-        before: String
-        after: String
-        first: Int
-        last: Int
-        id: ID
-        slug: String
-      ): VenueNodeConnection
     `;
   },
 };

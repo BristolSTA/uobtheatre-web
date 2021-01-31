@@ -1,22 +1,14 @@
 import { mount, RouterLinkStub } from '@vue/test-utils';
 import { expect } from 'chai';
 
-import { makeServer } from '@/fakeApi';
-import { productionService } from '@/services';
 import ProductionPerformances from '@/views/production/ProductionPerformances.vue';
 
+import FakePerformance from '../../fixtures/FakePerformance.js';
+import FakeProduction from '../../fixtures/FakeProduction.js';
 import { fixTextSpacing } from '../../helpers.js';
 
 describe('ProductionHeader', function () {
   let performancesContainer;
-  let server;
-  beforeEach(async () => {
-    server = makeServer({ environment: 'test' });
-  });
-
-  afterEach(() => {
-    server.shutdown();
-  });
 
   it('shows no performances available if none returned', async () => {
     await createWithPerformances([]);
@@ -30,40 +22,25 @@ describe('ProductionHeader', function () {
         {
           start: new Date('28 November 2020 16:00:00 GMT').toISOString(),
           end: new Date('28 November 2020 18:00:00 GMT').toISOString(),
-          sold_out: false,
+          soldOut: false,
           disabled: false,
-          is_online: true,
-          is_inperson: true,
-          venue: server.create('venue', {
-            name: 'Winston Theatre',
-          }),
-        },
-        // A disabled, in-person performance
-        {
-          start: new Date('29 November 2020 17:00:00 GMT').toISOString(),
-          end: new Date('29 November 2020 19:00:00 GMT').toISOString(),
-          sold_out: false,
-          disabled: true,
-          is_online: false,
-          is_inperson: true,
-          venue: server.create('venue', {
-            name: 'Pegg Theatre',
-          }),
+          isOnline: true,
+          isInperson: true,
         },
         // A sold out performance
         {
           start: new Date('30 November 2020 18:00:00 GMT').toISOString(),
           end: new Date('30 November 2020 20:00:00 GMT').toISOString(),
-          sold_out: true,
+          soldOut: true,
           disabled: false,
-          is_online: true,
-          is_inperson: false,
+          isOnline: true,
+          isInperson: false,
         },
       ]);
     });
 
     it('displays three performances', () => {
-      expect(performancesContainer.findAll('.performance').length).to.eq(3);
+      expect(performancesContainer.findAll('.performance').length).to.eq(2);
     });
     it('first performance is available and correct', () => {
       let performance = performancesContainer.findAll('.performance').at(0);
@@ -83,20 +60,8 @@ describe('ProductionHeader', function () {
       //TODO: Test for link to venue page
     });
 
-    it('second performance is unavailable and correct', () => {
+    it('second performance is sold out and correct', () => {
       let performance = performancesContainer.findAll('.performance').at(1);
-
-      expect(performance.text()).to.contain('Sunday 29 Nov');
-      expect(performance.find('div.bg-sta-green').exists()).to.be.false;
-      expect(performance.find('div.bg-sta-gray-dark').exists()).to.be.true;
-      expect(fixTextSpacing(performance.text())).to.contain('Pegg Theatre');
-      expect(performance.text()).to.contain('Starting at 17:00');
-      expect(performance.text()).to.contain('No Tickets Available');
-      expect(performance.find('button').text()).to.eq('Unavailable');
-    });
-
-    it('third performance is sold out and correct', () => {
-      let performance = performancesContainer.findAll('.performance').at(2);
 
       expect(performance.text()).to.contain('Monday 30 Nov');
       expect(performance.find('div.bg-sta-green').exists()).to.be.false;
@@ -111,32 +76,21 @@ describe('ProductionHeader', function () {
   let createWithPerformances = (performances, productionOverrides) => {
     let perfs = [];
     performances.forEach((perf) => {
-      perfs.push(server.create('performance', perf));
+      perfs.push({
+        node: Object.assign(FakePerformance(), perf),
+      });
     });
 
-    server.create(
-      'production',
-      Object.assign(
-        {
-          name: 'Legally Ginger',
-          slug: 'legally-ginger',
-          performances: perfs,
-        },
-        productionOverrides
-      )
-    );
+    let production = Object.assign(FakeProduction(), productionOverrides);
+    production.performances.edges = perfs;
 
-    return productionService
-      .fetchProductionBySlug('legally-ginger')
-      .then((production) => {
-        performancesContainer = mount(ProductionPerformances, {
-          propsData: {
-            production: production,
-          },
-          stubs: {
-            RouterLink: RouterLinkStub,
-          },
-        });
-      });
+    performancesContainer = mount(ProductionPerformances, {
+      propsData: {
+        production: production,
+      },
+      stubs: {
+        RouterLink: RouterLinkStub,
+      },
+    });
   };
 });

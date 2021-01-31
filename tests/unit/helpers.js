@@ -1,4 +1,6 @@
 import { mount, RouterLinkStub } from '@vue/test-utils';
+import { expect } from 'chai';
+import lo from 'lodash';
 
 import { makeServer as makeAPIServer } from '@/fakeApi';
 import { createProvider } from '@/vue-apollo';
@@ -22,7 +24,7 @@ const waitFor = function (callback) {
         clearInterval(timer);
         resolve();
       }
-    }, 100);
+    }, 2);
   });
 };
 
@@ -46,6 +48,22 @@ const fixTextSpacing = function (text) {
   return text.replace(/\s\s+/g, ' ');
 };
 
+const mountWithRouterMock = async function (component, options = {}) {
+  let mountedComponent = mount(component, mountOptionsWithRouter(options));
+  if (component.beforeRouteEnter) {
+    await component.beforeRouteEnter.call(
+      mountedComponent.vm,
+      undefined,
+      undefined,
+      (callback) => {
+        callback(mountedComponent.vm);
+      }
+    );
+  }
+
+  return mountedComponent;
+};
+
 const mountOptionsWithRouter = function (options = {}) {
   return Object.assign(options, {
     stubs: {
@@ -60,29 +78,45 @@ const mountOptionsWithApollo = function (options = {}) {
   });
 };
 
-const mountWithRouterMock = function (component, options = {}) {
-  return mount(component, mountOptionsWithRouter(options));
-};
-
 const makeServer = () => {
   return makeAPIServer({ environment: 'test' });
 };
 
-const executeWithServer = (callback) => {
+const executeWithServer = (callback, closeServer = true) => {
   let server = makeServer();
-  callback(server);
-  server.shutdown;
+  if (callback) callback(server);
+  if (closeServer) server.shutdown();
+  return server;
 };
 
-const serialize = (model, server) => {
-  return server.serializerOrRegistry.serialize(model);
+const serialize = (model, server, innersToSerialize = []) => {
+  let serializedModel = server.serializerOrRegistry.serialize(model);
+
+  innersToSerialize.forEach((relationship) => {
+    let serializedAccessor = Array.isArray(relationship)
+      ? relationship[0]
+      : relationship;
+    let modelAccessor = Array.isArray(relationship)
+      ? relationship[1]
+      : relationship;
+    return lo.set(
+      serializedModel,
+      relationship,
+      lo.get(serializedModel, serializedAccessor).map((_, index) => {
+        return serialize(model[modelAccessor].models[index], server);
+      })
+    );
+  });
+
+  return serializedModel;
 };
 
 const createFromFactoryAndSerialize = (
   modelName,
   count = 1,
   overrides = {},
-  server = null
+  server = null,
+  innersToSerialize = []
 ) => {
   let exisitingServer = server != null;
   if (!exisitingServer) {
@@ -95,20 +129,43 @@ const createFromFactoryAndSerialize = (
     returnData = server.createList(modelName, count, overrides);
   }
 
-  let serialized = serialize(returnData, server);
+  let serialized = serialize(returnData, server, innersToSerialize);
+
   if (!exisitingServer) server.shutdown();
   return serialized;
 };
 
+let assertNoVisualDifference = (recieved, expected) => {
+  expect(JSON.stringify(recieved)).to.eq(JSON.stringify(expected));
+};
+
+let mapRelationshipsToEdges = (resource, relationships) => {
+  relationships.forEach((relationship) => {
+    if (resource[relationship]) {
+      resource[relationship] = {
+        edges: resource[relationship].map((node) => {
+          return {
+            node,
+          };
+        }),
+      };
+    }
+  });
+  return resource;
+};
+
 export {
+  assertNoVisualDifference,
   createFromFactoryAndSerialize,
   executeWithServer,
   fixTextSpacing,
   makeServer,
+  mapRelationshipsToEdges,
   mountOptionsWithApollo,
   mountOptionsWithRouter,
   mountWithRouterMock,
   RouterLinkStub,
+  serialize,
   waitFor,
   waitForDOM,
   waitForTick,

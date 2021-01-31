@@ -1,4 +1,4 @@
-import { mergeTypeDefs } from '@graphql-tools/merge';
+import { stitchSchemas } from '@graphql-tools/stitch';
 import { createGraphQLHandler } from '@miragejs/graphql';
 import { DateTime } from 'luxon';
 import { createServer } from 'miragejs';
@@ -11,7 +11,7 @@ import ProductionTeamInterface from './productionTeam.model';
 import BaseGQLSchema from './schema.graphql';
 import SocietyInterface from './society.model';
 import UserInterface from './user.model';
-import { DefaultSerializer } from './utils';
+import { RelationshipSerializer } from './utils';
 import VenueInterface from './venue.model';
 
 let apiModels = [
@@ -64,7 +64,7 @@ export function makeServer({ environment = 'development' } = {}) {
 
     serializers: Object.assign(
       {
-        application: DefaultSerializer,
+        application: RelationshipSerializer(true),
       },
       serializers
     ),
@@ -81,7 +81,7 @@ export function makeServer({ environment = 'development' } = {}) {
         name: 'Winston Theatre',
       });
 
-      server.create('ProductionNode', 'withCoverImage', {
+      let prod = server.create('ProductionNode', 'withCoverImage', {
         name: 'Legally Blonde',
         ageRating: 10,
         society: server.create('SocietyNode', {
@@ -89,6 +89,7 @@ export function makeServer({ environment = 'development' } = {}) {
         }),
         performances: server.createList('PerformanceNode', 3),
       });
+      console.log(prod);
 
       server.create('ProductionNode', {
         name: 'TRASh',
@@ -154,8 +155,10 @@ export function makeServer({ environment = 'development' } = {}) {
 
       // Merge fake api with real api schema export
       let schemas = [BaseGQLSchema];
-      if (fakeAPISchema) schemas.unshift(fakeAPISchema);
-      const graphQLSchema = mergeTypeDefs(schemas);
+      if (fakeAPISchema) schemas.push(fakeAPISchema);
+      const graphQLSchema = stitchSchemas({
+        schemas: schemas,
+      });
 
       // Create GraphQL Route and Handler
       const graphQLHandler = createGraphQLHandler(graphQLSchema, this.schema, {

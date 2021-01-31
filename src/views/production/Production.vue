@@ -21,8 +21,7 @@
 </template>
 
 <script>
-import { productionService } from '@/services';
-import { handle404Mixin,runPromiseWithLoading } from '@/utils';
+import { handle404Mixin } from '@/utils';
 
 import ProductionCastCredits from './ProductionCastCredits.vue';
 import ProductionHeader from './ProductionHeader.vue';
@@ -48,13 +47,18 @@ export default {
       production: null,
     };
   },
-  created() {
-    runPromiseWithLoading(
-      productionService
-        .fetchProductionBySlug(this.$route.params.productionSlug)
-        .then((data) => (this.production = data))
-        .catch(this.handle404)
-    );
+  apollo: {
+    production: {
+      query: require('./Production.gql'),
+      variables() {
+        return {
+          slug: this.$route.params.productionSlug,
+        };
+      },
+      result(result) {
+        this.check404(result.data.production);
+      },
+    },
   },
 };
 </script>

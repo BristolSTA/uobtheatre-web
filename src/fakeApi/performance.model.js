@@ -24,6 +24,7 @@ export default {
               (1000 * 60)
           );
         },
+        minSeatPrice: () => faker.random.number({ min: 100, max: 100 }),
 
         afterCreate(performance, server) {
           updateIfDoesntHave(performance, {

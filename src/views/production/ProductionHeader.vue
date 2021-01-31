@@ -5,15 +5,15 @@
     <div class="relative inline-block w-full max-w-xl m-10 md:w-2/3">
       <img
         class="w-full p-8"
-        :src="production.featured_image"
+        :src="production.featuredImage.url"
         :alt="`${production.name} feature image`"
         ref="featured_image"
       />
       <img
-        :src="production.society.logo_image"
+        :src="production.society.logo.url"
         :alt="`${production.society.name} logo`"
         class="absolute bottom-0 left-0 w-20"
-        v-if="production.society.logo_image"
+        v-if="production.society.logo"
         ref="society_image"
       />
     </div>
@@ -32,16 +32,16 @@
         {{ venues }}
       </p>
       <p>
-        {{
-          displayStartEnd(production.start_date, production.end_date, 'd MMM')
-        }}
+        {{ displayStartEnd(production.start, production.end, 'd MMM') }}
       </p>
       <icon-list-item v-if="duration" icon="clock">
         {{ duration }}
       </icon-list-item>
-      <icon-list-item icon="ticket-alt" v-if="production.min_ticket_price">
+      <icon-list-item icon="ticket-alt" v-if="production.minSeatPrice">
         Tickets available from
-        <span class="font-semibold"> £{{ production.min_ticket_price }} </span>
+        <span class="font-semibold">
+          £{{ (production.minSeatPrice / 100).toFixed(2) }}
+        </span>
       </icon-list-item>
       <button
         class="w-full mt-4 font-semibold btn btn-green"
@@ -59,7 +59,7 @@ import humanizeDuration from 'humanize-duration';
 import lo from 'lodash';
 
 import IconListItem from '@/components/ui/IconListItem.vue';
-import { displayStartEnd,joinWithAnd } from '@/utils';
+import { displayStartEnd, joinWithAnd } from '@/utils';
 
 export default {
   components: { IconListItem },
@@ -74,13 +74,13 @@ export default {
   },
   computed: {
     venues() {
-      if (!this.production.performances.length) return '';
+      if (!this.production.performances.edges.length) return '';
 
       let venues = [];
       if (this.hasInPersonPerformances) {
         venues = lo.uniq(
-          this.production.performances.map((performance) => {
-            return performance.venue.name;
+          this.production.performances.edges.map((edge) => {
+            return edge.node.venue.name;
           })
         );
 
@@ -97,20 +97,22 @@ export default {
       return joinWithAnd(venues);
     },
     hasOnlinePerformances() {
-      return !!this.production.performances.find(
-        (performance) => performance.is_online
+      return !!this.production.performances.edges.find(
+        (edge) => edge.node.isOnline
       );
     },
     hasInPersonPerformances() {
-      return !!this.production.performances.find(
-        (performance) => performance.is_inperson
+      return !!this.production.performances.edges.find(
+        (edge) => edge.node.isInperson
       );
     },
     duration() {
-      if (!this.production.performances.length) return;
+      if (!this.production.performances.edges.length) return;
       return humanizeDuration(
-        lo.chain(this.production.performances).minBy('duration_mins').value()
-          .duration_mins *
+        lo
+          .chain(this.production.performances.edges.map((edge) => edge.node))
+          .minBy('durationMins')
+          .value().durationMins *
           60 *
           1000
       );
