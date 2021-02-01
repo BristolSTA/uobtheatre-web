@@ -1,37 +1,39 @@
 import faker from 'faker';
-import { Factory, Model } from 'miragejs';
+import { Factory } from 'miragejs';
 
-import { NotFoundResponse } from './utils';
-
+import { updateIfDoesntHave } from './utils';
 export default {
-  registerModels() {
-    return {
-      society: Model,
-    };
-  },
-  registerSerializers() {
-    return {};
-  },
   registerFactories() {
     return {
-      society: Factory.extend({
+      societyNode: Factory.extend({
         name: () => faker.name.findName(),
+        description: () => faker.lorem.paragraphs(1),
         slug() {
           return this.name.toLowerCase().replace(/ /g, '-');
         },
-        logo_image: 'https://via.placeholder.com/500x500/0000FF',
-        banner_image: 'https://via.placeholder.com/1200x480',
-        description: () => faker.lorem.paragraphs(1),
+        afterCreate(node, server) {
+          updateIfDoesntHave(node, {
+            logo: () => {
+              return server.create('GrapheneImageFieldNode', {
+                url: 'https://via.placeholder.com/500x500/0000FF',
+              });
+            },
+            banner: () => {
+              return server.create('GrapheneImageFieldNode', {
+                url: 'https://via.placeholder.com/1200x480',
+              });
+            },
+          });
+        },
       }),
     };
   },
-  registerRoutes() {
-    this.resource('societies');
-    this.get('societies/:slug', function (schema, request) {
-      return (
-        schema.societies.findBy({ slug: request.params.slug }) ??
-        NotFoundResponse()
-      );
-    });
+  registerGQLQueries() {
+    return `
+      society(
+        id: ID
+        slug: String
+      ): SocietyNode
+    `;
   },
 };
