@@ -18,10 +18,7 @@ let updateIfDoesntHave = function (model, keyValues, value) {
   }
   let updateObj = {};
   Object.keys(keyValues).forEach((key) => {
-    let shouldGenerateIfCan =
-      !model.__dont_factory || !model.__dont_factory.includes(key);
-    let attributeIsNotFilled = !model[key] || model[key].length == 0;
-    if (shouldGenerateIfCan && attributeIsNotFilled) {
+    if (!model[key] || model[key].length == 0) {
       value = keyValues[key];
       if (typeof value === 'function') value = value();
       updateObj[key] = value;
@@ -32,14 +29,7 @@ let updateIfDoesntHave = function (model, keyValues, value) {
 
 let RelationshipSerializer = (relationships) =>
   DefaultSerializer.extend({
-    include:
-      relationships === true
-        ? function () {
-            return this.primaryResource
-              ? Object.keys(this.primaryResource.associations)
-              : [];
-          }
-        : relationships,
+    include: relationships,
   });
 
 let DefaultSerializer = Serializer.extend({

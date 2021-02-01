@@ -1,21 +1,29 @@
 import { mount } from '@vue/test-utils';
 import { expect } from 'chai';
 
+import { makeServer } from '@/fakeApi';
+import { productionService } from '@/services';
 import ProductionCastCredits from '@/views/production/ProductionCastCredits.vue';
-
-import FakePerformance from '../../fixtures/FakePerformance';
-import FakeProduction from '../../fixtures/FakeProduction';
 
 describe('CastCreditsContainer', function () {
   let castCreditsContainer;
+  let server;
+  beforeEach(async () => {
+    server = makeServer({ environment: 'test' });
+  });
+
+  afterEach(() => {
+    server.shutdown();
+  });
 
   describe('Overview', () => {
     it('shows the correct overview', async () => {
       await createWithPerformances([
         {
           start: Date('2020-11-14'),
-          isInperson: true,
-          isOnline: false,
+          venue: server.create('venue'),
+          is_inperson: true,
+          is_online: false,
         },
       ]);
 
@@ -38,8 +46,9 @@ describe('CastCreditsContainer', function () {
       await createWithPerformances([
         {
           start: Date('2020-11-14'),
-          isInperson: true,
-          isOnline: false,
+          venue: server.create('venue'),
+          is_inperson: true,
+          is_online: false,
         },
       ]);
 
@@ -75,11 +84,12 @@ describe('CastCreditsContainer', function () {
         [
           {
             start: Date('2020-11-14'),
-            isInperson: false,
-            isOnline: true,
+            venue: server.create('venue'),
+            is_inperson: false,
+            is_online: true,
           },
         ],
-        { warnings: [], ageRating: null, facebookEvent: null }
+        { warnings: null, age_rating: null, facebook_event: null }
       );
 
       // no warnings
@@ -103,8 +113,9 @@ describe('CastCreditsContainer', function () {
       await createWithPerformances([
         {
           start: Date('2020-11-14'),
-          isInperson: true,
-          isOnline: true,
+          venue: server.create('venue'),
+          is_inperson: true,
+          is_online: true,
         },
       ]);
 
@@ -127,8 +138,9 @@ describe('CastCreditsContainer', function () {
       await createWithPerformances([
         {
           start: Date('2020-11-14'),
-          isInperson: true,
-          isOnline: false,
+          venue: server.create('venue'),
+          is_inperson: true,
+          is_online: false,
         },
       ]);
       await castCreditsContainer.setData({ overview: false });
@@ -162,6 +174,7 @@ describe('CastCreditsContainer', function () {
       expect(castCredits.text()).to.contain('Cast');
 
       let castArray = castCreditsContainer.findAll('.production-cast-member');
+
       // cast memeber with picture
       expect(castArray.at(0).text()).to.contain('Kit');
       expect(castArray.at(0).text()).to.contain('Crazy person');
@@ -182,18 +195,63 @@ describe('CastCreditsContainer', function () {
   let createWithPerformances = (performances, productionOverrides) => {
     let perfs = [];
     performances.forEach((perf) => {
-      perfs.push({
-        node: Object.assign(FakePerformance(), perf),
+      perfs.push(server.create('performance', perf));
+    });
+
+    server.create(
+      'production',
+      Object.assign(
+        {
+          name: 'Legally Ginger',
+          slug: 'legally-ginger',
+          poster_image: 'http://pathto.example/poster-image.png',
+          society: server.create('society', {
+            name: 'Joe Bloggs Productions',
+          }),
+          performances: perfs,
+          facebook_event: 'https://facebook.com/legally-ginger',
+          warnings: ['Strobe Lighting', 'Nudity'],
+          age_rating: '18',
+          description: 'The description of the show.',
+          cast: [
+            server.create('cast', {
+              name: 'Alex T',
+              role: 'Good Guy',
+              profile_picture: null,
+            }),
+            server.create('cast', {
+              name: 'Kit',
+              role: 'Crazy person',
+              profile_picture: 'http://pathto.example/profile-pic.png',
+            }),
+          ],
+          crew: [
+            server.create('crew', { name: 'Tom', department: 'Sound' }),
+            server.create('crew', { name: 'Millie', department: 'Lighting' }),
+          ],
+          productionTeam: [
+            server.create('productionTeam', {
+              name: 'James',
+              role: 'Producer',
+            }),
+            server.create('productionTeam', {
+              name: 'Nicole',
+              role: 'Musical Director',
+            }),
+          ],
+        },
+        productionOverrides
+      )
+    );
+
+    return productionService
+      .fetchProductionBySlug('legally-ginger')
+      .then((production) => {
+        castCreditsContainer = mount(ProductionCastCredits, {
+          propsData: {
+            production: production,
+          },
+        });
       });
-    });
-
-    let production = Object.assign(FakeProduction(), productionOverrides);
-    production.performances.edges = perfs;
-
-    castCreditsContainer = mount(ProductionCastCredits, {
-      propsData: {
-        production: production,
-      },
-    });
   };
 });

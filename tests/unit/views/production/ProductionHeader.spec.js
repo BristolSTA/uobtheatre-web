@@ -1,33 +1,42 @@
 import { mount } from '@vue/test-utils';
 import { expect } from 'chai';
 
+import { makeServer } from '@/fakeApi';
+import { productionService } from '@/services';
 import ProductionHeader from '@/views/production/ProductionHeader.vue';
 
-import FakePerformance from '../../fixtures/FakePerformance.js';
-import FakeProduction from '../../fixtures/FakeProduction.js';
 import { fixTextSpacing } from '../../helpers.js';
 
 describe('ProductionHeader', function () {
   let headerContainer;
+  let server;
+  beforeEach(async () => {
+    server = makeServer({ environment: 'test' });
+  });
+
+  afterEach(() => {
+    server.shutdown();
+  });
+
   it('shows production details correctly', async () => {
     await createWithPerformances([
       {
         start: Date('2020-11-14'),
-        venue: {
+        venue: server.create('venue', {
           name: 'The New Vic',
-        },
-        isInperson: true,
-        isOnline: false,
-        durationMins: 102,
+        }),
+        is_inperson: true,
+        is_online: false,
+        duration_mins: 102,
       },
       {
         start: Date('2020-11-15'),
-        venue: {
+        venue: server.create('venue', {
           name: 'The Newer Vic',
-        },
-        isInperson: true,
-        isOnline: false,
-        durationMins: 112,
+        }),
+        is_inperson: true,
+        is_online: false,
+        duration_mins: 112,
       },
     ]);
 
@@ -50,7 +59,7 @@ describe('ProductionHeader', function () {
 
     // test for correct ticket price
     expect(fixTextSpacing(headerContainer.text())).to.contain(
-      'Tickets available from £4.24'
+      'Tickets available from £4.34'
     );
 
     // correct feature image
@@ -74,10 +83,10 @@ describe('ProductionHeader', function () {
 
   it('shows no society image when none is given', async () => {
     await createWithPerformances([], {
-      society: {
+      society: server.create('society', {
         name: 'Joe Bloggs Productions',
-        logo: null,
-      },
+        logo_image: null,
+      }),
     });
 
     expect(
@@ -92,18 +101,18 @@ describe('ProductionHeader', function () {
   it('shows online only performances', async () => {
     await createWithPerformances([
       {
-        venue: {
+        venue: server.create('venue', {
           name: 'The New Vic',
-        },
-        isInperson: false,
-        isOnline: true,
+        }),
+        is_inperson: false,
+        is_online: true,
       },
       {
-        venue: {
+        venue: server.create('venue', {
           name: 'The Newer Vic',
-        },
-        isInperson: false,
-        isOnline: true,
+        }),
+        is_inperson: false,
+        is_online: true,
       },
     ]);
 
@@ -114,18 +123,18 @@ describe('ProductionHeader', function () {
   it('shows online and in person performances', async () => {
     await createWithPerformances([
       {
-        venue: {
+        venue: server.create('venue', {
           name: 'New Vic',
-        },
-        isInperson: false,
-        isOnline: true,
+        }),
+        is_inperson: false,
+        is_online: true,
       },
       {
-        venue: {
+        venue: server.create('venue', {
           name: 'New Vic',
-        },
-        isInperson: true,
-        isOnline: false,
+        }),
+        is_inperson: true,
+        is_online: false,
       },
     ]);
 
@@ -144,18 +153,38 @@ describe('ProductionHeader', function () {
   let createWithPerformances = (performances, productionOverrides) => {
     let perfs = [];
     performances.forEach((perf) => {
-      perfs.push({
-        node: Object.assign(FakePerformance(), perf),
+      perfs.push(server.create('performance', perf));
+    });
+
+    server.create(
+      'production',
+      Object.assign(
+        {
+          name: 'Legally Ginger',
+          slug: 'legally-ginger',
+          cover_image: 'http://pathto.example/cover-image.png',
+          featured_image: 'http://pathto.example/featured-image.png',
+          society: server.create('society', {
+            name: 'Joe Bloggs Productions',
+            logo_image: 'http://pathto.example/logo-image.png',
+          }),
+          start_date: new Date('2020-11-14'),
+          end_date: new Date('2020-11-18'),
+          min_ticket_price: '4.34',
+          performances: perfs,
+        },
+        productionOverrides
+      )
+    );
+
+    return productionService
+      .fetchProductionBySlug('legally-ginger')
+      .then((production) => {
+        headerContainer = mount(ProductionHeader, {
+          propsData: {
+            production: production,
+          },
+        });
       });
-    });
-
-    let production = Object.assign(FakeProduction(), productionOverrides);
-    production.performances.edges = perfs;
-
-    headerContainer = mount(ProductionHeader, {
-      propsData: {
-        production: production,
-      },
-    });
   };
 });

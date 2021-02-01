@@ -1,59 +1,54 @@
 import faker from 'faker';
 import { DateTime } from 'luxon';
-import { Factory } from 'miragejs';
+import { belongsTo,Factory, Model } from 'miragejs';
 
-import { updateIfDoesntHave } from './utils';
+import { RelationshipSerializer, updateIfDoesntHave } from './utils';
 
 export default {
+  registerModels() {
+    return {
+      performance: Model.extend({
+        venue: belongsTo(),
+        production: belongsTo('performance'),
+      }),
+    };
+  },
+  registerSerializers() {
+    return {
+      performance: RelationshipSerializer(['venue']),
+    };
+  },
   registerFactories() {
     return {
-      performanceNode: Factory.extend({
+      performance: Factory.extend({
         start: () => DateTime.local(),
         end: () =>
           DateTime.local().plus({
             hours: faker.random.number({ min: 1, max: 3 }),
           }),
         description: faker.lorem.words(4),
-        soldOut: () => faker.random.arrayElement([true, false]),
+        sold_out: () => faker.random.arrayElement([true, false]),
         disabled: () => false,
-        isOnline: () => faker.random.arrayElement([true, false]),
-        isInperson: () => faker.random.arrayElement([true, false]),
-        durationMins() {
+        is_online: () => faker.random.arrayElement([true, false]),
+        is_inperson: () => faker.random.arrayElement([true, false]),
+        duration_mins() {
           return Math.round(
             (DateTime.fromISO(this.end) - DateTime.fromISO(this.start)) /
               (1000 * 60)
           );
         },
-        minSeatPrice: () => faker.random.number({ min: 100, max: 100 }),
 
         afterCreate(performance, server) {
           updateIfDoesntHave(performance, {
             venue: () => {
-              return server.create('VenueNode');
+              return server.create('venue');
             },
           });
         },
       }),
     };
   },
-  registerGQLTypes() {
-    return `
-      type PerformanceNode implements Node {
-        id: ID!
-        production: ProductionNode!
-        venue: VenueNode
-        doorsOpen: DateTime
-        start: DateTime
-        end: DateTime
-        extraInformation: String
-        capacity: Int
-        capacityRemaining: Int
-        durationMins: Int
-        isInperson: Boolean!
-        isOnline: Boolean!
-        soldOut: Boolean!
-        ticketOptions: [PerformanceSeatGroupNode]
-      }
-    `;
+  registerRoutes() {
+    this.resource('performances');
   },
 };

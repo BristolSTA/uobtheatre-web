@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { makeServer } from '@/fakeApi';
 import Venue from '@/views/venues/Venue.vue';
 
-import { mountOptionsWithApollo, waitFor } from '../../helpers';
+import { waitFor } from '../../helpers';
 
 describe('Venue page', function () {
   let venuePageComponent;
@@ -14,38 +14,33 @@ describe('Venue page', function () {
     server = makeServer({ environment: 'test' });
 
     // Create a venue
-    server.create('VenueNode', {
+    server.create('venue', {
       name: 'Anson Theatre',
       slug: 'anson-theatre',
       description: 'not the anson rooms',
-      image: server.create('GrapheneImageFieldNode', {
-        url: 'http://pathto.example/venue-image.png',
-      }),
-      publiclyListed: true,
-      internalCapacity: '420',
-      address: server.create('AddressNode', {
-        buildingName: 'Wills Memorial Building',
+      image: 'http://pathto.example/venue-image.png',
+      publicly_listed: true,
+      internal_capacity: '420',
+      address: {
+        building_name: 'Wills Memorial Building',
         street: 'Queens Road',
-        buildingNumber: '69',
+        building_number: '69',
         city: 'London',
         postcode: 'BS69 420',
         latitude: '123.4567',
         longitude: '987.654',
-      }),
+      },
     });
 
-    venuePageComponent = mount(
-      Venue,
-      mountOptionsWithApollo({
-        mocks: {
-          $route: {
-            params: {
-              venueSlug: 'anson-theatre',
-            },
+    venuePageComponent = mount(Venue, {
+      mocks: {
+        $route: {
+          params: {
+            venueSlug: 'anson-theatre',
           },
         },
-      })
-    );
+      },
+    });
   });
 
   afterEach(() => {
@@ -105,23 +100,24 @@ describe('Venue page', function () {
   });
 
   it('handles invalid venue', async () => {
-    let fakeRouterPush = jest.fn();
-    venuePageComponent = mount(
-      Venue,
-      mountOptionsWithApollo({
-        mocks: {
-          $route: {
-            params: {
-              venueSlug: 'anson-theatre-allowed',
-            },
-          },
-          $router: {
-            push: fakeRouterPush,
+    let fake404Handler = jest.fn();
+    venuePageComponent = mount(Venue, {
+      mixins: [
+        {
+          methods: {
+            handle404: fake404Handler,
           },
         },
-      })
-    );
-    await waitFor(() => fakeRouterPush.mock.calls.length);
-    expect(fakeRouterPush.mock.calls.length).to.eq(1);
+      ],
+      mocks: {
+        $route: {
+          params: {
+            venueSlug: 'anson-theatre-allowed',
+          },
+        },
+      },
+    });
+    await waitFor(() => fake404Handler.mock.calls.length);
+    expect(fake404Handler.mock.calls.length).to.eq(1);
   });
 });

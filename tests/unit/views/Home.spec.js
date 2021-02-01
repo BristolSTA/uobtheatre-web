@@ -4,24 +4,17 @@ import { expect } from 'chai';
 import { makeServer } from '@/fakeApi';
 import Home from '@/views/Home.vue';
 
-import {
-  fixTextSpacing,
-  mountOptionsWithApollo,
-  mountWithRouterMock,
-  waitFor,
-} from '../helpers';
+import { fixTextSpacing, mountWithRouterMock,waitFor } from '../helpers';
 
 describe('Home', function () {
   let homepageComponent;
   let server;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     server = makeServer({ environment: 'test' });
-    homepageComponent = await mountWithRouterMock(
-      Home,
-      mountOptionsWithApollo()
-    );
+    homepageComponent = mountWithRouterMock(Home);
   });
+
   afterEach(() => {
     server.shutdown();
   });
@@ -40,10 +33,7 @@ describe('Home', function () {
     it('shows featured production on splashscreen', async () => {
       seedProductions();
 
-      homepageComponent = await mountWithRouterMock(
-        Home,
-        mountOptionsWithApollo()
-      );
+      homepageComponent = mountWithRouterMock(Home);
       splashscreenContainer = homepageComponent.find('#splashscreen');
       await waitFor(() => homepageComponent.vm.featuredProduction);
 
@@ -84,10 +74,7 @@ describe('Home', function () {
     it('shows upcoming productions', async () => {
       seedProductions();
 
-      homepageComponent = await mountWithRouterMock(
-        Home,
-        mountOptionsWithApollo()
-      );
+      homepageComponent = mountWithRouterMock(Home);
 
       await waitFor(() => homepageComponent.vm.upcomingProductions.length > 0);
       let whatsOnProductions = homepageComponent
@@ -134,27 +121,25 @@ describe('Home', function () {
 
   let seedProductions = () => {
     // Seed a production that can't be featured (no cover photo)
-    server.create('ProductionNode', {
+    server.create('production', {
       name: 'My production without a picture',
-      society: server.create('SocietyNode', { name: 'Dramatic Pause' }),
-      start: new Date('2020-11-13'),
-      end: new Date('2020-11-14'),
-      __dont_factory: ['coverImage'],
+      cover_image: null,
+      society: server.create('society', { name: 'Dramatic Pause' }),
+      start_date: new Date('2020-11-13'),
+      end_date: new Date('2020-11-14'),
     });
     // Seed a production that can be featured
-    server.create('ProductionNode', {
+    server.create('production', {
       name: 'Upside Down Cake',
-      coverImage: server.create('GrapheneImageFieldNode', {
-        url: 'http://pathto.example/my-image.png',
-      }),
-      society: server.create('SocietyNode', { name: 'Joe Bloggs Productions' }),
-      start: new Date('2020-11-14'),
-      end: new Date('2020-11-18'),
+      cover_image: 'http://pathto.example/my-image.png',
+      society: server.create('society', { name: 'Joe Bloggs Productions' }),
+      start_date: new Date('2020-11-14'),
+      end_date: new Date('2020-11-18'),
     });
     // Seed a second production that can be featured
-    server.create('ProductionNode', {
+    server.create('production', {
       name: 'Not This One Again...',
-      society: server.create('SocietyNode', { name: 'Jill Bowls Films' }),
+      society: server.create('society', { name: 'Jill Bowls Films' }),
     });
   };
 });

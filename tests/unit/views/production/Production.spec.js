@@ -7,7 +7,7 @@ import ProductionCastCredits from '@/views/production/ProductionCastCredits.vue'
 import ProductionHeader from '@/views/production/ProductionHeader.vue';
 import ProductionPerformances from '@/views/production/ProductionPerformances.vue';
 
-import { mountOptionsWithApollo, waitFor } from '../../helpers';
+import { waitFor } from '../../helpers';
 
 describe('Production', function () {
   let productionPageComponent;
@@ -19,23 +19,20 @@ describe('Production', function () {
     server = makeServer({ environment: 'test' });
 
     // Create a production
-    server.create('productionNode', {
+    server.create('production', {
       name: 'Legally Ginger',
       slug: 'legally-ginger',
     });
 
-    productionPageComponent = mount(
-      ProductionPage,
-      mountOptionsWithApollo({
-        mocks: {
-          $route: {
-            params: {
-              productionSlug: 'legally-ginger',
-            },
+    productionPageComponent = mount(ProductionPage, {
+      mocks: {
+        $route: {
+          params: {
+            productionSlug: 'legally-ginger',
           },
         },
-      })
-    );
+      },
+    });
   });
 
   afterEach(() => {
@@ -86,23 +83,24 @@ describe('Production', function () {
   });
 
   it('handles invalid production', async () => {
-    let fakeRouterPush = jest.fn();
-    productionPageComponent = mount(
-      ProductionPage,
-      mountOptionsWithApollo({
-        mocks: {
-          $route: {
-            params: {
-              productionSlug: 'legally-not-allowed',
-            },
-          },
-          $router: {
-            push: fakeRouterPush,
+    let fake404Handler = jest.fn();
+    productionPageComponent = mount(ProductionPage, {
+      mixins: [
+        {
+          methods: {
+            handle404: fake404Handler,
           },
         },
-      })
-    );
-    await waitFor(() => fakeRouterPush.mock.calls.length);
-    expect(fakeRouterPush.mock.calls.length).to.eq(1);
+      ],
+      mocks: {
+        $route: {
+          params: {
+            productionSlug: 'legally-not-allowed',
+          },
+        },
+      },
+    });
+    await waitFor(() => fake404Handler.mock.calls.length);
+    expect(fake404Handler.mock.calls.length).to.eq(1);
   });
 });

@@ -1,34 +1,25 @@
 import faker from 'faker';
-import { Factory } from 'miragejs';
-
-import { updateIfDoesntHave } from './utils';
+import { belongsTo,Factory, Model } from 'miragejs';
 
 export default {
-  registerFactories() {
+  registerModels() {
     return {
-      crewMemberNode: Factory.extend({
-        name: () => faker.name.findName(),
-        afterCreate(node, server) {
-          updateIfDoesntHave(node, {
-            role: () => server.create('CrewRoleNode'),
-          });
-        },
-      }),
-      crewRoleNode: Factory.extend({
-        name: null,
-        department: () =>
-          faker.random.arrayElement(['Stage Management', 'Lighting', 'Sound']),
+      crew: Model.extend({
+        production: belongsTo(),
       }),
     };
   },
-  registerGQLTypes() {
-    return `
-    type CrewRoleNode implements Node {
-      id: ID!
-      name: String
-      department: String!
-      crewMembers(offset: Int, before: String, after: String, first: Int, last: Int): CrewMemberNodeConnection!
-    }
-    `;
+  registerSerializers() {
+    return {};
   },
+  registerFactories() {
+    return {
+      crew: Factory.extend({
+        department: () =>
+          faker.random.arrayElement(['Stage Management', 'Lighting', 'Sound']),
+        name: () => faker.name.findName(),
+      }),
+    };
+  },
+  registerRoutes() {},
 };

@@ -8,7 +8,7 @@ const api = new (class {
   axiosInstance;
   constructor() {
     this.axiosInstance = axios.create({
-      baseURL: config.api.general_endpoint,
+      baseURL: config.api.endpoint,
       timeout: 5000,
       headers: {
         'Content-Type': 'application/json',

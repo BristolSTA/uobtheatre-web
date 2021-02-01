@@ -22,9 +22,9 @@
 
       <div class="mt-4 md:my-8 md:container md:flex md:space-x-4">
         <div class="mx-4 md:mx-0 md:w-1/2">
-          <div v-if="society.logo.url" class="flex justify-center p-2">
+          <div v-if="society.logo_image" class="flex justify-center p-2">
             <img
-              :src="society.logo.url"
+              :src="society.logo_image"
               :alt="`${society.name} logo`"
               class="w-32"
               ref="society_logo"
@@ -41,28 +41,26 @@
         <div class="w-full px-1 py-2 md:p-2 md:w-1/2 bg-sta-gray-dark">
           <h2 class="flex justify-center mb-2 text-2xl">Productions</h2>
           <table class="w-full table-auto">
-            <tbody>
-              <tr
-                class="odd:bg-sta-gray-light even:bg-sta-gray"
-                v-for="(production, index) in productions"
-                :key="index"
-              >
-                <td class="px-4 py-2 text-xl font-semibold">
-                  {{ production.name }}
-                </td>
-                <td class="px-4 text-right" v-if="production.isBookable">
-                  <div
-                    class="px-3 py-1.5 my-1 text-sm text-center font-semibold btn btn-orange"
-                  >
-                    Book Now
-                  </div>
-                  <!-- router link here -->
-                </td>
-                <td class="px-4 text-right" v-else>
-                  {{ production.end | dateFormat('MMMM y') }}
-                </td>
-              </tr>
-            </tbody>
+            <!-- wait for graphql integration -->
+            <tr class="bg-sta-gray-light">
+              <td class="px-4 py-2 text-xl font-semibold">Trash</td>
+              <td class="px-4 text-right">
+                <div
+                  class="px-3 py-1.5 my-1 text-sm text-center font-semibold btn btn-orange"
+                >
+                  Book Now
+                </div>
+                <!-- router link here -->
+              </td>
+            </tr>
+            <tr class="bg-sta-gray">
+              <td class="px-4 py-2 text-xl font-semibold">Another show</td>
+              <td class="px-4 text-right">November 2018</td>
+            </tr>
+            <tr class="bg-sta-gray-light">
+              <td class="px-4 py-2 text-xl font-semibold">Another one</td>
+              <td class="px-4 text-right">November 2017</td>
+            </tr>
           </table>
         </div>
       </div>
@@ -81,10 +79,8 @@
 </style>
 
 <script>
-import gql from 'graphql-tag';
-
-import { handle404Mixin } from '@/utils';
-import { createClient } from '@/vue-apollo';
+import { societyService } from '@/services';
+import { handle404Mixin, runPromiseWithLoading } from '@/utils';
 
 export default {
   name: 'scoiety-page',
@@ -101,52 +97,17 @@ export default {
       society: null,
     };
   },
-  beforeRouteEnter(to, from, next) {
-    const { apolloClient } = createClient();
-    apolloClient
-      .query({
-        query: gql`
-          query society($slug: String!) {
-            society(slug: $slug) {
-              name
-              description
-              slug
-              logo {
-                url
-              }
-              banner {
-                url
-              }
-              productions {
-                edges {
-                  node {
-                    name
-                    end
-                    isBookable
-                  }
-                }
-              }
-            }
-          }
-        `,
-        variables: {
-          slug: to.params.societySlug,
-        },
-      })
-      .then((result) => {
-        let society = result.data.society;
-        if (!society) return next({ name: '404' });
-        return next((vm) => {
-          vm.society = society;
-        });
-      });
+  created() {
+    runPromiseWithLoading(
+      societyService
+        .fetchSocietyBySlug(this.$route.params.societySlug)
+        .then((data) => (this.society = data))
+        .catch(this.handle404)
+    );
   },
   computed: {
     banner() {
-      return this.society ? `url("${this.society.banner.url}")` : null;
-    },
-    productions() {
-      return this.society.productions.edges.map((edge) => edge.node);
+      return this.society ? `url("${this.society.banner_image}")` : null;
     },
   },
 };

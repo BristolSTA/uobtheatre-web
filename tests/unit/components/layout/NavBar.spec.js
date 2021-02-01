@@ -10,8 +10,8 @@ import { mountWithRouterMock, RouterLinkStub } from '../../helpers';
 describe('NavBar', function () {
   let navbarComponent;
 
-  beforeEach(async () => {
-    navbarComponent = await mountWithRouterMock(NavBar, {
+  beforeEach(() => {
+    navbarComponent = mountWithRouterMock(NavBar, {
       store,
     });
   });

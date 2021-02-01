@@ -11,8 +11,5 @@ module.exports = {
     'src/playground.js',
     'src/fakeApi/*.*',
   ],
-  transform: {
-    '\\.(gql|graphql)$': 'jest-transform-graphql',
-  },
   collectCoverageFrom: ['src/**/*.{js,vue}'],
 };

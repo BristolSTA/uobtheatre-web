@@ -1,26 +1,30 @@
 import faker from 'faker';
-import { Factory } from 'miragejs';
-
-import { updateIfDoesntHave } from './utils';
+import { belongsTo,Factory, Model } from 'miragejs';
 
 export default {
-  registerFactories() {
+  registerModels() {
     return {
-      castMemberNode: Factory.extend({
-        name: () => faker.name.findName(),
-        role: () =>
-          faker.random.arrayElement(['Peter Pan', 'The Wizard', 'Gary']),
-        afterCreate(castNode, server) {
-          if (Math.random() > 0.5) {
-            updateIfDoesntHave(castNode, {
-              profilePicture: () =>
-                server.create('GrapheneImageFieldNode', {
-                  url: 'https://via.placeholder.com/100x100/FBD400',
-                }),
-            });
-          }
-        },
+      cast: Model.extend({
+        production: belongsTo(),
       }),
     };
   },
+  registerSerializers() {
+    return {};
+  },
+  registerFactories() {
+    return {
+      cast: Factory.extend({
+        name: () => faker.name.findName(),
+        profile_picture: () =>
+          faker.random.arrayElement([
+            'https://via.placeholder.com/100x100/FBD400',
+            null,
+          ]),
+        role: () =>
+          faker.random.arrayElement(['Peter Pan', 'The Wizard', 'Gary']),
+      }),
+    };
+  },
+  registerRoutes() {},
 };

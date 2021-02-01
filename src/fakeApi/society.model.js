@@ -1,39 +1,37 @@
 import faker from 'faker';
-import { Factory } from 'miragejs';
+import { Factory, Model } from 'miragejs';
 
-import { updateIfDoesntHave } from './utils';
+import { NotFoundResponse } from './utils';
+
 export default {
+  registerModels() {
+    return {
+      society: Model,
+    };
+  },
+  registerSerializers() {
+    return {};
+  },
   registerFactories() {
     return {
-      societyNode: Factory.extend({
+      society: Factory.extend({
         name: () => faker.name.findName(),
-        description: () => faker.lorem.paragraphs(1),
         slug() {
           return this.name.toLowerCase().replace(/ /g, '-');
         },
-        afterCreate(node, server) {
-          updateIfDoesntHave(node, {
-            logo: () => {
-              return server.create('GrapheneImageFieldNode', {
-                url: 'https://via.placeholder.com/500x500/0000FF',
-              });
-            },
-            banner: () => {
-              return server.create('GrapheneImageFieldNode', {
-                url: 'https://via.placeholder.com/1200x480',
-              });
-            },
-          });
-        },
+        logo_image: 'https://via.placeholder.com/500x500/0000FF',
+        banner_image: 'https://via.placeholder.com/1200x480',
+        description: () => faker.lorem.paragraphs(1),
       }),
     };
   },
-  registerGQLQueries() {
-    return `
-      society(
-        id: ID
-        slug: String
-      ): SocietyNode
-    `;
+  registerRoutes() {
+    this.resource('societies');
+    this.get('societies/:slug', function (schema, request) {
+      return (
+        schema.societies.findBy({ slug: request.params.slug }) ??
+        NotFoundResponse()
+      );
+    });
   },
 };
