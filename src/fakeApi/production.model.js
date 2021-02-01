@@ -1,97 +1,143 @@
+import { mirageGraphQLFieldResolver } from '@miragejs/graphql';
 import faker from 'faker';
 import { DateTime } from 'luxon';
-import { belongsTo, Factory, hasMany,Model } from 'miragejs';
+import { Factory, trait } from 'miragejs';
 
-import {
-  NotFoundResponse,
-  paginatedResponse,
-  RelationshipSerializer,
-  updateIfDoesntHave,
-} from './utils';
+import { updateIfDoesntHave } from './utils';
 
 export default {
-  registerModels() {
-    return {
-      production: Model.extend({
-        society: belongsTo('society'),
-        performances: hasMany(),
-        cast: hasMany('cast'),
-        crew: hasMany('crew'),
-        productionTeam: hasMany('production_team'),
-      }),
-    };
-  },
-  registerSerializers() {
-    return {
-      production: RelationshipSerializer([
-        'society',
-        'performances',
-        'cast',
-        'crew',
-        'productionTeam',
-      ]),
-    };
-  },
   registerFactories() {
     return {
-      production: Factory.extend({
+      productionNode: Factory.extend({
         name: () => faker.random.words(3),
         subtitle: null,
         slug() {
           return this.name.toLowerCase().replace(/ /g, '-');
         },
-        poster_image: 'https://via.placeholder.com/400x566',
-        featured_image: 'https://via.placeholder.com/1920x960',
-        cover_image: 'https://via.placeholder.com/1800x1000',
-        age_rating: null,
-        facebook_event: 'https://facebook.com',
+        ageRating: null,
+        facebookEvent: 'https://facebook.com',
         description: () => faker.lorem.paragraphs(3),
-        warnings: ['Strobe Lighting', 'Nudity'],
-        start_date: () => DateTime.local(),
-        end_date: () =>
+        start: () => DateTime.local(),
+        end: () =>
           DateTime.local().plus({
             day: faker.random.number({ min: 1, max: 3 }),
           }),
-        min_ticket_price: () =>
-          faker.random.number({ min: 1, max: 10 }).toFixed(2),
+        minSeatPrice: () => faker.random.number({ min: 1, max: 10 }).toFixed(2),
+
+        withCoverImage: trait({
+          afterCreate(production, server) {
+            production.update({
+              coverImage: server.create('GrapheneImageFieldNode', {
+                url: 'https://via.placeholder.com/1800x1000',
+              }),
+            });
+          },
+        }),
+
         afterCreate(production, server) {
           updateIfDoesntHave(production, {
+            posterImage: () => {
+              return server.create('GrapheneImageFieldNode', {
+                url: 'https://via.placeholder.com/400x566',
+              });
+            },
+            featuredImage: () => {
+              return server.create('GrapheneImageFieldNode', {
+                url: 'https://via.placeholder.com/1920x960',
+              });
+            },
             cast: () => {
-              return server.createList('cast', 30);
+              return server.createList('CastMemberNode', 30);
             },
             crew: () => {
-              return server.createList('crew', 4);
+              return server.createList('CrewMemberNode', 4);
             },
             productionTeam: () => {
-              return server.createList('productionTeam', 3);
+              return server.createList('ProductionTeamMemberNode', 3);
             },
             society: () => {
-              return server.create('society');
+              return server.create('SocietyNode');
+            },
+            warnings: () => {
+              return [
+                server.create('warningNode', {
+                  warning: 'Strobe Lighting',
+                }),
+                server.create('warningNode', {
+                  warning: 'Nudity',
+                }),
+              ];
             },
           });
         },
       }),
     };
   },
-  registerRoutes() {
-    this.resource('productions', { except: ['index', 'show'] });
+  registerGQLTypes() {
+    return `
+    type ProductionNode implements Node {
+      id: ID!
+      name: String!
+      subtitle: String
+      description: String
+      society: SocietyNode
+      posterImage: GrapheneImageFieldNode
+      featuredImage: GrapheneImageFieldNode
+      coverImage: GrapheneImageFieldNode
+      ageRating: Int
+      facebookEvent: String
+      warnings: [WarningNode!]
+      slug: String!
+      cast: [CastMemberNode!]
+      productionTeam: [ProductionTeamMemberNode!]
+      crew: [CrewMemberNode!]
+      performances(offset: Int, before: String, after: String, first: Int, last: Int, id: ID, start: DateTime, start_Year_Gt: DateTime): PerformanceNodeConnection!
+      start: DateTime
+      end: DateTime
+      minSeatPrice: Int
+    }
+    `;
+  },
+  registerGQLQueries() {
+    return `
+      production(id: ID
+        slug: String): ProductionNode
+      productions(
+        offset: Int
+        before: String
+        after: String
+        first: Int
+        last: Int
+        id: ID
+        slug: String
+        orderBy: String
+        future: Boolean
+      ): ProductionNodeConnection
+  `;
+  },
+  registerGQLQueryResolvers() {
+    return {
+      productions(obj, args, context, info) {
+        const { orderBy } = args;
 
-    // Upcoming Productions
-    this.get('productions/upcoming_productions', function (schema) {
-      return paginatedResponse(this.serialize(schema.productions.all()));
-    });
+        delete args.orderBy;
 
-    // All productions paginated endpoint
-    this.get('productions', function (schema) {
-      return paginatedResponse(this.serialize(schema.productions.all()));
-    });
+        const records = mirageGraphQLFieldResolver(obj, args, context, info);
 
-    // Production by slug
-    this.get('productions/:slug', function (schema, request) {
-      return (
-        schema.productions.findBy({ slug: request.params.slug }) ??
-        NotFoundResponse()
-      );
-    });
+        if (orderBy) {
+          const orderByProp = orderBy.substring(1);
+          const orderType = orderBy.charAt(0);
+          records.edges.sort((edge1, edge2) => {
+            if (edge1.node[orderByProp] < edge2.node[orderByProp])
+              return orderType == '+' ? -1 : 1;
+            if (edge1.node[orderByProp] > edge2.node[orderByProp])
+              return orderType == '+' ? 1 : -1;
+            return 0;
+          });
+        }
+
+        return records;
+      },
+    };
   },
 };

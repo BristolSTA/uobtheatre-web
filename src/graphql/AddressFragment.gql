@@ -1,0 +1,9 @@
+fragment AddressFields on AddressNode {
+  buildingNumber
+  buildingName
+  street
+  city
+  postcode
+  latitude
+  longitude
+}
