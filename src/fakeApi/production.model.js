@@ -75,8 +75,6 @@ export default {
   },
   registerGQLQueries() {
     return `
-      production(id: ID
-        slug: String): ProductionNode
       productions(
         offset: Int
         before: String

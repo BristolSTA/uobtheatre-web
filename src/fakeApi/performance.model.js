@@ -45,14 +45,19 @@ export default {
         doorsOpen: DateTime
         start: DateTime
         end: DateTime
+        description: String
         extraInformation: String
+        disabled: Boolean!
+        seatGroups(offset: Int, before: String, after: String, first: Int, last: Int): SeatGroupNodeConnection!
         capacity: Int
         capacityRemaining: Int
+        ticketOptions: [PerformanceSeatGroupNode]
+        minSeatPrice: Int
+        
         durationMins: Int
         isInperson: Boolean!
         isOnline: Boolean!
         soldOut: Boolean!
-        ticketOptions: [PerformanceSeatGroupNode]
       }
     `;
   },
