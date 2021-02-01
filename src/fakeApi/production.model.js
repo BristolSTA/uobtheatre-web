@@ -73,31 +73,6 @@ export default {
       }),
     };
   },
-  registerGQLTypes() {
-    return `
-    type ProductionNode implements Node {
-      id: ID!
-      name: String!
-      subtitle: String
-      description: String
-      society: SocietyNode
-      posterImage: GrapheneImageFieldNode
-      featuredImage: GrapheneImageFieldNode
-      coverImage: GrapheneImageFieldNode
-      ageRating: Int
-      facebookEvent: String
-      warnings: [WarningNode!]
-      slug: String!
-      cast: [CastMemberNode!]
-      productionTeam: [ProductionTeamMemberNode!]
-      crew: [CrewMemberNode!]
-      performances(offset: Int, before: String, after: String, first: Int, last: Int, id: ID, start: DateTime, start_Year_Gt: DateTime): PerformanceNodeConnection!
-      start: DateTime
-      end: DateTime
-      minSeatPrice: Int
-    }
-    `;
-  },
   registerGQLQueries() {
     return `
       production(id: ID
