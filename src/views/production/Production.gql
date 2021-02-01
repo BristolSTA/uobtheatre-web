@@ -43,6 +43,7 @@ query productionBySlug($slug: String!) {
         }
       }
     }
+    isBookable
     crew {
       name
       role {
