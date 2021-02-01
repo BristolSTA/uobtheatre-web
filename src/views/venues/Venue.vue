@@ -1,5 +1,12 @@
 <template>
   <div class="h-full text-white bg-sta-gray">
+    <div
+      v-if="!venue"
+      class="justify-center py-20 text-xl font-semibold text-center"
+    >
+      Loading Venue...
+    </div>
+    <template v-else>
       <h1 class="container pt-2 text-left text-h1">The {{ venue.name }}</h1>
       <div class="flex flex-wrap items-center justify-center mt-2 lg:mb-8">
         <div
@@ -66,6 +73,7 @@
           <div class="w-full" ref="venue-map"></div>
         </div>
       </div>
+    </template>
   </div>
 </template>
 
@@ -95,7 +103,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     const { apolloClient } = createClient();
-    apolloClient
+    return apolloClient
       .query({
         query: gql`
           query venue($slug: String!) {
@@ -120,14 +128,12 @@ export default {
       .then((result) => {
         let venue = result.data.venue;
         if (!venue) return next({ name: '404' });
-        return next((vm) => {
+        return next(async (vm) => {
           vm.venue = venue;
+          await vm.$nextTick();
+          vm.createMap();
         });
       });
-  },
-  async mounted() {
-    await this.$nextTick();
-    this.createMap();
   },
   computed: {
     googleMapsLink() {

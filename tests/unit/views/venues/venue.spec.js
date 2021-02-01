@@ -1,16 +1,15 @@
-import { mount } from '@vue/test-utils';
 import { expect } from 'chai';
 
 import { makeServer } from '@/fakeApi';
 import Venue from '@/views/venues/Venue.vue';
 
-import { mountOptionsWithApollo, waitFor } from '../../helpers';
+import { mountWithRouterMock, waitFor } from '../../helpers';
 
 describe('Venue page', function () {
   let venuePageComponent;
   let server;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     server = makeServer({ environment: 'test' });
 
     // Create a venue
@@ -34,17 +33,14 @@ describe('Venue page', function () {
       }),
     });
 
-    venuePageComponent = mount(
+    venuePageComponent = await mountWithRouterMock(
       Venue,
-      mountOptionsWithApollo({
-        mocks: {
-          $route: {
-            params: {
-              venueSlug: 'anson-theatre',
-            },
-          },
+      {},
+      {
+        params: {
+          venueSlug: 'anson-theatre',
         },
-      })
+      }
     );
   });
 
@@ -52,12 +48,7 @@ describe('Venue page', function () {
     server.shutdown();
   });
 
-  it('starts by showing loading screen', () => {
-    expect(venuePageComponent.text()).to.contain('Loading Venue...');
-  });
-
   it('fetches the venue', async () => {
-    await waitFor(() => venuePageComponent.vm.venue);
     expect(venuePageComponent.vm.venue.name).to.eq('Anson Theatre');
 
     expect(venuePageComponent.text()).to.contain('Anson Theatre');
@@ -95,7 +86,6 @@ describe('Venue page', function () {
   });
 
   it('checks map doesnt exist with invalid lat or long', async () => {
-    await waitFor(() => venuePageComponent.vm.venue);
     await venuePageComponent.setData({
       venue: { address: { latitude: null } },
     });
@@ -105,23 +95,20 @@ describe('Venue page', function () {
   });
 
   it('handles invalid venue', async () => {
-    let fakeRouterPush = jest.fn();
-    venuePageComponent = mount(
+    let fakeRouterNext = jest.fn();
+    venuePageComponent = await mountWithRouterMock(
       Venue,
-      mountOptionsWithApollo({
-        mocks: {
-          $route: {
-            params: {
-              venueSlug: 'anson-theatre-allowed',
-            },
-          },
-          $router: {
-            push: fakeRouterPush,
-          },
+      {},
+      {
+        params: {
+          venueSlug: 'anson-theatre-allowed',
         },
-      })
+      },
+      null,
+      fakeRouterNext
     );
-    await waitFor(() => fakeRouterPush.mock.calls.length);
-    expect(fakeRouterPush.mock.calls.length).to.eq(1);
+    await waitFor(() => fakeRouterNext.mock.calls.length);
+    expect(fakeRouterNext.mock.calls.length).to.eq(1);
+    expect(fakeRouterNext.mock.calls[0][0]).to.include({ name: '404' });
   });
 });
