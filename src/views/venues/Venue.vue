@@ -1,12 +1,5 @@
 <template>
   <div class="h-full text-white bg-sta-gray">
-    <div
-      v-if="!venue"
-      class="justify-center py-20 text-xl font-semibold text-center"
-    >
-      Loading Venue...
-    </div>
-    <template v-else>
       <h1 class="container pt-2 text-left text-h1">The {{ venue.name }}</h1>
       <div class="flex flex-wrap items-center justify-center mt-2 lg:mb-8">
         <div
@@ -73,7 +66,6 @@
           <div class="w-full" ref="venue-map"></div>
         </div>
       </div>
-    </template>
   </div>
 </template>
 
@@ -132,40 +124,6 @@ export default {
           vm.venue = venue;
         });
       });
-  },
-  apollo1: {
-    venue: {
-      query: gql`
-        query venue($slug: String!) {
-          venue(slug: $slug) {
-            name
-            internalCapacity
-            description
-            image {
-              url
-            }
-            address {
-              ...AddressFields
-            }
-          }
-        }
-        ${AddressFragment}
-      `,
-      manual: true,
-      result(result) {
-        this.venue = result.data.venue;
-        this.check404(this.venue);
-        if (this.venue)
-          this.$nextTick(() => {
-            this.createMap(this.venue);
-          });
-      },
-      variables() {
-        return {
-          slug: this.$route.params.venueSlug,
-        };
-      },
-    },
   },
   async mounted() {
     await this.$nextTick();
