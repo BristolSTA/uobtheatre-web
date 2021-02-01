@@ -23,7 +23,7 @@ export default {
     };
   },
   registerRoutes() {
-    this.post('auth/login/', function (schema, request) {
+    this.post('api/v1/auth/login/', function (schema, request) {
       let user = schema.users.findBy({
         email: JSON.parse(request.requestBody).email,
       });

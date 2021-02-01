@@ -1,5 +1,5 @@
 query upcomingProductions {
-  productions(first: 5, orderBy: "+start") {
+  productions(first: 5, orderBy: "start") {
     edges {
       node {
         id

@@ -82,7 +82,7 @@ import gql from 'graphql-tag';
 import L from 'leaflet';
 
 import IconListItem from '@/components/ui/IconListItem.vue';
-import AddressFragment from '@/graphql/AddressFragment.gql';
+import AddressFragment from '@/graphql/fragments/AddressFragment.gql';
 import { handle404Mixin } from '@/utils';
 import { createClient } from '@/vue-apollo';
 

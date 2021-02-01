@@ -7,14 +7,14 @@
 
 let api_general_endpoint = process.env.VUE_APP_API_BASE
   ? process.env.VUE_APP_API_BASE
-  : '/api';
+  : '/fakeapi';
 
 export default {
   application: {
     name: process.env.VUE_APP_NAME ?? 'uobtheatre',
   },
   api: {
-    general_endpoint: api_general_endpoint,
+    general_endpoint: api_general_endpoint + '/api/v1',
     graphql_endpoint: api_general_endpoint + '/graphql',
   },
   auth: {
