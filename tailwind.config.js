@@ -46,9 +46,6 @@ module.exports = {
         h2: '2rem',
         h3: '1rem',
       },
-      padding: {
-        0.5: '0.125rem',
-      },
     },
   },
   variants: {
