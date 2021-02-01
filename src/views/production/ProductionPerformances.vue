@@ -3,14 +3,16 @@
     <div class="text-center"><h1 class="text-h2">Dates and Times</h1></div>
     <div
       class="my-20 text-xl text-center"
-      v-if="!production.performances.length"
+      v-if="!production.performances.edges.length"
     >
       No Upcoming Performances
     </div>
     <div v-else class="flex flex-wrap justify-center">
       <div
         class="w-full performance md:w-1/2 lg:w-1/3 2xl:w-1/4"
-        v-for="performance in production.performances"
+        v-for="performance in production.performances.edges.map(
+          (edge) => edge.node
+        )"
         :key="performance.id"
       >
         <div
@@ -26,7 +28,7 @@
           </h2>
           <div>
             <router-link
-              v-if="performance.is_inperson"
+              v-if="performance.isInperson"
               :to="{
                 name: 'venue',
                 params: { venueSlug: performance.venue.slug },
@@ -34,10 +36,10 @@
             >
               {{ performance.venue.name }}
             </router-link>
-            <template v-if="performance.is_online && performance.is_inperson"
+            <template v-if="performance.isOnline && performance.isInperson"
               >and
             </template>
-            <template v-if="performance.is_online">Online</template>
+            <template v-if="performance.isOnline">Online</template>
           </div>
           <div>Starting at {{ performance.start | dateFormat('T') }}</div>
           <div class="text-sm font-semibold">
@@ -74,10 +76,10 @@ export default {
   },
   methods: {
     performanceDisabled(performance) {
-      return performance.disabled || performance.sold_out;
+      return performance.soldOut;
     },
     disabledReason(performance) {
-      if (performance.sold_out) return 'SOLD OUT';
+      if (performance.soldOut) return 'SOLD OUT';
       return 'Unavailable';
     },
   },

@@ -18,7 +18,10 @@ let updateIfDoesntHave = function (model, keyValues, value) {
   }
   let updateObj = {};
   Object.keys(keyValues).forEach((key) => {
-    if (!model[key] || model[key].length == 0) {
+    let shouldGenerateIfCan =
+      !model.__dont_factory || !model.__dont_factory.includes(key);
+    let attributeIsNotFilled = !model[key] || model[key].length == 0;
+    if (shouldGenerateIfCan && attributeIsNotFilled) {
       value = keyValues[key];
       if (typeof value === 'function') value = value();
       updateObj[key] = value;
@@ -29,7 +32,14 @@ let updateIfDoesntHave = function (model, keyValues, value) {
 
 let RelationshipSerializer = (relationships) =>
   DefaultSerializer.extend({
-    include: relationships,
+    include:
+      relationships === true
+        ? function () {
+            return this.primaryResource
+              ? Object.keys(this.primaryResource.associations)
+              : [];
+          }
+        : relationships,
   });
 
 let DefaultSerializer = Serializer.extend({
@@ -56,8 +66,26 @@ let ValidationErrorResponse = (
   return new Response(errorCode, {}, data);
 };
 
+let graphQLOrderBy = (records, args) => {
+  const { orderBy } = args;
+
+  if (orderBy) {
+    const orderByProp = orderBy.substring(1);
+    const orderType = orderBy.charAt(0);
+    records.edges.sort((edge1, edge2) => {
+      if (edge1.node[orderByProp] < edge2.node[orderByProp])
+        return orderType == '-' ? 1 : -1;
+      if (edge1.node[orderByProp] > edge2.node[orderByProp])
+        return orderType == '-' ? -1 : 1;
+      return 0;
+    });
+  }
+  return records;
+};
+
 export {
   DefaultSerializer,
+  graphQLOrderBy,
   NotFoundResponse,
   paginatedResponse,
   RelationshipSerializer,
