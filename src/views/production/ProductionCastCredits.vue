@@ -26,7 +26,7 @@
       >
         <img
           class="inline-block max-h-80"
-          :src="production.poster_image"
+          :src="production.posterImage.url"
           alt="show poster"
           ref="poster_image"
         />
@@ -39,14 +39,18 @@
       >
         <h3 class="text-xl font-semibold uppercase">Show Information</h3>
         <p v-if="medium"><strong>Medium:</strong> {{ medium }}</p>
-        <p v-if="production.age_rating" ref="age_rating">
-          Ages {{ production.age_rating }}+
+        <p v-if="production.ageRating" ref="age_rating">
+          Ages {{ production.ageRating }}+
         </p>
-        <div v-if="production.warnings" class="p-3 bg-sta-rouge" ref="warnings">
+        <div
+          v-if="production.warnings.length"
+          class="p-3 bg-sta-rouge"
+          ref="warnings"
+        >
           <span class="text-xl font-semibold uppercase">Audience Warnings</span>
           <ul class="list-disc list-inside">
             <li v-for="(warning, index) in production.warnings" :key="index">
-              {{ warning }}
+              {{ warning.warning }}
             </li>
           </ul>
         </div>
@@ -54,8 +58,8 @@
           A production by <strong>{{ production.society.name }}</strong>
         </p>
         <a
-          v-if="production.facebook_event"
-          :href="production.facebook_event"
+          v-if="production.facebookEvent"
+          :href="production.facebookEvent"
           class="font-semibold uppercase text-sta-green"
           target="_blank"
           ref="facebook_link"
@@ -108,7 +112,7 @@
               class="crew-item"
             >
               <h4 class="font-semibold uppercase">
-                {{ group[0].department }}
+                {{ group[0].role.department }}
               </h4>
               <p v-for="(member, gIndex) in group" :key="gIndex">
                 {{ member.name }}
@@ -125,10 +129,10 @@
             :key="index"
             class="flex items-center w-full px-2 sm:justify-center sm:w-1/3 md:w-1/4 xl:w-1/5 production-cast-member"
           >
-            <div v-if="member.profile_picture" class="flex-none w-20">
+            <div v-if="member.profilePicture" class="flex-none w-20">
               <img
                 class="rounded-full"
-                :src="member.profile_picture"
+                :src="member.profilePicture.url"
                 alt="profile image"
               />
             </div>
@@ -193,7 +197,7 @@ export default {
       let i = 0;
       return lodash
         .chain(this.production.crew)
-        .groupBy('department')
+        .groupBy('role.department')
         .groupBy(() => {
           let res = Math.floor(i % 2);
           i++;
@@ -202,23 +206,23 @@ export default {
         .value();
     },
     sortedCast() {
-      return lodash.sortBy(this.production.cast, 'profile_picture');
+      return lodash.sortBy(this.production.cast, 'profilePicture');
     },
     medium() {
-      if (!this.production.performances.length) return null;
+      if (!this.production.performances.edges.length) return null;
       if (this.hasOnlinePerformances && this.hasInPersonPerformances)
         return 'In Person + Online';
       if (this.hasOnlinePerformances) return 'Online Only';
       return 'In Person Only';
     },
     hasOnlinePerformances() {
-      return !!this.production.performances.find(
-        (performance) => performance.is_online
+      return !!this.production.performances.edges.find(
+        (edge) => edge.node.isOnline
       );
     },
     hasInPersonPerformances() {
-      return !!this.production.performances.find(
-        (performance) => performance.is_inperson
+      return !!this.production.performances.edges.find(
+        (edge) => edge.node.isInperson
       );
     },
   },

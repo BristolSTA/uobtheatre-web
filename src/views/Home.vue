@@ -18,8 +18,8 @@
             <div class="text-2xl">{{ featuredProduction.society.name }}</div>
             <div class="text-h1">{{ featuredProduction.name }}</div>
             <div class="text-2xl">
-              {{ featuredProduction.start_date | dateFormat('d MMMM') }} -
-              {{ featuredProduction.end_date | dateFormat('d MMMM y') }}
+              {{ featuredProduction.start | dateFormat('d MMMM') }} -
+              {{ featuredProduction.end | dateFormat('d MMMM y') }}
             </div>
           </router-link>
           <template v-else>
@@ -51,7 +51,7 @@
             }"
           >
             <img
-              :src="production.featured_image"
+              :src="production.featuredImage.url"
               :alt="`${production.name} feature image`"
               class="inline-block"
               style="max-height: 300px"
@@ -73,13 +73,7 @@
           </router-link>
           <span v-if="production.subtitle">{{ production.subtitle }}</span>
           <p class="font-semibold text-sta-orange">
-            {{
-              displayStartEnd(
-                production.start_date,
-                production.end_date,
-                'd MMMM'
-              )
-            }}
+            {{ displayStartEnd(production.start, production.end, 'd MMMM') }}
           </p>
           <p class="mt-2">
             {{ production.description | truncate(230) }}
@@ -101,7 +95,7 @@
       >
         <div class="w-full">
           <h2 class="text-h2">There are currently no upcoming productions</h2>
-          <p>Please be sure to check back soon for more original content</p>
+          <p>Please be sure to check back soon!</p>
         </div>
       </div>
       <div
@@ -132,8 +126,7 @@
 <script>
 import lo from 'lodash';
 
-import { productionService } from '@/services';
-import { displayStartEnd, runPromiseWithLoading } from '@/utils';
+import { displayStartEnd } from '@/utils';
 
 export default {
   name: 'Home',
@@ -151,19 +144,16 @@ export default {
       titleTemplate: null,
     };
   },
-  beforeRouteEnter(to, from, next) {
-    return runPromiseWithLoading(
-      productionService.fetchUpcomingProductions().then((results) => {
-        next((vm) => {
-          vm.upcomingProductions = results;
-        });
-      })
-    );
+  apollo: {
+    upcomingProductions: {
+      query: require('./HomeUpcomingProductions.gql'),
+      update: (data) => data.productions.edges.map((edge) => edge.node),
+    },
   },
   computed: {
     featuredProduction() {
-      return this.upcomingProductions.find((production) => {
-        return !!production.cover_image;
+      return this.upcomingProductionsToShow.find((production) => {
+        return !!production.coverImage;
       });
     },
     upcomingProductionsToShow() {
@@ -171,7 +161,7 @@ export default {
     },
     splashBackground() {
       return this.featuredProduction
-        ? `url("${this.featuredProduction.cover_image}")`
+        ? `url("${this.featuredProduction.coverImage.url}")`
         : null;
     },
   },

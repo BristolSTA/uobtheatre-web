@@ -1,24 +1,22 @@
 import faker from 'faker';
-import { Factory,Model } from 'miragejs';
+import { Factory } from 'miragejs';
 
+import { updateIfDoesntHave } from './utils';
 export default {
-  registerModels() {
-    return {
-      society: Model,
-    };
-  },
-  registerSerializers() {
-    return {};
-  },
   registerFactories() {
     return {
-      society: Factory.extend({
+      societyNode: Factory.extend({
         name: () => faker.name.findName(),
-        logo_image: 'https://via.placeholder.com/500x500/0000FF',
+        afterCreate(node, server) {
+          updateIfDoesntHave(node, {
+            logo: () => {
+              return server.create('GrapheneImageFieldNode', {
+                url: 'https://via.placeholder.com/500x500/0000FF',
+              });
+            },
+          });
+        },
       }),
     };
-  },
-  registerRoutes() {
-    this.resource('societies');
   },
 };

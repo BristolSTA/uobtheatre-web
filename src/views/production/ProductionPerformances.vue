@@ -3,13 +3,16 @@
     <div class="text-center"><h1 class="text-h2">Dates and Times</h1></div>
     <div
       class="my-20 text-xl text-center"
-      v-if="!production.performances.length"
+      v-if="!production.performances.edges.length"
     >
       No Upcoming Performances
     </div>
     <div v-else class="flex flex-wrap justify-center lg:flex-nowrap">
       <div
-        v-for="performance in production.performances"
+        class="w-full performance md:w-1/2 lg:w-1/3 2xl:w-1/4"
+        v-for="performance in production.performances.edges.map(
+          (edge) => edge.node
+        )"
         :key="performance.id"
         class="w-full p-4 md:w-1/2 lg:flex-1"
       >

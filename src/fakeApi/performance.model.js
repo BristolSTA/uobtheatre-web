@@ -1,34 +1,13 @@
 import faker from 'faker';
 import { DateTime } from 'luxon';
-import { belongsTo, Factory, hasMany, Model } from 'miragejs';
+import { Factory } from 'miragejs';
 
-import {
-  NotFoundResponse,
-  RelationshipSerializer,
-  updateIfDoesntHave,
-} from './utils';
+import { updateIfDoesntHave } from './utils';
 
 export default {
-  registerModels() {
-    return {
-      performance: Model.extend({
-        venue: belongsTo(),
-        production: belongsTo('production'),
-        seat_groups: hasMany('seat_group'),
-        concession_types: hasMany('concession_type'),
-        discounts: hasMany('discount'),
-        misc_costs: hasMany('miscCost'),
-      }),
-    };
-  },
-  registerSerializers() {
-    return {
-      performance: RelationshipSerializer(['venue']),
-    };
-  },
   registerFactories() {
     return {
-      performance: Factory.extend({
+      performanceNode: Factory.extend({
         start() {
           return DateTime.local().plus({
             days: faker.random.number({ min: 1, max: 3 }),
@@ -46,21 +25,22 @@ export default {
           });
         },
         description: faker.lorem.words(4),
-        sold_out: () => faker.random.arrayElement([true, false]),
+        soldOut: () => faker.random.arrayElement([true, false]),
         disabled: () => false,
-        is_online: () => faker.random.arrayElement([true, false]),
-        is_inperson: () => faker.random.arrayElement([true, false]),
-        duration_mins() {
+        isOnline: () => faker.random.arrayElement([true, false]),
+        isInperson: () => faker.random.arrayElement([true, false]),
+        durationMins() {
           return Math.round(
             (DateTime.fromISO(this.end) - DateTime.fromISO(this.start)) /
               (1000 * 60)
           );
         },
+        minSeatPrice: () => faker.random.number({ min: 100, max: 100 }),
 
         afterCreate(performance, server) {
           updateIfDoesntHave(performance, {
             venue: () => {
-              return server.create('venue');
+              return server.create('VenueNode');
             },
 
             seat_groups: () => {
@@ -86,7 +66,7 @@ export default {
           request.params.performance_id
         );
         if (!performance) {
-          return NotFoundResponse();
+          // return NotFoundResponse();
         }
 
         let seatGroups = this.serialize(performance.seat_groups);
@@ -116,11 +96,36 @@ export default {
           request.params.performance_id
         );
         if (!performance) {
-          return NotFoundResponse();
+          // return NotFoundResponse();
         }
 
         return performance.discounts;
       }
     );
+  },
+  registerGQLTypes() {
+    return `
+      type PerformanceNode implements Node {
+        id: ID!
+        production: ProductionNode!
+        venue: VenueNode
+        doorsOpen: DateTime
+        start: DateTime
+        end: DateTime
+        description: String
+        extraInformation: String
+        disabled: Boolean!
+        seatGroups(offset: Int, before: String, after: String, first: Int, last: Int): SeatGroupNodeConnection!
+        capacity: Int
+        capacityRemaining: Int
+        ticketOptions: [PerformanceSeatGroupNode]
+        minSeatPrice: Int
+        
+        durationMins: Int
+        isInperson: Boolean!
+        isOnline: Boolean!
+        soldOut: Boolean!
+      }
+    `;
   },
 };

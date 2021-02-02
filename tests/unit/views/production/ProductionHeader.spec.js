@@ -4,6 +4,10 @@ import { expect } from 'chai';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
 import ProductionHeader from '@/views/production/ProductionHeader.vue';
 
+import FakePerformance from '../../fixtures/FakePerformance.js';
+import FakeProduction from '../../fixtures/FakeProduction.js';
+import { fixTextSpacing } from '../../helpers.js';
+
 describe('ProductionHeader', function () {
   let headerContainer;
   let fakeProduction = {

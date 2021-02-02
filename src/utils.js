@@ -57,6 +57,12 @@ let handle404Mixin = {
     handle404(err) {
       handle404(err, this.$router.push);
     },
+
+    check404(objectToCheck) {
+      if (objectToCheck == null) {
+        this.$router.push({ name: '404' });
+      }
+    },
   },
 };
 

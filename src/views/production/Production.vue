@@ -47,5 +47,18 @@ export default {
       required: true,
     },
   },
+  apollo: {
+    production: {
+      query: require('./Production.gql'),
+      variables() {
+        return {
+          slug: this.$route.params.productionSlug,
+        };
+      },
+      result(result) {
+        this.check404(result.data.production);
+      },
+    },
+  },
 };
 </script>

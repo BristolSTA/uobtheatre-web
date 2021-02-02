@@ -17,7 +17,7 @@
         <div class="w-full h-full max-w-xl lg:w-2/3 md:m-4">
           <img
             class="w-full p-3 md:p-0"
-            :src="venue.image"
+            :src="venue.image.url"
             :alt="`${venue.name} image`"
             ref="image"
           />
@@ -33,18 +33,18 @@
               <tbody>
                 <tr>
                   <th class="pb-2 pr-2 align-top">Capacity:</th>
-                  <td class="align-top">Max {{ venue.internal_capacity }}</td>
+                  <td class="align-top">Max {{ venue.internalCapacity }}</td>
                 </tr>
                 <tr>
                   <th class="pr-2 align-top">Address:</th>
                   <td class="align-top">
                     <div ref="address">
-                      <p v-if="venue.address.building_name">
-                        {{ venue.address.building_name }}
+                      <p v-if="venue.address.buildingName">
+                        {{ venue.address.buildingName }}
                       </p>
                       <p>
-                        <template v-if="venue.address.building_number">
-                          {{ venue.address.building_number }}
+                        <template v-if="venue.address.buildingNumber">
+                          {{ venue.address.buildingNumber }}
                         </template>
                         {{ venue.address.street }}
                       </p>
@@ -69,7 +69,7 @@
           v-if="venue.address.latitude && venue.address.longitude"
           class="flex justify-center w-full lg:w-3/5 h-96 lg:mb-4"
         >
-          <div id="venueMap" ref="venue-map" class="w-full"></div>
+          <div class="w-full" ref="venue-map"></div>
         </div>
       </div>
     </template>
@@ -77,11 +77,13 @@
 </template>
 
 <script>
+import gql from 'graphql-tag';
 import L from 'leaflet';
 
 import IconListItem from '@/components/ui/IconListItem.vue';
-import { venueService } from '@/services';
-import { handle404Mixin, runPromiseWithLoading } from '@/utils';
+import AddressFragment from '@/graphql/fragments/AddressFragment.gql';
+import { handle404Mixin } from '@/utils';
+import { createClient } from '@/vue-apollo';
 
 export default {
   components: { IconListItem },
@@ -98,18 +100,39 @@ export default {
       venue: null,
     };
   },
-  created() {
-    runPromiseWithLoading(
-      venueService
-        .fetchVenueBySlug(this.$route.params.venueSlug)
-        .then((data) => {
-          this.venue = data;
-          this.$nextTick(() => {
-            this.createMap(this.venue);
-          });
-        })
-        .catch(this.handle404)
-    );
+  beforeRouteEnter(to, from, next) {
+    const { apolloClient } = createClient();
+    return apolloClient
+      .query({
+        query: gql`
+          query venue($slug: String!) {
+            venue(slug: $slug) {
+              name
+              internalCapacity
+              description
+              image {
+                url
+              }
+              address {
+                ...AddressFields
+              }
+            }
+          }
+          ${AddressFragment}
+        `,
+        variables: {
+          slug: to.params.venueSlug,
+        },
+      })
+      .then((result) => {
+        let venue = result.data.venue;
+        if (!venue) return next({ name: '404' });
+        return next(async (vm) => {
+          vm.venue = venue;
+          await vm.$nextTick();
+          vm.createMap();
+        });
+      });
   },
   computed: {
     googleMapsLink() {
@@ -117,7 +140,8 @@ export default {
     },
   },
   methods: {
-    async createMap(venue) {
+    createMap() {
+      let venue = this.venue;
       if (!venue.address.latitude || !venue.address.longitude) return;
       const map = L.map(this.$refs['venue-map']).setView(
         [venue.address.latitude, venue.address.longitude],

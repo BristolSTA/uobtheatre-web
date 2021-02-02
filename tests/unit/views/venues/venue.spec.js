@@ -1,61 +1,55 @@
-import { mount } from '@vue/test-utils';
 import { expect } from 'chai';
 
 import { makeServer } from '@/fakeApi';
 import Venue from '@/views/venues/Venue.vue';
 
-import { waitFor } from '../../helpers';
-import { fixTextSpacing } from '../../helpers.js';
+import { mountWithRouterMock, waitFor } from '../../helpers';
 
 describe('Venue page', function () {
   let venuePageComponent;
   let server;
   let address;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     server = makeServer({ environment: 'test' });
 
-    // Create a venue and address
-    address = {
-      building_name: 'Wills Memorial Building',
-      street: 'Queens Road',
-      building_number: '69',
-      city: 'London',
-      postcode: 'BS69 420',
-      latitude: '123.4567',
-      longitude: '987.654',
-    };
-    server.create('venue', {
+    // Create a venue
+    server.create('VenueNode', {
       name: 'Anson Theatre',
       slug: 'anson-theatre',
       description: 'not the anson rooms',
-      image: 'http://pathto.example/venue-image.png',
-      publicly_listed: true,
-      internal_capacity: '420',
-      address: address,
+      image: server.create('GrapheneImageFieldNode', {
+        url: 'http://pathto.example/venue-image.png',
+      }),
+      publiclyListed: true,
+      internalCapacity: '420',
+      address: server.create('AddressNode', {
+        buildingName: 'Wills Memorial Building',
+        street: 'Queens Road',
+        buildingNumber: '69',
+        city: 'London',
+        postcode: 'BS69 420',
+        latitude: '123.4567',
+        longitude: '987.654',
+      }),
     });
 
-    venuePageComponent = mount(Venue, {
-      mocks: {
-        $route: {
-          params: {
-            venueSlug: 'anson-theatre',
-          },
+    venuePageComponent = await mountWithRouterMock(
+      Venue,
+      {},
+      {
+        params: {
+          venueSlug: 'anson-theatre',
         },
-      },
-    });
+      }
+    );
   });
 
   afterEach(() => {
     server.shutdown();
   });
 
-  it('starts by showing loading screen', () => {
-    expect(venuePageComponent.text()).to.contain('Loading Venue...');
-  });
-
   it('fetches the venue', async () => {
-    await waitFor(() => venuePageComponent.vm.venue);
     expect(venuePageComponent.vm.venue.name).to.eq('Anson Theatre');
     expect(venuePageComponent.text()).to.contain('Anson Theatre');
     expect(venuePageComponent.text()).to.contain('not the anson rooms');
@@ -133,7 +127,6 @@ describe('Venue page', function () {
   });
 
   it('checks map doesnt exist with invalid lat or long', async () => {
-    await waitFor(() => venuePageComponent.vm.venue);
     await venuePageComponent.setData({
       venue: { address: { latitude: null } },
     });
@@ -142,24 +135,20 @@ describe('Venue page', function () {
   });
 
   it('handles invalid venue', async () => {
-    let fake404Handler = jest.fn();
-    venuePageComponent = mount(Venue, {
-      mixins: [
-        {
-          methods: {
-            handle404: fake404Handler,
-          },
-        },
-      ],
-      mocks: {
-        $route: {
-          params: {
-            venueSlug: 'anson-theatre-allowed',
-          },
+    let fakeRouterNext = jest.fn();
+    venuePageComponent = await mountWithRouterMock(
+      Venue,
+      {},
+      {
+        params: {
+          venueSlug: 'anson-theatre-allowed',
         },
       },
-    });
-    await waitFor(() => fake404Handler.mock.calls.length);
-    expect(fake404Handler.mock.calls.length).to.eq(1);
+      null,
+      fakeRouterNext
+    );
+    await waitFor(() => fakeRouterNext.mock.calls.length);
+    expect(fakeRouterNext.mock.calls.length).to.eq(1);
+    expect(fakeRouterNext.mock.calls[0][0]).to.include({ name: '404' });
   });
 });

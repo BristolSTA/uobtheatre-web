@@ -5,15 +5,15 @@
     <div class="relative inline-block w-full max-w-xl m-8 md:w-2/3">
       <img
         class="w-full p-4 sm:p-8"
-        :src="production.featured_image"
+        :src="production.featuredImage.url"
         :alt="`${production.name} feature image`"
         ref="featured_image"
       />
       <img
-        :src="production.society.logo_image"
+        :src="production.society.logoImage.url"
         :alt="`${production.society.name} logo`"
         class="absolute bottom-0 left-0 w-10 sm:w-20"
-        v-if="production.society.logo_image"
+        v-if="production.society.logoImage"
         ref="society_image"
       />
     </div>
@@ -32,16 +32,14 @@
         {{ venues }}
       </p>
       <p>
-        {{
-          displayStartEnd(production.start_date, production.end_date, 'd MMM')
-        }}
+        {{ displayStartEnd(production.start, production.end, 'd MMM') }}
       </p>
       <icon-list-item v-if="duration" icon="clock">
         {{ duration }}
       </icon-list-item>
-      <icon-list-item icon="ticket-alt" v-if="production.min_ticket_price">
+      <icon-list-item icon="ticket-alt" v-if="production.minSeatPrice">
         Tickets available from
-        <span class="font-semibold"> £{{ production.min_ticket_price }} </span>
+        <span class="font-semibold"> £{{ production.minSeatPrice }} </span>
       </icon-list-item>
       <button
         v-if="showBuyTicketsButton"
@@ -77,47 +75,51 @@ export default {
     displayStartEnd,
   },
   computed: {
-    venues() {
-      if (!this.production.performances.length) return '';
+    computed: {
+      venues() {
+        if (!this.production.performances.edges.length) return '';
 
-      let venues = [];
-      if (this.hasInPersonPerformances) {
-        venues = lo.uniq(
-          this.production.performances.map((performance) => {
-            return performance.venue.name;
-          })
-        );
+        let venues = [];
+        if (this.hasInPersonPerformances) {
+          venues = lo.uniq(
+            this.production.performances.edges.map((edge) => {
+              return edge.node.venue.name;
+            })
+          );
 
-        if (venues.length > 3) {
-          venues = lo.take(venues, 2);
-          venues.push('others');
+          if (venues.length > 3) {
+            venues = lo.take(venues, 2);
+            venues.push('others');
+          }
         }
-      }
 
-      if (this.hasOnlinePerformances) {
-        venues = lo.take(venues);
-        venues.push('Online');
-      }
-      return joinWithAnd(venues);
-    },
-    hasOnlinePerformances() {
-      return !!this.production.performances.find(
-        (performance) => performance.is_online
-      );
-    },
-    hasInPersonPerformances() {
-      return !!this.production.performances.find(
-        (performance) => performance.is_inperson
-      );
-    },
-    duration() {
-      if (!this.production.performances.length) return;
-      return humanizeDuration(
-        lo.chain(this.production.performances).minBy('duration_mins').value()
-          .duration_mins *
-          60 *
-          1000
-      );
+        if (this.hasOnlinePerformances) {
+          venues = lo.take(venues);
+          venues.push('Online');
+        }
+        return joinWithAnd(venues);
+      },
+      hasOnlinePerformances() {
+        return !!this.production.performances.edges.find(
+          (edge) => edge.node.isOnline
+        );
+      },
+      hasInPersonPerformances() {
+        return !!this.production.performances.edges.find(
+          (edge) => edge.node.isInperson
+        );
+      },
+      duration() {
+        if (!this.production.performances.edges.length) return;
+        return humanizeDuration(
+          lo
+            .chain(this.production.performances.edges.map((edge) => edge.node))
+            .minBy('durationMins')
+            .value().durationMins *
+            60 *
+            1000
+        );
+      },
     },
   },
 };

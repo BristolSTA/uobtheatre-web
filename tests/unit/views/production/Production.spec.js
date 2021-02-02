@@ -8,6 +8,8 @@ import ProductionCastCredits from '@/views/production/ProductionCastCredits.vue'
 import ProductionHeader from '@/views/production/ProductionHeader.vue';
 import ProductionPerformances from '@/views/production/ProductionPerformances.vue';
 
+import { mountOptionsWithApollo, waitFor } from '../../helpers';
+
 describe('Production', function () {
   let productionPageComponent;
   let productionObject;
@@ -19,21 +21,23 @@ describe('Production', function () {
     server = makeServer({ environment: 'test' });
 
     // Create a production
-    server.create('production', {
+    server.create('productionNode', {
       name: 'Legally Ginger',
       slug: 'legally-ginger',
     });
 
-    await productionService
-      .fetchProductionBySlug('legally-ginger')
-      .then((production) => {
-        productionObject = production;
-        productionPageComponent = mount(ProductionPage, {
-          propsData: {
-            production: productionObject,
+    productionPageComponent = mount(
+      ProductionPage,
+      mountOptionsWithApollo({
+        mocks: {
+          $route: {
+            params: {
+              productionSlug: 'legally-ginger',
+            },
           },
-        });
-      });
+        },
+      })
+    );
   });
 
   afterEach(() => {
@@ -60,5 +64,31 @@ describe('Production', function () {
     expect(headerComponent.props('production')).to.eq(productionObject);
     expect(castCreditsComponent.props('production')).to.eq(productionObject);
     expect(performancesComponent.props('production')).to.eq(productionObject);
+  });
+
+  it('fetches the production', async () => {
+    await waitFor(() => productionPageComponent.vm.production);
+    expect(productionPageComponent.vm.production.name).to.eq('Legally Ginger');
+  });
+
+  it('handles invalid production', async () => {
+    let fakeRouterPush = jest.fn();
+    productionPageComponent = mount(
+      ProductionPage,
+      mountOptionsWithApollo({
+        mocks: {
+          $route: {
+            params: {
+              productionSlug: 'legally-not-allowed',
+            },
+          },
+          $router: {
+            push: fakeRouterPush,
+          },
+        },
+      })
+    );
+    await waitFor(() => fakeRouterPush.mock.calls.length);
+    expect(fakeRouterPush.mock.calls.length).to.eq(1);
   });
 });

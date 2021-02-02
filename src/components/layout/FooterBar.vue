@@ -41,10 +41,7 @@
             &copy; Bristol Stage Technicians' Association
             {{ new Date().getFullYear() }}
           </p>
-          <p>
-            This theatre website is built and run by Bristol SU student
-            volunteers.
-          </p>
+          <p>This website is built and run by Bristol SU student volunteers.</p>
         </div>
       </div>
     </div>
