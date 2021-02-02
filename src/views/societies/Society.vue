@@ -51,12 +51,15 @@
                   {{ production.name }}
                 </td>
                 <td class="px-4 text-right" v-if="production.isBookable">
-                  <div
+                  <router-link
                     class="px-3 py-1.5 my-1 text-sm text-center font-semibold btn btn-orange"
+                    :to="{
+                      name: 'production.book',
+                      params: { productionSlug: production.slug },
+                    }"
                   >
                     Book Now
-                  </div>
-                  <!-- booking link here -->
+                  </router-link>
                 </td>
                 <td class="px-4 text-right" v-else>
                   {{ production.end | dateFormat('MMMM y') }}
