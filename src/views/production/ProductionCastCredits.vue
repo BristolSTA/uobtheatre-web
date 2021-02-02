@@ -58,6 +58,7 @@
           A production by
           <strong>
             <router-link
+              class="hover:text-gray-300"
               :to="{
                 name: 'society',
                 params: { societySlug: production.society.slug },

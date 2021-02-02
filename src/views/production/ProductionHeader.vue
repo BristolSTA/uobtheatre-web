@@ -25,6 +25,7 @@
         <p class="mb-1 -mt-2 text-sta-gray-lighter">
           {{ production.subtitle }} by
           <router-link
+            class="hover:text-gray-500"
             :to="{
               name: 'society',
               params: { societySlug: production.society.slug },
