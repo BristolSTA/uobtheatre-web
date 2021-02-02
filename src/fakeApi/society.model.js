@@ -28,12 +28,12 @@ export default {
       }),
     };
   },
-  registerGQLQueries() {
-    return `
-      society(
-        id: ID
-        slug: String
-      ): SocietyNode
-    `;
-  },
+  // registerGQLQueries() {
+  //   return `
+  //     society(
+  //       id: ID
+  //       slug: String
+  //     ): SocietyNode
+  //   `;
+  // },
 };

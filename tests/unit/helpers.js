@@ -48,16 +48,26 @@ const fixTextSpacing = function (text) {
   return text.replace(/\s\s+/g, ' ');
 };
 
-const mountWithRouterMock = async function (component, options = {}) {
+const mountWithRouterMock = async function (
+  component,
+  options = {},
+  to,
+  from,
+  next
+) {
+  // eslint-disable-next-line no-undef
+  if (!next) next = jest.fn();
   let mountedComponent = mount(component, mountOptionsWithRouter(options));
   if (component.beforeRouteEnter) {
     await component.beforeRouteEnter.call(
       mountedComponent.vm,
-      undefined,
-      undefined,
-      (callback) => {
-        callback(mountedComponent.vm);
-      }
+      to,
+      from,
+      // eslint-disable-next-line no-undef
+      next.mockImplementation(async (callback) => {
+        if (typeof callback === 'function') await callback(mountedComponent.vm);
+        return;
+      })
     );
   }
 

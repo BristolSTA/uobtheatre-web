@@ -3,7 +3,7 @@ import faker from 'faker';
 import { DateTime } from 'luxon';
 import { Factory, trait } from 'miragejs';
 
-import { updateIfDoesntHave } from './utils';
+import { graphQLOrderBy, updateIfDoesntHave } from './utils';
 
 export default {
   registerFactories() {
@@ -74,36 +74,8 @@ export default {
       }),
     };
   },
-  registerGQLTypes() {
-    return `
-    type ProductionNode implements Node {
-      id: ID!
-      name: String!
-      subtitle: String
-      description: String
-      society: SocietyNode
-      posterImage: GrapheneImageFieldNode
-      featuredImage: GrapheneImageFieldNode
-      coverImage: GrapheneImageFieldNode
-      ageRating: Int
-      facebookEvent: String
-      warnings: [WarningNode!]
-      slug: String!
-      cast: [CastMemberNode!]
-      productionTeam: [ProductionTeamMemberNode!]
-      crew: [CrewMemberNode!]
-      performances(offset: Int, before: String, after: String, first: Int, last: Int, id: ID, start: DateTime, start_Year_Gt: DateTime): PerformanceNodeConnection!
-      start: DateTime
-      end: DateTime
-      minSeatPrice: Int
-      isBookable: Boolean!
-    }
-    `;
-  },
   registerGQLQueries() {
     return `
-      production(id: ID
-        slug: String): ProductionNode
       productions(
         offset: Int
         before: String
@@ -120,23 +92,10 @@ export default {
   registerGQLQueryResolvers() {
     return {
       productions(obj, args, context, info) {
-        const { orderBy } = args;
-
         delete args.orderBy;
 
-        const records = mirageGraphQLFieldResolver(obj, args, context, info);
-
-        if (orderBy) {
-          const orderByProp = orderBy.substring(1);
-          const orderType = orderBy.charAt(0);
-          records.edges.sort((edge1, edge2) => {
-            if (edge1.node[orderByProp] < edge2.node[orderByProp])
-              return orderType == '+' ? -1 : 1;
-            if (edge1.node[orderByProp] > edge2.node[orderByProp])
-              return orderType == '+' ? 1 : -1;
-            return 0;
-          });
-        }
+        let records = mirageGraphQLFieldResolver(obj, args, context, info);
+        records = graphQLOrderBy(records, args);
 
         return records;
       },

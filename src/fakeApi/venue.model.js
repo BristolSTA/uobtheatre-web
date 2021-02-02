@@ -39,12 +39,4 @@ export default {
       }),
     };
   },
-  registerGQLQueries() {
-    return `
-      venue(
-        id: ID
-        slug: String
-      ): VenueNode
-    `;
-  },
 };

@@ -66,8 +66,26 @@ let ValidationErrorResponse = (
   return new Response(errorCode, {}, data);
 };
 
+let graphQLOrderBy = (records, args) => {
+  const { orderBy } = args;
+
+  if (orderBy) {
+    const orderByProp = orderBy.substring(1);
+    const orderType = orderBy.charAt(0);
+    records.edges.sort((edge1, edge2) => {
+      if (edge1.node[orderByProp] < edge2.node[orderByProp])
+        return orderType == '-' ? 1 : -1;
+      if (edge1.node[orderByProp] > edge2.node[orderByProp])
+        return orderType == '-' ? -1 : 1;
+      return 0;
+    });
+  }
+  return records;
+};
+
 export {
   DefaultSerializer,
+  graphQLOrderBy,
   NotFoundResponse,
   paginatedResponse,
   RelationshipSerializer,
