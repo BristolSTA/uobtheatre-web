@@ -15,7 +15,15 @@
               params: { productionSlug: featuredProduction.slug },
             }"
           >
-            <div class="text-2xl">{{ featuredProduction.society.name }}</div>
+            <router-link
+              class="text-2xl"
+              :to="{
+                name: 'society',
+                params: { societySlug: featuredProduction.society.slug },
+              }"
+            >
+              {{ featuredProduction.society.name }}
+            </router-link>
             <div class="text-h1">{{ featuredProduction.name }}</div>
             <div class="text-2xl">
               {{ featuredProduction.start | dateFormat('d MMMM') }} -

@@ -55,7 +55,17 @@
           </ul>
         </div>
         <p>
-          A production by <strong>{{ production.society.name }}</strong>
+          A production by
+          <strong>
+            <router-link
+              :to="{
+                name: 'society',
+                params: { societySlug: production.society.slug },
+              }"
+            >
+              {{ production.society.name }}
+            </router-link>
+          </strong>
         </p>
         <a
           v-if="production.facebookEvent"

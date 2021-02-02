@@ -56,7 +56,7 @@
                   >
                     Book Now
                   </div>
-                  <!-- router link here -->
+                  <!-- booking link here -->
                 </td>
                 <td class="px-4 text-right" v-else>
                   {{ production.end | dateFormat('MMMM y') }}
@@ -87,7 +87,7 @@ import { handle404Mixin } from '@/utils';
 import { createClient } from '@/vue-apollo';
 
 export default {
-  name: 'scoiety-page',
+  name: 'scoiety',
   mixins: handle404Mixin,
 
   metaInfo() {

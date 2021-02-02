@@ -5,6 +5,7 @@ query productionBySlug($slug: String!) {
     description
     society {
       name
+      slug
       logo {
         url
       }
