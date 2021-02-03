@@ -4,18 +4,18 @@
   >
     <div class="relative inline-block w-full max-w-xl m-10 md:w-2/3">
       <img
+        ref="featured-image"
         class="w-full p-8"
         :src="production.featuredImage.url"
         :alt="`${production.name} feature image`"
-        ref="featured-image"
-      />
+      >
       <img
+        v-if="production.society.logo"
+        ref="society-image"
         :src="production.society.logo.url"
         :alt="`${production.society.name} logo`"
         class="absolute bottom-0 left-0 w-20"
-        v-if="production.society.logo"
-        ref="society-image"
-      />
+      >
     </div>
     <div
       class="flex flex-col items-center w-full px-10 text-white md:block md:text-left md:w-auto md:max-w-md"
@@ -36,14 +36,19 @@
         </p>
       </span>
       <p>
-        <template v-if="hasInPersonPerformances"
-          >Live at the
-          <span v-for="(venue, index) in venues" :key="index">
+        <template
+          v-if="hasInPersonPerformances"
+        >
+          Live at the
+          <span
+            v-for="(venue, index) in venues"
+            :key="index"
+          >
             <template v-if="index < venueOverflow">
               <template v-if="index > 0">and</template>
               <router-link
-                class="hover:text-gray-300"
                 v-if="venue.publiclyListed"
+                class="hover:text-gray-300"
                 :to="{
                   name: 'venue',
                   params: { venueSlug: venue.slug },
@@ -56,18 +61,28 @@
             <template v-if="index == venueOverflow + 1"> and others</template>
           </span>
         </template>
-        <template v-if="hasOnlinePerformances && hasInPersonPerformances"
-          >and Online</template
+        <template
+          v-if="hasOnlinePerformances && hasInPersonPerformances"
         >
-        <template v-if="!hasInPersonPerformances">View Online</template>
+          and Online
+        </template>
+        <template v-if="!hasInPersonPerformances">
+          View Online
+        </template>
       </p>
       <p>
         {{ displayStartEnd(production.start, production.end, 'd MMM') }}
       </p>
-      <icon-list-item v-if="duration" icon="clock">
+      <icon-list-item
+        v-if="duration"
+        icon="clock"
+      >
         {{ duration }}
       </icon-list-item>
-      <icon-list-item icon="ticket-alt" v-if="production.minSeatPrice">
+      <icon-list-item
+        v-if="production.minSeatPrice"
+        icon="ticket-alt"
+      >
         Tickets available from
         <span class="font-semibold">
           £{{ (production.minSeatPrice / 100).toFixed(2) }}
@@ -93,8 +108,8 @@ import IconListItem from '@/components/ui/IconListItem.vue';
 import { displayStartEnd } from '@/utils';
 
 export default {
-  components: { IconListItem },
   name: 'ProductionHeader',
+  components: { IconListItem },
   props: {
     production: {
       required: true,
@@ -104,9 +119,6 @@ export default {
     return {
       venueOverflow: 3,
     };
-  },
-  methods: {
-    displayStartEnd,
   },
   computed: {
     venues() {
@@ -143,6 +155,9 @@ export default {
           1000
       );
     },
+  },
+  methods: {
+    displayStartEnd,
   },
 };
 </script>

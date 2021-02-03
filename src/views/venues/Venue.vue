@@ -7,7 +7,9 @@
       Loading Venue...
     </div>
     <template v-else>
-      <h1 class="container pt-2 text-left text-h1">The {{ venue.name }}</h1>
+      <h1 class="container pt-2 text-left text-h1">
+        The {{ venue.name }}
+      </h1>
       <div class="flex flex-wrap items-center justify-center mt-2 lg:mb-8">
         <div
           class="flex flex-col items-center w-full px-8 text-justify md:block md:w-auto md:max-w-md"
@@ -16,11 +18,11 @@
         </div>
         <div class="w-full h-full max-w-xl lg:w-2/3 md:m-4">
           <img
+            ref="image"
             class="w-full p-3 md:p-0"
             :src="venue.image.url"
             :alt="`${venue.name} image`"
-            ref="image"
-          />
+          >
         </div>
       </div>
       <div class="flex flex-wrap items-center justify-center">
@@ -28,15 +30,23 @@
           class="flex justify-center w-full p-4 space-y-1 lg:w-1/4 lg:order-last lg:mb-0 lg:ml-4 bg-sta-gray-dark"
         >
           <div>
-            <h2 class="text-3xl font-semibold text-sta-orange">Venue Info:</h2>
+            <h2 class="text-3xl font-semibold text-sta-orange">
+              Venue Info:
+            </h2>
             <table class="table-auto">
               <tbody>
                 <tr>
-                  <th class="pb-2 pr-2 align-top">Capacity:</th>
-                  <td class="align-top">Max {{ venue.internalCapacity }}</td>
+                  <th class="pb-2 pr-2 align-top">
+                    Capacity:
+                  </th>
+                  <td class="align-top">
+                    Max {{ venue.internalCapacity }}
+                  </td>
                 </tr>
                 <tr>
-                  <th class="pr-2 align-top">Address:</th>
+                  <th class="pr-2 align-top">
+                    Address:
+                  </th>
                   <td class="align-top">
                     <div ref="address">
                       <p v-if="venue.address.buildingName">
@@ -57,9 +67,13 @@
               </tbody>
             </table>
             <div class="text-sm font-semibold text-sta-orange">
-              <a target="_blank" :href="googleMapsLink">
-                <icon-list-item icon="map-marked-alt"
-                  >Open in Google Maps
+              <a
+                target="_blank"
+                :href="googleMapsLink"
+              >
+                <icon-list-item
+                  icon="map-marked-alt"
+                >Open in Google Maps
                 </icon-list-item>
               </a>
             </div>
@@ -67,10 +81,13 @@
         </div>
         <div
           v-if="venue.address.latitude && venue.address.longitude"
-          class="flex justify-center w-full lg:w-3/5 h-96 lg:mb-4"
           ref="mapContainer"
+          class="flex justify-center w-full lg:w-3/5 h-96 lg:mb-4"
         >
-          <div class="w-full" ref="venue-map"></div>
+          <div
+            ref="venue-map"
+            class="w-full"
+          />
         </div>
       </div>
     </template>
@@ -87,8 +104,8 @@ import { handle404Mixin } from '@/utils';
 import { createClient } from '@/vue-apollo';
 
 export default {
+  name: 'VenuePage',
   components: { IconListItem },
-  name: 'venue-page',
   mixins: [IconListItem, handle404Mixin],
   metaInfo() {
     const venueName = this.venue ? this.venue.name : 'Loading...';

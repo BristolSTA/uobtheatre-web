@@ -7,12 +7,11 @@
         e.target.click();
       }
     "
-    ><slot
-  /></a>
+  ><slot /></a>
 </template>
 
 <script>
 export default {
-  name: 'clickable-link',
+  name: 'ClickableLink',
 };
 </script>

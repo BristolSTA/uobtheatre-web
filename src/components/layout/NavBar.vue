@@ -5,8 +5,7 @@
         <router-link :to="{ name: 'home' }">
           <span
             class="text-3xl tracking-tight text-white uppercase sm:text-4xl"
-            >{{ $appName }}</span
-          >
+          >{{ $appName }}</span>
         </router-link>
       </div>
       <div class="block lg:hidden">
@@ -53,8 +52,8 @@
           </router-link>
           <clickable-link
             v-else
-            @click="authService.logout()"
             class="mt-4 auth-button btn btn-orange btn-outline lg:mt-0"
+            @click="authService.logout()"
           >
             Log Out
           </clickable-link>

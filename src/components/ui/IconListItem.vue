@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: 'icon-list-item',
+  name: 'IconListItem',
   props: {
     icon: {
       requried: true,

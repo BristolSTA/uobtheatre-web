@@ -16,8 +16,8 @@ import { authService } from '@/services';
 import UserAuthBox from './UserAuthBox.vue';
 
 export default {
+  name: 'Login',
   components: { UserAuthBox },
-  name: 'login',
   props: {
     login: {
       default: true,

@@ -5,7 +5,7 @@ module.exports = {
   },
   ignorePatterns: ['tests/test.spec.example.js'],
   extends: [
-    'plugin:vue/essential',
+    'plugin:vue/recommended',
     'eslint:recommended',
     'plugin:vue-a11y/base',
     'plugin:jsdoc/recommended',

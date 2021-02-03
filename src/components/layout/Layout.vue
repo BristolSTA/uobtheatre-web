@@ -12,7 +12,7 @@
 import FooterBar from './FooterBar.vue';
 import NavBar from './NavBar.vue';
 export default {
-  components: { NavBar, FooterBar },
   name: 'Layout',
+  components: { NavBar, FooterBar },
 };
 </script>

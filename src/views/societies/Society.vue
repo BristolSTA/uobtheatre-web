@@ -15,20 +15,25 @@
       >
         <div class="flex items-center bg-black bg-opacity-40">
           <div class="container px-4 lg:w-2/3">
-            <div class="text-4xl font-semibold">{{ society.name }}</div>
+            <div class="text-4xl font-semibold">
+              {{ society.name }}
+            </div>
           </div>
         </div>
       </div>
 
       <div class="mt-4 md:my-8 md:container md:flex md:space-x-4">
         <div class="mx-4 md:mx-0 md:w-1/2">
-          <div v-if="society.logo.url" class="flex justify-center p-2">
+          <div
+            v-if="society.logo.url"
+            class="flex justify-center p-2"
+          >
             <img
+              ref="society-logo"
               :src="society.logo.url"
               :alt="`${society.name} logo`"
               class="w-32"
-              ref="society-logo"
-            />
+            >
           </div>
           <div class="m-2 text-center md:text-left">
             <p>{{ society.description }}</p>
@@ -42,13 +47,15 @@
           ref="production-list"
           class="w-full px-1 py-2 md:p-2 md:w-1/2 bg-sta-gray-dark"
         >
-          <h2 class="flex justify-center mb-2 text-2xl">Productions</h2>
+          <h2 class="flex justify-center mb-2 text-2xl">
+            Productions
+          </h2>
           <table class="w-full table-auto">
             <tbody>
               <tr
-                class="odd:bg-sta-gray-light even:bg-sta-gray"
                 v-for="(production, index) in productions"
                 :key="index"
+                class="odd:bg-sta-gray-light even:bg-sta-gray"
               >
                 <td class="px-4 py-2 text-xl font-semibold hover:text-gray-300">
                   <router-link
@@ -60,7 +67,10 @@
                     {{ production.name }}
                   </router-link>
                 </td>
-                <td class="px-4 text-right" v-if="production.isBookable">
+                <td
+                  v-if="production.isBookable"
+                  class="px-4 text-right"
+                >
                   <router-link
                     class="px-3 py-1.5 my-1 text-sm text-center font-semibold btn btn-orange"
                     :to="{
@@ -71,7 +81,10 @@
                     Book Now
                   </router-link>
                 </td>
-                <td class="px-4 text-right" v-else>
+                <td
+                  v-else
+                  class="px-4 text-right"
+                >
                   {{ production.end | dateFormat('MMMM y') }}
                 </td>
               </tr>
@@ -99,7 +112,7 @@ import gql from 'graphql-tag';
 import { createClient } from '@/vue-apollo';
 
 export default {
-  name: 'society',
+  name: 'Society',
   metaInfo() {
     const societyName = this.society ? this.society.name : 'Loading...';
     return {

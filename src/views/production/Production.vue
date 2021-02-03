@@ -8,14 +8,20 @@
     </div>
     <template v-else>
       <production-header
+        ref="header"
         :production="production"
         @scroll-to-tickets="$refs.performances.$el.scrollIntoView()"
-        ref="header"
       />
-      <hr class="border-t-2 border-sta-gray-dark" />
-      <production-cast-credits :production="production" ref="cast-credits" />
-      <hr class="border-t-2 border-sta-gray-dark" />
-      <production-performances ref="performances" :production="production" />
+      <hr class="border-t-2 border-sta-gray-dark">
+      <production-cast-credits
+        ref="cast-credits"
+        :production="production"
+      />
+      <hr class="border-t-2 border-sta-gray-dark">
+      <production-performances
+        ref="performances"
+        :production="production"
+      />
     </template>
   </div>
 </template>
@@ -27,12 +33,12 @@ import ProductionCastCredits from './ProductionCastCredits.vue';
 import ProductionHeader from './ProductionHeader.vue';
 import ProductionPerformances from './ProductionPerformances.vue';
 export default {
+  name: 'Production',
   components: {
     ProductionHeader,
     ProductionCastCredits,
     ProductionPerformances,
   },
-  name: 'production',
   mixins: [handle404Mixin],
   metaInfo() {
     const productionName = this.production
