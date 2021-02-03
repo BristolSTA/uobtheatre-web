@@ -35,7 +35,7 @@
                   <th class="pb-2 pr-2 align-top">Capacity:</th>
                   <td class="align-top">Max {{ venue.internalCapacity }}</td>
                 </tr>
-                <tr class="">
+                <tr>
                   <th class="pr-2 align-top">Address:</th>
                   <td class="align-top">
                     <div ref="address">
