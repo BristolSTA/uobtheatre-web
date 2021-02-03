@@ -36,9 +36,30 @@
         </p>
       </span>
       <p>
-        <template v-if="hasInPersonPerformances">Live at the</template>
-        <template v-else>Watch </template>
-        {{ venues }}
+        <template v-if="hasInPersonPerformances"
+          >Live at the
+          <span v-for="(venue, index) in venues" :key="index">
+            <template v-if="index < venueOverflow">
+              <template v-if="index > 0">and</template>
+              <router-link
+                class="hover:text-gray-300"
+                v-if="venue.publiclyListed"
+                :to="{
+                  name: 'venue',
+                  params: { venueSlug: venue.slug },
+                }"
+              >
+                {{ venue.name }}
+              </router-link>
+              <template v-else> {{ venue.name }} </template>
+            </template>
+            <template v-if="index == venueOverflow + 1"> and others</template>
+          </span>
+        </template>
+        <template v-if="hasOnlinePerformances && hasInPersonPerformances"
+          >and Online</template
+        >
+        <template v-if="!hasInPersonPerformances">View Online</template>
       </p>
       <p>
         {{ displayStartEnd(production.start, production.end, 'd MMM') }}
@@ -51,7 +72,7 @@
         <span class="font-semibold"> £{{ production.minSeatPrice }} </span>
       </icon-list-item>
       <button
-        v-if="showBuyTicketsButton"
+        v-if="showBuyTicketsButton || production.isBookable"
         class="w-full mt-4 font-semibold btn btn-green"
         @click="$emit('on-buy-tickets-click')"
         @keypress="$emit('on-buy-tickets-click')"
@@ -67,7 +88,7 @@ import humanizeDuration from 'humanize-duration';
 import lo from 'lodash';
 
 import IconListItem from '@/components/ui/IconListItem.vue';
-import { displayStartEnd, joinWithAnd } from '@/utils';
+import { displayStartEnd } from '@/utils';
 
 export default {
   components: { IconListItem },
@@ -83,30 +104,25 @@ export default {
   methods: {
     displayStartEnd,
   },
+  data() {
+    return {
+      venueOverflow: 3,
+    };
+  },
   computed: {
     computed: {
       venues() {
-        if (!this.production.performances.edges.length) return '';
-
         let venues = [];
         if (this.hasInPersonPerformances) {
-          venues = lo.uniq(
+          venues = lo.uniqBy(
             this.production.performances.edges.map((edge) => {
-              return edge.node.venue.name;
-            })
+              return edge.node.venue;
+            }),
+            'name'
           );
-
-          if (venues.length > 3) {
-            venues = lo.take(venues, 2);
-            venues.push('others');
-          }
         }
-
-        if (this.hasOnlinePerformances) {
-          venues = lo.take(venues);
-          venues.push('Online');
-        }
-        return joinWithAnd(venues);
+        lo.take(venues, this.venueOverflow + 1);
+        return venues;
       },
       hasOnlinePerformances() {
         return !!this.production.performances.edges.find(

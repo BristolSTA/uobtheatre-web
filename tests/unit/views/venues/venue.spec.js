@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { makeServer } from '@/fakeApi';
 import Venue from '@/views/venues/Venue.vue';
 
-import { mountWithRouterMock, waitFor } from '../../helpers';
+import { fixTextSpacing, mountWithRouterMock, waitFor } from '../../helpers';
 
 describe('Venue page', function () {
   let venuePageComponent;
@@ -50,6 +50,7 @@ describe('Venue page', function () {
   });
 
   it('fetches the venue', async () => {
+    await waitFor(() => venuePageComponent.vm.venue);
     expect(venuePageComponent.vm.venue.name).to.eq('Anson Theatre');
     expect(venuePageComponent.text()).to.contain('Anson Theatre');
     expect(venuePageComponent.text()).to.contain('not the anson rooms');
@@ -87,8 +88,8 @@ describe('Venue page', function () {
       await venuePageComponent.setData({
         venue: {
           address: Object.assign({}, address, {
-            building_name: 'Wills Memorial Building',
-            building_number: null,
+            buildingName: 'Wills Memorial Building',
+            buildingNumber: null,
           }),
         },
       });
@@ -102,8 +103,8 @@ describe('Venue page', function () {
       await venuePageComponent.setData({
         venue: {
           address: Object.assign({}, address, {
-            building_name: null,
-            building_number: '69',
+            buildingName: null,
+            buildingNumber: '69',
           }),
         },
       });
@@ -117,8 +118,8 @@ describe('Venue page', function () {
       await venuePageComponent.setData({
         venue: {
           address: Object.assign({}, address, {
-            building_name: null,
-            building_number: null,
+            buildingName: null,
+            buildingNumber: null,
           }),
         },
       });

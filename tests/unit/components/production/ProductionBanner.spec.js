@@ -16,6 +16,8 @@ describe('ProductionBanner', function () {
         start: Date('2020-11-14'),
         venue: {
           name: 'The New Vic',
+          slug: 'the-new-vic',
+          publiclyListed: false,
         },
         isInperson: true,
         isOnline: false,
@@ -25,6 +27,8 @@ describe('ProductionBanner', function () {
         start: Date('2020-11-15'),
         venue: {
           name: 'The Newer Vic',
+          slug: 'the-newer-vic',
+          publiclyListed: true,
         },
         isInperson: true,
         isOnline: false,
@@ -49,7 +53,17 @@ describe('ProductionBanner', function () {
 
     // test combination of two venues
     expect(fixTextSpacing(headerContainer.text())).to.contain(
-      'The New Vic and The Newer Vic'
+      'Live at the The New Vic and The Newer Vic'
+    );
+    expect(
+      headerContainer.findAllComponents(RouterLinkStub).at(1).props('to').name
+    ).to.equal('venue');
+    expect(
+      headerContainer.findAllComponents(RouterLinkStub).at(1).props('to').params
+        .venueSlug
+    ).to.equal('the-newer-vic');
+    expect(headerContainer.findAllComponents(RouterLinkStub).length).to.equal(
+      2
     );
 
     // test production start and end dates
@@ -104,6 +118,8 @@ describe('ProductionBanner', function () {
       {
         venue: {
           name: 'The New Vic',
+          slug: 'the-new-vic',
+          publiclyListed: false,
         },
         isInperson: false,
         isOnline: true,
@@ -111,33 +127,92 @@ describe('ProductionBanner', function () {
       {
         venue: {
           name: 'The Newer Vic',
+          slug: 'the-newer-vic',
+          publiclyListed: true,
         },
         isInperson: false,
         isOnline: true,
       },
     ]);
     expect(fixTextSpacing(headerContainer.text())).to.contain('Watch Online');
+    expect(headerContainer.findAllComponents(RouterLinkStub).length).to.equal(
+      1
+    );
   });
 
   it('shows online and in person performances', async () => {
     await createWithPerformances([
       {
         venue: {
-          name: 'New Vic',
+          name: 'The Newer Vic',
+          slug: 'the-newer-vic',
+          publiclyListed: true,
         },
-        isInperson: false,
+        isInperson: true,
+        isOnline: true,
+      },
+    ]);
+
+    // test online and live
+    expect(fixTextSpacing(headerContainer.text())).to.contain(
+      'Live at the The Newer Vic and Online '
+    );
+    expect(headerContainer.findAllComponents(RouterLinkStub).length).to.equal(
+      2
+    );
+  });
+
+  it('shows venue overflow', async () => {
+    await createWithPerformances([
+      {
+        venue: {
+          name: 'The Newer Vic',
+          slug: 'the-newer-vic',
+        },
+        isInperson: true,
         isOnline: true,
       },
       {
+        start: Date('2020-11-14'),
         venue: {
-          name: 'New Vic',
+          name: 'The New Vic',
+          slug: 'the-new-vic',
+        },
+        isInperson: true,
+        isOnline: false,
+      },
+      {
+        start: Date('2020-11-15'),
+        venue: {
+          name: 'Anson Theatre',
+          slug: 'anson-theatre',
+        },
+        isInperson: true,
+        isOnline: false,
+      },
+      {
+        start: Date('2020-11-15'),
+        venue: {
+          name: 'Pegg Rooms',
+          slug: 'pegg-rooms',
+        },
+        isInperson: true,
+        isOnline: false,
+      },
+      {
+        start: Date('2020-11-15'),
+        venue: {
+          name: 'Winston Rooms',
+          slug: 'winston-rooms',
         },
         isInperson: true,
         isOnline: false,
       },
     ]);
+
+    // test venue overflow
     expect(fixTextSpacing(headerContainer.text())).to.contain(
-      'Live at the New Vic and Online '
+      'Live at the The Newer Vic and The New Vic and Anson Theatre and others and Online'
     );
   });
 
@@ -145,6 +220,15 @@ describe('ProductionBanner', function () {
     let button = headerContainer.find('button');
     await button.trigger('click');
     expect(headerContainer.emitted('on-buy-tickets-click').length).to.eq(1);
+  });
+
+  // no buy tickets when not bookable
+  it('doesnt show buy tickets button when not bookable', async () => {
+    await createWithPerformances([{}], {
+      isBookable: false,
+    });
+
+    expect(headerContainer.find('button').exists()).to.be.false;
   });
 
   let createWithPerformances = (performances, productionOverrides) => {
