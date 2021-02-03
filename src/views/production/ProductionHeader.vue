@@ -119,9 +119,7 @@ export default {
           'name'
         );
       }
-      if (venues.length > this.venueOverflow + 1) {
-        lo.take(venues, this.venueOverflow + 1);
-      }
+      lo.take(venues, this.venueOverflow + 1);
       return venues;
     },
     hasOnlinePerformances() {
