@@ -8,6 +8,8 @@ import { getRoutes } from '@/views/booking/bookingStages';
 import NotFoundError from '@/views/errors/NotFound.vue';
 import Home from '@/views/Home.vue';
 const Venue = () => import('@/views/venues/Venue.vue');
+const Society = () => import('@/views/societies/Society.vue');
+const Production = () => import('@/views/production/Production.vue');
 
 import * as Bindings from './bindings';
 
@@ -53,6 +55,11 @@ const routes = [
   /**
    * Auth Pages
    */
+  {
+    path: '/societies/:societySlug',
+    name: 'society',
+    component: Society,
+  },
   {
     path: '/login',
     name: 'login',

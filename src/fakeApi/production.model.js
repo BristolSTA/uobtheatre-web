@@ -26,6 +26,7 @@ export default {
             day: faker.random.number({ min: 1, max: 3 }),
           }),
         minSeatPrice: () => faker.random.number({ min: 1, max: 10 }).toFixed(2),
+        isBookable: () => true,
 
         withCoverImage: trait({
           afterCreate(production, server) {

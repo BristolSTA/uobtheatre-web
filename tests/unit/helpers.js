@@ -57,7 +57,12 @@ const mountWithRouterMock = async function (
 ) {
   // eslint-disable-next-line no-undef
   if (!next) next = jest.fn();
-  let mountedComponent = mount(component, mountOptionsWithRouter(options));
+
+  let mountedComponent = mount(
+    component,
+    generateMountOptions(['router'], options)
+  );
+
   if (component.beforeRouteEnter) {
     await component.beforeRouteEnter.call(
       mountedComponent.vm,
@@ -74,18 +79,15 @@ const mountWithRouterMock = async function (
   return mountedComponent;
 };
 
-const mountOptionsWithRouter = function (options = {}) {
-  return Object.assign(options, {
-    stubs: {
-      RouterLink: RouterLinkStub,
-    },
-  });
-};
-
-const mountOptionsWithApollo = function (options = {}) {
-  return Object.assign(options, {
-    apolloProvider: createProvider(),
-  });
+const generateMountOptions = function (types = [], options = {}) {
+  if (!options['stubs']) options.stubs = {};
+  if (types.includes('apollo')) {
+    options.apolloProvider = createProvider();
+  }
+  if (types.includes('router')) {
+    options.stubs.RouterLink = RouterLinkStub;
+  }
+  return options;
 };
 
 const makeServer = () => {
@@ -169,10 +171,9 @@ export {
   createFromFactoryAndSerialize,
   executeWithServer,
   fixTextSpacing,
+  generateMountOptions,
   makeServer,
   mapRelationshipsToEdges,
-  mountOptionsWithApollo,
-  mountOptionsWithRouter,
   mountWithRouterMock,
   RouterLinkStub,
   serialize,

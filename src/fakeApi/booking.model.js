@@ -1,6 +1,6 @@
 import faker from 'faker';
 import lo from 'lodash';
-import { belongsTo, Factory, hasMany, Model } from 'miragejs';
+import { Factory } from 'miragejs';
 
 import {
   DefaultSerializer,
@@ -9,20 +9,6 @@ import {
 } from './utils';
 
 export default {
-  registerModels() {
-    return {
-      booking: Model.extend({
-        performance: belongsTo('performance'),
-        tickets: hasMany('ticket'),
-        misc_costs: hasMany('miscCost'),
-      }),
-      ticket: Model.extend({
-        seat_group: belongsTo('seatGroup'),
-        concession_type: belongsTo('concessionType'),
-      }),
-      miscCost: Model,
-    };
-  },
   registerSerializers() {
     return {
       booking: RelationshipSerializer(['tickets']).extend({
@@ -103,29 +89,28 @@ export default {
           return DefaultSerializer.prototype.normalize.apply(this, arguments);
         },
       }),
-      ticket: RelationshipSerializer(['seat_group', 'concession_type']),
     };
   },
   registerFactories() {
     return {
-      booking: Factory.extend({
+      bookingNode: Factory.extend({
         afterCreate(booking, server) {
           updateIfDoesntHave(booking, [
             {
               performance: () => {
-                return server.create('performance');
+                return server.create('performanceNode');
               },
             },
             {
               tickets: () => {
-                return server.createList('ticket', 2, {
-                  seat_group: () =>
+                return server.createList('ticketNode', 2, {
+                  seatGroup: () =>
                     faker.random.arrayElement(
-                      booking.performance.seat_groups.models
+                      booking.performance.seatGroups.models
                     ),
-                  concession_type: () =>
+                  concessionType: () =>
                     faker.random.arrayElement(
-                      booking.performance.concession_types.models
+                      booking.performance.concessionTypes.models
                     ),
                 });
               },
@@ -133,19 +118,19 @@ export default {
           ]);
         },
       }),
-      ticket: Factory.extend({
+      ticketNode: Factory.extend({
         afterCreate(booking, server) {
           updateIfDoesntHave(booking, {
-            seat_group: () => {
-              return server.create('seatGroup');
+            seatGroup: () => {
+              return server.create('seatGroupNode');
             },
-            concession_type: () => {
-              return server.create('concessionType');
+            concessionType: () => {
+              return server.create('concessionTypeNode');
             },
           });
         },
       }),
-      miscCost: Factory.extend({
+      miscCostNode: Factory.extend({
         name: () =>
           faker.random.arrayElement([
             'Theatre Improvement Levy',

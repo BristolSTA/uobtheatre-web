@@ -5,6 +5,7 @@ query productionBySlug($slug: String!) {
     description
     society {
       name
+      slug
       logo {
         url
       }
@@ -33,6 +34,7 @@ query productionBySlug($slug: String!) {
           venue {
             name
             slug
+            publiclyListed
           }
           doorsOpen
           start
@@ -43,6 +45,7 @@ query productionBySlug($slug: String!) {
         }
       }
     }
+    isBookable
     crew {
       name
       role {

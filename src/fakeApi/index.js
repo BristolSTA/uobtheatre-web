@@ -1,6 +1,6 @@
 import { stitchSchemas } from '@graphql-tools/stitch';
 import { createGraphQLHandler } from '@miragejs/graphql';
-import { DateTime } from 'luxon';
+// import { DateTime } from 'luxon';
 import { createServer } from 'miragejs';
 
 import BookingInterface from './booking.model';
@@ -15,6 +15,7 @@ import BaseGQLSchema from './schema.graphql';
 import SeatGroupInterface from './seatGroup.model';
 import SocietyInterface from './society.model';
 import UserInterface from './user.model';
+import { generateConcessionTypeBookingTypes } from './utils';
 import { RelationshipSerializer } from './utils';
 import VenueInterface from './venue.model';
 let apiModels = [
@@ -79,59 +80,99 @@ export function makeServer({ environment = 'development' } = {}) {
     factories: Object.assign({}, factories),
 
     seeds(server) {
+      let AdultConcession = server.create('ConcessionTypeNode', {
+        name: 'Adult',
+        description: null,
+      });
+      let ChildConcession = server.create('ConcessionTypeNode', {
+        name: 'Child',
+      });
+      let StudentConcession = server.create('ConcessionTypeNode', {
+        name: 'The best seats in the house',
+        description: 'They are sooooo good',
+      });
+      let BestSeatGroup = server.create('SeatGroupNode', {
+        name: 'The best seats in the house',
+        description: 'They are sooooo good',
+      });
+      let ProjSeatGroup = server.create('SeatGroupNode', {
+        name: 'Proj Seats',
+        description: null,
+      });
+
       /**
        * Fake Performance 1 - Legally Blonde, MTB, with 3 performances (19th,20th,21st (sold out))
        */
 
       let performances = server.createList('PerformanceNode', 3);
-      performances[0].sold_out = false;
+      performances[0].soldOut = false;
       performances[0].start = '2020-12-19T10:00:00';
       performances[0].end = '2020-12-19T11:30:00';
-      performances[0].seat_groups = [
-        server.create('SeatGroupNode', {
-          name: 'The best seats in the house',
-          description: 'They are sooooo good',
+      performance.ticketOptions = [
+        server.create('PerformanceSeatGroupNode', {
+          seatGroup: BestSeatGroup,
+          concessionTypes: generateConcessionTypeBookingTypes([
+            AdultConcession,
+            ChildConcession,
+            StudentConcession,
+          ]),
         }),
-        server.create('SeatGroupNode', {
-          name: 'Proj Seats',
-          description: null,
-        }),
-        server.create('SeatGroupNode', {
-          name: 'Sold out group',
-          capacity_remaining: 0,
-        }),
-      ];
-      performances[0].concession_types = [
-        server.create('ConcessionTypeNode', {
-          name: 'Adult',
-          description: null,
-        }),
-        server.create('ConcessionTypeNode', {
-          name: 'Child',
-          description: 'Under 17.5 years',
-        }),
-        server.create('ConcessionTypeNode', {
-          name: 'Student',
-          description: 'Valid ID not required',
+        server.create('PerformanceSeatGroupNode', {
+          seatGroup: ProjSeatGroup,
+          concessionTypes: generateConcessionTypeBookingTypes([
+            AdultConcession,
+            ChildConcession,
+            StudentConcession,
+          ]),
         }),
       ];
-      performances[0].discounts = server.createList('discount', 2, {
-        performance: performances[0],
-      });
-      performances[0].misc_costs = server.createList('miscCost', 1);
 
-      performances[1].sold_out = false;
-      performances[1].doors_open = '2020-12-20T14:14:00';
-      performances[1].start = '2020-12-20T14:15:00';
-      performances[1].end = '2020-12-20T15:15:00';
+      // performances[0].seat_groups = [
+      //   server.create('SeatGroupNode', {
+      //     name: 'The best seats in the house',
+      //     description: 'They are sooooo good',
+      //   }),
+      //   server.create('SeatGroupNode', {
+      //     name: 'Proj Seats',
+      //     description: null,
+      //   }),
+      //   server.create('SeatGroupNode', {
+      //     name: 'Sold out group',
+      //     capacity_remaining: 0,
+      //   }),
+      // ];
+      // performances[0].concession_types = [
+      //   server.create('ConcessionTypeNode', {
+      //     name: 'Adult',
+      //     description: null,
+      //   }),
+      //   server.create('ConcessionTypeNode', {
+      //     name: 'Child',
+      //     description: 'Under 17.5 years',
+      //   }),
+      //   server.create('ConcessionTypeNode', {
+      //     name: 'Student',
+      //     description: 'Valid ID not required',
+      //   }),
+      // ];
+      // // performances[0].discounts = server.createList('discount', 2, {
+      // //   performance: performances[0],
+      // // });
+      // // performances[0].misc_costs = server.createList('miscCostNode', 1);
 
-      performances[2].sold_out = true;
-      performances[2].start = '2020-12-21T18:00:00';
-      performances[2].end = '2020-12-21T20:30:00';
+      // performances[1].sold_out = false;
+      // performances[1].doors_open = '2020-12-20T14:14:00';
+      // performances[1].start = '2020-12-20T14:15:00';
+      // performances[1].end = '2020-12-20T15:15:00';
 
-      let winston = server.create('VenueNode', {
-        name: 'Winston Theatre',
-      });
+      // performances[2].sold_out = true;
+      // performances[2].start = '2020-12-21T18:00:00';
+      // performances[2].end = '2020-12-21T20:30:00';
+
+      // // let winston =
+      // server.create('VenueNode', {
+      //   name: 'Winston Theatre',
+      // });
 
       server.create('ProductionNode', 'withCoverImage', {
         name: 'Legally Blonde',
@@ -142,41 +183,52 @@ export function makeServer({ environment = 'development' } = {}) {
         performances: performances,
       });
 
-      /**
-       * Fake Performance 2 - TRASh, Dramsoc, 1 performance, no warnings
-       */
+      // /**
+      //  * Fake Performance 2 - TRASh, Dramsoc, 1 performance, no warnings
+      //  */
 
-      let dramsoc = server.create('SocietyNode', {
-        name: 'Dramsoc',
-        logo_image: null,
-      });
+      // let dramsoc = server.create('SocietyNode', {
+      //   name: 'Dramsoc',
+      //   logo_image: null,
+      // });
 
-      server.create('ProductionNode', {
-        name: 'TRASh',
-        subtitle: 'The Really Artsy Show',
-        society: dramsoc,
-        start: DateTime.fromISO('2020-11-19'),
-        end: DateTime.fromISO('2020-11-19'),
-        performances: server.createList('PerformanceNode', 1, {
-          venue: winston,
-        }),
-      });
+      // server.create('ProductionNode', {
+      //   name: 'TRASh',
+      //   subtitle: 'The Really Artsy Show',
+      //   society: dramsoc,
+      //   start: DateTime.fromISO('2020-11-19'),
+      //   end: DateTime.fromISO('2020-11-19'),
+      //   performances: server.createList('PerformanceNode', 1, {
+      //     venue: winston,
+      //   }),
+      // });
 
-      /**
-       * Fake Performance 3 - Present laughter
-       */
+      // /**
+      //  * Fake Performance 3 - Present laughter
+      //  */
 
-      server.create('ProductionNode', {
-        name: 'Present Laughter',
-        society: dramsoc,
-      });
+      // server.create('ProductionNode', {
+      //   name: 'Present Laughter',
+      //   society: dramsoc,
+      //   start: DateTime.fromISO('2019-11-16'),
+      //   end: DateTime.fromISO('2019-11-19'),
+      //   isBookable: false,
+      // });
 
-      /**
-       * Fake Performance 4 - A complete random production called A Default Production
-       */
-      server.create('ProductionNode', {
-        name: 'A Default Production',
-      });
+      // server.create('ProductionNode', {
+      //   name: 'Decade',
+      //   society: dramsoc,
+      //   start: DateTime.fromISO('2018-10-18'),
+      //   end: DateTime.fromISO('2018-10-18'),
+      //   isBookable: false,
+      // });
+
+      // /**
+      //  * Fake Performance 4 - A complete random production called A Default Production
+      //  */
+      // server.create('ProductionNode', {
+      //   name: 'A Default Production',
+      // });
 
       /**
        * A user

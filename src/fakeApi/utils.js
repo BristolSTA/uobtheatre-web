@@ -90,8 +90,17 @@ let graphQLOrderBy = (records, args) => {
   return records;
 };
 
+let generateConcessionTypeBookingTypes = (concessionTypes, server) => {
+  return concessionTypes.map((concessionType) => {
+    return server.create('ConcessionTypeBookingType', {
+      concessionType: concessionType,
+    });
+  });
+};
+
 export {
   DefaultSerializer,
+  generateConcessionTypeBookingTypes,
   graphQLOrderBy,
   NotFoundResponse,
   paginatedResponse,

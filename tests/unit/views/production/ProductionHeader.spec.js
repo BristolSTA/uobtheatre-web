@@ -6,7 +6,7 @@ import ProductionHeader from '@/views/production/ProductionHeader.vue';
 
 import FakePerformance from '../../fixtures/FakePerformance.js';
 import FakeProduction from '../../fixtures/FakeProduction.js';
-import { fixTextSpacing } from '../../helpers.js';
+import { fixTextSpacing, generateMountOptions } from '../../helpers.js';
 
 describe('ProductionHeader', function () {
   let headerContainer;

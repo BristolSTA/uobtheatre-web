@@ -15,15 +15,6 @@ if (process.env.NODE_ENV === 'development' && !process.env.VUE_APP_API_BASE) {
 }
 
 /**
- * Import server
- */
-import { makeServer } from './fakeApi';
-
-if (process.env.NODE_ENV === 'development' && !process.env.VUE_APP_API_BASE) {
-  makeServer({ environment: 'development' });
-}
-
-/**
  * Import styles
  */
 import './assets/styles/app.scss';

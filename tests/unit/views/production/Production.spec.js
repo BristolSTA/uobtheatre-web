@@ -8,7 +8,7 @@ import ProductionCastCredits from '@/views/production/ProductionCastCredits.vue'
 import ProductionHeader from '@/views/production/ProductionHeader.vue';
 import ProductionPerformances from '@/views/production/ProductionPerformances.vue';
 
-import { mountOptionsWithApollo, waitFor } from '../../helpers';
+import { generateMountOptions, waitFor } from '../../helpers';
 
 describe('Production', function () {
   let productionPageComponent;
@@ -28,7 +28,7 @@ describe('Production', function () {
 
     productionPageComponent = mount(
       ProductionPage,
-      mountOptionsWithApollo({
+      generateMountOptions(['apollo', 'router'], {
         mocks: {
           $route: {
             params: {
@@ -75,7 +75,7 @@ describe('Production', function () {
     let fakeRouterPush = jest.fn();
     productionPageComponent = mount(
       ProductionPage,
-      mountOptionsWithApollo({
+      generateMountOptions(['apollo', 'router'], {
         mocks: {
           $route: {
             params: {

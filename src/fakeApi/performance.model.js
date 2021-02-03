@@ -42,16 +42,12 @@ export default {
             venue: () => {
               return server.create('VenueNode');
             },
-
-            seat_groups: () => {
-              return server.createList('seatGroup', 2);
-            },
-
-            concession_types: () => {
-              return server.createList('concessionType', 2);
-            },
           });
         },
+      }),
+      performanceSeatGroupNode: Factory.extend({
+        capacity: () => faker.random.number({ min: 50, max: 100 }),
+        capacityRemaining: () => faker.random.number({ min: 0, max: 100 }),
       }),
     };
   },
@@ -120,7 +116,7 @@ export default {
         capacityRemaining: Int
         ticketOptions: [PerformanceSeatGroupNode]
         minSeatPrice: Int
-        
+
         durationMins: Int
         isInperson: Boolean!
         isOnline: Boolean!

@@ -1,10 +1,11 @@
-import { mount } from '@vue/test-utils';
+import { mount, RouterLinkStub } from '@vue/test-utils';
 import { expect } from 'chai';
+import FakePerformance from 'tests/unit/fixtures/FakePerformance.js';
+import FakeProduction from 'tests/unit/fixtures/FakeProduction.js';
 
 import ProductionHeader from '@/components/production/ProductionBanner.vue';
-import { productionService } from '@/services';
 
-import { fixTextSpacing } from '../../helpers.js';
+import { fixTextSpacing, generateMountOptions } from '../../helpers.js';
 
 describe('ProductionBanner', function () {
   let headerContainer;
@@ -35,7 +36,16 @@ describe('ProductionBanner', function () {
     expect(headerContainer.text()).to.contain('Legally Ginger');
 
     // test correct society performing show
-    expect(headerContainer.text()).to.contain('by Joe Bloggs Productions');
+    expect(fixTextSpacing(headerContainer.text())).to.contain(
+      'by Joe Bloggs Productions'
+    );
+    expect(
+      headerContainer.findAllComponents(RouterLinkStub).at(0).props('to').name
+    ).to.equal('society');
+    expect(
+      headerContainer.findAllComponents(RouterLinkStub).at(0).props('to').params
+        .societySlug
+    ).to.equal('joe-bloggs-productions');
 
     // test combination of two venues
     expect(fixTextSpacing(headerContainer.text())).to.contain(
@@ -148,10 +158,13 @@ describe('ProductionBanner', function () {
     let production = Object.assign(FakeProduction(), productionOverrides);
     production.performances.edges = perfs;
 
-    headerContainer = mount(ProductionHeader, {
-      propsData: {
-        production: production,
-      },
-    });
+    headerContainer = mount(
+      ProductionHeader,
+      generateMountOptions(['router'], {
+        propsData: {
+          production: production,
+        },
+      })
+    );
   };
 });
