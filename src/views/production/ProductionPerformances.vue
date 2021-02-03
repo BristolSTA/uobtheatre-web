@@ -44,9 +44,7 @@
             >
               {{ performance.venue.name }}
             </router-link>
-            <template
-              v-if="performance.isOnline && performance.isInperson"
-            >
+            <template v-if="performance.isOnline && performance.isInperson">
               and
             </template>
             <template v-if="performance.isOnline">
@@ -88,6 +86,7 @@ export default {
   props: {
     production: {
       required: true,
+      type: Object,
     },
   },
   methods: {

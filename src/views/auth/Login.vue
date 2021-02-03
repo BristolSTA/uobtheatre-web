@@ -21,6 +21,7 @@ export default {
   props: {
     login: {
       default: true,
+      type: Boolean,
     },
   },
   metaInfo() {

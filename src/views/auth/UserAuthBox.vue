@@ -1,5 +1,5 @@
 <template>
-  <div class="shadow-2xl bg-sta-gray w-80 relative">
+  <div class="relative shadow-2xl bg-sta-gray w-80">
     <div
       role="navigation"
       class="flex items-center space-x-1"
@@ -24,7 +24,7 @@
     <div
       v-if="loading"
       ref="loading-overlay"
-      class="flex items-center justify-center absolute w-full h-full bg-sta-gray-dark bg-opacity-95 top-0 text-white text-3xl z-10"
+      class="absolute top-0 z-10 flex items-center justify-center w-full h-full text-3xl text-white bg-sta-gray-dark bg-opacity-95"
     >
       <font-awesome-icon
         class="animate-spin"
@@ -142,6 +142,7 @@ export default {
   props: {
     login: {
       default: true,
+      type: Boolean,
     },
   },
   data() {

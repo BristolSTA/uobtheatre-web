@@ -1,6 +1,6 @@
 <template>
   <label :for="inputId">
-    <span class="text-white text-xs font-semibold">{{ name }}</span>
+    <span class="text-xs font-semibold text-white">{{ name }}</span>
     <input
       :id="inputId"
       class="w-full p-1 rounded-sm focus:outline-none"
@@ -12,7 +12,7 @@
     >
     <span
       v-if="errors && errors.has(inputId)"
-      class="text-sta-rouge text-xs font-semibold"
+      class="text-xs font-semibold text-sta-rouge"
     >{{ errors.get(inputId) }}</span>
   </label>
 </template>
@@ -23,12 +23,15 @@ export default {
   props: {
     value: {
       required: true,
+      type: String,
     },
     name: {
       required: true,
+      type: String,
     },
     type: {
       default: 'text',
+      type: String,
     },
     autocomplete: {
       required: false,

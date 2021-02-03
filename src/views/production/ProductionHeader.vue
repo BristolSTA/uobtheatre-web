@@ -36,9 +36,7 @@
         </p>
       </span>
       <p>
-        <template
-          v-if="hasInPersonPerformances"
-        >
+        <template v-if="hasInPersonPerformances">
           Live at the
           <span
             v-for="(venue, index) in venues"
@@ -61,9 +59,7 @@
             <template v-if="index == venueOverflow + 1"> and others</template>
           </span>
         </template>
-        <template
-          v-if="hasOnlinePerformances && hasInPersonPerformances"
-        >
+        <template v-if="hasOnlinePerformances && hasInPersonPerformances">
           and Online
         </template>
         <template v-if="!hasInPersonPerformances">
@@ -113,6 +109,7 @@ export default {
   props: {
     production: {
       required: true,
+      type: Object,
     },
   },
   data() {

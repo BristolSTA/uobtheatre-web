@@ -74,20 +74,25 @@ export default {
   props: {
     numberOfPages: {
       required: true,
+      type: Number,
     },
     currentPage: {
       required: true,
+      type: Number,
     },
     numberPagesToDisplay: {
       default: 5,
+      type: Number,
     },
     activeButtonStyle: {
       default:
         'bg-sta-orange text-gray-700 border border-gray-300 focus:outline-none',
+      type: String,
     },
     inactiveButtonStyle: {
       default:
         'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 focus:outline-none',
+      type: String,
     },
   },
   computed: {

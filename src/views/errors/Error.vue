@@ -36,9 +36,11 @@ export default {
   props: {
     buttonText: {
       default: 'Return Home',
+      type: String,
     },
     buttonTo: {
       default: '/',
+      type: String,
     },
   },
 };

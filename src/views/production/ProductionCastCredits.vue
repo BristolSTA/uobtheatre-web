@@ -13,9 +13,7 @@
         class="inline-block ml-6 font-semibold hover:text-sta-rouge"
         :class="{ 'text-sta-rouge': !overview }"
       >
-        <clickable-link
-          @click="overview = false"
-        >
+        <clickable-link @click="overview = false">
           Cast &amp; Credits
         </clickable-link>
       </li>
@@ -98,7 +96,7 @@
       class="flex flex-wrap justify-center"
     >
       <div
-        v-if="this.production.productionTeam.length"
+        v-if="production.productionTeam.length"
         class="cast-credit-section lg:w-1/2"
       >
         <h1 class="crew-section-header">
@@ -129,7 +127,7 @@
         </div>
       </div>
       <div
-        v-if="this.production.crew.length"
+        v-if="production.crew.length"
         class="cast-credit-section lg:w-1/2"
       >
         <h1 class="uppercase crew-section-header">
@@ -160,7 +158,7 @@
         </div>
       </div>
       <div
-        v-if="this.production.cast.length"
+        v-if="production.cast.length"
         class="w-full p-4 text-center"
       >
         <h1 class="uppercase crew-section-header">
@@ -219,6 +217,7 @@ export default {
   props: {
     production: {
       required: true,
+      type: Object,
     },
   },
   data() {
