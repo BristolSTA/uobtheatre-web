@@ -57,7 +57,6 @@ export default {
         isInperson: Boolean!
         isOnline: Boolean!
         soldOut: Boolean!
-        ticketOptions: [PerformanceSeatGroupNode]
       }
     `;
   },

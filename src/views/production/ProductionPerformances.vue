@@ -28,7 +28,6 @@
           </h2>
           <div>
             <router-link
-              class="hover:text-gray-200"
               v-if="performance.isInperson"
               :to="{
                 name: 'venue',
