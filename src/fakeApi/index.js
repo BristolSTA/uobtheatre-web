@@ -88,29 +88,29 @@ export function makeServer({ environment = 'development' } = {}) {
       performances[0].start = '2020-12-19T10:00:00';
       performances[0].end = '2020-12-19T11:30:00';
       performances[0].seat_groups = [
-        server.create('seatGroup', {
+        server.create('SeatGroupNode', {
           name: 'The best seats in the house',
           description: 'They are sooooo good',
         }),
-        server.create('seatGroup', {
+        server.create('SeatGroupNode', {
           name: 'Proj Seats',
           description: null,
         }),
-        server.create('seatGroup', {
+        server.create('SeatGroupNode', {
           name: 'Sold out group',
           capacity_remaining: 0,
         }),
       ];
       performances[0].concession_types = [
-        server.create('concessionType', {
+        server.create('ConcessionTypeNode', {
           name: 'Adult',
           description: null,
         }),
-        server.create('concessionType', {
+        server.create('ConcessionTypeNode', {
           name: 'Child',
           description: 'Under 17.5 years',
         }),
-        server.create('concessionType', {
+        server.create('ConcessionTypeNode', {
           name: 'Student',
           description: 'Valid ID not required',
         }),
@@ -129,7 +129,7 @@ export function makeServer({ environment = 'development' } = {}) {
       performances[2].start = '2020-12-21T18:00:00';
       performances[2].end = '2020-12-21T20:30:00';
 
-      let winston = server.create('venue', {
+      let winston = server.create('VenueNode', {
         name: 'Winston Theatre',
       });
 
@@ -182,7 +182,7 @@ export function makeServer({ environment = 'development' } = {}) {
        * A user
        */
 
-      server.create('user', {
+      server.create('UserNode', {
         password: 'admin',
         email: 'admin@bristolsta.com',
         token: '36c86c19f8f8d73aa59c3a00814137bdee0ab8de',

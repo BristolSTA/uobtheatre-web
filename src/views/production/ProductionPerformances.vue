@@ -14,7 +14,6 @@
           (edge) => edge.node
         )"
         :key="performance.id"
-        class="w-full p-4 md:w-1/2 lg:flex-1"
       >
         <performance-overview
           :performance="performance"

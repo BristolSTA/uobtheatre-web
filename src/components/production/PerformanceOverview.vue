@@ -22,24 +22,27 @@
       <template v-if="performance.isOnline">Online</template>
     </div>
     <div>Starting at {{ performance.start | dateFormat('T') }}</div>
+    <div>{{ humanDuration }}</div>
     <div class="text-sm font-semibold">
-      <p v-if="performanceDisabled(performance)">No Tickets Available</p>
+      <p v-if="performanceDisabled">No Tickets Available</p>
       <p v-else>Tickets Available</p>
     </div>
+    <div class="flex-grow"></div>
     <button
       class="w-2/3 mt-4 font-semibold text-center btn btn-rouge btn-outline disabled"
       disabled
-      v-if="performanceDisabled(performance)"
+      v-if="performanceDisabled"
     >
-      {{ disabledReason(performance) }}
+      {{ disabledReason }}
     </button>
-    <router-link
-      to="/"
+    <button
+      @click="onBook"
+      @keypress="onBook"
       class="w-2/3 mt-4 font-semibold text-center btn btn-orange"
       v-else
     >
-      Book
-    </router-link>
+      <slot name="select-button">Book</slot>
+    </button>
   </div>
 </template>
 
