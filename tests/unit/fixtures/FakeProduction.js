@@ -22,6 +22,7 @@ export default () => {
     start: '2020-11-14T00:00:00.000+00:00',
     end: '2020-11-18T00:00:00.000+00:00',
     minSeatPrice: 424,
+    isBookable: true,
     warnings: [{ warning: 'Strobe Lighting' }, { warning: 'Nudity' }],
     performances: {
       edges: [

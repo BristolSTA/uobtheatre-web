@@ -169,6 +169,15 @@ describe('ProductionHeader', function () {
     expect(headerContainer.emitted('scroll-to-tickets').length).to.eq(1);
   });
 
+  // no buy tickets when not bookable
+  it('has the correct address', async () => {
+    await createWithPerformances([{}], {
+      isBookable: false,
+    });
+
+    expect(headerContainer.find('button').exists()).to.be.false;
+  });
+
   let createWithPerformances = (performances, productionOverrides) => {
     let perfs = [];
     performances.forEach((perf) => {

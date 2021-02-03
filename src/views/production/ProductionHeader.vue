@@ -65,6 +65,7 @@
         </span>
       </icon-list-item>
       <button
+        v-if="production.isBookable"
         class="w-full mt-4 font-semibold btn btn-green"
         @click="$emit('scroll-to-tickets')"
         @keydown="$emit('scroll-to-tickets')"
