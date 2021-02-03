@@ -53,7 +53,7 @@ export default {
         capacityRemaining: Int
         ticketOptions: [PerformanceSeatGroupNode]
         minSeatPrice: Int
-        
+
         durationMins: Int
         isInperson: Boolean!
         isOnline: Boolean!

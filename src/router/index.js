@@ -8,6 +8,7 @@ import NotFoundError from '@/views/errors/NotFound.vue';
 import Home from '@/views/Home.vue';
 
 const Venue = () => import('@/views/venues/Venue.vue');
+const Society = () => import('@/views/societies/Society.vue');
 const Production = () => import('@/views/production/Production.vue');
 
 Vue.use(VueRouter);
@@ -28,6 +29,11 @@ const routes = [
     path: '/venues/:venueSlug',
     name: 'venue',
     component: Venue,
+  },
+  {
+    path: '/societies/:societySlug',
+    name: 'society',
+    component: Society,
   },
   {
     path: '/login',

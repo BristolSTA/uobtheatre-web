@@ -6,7 +6,7 @@ import ProductionHeader from '@/views/production/ProductionHeader.vue';
 
 import FakePerformance from '../../fixtures/FakePerformance.js';
 import FakeProduction from '../../fixtures/FakeProduction.js';
-import { fixTextSpacing } from '../../helpers.js';
+import { fixTextSpacing, generateMountOptions } from '../../helpers.js';
 
 describe('ProductionHeader', function () {
   let headerContainer;
@@ -50,6 +50,7 @@ describe('ProductionHeader', function () {
       headerContainer.findAllComponents(RouterLinkStub).at(0).props('to').params
         .societySlug
     ).to.equal('joe-bloggs-productions');
+
     // test combination of two venues
     expect(fixTextSpacing(headerContainer.text())).to.contain(
       'Live at the The New Vic and The Newer Vic'
@@ -189,13 +190,13 @@ describe('ProductionHeader', function () {
     let production = Object.assign(FakeProduction(), productionOverrides);
     production.performances.edges = perfs;
 
-    headerContainer = mount(ProductionHeader, {
-      propsData: {
-        production: production,
-      },
-      stubs: {
-        RouterLink: RouterLinkStub,
-      },
-    });
+    headerContainer = mount(
+      ProductionHeader,
+      generateMountOptions(['router'], {
+        propsData: {
+          production: production,
+        },
+      })
+    );
   };
 });

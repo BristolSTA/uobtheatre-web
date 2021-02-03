@@ -8,6 +8,7 @@ export default () => {
       logo: {
         url: 'http://pathto.example/logo-image.png',
       },
+      slug: 'joe-bloggs-productions',
     },
     posterImage: {
       url: 'http://pathto.example/poster-image.png',

@@ -15,6 +15,7 @@ query upcomingProductions {
         }
         society {
           name
+          slug
         }
         start
         end
