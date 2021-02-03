@@ -39,8 +39,8 @@
         <template v-if="hasInPersonPerformances"
           >Live at the
           <span v-for="(venue, index) in venues" :key="index">
-            <template v-if="index > 0">and</template>
-            <template v-if="index < 3">
+            <template v-if="index < venueOverflow">
+              <template v-if="index > 0">and</template>
               <router-link
                 class="hover:text-gray-300"
                 v-if="venue.publiclyListed"
@@ -53,7 +53,7 @@
               </router-link>
               <template v-else> {{ venue.name }} </template>
             </template>
-            <template v-else>others</template>
+            <template v-if="index == venueOverflow + 1"> and others</template>
           </span>
         </template>
         <template v-if="hasOnlinePerformances && hasInPersonPerformances"
@@ -99,6 +99,11 @@ export default {
     production: {
       required: true,
     },
+  },
+  data() {
+    return {
+      venueOverflow: 3,
+    };
   },
   methods: {
     displayStartEnd,

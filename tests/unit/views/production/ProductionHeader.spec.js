@@ -164,6 +164,60 @@ describe('ProductionHeader', function () {
     );
   });
 
+  it('shows venue overflow', async () => {
+    await createWithPerformances([
+      {
+        venue: {
+          name: 'The Newer Vic',
+          slug: 'the-newer-vic',
+        },
+        isInperson: true,
+        isOnline: true,
+      },
+      {
+        start: Date('2020-11-14'),
+        venue: {
+          name: 'The New Vic',
+          slug: 'the-new-vic',
+        },
+        isInperson: true,
+        isOnline: false,
+      },
+      {
+        start: Date('2020-11-15'),
+        venue: {
+          name: 'Anson Theatre',
+          slug: 'anson-theatre',
+        },
+        isInperson: true,
+        isOnline: false,
+      },
+      {
+        start: Date('2020-11-15'),
+        venue: {
+          name: 'Pegg Rooms',
+          slug: 'pegg-rooms',
+        },
+        isInperson: true,
+        isOnline: false,
+      },
+      {
+        start: Date('2020-11-15'),
+        venue: {
+          name: 'Winston Rooms',
+          slug: 'winston-rooms',
+        },
+        isInperson: true,
+        isOnline: false,
+      },
+    ]);
+
+    // test venue overflow
+    expect(fixTextSpacing(headerContainer.text())).to.contain(
+      'Live at the The Newer Vic and The New Vic and Anson Theatre and others and Online'
+    );
+  });
+
   it('has tickets button that emits event', async () => {
     let button = headerContainer.find('button');
     await button.trigger('click');
