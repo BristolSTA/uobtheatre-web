@@ -32,9 +32,9 @@
           </div>
           <div class="m-2 text-center md:text-left">
             <p>{{ society.description }}</p>
-            <br />
+            <!-- <br />
             <p><strong>Website: </strong>www.{{ society.slug }}.com</p>
-            <p><strong>Contact: </strong>president@{{ society.slug }}.com</p>
+            <p><strong>Contact: </strong>president@{{ society.slug }}.com</p> -->
           </div>
         </div>
 
@@ -96,15 +96,12 @@
 <script>
 import gql from 'graphql-tag';
 
-import { handle404Mixin } from '@/utils';
 import { createClient } from '@/vue-apollo';
 
 export default {
-  name: 'scoiety',
-  mixins: handle404Mixin,
-
+  name: 'society',
   metaInfo() {
-    const societyName = this.scoeity ? this.scoeity.name : 'Loading...';
+    const societyName = this.society ? this.society.name : 'Loading...';
     return {
       title: `${societyName}`,
     };

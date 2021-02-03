@@ -1,11 +1,12 @@
-import { mount, RouterLinkStub } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
+import { RouterLinkStub } from '@vue/test-utils';
 import { expect } from 'chai';
 
 import ProductionHeader from '@/views/production/ProductionHeader.vue';
 
 import FakePerformance from '../../fixtures/FakePerformance.js';
 import FakeProduction from '../../fixtures/FakeProduction.js';
-import { fixTextSpacing } from '../../helpers.js';
+import { fixTextSpacing, mountOptionsWithRouter } from '../../helpers.js';
 
 describe('ProductionHeader', function () {
   let headerContainer;
@@ -161,13 +162,13 @@ describe('ProductionHeader', function () {
     let production = Object.assign(FakeProduction(), productionOverrides);
     production.performances.edges = perfs;
 
-    headerContainer = mount(ProductionHeader, {
-      propsData: {
-        production: production,
-      },
-      stubs: {
-        RouterLink: RouterLinkStub,
-      },
-    });
+    headerContainer = mount(
+      ProductionHeader,
+      mountOptionsWithRouter({
+        propsData: {
+          production: production,
+        },
+      })
+    );
   };
 });

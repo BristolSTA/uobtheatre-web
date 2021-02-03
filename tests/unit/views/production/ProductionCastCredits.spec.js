@@ -6,7 +6,7 @@ import ProductionCastCredits from '@/views/production/ProductionCastCredits.vue'
 
 import FakePerformance from '../../fixtures/FakePerformance';
 import FakeProduction from '../../fixtures/FakeProduction';
-import { fixTextSpacing } from '../../helpers.js';
+import { fixTextSpacing, mountOptionsWithRouter } from '../../helpers.js';
 
 describe('CastCreditsContainer', function () {
   let castCreditsContainer;
@@ -201,13 +201,13 @@ describe('CastCreditsContainer', function () {
     let production = Object.assign(FakeProduction(), productionOverrides);
     production.performances.edges = perfs;
 
-    castCreditsContainer = mount(ProductionCastCredits, {
-      propsData: {
-        production: production,
-      },
-      stubs: {
-        RouterLink: RouterLinkStub,
-      },
-    });
+    castCreditsContainer = mount(
+      ProductionCastCredits,
+      mountOptionsWithRouter({
+        propsData: {
+          production: production,
+        },
+      })
+    );
   };
 });
