@@ -110,14 +110,19 @@ export default {
   },
   computed: {
     venues() {
+      let venues = [];
       if (this.hasInPersonPerformances) {
-        return lo.uniqBy(
+        venues = lo.uniqBy(
           this.production.performances.edges.map((edge) => {
             return edge.node.venue;
           }),
           'name'
         );
-      } else return '';
+      }
+      if (venues.length > this.venueOverflow + 1) {
+        lo.take(venues, this.venueOverflow + 1);
+      }
+      return venues;
     },
     hasOnlinePerformances() {
       return !!this.production.performances.edges.find(
