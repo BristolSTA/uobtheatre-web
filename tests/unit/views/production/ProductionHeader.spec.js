@@ -1,4 +1,5 @@
 import { mount } from '@vue/test-utils';
+import { RouterLinkStub } from '@vue/test-utils';
 import { expect } from 'chai';
 
 import ProductionHeader from '@/views/production/ProductionHeader.vue';
@@ -15,6 +16,8 @@ describe('ProductionHeader', function () {
         start: Date('2020-11-14'),
         venue: {
           name: 'The New Vic',
+          slug: 'the-new-vic',
+          publiclyListed: false,
         },
         isInperson: true,
         isOnline: false,
@@ -24,6 +27,8 @@ describe('ProductionHeader', function () {
         start: Date('2020-11-15'),
         venue: {
           name: 'The Newer Vic',
+          slug: 'the-newer-vic',
+          publiclyListed: true,
         },
         isInperson: true,
         isOnline: false,
@@ -35,11 +40,29 @@ describe('ProductionHeader', function () {
     expect(headerContainer.text()).to.contain('Legally Ginger');
 
     // test correct society performing show
-    expect(headerContainer.text()).to.contain('by Joe Bloggs Productions');
-
+    expect(fixTextSpacing(headerContainer.text())).to.contain(
+      'by Joe Bloggs Productions'
+    );
+    expect(
+      headerContainer.findAllComponents(RouterLinkStub).at(0).props('to').name
+    ).to.equal('society');
+    expect(
+      headerContainer.findAllComponents(RouterLinkStub).at(0).props('to').params
+        .societySlug
+    ).to.equal('joe-bloggs-productions');
     // test combination of two venues
     expect(fixTextSpacing(headerContainer.text())).to.contain(
-      'The New Vic and The Newer Vic'
+      'Live at the The New Vic and The Newer Vic'
+    );
+    expect(
+      headerContainer.findAllComponents(RouterLinkStub).at(1).props('to').name
+    ).to.equal('venue');
+    expect(
+      headerContainer.findAllComponents(RouterLinkStub).at(1).props('to').params
+        .venueSlug
+    ).to.equal('the-newer-vic');
+    expect(headerContainer.findAllComponents(RouterLinkStub).length).to.equal(
+      2
     );
 
     // test production start and end dates
@@ -94,6 +117,8 @@ describe('ProductionHeader', function () {
       {
         venue: {
           name: 'The New Vic',
+          slug: 'the-new-vic',
+          publiclyListed: false,
         },
         isInperson: false,
         isOnline: true,
@@ -101,6 +126,8 @@ describe('ProductionHeader', function () {
       {
         venue: {
           name: 'The Newer Vic',
+          slug: 'the-newer-vic',
+          publiclyListed: true,
         },
         isInperson: false,
         isOnline: true,
@@ -109,29 +136,30 @@ describe('ProductionHeader', function () {
 
     // test online only
     expect(fixTextSpacing(headerContainer.text())).to.contain('View Online');
+    expect(headerContainer.findAllComponents(RouterLinkStub).length).to.equal(
+      1
+    );
   });
 
   it('shows online and in person performances', async () => {
     await createWithPerformances([
       {
         venue: {
-          name: 'New Vic',
-        },
-        isInperson: false,
-        isOnline: true,
-      },
-      {
-        venue: {
-          name: 'New Vic',
+          name: 'The Newer Vic',
+          slug: 'the-newer-vic',
+          publiclyListed: true,
         },
         isInperson: true,
-        isOnline: false,
+        isOnline: true,
       },
     ]);
 
     // test online and live
     expect(fixTextSpacing(headerContainer.text())).to.contain(
-      'Live at the New Vic and Online '
+      'Live at the The Newer Vic and Online '
+    );
+    expect(headerContainer.findAllComponents(RouterLinkStub).length).to.equal(
+      2
     );
   });
 
@@ -155,6 +183,9 @@ describe('ProductionHeader', function () {
     headerContainer = mount(ProductionHeader, {
       propsData: {
         production: production,
+      },
+      stubs: {
+        RouterLink: RouterLinkStub,
       },
     });
   };

@@ -27,9 +27,30 @@
         </p>
       </span>
       <p>
-        <template v-if="hasInPersonPerformances">Live at the</template>
-        <template v-else>View </template>
-        {{ venues }}
+        <template v-if="hasInPersonPerformances"
+          >Live at the
+          <span v-for="(venue, index) in venues" :key="index">
+            <template v-if="index > 0">and</template>
+            <template v-if="index < 3">
+              <router-link
+                class="hover:text-gray-300"
+                v-if="venue.publiclyListed"
+                :to="{
+                  name: 'venue',
+                  params: { venueSlug: venue.slug },
+                }"
+              >
+                {{ venue.name }}
+              </router-link>
+              <template v-else> {{ venue.name }} </template>
+            </template>
+            <template v-else>others</template>
+          </span>
+        </template>
+        <template v-if="hasOnlinePerformances && hasInPersonPerformances"
+          >and Online</template
+        >
+        <template v-if="!hasInPersonPerformances">View Online</template>
       </p>
       <p>
         {{ displayStartEnd(production.start, production.end, 'd MMM') }}
@@ -59,7 +80,7 @@ import humanizeDuration from 'humanize-duration';
 import lo from 'lodash';
 
 import IconListItem from '@/components/ui/IconListItem.vue';
-import { displayStartEnd, joinWithAnd } from '@/utils';
+import { displayStartEnd } from '@/utils';
 
 export default {
   components: { IconListItem },
@@ -74,27 +95,14 @@ export default {
   },
   computed: {
     venues() {
-      if (!this.production.performances.edges.length) return '';
-
-      let venues = [];
       if (this.hasInPersonPerformances) {
-        venues = lo.uniq(
+        return lo.uniqBy(
           this.production.performances.edges.map((edge) => {
-            return edge.node.venue.name;
-          })
+            return edge.node.venue;
+          }),
+          'name'
         );
-
-        if (venues.length > 3) {
-          venues = lo.take(venues, 2);
-          venues.push('others');
-        }
-      }
-
-      if (this.hasOnlinePerformances) {
-        venues = lo.take(venues);
-        venues.push('Online');
-      }
-      return joinWithAnd(venues);
+      } else return '';
     },
     hasOnlinePerformances() {
       return !!this.production.performances.edges.find(
