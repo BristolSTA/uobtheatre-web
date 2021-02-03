@@ -6,7 +6,7 @@ import ProductionCastCredits from '@/views/production/ProductionCastCredits.vue'
 
 import FakePerformance from '../../fixtures/FakePerformance';
 import FakeProduction from '../../fixtures/FakeProduction';
-import { fixTextSpacing, mountOptionsWithRouter } from '../../helpers.js';
+import { fixTextSpacing, generateMountOptions } from '../../helpers.js';
 
 describe('CastCreditsContainer', function () {
   let castCreditsContainer;
@@ -203,7 +203,7 @@ describe('CastCreditsContainer', function () {
 
     castCreditsContainer = mount(
       ProductionCastCredits,
-      mountOptionsWithRouter({
+      generateMountOptions(['router'], {
         propsData: {
           production: production,
         },

@@ -6,8 +6,8 @@ import Home from '@/views/Home.vue';
 
 import {
   fixTextSpacing,
-  mountOptionsWithApollo,
   mountWithRouterMock,
+  generateMountOptions,
   waitFor,
 } from '../helpers';
 
@@ -19,7 +19,7 @@ describe('Home', function () {
     server = makeServer({ environment: 'test' });
     homepageComponent = await mountWithRouterMock(
       Home,
-      mountOptionsWithApollo()
+      generateMountOptions(['apollo'])
     );
   });
   afterEach(() => {
@@ -42,7 +42,7 @@ describe('Home', function () {
 
       homepageComponent = await mountWithRouterMock(
         Home,
-        mountOptionsWithApollo()
+        generateMountOptions(['apollo'])
       );
       splashscreenContainer = homepageComponent.find('#splashscreen');
       await waitFor(() => homepageComponent.vm.featuredProduction);
@@ -94,7 +94,7 @@ describe('Home', function () {
 
       homepageComponent = await mountWithRouterMock(
         Home,
-        mountOptionsWithApollo()
+        generateMountOptions(['apollo'])
       );
 
       await waitFor(() => homepageComponent.vm.upcomingProductions.length > 0);
