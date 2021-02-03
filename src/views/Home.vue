@@ -24,14 +24,18 @@
             >
               {{ featuredProduction.society.name }}
             </router-link>
-            <div class="text-h1">{{ featuredProduction.name }}</div>
+            <div class="text-h1">
+              {{ featuredProduction.name }}
+            </div>
             <div class="text-2xl">
               {{ featuredProduction.start | dateFormat('d MMMM') }} -
               {{ featuredProduction.end | dateFormat('d MMMM y') }}
             </div>
           </router-link>
           <template v-else>
-            <div class="text-4xl">Welcome to {{ $appName }}</div>
+            <div class="text-4xl">
+              Welcome to {{ $appName }}
+            </div>
             <div class="text-2xl">
               The Home of Bristol Student Performing Arts
             </div>
@@ -40,8 +44,13 @@
       </div>
     </div>
 
-    <div class="container mt-4 text-white" ref="whatson">
-      <h1 class="text-h1">What's On</h1>
+    <div
+      ref="whatson"
+      class="container mt-4 text-white"
+    >
+      <h1 class="text-h1">
+        What's On
+      </h1>
       <div
         v-for="(production, index) in upcomingProductionsToShow"
         :key="production.id"
@@ -63,7 +72,7 @@
               :alt="`${production.name} feature image`"
               class="inline-block"
               style="max-height: 300px"
-            />
+            >
           </router-link>
         </div>
         <div
@@ -75,7 +84,8 @@
               name: 'production',
               params: { productionSlug: production.slug },
             }"
-            ><h2 class="font-semibold text-h2 hover:text-gray-300">
+          >
+            <h2 class="font-semibold text-h2 hover:text-gray-300">
               {{ production.name }}
             </h2>
           </router-link>
@@ -92,7 +102,8 @@
               params: { productionSlug: production.slug },
             }"
             class="mt-6 btn btn-rouge"
-            >More Information
+          >
+            More Information
           </router-link>
         </div>
       </div>
@@ -102,7 +113,9 @@
         style="height: 30vh"
       >
         <div class="w-full">
-          <h2 class="text-h2">There are currently no upcoming productions</h2>
+          <h2 class="text-h2">
+            There are currently no upcoming productions
+          </h2>
           <p>Please be sure to check back soon!</p>
         </div>
       </div>
@@ -111,8 +124,11 @@
         class="flex items-center py-10 text-center"
       >
         <div class="w-full">
-          <router-link to="/" class="btn btn-outline btn-orange"
-            >View All Upcoming Productions
+          <router-link
+            to="/"
+            class="btn btn-outline btn-orange"
+          >
+            View All Upcoming Productions
           </router-link>
         </div>
       </div>
@@ -137,7 +153,7 @@ import lo from 'lodash';
 import { displayStartEnd } from '@/utils';
 
 export default {
-  name: 'home',
+  name: 'Home',
   data() {
     return {
       upcomingProductions: [],
