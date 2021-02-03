@@ -53,14 +53,14 @@ describe('AuthBox', function () {
 
   it('loading screen overlays correctly', async () => {
     authBoxComponent = mount(UserAuthBox);
-    expect(authBoxComponent.findComponent({ ref: 'loading_overlay' }).exists())
+    expect(authBoxComponent.findComponent({ ref: 'loading-overlay' }).exists())
       .to.be.false;
 
     await authBoxComponent.setData({
       loading: true,
     });
 
-    expect(authBoxComponent.findComponent({ ref: 'loading_overlay' }).exists())
+    expect(authBoxComponent.findComponent({ ref: 'loading-overlay' }).exists())
       .to.be.true;
   });
 

@@ -6,8 +6,8 @@ import Home from '@/views/Home.vue';
 
 import {
   fixTextSpacing,
-  mountWithRouterMock,
   generateMountOptions,
+  mountWithRouterMock,
   waitFor,
 } from '../helpers';
 

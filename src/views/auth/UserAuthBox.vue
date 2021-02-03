@@ -20,7 +20,7 @@
     </div>
     <div
       v-if="loading"
-      ref="loading_overlay"
+      ref="loading-overlay"
       class="flex items-center justify-center absolute w-full h-full bg-sta-gray-dark bg-opacity-95 top-0 text-white text-3xl z-10"
     >
       <font-awesome-icon class="animate-spin" icon="circle-notch" />

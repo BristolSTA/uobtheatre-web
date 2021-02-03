@@ -137,7 +137,7 @@ import lo from 'lodash';
 import { displayStartEnd } from '@/utils';
 
 export default {
-  name: 'Home',
+  name: 'home',
   data() {
     return {
       upcomingProductions: [],

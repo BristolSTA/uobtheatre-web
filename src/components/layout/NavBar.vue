@@ -31,7 +31,7 @@
         </button>
       </div>
       <div
-        ref="collapsableNavbar"
+        ref="collapsable-navbar"
         class="w-full lg:flex lg:items-center lg:w-auto"
         :class="navHidden ? 'hidden' : 'block'"
       >

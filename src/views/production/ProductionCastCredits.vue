@@ -28,7 +28,7 @@
           class="inline-block max-h-80"
           :src="production.posterImage.url"
           alt="show poster"
-          ref="poster_image"
+          ref="poster-image"
         />
       </div>
       <div class="flex-grow order-3 mt-4 lg:mt-0 lg:order-2">
@@ -39,7 +39,7 @@
       >
         <h3 class="text-xl font-semibold uppercase">Show Information</h3>
         <p v-if="medium"><strong>Medium:</strong> {{ medium }}</p>
-        <p v-if="production.ageRating" ref="age_rating">
+        <p v-if="production.ageRating" ref="age-rating">
           Ages {{ production.ageRating }}+
         </p>
         <div
@@ -71,7 +71,7 @@
           :href="production.facebookEvent"
           class="font-semibold uppercase text-sta-green"
           target="_blank"
-          ref="facebook_link"
+          ref="facebook-link"
         >
           <icon-list-item :icon="['fab', 'facebook']"
             >Facebook Event</icon-list-item
@@ -79,7 +79,7 @@
         >
       </div>
     </div>
-    <div v-else class="flex flex-wrap justify-center" ref="cast_credits">
+    <div v-else class="flex flex-wrap justify-center" ref="cast-credits">
       <div
         class="cast-credit-section lg:w-1/2"
         v-if="this.production.productionTeam.length"

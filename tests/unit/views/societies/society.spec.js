@@ -74,7 +74,7 @@ describe('Society page', function () {
     expect(
       societyPageComponent
         .findComponent({
-          ref: 'society_logo',
+          ref: 'society-logo',
         })
         .attributes('src')
     ).to.equal('http://pathto.example/society-logo.png');

@@ -46,7 +46,7 @@ describe('NavBar', function () {
   });
 
   it('can toggle the mobile navbar', async () => {
-    let navbar = navbarComponent.findComponent({ ref: 'collapsableNavbar' });
+    let navbar = navbarComponent.findComponent({ ref: 'collapsable-navbar' });
     let navbarToggle = navbarComponent.find('button[role="toggle"]');
 
     // Test that it is collapsed by default
