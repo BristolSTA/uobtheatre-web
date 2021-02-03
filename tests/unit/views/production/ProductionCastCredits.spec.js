@@ -1,10 +1,12 @@
 import { mount } from '@vue/test-utils';
+import { RouterLinkStub } from '@vue/test-utils';
 import { expect } from 'chai';
 
 import ProductionCastCredits from '@/views/production/ProductionCastCredits.vue';
 
 import FakePerformance from '../../fixtures/FakePerformance';
 import FakeProduction from '../../fixtures/FakeProduction';
+import { fixTextSpacing } from '../../helpers.js';
 
 describe('CastCreditsContainer', function () {
   let castCreditsContainer;
@@ -58,9 +60,18 @@ describe('CastCreditsContainer', function () {
       expect(castCreditsContainer.text()).to.contain('Ages 18+');
 
       // correct description
-      expect(castCreditsContainer.text()).to.contain(
+      expect(fixTextSpacing(castCreditsContainer.text())).to.contain(
         'A production by Joe Bloggs Productions'
       );
+
+      expect(
+        castCreditsContainer.findAllComponents(RouterLinkStub).at(0).props('to')
+          .name
+      ).to.equal('society');
+      expect(
+        castCreditsContainer.findAllComponents(RouterLinkStub).at(0).props('to')
+          .params.societySlug
+      ).to.equal('joe-bloggs-productions');
 
       // correct facebook link
       let link = castCreditsContainer.findComponent({ ref: 'facebook_link' });
@@ -193,6 +204,9 @@ describe('CastCreditsContainer', function () {
     castCreditsContainer = mount(ProductionCastCredits, {
       propsData: {
         production: production,
+      },
+      stubs: {
+        RouterLink: RouterLinkStub,
       },
     });
   };

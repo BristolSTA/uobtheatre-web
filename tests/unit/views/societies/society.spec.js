@@ -1,3 +1,4 @@
+import { RouterLinkStub } from '@vue/test-utils';
 import { expect } from 'chai';
 import { DateTime } from 'luxon';
 
@@ -40,13 +41,6 @@ describe('Society page', function () {
       end: DateTime.fromISO('2019-10-19'),
       society: testSociety,
     });
-    server.create('ProductionNode', {
-      name: 'Current Humour',
-      slug: 'current-humour',
-      isBookable: false,
-      end: DateTime.fromISO('2018-11-20'),
-      society: testSociety,
-    });
 
     societyPageComponent = await mountWithRouterMock(
       Society,
@@ -63,8 +57,8 @@ describe('Society page', function () {
     server.shutdown();
   });
 
-  it('displays message while loading society', async () => {
-    expect(societyPageComponent.text()).to.contain('Loading Society');
+  it('displays message while loading society', () => {
+    expect(societyPageComponent.text()).to.contain('Loading Society...');
   });
 
   it('fetches the society', async () => {
@@ -98,14 +92,38 @@ describe('Society page', function () {
   });
 
   describe('society production list', () => {
-    let producionTableRows;
+    let links;
+    let tableRows;
     beforeEach(async () => {
       await waitFor(() => societyPageComponent.vm.society);
-      producionTableRows = societyPageComponent.findAll('tr');
+      tableRows = societyPageComponent.findAll('tr');
+      links = societyPageComponent.findAllComponents(RouterLinkStub);
     });
 
     it('correct number of productions', async () => {
-      expect(producionTableRows.length).to.equal(3);
+      expect(tableRows.length).to.equal(2);
+      expect(links.length).to.equal(3);
+    });
+
+    it('table rows have correct text', async () => {
+      expect(tableRows.at(0).text()).to.contain('Bins');
+      expect(tableRows.at(0).text()).to.contain('Book Now');
+
+      expect(tableRows.at(1).text()).to.contain('Centuary');
+      expect(tableRows.at(1).text()).to.contain('October 2019');
+    });
+
+    it('has correct links', async () => {
+      expect(links.at(0).props('to').name).to.equal('production');
+      expect(links.at(0).props('to').params.productionSlug).to.equal('bins');
+
+      expect(links.at(1).props('to').name).to.equal('production.book');
+      expect(links.at(1).props('to').params.productionSlug).to.equal('bins');
+
+      expect(links.at(2).props('to').name).to.equal('production');
+      expect(links.at(2).props('to').params.productionSlug).to.equal(
+        'centuary'
+      );
     });
   });
 

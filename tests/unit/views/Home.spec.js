@@ -67,6 +67,14 @@ describe('Home', function () {
       expect(splashscreenContainer.text()).not.to.contain(
         'Not This One Again...'
       );
+      expect(
+        homepageComponent.findAllComponents(RouterLinkStub).at(1).props('to')
+          .name
+      ).to.equal('society');
+      expect(
+        homepageComponent.findAllComponents(RouterLinkStub).at(1).props('to')
+          .params.societySlug
+      ).to.equal('joe-bloggs-productions');
     });
   });
 
@@ -113,11 +121,11 @@ describe('Home', function () {
       // Link to production
       expect(whatsOnProductions.at(0).find('a').exists()).to.be.true;
       expect(
-        homepageComponent.findAllComponents(RouterLinkStub).at(1).props('to')
+        homepageComponent.findAllComponents(RouterLinkStub).at(2).props('to')
           .name
       ).to.equal('production');
       expect(
-        homepageComponent.findAllComponents(RouterLinkStub).at(1).props('to')
+        homepageComponent.findAllComponents(RouterLinkStub).at(2).props('to')
           .params.productionSlug
       ).to.equal('my-production-without-a-picture');
 

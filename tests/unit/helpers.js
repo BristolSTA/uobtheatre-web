@@ -85,6 +85,9 @@ const mountOptionsWithRouter = function (options = {}) {
 const mountOptionsWithApollo = function (options = {}) {
   return Object.assign(options, {
     apolloProvider: createProvider(),
+    stubs: {
+      RouterLink: RouterLinkStub,
+    },
   });
 };
 
