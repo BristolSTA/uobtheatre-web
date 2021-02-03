@@ -38,7 +38,10 @@
           </div>
         </div>
 
-        <div class="w-full px-1 py-2 md:p-2 md:w-1/2 bg-sta-gray-dark">
+        <div
+          ref="production_list"
+          class="w-full px-1 py-2 md:p-2 md:w-1/2 bg-sta-gray-dark"
+        >
           <h2 class="flex justify-center mb-2 text-2xl">Productions</h2>
           <table class="w-full table-auto">
             <tbody>
@@ -47,8 +50,15 @@
                 v-for="(production, index) in productions"
                 :key="index"
               >
-                <td class="px-4 py-2 text-xl font-semibold">
-                  {{ production.name }}
+                <td class="px-4 py-2 text-xl font-semibold hover:text-gray-300">
+                  <router-link
+                    :to="{
+                      name: 'production',
+                      params: { productionSlug: production.slug },
+                    }"
+                  >
+                    {{ production.name }}
+                  </router-link>
                 </td>
                 <td class="px-4 text-right" v-if="production.isBookable">
                   <router-link
@@ -126,6 +136,7 @@ export default {
                     name
                     end
                     isBookable
+                    slug
                   }
                 }
               }
