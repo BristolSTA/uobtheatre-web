@@ -48,10 +48,6 @@ describe('Venue page', function () {
     server.shutdown();
   });
 
-  it('displays message while loading venue', () => {
-    expect(venuePageComponent.text()).to.contain('Loading Venue...');
-  });
-
   it('fetches the venue', async () => {
     await waitFor(() => venuePageComponent.vm.venue);
     expect(venuePageComponent.vm.venue.name).to.eq('Anson Theatre');

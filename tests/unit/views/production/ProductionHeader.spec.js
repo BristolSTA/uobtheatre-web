@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils';
+import { mount, RouterLinkStub } from '@vue/test-utils';
 import { expect } from 'chai';
 
 import ProductionHeader from '@/views/production/ProductionHeader.vue';
@@ -35,7 +35,16 @@ describe('ProductionHeader', function () {
     expect(headerContainer.text()).to.contain('Legally Ginger');
 
     // test correct society performing show
-    expect(headerContainer.text()).to.contain('by Joe Bloggs Productions');
+    expect(fixTextSpacing(headerContainer.text())).to.contain(
+      'by Joe Bloggs Productions'
+    );
+    expect(
+      headerContainer.findAllComponents(RouterLinkStub).at(0).props('to').name
+    ).to.equal('society');
+    expect(
+      headerContainer.findAllComponents(RouterLinkStub).at(0).props('to').params
+        .societySlug
+    ).to.equal('joe-bloggs-productions');
 
     // test combination of two venues
     expect(fixTextSpacing(headerContainer.text())).to.contain(
@@ -155,6 +164,9 @@ describe('ProductionHeader', function () {
     headerContainer = mount(ProductionHeader, {
       propsData: {
         production: production,
+      },
+      stubs: {
+        RouterLink: RouterLinkStub,
       },
     });
   };
