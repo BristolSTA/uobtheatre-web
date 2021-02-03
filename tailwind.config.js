@@ -50,7 +50,7 @@ module.exports = {
   },
   variants: {
     extend: {
-      backgroundColor: ['checked'],
+      backgroundColor: ['checked', 'odd', 'even'],
     },
   },
   plugins: [],

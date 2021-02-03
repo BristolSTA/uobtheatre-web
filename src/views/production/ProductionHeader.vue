@@ -23,7 +23,16 @@
       <span class="font-semibold text-center md:text-left">
         <span class="text-h2">{{ production.name }}</span>
         <p class="mb-1 -mt-2 text-sta-gray-lighter">
-          {{ production.subtitle }} by {{ production.society.name }}
+          {{ production.subtitle }} by
+          <router-link
+            class="hover:text-gray-500"
+            :to="{
+              name: 'society',
+              params: { societySlug: production.society.slug },
+            }"
+          >
+            {{ production.society.name }}
+          </router-link>
         </p>
       </span>
       <p>
