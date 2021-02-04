@@ -24,16 +24,13 @@
 
       <div class="mt-4 md:my-8 md:container md:flex md:space-x-4">
         <div class="mx-4 md:mx-0 md:w-1/2">
-          <div
-            v-if="society.logo.url"
-            class="flex justify-center p-2"
-          >
+          <div v-if="society.logo.url" class="flex justify-center p-2">
             <img
               ref="society-logo"
               :src="society.logo.url"
               :alt="`${society.name} logo`"
               class="w-32"
-            >
+            />
           </div>
           <div class="m-2 text-center md:text-left">
             <p>{{ society.description }}</p>
@@ -47,9 +44,7 @@
           ref="production-list"
           class="w-full px-1 py-2 md:p-2 md:w-1/2 bg-sta-gray-dark"
         >
-          <h2 class="flex justify-center mb-2 text-2xl">
-            Productions
-          </h2>
+          <h2 class="flex justify-center mb-2 text-2xl">Productions</h2>
           <table class="w-full table-auto">
             <tbody>
               <tr
@@ -67,10 +62,7 @@
                     {{ production.name }}
                   </router-link>
                 </td>
-                <td
-                  v-if="production.isBookable"
-                  class="px-4 text-right"
-                >
+                <td v-if="production.isBookable" class="px-4 text-right">
                   <router-link
                     class="px-3 py-1.5 my-1 text-sm text-center font-semibold btn btn-orange"
                     :to="{
@@ -81,10 +73,7 @@
                     Book Now
                   </router-link>
                 </td>
-                <td
-                  v-else
-                  class="px-4 text-right"
-                >
+                <td v-else class="px-4 text-right">
                   {{ production.end | dateFormat('MMMM y') }}
                 </td>
               </tr>

@@ -12,16 +12,10 @@
         :production="production"
         @scroll-to-tickets="$refs.performances.$el.scrollIntoView()"
       />
-      <hr class="border-t-2 border-sta-gray-dark">
-      <production-cast-credits
-        ref="cast-credits"
-        :production="production"
-      />
-      <hr class="border-t-2 border-sta-gray-dark">
-      <production-performances
-        ref="performances"
-        :production="production"
-      />
+      <hr class="border-t-2 border-sta-gray-dark" />
+      <production-cast-credits ref="cast-credits" :production="production" />
+      <hr class="border-t-2 border-sta-gray-dark" />
+      <production-performances ref="performances" :production="production" />
     </template>
   </div>
 </template>

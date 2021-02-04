@@ -5,9 +5,7 @@
         class="inline-block font-semibold hover:text-sta-rouge"
         :class="{ 'text-sta-rouge': overview }"
       >
-        <clickable-link @click="overview = true">
-          Overview
-        </clickable-link>
+        <clickable-link @click="overview = true"> Overview </clickable-link>
       </li>
       <li
         class="inline-block ml-6 font-semibold hover:text-sta-rouge"
@@ -31,7 +29,7 @@
           class="inline-block max-h-80"
           :src="production.posterImage.url"
           alt="show poster"
-        >
+        />
       </div>
       <div class="flex-grow order-3 mt-4 lg:mt-0 lg:order-2">
         {{ production.description }}
@@ -39,16 +37,9 @@
       <div
         class="flex flex-col flex-none order-2 w-full p-5 space-y-2 bg-sta-gray-dark sm:w-1/2 lg:w-1/3 lg:order-3"
       >
-        <h3 class="text-xl font-semibold uppercase">
-          Show Information
-        </h3>
-        <p v-if="medium">
-          <strong>Medium:</strong> {{ medium }}
-        </p>
-        <p
-          v-if="production.ageRating"
-          ref="age-rating"
-        >
+        <h3 class="text-xl font-semibold uppercase">Show Information</h3>
+        <p v-if="medium"><strong>Medium:</strong> {{ medium }}</p>
+        <p v-if="production.ageRating" ref="age-rating">
           Ages {{ production.ageRating }}+
         </p>
         <div
@@ -58,10 +49,7 @@
         >
           <span class="text-xl font-semibold uppercase">Audience Warnings</span>
           <ul class="list-disc list-inside">
-            <li
-              v-for="(warning, index) in production.warnings"
-              :key="index"
-            >
+            <li v-for="(warning, index) in production.warnings" :key="index">
               {{ warning.warning }}
             </li>
           </ul>
@@ -85,23 +73,18 @@
           class="font-semibold uppercase text-sta-green"
           target="_blank"
         >
-          <icon-list-item
-            :icon="['fab', 'facebook']"
-          >Facebook Event</icon-list-item></a>
+          <icon-list-item :icon="['fab', 'facebook']">
+            Facebook Event
+          </icon-list-item>
+        </a>
       </div>
     </div>
-    <div
-      v-else
-      ref="cast-credits"
-      class="flex flex-wrap justify-center"
-    >
+    <div v-else ref="cast-credits" class="flex flex-wrap justify-center">
       <div
         v-if="production.productionTeam.length"
         class="cast-credit-section lg:w-1/2"
       >
-        <h1 class="crew-section-header">
-          Production Team
-        </h1>
+        <h1 class="crew-section-header">Production Team</h1>
         <div class="flex flex-wrap justify-center">
           <div
             v-for="(groups, groupsIndex) in productionTeamSplit"
@@ -116,23 +99,15 @@
               <h4 class="font-semibold uppercase">
                 {{ group[0].role }}
               </h4>
-              <p
-                v-for="(member, gIndex) in group"
-                :key="gIndex"
-              >
+              <p v-for="(member, gIndex) in group" :key="gIndex">
                 {{ member.name }}
               </p>
             </div>
           </div>
         </div>
       </div>
-      <div
-        v-if="production.crew.length"
-        class="cast-credit-section lg:w-1/2"
-      >
-        <h1 class="uppercase crew-section-header">
-          Crew
-        </h1>
+      <div v-if="production.crew.length" class="cast-credit-section lg:w-1/2">
+        <h1 class="uppercase crew-section-header">Crew</h1>
         <div class="flex flex-wrap justify-center">
           <div
             v-for="(groups, groupsIndex) in crewGroupedSplit"
@@ -147,38 +122,27 @@
               <h4 class="font-semibold uppercase">
                 {{ group[0].role.department }}
               </h4>
-              <p
-                v-for="(member, gIndex) in group"
-                :key="gIndex"
-              >
+              <p v-for="(member, gIndex) in group" :key="gIndex">
                 {{ member.name }}
               </p>
             </div>
           </div>
         </div>
       </div>
-      <div
-        v-if="production.cast.length"
-        class="w-full p-4 text-center"
-      >
-        <h1 class="uppercase crew-section-header">
-          Cast
-        </h1>
+      <div v-if="production.cast.length" class="w-full p-4 text-center">
+        <h1 class="uppercase crew-section-header">Cast</h1>
         <div class="flex flex-wrap justify-center space-y-4">
           <div
             v-for="(member, index) in sortedCast"
             :key="index"
             class="flex items-center w-full px-2 sm:justify-center sm:w-1/3 md:w-1/4 xl:w-1/5 production-cast-member"
           >
-            <div
-              v-if="member.profilePicture"
-              class="flex-none w-20"
-            >
+            <div v-if="member.profilePicture" class="flex-none w-20">
               <img
                 class="rounded-full"
                 :src="member.profilePicture.url"
                 alt="profile image"
-              >
+              />
             </div>
             <div class="flex-grow text-center">
               <p>

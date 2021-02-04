@@ -1,9 +1,6 @@
 <template>
   <div class="relative shadow-2xl bg-sta-gray w-80">
-    <div
-      role="navigation"
-      class="flex items-center space-x-1"
-    >
+    <div role="navigation" class="flex items-center space-x-1">
       <button
         class="w-1/2 py-3 font-semibold rounded-none focus:outline-none"
         :class="[login ? 'bg-sta-orange' : 'bg-gray-200']"
@@ -26,10 +23,7 @@
       ref="loading-overlay"
       class="absolute top-0 z-10 flex items-center justify-center w-full h-full text-3xl text-white bg-sta-gray-dark bg-opacity-95"
     >
-      <font-awesome-icon
-        class="animate-spin"
-        icon="circle-notch"
-      />
+      <font-awesome-icon class="animate-spin" icon="circle-notch" />
     </div>
     <form
       v-if="login"
@@ -55,16 +49,13 @@
         autocomplete="current-password"
         :errors="login_errors"
       />
-      <label
-        for="remember_me"
-        class="flex items-center space-x-2"
-      >
+      <label for="remember_me" class="flex items-center space-x-2">
         <input
           id="remember_me"
           v-model="remember_me"
           type="checkbox"
           class="w-5 h-5 border rounded-sm border-sta-grey focus:outline-none"
-        >
+        />
         <span class="text-xs font-semibold text-white">Remember me?</span>
       </label>
 
@@ -75,7 +66,7 @@
         Log In
       </button>
 
-      <hr class="border-t-2 border-sta-gray-dark">
+      <hr class="border-t-2 border-sta-gray-dark" />
 
       <p class="mt-2 text-white">
         <clickable-link @click="$emit('go-signup')">
@@ -83,18 +74,13 @@
         </clickable-link>
       </p>
       <p>
-        <a
-          href="/login"
-          class="text-sta-orange hover:text-sta-orange-dark"
-        >Forgot your password?
+        <a href="/login" class="text-sta-orange hover:text-sta-orange-dark">
+          Forgot your password?
         </a>
       </p>
     </form>
 
-    <form
-      v-else
-      class="flex flex-col p-6 space-y-2"
-    >
+    <form v-else class="flex flex-col p-6 space-y-2">
       <!-- TODO: Implement -->
       Currently unavailable...
       <!-- <text-input name="Full Name" v-model="name" autocomplete="name" />

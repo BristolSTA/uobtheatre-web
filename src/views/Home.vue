@@ -33,9 +33,7 @@
             </div>
           </router-link>
           <template v-else>
-            <div class="text-4xl">
-              Welcome to {{ $appName }}
-            </div>
+            <div class="text-4xl">Welcome to {{ $appName }}</div>
             <div class="text-2xl">
               The Home of Bristol Student Performing Arts
             </div>
@@ -44,13 +42,8 @@
       </div>
     </div>
 
-    <div
-      ref="whatson"
-      class="container mt-4 text-white"
-    >
-      <h1 class="text-h1">
-        What's On
-      </h1>
+    <div ref="whatson" class="container mt-4 text-white">
+      <h1 class="text-h1">What's On</h1>
       <div
         v-for="(production, index) in upcomingProductionsToShow"
         :key="production.id"
@@ -72,7 +65,7 @@
               :alt="`${production.name} feature image`"
               class="inline-block"
               style="max-height: 300px"
-            >
+            />
           </router-link>
         </div>
         <div
@@ -113,9 +106,7 @@
         style="height: 30vh"
       >
         <div class="w-full">
-          <h2 class="text-h2">
-            There are currently no upcoming productions
-          </h2>
+          <h2 class="text-h2">There are currently no upcoming productions</h2>
           <p>Please be sure to check back soon!</p>
         </div>
       </div>
@@ -124,10 +115,7 @@
         class="flex items-center py-10 text-center"
       >
         <div class="w-full">
-          <router-link
-            to="/"
-            class="btn btn-outline btn-orange"
-          >
+          <router-link to="/" class="btn btn-outline btn-orange">
             View All Upcoming Productions
           </router-link>
         </div>

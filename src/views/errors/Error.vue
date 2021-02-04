@@ -4,21 +4,14 @@
       <div class="text-left">
         <slot>
           <h1 class="text-h1">
-            <slot name="title">
-              Oops!
-            </slot>
+            <slot name="title"> Oops! </slot>
           </h1>
           <h2 class="text-h2">
-            <slot name="subtitle">
-              404 - Page Not found
-            </slot>
+            <slot name="subtitle"> 404 - Page Not found </slot>
           </h2>
         </slot>
       </div>
-      <div
-        v-if="buttonTo"
-        class="mt-4"
-      >
+      <div v-if="buttonTo" class="mt-4">
         <router-link
           :to="buttonTo"
           class="font-semibold btn btn-outline btn-orange font"

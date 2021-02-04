@@ -9,11 +9,13 @@
       :value="value"
       :autocomplete="autocomplete"
       @input="onInput"
-    >
+    />
     <span
       v-if="errors && errors.has(inputId)"
       class="text-xs font-semibold text-sta-rouge"
-    >{{ errors.get(inputId) }}</span>
+    >
+      {{ errors.get(inputId) }}
+    </span>
   </label>
 </template>
 

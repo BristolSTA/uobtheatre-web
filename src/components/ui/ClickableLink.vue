@@ -7,7 +7,9 @@
         e.target.click();
       }
     "
-  ><slot /></a>
+  >
+    <slot></slot>
+  </a>
 </template>
 
 <script>

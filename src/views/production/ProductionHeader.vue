@@ -8,14 +8,14 @@
         class="w-full p-8"
         :src="production.featuredImage.url"
         :alt="`${production.name} feature image`"
-      >
+      />
       <img
         v-if="production.society.logo"
         ref="society-image"
         :src="production.society.logo.url"
         :alt="`${production.society.name} logo`"
         class="absolute bottom-0 left-0 w-20"
-      >
+      />
     </div>
     <div
       class="flex flex-col items-center w-full px-10 text-white md:block md:text-left md:w-auto md:max-w-md"
@@ -38,10 +38,7 @@
       <p>
         <template v-if="hasInPersonPerformances">
           Live at the
-          <span
-            v-for="(venue, index) in venues"
-            :key="index"
-          >
+          <span v-for="(venue, index) in venues" :key="index">
             <template v-if="index < venueOverflow">
               <template v-if="index > 0">and</template>
               <router-link
@@ -62,23 +59,15 @@
         <template v-if="hasOnlinePerformances && hasInPersonPerformances">
           and Online
         </template>
-        <template v-if="!hasInPersonPerformances">
-          View Online
-        </template>
+        <template v-if="!hasInPersonPerformances"> View Online </template>
       </p>
       <p>
         {{ displayStartEnd(production.start, production.end, 'd MMM') }}
       </p>
-      <icon-list-item
-        v-if="duration"
-        icon="clock"
-      >
+      <icon-list-item v-if="duration" icon="clock">
         {{ duration }}
       </icon-list-item>
-      <icon-list-item
-        v-if="production.minSeatPrice"
-        icon="ticket-alt"
-      >
+      <icon-list-item v-if="production.minSeatPrice" icon="ticket-alt">
         Tickets available from
         <span class="font-semibold">
           £{{ (production.minSeatPrice / 100).toFixed(2) }}

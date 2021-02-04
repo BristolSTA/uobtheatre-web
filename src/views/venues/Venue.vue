@@ -7,9 +7,7 @@
       Loading Venue...
     </div>
     <template v-else>
-      <h1 class="container pt-2 text-left text-h1">
-        The {{ venue.name }}
-      </h1>
+      <h1 class="container pt-2 text-left text-h1">The {{ venue.name }}</h1>
       <div class="flex flex-wrap items-center justify-center mt-2 lg:mb-8">
         <div
           class="flex flex-col items-center w-full px-8 text-justify md:block md:w-auto md:max-w-md"
@@ -22,7 +20,7 @@
             class="w-full p-3 md:p-0"
             :src="venue.image.url"
             :alt="`${venue.name} image`"
-          >
+          />
         </div>
       </div>
       <div class="flex flex-wrap items-center justify-center">
@@ -30,23 +28,15 @@
           class="flex justify-center w-full p-4 space-y-1 lg:w-1/4 lg:order-last lg:mb-0 lg:ml-4 bg-sta-gray-dark"
         >
           <div>
-            <h2 class="text-3xl font-semibold text-sta-orange">
-              Venue Info:
-            </h2>
+            <h2 class="text-3xl font-semibold text-sta-orange">Venue Info:</h2>
             <table class="table-auto">
               <tbody>
                 <tr>
-                  <th class="pb-2 pr-2 align-top">
-                    Capacity:
-                  </th>
-                  <td class="align-top">
-                    Max {{ venue.internalCapacity }}
-                  </td>
+                  <th class="pb-2 pr-2 align-top">Capacity:</th>
+                  <td class="align-top">Max {{ venue.internalCapacity }}</td>
                 </tr>
                 <tr>
-                  <th class="pr-2 align-top">
-                    Address:
-                  </th>
+                  <th class="pr-2 align-top">Address:</th>
                   <td class="align-top">
                     <div ref="address">
                       <p v-if="venue.address.buildingName">
@@ -67,13 +57,9 @@
               </tbody>
             </table>
             <div class="text-sm font-semibold text-sta-orange">
-              <a
-                target="_blank"
-                :href="googleMapsLink"
-              >
-                <icon-list-item
-                  icon="map-marked-alt"
-                >Open in Google Maps
+              <a target="_blank" :href="googleMapsLink">
+                <icon-list-item icon="map-marked-alt">
+                  Open in Google Maps
                 </icon-list-item>
               </a>
             </div>
@@ -84,10 +70,7 @@
           ref="mapContainer"
           class="flex justify-center w-full lg:w-3/5 h-96 lg:mb-4"
         >
-          <div
-            ref="venue-map"
-            class="w-full"
-          />
+          <div ref="venue-map" class="w-full"></div>
         </div>
       </div>
     </template>

@@ -1,9 +1,7 @@
 <template>
   <div class="container my-6 text-white">
     <div class="text-center">
-      <h1 class="text-h2">
-        Dates and Times
-      </h1>
+      <h1 class="text-h2">Dates and Times</h1>
     </div>
     <div
       v-if="!production.performances.edges.length"
@@ -11,10 +9,7 @@
     >
       No Upcoming Performances
     </div>
-    <div
-      v-else
-      class="flex flex-wrap justify-center"
-    >
+    <div v-else class="flex flex-wrap justify-center">
       <div
         v-for="performance in production.performances.edges.map(
           (edge) => edge.node
@@ -47,18 +42,12 @@
             <template v-if="performance.isOnline && performance.isInperson">
               and
             </template>
-            <template v-if="performance.isOnline">
-              Online
-            </template>
+            <template v-if="performance.isOnline"> Online </template>
           </div>
           <div>Starting at {{ performance.start | dateFormat('T') }}</div>
           <div class="text-sm font-semibold">
-            <p v-if="performanceDisabled(performance)">
-              No Tickets Available
-            </p>
-            <p v-else>
-              Tickets Available
-            </p>
+            <p v-if="performanceDisabled(performance)">No Tickets Available</p>
+            <p v-else>Tickets Available</p>
           </div>
           <button
             v-if="performanceDisabled(performance)"

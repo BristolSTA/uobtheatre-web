@@ -1,8 +1,6 @@
 <template>
   <error>
-    <template v-slot:subtitle>
-      404 - Page Not Found
-    </template>
+    <template v-slot:subtitle> 404 - Page Not Found </template>
   </error>
 </template>
 
