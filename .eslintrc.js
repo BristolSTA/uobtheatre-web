@@ -58,6 +58,27 @@ module.exports = {
         },
       },
     ],
+    'vue/attributes-order': [
+      'error',
+      {
+        order: [
+          'DEFINITION',
+          'LIST_RENDERING',
+          'CONDITIONALS',
+          'TWO_WAY_BINDING',
+          'SLOT',
+          'RENDER_MODIFIERS',
+          'GLOBAL',
+          'UNIQUE',
+          'OTHER_ATTR',
+          'TWO_WAY_BINDING',
+          'OTHER_DIRECTIVES',
+          'EVENTS',
+          'CONTENT',
+        ],
+        alphabetical: false,
+      },
+    ],
   },
   plugins: ['prettier', 'vue-a11y', 'simple-import-sort', 'graphql'],
   overrides: [

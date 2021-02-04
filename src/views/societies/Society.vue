@@ -14,10 +14,8 @@
         }"
       >
         <div class="flex items-center bg-black bg-opacity-40">
-          <div class="container px-4 lg:w-2/3">
-            <div class="text-4xl font-semibold">
-              {{ society.name }}
-            </div>
+          <div class="container px-4 text-4xl font-semibold lg:w-2/3">
+            {{ society.name }}
           </div>
         </div>
       </div>

@@ -12,9 +12,9 @@
       <img
         v-if="production.society.logo"
         ref="society-image"
+        class="absolute bottom-0 left-0 w-20"
         :src="production.society.logo.url"
         :alt="`${production.society.name} logo`"
-        class="absolute bottom-0 left-0 w-20"
       />
     </div>
     <div

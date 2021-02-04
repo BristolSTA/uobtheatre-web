@@ -37,24 +37,24 @@
         <p>Error: {{ login_errors.getGenericErrors()[0] }}</p>
       </div>
       <text-input
-        v-model="email"
         name="Email"
         autocomplete="email"
         :errors="login_errors"
+        v-model="email"
       />
       <text-input
-        v-model="password"
         name="Password"
         type="password"
         autocomplete="current-password"
         :errors="login_errors"
+        v-model="password"
       />
       <label for="remember_me" class="flex items-center space-x-2">
         <input
           id="remember_me"
-          v-model="remember_me"
           type="checkbox"
           class="w-5 h-5 border rounded-sm border-sta-grey focus:outline-none"
+          v-model="remember_me"
         />
         <span class="text-xs font-semibold text-white">Remember me?</span>
       </label>
