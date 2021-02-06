@@ -37,7 +37,7 @@
       </span>
       <p>
         <template v-if="hasInPersonPerformances"
-          >Live at the
+          >Live at
           <span v-for="(venue, index) in venues" :key="index">
             <template v-if="index < venueOverflow">
               <template v-if="index > 0">and</template>
