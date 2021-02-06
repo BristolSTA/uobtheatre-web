@@ -7,7 +7,7 @@
       Loading Venue...
     </div>
     <template v-else>
-      <h1 class="container pt-2 text-left text-h1">The {{ venue.name }}</h1>
+      <h1 class="container pt-2 text-left text-h1">{{ venue.name }}</h1>
       <div class="flex flex-wrap items-center justify-center mt-2 lg:mb-8">
         <div
           class="flex flex-col items-center w-full px-8 text-justify md:block md:w-auto md:max-w-md"
