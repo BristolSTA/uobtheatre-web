@@ -1,6 +1,8 @@
-import { productionService } from '@/services';
+import gql from 'graphql-tag';
+
+import ProductionFragment from '@/graphql/fragments/ProductionFragment.gql';
 import store from '@/store';
-import { handle404 } from '@/utils';
+import { createClient } from '@/vue-apollo';
 
 /**
  * @param {object} routeOptions Route Options
@@ -27,17 +29,34 @@ export function routeWithBindings(routeOptions, bindings) {
 /**
  * Automatically injectionsd the production prop based on productionSlug
  *
- * @param {object} to Vue Route
- * @param {Function} next Vue Router Closure
+ * @param {any} query Optional GraphQL query to override default
  * @returns {Promise} API Service Promise
  */
-export function bindProductionSlug(to, next) {
-  return productionService
-    .fetchProductionBySlug(to.params.productionSlug)
-    .then((production) => {
-      to.params.production = production;
-    })
-    .catch((err) => {
-      handle404(err, next);
-    });
+export function bindProductionSlug(query = null) {
+  return (to, next) => {
+    if (!query) {
+      query = gql`
+        query production($slug: String!) {
+          production(slug: $slug) {
+            ...ProductionBasicInfo
+          }
+        }
+        ${ProductionFragment}
+      `;
+    }
+    let { apolloClient } = createClient();
+
+    return apolloClient
+      .query({
+        query: query,
+        variables: {
+          slug: to.params.productionSlug,
+        },
+      })
+      .then((result) => {
+        let production = result.data.production;
+        if (!production) return next({ name: '404' });
+        to.params.production = production;
+      });
+  };
 }

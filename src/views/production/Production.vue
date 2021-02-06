@@ -21,8 +21,6 @@
 </template>
 
 <script>
-import { handle404Mixin } from '@/utils';
-
 import ProductionCastCredits from './ProductionCastCredits.vue';
 import ProductionHeader from './ProductionHeader.vue';
 import ProductionPerformances from './ProductionPerformances.vue';
@@ -33,7 +31,6 @@ export default {
     ProductionPerformances,
   },
   name: 'production',
-  mixins: [handle404Mixin],
   metaInfo() {
     const productionName = this.production
       ? this.production.name
@@ -45,19 +42,6 @@ export default {
   props: {
     production: {
       required: true,
-    },
-  },
-  apollo: {
-    production: {
-      query: require('./Production.gql'),
-      variables() {
-        return {
-          slug: this.$route.params.productionSlug,
-        };
-      },
-      result(result) {
-        this.check404(result.data.production);
-      },
     },
   },
 };

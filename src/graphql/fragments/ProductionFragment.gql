@@ -1,0 +1,41 @@
+fragment ProductionBasicInfo on ProductionNode {
+  name
+  subtitle
+  description
+  society {
+    name
+    slug
+    logo {
+      url
+    }
+  }
+  featuredImage {
+    url
+  }
+  ageRating
+  slug
+  start
+  end
+  minSeatPrice
+  warnings {
+    warning
+  }
+  performances {
+    edges {
+      node {
+        id
+        venue {
+          name
+          slug
+        }
+        disabled
+        doorsOpen
+        start
+        end
+        durationMins
+        soldOut
+      }
+    }
+  }
+  isBookable
+}

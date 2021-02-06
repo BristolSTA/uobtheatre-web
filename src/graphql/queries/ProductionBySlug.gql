@@ -1,0 +1,61 @@
+query productionBySlug($slug: String!) {
+  production(slug: $slug) {
+    name
+    subtitle
+    description
+    society {
+      name
+      slug
+      logo {
+        url
+      }
+    }
+    featuredImage {
+      url
+    }
+    ageRating
+    facebookEvent
+    slug
+    start
+    end
+    minSeatPrice
+    warnings {
+      warning
+    }
+    performances {
+      edges {
+        node {
+          venue {
+            name
+            slug
+            publiclyListed
+          }
+          doorsOpen
+          start
+          end
+          durationMins
+          isOnline
+          isInperson
+        }
+      }
+    }
+    isBookable
+    crew {
+      name
+      role {
+        department
+      }
+    }
+    cast {
+      name
+      role
+      profilePicture {
+        url
+      }
+    }
+    productionTeam {
+      name
+      role
+    }
+  }
+}

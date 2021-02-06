@@ -72,7 +72,7 @@
         <span class="font-semibold"> £{{ production.minSeatPrice }} </span>
       </icon-list-item>
       <button
-        v-if="showBuyTicketsButton || production.isBookable"
+        v-if="showBuyTicketsButton && production.isBookable"
         class="w-full mt-4 font-semibold btn btn-green"
         @click="$emit('on-buy-tickets-click')"
         @keypress="$emit('on-buy-tickets-click')"
@@ -110,41 +110,39 @@ export default {
     };
   },
   computed: {
-    computed: {
-      venues() {
-        let venues = [];
-        if (this.hasInPersonPerformances) {
-          venues = lo.uniqBy(
-            this.production.performances.edges.map((edge) => {
-              return edge.node.venue;
-            }),
-            'name'
-          );
-        }
-        lo.take(venues, this.venueOverflow + 1);
-        return venues;
-      },
-      hasOnlinePerformances() {
-        return !!this.production.performances.edges.find(
-          (edge) => edge.node.isOnline
+    venues() {
+      let venues = [];
+      if (this.hasInPersonPerformances) {
+        venues = lo.uniqBy(
+          this.production.performances.edges.map((edge) => {
+            return edge.node.venue;
+          }),
+          'name'
         );
-      },
-      hasInPersonPerformances() {
-        return !!this.production.performances.edges.find(
-          (edge) => edge.node.isInperson
-        );
-      },
-      duration() {
-        if (!this.production.performances.edges.length) return;
-        return humanizeDuration(
-          lo
-            .chain(this.production.performances.edges.map((edge) => edge.node))
-            .minBy('durationMins')
-            .value().durationMins *
-            60 *
-            1000
-        );
-      },
+      }
+      lo.take(venues, this.venueOverflow + 1);
+      return venues;
+    },
+    hasOnlinePerformances() {
+      return !!this.production.performances.edges.find(
+        (edge) => edge.node.isOnline
+      );
+    },
+    hasInPersonPerformances() {
+      return !!this.production.performances.edges.find(
+        (edge) => edge.node.isInperson
+      );
+    },
+    duration() {
+      if (!this.production.performances.edges.length) return;
+      return humanizeDuration(
+        lo
+          .chain(this.production.performances.edges.map((edge) => edge.node))
+          .minBy('durationMins')
+          .value().durationMins *
+          60 *
+          1000
+      );
     },
   },
 };

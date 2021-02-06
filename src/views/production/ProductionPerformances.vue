@@ -9,7 +9,7 @@
     </div>
     <div v-else class="flex flex-wrap justify-center lg:flex-nowrap">
       <div
-        class="w-full performance md:w-1/2 lg:w-1/3 2xl:w-1/4"
+        class="w-full p-2 performance md:w-1/2 lg:w-1/3 2xl:w-1/4"
         v-for="performance in production.performances.edges.map(
           (edge) => edge.node
         )"
