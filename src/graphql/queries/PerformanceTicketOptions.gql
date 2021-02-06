@@ -1,0 +1,21 @@
+query performanceTicketOptions($id: ID!) {
+  performance(id: $id) {
+    capacityRemaining
+    ticketOptions {
+      capacityRemaining
+      seatGroup {
+        id
+        name
+        description
+      }
+      concessionTypes {
+        concessionType {
+          id
+          name
+          description
+        }
+        price
+      }
+    }
+  }
+}

@@ -14,7 +14,7 @@
         :ticket_option="ticket_option"
         :group_capacity_remaining="
           ticket_matrix.capacityRemainingForSeatGroup(
-            ticket_option.seat_group.id
+            ticket_option.seatGroup.id
           )
         "
         :expanded="
@@ -62,7 +62,7 @@
                 <td class="p-2">{{ ticket.concession_type.name }}</td>
                 <td class="p-2 text-center">{{ ticket.number }}</td>
                 <td class="p-2 text-right">
-                  £{{ (ticket.total_price / 100).toFixed(2) }}
+                  £{{ (ticket.totalPrice / 100).toFixed(2) }}
                 </td>
               </tr>
             </tbody>
@@ -112,13 +112,13 @@
 
 <script>
 //TODO: Handle Errors
+import gql from 'graphql-tag';
 import lo from 'lodash';
 
 import Booking from '@/classes/Booking';
 import Ticket from '@/classes/Ticket';
 import SeatGroup from '@/components/booking/SeatGroup.vue';
-import { bookingService, performanceService } from '@/services';
-import { runPromiseWithLoading } from '@/utils';
+import BookingFragments from '@/graphql/fragments/BookingFragments.gql';
 
 export default {
   name: 'ticket-selection-stage',
@@ -145,60 +145,100 @@ export default {
     };
   },
   created() {
-    runPromiseWithLoading(
-      performanceService
-        .fetchGroupDiscountOptionsForPerformance(
-          this.production.slug,
-          this.booking.performance.id
-        )
-        .then((results) => {
-          this.discounts = results;
-        })
-    );
+    // runPromiseWithLoading(
+    //   performanceService
+    //     .fetchGroupDiscountOptionsForPerformance(
+    //       this.production.slug,
+    //       this.booking.performance.id
+    //     )
+    //     .then((results) => {
+    //       this.discounts = results;
+    //     })
+    // );
   },
   methods: {
-    onAddTicket(location, concession_type, number = 1) {
+    onAddTicket(seat_group, concession_type, number = 1) {
       this.booking.addTicket(
-        new Ticket(location.id, concession_type.id),
+        new Ticket(seat_group.id, concession_type.id),
         this.ticket_matrix,
         number
       );
       this.interaction_timer();
     },
-    onSetTicketNum(location, concession_type, number) {
+    onSetTicketNum(seat_group, concession_type, number) {
       this.booking.setTicketCount(
-        location,
+        seat_group,
         concession_type,
         number,
         this.ticket_matrix
       );
       this.interaction_timer();
     },
-    onRemoveTicket(location, concession_type) {
-      this.booking.removeTicket(location, concession_type, this.ticket_matrix);
+    onRemoveTicket(seat_group, concession_type) {
+      this.booking.removeTicket(
+        seat_group,
+        concession_type,
+        this.ticket_matrix
+      );
       this.interaction_timer();
     },
     async updateAPI() {
-      let bookingResponse;
-
-      if (!this.booking.id) {
-        // We haven't got a booking yet, lets create one
-        bookingResponse = await bookingService.startNewBooking(
-          this.booking.performance.id,
-          this.booking.toAPIData().tickets
-        );
-      } else {
-        // We have a booking, lets update it
-        bookingResponse = await bookingService.updateBooking(
-          this.booking.id,
-          this.booking.toAPIData().tickets
-        );
-      }
-
-      // Check for changes since API called
-      if (this.booking.tickets.length == bookingResponse.tickets.length) {
-        return this.booking.updateFromAPIData(bookingResponse);
-      }
+      this.$apollo
+        .mutate({
+          mutation: gql`
+            mutation($performanceID: ID!, $tickets: [CreateTicketInput]) {
+              createBooking(performanceId: $performanceID, tickets: $tickets) {
+                id
+                tickets {
+                  id
+                  seatGroup {
+                    id
+                    name
+                  }
+                  concessionType {
+                    id
+                    name
+                  }
+                }
+                priceBreakdown {
+                  ...AllPriceBreakdown
+                }
+              }
+            }
+            ${BookingFragments}
+          `,
+          variables: {
+            performanceID: this.booking.performance.id,
+            tickets: this.booking.toAPIData().tickets,
+          },
+        })
+        .then(({ data }) => {
+          if (
+            this.booking.tickets.length == data.createBooking.tickets.length
+          ) {
+            return this.booking.updateFromAPIData(data.createBooking);
+          } else {
+            this.interaction_timer();
+          }
+        });
+      // let bookingResponse;
+      // if (!this.booking.id) {
+      //   // We haven't got a booking yet, lets create one
+      //   bookingResponse = await bookingService.startNewBooking(
+      //     this.booking.performance.id,
+      //     this.booking.toAPIData().tickets
+      //   );
+      // } else {
+      //   // We have a booking, lets update it
+      //   bookingResponse = await bookingService.updateBooking(
+      //     this.booking.id,
+      //     this.booking.toAPIData().tickets
+      //   );
+      // }
+      // // Check for changes since API called
+      // if (this.booking.tickets.length == bookingResponse.tickets.length) {
+      //   return this.booking.updateFromAPIData(bookingResponse);
+      // }
     },
   },
 };

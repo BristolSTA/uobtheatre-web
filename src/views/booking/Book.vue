@@ -53,11 +53,10 @@
 import Booking from '@/classes/Booking';
 import BookingStage from '@/classes/BookingStage';
 import TicketsMatrix from '@/classes/TicketsMatrix';
+// import TicketsMatrix from '@/classes/TicketsMatrix';
 import BookingNavigation from '@/components/booking/BookingNavigation.vue';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
 import ClickableLink from '@/components/ui/ClickableLink.vue';
-import { performanceService } from '@/services';
-import { runPromiseWithLoading } from '@/utils';
 
 import { getNextStage, getPreviousStage, getStageIndex } from './bookingStages';
 export default {
@@ -130,21 +129,25 @@ export default {
     loadDataForStage() {
       if (this.$route.params.performanceID) {
         if (!this.booking.performance) {
-          this.booking.performance = this.production.performances.find(
-            (performance) => performance.id === this.$route.params.performanceID
-          );
+          this.booking.performance = this.production.performances.edges
+            .map((edge) => edge.node)
+            .find(
+              (performance) =>
+                performance.id === this.$route.params.performanceID
+            );
         }
+
         if (!this.ticket_matrix) {
-          runPromiseWithLoading(
-            performanceService
-              .fetchTicketOptionsForPerformance(
-                this.production.slug,
-                this.booking.performance.id
-              )
-              .then((result) => {
-                this.ticket_matrix = new TicketsMatrix(result);
-              })
-          );
+          this.$apollo
+            .query({
+              query: require('@/graphql/queries/PerformanceTicketOptions.gql'),
+              variables: {
+                id: this.booking.performance.id,
+              },
+            })
+            .then((result) => {
+              this.ticket_matrix = new TicketsMatrix(result.data.performance);
+            });
         }
       }
     },

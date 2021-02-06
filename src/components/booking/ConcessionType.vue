@@ -2,12 +2,16 @@
   <div class="text-white">
     <div class="flex items-center p-2">
       <div class="w-3/4 pl-2">
-        <p class="font-semibold">{{ concession_type.name }}</p>
-        <p class="text-sm">{{ concession_type.description }}</p>
+        <p class="font-semibold">
+          {{ concession_type_edge.concessionType.name }}
+        </p>
+        <p class="text-sm">
+          {{ concession_type_edge.concessionType.description }}
+        </p>
       </div>
       <div class="flex-col w-1/2 space-y-1 sm:w-1/4">
         <div class="flex justify-center font-semibold font">
-          £{{ (concession_type.price / 100).toFixed(2) }}
+          £{{ (concession_type_edge.price / 100).toFixed(2) }}
         </div>
         <div class="flex justify-center space-x-1">
           <button
@@ -30,7 +34,7 @@
               (event) => {
                 if (
                   isNaN(event.target.value) ||
-                  (event.target.value - numTickets) > max_add_allowed
+                  event.target.value - numTickets > max_add_allowed
                 )
                   return;
                 $emit('set-tickets', event.target.value);
@@ -57,7 +61,7 @@
 export default {
   name: 'concession-type',
   props: {
-    concession_type: {
+    concession_type_edge: {
       required: true,
     },
     current_tickets: {
@@ -78,7 +82,7 @@ export default {
   computed: {
     numTickets() {
       return this.current_tickets.filter((ticket) => {
-        return ticket.matches(null, this.concession_type);
+        return ticket.matches(null, this.concession_type_edge.concessionType);
       }).length;
     },
   },

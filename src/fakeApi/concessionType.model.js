@@ -4,18 +4,24 @@ import { Factory } from 'miragejs';
 export default {
   registerFactories() {
     return {
-      ConcessionTypeNode: Factory.extend({
+      concessionTypeNode: Factory.extend({
         name: () => faker.random.arrayElement(['Adult', 'Student']),
-        price() {
-          return faker.random.number({ min: 1, max: 10 }) * 100;
-        },
         description: () => faker.lorem.words(5),
       }),
-      ConcessionTypeBookingType: Factory.extend({
+      concessionTypeBookingType: Factory.extend({
         price() {
           return faker.random.number({ min: 1, max: 10 }) * 100;
         },
       }),
     };
+  },
+  registerGQLTypes() {
+    return `
+    type ConcessionTypeBookingType {
+      concessionType: ConcessionTypeNode
+      price: Int
+      pricePounds: String
+    } 
+    `;
   },
 };

@@ -1,18 +1,19 @@
 export default class {
-  constructor(raw_ticket_types) {
-    this.raw_ticket_types = raw_ticket_types;
+  constructor(raw_performance) {
+    this.raw_ticket_options = raw_performance.ticketOptions;
+    this.performanceCapacityRemaining = raw_performance.capacityRemaining;
   }
 
   get ticket_options() {
-    return this.raw_ticket_types.ticket_types;
+    return this.raw_ticket_options;
   }
 
   get performance_capacity_remaining() {
-    return this.raw_ticket_types.capacity_remaining;
+    return this.performanceCapacityRemaining;
   }
 
   set performance_capacity_remaining(number) {
-    return (this.raw_ticket_types.capacity_remaining = number);
+    return (this.performanceCapacityRemaining = number);
   }
 
   decrementPerformanceCapacity() {
@@ -30,8 +31,8 @@ export default class {
   capacityRemainingForSeatGroup(seat_group_id) {
     return Math.min(
       this.ticket_options.find(
-        (option) => parseInt(option.seat_group.id) == seat_group_id
-      ).seat_group.capacity_remaining,
+        (option) => parseInt(option.seatGroup.id) == seat_group_id
+      ).seatGroup.capacityRemaining,
       this.performance_capacity_remaining
     );
   }
@@ -40,16 +41,16 @@ export default class {
    * @param {number} seat_group_id Seat group ID to decrease capacity by 1
    */
   decrementSeatGroupCapacity(seat_group_id) {
-    this.ticket_options.find((option) => option.seat_group.id === seat_group_id)
-      .seat_group.capacity_remaining--;
+    this.ticket_options.find((option) => option.seatGroup.id === seat_group_id)
+      .capacityRemaining--;
   }
 
   /**
    * @param {number} seat_group_id Seat group ID to increase capacity by 1
    */
   incrementSeatGroupCapacity(seat_group_id) {
-    this.ticket_options.find((option) => option.seat_group.id === seat_group_id)
-      .seat_group.capacity_remaining++;
+    this.ticket_options.find((option) => option.seatGroup.id === seat_group_id)
+      .capacityRemaining++;
   }
 
   /**

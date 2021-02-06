@@ -1,0 +1,19 @@
+fragment AllPriceBreakdown on PriceBreakdownNode {
+  tickets {
+    number
+    seatGroup {
+      name
+    }
+    concessionType {
+      name
+    }
+    totalPrice
+  }
+
+  ticketsPrice
+  ticketsDiscountedPrice
+  discountsValue
+  subtotalPrice
+  miscCostsValue
+  totalPrice
+}

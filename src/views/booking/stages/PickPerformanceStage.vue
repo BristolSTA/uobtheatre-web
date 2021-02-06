@@ -37,9 +37,11 @@ export default {
   },
   computed: {
     availablePerformances() {
-      return this.production.performances.filter(
-        (performance) => !(performance.disabled || performance.sold_out)
-      );
+      return this.production.performances.edges
+        .map((edge) => edge.node)
+        .filter(
+          (performance) => !(performance.disabled || performance.soldOut)
+        );
     },
     groupedPerformances() {
       return lo.groupBy(this.availablePerformances, (performance) => {

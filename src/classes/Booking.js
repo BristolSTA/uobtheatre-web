@@ -38,7 +38,14 @@ export default class Booking {
    * @param {object} bookingData API Booking Data
    */
   updateFromAPIData(bookingData) {
-    this.price_breakdown = bookingData.price_breakdown;
+    this.price_breakdown = bookingData.priceBreakdown;
+    this.price_breakdown.tickets = this.price_breakdown.tickets.map(
+      (ticketSummary) => {
+        ticketSummary.concession_type = ticketSummary.concessionType;
+        ticketSummary.seat_group = ticketSummary.seatGroup;
+        return ticketSummary;
+      }
+    );
     if (bookingData.tickets) {
       this.tickets = bookingData.tickets.map((ticketAPIData) =>
         Ticket.fromAPIData(ticketAPIData)
@@ -202,7 +209,7 @@ export default class Booking {
    */
   get total_price_pounds() {
     if (!this.price_breakdown) return (0).toFixed(2);
-    return (this.price_breakdown.total_price / 100).toFixed(2);
+    return (this.price_breakdown.totalPrice / 100).toFixed(2);
   }
 
   /**
@@ -210,7 +217,7 @@ export default class Booking {
    */
   get sub_total_price_pounds() {
     if (!this.price_breakdown) return (0).toFixed(2);
-    return (this.price_breakdown.subtotal_price / 100).toFixed(2);
+    return (this.price_breakdown.subtotalPrice / 100).toFixed(2);
   }
 
   /**
@@ -218,7 +225,7 @@ export default class Booking {
    */
   get tickets_price_pounds() {
     if (!this.price_breakdown) return (0).toFixed(2);
-    return (this.price_breakdown.tickets_price / 100).toFixed(2);
+    return (this.price_breakdown.ticketsPrice / 100).toFixed(2);
   }
 
   /**
@@ -226,7 +233,7 @@ export default class Booking {
    */
   get tickets_discounted_price_pounds() {
     if (!this.price_breakdown) return (0).toFixed(2);
-    return (this.price_breakdown.tickets_discounted_price / 100).toFixed(2);
+    return (this.price_breakdown.ticketsDiscountedPrice / 100).toFixed(2);
   }
 
   /**
@@ -234,7 +241,7 @@ export default class Booking {
    */
   get has_discounts() {
     if (!this.price_breakdown) return false;
-    return this.price_breakdown.discounts_value != 0;
+    return this.price_breakdown.discountsValue != 0;
   }
 
   /**
@@ -242,7 +249,7 @@ export default class Booking {
    */
   get discounts_value_pounds() {
     if (!this.price_breakdown) return (0).toFixed(2);
-    return (this.price_breakdown.discounts_value / 100).toFixed(2);
+    return (this.price_breakdown.discountsValue / 100).toFixed(2);
   }
 
   /**
@@ -265,20 +272,21 @@ export default class Booking {
       .groupBy((ticket) => [ticket.seat_group.id, ticket.concession_type.id])
       .values()
       .map((groupedTickets) => {
-        let seatLocation = ticket_matrix.ticket_options.find(
-          (location) =>
-            location.seat_group.id == groupedTickets[0].seat_group.id
+        let option = ticket_matrix.ticket_options.find(
+          (option) => option.seatGroup.id == groupedTickets[0].seat_group.id
         );
-        let seatGroup = seatLocation.seat_group;
-        let concessionType = seatLocation.concession_types.find(
-          (type) => type.id == groupedTickets[0].concession_type.id
+        let seatGroup = option.seatGroup;
+        let concessionTypeEdge = option.concessionTypes.find(
+          (cocnession_type_edge) =>
+            cocnession_type_edge.concessionType.id ==
+            groupedTickets[0].concession_type.id
         );
         return {
           number: groupedTickets.length,
-          concession_type: concessionType,
+          concession_type: concessionTypeEdge.concessionType,
           seat_group: seatGroup,
-          ticket_price: concessionType.price,
-          total_price: concessionType.price * groupedTickets.length,
+          ticketPrice: concessionTypeEdge.price,
+          totalPrice: concessionTypeEdge.price * groupedTickets.length,
         };
       })
       .value();

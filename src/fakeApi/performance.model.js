@@ -36,6 +36,7 @@ export default {
           );
         },
         minSeatPrice: () => faker.random.number({ min: 100, max: 100 }),
+        capacityRemaining: () => faker.random.number({ min: 40, max: 100 }),
 
         afterCreate(performance, server) {
           updateIfDoesntHave(performance, {
@@ -122,6 +123,11 @@ export default {
         isOnline: Boolean!
         soldOut: Boolean!
       }
+    `;
+  },
+  registerGQLQueries() {
+    return `
+      performance(id: ID!): PerformanceNode
     `;
   },
 };

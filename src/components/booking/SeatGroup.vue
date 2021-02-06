@@ -19,7 +19,7 @@
           class="inline-block text-h3 lg:text-h2"
           :class="{ 'line-through': !available }"
         >
-          {{ ticket_option.seat_group.name }}
+          {{ ticket_option.seatGroup.name }}
         </h3>
         <h3
           v-if="!available"
@@ -27,8 +27,8 @@
         >
           Sold Out
         </h3>
-        <p v-if="expanded && ticket_option.seat_group.description" class="p-2">
-          {{ ticket_option.seat_group.description }}
+        <p v-if="expanded && ticket_option.seatGroup.description" class="p-2">
+          {{ ticket_option.seatGroup.description }}
         </p>
       </div>
       <div v-if="available" class="flex items-center pr-4 text-3xl">
@@ -49,20 +49,33 @@
         <template v-else>No more tickets available at this location</template>
       </div>
       <concession-type
-        v-for="(concession_type, index) in ticket_option.concession_types"
+        v-for="(concession_type_edge, index) in ticket_option.concessionTypes"
         :key="index"
-        :concession_type="concession_type"
+        :concession_type_edge="concession_type_edge"
         :current_tickets="currentLocationTickets"
         :max_add_allowed="group_capacity_remaining"
         @add-ticket="
-          $emit('add-ticket', ticket_option.seat_group, concession_type)
+          $emit(
+            'add-ticket',
+            ticket_option.seatGroup,
+            concession_type_edge.concessionType
+          )
         "
         @set-tickets="
           (num) =>
-            $emit('set-tickets', ticket_option.seat_group, concession_type, num)
+            $emit(
+              'set-tickets',
+              ticket_option.seatGroup,
+              concession_type_edge.concessionType,
+              num
+            )
         "
         @remove-ticket="
-          $emit('remove-ticket', ticket_option.seat_group, concession_type)
+          $emit(
+            'remove-ticket',
+            ticket_option.seatGroup,
+            concession_type_edge.concessionType
+          )
         "
       />
       <div v-if="discounts" class="flex justify-center w-full mt-2 mb-4">
@@ -134,7 +147,7 @@ export default {
     },
     currentLocationTickets() {
       return this.current_tickets.filter((ticket) => {
-        return ticket.matches(this.ticket_option.seat_group);
+        return ticket.matches(this.ticket_option.seatGroup);
       });
     },
   },

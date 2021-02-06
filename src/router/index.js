@@ -7,9 +7,9 @@ import Login from '@/views/auth/Login.vue';
 import { getRoutes } from '@/views/booking/bookingStages';
 import NotFoundError from '@/views/errors/NotFound.vue';
 import Home from '@/views/Home.vue';
+import ProductionPageQuery from '@/views/production/Production.gql';
 const Venue = () => import('@/views/venues/Venue.vue');
 const Society = () => import('@/views/societies/Society.vue');
-const Production = () => import('@/views/production/Production.vue');
 
 import * as Bindings from './bindings';
 
@@ -32,7 +32,7 @@ const routes = [
       name: 'production',
       component: () => import('@/views/production/Production.vue'),
     },
-    [Bindings.bindProductionSlug]
+    [Bindings.bindProductionSlug(ProductionPageQuery)]
   ),
   Bindings.routeWithBindings(
     {
@@ -40,7 +40,7 @@ const routes = [
       component: () => import('@/views/booking/Book.vue'),
       children: getRoutes(),
     },
-    [Bindings.bindProductionSlug]
+    [Bindings.bindProductionSlug()]
   ),
 
   /**

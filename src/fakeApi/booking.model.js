@@ -8,6 +8,75 @@ import {
   updateIfDoesntHave,
 } from './utils';
 
+let generatePriceBreakdown = (mirageSchema, booking) => {
+  let performance = booking.performance;
+
+  let ticketSummaries = lo
+    .chain(booking.tickets.models)
+    .groupBy((ticket) => [ticket.seatGroup.id, ticket.concessionType.id])
+    .values()
+    .map((groupedTickets) => {
+      let ticketOption = performance.ticketOptions.models.find((option) => {
+        return option.seatGroupId == groupedTickets[0].seatGroup.id;
+      });
+      let concessionTypeEdge = ticketOption.concessionTypes.models.find(
+        (concessionTypeEdge) => {
+          return (
+            concessionTypeEdge.concessionTypeId ==
+            groupedTickets[0].concessionType.id
+          );
+        }
+      );
+
+      return mirageSchema.create('ticketSummaryNode', {
+        number: groupedTickets.length,
+        concessionType: concessionTypeEdge.concessionType,
+        seatGroup: ticketOption.seatGroup,
+        ticketPrice: concessionTypeEdge.price,
+        totalPrice: concessionTypeEdge.price * groupedTickets.length,
+      });
+    })
+    .value();
+
+  let ticket_price = ticketSummaries
+    .map((tickets) => tickets.totalPrice)
+    .reduce((a, b) => a + b, 0);
+
+  // A bit of a bodge...
+  // let discounts_price = object.performance.discounts.models.length
+  //   ? Math.round(object.performance.discounts.models[0].discount * 100)
+  //   : 0;
+  let discounts_price = 0;
+
+  let tickets_inc_discount_price = ticket_price - discounts_price;
+
+  // let misc_costs = this.buildPayload(object.performance.misc_costs);
+  // let misc_costs_price = misc_costs.length
+  //   ? misc_costs.map((misc_cost) => misc_cost.value).reduce((a, b) => a + b)
+  //   : 0;
+  let misc_costs = [];
+  let misc_costs_price = 0;
+
+  let result = {
+    // Tickets
+    tickets: ticketSummaries,
+    ticketsPrice: ticket_price,
+    ticketsDiscountedPrice: tickets_inc_discount_price,
+    discountsValue: discounts_price,
+
+    // Misc Costs
+    miscCosts: misc_costs,
+    miscCostsValue: misc_costs_price,
+
+    // Totals
+    subtotalPrice: tickets_inc_discount_price,
+    totalPrice: tickets_inc_discount_price + misc_costs_price,
+  };
+  console.log(result);
+
+  return result;
+};
+
 export default {
   registerSerializers() {
     return {
@@ -94,29 +163,30 @@ export default {
   registerFactories() {
     return {
       bookingNode: Factory.extend({
-        afterCreate(booking, server) {
-          updateIfDoesntHave(booking, [
-            {
-              performance: () => {
-                return server.create('performanceNode');
-              },
-            },
-            {
-              tickets: () => {
-                return server.createList('ticketNode', 2, {
-                  seatGroup: () =>
-                    faker.random.arrayElement(
-                      booking.performance.seatGroups.models
-                    ),
-                  concessionType: () =>
-                    faker.random.arrayElement(
-                      booking.performance.concessionTypes.models
-                    ),
-                });
-              },
-            },
-          ]);
-        },
+        bookingReference: () => faker.random.uuid(),
+        // afterCreate(booking, server) {
+        //   updateIfDoesntHave(booking, [
+        //     {
+        //       performance: () => {
+        //         return server.create('performanceNode');
+        //       },
+        //     },
+        //     {
+        //       tickets: () => {
+        //         return server.createList('ticketNode', 2, {
+        //           seatGroup: () =>
+        //             faker.random.arrayElement(
+        //               booking.performance.seatGroups.models
+        //             ),
+        //           concessionType: () =>
+        //             faker.random.arrayElement(
+        //               booking.performance.concessionTypes.models
+        //             ),
+        //         });
+        //       },
+        //     },
+        //   ]);
+        // },
       }),
       ticketNode: Factory.extend({
         afterCreate(booking, server) {
@@ -159,5 +229,90 @@ export default {
       let attrs = this.normalizedRequestAttrs('booking');
       return schema.bookings.find(request.params.id).update(attrs);
     });
+  },
+  registerGQLMutationResolvers() {
+    return {
+      createBooking(obj, args, { mirageSchema }) {
+        // Create the tickets
+        let tickets = [];
+        if (args.tickets) {
+          tickets = args.tickets.map((ticket) =>
+            mirageSchema.create('ticketNode', {
+              seatGroupId: ticket.seatGroupId,
+              concessionTypeId: ticket.concessionTypeId,
+            })
+          );
+        }
+
+        // Create the booking
+        let booking = mirageSchema.create('bookingNode', {
+          performance: mirageSchema.performanceNodes.find(args.performanceId),
+          status: 'IN_PROGRESS',
+          tickets: tickets,
+        });
+        booking.priceBreakdown = mirageSchema.create(
+          'priceBreakdownNode',
+          generatePriceBreakdown(mirageSchema, booking)
+        );
+
+        return booking;
+      },
+    };
+  },
+  registerGQLTypes() {
+    return `
+      input CreateTicketInput {
+        id: ID
+        seatGroupId: ID!
+        concessionTypeId: ID!
+      }
+      
+      type BookingNode implements Node {
+        id: ID!
+        bookingReference: UUID!
+        performance: PerformanceNode!
+        status: BookingStatus!
+        priceBreakdown: PriceBreakdownNode
+
+        
+        tickets: [TicketNode]
+      }
+
+      type PriceBreakdownNode implements Node {
+        id: ID!
+        tickets: [TicketSummaryNode]
+        ticketsPrice: Int
+        discountsValue: Int
+        miscCosts: [MiscCostNode]
+        subtotalPrice: Int
+        miscCostsValue: Int
+        totalPrice: Int
+
+        
+        ticketsDiscountedPrice: Int
+      }
+
+      type TicketNode {
+        id: ID!
+        seatGroup: SeatGroupNode!
+        concessionType: ConcessionTypeNode!
+      }
+
+      type TicketSummaryNode {
+        ticketPrice: Int
+        number: Int
+        seatGroup: SeatGroupNode
+        totalPrice: Int
+
+        
+        concessionType: ConcessionTypeNode
+      }
+
+    `;
+  },
+  registerGQLMutations() {
+    return `
+      createBooking(performanceId: ID!, tickets: [CreateTicketInput]) : BookingNode
+    `;
   },
 };

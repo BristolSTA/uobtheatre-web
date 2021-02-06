@@ -1,22 +1,27 @@
 export default class {
   seat_group = {};
   concession_type = {};
+  id = null;
+
   /**
    * @param {object} seat_group_id Seat Group / Location ID
    * @param {object} concession_type_id Concession Type ID
+   * @param {string} id Optional ID of ticket in database
    */
-  constructor(seat_group_id, concession_type_id) {
+  constructor(seat_group_id, concession_type_id, id = null) {
     this.seat_group.id = seat_group_id;
     this.concession_type.id = concession_type_id;
+    this.id = id;
   }
 
   static fromAPIData(ticketAPIData) {
     let ticket = new this(
-      ticketAPIData.seat_group.id,
-      ticketAPIData.concession_type.id
+      ticketAPIData.seatGroup.id,
+      ticketAPIData.concessionType.id,
+      ticketAPIData.id
     );
-    ticket.seat_group = ticketAPIData.seat_group;
-    ticket.concession_type = ticketAPIData.concession_type;
+    ticket.seat_group = ticketAPIData.seatGroup;
+    ticket.concession_type = ticketAPIData.concessionType;
     return ticket;
   }
 
@@ -45,11 +50,10 @@ export default class {
    */
   price(ticket_options) {
     return ticket_options
-      .find(
-        (seat_location) => seat_location.seat_group.id == this.seat_group.id
-      )
-      .concession_types.find(
-        (concession) => concession.id == this.concession_type.id
+      .find((option) => option.seatGroup.id == this.seat_group.id)
+      .concessionTypes.find(
+        (concession_edge) =>
+          concession_edge.concessionType.id == this.concession_type.id
       ).price;
   }
 
@@ -58,8 +62,9 @@ export default class {
    */
   get apiData() {
     return {
-      seat_group_id: this.seat_group.id,
-      concession_type_id: this.concession_type.id,
+      id: this.id,
+      seatGroupId: this.seat_group.id,
+      concessionTypeId: this.concession_type.id,
     };
   }
 }

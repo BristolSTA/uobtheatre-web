@@ -88,8 +88,8 @@ export function makeServer({ environment = 'development' } = {}) {
         name: 'Child',
       });
       let StudentConcession = server.create('ConcessionTypeNode', {
-        name: 'The best seats in the house',
-        description: 'They are sooooo good',
+        name: 'Student',
+        description: 'Valid ID NOT required',
       });
       let BestSeatGroup = server.create('SeatGroupNode', {
         name: 'The best seats in the house',
@@ -108,24 +108,23 @@ export function makeServer({ environment = 'development' } = {}) {
       performances[0].soldOut = false;
       performances[0].start = '2020-12-19T10:00:00';
       performances[0].end = '2020-12-19T11:30:00';
-      performance.ticketOptions = [
+      performances[0].ticketOptions = [
         server.create('PerformanceSeatGroupNode', {
           seatGroup: BestSeatGroup,
-          concessionTypes: generateConcessionTypeBookingTypes([
-            AdultConcession,
-            ChildConcession,
-            StudentConcession,
-          ]),
+          concessionTypes: generateConcessionTypeBookingTypes(
+            [AdultConcession, ChildConcession, StudentConcession],
+            server
+          ),
         }),
         server.create('PerformanceSeatGroupNode', {
           seatGroup: ProjSeatGroup,
-          concessionTypes: generateConcessionTypeBookingTypes([
-            AdultConcession,
-            ChildConcession,
-            StudentConcession,
-          ]),
+          concessionTypes: generateConcessionTypeBookingTypes(
+            [AdultConcession, ChildConcession, StudentConcession],
+            server
+          ),
         }),
       ];
+      console.log(performances[0].ticketOptions);
 
       // performances[0].seat_groups = [
       //   server.create('SeatGroupNode', {
@@ -234,7 +233,7 @@ export function makeServer({ environment = 'development' } = {}) {
        * A user
        */
 
-      server.create('UserNode', {
+      server.create('user', {
         password: 'admin',
         email: 'admin@bristolsta.com',
         token: '36c86c19f8f8d73aa59c3a00814137bdee0ab8de',
@@ -287,7 +286,7 @@ export function makeServer({ environment = 'development' } = {}) {
       const graphQLHandler = createGraphQLHandler(graphQLSchema, this.schema, {
         resolvers: {
           Query: queryResolvers,
-          Mutations: mutationResolvers,
+          Mutation: mutationResolvers,
         },
       });
       this.post('/graphql', graphQLHandler);
