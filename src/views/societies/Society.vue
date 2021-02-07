@@ -8,21 +8,25 @@
     </div>
     <template v-else>
       <div
+        v-if="banner"
         id="splashscreen"
         :style="{
           'background-image': banner,
         }"
       >
         <div class="flex items-center bg-black bg-opacity-40">
-          <div class="container px-4 text-4xl font-semibold lg:w-2/3">
+          <h1 class="container px-4 text-h1 lg:w-2/3">
             {{ society.name }}
-          </div>
+          </h1>
         </div>
       </div>
+      <h1 v-else class="container py-8 text-left text-h1">
+        {{ society.name }}
+      </h1>
 
-      <div class="mt-4 md:my-8 md:container md:flex md:space-x-4">
+      <div class="mt-4 md:my-8 md:container md:flex md:space-x-6">
         <div class="mx-4 md:mx-0 md:w-1/2">
-          <div v-if="society.logo.url" class="flex justify-center p-2">
+          <div v-if="society.logo.url" class="flex justify-center py-2">
             <img
               ref="society-logo"
               :src="society.logo.url"
@@ -30,7 +34,7 @@
               class="w-32"
             />
           </div>
-          <div class="m-2 text-center md:text-left">
+          <div class="w-full m-2 text-center md:text-left">
             <p>{{ society.description }}</p>
             <!-- <br />
             <p><strong>Website: </strong>www.{{ society.slug }}.com</p>
@@ -88,7 +92,7 @@
   background-size: cover;
   background-position: center;
   > div {
-    min-height: 240px;
+    min-height: 30vh;
   }
 }
 </style>
@@ -154,7 +158,9 @@ export default {
   },
   computed: {
     banner() {
-      return this.society ? `url("${this.society.banner.url}")` : null;
+      return this.society.banner.url
+        ? `url("${this.society.banner.url}")`
+        : null;
     },
     productions() {
       return this.society.productions.edges.map((edge) => edge.node);

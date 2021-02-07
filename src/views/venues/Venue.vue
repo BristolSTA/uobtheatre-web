@@ -9,12 +9,13 @@
     <template v-else>
       <h1 class="container pt-2 text-left text-h1">{{ venue.name }}</h1>
       <div class="flex flex-wrap items-center justify-center mt-2 lg:mb-8">
-        <div
-          class="flex flex-col items-center w-full px-8 text-justify md:block md:w-auto md:max-w-md"
-        >
+        <div class="w-full px-8 text-justify md:block md:w-auto md:max-w-md">
           {{ venue.description }}
         </div>
-        <div class="w-full h-full max-w-xl lg:w-2/3 md:m-4">
+        <div
+          v-if="venue.image.url"
+          class="w-full h-full max-w-xl lg:w-2/3 md:m-4"
+        >
           <img
             ref="image"
             class="w-full p-3 md:p-0"
@@ -25,7 +26,7 @@
       </div>
       <div class="flex flex-wrap items-center justify-center">
         <div
-          class="flex justify-center w-full p-4 space-y-1 lg:w-1/4 lg:order-last lg:mb-0 lg:ml-4 bg-sta-gray-dark"
+          class="flex justify-center w-full p-4 lg:w-1/4 lg:order-last lg:ml-4 bg-sta-gray-dark"
         >
           <div>
             <h2 class="text-3xl font-semibold text-sta-orange">Venue Info:</h2>

@@ -51,6 +51,7 @@ module.exports = {
   variants: {
     extend: {
       backgroundColor: ['checked', 'odd', 'even'],
+      flexDirection: ['odd'],
     },
   },
   plugins: [],

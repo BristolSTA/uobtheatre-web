@@ -47,8 +47,7 @@
       <div
         v-for="(production, index) in upcomingProductionsToShow"
         :key="production.id"
-        class="flex flex-wrap items-center py-4 production-feature"
-        :class="{ 'flex-row-reverse': index % 2 == 1 }"
+        class="flex flex-wrap items-center py-4 production-feature odd:flex-row-reverse"
       >
         <div
           class="w-full p-2 text-center md:w-1/2 md:px-6"
