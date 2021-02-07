@@ -1,44 +1,46 @@
 <template>
   <div class="min-h-full bg-sta-gray">
-    <div
-      id="splashscreen"
-      :style="{
-        'background-image': splashBackground,
-      }"
-    >
-      <div class="flex items-center bg-black bg-opacity-40">
-        <div class="container px-4 text-white lg:w-2/3">
-          <router-link
-            v-if="featuredProduction"
-            :to="{
-              name: 'production',
-              params: { productionSlug: featuredProduction.slug },
-            }"
-          >
-            <router-link
-              class="text-2xl"
-              :to="{
-                name: 'society',
-                params: { societySlug: featuredProduction.society.slug },
-              }"
-            >
-              {{ featuredProduction.society.name }}
-            </router-link>
-            <div class="text-h1">{{ featuredProduction.name }}</div>
-            <div class="text-2xl">
-              {{ featuredProduction.start | dateFormat('d MMMM') }} -
-              {{ featuredProduction.end | dateFormat('d MMMM y') }}
+    <template v-if="!bannerProductions.length">
+      <div class="text-4xl">Welcome to {{ $appName }}</div>
+      <div class="text-2xl">The Home of Bristol Student Performing Arts</div>
+    </template>
+    <template v-else>
+      <div v-for="(bannerProduction, index) in bannerProductions" :key="index">
+        <div
+          id="splashscreen"
+          :style="{
+            'background-image': bannerBackgorund(bannerProduction),
+          }"
+        >
+          <div class="flex items-center bg-black bg-opacity-40">
+            <div class="container px-4 text-white lg:w-2/3">
+              <router-link
+                v-if="bannerProduction"
+                :to="{
+                  name: 'production',
+                  params: { productionSlug: bannerProduction.slug },
+                }"
+              >
+                <router-link
+                  class="text-2xl"
+                  :to="{
+                    name: 'society',
+                    params: { societySlug: bannerProduction.society.slug },
+                  }"
+                >
+                  {{ bannerProduction.society.name }}
+                </router-link>
+                <div class="text-h1">{{ bannerProduction.name }}</div>
+                <div class="text-2xl">
+                  {{ bannerProduction.start | dateFormat('d MMMM') }} -
+                  {{ bannerProduction.end | dateFormat('d MMMM y') }}
+                </div>
+              </router-link>
             </div>
-          </router-link>
-          <template v-else>
-            <div class="text-4xl">Welcome to {{ $appName }}</div>
-            <div class="text-2xl">
-              The Home of Bristol Student Performing Arts
-            </div>
-          </template>
+          </div>
         </div>
       </div>
-    </div>
+    </template>
 
     <div class="container mt-4 text-white" ref="whatson">
       <h1 class="text-h1">What's On</h1>
@@ -159,18 +161,18 @@ export default {
     },
   },
   computed: {
-    featuredProduction() {
-      return this.upcomingProductionsToShow.find((production) => {
+    bannerProductions() {
+      return this.upcomingProductionsToShow.filter((production) => {
         return !!production.coverImage;
       });
     },
     upcomingProductionsToShow() {
       return lo.take(this.upcomingProductions, 4);
     },
-    splashBackground() {
-      return this.featuredProduction
-        ? `url("${this.featuredProduction.coverImage.url}")`
-        : null;
+  },
+  methods: {
+    bannerBackgorund(bannerProduction) {
+      return `url("${bannerProduction.coverImage.url}")`;
     },
   },
 };
