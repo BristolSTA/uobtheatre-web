@@ -1,9 +1,9 @@
 <template>
   <div class="min-h-full bg-sta-gray">
-    <template v-if="!bannerProductions.length">
+    <div v-if="!bannerProductions.length" class="p-8 text-center text-white">
       <div class="text-4xl">Welcome to {{ $appName }}</div>
       <div class="text-2xl">The Home of Bristol Student Performing Arts</div>
-    </template>
+    </div>
     <template v-else>
       <agile :options="carouselOptions">
         <div

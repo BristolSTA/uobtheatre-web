@@ -6,8 +6,8 @@ import Home from '@/views/Home.vue';
 
 import {
   fixTextSpacing,
-  mountWithRouterMock,
   generateMountOptions,
+  mountWithRouterMock,
   waitFor,
 } from '../helpers';
 
@@ -44,7 +44,7 @@ describe('Home', function () {
         Home,
         generateMountOptions(['apollo'])
       );
-      splashscreenContainer = homepageComponent.find('#splashscreen');
+      splashscreenContainer = homepageComponent.findAll('#splashscreen');
       await waitFor(() => homepageComponent.vm.featuredProduction);
 
       // Should have production name
@@ -67,14 +67,6 @@ describe('Home', function () {
       expect(splashscreenContainer.text()).not.to.contain(
         'Not This One Again...'
       );
-      expect(
-        homepageComponent.findAllComponents(RouterLinkStub).at(1).props('to')
-          .name
-      ).to.equal('society');
-      expect(
-        homepageComponent.findAllComponents(RouterLinkStub).at(1).props('to')
-          .params.societySlug
-      ).to.equal('joe-bloggs-productions');
     });
   });
 
@@ -121,11 +113,11 @@ describe('Home', function () {
       // Link to production
       expect(whatsOnProductions.at(0).find('a').exists()).to.be.true;
       expect(
-        homepageComponent.findAllComponents(RouterLinkStub).at(2).props('to')
+        homepageComponent.findAllComponents(RouterLinkStub).at(0).props('to')
           .name
       ).to.equal('production');
       expect(
-        homepageComponent.findAllComponents(RouterLinkStub).at(2).props('to')
+        homepageComponent.findAllComponents(RouterLinkStub).at(0).props('to')
           .params.productionSlug
       ).to.equal('my-production-without-a-picture');
 
@@ -158,6 +150,15 @@ describe('Home', function () {
       society: server.create('SocietyNode', { name: 'Joe Bloggs Productions' }),
       start: new Date('2020-11-14'),
       end: new Date('2020-11-18'),
+    });
+    server.create('ProductionNode', {
+      name: 'Legally Ginger',
+      coverImage: server.create('GrapheneImageFieldNode', {
+        url: 'http://pathto.example/my-image2.png',
+      }),
+      society: server.create('SocietyNode', { name: 'MTB' }),
+      start: new Date('2019-11-14'),
+      end: new Date('2019-11-18'),
     });
     // Seed a second production that can be featured
     server.create('ProductionNode', {
