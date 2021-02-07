@@ -5,41 +5,39 @@
       <div class="text-2xl">The Home of Bristol Student Performing Arts</div>
     </template>
     <template v-else>
-      <div v-for="(bannerProduction, index) in bannerProductions" :key="index">
+      <agile :options="carouselOptions">
         <div
-          id="splashscreen"
-          :style="{
-            'background-image': bannerBackgorund(bannerProduction),
-          }"
+          v-for="(bannerProduction, index) in bannerProductions"
+          :key="index"
+          ref="banner-slide"
         >
-          <div class="flex items-center bg-black bg-opacity-40">
-            <div class="container px-4 text-white lg:w-2/3">
-              <router-link
-                v-if="bannerProduction"
-                :to="{
-                  name: 'production',
-                  params: { productionSlug: bannerProduction.slug },
-                }"
-              >
-                <router-link
-                  class="text-2xl"
-                  :to="{
-                    name: 'society',
-                    params: { societySlug: bannerProduction.society.slug },
-                  }"
-                >
+          <div
+            id="splashscreen"
+            :style="{
+              'background-image': bannerBackgorund(bannerProduction),
+            }"
+          >
+            <div class="flex items-center bg-black bg-opacity-40">
+              <div class="container px-4 text-white lg:w-2/3">
+                <div class="text-2xl">
                   {{ bannerProduction.society.name }}
-                </router-link>
+                </div>
                 <div class="text-h1">{{ bannerProduction.name }}</div>
                 <div class="text-2xl">
                   {{ bannerProduction.start | dateFormat('d MMMM') }} -
                   {{ bannerProduction.end | dateFormat('d MMMM y') }}
                 </div>
-              </router-link>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+        <template slot="prevButton">
+          <font-awesome-icon icon="chevron-left" />
+        </template>
+        <template slot="nextButton">
+          <font-awesome-icon icon="chevron-right" />
+        </template>
+      </agile>
     </template>
 
     <div class="container mt-4 text-white" ref="whatson">
@@ -135,23 +133,32 @@
 
 <script>
 import lo from 'lodash';
+import { VueAgile } from 'vue-agile';
 
 import { displayStartEnd } from '@/utils';
 
 export default {
   name: 'Home',
+  components: { agile: VueAgile },
   data() {
     return {
       upcomingProductions: [],
       displayStartEnd: displayStartEnd,
-    };
-  },
-  /* istanbul ignore next */
-  metaInfo() {
-    const appName = this.$appName;
-    return {
-      title: `${appName} | The Home Of Bristol Student Performing Arts`,
-      titleTemplate: null,
+      carouselOptions: {
+        navButtons: false,
+        autoplay: true,
+        autoplaySpeed: 8000,
+        speed: 1000,
+        fade: true,
+        responsive: [
+          {
+            breakpoint: 700,
+            settings: {
+              navButtons: true,
+            },
+          },
+        ],
+      },
     };
   },
   apollo: {
@@ -177,3 +184,51 @@ export default {
   },
 };
 </script>
+
+<style lang="sass">
+.agile
+	&__nav-button
+		background: transparent
+		color: #fff
+		cursor: pointer
+		font-size: 24px
+		height: 100%
+		position: absolute
+		top: 0
+		transition-duration: .3s
+		width: 60px
+
+		&:hover
+			background-color: rgba(#000, .5)
+			opacity: 1
+
+		&--prev
+			left: 0
+
+		&--next
+			right: 0
+
+	&__dots
+		bottom: 10px
+		left: 50%
+		position: absolute
+		transform: translateX(-50%)
+
+	&__dot
+		margin: 0 10px
+
+		button
+			background-color: transparent
+			border: 1px solid #fff
+			border-radius: 50%
+			cursor: pointer
+			display: block
+			height: 10px
+			transition-duration: .3s
+			width: 10px
+
+		&--current,
+		&:hover
+			button
+				background-color: #fff
+</style>
