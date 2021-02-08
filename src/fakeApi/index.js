@@ -1,6 +1,5 @@
 import { stitchSchemas } from '@graphql-tools/stitch';
 import { createGraphQLHandler } from '@miragejs/graphql';
-// import { DateTime } from 'luxon';
 import { createServer } from 'miragejs';
 
 import BookingInterface from './booking.model';
@@ -100,6 +99,22 @@ export function makeServer({ environment = 'development' } = {}) {
         description: null,
       });
 
+      let FamilyDiscount = server.create('DiscountNode', {
+        name: 'Family Discount',
+        discount: 0.2,
+        seatGroup: null,
+        requirements: [
+          server.create('DiscountRequirementNode', {
+            number: 2,
+            concessionType: AdultConcession,
+          }),
+          server.create('DiscountRequirementNode', {
+            number: 2,
+            concessionType: ChildConcession,
+          }),
+        ],
+      });
+
       /**
        * Fake Performance 1 - Legally Blonde, MTB, with 3 performances (19th,20th,21st (sold out))
        */
@@ -124,62 +139,21 @@ export function makeServer({ environment = 'development' } = {}) {
           ),
         }),
       ];
-      console.log(performances[0].ticketOptions);
+      performances[0].discounts = [FamilyDiscount];
 
-      // performances[0].seat_groups = [
-      //   server.create('SeatGroupNode', {
-      //     name: 'The best seats in the house',
-      //     description: 'They are sooooo good',
-      //   }),
-      //   server.create('SeatGroupNode', {
-      //     name: 'Proj Seats',
-      //     description: null,
-      //   }),
-      //   server.create('SeatGroupNode', {
-      //     name: 'Sold out group',
-      //     capacity_remaining: 0,
-      //   }),
-      // ];
-      // performances[0].concession_types = [
-      //   server.create('ConcessionTypeNode', {
-      //     name: 'Adult',
-      //     description: null,
-      //   }),
-      //   server.create('ConcessionTypeNode', {
-      //     name: 'Child',
-      //     description: 'Under 17.5 years',
-      //   }),
-      //   server.create('ConcessionTypeNode', {
-      //     name: 'Student',
-      //     description: 'Valid ID not required',
-      //   }),
-      // ];
-      // // performances[0].discounts = server.createList('discount', 2, {
-      // //   performance: performances[0],
-      // // });
-      // // performances[0].misc_costs = server.createList('miscCostNode', 1);
-
-      // performances[1].sold_out = false;
-      // performances[1].doors_open = '2020-12-20T14:14:00';
-      // performances[1].start = '2020-12-20T14:15:00';
-      // performances[1].end = '2020-12-20T15:15:00';
-
-      // performances[2].sold_out = true;
-      // performances[2].start = '2020-12-21T18:00:00';
-      // performances[2].end = '2020-12-21T20:30:00';
-
-      // // let winston =
-      // server.create('VenueNode', {
-      //   name: 'Winston Theatre',
-      // });
-
-      server.create('ProductionNode', 'withCoverImage', {
+      let legallyBlonde = server.create('ProductionNode', 'withCoverImage', {
         name: 'Legally Blonde',
         ageRating: 10,
         society: server.create('SocietyNode', {
           name: 'MTB',
         }),
         performances: performances,
+      });
+
+      server.create('MiscCostNode', {
+        production: legallyBlonde,
+        name: 'Booking Fee',
+        percentage: 0.05,
       });
 
       // /**
@@ -241,7 +215,7 @@ export function makeServer({ environment = 'development' } = {}) {
     },
 
     async routes() {
-      this.namespace = '/fakeapi';
+      this.namespace = 'test.example/fakeapi';
 
       apiModels.forEach((model) => {
         if (model.registerRoutes) model.registerRoutes.bind(this)();

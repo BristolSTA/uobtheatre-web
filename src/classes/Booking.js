@@ -297,9 +297,9 @@ export default class Booking {
    */
   get misc_costs() {
     if (!this.price_breakdown) return [];
-    return this.price_breakdown.misc_costs.map((misc_cost) => {
+    return this.price_breakdown.miscCosts.map((misc_cost) => {
       return Object.assign(misc_cost, {
-        value_pounds: (misc_cost.value / 100).toFixed(2),
+        valuePounds: (misc_cost.value / 100).toFixed(2),
       });
     });
   }

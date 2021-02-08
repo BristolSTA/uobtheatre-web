@@ -1,22 +1,22 @@
 export default [
   {
-    seat_group: {
+    seatGroup: {
       id: 1,
       name: 'My Seat Group',
       description: 'A awesome seat group',
     },
-    concession_type: {
+    concessionType: {
       id: 1,
       name: 'Adult',
       description: '18+',
     },
   },
   {
-    seat_group: {
+    seatGroup: {
       id: 2,
       name: 'The Bad Seats',
     },
-    concession_type: {
+    concessionType: {
       id: 2,
       name: 'Child',
     },

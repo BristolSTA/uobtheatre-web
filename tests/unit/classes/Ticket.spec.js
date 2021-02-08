@@ -9,58 +9,91 @@ describe('Ticket Class', () => {
     id: 1,
     name: 'Front Row',
   };
-  let incorrectConcessionType = {
-    id: 5,
-    name: 'Child',
+  let incorrectConcessionTypeEdge = {
     price: 200,
-    price_pounds: '2.00',
+    concessionType: {
+      id: 5,
+      name: 'Child',
+    },
   };
 
   let correctSeatGroup = {
     id: 2,
     name: 'Back Row',
   };
-  let correctConcessionType = {
-    id: 4,
-    name: 'Adult',
+  let correctConcessionTypeEdge = {
     price: 100,
-    price_pounds: '1.00',
+    concessionType: {
+      id: 4,
+      name: 'Adult',
+    },
   };
 
-  let ticket_types_data = [
+  let ticket_options_data = [
     {
-      seat_group: incorrectSeatGroup,
-      concession_types: [correctConcessionType, incorrectConcessionType],
+      seatGroup: incorrectSeatGroup,
+      concessionTypes: [correctConcessionTypeEdge, incorrectConcessionTypeEdge],
     },
     {
-      seat_group: correctSeatGroup,
-      concession_types: [correctConcessionType, incorrectConcessionType],
+      seatGroup: correctSeatGroup,
+      concessionTypes: [correctConcessionTypeEdge, incorrectConcessionTypeEdge],
     },
   ];
 
   beforeEach(() => {
-    ticket = new Ticket(correctSeatGroup.id, correctConcessionType.id);
+    ticket = new Ticket(
+      correctSeatGroup.id,
+      correctConcessionTypeEdge.concessionType.id
+    );
+  });
+
+  it('can create from API data', () => {
+    let ticket = Ticket.fromAPIData({
+      id: 4,
+      seatGroup: {
+        id: 1,
+      },
+      concessionType: {
+        id: 2,
+      },
+    });
+
+    expect(ticket.id).to.eq(4);
+    expect(ticket.seat_group.id).to.eq(1);
+    expect(ticket.concession_type.id).to.eq(2);
   });
 
   it('can report if it matches', () => {
     expect(ticket.matches(incorrectSeatGroup)).to.be.false;
-    expect(ticket.matches(null, incorrectConcessionType)).to.be.false;
-    expect(ticket.matches(incorrectSeatGroup, incorrectConcessionType)).to.be
-      .false;
+    expect(ticket.matches(null, incorrectConcessionTypeEdge)).to.be.false;
+    expect(ticket.matches(incorrectSeatGroup, incorrectConcessionTypeEdge)).to
+      .be.false;
 
     expect(ticket.matches(correctSeatGroup)).to.be.true;
-    expect(ticket.matches(null, correctConcessionType)).to.be.true;
-    expect(ticket.matches(correctSeatGroup, correctConcessionType)).to.be.true;
+    expect(ticket.matches(null, correctConcessionTypeEdge.concessionType)).to.be
+      .true;
+    expect(
+      ticket.matches(correctSeatGroup, correctConcessionTypeEdge.concessionType)
+    ).to.be.true;
   });
 
   it('can give the price in pennies', () => {
-    expect(ticket.price(ticket_types_data) == 100);
+    expect(ticket.price(ticket_options_data) == 100);
   });
 
   it('can convert to API data', () => {
     expect(ticket.apiData).to.include({
-      seat_group_id: 2,
-      concession_type_id: 4,
+      id: null,
+      seatGroupId: 2,
+      concessionTypeId: 4,
+    });
+
+    ticket.id = 2;
+
+    expect(ticket.apiData).to.include({
+      id: 2,
+      seatGroupId: 2,
+      concessionTypeId: 4,
     });
   });
 });

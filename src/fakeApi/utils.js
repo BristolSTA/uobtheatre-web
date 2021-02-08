@@ -1,4 +1,4 @@
-import { ActiveModelSerializer, Response } from 'miragejs';
+import { Response, Serializer } from 'miragejs';
 
 let paginatedResponse = (data) => {
   return {
@@ -49,7 +49,7 @@ let RelationshipSerializer = (relationships) =>
         : relationships,
   });
 
-let DefaultSerializer = ActiveModelSerializer.extend({
+let DefaultSerializer = Serializer.extend({
   embed: true,
   root: false,
 });
@@ -90,11 +90,22 @@ let graphQLOrderBy = (records, args) => {
   return records;
 };
 
-let generateConcessionTypeBookingTypes = (concessionTypes, server) => {
-  return concessionTypes.map((concessionType) => {
-    return server.create('ConcessionTypeBookingType', {
-      concessionType: concessionType,
-    });
+let generateConcessionTypeBookingTypes = (
+  concessionTypes,
+  server,
+  overrides = []
+) => {
+  return concessionTypes.map((concessionType, index) => {
+    return server.create(
+      'ConcessionTypeBookingType',
+      Object.assign(
+        {},
+        {
+          concessionType: concessionType,
+        },
+        overrides.length ? overrides[index] : null
+      )
+    );
   });
 };
 

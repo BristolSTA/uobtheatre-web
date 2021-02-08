@@ -1,15 +1,18 @@
 export default {
   name: 'Family Discount',
-  discount_requirements: [
+  percentage: 0.5,
+  requirements: [
     {
       number: 1,
-      concession_type: {
+      concessionType: {
+        id: 1,
         name: 'Adult',
       },
     },
     {
       number: 2,
-      concession_type: {
+      concessionType: {
+        id: 2,
         name: 'Student',
       },
     },

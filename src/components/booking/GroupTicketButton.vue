@@ -3,14 +3,9 @@
     <span class="font-semibold">{{ discount.name }}:</span>
     <div class="flex justify-center text-sm">
       <table class="text-left table-auto">
-        <tr
-          v-for="(
-            discount_requirement, index
-          ) in discount.discount_requirements"
-          :key="index"
-        >
-          <td class="pr-2">{{ discount_requirement.concession_type.name }}</td>
-          <td>x {{ discount_requirement.number }}</td>
+        <tr v-for="(requirement, index) in discount.requirements" :key="index">
+          <td class="pr-2">{{ requirement.concessionType.name }}</td>
+          <td>x {{ requirement.number }}</td>
         </tr>
       </table>
     </div>

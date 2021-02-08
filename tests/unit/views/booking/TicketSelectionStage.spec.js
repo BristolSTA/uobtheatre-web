@@ -6,302 +6,309 @@ import Booking from '@/classes/Booking';
 import Ticket from '@/classes/Ticket';
 import TicketsMatrix from '@/classes/TicketsMatrix';
 import SeatGroup from '@/components/booking/SeatGroup.vue';
+import { generateConcessionTypeBookingTypes } from '@/fakeApi/utils';
 import TicketSelectionStage from '@/views/booking/stages/TicketSelectionStage.vue';
 
-import {
-  createFromFactoryAndSerialize,
-  executeWithServer,
-  serialize,
-  waitFor,
-} from '../../helpers';
+import FakeDiscount from '../../fixtures/FakeDiscount';
+import FakePerformance from '../../fixtures/FakePerformance';
+import FakeProduction from '../../fixtures/FakeProduction';
+import FakeTicketOption from '../../fixtures/FakeTicketOption';
+import { executeWithServer, generateMountOptions } from '../../helpers';
 
 describe('Ticket Selection Stage', () => {
   let stageComponent;
-  let production;
-  let performance;
   let server;
   let ticket_types;
+  let ticketMatrixPerformance;
 
   beforeEach(async () => {
     server = executeWithServer((server) => {
-      let productionModel = server.create('production');
-      production = serialize(productionModel, server);
-      performance = createFromFactoryAndSerialize(
-        'performance',
-        1,
-        {
-          production: productionModel,
-          seat_groups: [
-            server.create('seatGroup', {
-              name: 'Best seats in the house',
-              description: 'Right up close to the action',
-              capacity_remaining: 10,
-            }),
-            server.create('seatGroup', {
-              name: 'The Meh Seats',
-              capacity_remaining: 10,
-            }),
-          ],
-          concession_types: [
-            server.create('concessionType', {
-              name: 'Adult',
-              price: 100,
-            }),
-            server.create('concessionType', {
-              name: 'Child',
-              price: 50,
-            }),
-          ],
-          discounts: [
-            server.create('discount', {
-              discount: 0.5,
-            }),
-          ],
-        },
-        server
+      // Seed fake types
+      let conc1 = server.create(
+        'concessionTypeNode',
+        FakeTicketOption().concessionTypes[0].concessionType
       );
+      let conc2 = server.create(
+        'concessionTypeNode',
+        FakeTicketOption().concessionTypes[1].concessionType
+      );
+
+      server.create('performanceNode', {
+        production: server.create('productionNode'),
+        discounts: [
+          server.create('discountNode', {
+            percentage: 0.5,
+            requirements: [
+              server.create('discountRequirementNode', {
+                number: 1,
+                concessionTypeId: 1,
+              }),
+              server.create('discountRequirementNode', {
+                number: 2,
+                concessionTypeId: 2,
+              }),
+            ],
+          }),
+        ],
+        ticketOptions: [
+          server.create('PerformanceSeatGroupNode', {
+            seatGroup: server.create(
+              'seatGroupNode',
+              FakeTicketOption().seatGroup
+            ),
+            concessionTypes: generateConcessionTypeBookingTypes(
+              [conc1, conc2],
+              server,
+              [{ price: 1000 }, { price: 800 }]
+            ),
+          }),
+          server.create('PerformanceSeatGroupNode', {
+            seatGroup: server.create('seatGroupNode', {
+              name: 'The Meh Seats',
+            }),
+            concessionTypes: generateConcessionTypeBookingTypes(
+              [conc1, conc2],
+              server,
+              [{ price: 1000 }, { price: 800 }]
+            ),
+          }),
+        ],
+      });
+
+      ticketMatrixPerformance = {
+        capacityRemaining: 100,
+        discounts: [FakeDiscount],
+        ticketOptions: [
+          FakeTicketOption(),
+          Object.assign({}, FakeTicketOption(), {
+            seatGroup: {
+              id: 2,
+              name: 'The Meh Seats',
+              description: null,
+            },
+          }),
+        ],
+      };
     }, false);
 
-    ticket_types = await fetch(
-      `api/productions/myperf/performances/${performance.id}/ticket_types`
-    );
-    ticket_types = new TicketsMatrix(await ticket_types.json());
+    ticket_types = new TicketsMatrix(ticketMatrixPerformance);
     let booking = new Booking();
-    booking.performance = performance;
+    booking.performance = FakePerformance();
 
-    stageComponent = mount(TicketSelectionStage, {
-      propsData: {
-        production: production,
-        booking: booking,
-        ticket_matrix: ticket_types,
-      },
-    });
+    stageComponent = mount(
+      TicketSelectionStage,
+      generateMountOptions(['apollo'], {
+        propsData: {
+          production: FakeProduction(),
+          booking: booking,
+          ticket_matrix: ticket_types,
+        },
+      })
+    );
   });
 
   afterEach(() => {
     server.shutdown();
   });
 
-  it('fetches discount options on created', async () => {
-    await waitFor(() => stageComponent.vm.discounts);
-    expect(stageComponent.vm.discounts.length).to.eq(1);
+  it('displays the available seat locations', async () => {
+    let seatGroupComponents = stageComponent.findAllComponents(SeatGroup);
+    expect(seatGroupComponents.length).to.eq(2);
+    expect(
+      seatGroupComponents.at(0).props('ticket_option').seatGroup.name
+    ).to.eq('Best seats in the house');
+    expect(
+      seatGroupComponents.at(1).props('ticket_option').seatGroup.name
+    ).to.eq('The Meh Seats');
+    expect(seatGroupComponents.at(1).props('discounts').length).to.eq(1);
+    expect(seatGroupComponents.at(1).props('current_tickets').length).to.eq(0);
+    expect(seatGroupComponents.at(1).props('group_capacity_remaining')).to.eq(
+      10
+    );
+
+    ticket_types.performance_capacity_remaining = 5;
+    await stageComponent.vm.$forceUpdate();
+
+    expect(seatGroupComponents.at(1).props('group_capacity_remaining')).to.eq(
+      5
+    );
+
+    await stageComponent.vm.booking.tickets.push(new Ticket(1, 1));
+
+    expect(seatGroupComponents.at(1).props('current_tickets').length).to.eq(1);
   });
 
-  describe('with api calls complete', () => {
+  it('reacts to select location event and toggles accordion', async () => {
+    // By default, all should be collpased
+    let seatGroupComponents = stageComponent.findAllComponents(SeatGroup);
+    expect(
+      !seatGroupComponents.at(0).props('expanded') &&
+        !seatGroupComponents.at(0).props('expanded')
+    ).to.be.true;
+
+    await seatGroupComponents.at(0).vm.$emit('select-location');
+
+    expect(seatGroupComponents.at(0).props('expanded')).to.be.true;
+    expect(seatGroupComponents.at(1).props('expanded')).to.be.false;
+
+    await seatGroupComponents.at(1).vm.$emit('select-location');
+    expect(seatGroupComponents.at(0).props('expanded')).to.be.false;
+    expect(seatGroupComponents.at(1).props('expanded')).to.be.true;
+
+    await seatGroupComponents.at(1).vm.$emit('select-location');
+    expect(seatGroupComponents.at(0).props('expanded')).to.be.false;
+    expect(seatGroupComponents.at(1).props('expanded')).to.be.false;
+  });
+
+  it('reacts to add ticket event', async () => {
+    stageComponent.vm.interaction_timer = jest.fn();
+    await stageComponent
+      .findComponent(SeatGroup)
+      .vm.$emit(
+        'add-ticket',
+        ticket_types.ticket_options[0].seatGroup,
+        ticket_types.ticket_options[0].concessionTypes[0].concessionType
+      );
+    expect(stageComponent.vm.booking.tickets.length).to.eq(1);
+    expect(stageComponent.vm.booking.tickets[0].seat_group.id).to.eq(1);
+    expect(stageComponent.vm.booking.tickets[0].concession_type.id).to.eq(1);
+    expect(stageComponent.vm.interaction_timer.mock.calls.length).to.eq(1);
+  });
+
+  it('reacts to add ticket event (multiple)', async () => {
+    stageComponent.vm.interaction_timer = jest.fn();
+    await stageComponent
+      .findComponent(SeatGroup)
+      .vm.$emit(
+        'add-ticket',
+        ticket_types.ticket_options[0].seatGroup,
+        ticket_types.ticket_options[0].concessionTypes[0].concessionType,
+        3
+      );
+    expect(stageComponent.vm.booking.tickets.length).to.eq(3);
+    expect(stageComponent.vm.booking.tickets[0].seat_group.id).to.eq(1);
+    expect(stageComponent.vm.booking.tickets[0].concession_type.id).to.eq(1);
+    expect(stageComponent.vm.interaction_timer.mock.calls.length).to.eq(1);
+  });
+
+  it('reacts to set ticket number event', async () => {
+    stageComponent.vm.interaction_timer = jest.fn();
+    await stageComponent
+      .findComponent(SeatGroup)
+      .vm.$emit(
+        'set-tickets',
+        ticket_types.ticket_options[0].seatGroup,
+        ticket_types.ticket_options[0].concessionTypes[0].concessionType,
+        2
+      );
+    expect(stageComponent.vm.booking.tickets.length).to.eq(2);
+    expect(stageComponent.vm.booking.tickets[0].seat_group.id).to.eq(1);
+    expect(stageComponent.vm.booking.tickets[0].concession_type.id).to.eq(1);
+    expect(stageComponent.vm.interaction_timer.mock.calls.length).to.eq(1);
+  });
+
+  it('reacts to remove ticket event', async () => {
+    stageComponent.vm.interaction_timer = jest.fn();
+    stageComponent.vm.booking.tickets = [new Ticket(1, 1)];
+    await stageComponent
+      .findComponent(SeatGroup)
+      .vm.$emit(
+        'remove-ticket',
+        ticket_types.ticket_options[0].seatGroup,
+        ticket_types.ticket_options[0].concessionTypes[0].concessionType
+      );
+    expect(stageComponent.vm.booking.tickets.length).to.eq(0);
+    expect(stageComponent.vm.interaction_timer.mock.calls.length).to.eq(1);
+  });
+
+  it('calls update API once interaction timer debounced', () => {
+    jest.spyOn(lo, 'debounce');
+
+    stageComponent = mount(TicketSelectionStage, {
+      propsData: {
+        production: FakeProduction(),
+        booking: stageComponent.vm.booking,
+        ticket_matrix: ticket_types,
+      },
+    });
+    expect(lo.debounce.mock.calls.length).to.eq(1);
+    expect(lo.debounce.mock.calls[0][0]).to.eq(stageComponent.vm.updateAPI);
+    expect(lo.debounce.mock.calls[0][1]).to.eq(2000);
+
+    lo.debounce.mockReset();
+  });
+
+  describe('with selected tickets', () => {
     beforeEach(async () => {
-      await waitFor(() => stageComponent.vm.discounts);
+      let booking = new Booking();
+      booking.performance = FakePerformance();
+      booking.tickets = [
+        new Ticket(1, 1),
+        new Ticket(1, 1),
+        new Ticket(1, 2),
+        new Ticket(2, 2),
+      ];
+      await stageComponent.setProps({
+        booking: booking,
+      });
     });
-    it('displays the available seat locations', async () => {
-      let seatGroupComponents = stageComponent.findAllComponents(SeatGroup);
-      expect(seatGroupComponents.length).to.eq(2);
-      expect(
-        seatGroupComponents.at(0).props('ticket_option').seat_group.name
-      ).to.eq('Best seats in the house');
-      expect(
-        seatGroupComponents.at(1).props('ticket_option').seat_group.name
-      ).to.eq('The Meh Seats');
-      expect(seatGroupComponents.at(1).props('discounts').length).to.eq(1);
-      expect(seatGroupComponents.at(1).props('current_tickets').length).to.eq(
-        0
-      );
-      expect(seatGroupComponents.at(1).props('group_capacity_remaining')).to.eq(
-        10
-      );
+    it('displays selected tickets', async () => {
+      expect(stageComponent.text()).to.contain('Selected Tickets');
+      let overview = stageComponent.find('table');
 
-      ticket_types.performance_capacity_remaining = 5;
-      await stageComponent.vm.$forceUpdate();
+      // 3 unique combinations of seat group + conession type
+      expect(overview.findAll('tbody tr').length).to.eq(3);
 
-      expect(seatGroupComponents.at(1).props('group_capacity_remaining')).to.eq(
-        5
-      );
-
-      await stageComponent.vm.booking.tickets.push(new Ticket(1, 1));
-
-      expect(seatGroupComponents.at(1).props('current_tickets').length).to.eq(
-        1
-      );
+      // Test the first row
+      let columns = overview.findAll('tbody tr:first-of-type td');
+      expect(columns.at(0).text()).to.eq('Best seats in the house');
+      expect(columns.at(1).text()).to.eq('Adult');
+      expect(columns.at(2).text()).to.eq('2');
+      expect(columns.at(3).text()).to.eq('£20.00');
     });
+    it('shows discount line if discount applied', async () => {
+      await stageComponent.vm.updateAPI(); // Need to fetch from API to get discount on the tickets
 
-    it('reacts to select location event and toggles accordion', async () => {
-      // By default, all should be collpased
-      let seatGroupComponents = stageComponent.findAllComponents(SeatGroup);
       expect(
-        !seatGroupComponents.at(0).props('expanded') &&
-          !seatGroupComponents.at(0).props('expanded')
+        stageComponent.find('table tfoot tr:first-of-type th').text()
+      ).to.eq('Discounts');
+      expect(
+        stageComponent
+          .find('table tfoot tr:first-of-type td:last-of-type')
+          .text()
+      ).to.eq('-£0.50'); // Fake API will do discount * 100 (pennies)
+
+      // Delete the discount
+      server.schema.performanceNodes.find(1).discounts.models[0].destroy();
+
+      await stageComponent.vm.updateAPI(); // Need to fetch from API to get discount on the tickets
+      expect(stageComponent.find('table').text()).not.to.contain('Discounts');
+    });
+    it('shows subtotal', async () => {
+      await stageComponent.vm.updateAPI(); // Need to fetch from API to get discount on the tickets
+
+      expect(
+        stageComponent.find('table tfoot tr:last-of-type').text()
+      ).to.contain('Subtotal');
+      expect(
+        stageComponent.find('table tfoot tr:last-of-type').text()
+      ).to.contain('£35.50'); // £3.00 of tickets - £0.50 of discount
+    });
+    it('shows loading spinner for subtotal while dirty', async () => {
+      expect(stageComponent.find('table').text()).to.contain('Subtotal');
+      expect(
+        stageComponent
+          .find('table tfoot tr:last-of-type svg[data-icon="circle-notch"]')
+          .exists()
       ).to.be.true;
 
-      await seatGroupComponents.at(0).vm.$emit('select-location');
+      await stageComponent.vm.updateAPI();
 
-      expect(seatGroupComponents.at(0).props('expanded')).to.be.true;
-      expect(seatGroupComponents.at(1).props('expanded')).to.be.false;
-
-      await seatGroupComponents.at(1).vm.$emit('select-location');
-      expect(seatGroupComponents.at(0).props('expanded')).to.be.false;
-      expect(seatGroupComponents.at(1).props('expanded')).to.be.true;
-
-      await seatGroupComponents.at(1).vm.$emit('select-location');
-      expect(seatGroupComponents.at(0).props('expanded')).to.be.false;
-      expect(seatGroupComponents.at(1).props('expanded')).to.be.false;
-    });
-
-    it('reacts to add ticket event', async () => {
-      stageComponent.vm.interaction_timer = jest.fn();
-      await stageComponent
-        .findComponent(SeatGroup)
-        .vm.$emit(
-          'add-ticket',
-          ticket_types.ticket_options[0].seat_group,
-          ticket_types.ticket_options[0].concession_types[0]
-        );
-      expect(stageComponent.vm.booking.tickets.length).to.eq(1);
-      expect(stageComponent.vm.booking.tickets[0].seat_group.id).to.eq('1');
-      expect(stageComponent.vm.booking.tickets[0].concession_type.id).to.eq(
-        '1'
-      );
-      expect(stageComponent.vm.interaction_timer.mock.calls.length).to.eq(1);
-    });
-
-    it('reacts to add ticket event (multiple)', async () => {
-      stageComponent.vm.interaction_timer = jest.fn();
-      await stageComponent
-        .findComponent(SeatGroup)
-        .vm.$emit(
-          'add-ticket',
-          ticket_types.ticket_options[0].seat_group,
-          ticket_types.ticket_options[0].concession_types[0],
-          3
-        );
-      expect(stageComponent.vm.booking.tickets.length).to.eq(3);
-      expect(stageComponent.vm.booking.tickets[0].seat_group.id).to.eq('1');
-      expect(stageComponent.vm.booking.tickets[0].concession_type.id).to.eq(
-        '1'
-      );
-      expect(stageComponent.vm.interaction_timer.mock.calls.length).to.eq(1);
-    });
-
-    it('reacts to set ticket number event', async () => {
-      stageComponent.vm.interaction_timer = jest.fn();
-      await stageComponent
-        .findComponent(SeatGroup)
-        .vm.$emit(
-          'set-tickets',
-          ticket_types.ticket_options[0].seat_group,
-          ticket_types.ticket_options[0].concession_types[0],
-          2
-        );
-      expect(stageComponent.vm.booking.tickets.length).to.eq(2);
-      expect(stageComponent.vm.booking.tickets[0].seat_group.id).to.eq('1');
-      expect(stageComponent.vm.booking.tickets[0].concession_type.id).to.eq(
-        '1'
-      );
-      expect(stageComponent.vm.interaction_timer.mock.calls.length).to.eq(1);
-    });
-
-    it('reacts to remove ticket event', async () => {
-      stageComponent.vm.interaction_timer = jest.fn();
-      stageComponent.vm.booking.tickets = [new Ticket(1, 1)];
-      await stageComponent
-        .findComponent(SeatGroup)
-        .vm.$emit(
-          'remove-ticket',
-          ticket_types.ticket_options[0].seat_group,
-          ticket_types.ticket_options[0].concession_types[0]
-        );
-      expect(stageComponent.vm.booking.tickets.length).to.eq(0);
-      expect(stageComponent.vm.interaction_timer.mock.calls.length).to.eq(1);
-    });
-
-    it('calls update API once interaction timer debounced', () => {
-      jest.spyOn(lo, 'debounce');
-
-      stageComponent = mount(TicketSelectionStage, {
-        propsData: {
-          production: production,
-          booking: stageComponent.vm.booking,
-          ticket_matrix: ticket_types,
-        },
-      });
-      expect(lo.debounce.mock.calls.length).to.eq(1);
-      expect(lo.debounce.mock.calls[0][0]).to.eq(stageComponent.vm.updateAPI);
-      expect(lo.debounce.mock.calls[0][1]).to.eq(2000);
-
-      lo.debounce.mockReset();
-    });
-
-    describe('with selected tickets', () => {
-      beforeEach(async () => {
-        let booking = new Booking();
-        booking.performance = performance;
-        booking.tickets = [
-          new Ticket(1, 1),
-          new Ticket(1, 1),
-          new Ticket(1, 2),
-          new Ticket(2, 2),
-        ];
-        await stageComponent.setProps({
-          booking: booking,
-        });
-      });
-      it('displays selected tickets', async () => {
-        expect(stageComponent.text()).to.contain('Selected Tickets');
-        let overview = stageComponent.find('table');
-
-        // 3 unique combinations of seat group + conession type
-        expect(overview.findAll('tbody tr').length).to.eq(3);
-
-        // Test the first row
-        let columns = overview.findAll('tbody tr:first-of-type td');
-        expect(columns.at(0).text()).to.eq('Best seats in the house');
-        expect(columns.at(1).text()).to.eq('Adult');
-        expect(columns.at(2).text()).to.eq('2');
-        expect(columns.at(3).text()).to.eq('£2.00');
-      });
-      it('shows discount line if discount applied', async () => {
-        await stageComponent.vm.updateAPI(); // Need to fetch from API to get discount on the tickets
-
-        expect(
-          stageComponent.find('table tfoot tr:first-of-type th').text()
-        ).to.eq('Discounts');
-        expect(
-          stageComponent
-            .find('table tfoot tr:first-of-type td:last-of-type')
-            .text()
-        ).to.eq('-£0.50'); // Fake API will do discount * 100 (pennies)
-
-        // Delete the discount
-        server.schema.performances
-          .find(performance.id)
-          .discounts.models[0].destroy();
-
-        await stageComponent.vm.updateAPI(); // Need to fetch from API to get discount on the tickets
-        expect(stageComponent.find('table').text()).not.to.contain('Discounts');
-      });
-      it('shows subtotal', async () => {
-        await stageComponent.vm.updateAPI(); // Need to fetch from API to get discount on the tickets
-
-        expect(
-          stageComponent.find('table tfoot tr:last-of-type').text()
-        ).to.contain('Subtotal');
-        expect(
-          stageComponent.find('table tfoot tr:last-of-type').text()
-        ).to.contain('£2.50'); // £3.00 of tickets - £0.50 of discount
-      });
-      it('shows loading spinner for subtotal while dirty', async () => {
-        expect(stageComponent.find('table').text()).to.contain('Subtotal');
-        expect(
-          stageComponent
-            .find('table tfoot tr:last-of-type svg[data-icon="circle-notch"]')
-            .exists()
-        ).to.be.true;
-
-        await stageComponent.vm.updateAPI();
-
-        expect(
-          stageComponent
-            .find('table tfoot tr:last-of-type svg[data-icon="circle-notch"]')
-            .exists()
-        ).not.to.be.true;
-      });
+      expect(
+        stageComponent
+          .find('table tfoot tr:last-of-type svg[data-icon="circle-notch"]')
+          .exists()
+      ).not.to.be.true;
     });
   });
 });

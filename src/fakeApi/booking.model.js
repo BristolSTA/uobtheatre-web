@@ -1,12 +1,8 @@
 import faker from 'faker';
 import lo from 'lodash';
-import { Factory } from 'miragejs';
+import { belongsTo, Factory, Model } from 'miragejs';
 
-import {
-  DefaultSerializer,
-  RelationshipSerializer,
-  updateIfDoesntHave,
-} from './utils';
+import { updateIfDoesntHave } from './utils';
 
 let generatePriceBreakdown = (mirageSchema, booking) => {
   let performance = booking.performance;
@@ -28,7 +24,7 @@ let generatePriceBreakdown = (mirageSchema, booking) => {
         }
       );
 
-      return mirageSchema.create('ticketSummaryNode', {
+      return mirageSchema.create('priceBreakdownTicketNode', {
         number: groupedTickets.length,
         concessionType: concessionTypeEdge.concessionType,
         seatGroup: ticketOption.seatGroup,
@@ -43,19 +39,28 @@ let generatePriceBreakdown = (mirageSchema, booking) => {
     .reduce((a, b) => a + b, 0);
 
   // A bit of a bodge...
-  // let discounts_price = object.performance.discounts.models.length
-  //   ? Math.round(object.performance.discounts.models[0].discount * 100)
-  //   : 0;
-  let discounts_price = 0;
+  let discounts_price = performance.discounts.models.length
+    ? Math.round(performance.discounts.models[0].percentage * 100)
+    : 0;
 
   let tickets_inc_discount_price = ticket_price - discounts_price;
 
-  // let misc_costs = this.buildPayload(object.performance.misc_costs);
-  // let misc_costs_price = misc_costs.length
-  //   ? misc_costs.map((misc_cost) => misc_cost.value).reduce((a, b) => a + b)
-  //   : 0;
-  let misc_costs = [];
-  let misc_costs_price = 0;
+  let misc_costs = mirageSchema.miscCostNodes.where({
+    productionId: performance.production.id,
+  });
+  misc_costs.models.forEach((misc_cost) => {
+    if (misc_cost.percentage) {
+      misc_cost.update({
+        value: misc_cost.percentage * tickets_inc_discount_price,
+      });
+    }
+  });
+
+  let misc_costs_price = misc_costs.models.length
+    ? misc_costs.models
+        .map((misc_cost) => misc_cost.value)
+        .reduce((a, b) => a + b)
+    : 0;
 
   let result = {
     // Tickets
@@ -72,91 +77,15 @@ let generatePriceBreakdown = (mirageSchema, booking) => {
     subtotalPrice: tickets_inc_discount_price,
     totalPrice: tickets_inc_discount_price + misc_costs_price,
   };
-  console.log(result);
 
   return result;
 };
 
 export default {
-  registerSerializers() {
+  registerModels() {
     return {
-      booking: RelationshipSerializer(['tickets']).extend({
-        serialize(object) {
-          let json = this.buildPayload(object);
-          json.performance_id = object.performanceId;
-
-          let tickets_pricebreakdown = lo
-            .chain(object.tickets.models)
-            .groupBy((ticket) => [
-              ticket.seat_group.id,
-              ticket.concession_type.id,
-            ])
-            .values()
-            .map((groupedTickets) => {
-              return {
-                number: groupedTickets.length,
-                concession_type: groupedTickets[0].concession_type,
-                seat_group: groupedTickets[0].seat_group,
-                ticket_price: groupedTickets[0].concession_type.price,
-                total_price:
-                  groupedTickets[0].concession_type.price *
-                  groupedTickets.length,
-              };
-            })
-            .value();
-
-          let ticket_price = tickets_pricebreakdown
-            .map((tickets) => tickets.total_price)
-            .reduce((a, b) => a + b, 0);
-
-          // A bit of a bodge...
-          let discounts_price = object.performance.discounts.models.length
-            ? Math.round(object.performance.discounts.models[0].discount * 100)
-            : 0;
-
-          let tickets_inc_discount_price = ticket_price - discounts_price;
-
-          let misc_costs = this.buildPayload(object.performance.misc_costs);
-          let misc_costs_price = misc_costs.length
-            ? misc_costs
-                .map((misc_cost) => misc_cost.value)
-                .reduce((a, b) => a + b)
-            : 0;
-
-          json.price_breakdown = {
-            // Tickets
-            tickets: tickets_pricebreakdown,
-            tickets_price: ticket_price,
-            tickets_discounted_price: tickets_inc_discount_price,
-            discounts_value: discounts_price,
-
-            // Misc Costs
-            misc_costs: misc_costs,
-            misc_costs_value: misc_costs_price,
-
-            // Totals
-            subtotal_price: tickets_inc_discount_price,
-            total_price: tickets_inc_discount_price + misc_costs_price,
-          };
-
-          return json;
-        },
-        normalize() {
-          if (arguments[0].booking.tickets) {
-            arguments[0].booking.tickets = arguments[0].booking.tickets.map(
-              (ticket) => {
-                let ticketModel = this.schema.tickets.create({
-                  seat_group: this.schema.seatGroups.find(ticket.seat_group_id),
-                  concession_type: this.schema.concessionTypes.find(
-                    ticket.concession_type_id
-                  ),
-                });
-                return ticketModel.id;
-              }
-            );
-          }
-          return DefaultSerializer.prototype.normalize.apply(this, arguments);
-        },
+      miscCostNode: Model.extend({
+        production: belongsTo('productionNode'),
       }),
     };
   },
@@ -164,29 +93,6 @@ export default {
     return {
       bookingNode: Factory.extend({
         bookingReference: () => faker.random.uuid(),
-        // afterCreate(booking, server) {
-        //   updateIfDoesntHave(booking, [
-        //     {
-        //       performance: () => {
-        //         return server.create('performanceNode');
-        //       },
-        //     },
-        //     {
-        //       tickets: () => {
-        //         return server.createList('ticketNode', 2, {
-        //           seatGroup: () =>
-        //             faker.random.arrayElement(
-        //               booking.performance.seatGroups.models
-        //             ),
-        //           concessionType: () =>
-        //             faker.random.arrayElement(
-        //               booking.performance.concessionTypes.models
-        //             ),
-        //         });
-        //       },
-        //     },
-        //   ]);
-        // },
       }),
       ticketNode: Factory.extend({
         afterCreate(booking, server) {
@@ -250,8 +156,35 @@ export default {
           status: 'IN_PROGRESS',
           tickets: tickets,
         });
-        booking.priceBreakdown = mirageSchema.create(
-          'priceBreakdownNode',
+        booking.update({
+          priceBreakdown: mirageSchema.create(
+            'priceBreakdownNode',
+            generatePriceBreakdown(mirageSchema, booking)
+          ),
+        });
+
+        return booking;
+      },
+      updateBooking(obj, args, { mirageSchema }) {
+        // Update the tickets
+        let tickets = [];
+        if (args.tickets) {
+          tickets = args.tickets.map((ticket) => {
+            if (ticket.id) {
+              return mirageSchema.ticketNodes.find(ticket.id);
+            }
+            return mirageSchema.create('ticketNode', {
+              seatGroupId: ticket.seatGroupId,
+              concessionTypeId: ticket.concessionTypeId,
+            });
+          });
+        }
+        // Update the booking
+        let booking = mirageSchema.bookingNodes.find(args.id);
+        booking.update({
+          tickets: tickets,
+        });
+        booking.priceBreakdown.update(
           generatePriceBreakdown(mirageSchema, booking)
         );
 
@@ -280,7 +213,7 @@ export default {
 
       type PriceBreakdownNode implements Node {
         id: ID!
-        tickets: [TicketSummaryNode]
+        tickets: [PriceBreakdownTicketNode]
         ticketsPrice: Int
         discountsValue: Int
         miscCosts: [MiscCostNode]
@@ -298,7 +231,7 @@ export default {
         concessionType: ConcessionTypeNode!
       }
 
-      type TicketSummaryNode {
+      type PriceBreakdownTicketNode {
         ticketPrice: Int
         number: Int
         seatGroup: SeatGroupNode
@@ -313,6 +246,7 @@ export default {
   registerGQLMutations() {
     return `
       createBooking(performanceId: ID!, tickets: [CreateTicketInput]) : BookingNode
+      updateBooking(id: ID!, tickets: [CreateTicketInput]) : BookingNode
     `;
   },
 };

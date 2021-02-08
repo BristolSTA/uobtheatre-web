@@ -22,7 +22,7 @@
           ticket_matrix.ticket_options.length == 1
         "
         :current_tickets="booking.tickets"
-        :discounts="discounts"
+        :discounts="ticket_matrix.discounts"
         @select-location="
           selected_location_index =
             selected_location_index != index ? index : null
@@ -139,22 +139,9 @@ export default {
     return {
       expanded: true,
       selected_location_index: null,
-      discounts: null,
 
       interaction_timer: lo.debounce(this.updateAPI, 2 * 1000),
     };
-  },
-  created() {
-    // runPromiseWithLoading(
-    //   performanceService
-    //     .fetchGroupDiscountOptionsForPerformance(
-    //       this.production.slug,
-    //       this.booking.performance.id
-    //     )
-    //     .then((results) => {
-    //       this.discounts = results;
-    //     })
-    // );
   },
   methods: {
     onAddTicket(seat_group, concession_type, number = 1) {
@@ -183,62 +170,66 @@ export default {
       this.interaction_timer();
     },
     async updateAPI() {
-      this.$apollo
-        .mutate({
+      let queryBody = `
+        id
+        tickets {
+          id
+          seatGroup {
+            id
+            name
+          }
+          concessionType {
+            id
+            name
+          }
+        }
+        priceBreakdown {
+          ...AllPriceBreakdown
+        }`;
+
+      let variables = {
+        id: this.booking.id,
+        performanceID: this.booking.performance.id,
+        tickets: this.booking.toAPIData().tickets,
+      };
+
+      let bookingResponse;
+      if (!this.booking.id) {
+        // We haven't got a booking yet, lets create one
+        bookingResponse = await this.$apollo.mutate({
           mutation: gql`
             mutation($performanceID: ID!, $tickets: [CreateTicketInput]) {
               createBooking(performanceId: $performanceID, tickets: $tickets) {
-                id
-                tickets {
-                  id
-                  seatGroup {
-                    id
-                    name
-                  }
-                  concessionType {
-                    id
-                    name
-                  }
-                }
-                priceBreakdown {
-                  ...AllPriceBreakdown
-                }
+                ${queryBody}
               }
             }
             ${BookingFragments}
           `,
-          variables: {
-            performanceID: this.booking.performance.id,
-            tickets: this.booking.toAPIData().tickets,
-          },
-        })
-        .then(({ data }) => {
-          if (
-            this.booking.tickets.length == data.createBooking.tickets.length
-          ) {
-            return this.booking.updateFromAPIData(data.createBooking);
-          } else {
-            this.interaction_timer();
-          }
+          variables: variables,
         });
-      // let bookingResponse;
-      // if (!this.booking.id) {
-      //   // We haven't got a booking yet, lets create one
-      //   bookingResponse = await bookingService.startNewBooking(
-      //     this.booking.performance.id,
-      //     this.booking.toAPIData().tickets
-      //   );
-      // } else {
-      //   // We have a booking, lets update it
-      //   bookingResponse = await bookingService.updateBooking(
-      //     this.booking.id,
-      //     this.booking.toAPIData().tickets
-      //   );
-      // }
-      // // Check for changes since API called
-      // if (this.booking.tickets.length == bookingResponse.tickets.length) {
-      //   return this.booking.updateFromAPIData(bookingResponse);
-      // }
+        bookingResponse = bookingResponse.data.createBooking;
+      } else {
+        // We have a booking, lets update it
+        bookingResponse = await this.$apollo.mutate({
+          mutation: gql`
+            mutation($id: ID!, $tickets: [CreateTicketInput]) {
+              updateBooking(id: $id, tickets: $tickets) {
+                ${queryBody}
+              }
+            }
+            ${BookingFragments}
+          `,
+          variables: variables,
+        });
+        bookingResponse = bookingResponse.data.updateBooking;
+      }
+      // Check for changes since API called. TODO - this isn't very thorough...
+      if (this.booking.tickets.length == bookingResponse.tickets.length) {
+        return this.booking.updateFromAPIData(bookingResponse);
+      }
+
+      // There has been a change in the selected tickets whilst calling the API. Let's trigger another call...
+      this.interaction_timer();
     },
   },
 };

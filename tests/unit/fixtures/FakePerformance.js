@@ -1,5 +1,6 @@
 export default () => {
   return {
+    id: 1,
     venue: {
       name: 'Winston Theatre',
       slug: 'winston-theatre',

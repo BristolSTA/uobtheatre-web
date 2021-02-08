@@ -82,8 +82,9 @@
         <group-ticket-button
           v-for="(discount, index) in discounts.filter(
             (discount) =>
-              !discount.seat_group &&
-              discount.discount_requirements
+              (!discount.seatGroup ||
+                discount.seatGroup.id == ticket_option.seatGroup.id) &&
+              discount.requirements
                 .map((req) => req.number)
                 .reduce((a, b) => a + b, 0) <= group_capacity_remaining
           )"
@@ -123,11 +124,11 @@ export default {
   },
   methods: {
     onAddDiscountTickets(discount) {
-      discount.discount_requirements.forEach((requirement) => {
+      discount.requirements.forEach((requirement) => {
         this.$emit(
           'add-ticket',
-          this.ticket_option.seat_group,
-          requirement.concession_type,
+          this.ticket_option.seatGroup,
+          requirement.concessionType,
           requirement.number
         );
       });

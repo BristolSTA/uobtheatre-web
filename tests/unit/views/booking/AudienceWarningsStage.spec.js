@@ -1,38 +1,42 @@
 import { mount } from '@vue/test-utils';
 import { expect } from 'chai';
+import gql from 'graphql-tag';
 
 import AudienceWarningsStage from '@/views/booking/stages/AudienceWarningsStage.vue';
 
-import {
-  createFromFactoryAndSerialize,
-  executeWithServer,
-} from '../../helpers';
+import FakeProduction from '../../fixtures/FakeProduction';
+import { executeWithServer, runApolloQuery } from '../../helpers';
 
 describe('Pick Performance Stage', () => {
   let stageComponent;
-  let production;
 
-  beforeAll(() => {
-    executeWithServer((server) => {
-      production = createFromFactoryAndSerialize(
-        'production',
-        1,
-        {
-          warnings: ['Strobe lighting is in use', 'Something else'],
+  beforeAll(async () => {
+    await executeWithServer(async (server) => {
+      let production = server.create('productionNode');
+
+      let { data } = await runApolloQuery({
+        query: gql`
+          query production {
+            production(slug: "${production.slug}") {
+              warnings {
+                warning
+              }
+            }
+          }
+        `,
+      });
+
+      stageComponent = mount(AudienceWarningsStage, {
+        propsData: {
+          production: data.production,
         },
-        server
-      );
-    });
-    stageComponent = mount(AudienceWarningsStage, {
-      propsData: {
-        production: production,
-      },
+      });
     });
   });
 
   it('displays the warnings', () => {
-    expect(stageComponent.text()).to.contain('Strobe lighting is in use');
-    expect(stageComponent.text()).to.contain('Something else');
+    expect(stageComponent.text()).to.contain('Strobe Lighting');
+    expect(stageComponent.text()).to.contain('Nudity');
   });
 
   it('emits event on understood', () => {

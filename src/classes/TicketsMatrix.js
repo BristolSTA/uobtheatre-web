@@ -2,6 +2,11 @@ export default class {
   constructor(raw_performance) {
     this.raw_ticket_options = raw_performance.ticketOptions;
     this.performanceCapacityRemaining = raw_performance.capacityRemaining;
+    this.raw_discounts = raw_performance.discounts;
+  }
+
+  get discounts() {
+    return this.raw_discounts;
   }
 
   get ticket_options() {
@@ -30,9 +35,8 @@ export default class {
    */
   capacityRemainingForSeatGroup(seat_group_id) {
     return Math.min(
-      this.ticket_options.find(
-        (option) => parseInt(option.seatGroup.id) == seat_group_id
-      ).seatGroup.capacityRemaining,
+      this.ticket_options.find((option) => option.seatGroup.id == seat_group_id)
+        .capacityRemaining,
       this.performance_capacity_remaining
     );
   }

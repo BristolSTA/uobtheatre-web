@@ -10,8 +10,8 @@ describe('TicketsMatrix', () => {
   beforeEach(() => {
     ticketOption = FakeTicketOption();
     matrix = new TicketsMatrix({
-      capacity_remaining: 100,
-      ticket_types: [ticketOption],
+      capacityRemaining: 100,
+      ticketOptions: [ticketOption],
     });
   });
 

@@ -1,21 +1,25 @@
 export default () => {
   return {
-    seat_group: {
+    capacityRemaining: 10,
+    seatGroup: {
       id: 1,
-      name: 'Best Seats in the House',
+      name: 'Best seats in the house',
       description: 'The best seats obviously',
-      capacity_remaining: 10,
     },
-    concession_types: [
+    concessionTypes: [
       {
-        id: 1,
-        name: 'Adult',
-        price: 100,
+        concessionType: {
+          id: 1,
+          name: 'Adult',
+        },
+        price: 1000,
       },
       {
-        id: 2,
-        name: 'Student',
-        price: 100,
+        concessionType: {
+          id: 2,
+          name: 'Student',
+        },
+        price: 800,
       },
     ],
   };

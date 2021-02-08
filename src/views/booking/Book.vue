@@ -53,7 +53,6 @@
 import Booking from '@/classes/Booking';
 import BookingStage from '@/classes/BookingStage';
 import TicketsMatrix from '@/classes/TicketsMatrix';
-// import TicketsMatrix from '@/classes/TicketsMatrix';
 import BookingNavigation from '@/components/booking/BookingNavigation.vue';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
 import ClickableLink from '@/components/ui/ClickableLink.vue';

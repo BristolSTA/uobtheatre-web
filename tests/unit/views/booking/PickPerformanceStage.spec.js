@@ -3,43 +3,39 @@ import { expect } from 'chai';
 import PerformanceOverview from '@/components/production/PerformanceOverview.vue';
 import PickPerformanceStage from '@/views/booking/stages/PickPerformanceStage.vue';
 
+import FakeProduction from '../../fixtures/FakeProduction';
 import { mountWithRouterMock } from '../../helpers';
-import {
-  createFromFactoryAndSerialize,
-  executeWithServer,
-} from '../../helpers';
 
 describe('Pick Performance Stage', () => {
   let stageComponent;
   let production;
 
   beforeAll(async () => {
-    executeWithServer((server) => {
-      production = createFromFactoryAndSerialize(
-        'production',
-        1,
-        {
-          performances: [
-            server.create('performance', {
-              start: '2020-12-25T10:00:00',
-              end: '2020-12-25T12:00:00',
-              sold_out: false,
-            }),
-            server.create('performance', {
-              start: '2020-12-26T14:00:00',
-              end: '2020-12-26T16:00:00',
-              sold_out: false,
-            }),
-            server.create('performance', {
-              start: '2020-12-27T18:00:00',
-              end: '2020-12-27T20:00:00',
-              sold_out: false,
-            }),
-          ],
-        },
-        server
-      );
-    });
+    production = FakeProduction();
+    let basePerformance = production.performances.edges[0].node;
+    production.performances.edges = [
+      {
+        node: Object.assign({}, basePerformance, {
+          start: '2020-12-25T10:00:00',
+          end: '2020-12-25T12:00:00',
+          soldOut: false,
+        }),
+      },
+      {
+        node: Object.assign({}, basePerformance, {
+          start: '2020-12-26T14:00:00',
+          end: '2020-12-26T16:00:00',
+          soldOut: false,
+        }),
+      },
+      {
+        node: Object.assign({}, basePerformance, {
+          start: '2020-12-27T18:00:00',
+          end: '2020-12-27T20:00:00',
+          soldOut: false,
+        }),
+      },
+    ];
     stageComponent = await mountWithRouterMock(PickPerformanceStage, {
       propsData: {
         production: production,
@@ -51,13 +47,13 @@ describe('Pick Performance Stage', () => {
     let overviews = stageComponent.findAllComponents(PerformanceOverview);
     expect(overviews.length).to.eq(3);
     expect(overviews.at(0).props('performance')).to.eq(
-      production.performances[0]
+      production.performances.edges[0].node
     );
     expect(overviews.at(1).props('performance')).to.eq(
-      production.performances[1]
+      production.performances.edges[1].node
     );
     expect(overviews.at(2).props('performance')).to.eq(
-      production.performances[2]
+      production.performances.edges[2].node
     );
   });
 
@@ -80,7 +76,7 @@ describe('Pick Performance Stage', () => {
     stageComponent.findComponent(PerformanceOverview).vm.$emit('select');
     expect(stageComponent.emitted('select-performance').length).to.eq(1);
     expect(stageComponent.emitted('select-performance')[0][0]).to.eq(
-      production.performances[0]
+      production.performances.edges[0].node
     );
   });
 });

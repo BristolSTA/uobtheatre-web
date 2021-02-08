@@ -19,7 +19,7 @@ export default {
             hours: faker.random.number({ min: 1, max: 3 }),
           });
         },
-        doors_open() {
+        doorsOpen() {
           return DateTime.fromISO(this.start).minus({
             hours: faker.random.number({ min: 1, max: 2 }),
           });
@@ -52,54 +52,6 @@ export default {
       }),
     };
   },
-  registerRoutes() {
-    this.resource('performances');
-
-    // All ticket (concession) types by performance by production
-    this.get(
-      'productions/:slug/performances/:performance_id/ticket_types',
-      function (schema, request) {
-        let performance = schema.performances.find(
-          request.params.performance_id
-        );
-        if (!performance) {
-          // return NotFoundResponse();
-        }
-
-        let seatGroups = this.serialize(performance.seat_groups);
-
-        let concessionTypes = this.serialize(performance.concession_types);
-
-        /*  */
-        return {
-          ticket_types: seatGroups.map((seatGroup) => {
-            return {
-              seat_group: seatGroup,
-              concession_types: concessionTypes,
-            };
-          }),
-          capacity_remaining: seatGroups
-            .map((seat_group) => seat_group.capacity_remaining)
-            .reduce((a, b) => a + b, 0),
-        };
-      }
-    );
-
-    // All discounts for performance
-    this.get(
-      'productions/:slug/performances/:performance_id/discounts',
-      function (schema, request) {
-        let performance = schema.performances.find(
-          request.params.performance_id
-        );
-        if (!performance) {
-          // return NotFoundResponse();
-        }
-
-        return performance.discounts;
-      }
-    );
-  },
   registerGQLTypes() {
     return `
       type PerformanceNode implements Node {
@@ -122,6 +74,7 @@ export default {
         isInperson: Boolean!
         isOnline: Boolean!
         soldOut: Boolean!
+        discounts: [DiscountNode]
       }
     `;
   },
