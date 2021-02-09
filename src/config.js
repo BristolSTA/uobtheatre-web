@@ -7,7 +7,7 @@
 
 let api_general_endpoint = process.env.VUE_APP_API_BASE
   ? process.env.VUE_APP_API_BASE
-  : 'test.example/fakeapi';
+  : '/fakeapi';
 
 export default {
   application: {
