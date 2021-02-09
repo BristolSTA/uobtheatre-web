@@ -1,6 +1,7 @@
 import { RouterLinkStub } from '@vue/test-utils';
 import { expect } from 'chai';
 
+import ProductionCarousel from '@/components/ui/carousel/ProductionCarousel.vue';
 import { makeServer } from '@/fakeApi';
 import Home from '@/views/Home.vue';
 
@@ -30,43 +31,50 @@ describe('Home', function () {
     let splashscreenContainer;
 
     beforeEach(() => {
-      splashscreenContainer = homepageComponent.find('#splashscreen');
+      splashscreenContainer = homepageComponent.find('#carousel');
     });
 
     it('shows fallback with no productions', () => {
-      expect(splashscreenContainer.text()).to.contain(`Welcome to UOB Theatre`);
+      expect(fixTextSpacing(splashscreenContainer.text())).to.contain(
+        'Welcome to UOB Theatre The Home of Bristol Student Performing Arts'
+      );
     });
 
-    it('shows featured production on splashscreen', async () => {
+    it('shows fallback with no featured production with image', async () => {
+      server.create('ProductionNode', {
+        name: 'My production without a picture',
+        society: server.create('SocietyNode', { name: 'Dramatic Pause' }),
+        start: new Date('2020-11-13'),
+        end: new Date('2020-11-14'),
+        __dont_factory: ['coverImage'],
+      });
+
+      homepageComponent = await mountWithRouterMock(
+        Home,
+        generateMountOptions(['apollo'])
+      );
+
+      await waitFor(() => homepageComponent.vm.bannerProductions);
+
+      expect(fixTextSpacing(homepageComponent.text())).to.contain(
+        'Welcome to UOB Theatre The Home of Bristol Student Performing Arts'
+      );
+      expect(homepageComponent.findComponent(ProductionCarousel).exists()).to.be
+        .false;
+    });
+
+    it('shows carousel component with correct data', async () => {
       seedProductions();
 
       homepageComponent = await mountWithRouterMock(
         Home,
         generateMountOptions(['apollo'])
       );
-      splashscreenContainer = homepageComponent.findAll('#splashscreen');
-      await waitFor(() => homepageComponent.vm.featuredProduction);
+      await waitFor(() => homepageComponent.vm.bannerProductions.length > 0);
 
-      // Should have production name
-      expect(splashscreenContainer.text()).to.contain('Upside Down Cake');
-
-      // Should have society putting on
-      expect(splashscreenContainer.text()).to.contain('Joe Bloggs Productions');
-
-      // Should have background image
-      expect(splashscreenContainer.attributes('style')).to.contain(
-        'background-image: url(http://pathto.example/my-image.png)'
-      );
-
-      // Should have production's run dates
-      expect(fixTextSpacing(splashscreenContainer.text())).to.contain(
-        '14 November - 18 November 2020'
-      );
-
-      // Shouldn't contain the name of the other production
-      expect(splashscreenContainer.text()).not.to.contain(
-        'Not This One Again...'
-      );
+      expect(homepageComponent.findComponent(ProductionCarousel).exists()).to.be
+        .true;
+      expect(homepageComponent.vm.bannerProductions.length).equals(2);
     });
   });
 
@@ -96,7 +104,7 @@ describe('Home', function () {
         })
         .findAll('.production-feature');
 
-      expect(whatsOnProductions.length).to.equal(3);
+      expect(whatsOnProductions.length).to.equal(4);
 
       // Checks for the first production
       // Has image in first div
@@ -113,11 +121,11 @@ describe('Home', function () {
       // Link to production
       expect(whatsOnProductions.at(0).find('a').exists()).to.be.true;
       expect(
-        homepageComponent.findAllComponents(RouterLinkStub).at(0).props('to')
+        homepageComponent.findAllComponents(RouterLinkStub).at(2).props('to')
           .name
       ).to.equal('production');
       expect(
-        homepageComponent.findAllComponents(RouterLinkStub).at(0).props('to')
+        homepageComponent.findAllComponents(RouterLinkStub).at(2).props('to')
           .params.productionSlug
       ).to.equal('my-production-without-a-picture');
 

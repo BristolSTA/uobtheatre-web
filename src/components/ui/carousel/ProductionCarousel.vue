@@ -1,5 +1,12 @@
 <template>
-  <div class="relative text-white">
+  <div
+    id="carousel"
+    class="relative text-white"
+    @mouseover="handleMouseOver('carousel')"
+    @mouseout="handleMouseOut('carousel')"
+    @focusin="handleFocus()"
+    @focusout="handleFocus()"
+  >
     <transition-group
       tag="div"
       class="relative w-full overflow-hidden"
@@ -11,10 +18,6 @@
         v-bind:key="index"
         class="absolute top-0 bottom-0 left-0 right-0"
         ref="carousel"
-        @mouseover="handleMouseOver('carousel')"
-        @mouseout="handleMouseOut('carousel')"
-        @focusin="handleFocus()"
-        @focusout="handleFocus()"
       >
         <div
           id="splashscreen"
@@ -51,6 +54,7 @@
         <ul class="flex items-center p-0 space-x-3 list-none whitespace-nowrap">
           <li v-for="n in carouselLength" :key="n">
             <button
+              id="slideBtn"
               class="btnBase transition-colors duration-500 w-2.5 h-2.5 rounded-full p-0 focus:outline-none border-white border hover:bg-white"
               :class="[
                 n - 1 == currentProduction ? 'bg-white' : 'bg-transparent',
@@ -65,6 +69,7 @@
         class="absolute top-0 left-0 invisible w-32 h-full md:w-24 lg:w-32 md:visible"
       >
         <button
+          id="prevBtn"
           class="w-full h-full text-4xl duration-300 transition-color btnBase focus:outline-none hover:bg-opacity-30 hover:bg-black"
           @click="goToPrev(), restartAutoPlay()"
           @keydown="goToPrev()"
@@ -76,6 +81,7 @@
         class="absolute top-0 right-0 invisible w-32 h-full md:w-24 lg:w-32 md:visible"
       >
         <button
+          id="nextBtn"
           class="w-full h-full text-4xl duration-300 transition-color btnBase focus:outline-none hover:bg-opacity-30 hover:bg-black"
           @click="goToNext(), restartAutoPlay()"
           @keydown="goToNext()"
@@ -121,7 +127,6 @@ export default {
       autoplayStartTimestamp: null,
       autoplayTimeout: null,
       isAutoplayPaused: false,
-      isMouseDown: false,
     };
   },
   mounted() {

@@ -1,10 +1,12 @@
 <template>
   <div class="min-h-full text-white bg-sta-gray">
-    <div v-if="!bannerProductions.length" class="p-8 text-center">
-      <div class="text-4xl">Welcome to {{ $appName }}</div>
-      <div class="text-2xl">The Home of Bristol Student Performing Arts</div>
+    <div id="carousel">
+      <div v-if="!bannerProductions.length" class="p-8 text-center">
+        <div class="text-4xl">Welcome to {{ $appName }}</div>
+        <div class="text-2xl">The Home of Bristol Student Performing Arts</div>
+      </div>
+      <production-carousel v-else :bannerProductions="bannerProductions" />
     </div>
-    <production-carousel v-else :bannerProductions="bannerProductions" />
 
     <div class="container mt-4 text-white" ref="whatson">
       <h1 class="text-h1">What's On</h1>

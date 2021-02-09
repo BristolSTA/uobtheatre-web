@@ -27,11 +27,6 @@ const mixin = {
       }
     },
 
-    handleMouseUp() {
-      this.isMouseDown = false;
-      this.enableScroll();
-    },
-
     handleMouseOver(element) {
       if (this.autoplay) {
         if (element === 'carousel' && this.pauseOnHover) {
