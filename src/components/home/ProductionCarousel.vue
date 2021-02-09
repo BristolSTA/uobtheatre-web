@@ -4,8 +4,8 @@
     class="relative text-white"
     @mouseover="handleMouseOver('carousel')"
     @mouseout="handleMouseOut('carousel')"
-    @focusin="handleFocus()"
-    @focusout="handleFocus()"
+    @focusin="() => null"
+    @focusout="() => null"
   >
     <transition-group
       tag="div"
@@ -59,7 +59,7 @@
               :class="[
                 n - 1 == currentProduction ? 'bg-white' : 'bg-transparent',
               ]"
-              @click="goTo(n - 1), restartAutoPlay()"
+              @click="goTo(n - 1)"
               @keydown="goTo(n - 1)"
             ></button>
           </li>
@@ -71,7 +71,7 @@
         <button
           id="prevBtn"
           class="w-full h-full text-4xl duration-300 transition-color btnBase focus:outline-none hover:bg-opacity-30 hover:bg-black"
-          @click="goToPrev(), restartAutoPlay()"
+          @click="goToPrev()"
           @keydown="goToPrev()"
         >
           <font-awesome-icon icon="chevron-left" />
@@ -83,7 +83,7 @@
         <button
           id="nextBtn"
           class="w-full h-full text-4xl duration-300 transition-color btnBase focus:outline-none hover:bg-opacity-30 hover:bg-black"
-          @click="goToNext(), restartAutoPlay()"
+          @click="goToNext()"
           @keydown="goToNext()"
         >
           <font-awesome-icon icon="chevron-right" />
@@ -96,11 +96,8 @@
 <script>
 import { displayStartEnd } from '@/utils';
 
-import autoplay from './autoplay';
-
 export default {
   name: 'production-carousel',
-  mixins: [autoplay],
   props: {
     bannerProductions: {
       required: true,
@@ -112,7 +109,7 @@ export default {
       default: true,
     },
     autoplaySpeed: {
-      default: 5000,
+      default: 2000,
     },
     pauseOnHover: {
       default: true,
@@ -123,14 +120,10 @@ export default {
       currentProduction: 0,
       displayStartEnd: displayStartEnd,
       autoplayInterval: null,
-      autoplayRemaining: null,
-      autoplayStartTimestamp: null,
-      autoplayTimeout: null,
-      isAutoplayPaused: false,
     };
   },
   mounted() {
-    this.toggleAutoPlay();
+    this.enableAutoPlay();
   },
   beforeDestroy() {
     this.disableAutoPlay();
@@ -156,6 +149,31 @@ export default {
       if (this.currentProduction == this.carouselLength - 1) {
         this.goTo(0);
       } else this.goTo(this.currentProduction + 1);
+    },
+    disableAutoPlay() {
+      clearInterval(this.autoplayInterval);
+      this.autoplayInterval = null;
+    },
+    enableAutoPlay() {
+      if (this.carouselLength > 1 && this.autoplay) {
+        this.autoplayInterval = setInterval(() => {
+          this.goToNext();
+        }, this.autoplaySpeed);
+      }
+    },
+    handleMouseOver(element) {
+      if (this.autoplay) {
+        if (element === 'carousel' && this.pauseOnHover) {
+          this.disableAutoPlay();
+        }
+      }
+    },
+    handleMouseOut(element) {
+      if (this.autoplay) {
+        if (element === 'carousel' && this.pauseOnHover) {
+          this.enableAutoPlay();
+        }
+      }
     },
   },
 };

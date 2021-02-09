@@ -2,7 +2,7 @@ import { RouterLinkStub } from '@vue/test-utils';
 import { expect } from 'chai';
 import { DateTime } from 'luxon';
 
-import ProductionCarousel from '@/components/ui/carousel/ProductionCarousel.vue';
+import ProductionCarousel from '@/components/home/ProductionCarousel.vue';
 import { makeServer } from '@/fakeApi';
 
 import { fixTextSpacing, mountWithRouterMock } from '../../helpers';
@@ -182,47 +182,110 @@ describe('ProductionCarousel', function () {
 
   describe('autoplay and pausing functionality', () => {
     it('mouseover pauses autoplay', async () => {
-      expect(prodCarouselComponent.vm.$data.isAutoplayPaused).equals(false);
+      expect(prodCarouselComponent.vm.$data.autoplayInterval).to.not.equal(
+        null
+      );
       prodCarouselComponent.find('#carousel').trigger('mouseover');
-      expect(prodCarouselComponent.vm.$data.isAutoplayPaused).equals(true);
+      expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
       prodCarouselComponent.find('#carousel').trigger('mouseout');
-      expect(prodCarouselComponent.vm.$data.isAutoplayPaused).equals(false);
+      expect(prodCarouselComponent.vm.$data.autoplayInterval).to.not.equal(
+        null
+      );
     });
     it('mouseover does nothing when disabed', async () => {
       await prodCarouselComponent.setProps({
         pauseOnHover: false,
       });
-      expect(prodCarouselComponent.vm.$data.isAutoplayPaused).equals(false);
+      expect(prodCarouselComponent.vm.$data.autoplayInterval).to.not.equal(
+        null
+      );
       prodCarouselComponent.find('#carousel').trigger('mouseover');
-      expect(prodCarouselComponent.vm.$data.isAutoplayPaused).equals(false);
+      expect(prodCarouselComponent.vm.$data.autoplayInterval).to.not.equal(
+        null
+      );
       prodCarouselComponent.find('#carousel').trigger('mouseout');
-      expect(prodCarouselComponent.vm.$data.isAutoplayPaused).equals(false);
+      expect(prodCarouselComponent.vm.$data.autoplayInterval).to.not.equal(
+        null
+      );
     });
+
     it('mouseover does nothing when no autoplay', async () => {
       await prodCarouselComponent.setProps({
         autoplay: false,
         pauseOnHover: true,
       });
-      expect(prodCarouselComponent.vm.$data.isAutoplayPaused).equals(false);
-      prodCarouselComponent.find('#carousel').trigger('mouseover');
-      expect(prodCarouselComponent.vm.$data.isAutoplayPaused).equals(false);
-      prodCarouselComponent.find('#carousel').trigger('mouseout');
-      expect(prodCarouselComponent.vm.$data.isAutoplayPaused).equals(false);
-    });
-    it('autoplay is disabled', async () => {
-      await prodCarouselComponent.setProps({
-        autoplay: false,
-      });
-      expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
-      expect(prodCarouselComponent.vm.$data.autoplayRemaining).equals(null);
-      expect(prodCarouselComponent.vm.$data.autoplayStartTimestamp).equals(
+      expect(prodCarouselComponent.vm.$data.autoplayInterval).to.not.equal(
         null
       );
-      expect(prodCarouselComponent.vm.$data.autoplayTimeout).equals(null);
+      prodCarouselComponent.find('#carousel').trigger('mouseover');
+      expect(prodCarouselComponent.vm.$data.autoplayInterval).to.not.equal(
+        null
+      );
+      prodCarouselComponent.find('#carousel').trigger('mouseout');
+      expect(prodCarouselComponent.vm.$data.autoplayInterval).to.not.equal(
+        null
+      );
     });
-    // it('disables on destroy', async () => {
-    //   await prodCarouselComponent.desroy();
-    //   expect(prodCarouselComponent.disableAutoPlay).toHaveBeenCalled();
-    // });
+
+    it('autoplays after interval', async () => {
+      await prodCarouselComponent.setProps({
+        autoplaySpeed: 600,
+      });
+      await prodCarouselComponent.setData({
+        currentProduction: 0,
+      });
+      console.log(prodCarouselComponent.vm.$data.currentProduction);
+      setTimeout(function () {
+        expect(prodCarouselComponent.vm.$data.currentProduction).equals(2);
+      }, 600);
+      console.log(prodCarouselComponent.vm.$data.currentProduction);
+      expect(false).equals(true);
+    });
+  });
+});
+describe('ProductionCarousel', function () {
+  let prodCarouselComponent;
+  let server;
+  let bannerProductions;
+
+  beforeEach(async () => {
+    server = makeServer({ environment: 'test' });
+
+    bannerProductions = [
+      server.create('ProductionNode', {
+        name: 'My production without a picture',
+        coverImage: server.create('GrapheneImageFieldNode', {
+          url: 'http://pathto.example/my-image0.png',
+        }),
+        society: server.create('SocietyNode', { name: 'Dramatic Pause' }),
+        start: DateTime.fromISO('2020-11-13'),
+        end: DateTime.fromISO('2020-11-14'),
+      }),
+      server.create('ProductionNode', {
+        name: 'Upside Down Cake',
+        coverImage: server.create('GrapheneImageFieldNode', {
+          url: 'http://pathto.example/my-image.png',
+        }),
+        society: server.create('SocietyNode', {
+          name: 'Joe Bloggs Productions',
+        }),
+        start: DateTime.fromISO('2020-11-14'),
+        end: DateTime.fromISO('2020-11-18'),
+      }),
+    ];
+    prodCarouselComponent = await mountWithRouterMock(ProductionCarousel, {
+      propsData: {
+        bannerProductions: bannerProductions,
+        autoplay: false,
+        pauseOnHover: true,
+      },
+    });
+  });
+  afterEach(() => {
+    server.shutdown();
+  });
+
+  it('doesnt autoplay', async () => {
+    expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
   });
 });

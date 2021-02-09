@@ -91,7 +91,7 @@
 <script>
 import lo from 'lodash';
 
-import ProductionCarousel from '@/components/ui/carousel/ProductionCarousel.vue';
+import ProductionCarousel from '@/components/home/ProductionCarousel.vue';
 import { displayStartEnd } from '@/utils';
 
 export default {

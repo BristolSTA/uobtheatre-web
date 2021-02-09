@@ -1,7 +1,7 @@
 import { RouterLinkStub } from '@vue/test-utils';
 import { expect } from 'chai';
 
-import ProductionCarousel from '@/components/ui/carousel/ProductionCarousel.vue';
+import ProductionCarousel from '@/components/home/ProductionCarousel.vue';
 import { makeServer } from '@/fakeApi';
 import Home from '@/views/Home.vue';
 
