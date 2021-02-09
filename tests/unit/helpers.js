@@ -166,10 +166,13 @@ let mapRelationshipsToEdges = (resource, relationships) => {
   });
   return resource;
 };
-
+let client = null;
 let runApolloQuery = (options) => {
-  let { apolloClient } = createClient();
-  return apolloClient.query(options);
+  if (!client) {
+    let { apolloClient } = createClient();
+    client = apolloClient;
+  }
+  return client.query(options);
 };
 
 export {
