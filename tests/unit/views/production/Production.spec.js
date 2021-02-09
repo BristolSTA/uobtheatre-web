@@ -1,14 +1,18 @@
 import { mount } from '@vue/test-utils';
 import { expect } from 'chai';
 
-import { makeServer } from '@/fakeApi';
-import { productionService } from '@/services';
 import ProductionPage from '@/views/production/Production.vue';
 import ProductionCastCredits from '@/views/production/ProductionCastCredits.vue';
 import ProductionHeader from '@/views/production/ProductionHeader.vue';
 import ProductionPerformances from '@/views/production/ProductionPerformances.vue';
 
-import { generateMountOptions, waitFor } from '../../helpers';
+import {
+  generateMountOptions,
+  makeServer,
+  mountWithRouterMock,
+  runApolloQuery,
+  waitFor,
+} from '../../helpers';
 
 describe('Production', function () {
   let productionPageComponent;
@@ -18,7 +22,7 @@ describe('Production', function () {
   let headerComponent, castCreditsComponent, performancesComponent;
 
   beforeEach(async () => {
-    server = makeServer({ environment: 'test' });
+    server = makeServer();
 
     // Create a production
     server.create('productionNode', {
@@ -26,18 +30,18 @@ describe('Production', function () {
       slug: 'legally-ginger',
     });
 
-    productionPageComponent = mount(
-      ProductionPage,
-      generateMountOptions(['apollo', 'router'], {
-        mocks: {
-          $route: {
-            params: {
-              productionSlug: 'legally-ginger',
-            },
-          },
-        },
-      })
-    );
+    let { data } = await runApolloQuery({
+      query: require('@/graphql/queries/ProductionBySlug.gql'),
+      variables: {
+        slug: 'legally-ginger',
+      },
+    });
+    productionObject = data.production;
+    productionPageComponent = await mountWithRouterMock(ProductionPage, {
+      propsData: {
+        production: productionObject,
+      },
+    });
   });
 
   afterEach(() => {
@@ -69,26 +73,5 @@ describe('Production', function () {
   it('fetches the production', async () => {
     await waitFor(() => productionPageComponent.vm.production);
     expect(productionPageComponent.vm.production.name).to.eq('Legally Ginger');
-  });
-
-  it('handles invalid production', async () => {
-    let fakeRouterPush = jest.fn();
-    productionPageComponent = mount(
-      ProductionPage,
-      generateMountOptions(['apollo', 'router'], {
-        mocks: {
-          $route: {
-            params: {
-              productionSlug: 'legally-not-allowed',
-            },
-          },
-          $router: {
-            push: fakeRouterPush,
-          },
-        },
-      })
-    );
-    await waitFor(() => fakeRouterPush.mock.calls.length);
-    expect(fakeRouterPush.mock.calls.length).to.eq(1);
   });
 });

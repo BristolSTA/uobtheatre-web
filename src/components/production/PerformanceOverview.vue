@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col p-3 text-white performance"
+    class="flex flex-col p-3 text-white"
     :class="[performanceDisabled ? 'bg-sta-gray-dark' : 'bg-sta-green']"
   >
     <h2 class="text-h2">

@@ -1,11 +1,15 @@
 import { mount, RouterLinkStub } from '@vue/test-utils';
 import { expect } from 'chai';
-import FakePerformance from 'tests/unit/fixtures/FakePerformance.js';
-import FakeProduction from 'tests/unit/fixtures/FakeProduction.js';
 
 import ProductionHeader from '@/components/production/ProductionBanner.vue';
 
-import { fixTextSpacing, generateMountOptions } from '../../helpers.js';
+import FakeProduction from '../../fixtures/FakeProduction.js';
+import {
+  executeWithServer,
+  fixTextSpacing,
+  generateMountOptions,
+  runApolloQuery,
+} from '../../helpers.js';
 
 describe('ProductionBanner', function () {
   let headerContainer;
@@ -231,24 +235,33 @@ describe('ProductionBanner', function () {
     expect(headerContainer.find('button').exists()).to.be.false;
   });
 
-  let createWithPerformances = (performances, productionOverrides) => {
-    let perfs = [];
-    performances.forEach((perf) => {
-      perfs.push({
-        node: Object.assign(FakePerformance(), perf),
-      });
-    });
+  let createWithPerformances = async (performances, productionOverrides) => {
+    await executeWithServer(async (server) => {
+      productionOverrides = Object.assign(
+        FakeProduction(server),
+        productionOverrides,
+        {
+          performances: performances.map((perf) => {
+            return server.create('performanceNode', perf);
+          }),
+        }
+      );
+      let production = server.create('productionNode', productionOverrides);
 
-    let production = Object.assign(FakeProduction(), productionOverrides);
-    production.performances.edges = perfs;
-
-    headerContainer = mount(
-      ProductionHeader,
-      generateMountOptions(['router'], {
-        propsData: {
-          production: production,
+      let gqlResult = await runApolloQuery({
+        query: require('@/graphql/queries/ProductionBySlug.gql'),
+        variables: {
+          slug: production.slug,
         },
-      })
-    );
+      });
+      headerContainer = mount(
+        ProductionHeader,
+        generateMountOptions(['router'], {
+          propsData: {
+            production: gqlResult.data.production,
+          },
+        })
+      );
+    });
   };
 });

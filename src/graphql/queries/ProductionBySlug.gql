@@ -10,7 +10,13 @@ query productionBySlug($slug: String!) {
         url
       }
     }
+    posterImage {
+      url
+    }
     featuredImage {
+      url
+    }
+    coverImage {
       url
     }
     ageRating
@@ -33,6 +39,7 @@ query productionBySlug($slug: String!) {
           doorsOpen
           start
           end
+          soldOut
           durationMins
           isOnline
           isInperson

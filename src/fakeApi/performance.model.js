@@ -30,12 +30,9 @@ export default {
         isOnline: () => faker.random.arrayElement([true, false]),
         isInperson: () => faker.random.arrayElement([true, false]),
         durationMins() {
-          return Math.round(
-            (DateTime.fromISO(this.end) - DateTime.fromISO(this.start)) /
-              (1000 * 60)
-          );
+          return Math.round((this.end - this.start) / (1000 * 60));
         },
-        minSeatPrice: () => faker.random.number({ min: 100, max: 100 }),
+        minSeatPrice: () => faker.random.number({ min: 100, max: 1000 }),
         capacityRemaining: () => faker.random.number({ min: 40, max: 100 }),
 
         afterCreate(performance, server) {

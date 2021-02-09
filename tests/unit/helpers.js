@@ -98,7 +98,9 @@ const makeServer = () => {
 const executeWithServer = async (callback, closeServer = true) => {
   let server = makeServer();
   if (callback) await callback(server);
-  if (closeServer) server.shutdown();
+  if (closeServer) {
+    server.shutdown();
+  }
   return server;
 };
 
@@ -172,7 +174,14 @@ let runApolloQuery = (options) => {
     let { apolloClient } = createClient();
     client = apolloClient;
   }
-  return client.query(options);
+  return client.query(
+    Object.assign(
+      {
+        fetchPolicy: 'no-cache',
+      },
+      options
+    )
+  );
 };
 
 export {

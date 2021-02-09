@@ -3,11 +3,11 @@ import Vue from 'vue';
 import Meta from 'vue-meta';
 import VueRouter from 'vue-router';
 
+import ProductionPageQuery from '@/graphql/queries/ProductionBySlug.gql';
 import Login from '@/views/auth/Login.vue';
 import { getRoutes } from '@/views/booking/bookingStages';
 import NotFoundError from '@/views/errors/NotFound.vue';
 import Home from '@/views/Home.vue';
-import ProductionPageQuery from '@/views/production/Production.gql';
 const Venue = () => import('@/views/venues/Venue.vue');
 const Society = () => import('@/views/societies/Society.vue');
 
