@@ -3,19 +3,24 @@ import { expect } from 'chai';
 import { DateTime } from 'luxon';
 
 import ProductionCarousel from '@/components/home/ProductionCarousel.vue';
-import { makeServer } from '@/fakeApi';
 
-import { fixTextSpacing, mountWithRouterMock } from '../../helpers';
+import {
+  executeWithServer,
+  fixTextSpacing,
+  mountWithRouterMock,
+  runApolloQuery,
+} from '../../helpers';
+
+jest.useFakeTimers();
 
 describe('ProductionCarousel', function () {
   let prodCarouselComponent;
-  let server;
   let bannerProductions;
 
   beforeEach(async () => {
-    server = makeServer({ environment: 'test' });
-
-    bannerProductions = [
+    console.log('aaaa');
+    await executeWithServer(async (server) => {
+      console.log('bbbb');
       server.create('ProductionNode', {
         name: 'My production without a picture',
         coverImage: server.create('GrapheneImageFieldNode', {
@@ -24,7 +29,7 @@ describe('ProductionCarousel', function () {
         society: server.create('SocietyNode', { name: 'Dramatic Pause' }),
         start: DateTime.fromISO('2020-11-13'),
         end: DateTime.fromISO('2020-11-14'),
-      }),
+      });
       server.create('ProductionNode', {
         name: 'Upside Down Cake',
         coverImage: server.create('GrapheneImageFieldNode', {
@@ -35,7 +40,7 @@ describe('ProductionCarousel', function () {
         }),
         start: DateTime.fromISO('2020-11-14'),
         end: DateTime.fromISO('2020-11-18'),
-      }),
+      });
       server.create('ProductionNode', {
         name: 'Legally Ginger',
         coverImage: server.create('GrapheneImageFieldNode', {
@@ -44,8 +49,20 @@ describe('ProductionCarousel', function () {
         society: server.create('SocietyNode', { name: 'MTB' }),
         start: DateTime.fromISO('2019-11-14'),
         end: DateTime.fromISO('2019-11-18'),
-      }),
-    ];
+      });
+      console.log('ccc');
+      let { data } = await runApolloQuery({
+        query: require('@/views/HomeUpcomingProductions.gql'),
+      });
+      console.log('dddd');
+      bannerProductions = data.productions;
+    });
+    console.log(bannerProductions);
+
+    // bannerProductions = [
+
+    // ];
+
     prodCarouselComponent = await mountWithRouterMock(ProductionCarousel, {
       propsData: {
         bannerProductions: bannerProductions,
@@ -54,15 +71,9 @@ describe('ProductionCarousel', function () {
       },
     });
   });
-  afterEach(() => {
-    server.shutdown();
-  });
 
   describe('carousel displays correct data', () => {
-    it('slide 0', async () => {
-      await prodCarouselComponent.setData({
-        currentProduction: 0,
-      });
+    it.only('slide 0', async () => {
       let slide = prodCarouselComponent.find('#splashscreen');
       expect(slide.text()).to.contain('Dramatic Pause');
       expect(slide.text()).to.contain('My production without a picture');
@@ -124,9 +135,6 @@ describe('ProductionCarousel', function () {
 
     it('next button increments slide', async () => {
       let nextButton = prodCarouselComponent.find('#nextBtn');
-      await prodCarouselComponent.setData({
-        currentProduction: 0,
-      });
 
       nextButton.trigger('click');
       expect(prodCarouselComponent.vm.$data.currentProduction).equals(1);
@@ -136,7 +144,6 @@ describe('ProductionCarousel', function () {
       expect(prodCarouselComponent.vm.$data.currentProduction).equals(0);
       nextButton.trigger('click');
       expect(prodCarouselComponent.vm.$data.currentProduction).equals(1);
-      //   expect(prodCarouselComponent.restartAutoplay).to.have.been.called();
     });
 
     it('prev button decrements slide', async () => {
@@ -157,9 +164,7 @@ describe('ProductionCarousel', function () {
 
     it('buttons go to correct slide', async () => {
       let buttons = prodCarouselComponent.findAll('#slideBtn');
-      await prodCarouselComponent.setData({
-        currentProduction: 0,
-      });
+
       buttons.at(1).trigger('click');
       expect(prodCarouselComponent.vm.$data.currentProduction).equals(1);
       buttons.at(0).trigger('click');
@@ -198,21 +203,28 @@ describe('ProductionCarousel', function () {
       );
     });
 
-    // it('autoplays after interval', async () => {
-    //   jest.useFakeTimers();
-    //   await prodCarouselComponent.setProps({
-    //     autoplaySpeed: 600,
-    //   });
-    //   await prodCarouselComponent.setData({
-    //     currentProduction: 0,
-    //   });
-    //   expect(setInterval).should.have.been.called();
-    //   console.log(prodCarouselComponent.vm.$data.currentProduction);
-    //   jest.runAllTimers;
-    //   console.log(prodCarouselComponent.vm.$data.currentProduction);
+    it('autoplays after interval', async () => {
+      jest.advanceTimersByTime(4000);
+      expect(prodCarouselComponent.vm.$data.currentProduction).equals(0);
+      jest.advanceTimersByTime(1000);
+      expect(prodCarouselComponent.vm.$data.currentProduction).equals(1);
+    });
 
-    //   expect(prodCarouselComponent.vm.$data.currentProduction).equals(1);
-    // });
+    it('autoplays with non default interval', async () => {
+      prodCarouselComponent = await mountWithRouterMock(ProductionCarousel, {
+        propsData: {
+          bannerProductions: bannerProductions,
+          autoplay: true,
+          pauseOnHover: true,
+          autoplaySpeed: 2000,
+        },
+      });
+
+      jest.advanceTimersByTime(1000);
+      expect(prodCarouselComponent.vm.$data.currentProduction).equals(0);
+      jest.advanceTimersByTime(1000);
+      expect(prodCarouselComponent.vm.$data.currentProduction).equals(1);
+    });
 
     it('disable autoplay when destroyed', async () => {
       expect(prodCarouselComponent.vm.$data.autoplayInterval).to.not.equal(
@@ -222,59 +234,28 @@ describe('ProductionCarousel', function () {
       expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
     });
   });
-});
 
-describe('ProductionCarousel no autoplay', function () {
-  let prodCarouselComponent;
-  let server;
-  let bannerProductions;
-
-  beforeEach(async () => {
-    server = makeServer({ environment: 'test' });
-
-    bannerProductions = [
-      server.create('ProductionNode', {
-        name: 'My production without a picture',
-        coverImage: server.create('GrapheneImageFieldNode', {
-          url: 'http://pathto.example/my-image0.png',
-        }),
-        society: server.create('SocietyNode', { name: 'Dramatic Pause' }),
-        start: DateTime.fromISO('2020-11-13'),
-        end: DateTime.fromISO('2020-11-14'),
-      }),
-      server.create('ProductionNode', {
-        name: 'Upside Down Cake',
-        coverImage: server.create('GrapheneImageFieldNode', {
-          url: 'http://pathto.example/my-image.png',
-        }),
-        society: server.create('SocietyNode', {
-          name: 'Joe Bloggs Productions',
-        }),
-        start: DateTime.fromISO('2020-11-14'),
-        end: DateTime.fromISO('2020-11-18'),
-      }),
-    ];
-    prodCarouselComponent = await mountWithRouterMock(ProductionCarousel, {
-      propsData: {
-        bannerProductions: bannerProductions,
-        autoplay: false,
-        pauseOnHover: true,
-      },
+  describe('with no autoplay', () => {
+    beforeEach(async () => {
+      prodCarouselComponent = await mountWithRouterMock(ProductionCarousel, {
+        propsData: {
+          bannerProductions: bannerProductions,
+          autoplay: false,
+          pauseOnHover: true,
+        },
+      });
     });
-  });
-  afterEach(() => {
-    server.shutdown();
-  });
 
-  it('doesnt autoplay', async () => {
-    expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
-  });
+    it('doesnt autoplay', async () => {
+      expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
+    });
 
-  it('mouseover does nothing when no autoplay', async () => {
-    expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
-    prodCarouselComponent.find('#carousel').trigger('mouseover');
-    expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
-    prodCarouselComponent.find('#carousel').trigger('mouseout');
-    expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
+    it('mouseover does nothing when no autoplay', async () => {
+      expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
+      prodCarouselComponent.find('#carousel').trigger('mouseover');
+      expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
+      prodCarouselComponent.find('#carousel').trigger('mouseout');
+      expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
+    });
   });
 });
