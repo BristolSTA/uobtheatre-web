@@ -250,4 +250,35 @@ describe('ProductionCarousel', function () {
       expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
     });
   });
+
+  describe('with only one banner production', () => {
+    beforeEach(async () => {
+      bannerProductions = [
+        server.create('ProductionNode', {
+          name: 'My production without a picture',
+          coverImage: server.create('GrapheneImageFieldNode', {
+            url: 'http://pathto.example/my-image0.png',
+          }),
+          society: server.create('SocietyNode', { name: 'Dramatic Pause' }),
+          start: DateTime.fromISO('2020-11-13'),
+          end: DateTime.fromISO('2020-11-14'),
+        }),
+      ];
+      prodCarouselComponent = await mountWithRouterMock(ProductionCarousel, {
+        propsData: {
+          bannerProductions: bannerProductions,
+          autoplay: true,
+          pauseOnHover: true,
+        },
+      });
+    });
+
+    it('has no buttons, arrows, or autoplay', async () => {
+      expect(prodCarouselComponent.find('#nextBtn').exists()).to.be.false;
+      expect(prodCarouselComponent.find('#prevBtn').exists()).to.be.false;
+      expect(prodCarouselComponent.find('.carousel-indicator').exists()).to.be
+        .false;
+      expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
+    });
+  });
 });
