@@ -50,17 +50,17 @@
       </div>
     </transition-group>
     <template v-if="this.carouselLength > 1">
-      <div class="absolute left-1/2 blobs bottom-2">
+      <div class="absolute left-1/2 move-to-center bottom-2">
         <ul class="flex items-center p-0 space-x-3 list-none whitespace-nowrap">
           <li v-for="n in carouselLength" :key="n">
             <button
               id="slideBtn"
-              class="btnBase transition-colors duration-500 w-2.5 h-2.5 rounded-full p-0 focus:outline-none border-white border hover:bg-white"
+              class="btn-base transition-colors duration-500 w-2.5 h-2.5 rounded-full p-0 focus:outline-none border-white border hover:bg-white"
               :class="[
                 n - 1 == currentProduction ? 'bg-white' : 'bg-transparent',
               ]"
-              @click="goTo(n - 1)"
-              @keydown="goTo(n - 1)"
+              @click="goTo(n - 1), enableAutoPlay()"
+              @keypress="goTo(n - 1)"
             ></button>
           </li>
         </ul>
@@ -70,9 +70,9 @@
       >
         <button
           id="prevBtn"
-          class="w-full h-full text-4xl duration-300 transition-color btnBase focus:outline-none hover:bg-opacity-30 hover:bg-black"
+          class="w-full h-full text-4xl duration-300 transition-color btn-base focus:outline-none hover:bg-opacity-30 hover:bg-black"
           @click="goToPrev()"
-          @keydown="goToPrev()"
+          @keypress="goToPrev()"
         >
           <font-awesome-icon icon="chevron-left" />
         </button>
@@ -82,9 +82,9 @@
       >
         <button
           id="nextBtn"
-          class="w-full h-full text-4xl duration-300 transition-color btnBase focus:outline-none hover:bg-opacity-30 hover:bg-black"
+          class="w-full h-full text-4xl duration-300 transition-color btn-base focus:outline-none hover:bg-opacity-30 hover:bg-black"
           @click="goToNext()"
-          @keydown="goToNext()"
+          @keypress="goToNext()"
         >
           <font-awesome-icon icon="chevron-right" />
         </button>
@@ -155,6 +155,10 @@ export default {
       this.autoplayInterval = null;
     },
     enableAutoPlay() {
+      if (this.autoplayInterval) {
+        clearInterval(this.autoplayInterval);
+        this.autoplayInterval = null;
+      }
       if (this.carouselLength > 1 && this.autoplay) {
         this.autoplayInterval = setInterval(() => {
           this.goToNext();
@@ -185,7 +189,7 @@ export default {
   background-size: cover;
   background-position: center;
 }
-.btnBase {
+.btn-base {
   @apply inline-block;
   @apply cursor-pointer;
 }
@@ -199,7 +203,7 @@ export default {
   opacity: 0;
 }
 
-.blobs {
+.move-to-center {
   transform: translateX(-50%);
 }
 </style>

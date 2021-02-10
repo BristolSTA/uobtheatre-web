@@ -3,24 +3,21 @@ import { expect } from 'chai';
 import { DateTime } from 'luxon';
 
 import ProductionCarousel from '@/components/home/ProductionCarousel.vue';
+import { makeServer } from '@/fakeApi';
 
-import {
-  executeWithServer,
-  fixTextSpacing,
-  mountWithRouterMock,
-  runApolloQuery,
-} from '../../helpers';
+import { fixTextSpacing, mountWithRouterMock } from '../../helpers';
 
 jest.useFakeTimers();
 
 describe('ProductionCarousel', function () {
   let prodCarouselComponent;
+  let server;
   let bannerProductions;
 
   beforeEach(async () => {
-    console.log('aaaa');
-    await executeWithServer(async (server) => {
-      console.log('bbbb');
+    server = makeServer({ environment: 'test' });
+
+    bannerProductions = [
       server.create('ProductionNode', {
         name: 'My production without a picture',
         coverImage: server.create('GrapheneImageFieldNode', {
@@ -29,7 +26,7 @@ describe('ProductionCarousel', function () {
         society: server.create('SocietyNode', { name: 'Dramatic Pause' }),
         start: DateTime.fromISO('2020-11-13'),
         end: DateTime.fromISO('2020-11-14'),
-      });
+      }),
       server.create('ProductionNode', {
         name: 'Upside Down Cake',
         coverImage: server.create('GrapheneImageFieldNode', {
@@ -40,7 +37,7 @@ describe('ProductionCarousel', function () {
         }),
         start: DateTime.fromISO('2020-11-14'),
         end: DateTime.fromISO('2020-11-18'),
-      });
+      }),
       server.create('ProductionNode', {
         name: 'Legally Ginger',
         coverImage: server.create('GrapheneImageFieldNode', {
@@ -49,20 +46,8 @@ describe('ProductionCarousel', function () {
         society: server.create('SocietyNode', { name: 'MTB' }),
         start: DateTime.fromISO('2019-11-14'),
         end: DateTime.fromISO('2019-11-18'),
-      });
-      console.log('ccc');
-      let { data } = await runApolloQuery({
-        query: require('@/views/HomeUpcomingProductions.gql'),
-      });
-      console.log('dddd');
-      bannerProductions = data.productions;
-    });
-    console.log(bannerProductions);
-
-    // bannerProductions = [
-
-    // ];
-
+      }),
+    ];
     prodCarouselComponent = await mountWithRouterMock(ProductionCarousel, {
       propsData: {
         bannerProductions: bannerProductions,
@@ -71,9 +56,12 @@ describe('ProductionCarousel', function () {
       },
     });
   });
+  afterEach(() => {
+    server.shutdown();
+  });
 
   describe('carousel displays correct data', () => {
-    it.only('slide 0', async () => {
+    it('slide 0', async () => {
       let slide = prodCarouselComponent.find('#splashscreen');
       expect(slide.text()).to.contain('Dramatic Pause');
       expect(slide.text()).to.contain('My production without a picture');
@@ -171,6 +159,8 @@ describe('ProductionCarousel', function () {
       expect(prodCarouselComponent.vm.$data.currentProduction).equals(0);
       buttons.at(2).trigger('click');
       expect(prodCarouselComponent.vm.$data.currentProduction).equals(2);
+      jest.advanceTimersByTime(5000);
+      expect(prodCarouselComponent.vm.$data.currentProduction).equals(0);
     });
   });
 
@@ -185,6 +175,8 @@ describe('ProductionCarousel', function () {
       expect(prodCarouselComponent.vm.$data.autoplayInterval).to.not.equal(
         null
       );
+      jest.advanceTimersByTime(5000);
+      expect(prodCarouselComponent.vm.$data.currentProduction).equals(1);
     });
     it('mouseover does nothing when disabed', async () => {
       await prodCarouselComponent.setProps({
