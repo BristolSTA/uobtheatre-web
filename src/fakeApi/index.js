@@ -156,6 +156,13 @@ export function makeServer({ environment = 'development' } = {}) {
         percentage: 0.05,
       });
 
+      server.create('ProductionNode', 'withCoverImage', {
+        name: 'Present Laughter',
+        society: dramsoc,
+        start: DateTime.fromISO('2019-11-16'),
+        end: DateTime.fromISO('2019-11-19'),
+        isBookable: false,
+      });
       // /**
       //  * Fake Performance 2 - TRASh, Dramsoc, 1 performance, no warnings
       //  */
