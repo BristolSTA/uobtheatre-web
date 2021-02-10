@@ -20,7 +20,6 @@
         ref="carousel"
       >
         <div
-          id="splashscreen"
           :style="{
             'background-image': bannerBackgorund(bannerProductions[index]),
           }"
@@ -50,12 +49,11 @@
       </div>
     </transition-group>
     <template v-if="this.carouselLength > 1">
-      <div class="absolute left-1/2 move-to-center bottom-2">
-        <ul class="flex items-center p-0 space-x-3 list-none whitespace-nowrap">
+      <div class="absolute flex justify-center w-full bottom-2">
+        <ul class="flex items-center p-0 space-x-3 whitespace-nowrap">
           <li v-for="n in carouselLength" :key="n">
             <button
-              id="slideBtn"
-              class="btn-base transition-colors duration-500 w-2.5 h-2.5 rounded-full p-0 focus:outline-none border-white border hover:bg-white"
+              class="carouel-indicator cursor-pointer transition-colors duration-500 w-2.5 h-2.5 rounded-full focus:outline-none border-white border hover:bg-white"
               :class="[
                 n - 1 == currentProduction ? 'bg-white' : 'bg-transparent',
               ]"
@@ -70,7 +68,7 @@
       >
         <button
           id="prevBtn"
-          class="w-full h-full text-4xl duration-300 transition-color btn-base focus:outline-none hover:bg-opacity-30 hover:bg-black"
+          class="w-full h-full text-4xl transition-colors duration-300 cursor-pointer focus:outline-none hover:bg-opacity-30 hover:bg-black"
           @click="goToPrev()"
           @keypress="goToPrev()"
         >
@@ -82,7 +80,7 @@
       >
         <button
           id="nextBtn"
-          class="w-full h-full text-4xl duration-300 transition-color btn-base focus:outline-none hover:bg-opacity-30 hover:bg-black"
+          class="w-full h-full text-4xl transition-colors duration-300 cursor-pointer focus:outline-none hover:bg-opacity-30 hover:bg-black"
           @click="goToNext()"
           @keypress="goToNext()"
         >
@@ -184,26 +182,16 @@ export default {
 </script>
 
 <style scoped lang="scss">
-#splashscreen {
-  background-image: url('~@/assets/images/placeholder-homepage-splash.jpg');
-  background-size: cover;
-  background-position: center;
-}
-.btn-base {
-  @apply inline-block;
-  @apply cursor-pointer;
-}
-
-.slide-leave-active,
 .slide-enter-active {
   transition: opacity 0.8s cubic-bezier(0.5, 0, 0.5, 1);
 }
+
+.slide-leave-active {
+  transition: opacity 0.8s cubic-bezier(0.5, 0, 0.5, 1) 0.9s;
+}
+
 .slide-enter,
 .slide-leave-to {
   opacity: 0;
-}
-
-.move-to-center {
-  transform: translateX(-50%);
 }
 </style>

@@ -1,9 +1,17 @@
 <template>
   <div class="min-h-full text-white bg-sta-gray">
-    <div id="carousel">
-      <div v-if="!bannerProductions.length" class="p-8 text-center">
-        <div class="text-4xl">Welcome to {{ $appName }}</div>
-        <div class="text-2xl">The Home of Bristol Student Performing Arts</div>
+    <div id="splashscreen">
+      <div
+        v-if="!bannerProductions.length"
+        class="flex items-center bg-black bg-opacity-40"
+        style="min-height: 50vh"
+      >
+        <div class="container px-4 text-white lg:w-2/3">
+          <div class="text-4xl">Welcome to {{ $appName }}</div>
+          <div class="text-2xl">
+            The Home of Bristol Student Performing Arts
+          </div>
+        </div>
       </div>
       <production-carousel v-else :bannerProductions="bannerProductions" />
     </div>
@@ -87,6 +95,14 @@
     </div>
   </div>
 </template>
+
+<style>
+#splashscreen {
+  background-image: url('~@/assets/images/placeholder-homepage-splash.jpg');
+  background-size: cover;
+  background-position: center;
+}
+</style>
 
 <script>
 import lo from 'lodash';

@@ -151,7 +151,7 @@ describe('ProductionCarousel', function () {
     });
 
     it('buttons go to correct slide', async () => {
-      let buttons = prodCarouselComponent.findAll('#slideBtn');
+      let buttons = prodCarouselComponent.findAll('.carouel-indicator');
 
       buttons.at(1).trigger('click');
       expect(prodCarouselComponent.vm.$data.currentProduction).equals(1);
