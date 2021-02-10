@@ -109,7 +109,7 @@ export default {
       default: true,
     },
     autoplaySpeed: {
-      default: 2000,
+      default: 5000,
     },
     pauseOnHover: {
       default: true,

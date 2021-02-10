@@ -59,12 +59,6 @@ describe('ProductionCarousel', function () {
   });
 
   describe('carousel displays correct data', () => {
-    beforeEach(async () => {
-      await prodCarouselComponent.setProps({
-        autoplay: false,
-      });
-    });
-
     it('slide 0', async () => {
       await prodCarouselComponent.setData({
         currentProduction: 0,
@@ -121,11 +115,6 @@ describe('ProductionCarousel', function () {
   });
 
   describe('carousel functions as a carousel', () => {
-    beforeEach(async () => {
-      await prodCarouselComponent.setProps({
-        autoplay: false,
-      });
-    });
     it('has 3 slides', async () => {
       expect(prodCarouselComponent.vm.$props.bannerProductions.length).equals(
         3
@@ -209,41 +198,33 @@ describe('ProductionCarousel', function () {
       );
     });
 
-    it('mouseover does nothing when no autoplay', async () => {
-      await prodCarouselComponent.setProps({
-        autoplay: false,
-        pauseOnHover: true,
-      });
-      expect(prodCarouselComponent.vm.$data.autoplayInterval).to.not.equal(
-        null
-      );
-      prodCarouselComponent.find('#carousel').trigger('mouseover');
-      expect(prodCarouselComponent.vm.$data.autoplayInterval).to.not.equal(
-        null
-      );
-      prodCarouselComponent.find('#carousel').trigger('mouseout');
-      expect(prodCarouselComponent.vm.$data.autoplayInterval).to.not.equal(
-        null
-      );
-    });
+    // it('autoplays after interval', async () => {
+    //   jest.useFakeTimers();
+    //   await prodCarouselComponent.setProps({
+    //     autoplaySpeed: 600,
+    //   });
+    //   await prodCarouselComponent.setData({
+    //     currentProduction: 0,
+    //   });
+    //   expect(setInterval).should.have.been.called();
+    //   console.log(prodCarouselComponent.vm.$data.currentProduction);
+    //   jest.runAllTimers;
+    //   console.log(prodCarouselComponent.vm.$data.currentProduction);
 
-    it('autoplays after interval', async () => {
-      await prodCarouselComponent.setProps({
-        autoplaySpeed: 600,
-      });
-      await prodCarouselComponent.setData({
-        currentProduction: 0,
-      });
-      console.log(prodCarouselComponent.vm.$data.currentProduction);
-      setTimeout(function () {
-        expect(prodCarouselComponent.vm.$data.currentProduction).equals(2);
-      }, 600);
-      console.log(prodCarouselComponent.vm.$data.currentProduction);
-      expect(false).equals(true);
+    //   expect(prodCarouselComponent.vm.$data.currentProduction).equals(1);
+    // });
+
+    it('disable autoplay when destroyed', async () => {
+      expect(prodCarouselComponent.vm.$data.autoplayInterval).to.not.equal(
+        null
+      );
+      prodCarouselComponent.destroy();
+      expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
     });
   });
 });
-describe('ProductionCarousel', function () {
+
+describe('ProductionCarousel no autoplay', function () {
   let prodCarouselComponent;
   let server;
   let bannerProductions;
@@ -286,6 +267,14 @@ describe('ProductionCarousel', function () {
   });
 
   it('doesnt autoplay', async () => {
+    expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
+  });
+
+  it('mouseover does nothing when no autoplay', async () => {
+    expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
+    prodCarouselComponent.find('#carousel').trigger('mouseover');
+    expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
+    prodCarouselComponent.find('#carousel').trigger('mouseout');
     expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
   });
 });
