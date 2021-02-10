@@ -34,7 +34,7 @@
             ><font-awesome-icon icon="chevron-left" /> Back</clickable-link
           >
         </div>
-        <div class="flex-grow max-w-full p-1 pb-4 sm:p-3 bg-sta-gray-dark">
+        <div id="booking-view" class="flex-grow max-w-full p-1 pb-4 sm:p-3 bg-sta-gray-dark">
           <router-view
             :production="production"
             :booking="booking"
@@ -117,6 +117,7 @@ export default {
 
       this.$router.push({
         name: stage.getRouteName(),
+        hash: '#booking-view',
         params: {
           production: this.production,
           performanceID: this.booking.performance
