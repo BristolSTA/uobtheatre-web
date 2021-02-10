@@ -20,7 +20,10 @@ import 'leaflet/dist/leaflet.css';
 import { makeServer } from '@/fakeApi';
 import { createProvider } from '@/vue-apollo';
 
-if (process.env.NODE_ENV === 'development' && !process.env.VUE_APP_API_BASE) {
+if (
+  process.env.VUE_APP_CYPRESS ||
+  (process.env.NODE_ENV === 'development' && !process.env.VUE_APP_API_BASE)
+) {
   makeServer({ environment: 'development' });
 }
 
