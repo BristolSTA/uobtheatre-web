@@ -26,14 +26,14 @@
         class="p-2 px-4 rounded bg-sta-gray"
       >
         <span class="font-semibold text-sta-orange"
-          >{{ groupedConcessions[0].seat_group.name }}
+          >{{ groupedConcessions[0].seatGroup.name }}
         </span>
         <div
           v-for="(concession, concession_index) in groupedConcessions"
           :key="concession_index"
         >
           <strong>{{ concession.number }}</strong> x
-          {{ concession.concession_type.name }}
+          {{ concession.concessionType.name }}
         </div>
       </div>
     </div>
@@ -59,7 +59,7 @@ export default {
     seatGroupedTickets() {
       return lo.groupBy(
         this.booking.ticket_overview(),
-        (concessionTickets) => concessionTickets.seat_group.id
+        (concessionTickets) => concessionTickets.seatGroup.id
       );
     },
   },

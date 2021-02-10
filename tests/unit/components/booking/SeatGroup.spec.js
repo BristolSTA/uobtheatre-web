@@ -6,22 +6,38 @@ import ConcessionType from '@/components/booking/ConcessionType.vue';
 import GroupTicketButton from '@/components/booking/GroupTicketButton.vue';
 import SeatGroup from '@/components/booking/SeatGroup.vue';
 
-import FakeDiscount from '../../fixtures/FakeDiscount';
-import FakeTicketOption from '../../fixtures/FakeTicketOption';
-import { fixTextSpacing } from '../../helpers';
+import FakePerformance from '../../fixtures/FakePerformance';
+import {
+  executeWithServer,
+  fixTextSpacing,
+  runApolloQuery,
+} from '../../helpers';
 
 describe('Seat Location Component', () => {
   let seatGroupComponent;
   let ticketOption;
-  beforeEach(() => {
-    seatGroupComponent = mount(SeatGroup, {
-      propsData: {
-        expanded: false,
-        ticket_option: (ticketOption = FakeTicketOption()),
-        group_capacity_remaining: 100,
-        current_tickets: [],
-        discounts: [FakeDiscount],
-      },
+  let discounts;
+  beforeEach(async () => {
+    await executeWithServer(async (server) => {
+      let performance = server.create(
+        'performanceNode',
+        FakePerformance(server)
+      );
+      let { data } = await runApolloQuery({
+        query: require('@/graphql/queries/PerformanceTicketOptions.gql'),
+        variables: {
+          id: performance.id,
+        },
+      });
+      seatGroupComponent = mount(SeatGroup, {
+        propsData: {
+          expanded: false,
+          ticket_option: (ticketOption = data.performance.ticketOptions[0]),
+          group_capacity_remaining: 100,
+          current_tickets: [],
+          discounts: (discounts = data.performance.discounts),
+        },
+      });
     });
   });
 
@@ -33,7 +49,7 @@ describe('Seat Location Component', () => {
   it('displays seat group name', () => {
     expect(
       seatGroupComponent.findComponent({ ref: 'header' }).text()
-    ).to.contain('Best Seats in the House');
+    ).to.contain('Best seats in the house');
   });
 
   it('doesnt display concession types + ticket warnings if not exapnded', async () => {
@@ -92,17 +108,17 @@ describe('Seat Location Component', () => {
     let components = seatGroupComponent.findAllComponents(ConcessionType);
     expect(components.length).to.eq(2);
 
-    expect(components.at(0).props('concession_type')).to.include(
-      FakeTicketOption().concession_types[0]
-    );
+    expect(
+      components.at(0).props('concession_type_edge').concessionType.name
+    ).to.eq('Adult');
 
     expect(components.at(0).props('max_add_allowed')).to.eq(100);
 
     expect(components.at(0).props('current_tickets').length).to.eq(3);
 
-    expect(components.at(1).props('concession_type')).to.include(
-      FakeTicketOption().concession_types[1]
-    );
+    expect(
+      components.at(1).props('concession_type_edge').concessionType.name
+    ).to.eq('Student');
     expect(components.at(1).props('current_tickets').length).to.eq(3);
   });
 
@@ -114,7 +130,9 @@ describe('Seat Location Component', () => {
       GroupTicketButton
     );
     expect(discountComponents.length).to.eq(1);
-    expect(discountComponents.at(0).props('discount')).to.eq(FakeDiscount);
+    expect(discountComponents.at(0).props('discount').name).to.eq(
+      'Family Discount'
+    );
   });
 
   it('handles add discount tickets event and emits add ticket(s) event', async () => {
@@ -128,16 +146,16 @@ describe('Seat Location Component', () => {
     expect(seatGroupComponent.emitted()['add-ticket'].length).to.eq(2);
     expect(JSON.stringify(seatGroupComponent.emitted()['add-ticket'][0])).to.eq(
       JSON.stringify([
-        FakeTicketOption().seat_group,
-        FakeDiscount.discount_requirements[0].concession_type,
-        FakeDiscount.discount_requirements[0].number,
+        ticketOption.seatGroup,
+        discounts[0].requirements[0].concessionType,
+        discounts[0].requirements[0].number,
       ])
     );
     expect(JSON.stringify(seatGroupComponent.emitted()['add-ticket'][1])).to.eq(
       JSON.stringify([
-        FakeTicketOption().seat_group,
-        FakeDiscount.discount_requirements[1].concession_type,
-        FakeDiscount.discount_requirements[1].number,
+        ticketOption.seatGroup,
+        discounts[0].requirements[1].concessionType,
+        discounts[0].requirements[1].number,
       ])
     );
   });
@@ -173,8 +191,8 @@ describe('Seat Location Component', () => {
         await seatGroupComponent.setProps({
           current_tickets: [
             new Ticket(
-              ticketOption.seat_group.id,
-              ticketOption.concession_types[0].id
+              ticketOption.seatGroup.id,
+              ticketOption.concessionTypes[0].concessionType.id
             ),
           ],
         });

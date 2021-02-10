@@ -64,7 +64,8 @@ describe('Venue page', function () {
         .attributes('src')
     ).to.equal('http://pathto.example/venue-image.png');
 
-    expect(venuePageComponent.find('#venueMap').exists()).to.be.true;
+    expect(venuePageComponent.findComponent({ ref: 'venue-map' }).exists()).to
+      .be.true;
   });
 
   describe('venue address', () => {

@@ -1,48 +1,55 @@
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { RouterLinkStub } from '@vue/test-utils';
+import { mount, RouterLinkStub } from '@vue/test-utils';
 import { expect } from 'chai';
 
 import OverviewBox from '@/components/overview/OverviewBox.vue';
 import VenueOverview from '@/components/overview/VenueOverview.vue';
-import { makeServer } from '@/fakeApi';
 
-import { mountWithRouterMock, waitFor } from '../../helpers';
+import {
+  executeWithServer,
+  generateMountOptions,
+  waitFor,
+} from '../../helpers';
 import { fixTextSpacing } from '../../helpers.js';
 
 describe('Venue overview box', function () {
   let venueOverviewComponent;
   let server;
-  let venue;
-  let address;
 
   beforeEach(async () => {
-    server = makeServer({ environment: 'test' });
-
     // Create a venue and address
-    address = {
-      building_name: 'Wills Memorial Building',
+    let address = {
+      buildingName: 'Wills Memorial Building',
       street: 'Queens Road',
-      building_number: '69',
+      buildingNumber: '69',
       city: 'London',
       postcode: 'BS69 420',
       latitude: '123.4567',
       longitude: '987.654',
     };
-    venue = server.create('venue', {
-      name: 'Anson Theatre',
-      slug: 'anson-theatre',
-      description: 'not the anson rooms',
-      image: 'http://pathto.example/venue-image.png',
-      publicly_listed: true,
-      internal_capacity: '420',
-      address: address,
-    });
 
-    venueOverviewComponent = await mountWithRouterMock(VenueOverview, {
-      propsData: {
-        venue_data: venue.slug,
-      },
-    });
+    server = await executeWithServer(async (server) => {
+      server.create('venueNode', {
+        name: 'Anson Theatre',
+        slug: 'anson-theatre',
+        description: 'not the anson rooms',
+        image: server.create('grapheneImageFieldNode', {
+          url: 'http://pathto.example/venue-image.png',
+        }),
+        publiclyListed: true,
+        internalCapacity: '420',
+        address: server.create('addressNode', address),
+      });
+
+      venueOverviewComponent = mount(
+        VenueOverview,
+        generateMountOptions(['apollo', 'router'], {
+          propsData: {
+            venue_data: 'anson-theatre',
+          },
+        })
+      );
+    }, false);
   });
 
   afterEach(() => {
@@ -93,12 +100,12 @@ describe('Venue overview box', function () {
     });
 
     // no building number
-    it('has the correct address', async () => {
+    it('has the correct address (no building number)', async () => {
       await venueOverviewComponent.setData({
         venue: {
-          address: Object.assign({}, address, {
-            building_name: 'Wills Memorial Building',
-            building_number: null,
+          address: Object.assign({}, venueOverviewComponent.vm.venue.address, {
+            buildingName: 'Wills Memorial Building',
+            buildingNumber: null,
           }),
         },
       });
@@ -108,12 +115,12 @@ describe('Venue overview box', function () {
     });
 
     // no building name
-    it('has the correct address', async () => {
+    it('has the correct address (no building name)', async () => {
       await venueOverviewComponent.setData({
         venue: {
-          address: Object.assign({}, address, {
-            building_name: null,
-            building_number: '69',
+          address: Object.assign({}, venueOverviewComponent.vm.venue.address, {
+            buildingName: null,
+            buildingNumber: '69',
           }),
         },
       });
@@ -123,12 +130,12 @@ describe('Venue overview box', function () {
     });
 
     // no building name or number
-    it('has the correct address', async () => {
+    it('has the correct address (no building name or number)', async () => {
       await venueOverviewComponent.setData({
         venue: {
-          address: Object.assign({}, address, {
-            building_name: null,
-            building_number: null,
+          address: Object.assign({}, venueOverviewComponent.vm.venue.address, {
+            buildingName: null,
+            buildingNumber: null,
           }),
         },
       });

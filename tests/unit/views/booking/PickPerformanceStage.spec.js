@@ -1,45 +1,63 @@
 import { expect } from 'chai';
+import gql from 'graphql-tag';
+import { DateTime } from 'luxon';
 
 import PerformanceOverview from '@/components/production/PerformanceOverview.vue';
+import ProductionFragment from '@/graphql/fragments/ProductionFragment.gql';
 import PickPerformanceStage from '@/views/booking/stages/PickPerformanceStage.vue';
 
 import FakeProduction from '../../fixtures/FakeProduction';
-import { mountWithRouterMock } from '../../helpers';
+import {
+  executeWithServer,
+  mountWithRouterMock,
+  runApolloQuery,
+} from '../../helpers';
 
 describe('Pick Performance Stage', () => {
   let stageComponent;
   let production;
 
   beforeAll(async () => {
-    production = FakeProduction();
-    let basePerformance = production.performances.edges[0].node;
-    production.performances.edges = [
-      {
-        node: Object.assign({}, basePerformance, {
-          start: '2020-12-25T10:00:00',
-          end: '2020-12-25T12:00:00',
-          soldOut: false,
-        }),
-      },
-      {
-        node: Object.assign({}, basePerformance, {
-          start: '2020-12-26T14:00:00',
-          end: '2020-12-26T16:00:00',
-          soldOut: false,
-        }),
-      },
-      {
-        node: Object.assign({}, basePerformance, {
-          start: '2020-12-27T18:00:00',
-          end: '2020-12-27T20:00:00',
-          soldOut: false,
-        }),
-      },
-    ];
-    stageComponent = await mountWithRouterMock(PickPerformanceStage, {
-      propsData: {
-        production: production,
-      },
+    await executeWithServer(async (server) => {
+      production = server.create(
+        'productionNode',
+        Object.assign({}, FakeProduction(server), {
+          performances: [
+            server.create('performanceNode', {
+              start: DateTime.fromISO('2020-12-25T10:00:00'),
+              end: DateTime.fromISO('2020-12-25T12:00:00'),
+              soldOut: false,
+            }),
+            server.create('performanceNode', {
+              start: DateTime.fromISO('2020-12-26T14:00:00'),
+              end: DateTime.fromISO('2020-12-26T16:00:00'),
+              soldOut: false,
+            }),
+            server.create('performanceNode', {
+              start: DateTime.fromISO('2020-12-27T18:00:00'),
+              end: DateTime.fromISO('2020-12-27T20:00:00'),
+              soldOut: false,
+            }),
+          ],
+        })
+      );
+      let gqlResult = await runApolloQuery({
+        query: gql`
+          query {
+            production(slug: "${production.slug}") {
+              ...ProductionBasicInfo
+            }
+          }
+          ${ProductionFragment}
+        `,
+      });
+      production = gqlResult.data.production;
+
+      stageComponent = await mountWithRouterMock(PickPerformanceStage, {
+        propsData: {
+          production: production,
+        },
+      });
     });
   });
 

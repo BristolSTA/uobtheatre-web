@@ -1,110 +1,73 @@
 import { mount } from '@vue/test-utils';
 import { expect } from 'chai';
+import gql from 'graphql-tag';
 import lo from 'lodash';
 
 import Booking from '@/classes/Booking';
 import Ticket from '@/classes/Ticket';
 import TicketsMatrix from '@/classes/TicketsMatrix';
 import SeatGroup from '@/components/booking/SeatGroup.vue';
-import { generateConcessionTypeBookingTypes } from '@/fakeApi/utils';
+import ProductionFragment from '@/graphql/fragments/ProductionFragment.gql';
+import PerformanceTicketOptionsQuery from '@/graphql/queries/PerformanceTicketOptions.gql';
 import TicketSelectionStage from '@/views/booking/stages/TicketSelectionStage.vue';
 
-import FakeDiscount from '../../fixtures/FakeDiscount';
 import FakePerformance from '../../fixtures/FakePerformance';
-import FakeProduction from '../../fixtures/FakeProduction';
-import FakeTicketOption from '../../fixtures/FakeTicketOption';
-import { executeWithServer, generateMountOptions } from '../../helpers';
+import {
+  executeWithServer,
+  generateMountOptions,
+  runApolloQuery,
+} from '../../helpers';
 
 describe('Ticket Selection Stage', () => {
   let stageComponent;
   let server;
   let ticket_types;
-  let ticketMatrixPerformance;
+  let production;
 
   beforeEach(async () => {
-    server = executeWithServer((server) => {
-      // Seed fake types
-      let conc1 = server.create(
-        'concessionTypeNode',
-        FakeTicketOption().concessionTypes[0].concessionType
-      );
-      let conc2 = server.create(
-        'concessionTypeNode',
-        FakeTicketOption().concessionTypes[1].concessionType
+    server = await executeWithServer(async (server) => {
+      let performanceModel = server.create(
+        'performanceNode',
+        FakePerformance(server)
       );
 
-      server.create('performanceNode', {
-        production: server.create('productionNode'),
-        discounts: [
-          server.create('discountNode', {
-            percentage: 0.5,
-            requirements: [
-              server.create('discountRequirementNode', {
-                number: 1,
-                concessionTypeId: 1,
-              }),
-              server.create('discountRequirementNode', {
-                number: 2,
-                concessionTypeId: 2,
-              }),
-            ],
-          }),
-        ],
-        ticketOptions: [
-          server.create('PerformanceSeatGroupNode', {
-            seatGroup: server.create(
-              'seatGroupNode',
-              FakeTicketOption().seatGroup
-            ),
-            concessionTypes: generateConcessionTypeBookingTypes(
-              [conc1, conc2],
-              server,
-              [{ price: 1000 }, { price: 800 }]
-            ),
-          }),
-          server.create('PerformanceSeatGroupNode', {
-            seatGroup: server.create('seatGroupNode', {
-              name: 'The Meh Seats',
-            }),
-            concessionTypes: generateConcessionTypeBookingTypes(
-              [conc1, conc2],
-              server,
-              [{ price: 1000 }, { price: 800 }]
-            ),
-          }),
-        ],
+      let gqlResult = await runApolloQuery({
+        query: gql`
+          query production{
+            production(slug: "${performanceModel.production.slug}") {
+              ...ProductionBasicInfo
+            }
+          }
+          ${ProductionFragment}
+        `,
       });
+      production = gqlResult.data.production;
 
-      ticketMatrixPerformance = {
-        capacityRemaining: 100,
-        discounts: [FakeDiscount],
-        ticketOptions: [
-          FakeTicketOption(),
-          Object.assign({}, FakeTicketOption(), {
-            seatGroup: {
-              id: 2,
-              name: 'The Meh Seats',
-              description: null,
-            },
-          }),
-        ],
-      };
-    }, false);
-
-    ticket_types = new TicketsMatrix(ticketMatrixPerformance);
-    let booking = new Booking();
-    booking.performance = FakePerformance();
-
-    stageComponent = mount(
-      TicketSelectionStage,
-      generateMountOptions(['apollo'], {
-        propsData: {
-          production: FakeProduction(),
-          booking: booking,
-          ticket_matrix: ticket_types,
+      gqlResult = await runApolloQuery({
+        query: gql`
+          ${PerformanceTicketOptionsQuery}
+        `,
+        variables: {
+          id: performanceModel.id,
         },
-      })
-    );
+      });
+      let ticketOptions = gqlResult.data.performance;
+
+      ticket_types = new TicketsMatrix(ticketOptions);
+      let booking = new Booking();
+      booking.performance = production.performances.edges[0].node;
+
+      stageComponent = mount(
+        TicketSelectionStage,
+        generateMountOptions(['apollo'], {
+          propsData: {
+            production: production,
+            booking: booking,
+            ticket_matrix: ticket_types,
+          },
+        })
+      );
+    }, false);
   });
 
   afterEach(() => {
@@ -170,8 +133,8 @@ describe('Ticket Selection Stage', () => {
         ticket_types.ticket_options[0].concessionTypes[0].concessionType
       );
     expect(stageComponent.vm.booking.tickets.length).to.eq(1);
-    expect(stageComponent.vm.booking.tickets[0].seat_group.id).to.eq(1);
-    expect(stageComponent.vm.booking.tickets[0].concession_type.id).to.eq(1);
+    expect(stageComponent.vm.booking.tickets[0].seat_group.id).to.eq('1');
+    expect(stageComponent.vm.booking.tickets[0].concession_type.id).to.eq('1');
     expect(stageComponent.vm.interaction_timer.mock.calls.length).to.eq(1);
   });
 
@@ -186,8 +149,8 @@ describe('Ticket Selection Stage', () => {
         3
       );
     expect(stageComponent.vm.booking.tickets.length).to.eq(3);
-    expect(stageComponent.vm.booking.tickets[0].seat_group.id).to.eq(1);
-    expect(stageComponent.vm.booking.tickets[0].concession_type.id).to.eq(1);
+    expect(stageComponent.vm.booking.tickets[0].seat_group.id).to.eq('1');
+    expect(stageComponent.vm.booking.tickets[0].concession_type.id).to.eq('1');
     expect(stageComponent.vm.interaction_timer.mock.calls.length).to.eq(1);
   });
 
@@ -202,8 +165,8 @@ describe('Ticket Selection Stage', () => {
         2
       );
     expect(stageComponent.vm.booking.tickets.length).to.eq(2);
-    expect(stageComponent.vm.booking.tickets[0].seat_group.id).to.eq(1);
-    expect(stageComponent.vm.booking.tickets[0].concession_type.id).to.eq(1);
+    expect(stageComponent.vm.booking.tickets[0].seat_group.id).to.eq('1');
+    expect(stageComponent.vm.booking.tickets[0].concession_type.id).to.eq('1');
     expect(stageComponent.vm.interaction_timer.mock.calls.length).to.eq(1);
   });
 
@@ -226,7 +189,7 @@ describe('Ticket Selection Stage', () => {
 
     stageComponent = mount(TicketSelectionStage, {
       propsData: {
-        production: FakeProduction(),
+        production: production,
         booking: stageComponent.vm.booking,
         ticket_matrix: ticket_types,
       },
@@ -241,7 +204,7 @@ describe('Ticket Selection Stage', () => {
   describe('with selected tickets', () => {
     beforeEach(async () => {
       let booking = new Booking();
-      booking.performance = FakePerformance();
+      booking.performance = production.performances.edges[0].node;
       booking.tickets = [
         new Ticket(1, 1),
         new Ticket(1, 1),

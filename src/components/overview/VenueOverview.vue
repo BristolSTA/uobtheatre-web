@@ -22,12 +22,12 @@
       </router-link>
     </template>
     <div v-if="venue">
-      <p v-if="venue.address.building_name">
-        {{ venue.address.building_name }}
+      <p v-if="venue.address.buildingName">
+        {{ venue.address.buildingName }}
       </p>
       <p>
-        <template v-if="venue.address.building_number">
-          {{ venue.address.building_number }}
+        <template v-if="venue.address.buildingNumber">
+          {{ venue.address.buildingNumber }}
         </template>
         {{ venue.address.street }}
       </p>
@@ -38,9 +38,10 @@
 </template>
 
 <script>
+import gql from 'graphql-tag';
+
 import OverviewBox from '@/components/overview/OverviewBox.vue';
-import { venueService } from '@/services';
-import { runPromiseWithLoading } from '@/utils';
+import AddressFragments from '@/graphql/fragments/AddressFragment.gql';
 import { handle404Mixin } from '@/utils';
 
 import IconListItem from '../ui/IconListItem.vue';
@@ -59,15 +60,33 @@ export default {
       venue: null,
     };
   },
-  created() {
-    if (typeof this.venue_data == 'string') {
-      return runPromiseWithLoading(
-        venueService.fetchVenueBySlug(this.venue_data).then((data) => {
-          this.venue = data;
-        })
-      );
-    }
-    this.venue = this.venue_data;
+  apollo: {
+    venue: {
+      query: gql`
+        query venue($slug: String!) {
+          venue(slug: $slug) {
+            name
+            slug
+            address {
+              ...AddressFields
+            }
+          }
+        }
+        ${AddressFragments}
+      `,
+      variables() {
+        return {
+          slug: this.venue_data,
+        };
+      },
+      skip() {
+        if (typeof this.venue_data != 'string') {
+          this.venue = this.venue_data;
+          return true;
+        }
+        return false;
+      },
+    },
   },
 };
 </script>

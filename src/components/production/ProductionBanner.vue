@@ -10,10 +10,10 @@
         ref="featured_image"
       />
       <img
-        :src="production.society.logoImage.url"
+        :src="production.society.logo.url"
         :alt="`${production.society.name} logo`"
         class="absolute bottom-0 left-0 w-10 sm:w-20"
-        v-if="production.society.logoImage"
+        v-if="production.society.logo"
         ref="society_image"
       />
     </div>
@@ -69,7 +69,9 @@
       </icon-list-item>
       <icon-list-item icon="ticket-alt" v-if="production.minSeatPrice">
         Tickets available from
-        <span class="font-semibold"> £{{ production.minSeatPrice }} </span>
+        <span class="font-semibold">
+          £{{ (production.minSeatPrice / 100).toFixed(2) }}
+        </span>
       </icon-list-item>
       <button
         v-if="showBuyTicketsButton && production.isBookable"

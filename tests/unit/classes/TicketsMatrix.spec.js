@@ -2,21 +2,31 @@ import { expect } from 'chai';
 
 import TicketsMatrix from '@/classes/TicketsMatrix';
 
-import FakeTicketOption from '../fixtures/FakeTicketOption';
+import FakePerformance from '../fixtures/FakePerformance';
+import { executeWithServer, runApolloQuery } from '../helpers';
 
 describe('TicketsMatrix', () => {
   let matrix;
-  let ticketOption;
-  beforeEach(() => {
-    ticketOption = FakeTicketOption();
-    matrix = new TicketsMatrix({
-      capacityRemaining: 100,
-      ticketOptions: [ticketOption],
+  let apiData;
+  beforeEach(async () => {
+    await executeWithServer(async (server) => {
+      let performance = server.create(
+        'performanceNode',
+        Object.assign({}, FakePerformance(server), { capacityRemaining: 100 })
+      );
+      let { data } = await runApolloQuery({
+        query: require('@/graphql/queries/PerformanceTicketOptions.gql'),
+        variables: {
+          id: performance.id,
+        },
+      });
+      apiData = data.performance;
+      matrix = new TicketsMatrix(apiData);
     });
   });
 
   it('can get ticket options', () => {
-    expect(matrix.ticket_options).to.include(ticketOption);
+    expect(matrix.ticket_options).to.include(apiData.ticketOptions[0]);
   });
   it('can get performance capacity remaining', () => {
     expect(matrix.performance_capacity_remaining).to.eq(100);
@@ -34,20 +44,20 @@ describe('TicketsMatrix', () => {
     expect(matrix.performance_capacity_remaining).to.eq(101);
   });
   it('can get capacity remaining for a seat group', () => {
-    expect(matrix.capacityRemainingForSeatGroup(1)).to.eq(10);
+    expect(matrix.capacityRemainingForSeatGroup('1')).to.eq(10);
 
     // Test that is uses minimum between performance and seat group
     matrix.performance_capacity_remaining = 5;
 
-    expect(matrix.capacityRemainingForSeatGroup(1)).to.eq(5);
+    expect(matrix.capacityRemainingForSeatGroup('1')).to.eq(5);
   });
   it('can decrement capacity remaining for a seat group', () => {
-    matrix.decrementSeatGroupCapacity(1);
-    expect(matrix.capacityRemainingForSeatGroup(1)).to.eq(9);
+    matrix.decrementSeatGroupCapacity('1');
+    expect(matrix.capacityRemainingForSeatGroup('1')).to.eq(9);
   });
   it('can increment capacity remaining for a seat group', () => {
-    matrix.incrementSeatGroupCapacity(1);
-    expect(matrix.capacityRemainingForSeatGroup(1)).to.eq(11);
+    matrix.incrementSeatGroupCapacity('1');
+    expect(matrix.capacityRemainingForSeatGroup('1')).to.eq(11);
   });
   it('can check if it can add tickets', () => {
     expect(matrix.canAddTickets(1)).to.be.true;

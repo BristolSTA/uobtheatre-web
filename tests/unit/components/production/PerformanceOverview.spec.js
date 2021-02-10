@@ -1,38 +1,49 @@
 import { RouterLinkStub } from '@vue/test-utils';
 import { expect } from 'chai';
+import gql from 'graphql-tag';
+import { DateTime } from 'luxon';
 
 import PerformanceOverview from '@/components/production/PerformanceOverview.vue';
 
 import { mountWithRouterMock } from '../../helpers';
-import {
-  createFromFactoryAndSerialize,
-  executeWithServer,
-} from '../../helpers';
-import { fixTextSpacing } from '../../helpers.js';
+import { executeWithServer } from '../../helpers';
+import { fixTextSpacing, runApolloQuery } from '../../helpers.js';
 
 describe('Pick Performance Stage', () => {
   let performanceOverviewComponent;
   let performance;
 
   beforeAll(async () => {
-    executeWithServer((server) => {
-      performance = createFromFactoryAndSerialize(
-        'performance',
-        1,
-        {
-          start: new Date('28 November 2020 16:00:00 GMT').toISOString(),
-          end: new Date('28 November 2020 18:00:00 GMT').toISOString(),
-          sold_out: false,
-          disabled: false,
-          is_online: true,
-          is_inperson: true,
-          venue: server.create('venue', {
-            name: 'Winston Theatre',
-            slug: 'winston-theatre',
-          }),
-        },
-        server
-      );
+    await executeWithServer(async (server) => {
+      performance = server.create('performanceNode', {
+        start: DateTime.fromISO('2020-11-28T16:00:00'),
+        end: DateTime.fromISO('2020-11-28T18:00:00'),
+        soldOut: false,
+        disabled: false,
+        isOnline: true,
+        isInperson: true,
+        venue: server.create('venueNode', {
+          name: 'Winston Theatre',
+          slug: 'winston-theatre',
+        }),
+      });
+      let gqlResult = await runApolloQuery({
+        query: gql`
+          {performance(id: ${performance.id}) {
+            start
+            end
+            soldOut
+            disabled
+            isOnline
+            isInperson
+            venue {
+              name
+              slug
+            }
+          }}
+        `,
+      });
+      performance = gqlResult.data.performance;
     });
     performanceOverviewComponent = await mountWithRouterMock(
       PerformanceOverview,
@@ -87,8 +98,8 @@ describe('Pick Performance Stage', () => {
     await performanceOverviewComponent.setProps({
       performance: Object.assign({}, performance, {
         disabled: true,
-        is_online: false,
-        is_inperson: true,
+        isOnline: false,
+        isInperson: true,
       }),
     });
 
@@ -113,10 +124,10 @@ describe('Pick Performance Stage', () => {
   it('A disabled, in-person performance', async () => {
     await performanceOverviewComponent.setProps({
       performance: Object.assign({}, performance, {
-        sold_out: true,
+        soldOut: true,
         disabled: false,
-        is_online: true,
-        is_inperson: false,
+        isOnline: true,
+        isInperson: false,
       }),
     });
 

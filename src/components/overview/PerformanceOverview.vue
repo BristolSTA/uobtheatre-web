@@ -5,7 +5,7 @@
       {{ performance.start | dateFormat('EEEE d MMMM kkkk') }}
     </template>
     <div class="font-semibold text-sta-green">
-      <p>Doors Open: {{ performance.doors_open | dateFormat('T') }}</p>
+      <p>Doors Open: {{ performance.doorsOpen | dateFormat('T') }}</p>
       <p>Performance Starts: {{ performance.start | dateFormat('T') }}</p>
     </div>
   </overview-box>

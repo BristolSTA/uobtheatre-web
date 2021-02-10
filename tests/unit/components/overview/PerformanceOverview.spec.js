@@ -1,13 +1,12 @@
+import { mount } from '@vue/test-utils';
 import { expect } from 'chai';
+import gql from 'graphql-tag';
 
 import OverviewBox from '@/components/overview/OverviewBox.vue';
 import PerformanceOverview from '@/components/overview/PerformanceOverview.vue';
 
-import { mountWithRouterMock } from '../../helpers';
-import {
-  createFromFactoryAndSerialize,
-  executeWithServer,
-} from '../../helpers';
+import { runApolloQuery } from '../../helpers';
+import { executeWithServer } from '../../helpers';
 
 describe('performance overview box', function () {
   let performanceOverviewComponent;
@@ -15,36 +14,39 @@ describe('performance overview box', function () {
   let performance;
 
   beforeAll(async () => {
-    executeWithServer((server) => {
-      production = createFromFactoryAndSerialize(
-        'production',
-        1,
-        {
-          name: 'Legally Ginger',
-        },
-        server
-      );
-      performance = createFromFactoryAndSerialize(
-        'performance',
-        1,
-        {
-          doors_open: '2020-12-25T09:00:00',
-          start: '2020-12-25T10:00:00',
-          end: '2020-12-25T12:00:00',
-          sold_out: false,
-        },
-        server
-      );
-    });
-    performanceOverviewComponent = await mountWithRouterMock(
-      PerformanceOverview,
-      {
+    await executeWithServer(async (server) => {
+      production = server.create('productionNode', {
+        name: 'Legally Ginger',
+      });
+      performance = server.create('performanceNode', {
+        production: production,
+        doorsOpen: '2020-12-25T09:00:00',
+        start: '2020-12-25T10:00:00',
+        end: '2020-12-25T12:00:00',
+        soldOut: false,
+      });
+
+      let { data } = await runApolloQuery({
+        query: gql`
+          {
+            performance(id: ${performance.id}) {
+              start
+              doorsOpen
+              production {
+                name
+              }
+            }
+          }
+        `,
+      });
+
+      performanceOverviewComponent = mount(PerformanceOverview, {
         propsData: {
-          production: production,
-          performance: performance,
+          production: data.performance.production,
+          performance: data.performance,
         },
-      }
-    );
+      });
+    });
   });
 
   it('has overview box component', () => {

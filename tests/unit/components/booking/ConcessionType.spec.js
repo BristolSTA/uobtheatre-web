@@ -8,10 +8,12 @@ describe('Concession Type', () => {
   beforeEach(() => {
     concessionTypeComponent = mount(ConcessionType, {
       propsData: {
-        concession_type: {
-          id: 1,
-          name: 'Adult',
-          description: 'A adult human',
+        concession_type_edge: {
+          concessionType: {
+            id: 1,
+            name: 'Adult',
+            description: 'A adult human',
+          },
           price: 1000,
         },
         max_add_allowed: 10,

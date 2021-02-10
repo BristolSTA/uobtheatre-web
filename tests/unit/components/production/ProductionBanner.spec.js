@@ -1,5 +1,6 @@
 import { mount, RouterLinkStub } from '@vue/test-utils';
 import { expect } from 'chai';
+import { DateTime } from 'luxon';
 
 import ProductionHeader from '@/components/production/ProductionBanner.vue';
 
@@ -17,7 +18,7 @@ describe('ProductionBanner', function () {
   it('shows production details correctly', async () => {
     await createWithPerformances([
       {
-        start: Date('2020-11-14'),
+        start: DateTime.fromISO('2020-11-14'),
         venue: {
           name: 'The New Vic',
           slug: 'the-new-vic',
@@ -28,7 +29,7 @@ describe('ProductionBanner', function () {
         durationMins: 102,
       },
       {
-        start: Date('2020-11-15'),
+        start: DateTime.fromISO('2020-11-15'),
         venue: {
           name: 'The Newer Vic',
           slug: 'the-newer-vic',
@@ -101,13 +102,9 @@ describe('ProductionBanner', function () {
   });
 
   it('shows no society image when none is given', async () => {
-    await createWithPerformances([], {
-      society: {
-        name: 'Joe Bloggs Productions',
-        logo: null,
-      },
-    });
-
+    await createWithPerformances([]);
+    headerContainer.vm.production.society.logo = null;
+    await headerContainer.vm.$forceUpdate();
     expect(
       headerContainer
         .findComponent({
@@ -138,7 +135,7 @@ describe('ProductionBanner', function () {
         isOnline: true,
       },
     ]);
-    expect(fixTextSpacing(headerContainer.text())).to.contain('Watch Online');
+    expect(fixTextSpacing(headerContainer.text())).to.contain('View Online');
     expect(headerContainer.findAllComponents(RouterLinkStub).length).to.equal(
       1
     );
@@ -177,7 +174,7 @@ describe('ProductionBanner', function () {
         isOnline: true,
       },
       {
-        start: Date('2020-11-14'),
+        start: DateTime.fromISO('2020-11-14'),
         venue: {
           name: 'The New Vic',
           slug: 'the-new-vic',
@@ -186,7 +183,7 @@ describe('ProductionBanner', function () {
         isOnline: false,
       },
       {
-        start: Date('2020-11-15'),
+        start: DateTime.fromISO('2020-11-15'),
         venue: {
           name: 'Anson Theatre',
           slug: 'anson-theatre',
@@ -195,7 +192,7 @@ describe('ProductionBanner', function () {
         isOnline: false,
       },
       {
-        start: Date('2020-11-15'),
+        start: DateTime.fromISO('2020-11-15'),
         venue: {
           name: 'Pegg Rooms',
           slug: 'pegg-rooms',
@@ -204,7 +201,7 @@ describe('ProductionBanner', function () {
         isOnline: false,
       },
       {
-        start: Date('2020-11-15'),
+        start: DateTime.fromISO('2020-11-15'),
         venue: {
           name: 'Winston Rooms',
           slug: 'winston-rooms',
@@ -242,6 +239,9 @@ describe('ProductionBanner', function () {
         productionOverrides,
         {
           performances: performances.map((perf) => {
+            if (perf.venue) {
+              perf.venue = server.create('venueNode', perf.venue);
+            }
             return server.create('performanceNode', perf);
           }),
         }

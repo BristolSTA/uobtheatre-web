@@ -4,83 +4,6 @@ import { belongsTo, Factory, Model } from 'miragejs';
 
 import { updateIfDoesntHave } from './utils';
 
-let generatePriceBreakdown = (mirageSchema, booking) => {
-  let performance = booking.performance;
-
-  let ticketSummaries = lo
-    .chain(booking.tickets.models)
-    .groupBy((ticket) => [ticket.seatGroup.id, ticket.concessionType.id])
-    .values()
-    .map((groupedTickets) => {
-      let ticketOption = performance.ticketOptions.models.find((option) => {
-        return option.seatGroupId == groupedTickets[0].seatGroup.id;
-      });
-      let concessionTypeEdge = ticketOption.concessionTypes.models.find(
-        (concessionTypeEdge) => {
-          return (
-            concessionTypeEdge.concessionTypeId ==
-            groupedTickets[0].concessionType.id
-          );
-        }
-      );
-
-      return mirageSchema.create('priceBreakdownTicketNode', {
-        number: groupedTickets.length,
-        concessionType: concessionTypeEdge.concessionType,
-        seatGroup: ticketOption.seatGroup,
-        ticketPrice: concessionTypeEdge.price,
-        totalPrice: concessionTypeEdge.price * groupedTickets.length,
-      });
-    })
-    .value();
-
-  let ticket_price = ticketSummaries
-    .map((tickets) => tickets.totalPrice)
-    .reduce((a, b) => a + b, 0);
-
-  // A bit of a bodge...
-  let discounts_price = performance.discounts.models.length
-    ? Math.round(performance.discounts.models[0].percentage * 100)
-    : 0;
-
-  let tickets_inc_discount_price = ticket_price - discounts_price;
-
-  let misc_costs = mirageSchema.miscCostNodes.where({
-    productionId: performance.production.id,
-  });
-  misc_costs.models.forEach((misc_cost) => {
-    if (misc_cost.percentage) {
-      misc_cost.update({
-        value: misc_cost.percentage * tickets_inc_discount_price,
-      });
-    }
-  });
-
-  let misc_costs_price = misc_costs.models.length
-    ? misc_costs.models
-        .map((misc_cost) => misc_cost.value)
-        .reduce((a, b) => a + b)
-    : 0;
-
-  let result = {
-    // Tickets
-    tickets: ticketSummaries,
-    ticketsPrice: ticket_price,
-    ticketsDiscountedPrice: tickets_inc_discount_price,
-    discountsValue: discounts_price,
-
-    // Misc Costs
-    miscCosts: misc_costs,
-    miscCostsValue: misc_costs_price,
-
-    // Totals
-    subtotalPrice: tickets_inc_discount_price,
-    totalPrice: tickets_inc_discount_price + misc_costs_price,
-  };
-
-  return result;
-};
-
 export default {
   registerModels() {
     return {
@@ -93,6 +16,14 @@ export default {
     return {
       bookingNode: Factory.extend({
         bookingReference: () => faker.random.uuid(),
+        status: 'IN_PROGRESS',
+        afterCreate(node, server) {
+          updateIfDoesntHave(node, {
+            performance: () => {
+              return server.create('performanceNode');
+            },
+          });
+        },
       }),
       ticketNode: Factory.extend({
         afterCreate(booking, server) {
@@ -192,6 +123,11 @@ export default {
       },
     };
   },
+  registerGQLQueries() {
+    return `
+      booking(id: ID!): BookingNode
+    `;
+  },
   registerGQLTypes() {
     return `
       input CreateTicketInput {
@@ -250,3 +186,85 @@ export default {
     `;
   },
 };
+
+/**
+ * @param {any} mirageSchema MirageJS Schema Instance
+ * @param {object} booking MirageJS Booking Child
+ * @returns {object} PriceBreakdownNode Data
+ */
+export function generatePriceBreakdown(mirageSchema, booking) {
+  let performance = booking.performance;
+
+  let ticketSummaries = lo
+    .chain(booking.tickets.models)
+    .groupBy((ticket) => [ticket.seatGroup.id, ticket.concessionType.id])
+    .values()
+    .map((groupedTickets) => {
+      let ticketOption = performance.ticketOptions.models.find((option) => {
+        return option.seatGroupId == groupedTickets[0].seatGroup.id;
+      });
+      let concessionTypeEdge = ticketOption.concessionTypes.models.find(
+        (concessionTypeEdge) => {
+          return (
+            concessionTypeEdge.concessionTypeId ==
+            groupedTickets[0].concessionType.id
+          );
+        }
+      );
+
+      return mirageSchema.create('priceBreakdownTicketNode', {
+        number: groupedTickets.length,
+        concessionType: concessionTypeEdge.concessionType,
+        seatGroup: ticketOption.seatGroup,
+        ticketPrice: concessionTypeEdge.price,
+        totalPrice: concessionTypeEdge.price * groupedTickets.length,
+      });
+    })
+    .value();
+
+  let ticket_price = ticketSummaries
+    .map((tickets) => tickets.totalPrice)
+    .reduce((a, b) => a + b, 0);
+
+  // A bit of a bodge...
+  let discounts_price = performance.discounts.models.length
+    ? Math.round(performance.discounts.models[0].percentage * 100)
+    : 0;
+
+  let tickets_inc_discount_price = ticket_price - discounts_price;
+
+  let misc_costs = mirageSchema.miscCostNodes.where({
+    productionId: performance.production.id,
+  });
+  misc_costs.models.forEach((misc_cost) => {
+    if (misc_cost.percentage) {
+      misc_cost.update({
+        value: Math.round(misc_cost.percentage * tickets_inc_discount_price),
+      });
+    }
+  });
+
+  let misc_costs_price = misc_costs.models.length
+    ? misc_costs.models
+        .map((misc_cost) => misc_cost.value)
+        .reduce((a, b) => a + b)
+    : 0;
+
+  let result = {
+    // Tickets
+    tickets: ticketSummaries,
+    ticketsPrice: ticket_price,
+    ticketsDiscountedPrice: tickets_inc_discount_price,
+    discountsValue: discounts_price,
+
+    // Misc Costs
+    miscCosts: misc_costs,
+    miscCostsValue: misc_costs_price,
+
+    // Totals
+    subtotalPrice: tickets_inc_discount_price,
+    totalPrice: tickets_inc_discount_price + misc_costs_price,
+  };
+
+  return result;
+}
