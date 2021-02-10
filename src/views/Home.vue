@@ -1,43 +1,19 @@
 <template>
-  <div class="min-h-full bg-sta-gray">
-    <div
-      id="splashscreen"
-      :style="{
-        'background-image': splashBackground,
-      }"
-    >
-      <div class="flex items-center bg-black bg-opacity-40">
+  <div class="min-h-full text-white bg-sta-gray">
+    <div id="splashscreen">
+      <div
+        v-if="!bannerProductions.length"
+        class="flex items-center bg-black bg-opacity-40"
+        style="min-height: 50vh"
+      >
         <div class="container px-4 text-white lg:w-2/3">
-          <router-link
-            v-if="featuredProduction"
-            :to="{
-              name: 'production',
-              params: { productionSlug: featuredProduction.slug },
-            }"
-          >
-            <router-link
-              class="text-2xl"
-              :to="{
-                name: 'society',
-                params: { societySlug: featuredProduction.society.slug },
-              }"
-            >
-              {{ featuredProduction.society.name }}
-            </router-link>
-            <div class="text-h1">{{ featuredProduction.name }}</div>
-            <div class="text-2xl">
-              {{ featuredProduction.start | dateFormat('d MMMM') }} -
-              {{ featuredProduction.end | dateFormat('d MMMM y') }}
-            </div>
-          </router-link>
-          <template v-else>
-            <div class="text-4xl">Welcome to {{ $appName }}</div>
-            <div class="text-2xl">
-              The Home of Bristol Student Performing Arts
-            </div>
-          </template>
+          <div class="text-4xl">Welcome to {{ $appName }}</div>
+          <div class="text-2xl">
+            The Home of Bristol Student Performing Arts
+          </div>
         </div>
       </div>
+      <production-carousel v-else :bannerProductions="bannerProductions" />
     </div>
 
     <div class="container mt-4 text-white" ref="whatson">
@@ -120,24 +96,23 @@
   </div>
 </template>
 
-<style scoped lang="scss">
+<style>
 #splashscreen {
   background-image: url('~@/assets/images/placeholder-homepage-splash.jpg');
   background-size: cover;
   background-position: center;
-  > div {
-    min-height: 50vh;
-  }
 }
 </style>
 
 <script>
 import lo from 'lodash';
 
+import ProductionCarousel from '@/components/home/ProductionCarousel.vue';
 import { displayStartEnd } from '@/utils';
 
 export default {
   name: 'Home',
+  components: { ProductionCarousel },
   data() {
     return {
       upcomingProductions: [],
@@ -159,18 +134,13 @@ export default {
     },
   },
   computed: {
-    featuredProduction() {
-      return this.upcomingProductionsToShow.find((production) => {
+    bannerProductions() {
+      return this.upcomingProductionsToShow.filter((production) => {
         return !!production.coverImage;
       });
     },
     upcomingProductionsToShow() {
       return lo.take(this.upcomingProductions, 4);
-    },
-    splashBackground() {
-      return this.featuredProduction
-        ? `url("${this.featuredProduction.coverImage.url}")`
-        : null;
     },
   },
 };
