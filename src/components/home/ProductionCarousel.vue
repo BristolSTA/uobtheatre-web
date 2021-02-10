@@ -18,12 +18,10 @@
         v-bind:key="index"
         class="absolute top-0 bottom-0 left-0 right-0"
         ref="carousel"
-      >
-        <div
-          :style="{
+        :style="{
             'background-image': bannerBackgorund(bannerProductions[index]),
           }"
-        >
+      >
           <div
             class="flex items-center bg-black bg-opacity-40"
             :style="{ height: vheight + 'vh' }"
@@ -46,14 +44,13 @@
             </router-link>
           </div>
         </div>
-      </div>
     </transition-group>
     <template v-if="this.carouselLength > 1">
       <div class="absolute flex justify-center w-full bottom-2">
         <ul class="flex items-center p-0 space-x-3 whitespace-nowrap">
           <li v-for="n in carouselLength" :key="n">
             <button
-              class="carouel-indicator cursor-pointer transition-colors duration-500 w-2.5 h-2.5 rounded-full focus:outline-none border-white border hover:bg-white"
+              class="carousel-indicator cursor-pointer transition-colors duration-500 w-2.5 h-2.5 rounded-full focus:outline-none border-white border hover:bg-white"
               :class="[
                 n - 1 == currentProduction ? 'bg-white' : 'bg-transparent',
               ]"

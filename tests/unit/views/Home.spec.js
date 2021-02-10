@@ -31,7 +31,7 @@ describe('Home', function () {
     let splashscreenContainer;
 
     beforeEach(() => {
-      splashscreenContainer = homepageComponent.find('#carousel');
+      splashscreenContainer = homepageComponent.find('#splashscreen');
     });
 
     it('shows fallback with no productions', () => {

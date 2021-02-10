@@ -62,7 +62,7 @@ describe('ProductionCarousel', function () {
 
   describe('carousel displays correct data', () => {
     it('slide 0', async () => {
-      let slide = prodCarouselComponent.find('#splashscreen');
+      let slide = prodCarouselComponent.findComponent({ ref: 'carousel' });
       expect(slide.text()).to.contain('Dramatic Pause');
       expect(slide.text()).to.contain('My production without a picture');
       expect(fixTextSpacing(slide.text())).to.contain(
@@ -89,7 +89,7 @@ describe('ProductionCarousel', function () {
       await prodCarouselComponent.setData({
         currentProduction: 1,
       });
-      let slide = prodCarouselComponent.find('#splashscreen');
+      let slide = prodCarouselComponent.findComponent({ ref: 'carousel' });
       expect(slide.text()).to.contain('Joe Bloggs Productions');
       expect(slide.text()).to.contain('Upside Down Cake');
       expect(fixTextSpacing(slide.text())).to.contain(
@@ -115,9 +115,6 @@ describe('ProductionCarousel', function () {
 
   describe('carousel functions as a carousel', () => {
     it('has 3 slides', async () => {
-      expect(prodCarouselComponent.vm.$props.bannerProductions.length).equals(
-        3
-      );
       expect(prodCarouselComponent.findAll('li').length).equals(3);
     });
 
@@ -125,13 +122,13 @@ describe('ProductionCarousel', function () {
       let nextButton = prodCarouselComponent.find('#nextBtn');
 
       nextButton.trigger('click');
-      expect(prodCarouselComponent.vm.$data.currentProduction).equals(1);
+      expect(prodCarouselComponent.vm.currentProduction).equals(1);
       nextButton.trigger('click');
-      expect(prodCarouselComponent.vm.$data.currentProduction).equals(2);
+      expect(prodCarouselComponent.vm.currentProduction).equals(2);
       nextButton.trigger('click');
-      expect(prodCarouselComponent.vm.$data.currentProduction).equals(0);
+      expect(prodCarouselComponent.vm.currentProduction).equals(0);
       nextButton.trigger('click');
-      expect(prodCarouselComponent.vm.$data.currentProduction).equals(1);
+      expect(prodCarouselComponent.vm.currentProduction).equals(1);
     });
 
     it('prev button decrements slide', async () => {
@@ -141,65 +138,55 @@ describe('ProductionCarousel', function () {
       });
 
       prevButton.trigger('click');
-      expect(prodCarouselComponent.vm.$data.currentProduction).equals(0);
+      expect(prodCarouselComponent.vm.currentProduction).equals(0);
       prevButton.trigger('click');
-      expect(prodCarouselComponent.vm.$data.currentProduction).equals(2);
+      expect(prodCarouselComponent.vm.currentProduction).equals(2);
       prevButton.trigger('click');
-      expect(prodCarouselComponent.vm.$data.currentProduction).equals(1);
+      expect(prodCarouselComponent.vm.currentProduction).equals(1);
       prevButton.trigger('click');
-      expect(prodCarouselComponent.vm.$data.currentProduction).equals(0);
+      expect(prodCarouselComponent.vm.currentProduction).equals(0);
     });
 
     it('buttons go to correct slide', async () => {
-      let buttons = prodCarouselComponent.findAll('.carouel-indicator');
+      let buttons = prodCarouselComponent.findAll('.carousel-indicator');
 
       buttons.at(1).trigger('click');
-      expect(prodCarouselComponent.vm.$data.currentProduction).equals(1);
+      expect(prodCarouselComponent.vm.currentProduction).equals(1);
       buttons.at(0).trigger('click');
-      expect(prodCarouselComponent.vm.$data.currentProduction).equals(0);
+      expect(prodCarouselComponent.vm.currentProduction).equals(0);
       buttons.at(2).trigger('click');
-      expect(prodCarouselComponent.vm.$data.currentProduction).equals(2);
+      expect(prodCarouselComponent.vm.currentProduction).equals(2);
       jest.advanceTimersByTime(5000);
-      expect(prodCarouselComponent.vm.$data.currentProduction).equals(0);
+      expect(prodCarouselComponent.vm.currentProduction).equals(0);
     });
   });
 
   describe('autoplay and pausing functionality', () => {
     it('mouseover pauses autoplay', async () => {
-      expect(prodCarouselComponent.vm.$data.autoplayInterval).to.not.equal(
-        null
-      );
+      expect(prodCarouselComponent.vm.autoplayInterval).to.not.equal(null);
       prodCarouselComponent.find('#carousel').trigger('mouseover');
-      expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
+      expect(prodCarouselComponent.vm.autoplayInterval).equals(null);
       prodCarouselComponent.find('#carousel').trigger('mouseout');
-      expect(prodCarouselComponent.vm.$data.autoplayInterval).to.not.equal(
-        null
-      );
+      expect(prodCarouselComponent.vm.autoplayInterval).to.not.equal(null);
       jest.advanceTimersByTime(5000);
-      expect(prodCarouselComponent.vm.$data.currentProduction).equals(1);
+      expect(prodCarouselComponent.vm.currentProduction).equals(1);
     });
     it('mouseover does nothing when disabed', async () => {
       await prodCarouselComponent.setProps({
         pauseOnHover: false,
       });
-      expect(prodCarouselComponent.vm.$data.autoplayInterval).to.not.equal(
-        null
-      );
+      expect(prodCarouselComponent.vm.autoplayInterval).to.not.equal(null);
       prodCarouselComponent.find('#carousel').trigger('mouseover');
-      expect(prodCarouselComponent.vm.$data.autoplayInterval).to.not.equal(
-        null
-      );
+      expect(prodCarouselComponent.vm.autoplayInterval).to.not.equal(null);
       prodCarouselComponent.find('#carousel').trigger('mouseout');
-      expect(prodCarouselComponent.vm.$data.autoplayInterval).to.not.equal(
-        null
-      );
+      expect(prodCarouselComponent.vm.autoplayInterval).to.not.equal(null);
     });
 
     it('autoplays after interval', async () => {
       jest.advanceTimersByTime(4000);
-      expect(prodCarouselComponent.vm.$data.currentProduction).equals(0);
+      expect(prodCarouselComponent.vm.currentProduction).equals(0);
       jest.advanceTimersByTime(1000);
-      expect(prodCarouselComponent.vm.$data.currentProduction).equals(1);
+      expect(prodCarouselComponent.vm.currentProduction).equals(1);
     });
 
     it('autoplays with non default interval', async () => {
@@ -213,17 +200,15 @@ describe('ProductionCarousel', function () {
       });
 
       jest.advanceTimersByTime(1000);
-      expect(prodCarouselComponent.vm.$data.currentProduction).equals(0);
+      expect(prodCarouselComponent.vm.currentProduction).equals(0);
       jest.advanceTimersByTime(1000);
-      expect(prodCarouselComponent.vm.$data.currentProduction).equals(1);
+      expect(prodCarouselComponent.vm.currentProduction).equals(1);
     });
 
     it('disable autoplay when destroyed', async () => {
-      expect(prodCarouselComponent.vm.$data.autoplayInterval).to.not.equal(
-        null
-      );
+      expect(prodCarouselComponent.vm.autoplayInterval).to.not.equal(null);
       prodCarouselComponent.destroy();
-      expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
+      expect(prodCarouselComponent.vm.autoplayInterval).equals(null);
     });
   });
 
@@ -239,15 +224,15 @@ describe('ProductionCarousel', function () {
     });
 
     it('doesnt autoplay', async () => {
-      expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
+      expect(prodCarouselComponent.vm.autoplayInterval).equals(null);
     });
 
     it('mouseover does nothing when no autoplay', async () => {
-      expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
+      expect(prodCarouselComponent.vm.autoplayInterval).equals(null);
       prodCarouselComponent.find('#carousel').trigger('mouseover');
-      expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
+      expect(prodCarouselComponent.vm.autoplayInterval).equals(null);
       prodCarouselComponent.find('#carousel').trigger('mouseout');
-      expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
+      expect(prodCarouselComponent.vm.autoplayInterval).equals(null);
     });
   });
 
@@ -278,7 +263,7 @@ describe('ProductionCarousel', function () {
       expect(prodCarouselComponent.find('#prevBtn').exists()).to.be.false;
       expect(prodCarouselComponent.find('.carousel-indicator').exists()).to.be
         .false;
-      expect(prodCarouselComponent.vm.$data.autoplayInterval).equals(null);
+      expect(prodCarouselComponent.vm.autoplayInterval).equals(null);
     });
   });
 });
