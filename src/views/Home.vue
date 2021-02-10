@@ -103,6 +103,14 @@ export default {
       displayStartEnd: displayStartEnd,
     };
   },
+  /* istanbul ignore next */
+  metaInfo() {
+    const appName = this.$appName;
+    return {
+      title: `${appName} | The Home Of Bristol Student Performing Arts`,
+      titleTemplate: null,
+    };
+  },
   apollo: {
     upcomingProductions: {
       query: require('./HomeUpcomingProductions.gql'),
