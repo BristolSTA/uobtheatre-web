@@ -1,5 +1,6 @@
 import { stitchSchemas } from '@graphql-tools/stitch';
 import { createGraphQLHandler } from '@miragejs/graphql';
+import { DateTime } from 'luxon';
 import { createServer } from 'miragejs';
 
 import BookingInterface from './booking.model';
@@ -156,21 +157,14 @@ export function makeServer({ environment = 'development' } = {}) {
         percentage: 0.05,
       });
 
-      server.create('ProductionNode', 'withCoverImage', {
-        name: 'Present Laughter',
-        society: dramsoc,
-        start: DateTime.fromISO('2019-11-16'),
-        end: DateTime.fromISO('2019-11-19'),
-        isBookable: false,
-      });
       // /**
       //  * Fake Performance 2 - TRASh, Dramsoc, 1 performance, no warnings
       //  */
 
-      // let dramsoc = server.create('SocietyNode', {
-      //   name: 'Dramsoc',
-      //   logo_image: null,
-      // });
+      let dramsoc = server.create('SocietyNode', {
+        name: 'Dramsoc',
+        logo_image: null,
+      });
 
       // server.create('ProductionNode', {
       //   name: 'TRASh',
@@ -183,17 +177,17 @@ export function makeServer({ environment = 'development' } = {}) {
       //   }),
       // });
 
-      // /**
-      //  * Fake Performance 3 - Present laughter
-      //  */
+      /**
+       * Fake Performance 3 - Present laughter
+       */
 
-      // server.create('ProductionNode', {
-      //   name: 'Present Laughter',
-      //   society: dramsoc,
-      //   start: DateTime.fromISO('2019-11-16'),
-      //   end: DateTime.fromISO('2019-11-19'),
-      //   isBookable: false,
-      // });
+      server.create('ProductionNode', 'withCoverImage', {
+        name: 'Present Laughter',
+        society: dramsoc,
+        start: DateTime.fromISO('2019-11-16'),
+        end: DateTime.fromISO('2019-11-19'),
+        isBookable: false,
+      });
 
       // server.create('ProductionNode', {
       //   name: 'Decade',
