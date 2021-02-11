@@ -101,7 +101,7 @@ export function makeServer({ environment = 'development' } = {}) {
         }),
       });
 
-      server.create('ProductionNode', {
+      server.create('ProductionNode', 'withCoverImage', {
         name: 'Present Laughter',
         society: dramsoc,
         start: DateTime.fromISO('2019-11-16'),

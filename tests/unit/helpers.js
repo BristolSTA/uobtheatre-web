@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import lo from 'lodash';
 
 import { makeServer as makeAPIServer } from '@/fakeApi';
+import { createClient } from '@/vue-apollo';
 import { createProvider } from '@/vue-apollo';
 
 const waitForDOM = function (wrapper, selector) {
@@ -94,9 +95,9 @@ const makeServer = () => {
   return makeAPIServer({ environment: 'test' });
 };
 
-const executeWithServer = (callback, closeServer = true) => {
+const executeWithServer = async (callback, closeServer = true) => {
   let server = makeServer();
-  if (callback) callback(server);
+  if (callback) await callback(server);
   if (closeServer) server.shutdown();
   return server;
 };
@@ -165,6 +166,14 @@ let mapRelationshipsToEdges = (resource, relationships) => {
   });
   return resource;
 };
+let client = null;
+let runApolloQuery = (options) => {
+  if (!client) {
+    let { apolloClient } = createClient();
+    client = apolloClient;
+  }
+  return client.query(options);
+};
 
 export {
   assertNoVisualDifference,
@@ -176,6 +185,7 @@ export {
   mapRelationshipsToEdges,
   mountWithRouterMock,
   RouterLinkStub,
+  runApolloQuery,
   serialize,
   waitFor,
   waitForDOM,

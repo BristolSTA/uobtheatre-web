@@ -6,12 +6,12 @@
     "serve": "./node_modules/.bin/vue-cli-service serve",
     "build": "./node_modules/.bin/vue-cli-service build",
     "test:unit": "./node_modules/.bin/vue-cli-service test:unit",
-    "test:e2e": "./node_modules/.bin/vue-cli-service test:e2e",
+    "test:e2e": "VUE_APP_CYPRESS=true vue-cli-service test:e2e",
     "lint": "./node_modules/.bin/vue-cli-service lint",
+    "api:download-schema": "node scripts/downloadSchema.js",
     "playground": "vue-cli-service serve src/playground.js",
     "postinstall": "yarn husky install",
-    "setup": "cp .env.example .env.local && yarn run api:download-schema",
-    "api:download-schema": "node scripts/downloadSchema.js"
+    "setup": "cp .env.example .env.local && yarn run api:download-schema"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
@@ -38,6 +38,7 @@
     "vuex": "^3.6.0"
   },
   "devDependencies": {
+    "@cypress/webpack-preprocessor": "^5.5.0",
     "@miragejs/graphql": "^0.1.10",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-e2e-cypress": "~4.5.0",
@@ -50,6 +51,7 @@
     "@vue/test-utils": "^1.0.3",
     "babel-eslint": "^10.1.0",
     "chai": "^4.1.2",
+    "cross-fetch": "^3.0.6",
     "eslint": "^6.7.2",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-graphql": "^4.0.0",
