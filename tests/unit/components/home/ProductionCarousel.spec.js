@@ -3,11 +3,13 @@ import { expect } from 'chai';
 import { DateTime } from 'luxon';
 
 import ProductionCarousel from '@/components/home/ProductionCarousel.vue';
-import { makeServer } from '@/fakeApi';
 
-import { fixTextSpacing, mountWithRouterMock } from '../../helpers';
-
-jest.useFakeTimers();
+import {
+  executeWithServer,
+  fixTextSpacing,
+  mountWithRouterMock,
+  runApolloQuery,
+} from '../../helpers';
 
 describe('ProductionCarousel', function () {
   let prodCarouselComponent;
@@ -15,9 +17,7 @@ describe('ProductionCarousel', function () {
   let bannerProductions;
 
   beforeEach(async () => {
-    server = makeServer({ environment: 'test' });
-
-    bannerProductions = [
+    await executeWithServer(async (server) => {
       server.create('ProductionNode', {
         name: 'My production without a picture',
         coverImage: server.create('GrapheneImageFieldNode', {
@@ -26,7 +26,7 @@ describe('ProductionCarousel', function () {
         society: server.create('SocietyNode', { name: 'Dramatic Pause' }),
         start: DateTime.fromISO('2020-11-13'),
         end: DateTime.fromISO('2020-11-14'),
-      }),
+      });
       server.create('ProductionNode', {
         name: 'Upside Down Cake',
         coverImage: server.create('GrapheneImageFieldNode', {
@@ -37,7 +37,7 @@ describe('ProductionCarousel', function () {
         }),
         start: DateTime.fromISO('2020-11-14'),
         end: DateTime.fromISO('2020-11-18'),
-      }),
+      });
       server.create('ProductionNode', {
         name: 'Legally Ginger',
         coverImage: server.create('GrapheneImageFieldNode', {
@@ -46,18 +46,27 @@ describe('ProductionCarousel', function () {
         society: server.create('SocietyNode', { name: 'MTB' }),
         start: DateTime.fromISO('2019-11-14'),
         end: DateTime.fromISO('2019-11-18'),
-      }),
-    ];
-    prodCarouselComponent = await mountWithRouterMock(ProductionCarousel, {
-      propsData: {
-        bannerProductions: bannerProductions,
-        autoplay: true,
-        pauseOnHover: true,
-      },
+      });
+
+      let { data } = await runApolloQuery({
+        query: require('@/views/HomeUpcomingProductions.gql'),
+      });
+
+      jest.useFakeTimers();
+      prodCarouselComponent = await mountWithRouterMock(ProductionCarousel, {
+        propsData: {
+          bannerProductions: (bannerProductions = data.productions.edges.map(
+            (edge) => edge.node
+          )),
+          autoplay: true,
+          pauseOnHover: true,
+        },
+      });
     });
   });
+
   afterEach(() => {
-    server.shutdown();
+    jest.useRealTimers();
   });
 
   describe('carousel displays correct data', () => {
@@ -238,20 +247,9 @@ describe('ProductionCarousel', function () {
 
   describe('with only one banner production', () => {
     beforeEach(async () => {
-      bannerProductions = [
-        server.create('ProductionNode', {
-          name: 'My production without a picture',
-          coverImage: server.create('GrapheneImageFieldNode', {
-            url: 'http://pathto.example/my-image0.png',
-          }),
-          society: server.create('SocietyNode', { name: 'Dramatic Pause' }),
-          start: DateTime.fromISO('2020-11-13'),
-          end: DateTime.fromISO('2020-11-14'),
-        }),
-      ];
       prodCarouselComponent = await mountWithRouterMock(ProductionCarousel, {
         propsData: {
-          bannerProductions: bannerProductions,
+          bannerProductions: bannerProductions.slice(0, 1),
           autoplay: true,
           pauseOnHover: true,
         },
