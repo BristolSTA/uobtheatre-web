@@ -53,13 +53,17 @@ const routes = [
   },
 
   /**
-   * Auth Pages
+   * Society Pages
    */
   {
     path: '/societies/:societySlug',
     name: 'society',
     component: Society,
   },
+
+  /**
+   * Auth Pages
+   */
   {
     path: '/login',
     name: 'login',
