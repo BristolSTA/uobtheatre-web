@@ -81,11 +81,9 @@ export default {
   mounted() {
     this.loadDataForStage();
     if (!this.$route.meta.stage.shouldBeUsed(this.production, this.booking)) {
-      console.log('uhoh', this.booking);
       return this.navigateToStage();
     }
     if (!this.$route.meta.stage.eligable(this.production, this.booking)) {
-      console.log('uhoh2', this.booking, this.$route.meta.stage);
       return this.gotoPreviousStage();
     }
   },
