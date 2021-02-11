@@ -14,6 +14,8 @@ describe('Booking Navigation', () => {
       Stages.forEach((stage) => {
         jest.spyOn(stage, 'shouldBeUsed').mockReturnValue(true);
       });
+      let booking = new Booking();
+      booking.performance = { id: 1 };
       navigationComponent = mount(BookingNavgiation, {
         propsData: {
           currentStageIndex: 0,
@@ -21,7 +23,7 @@ describe('Booking Navigation', () => {
           production: {
             warnings: ['Generic Warning Here'],
           },
-          booking: new Booking(),
+          booking: booking,
         },
       });
     });

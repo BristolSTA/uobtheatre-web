@@ -5,10 +5,17 @@ import PickPerformanceStage from '@/views/booking/stages/PickPerformanceStage.vu
 import TicketSelectionStage from '@/views/booking/stages/TicketSelectionStage.vue';
 
 let stages = [
-  new BookingStage('Select Performance', PickPerformanceStage, {
-    path: '',
-    name: 'production.book.select',
-  }),
+  new BookingStage(
+    'Select Performance',
+    PickPerformanceStage,
+    {
+      path: '',
+      name: 'production.book.select',
+    },
+    undefined,
+    undefined,
+    false
+  ),
   new BookingStage(
     'Auidence Warnings',
     AudienceWarningsStage,

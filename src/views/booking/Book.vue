@@ -34,7 +34,10 @@
             ><font-awesome-icon icon="chevron-left" /> Back</clickable-link
           >
         </div>
-        <div id="booking-view" class="flex-grow max-w-full p-1 pb-4 sm:p-3 bg-sta-gray-dark">
+        <div
+          id="booking-view"
+          class="flex-grow max-w-full p-1 pb-4 sm:p-3 bg-sta-gray-dark"
+        >
           <router-view
             :production="production"
             :booking="booking"
@@ -75,8 +78,16 @@ export default {
     to.params.production = from.params.production;
     return next();
   },
-  created() {
+  mounted() {
     this.loadDataForStage();
+    if (!this.$route.meta.stage.shouldBeUsed(this.production, this.booking)) {
+      console.log('uhoh', this.booking);
+      return this.navigateToStage();
+    }
+    if (!this.$route.meta.stage.eligable(this.production, this.booking)) {
+      console.log('uhoh2', this.booking, this.$route.meta.stage);
+      return this.gotoPreviousStage();
+    }
   },
   metaInfo() {
     return {

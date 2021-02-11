@@ -7,6 +7,7 @@ import ProductionPerformances from '@/views/production/ProductionPerformances.vu
 
 import FakeProduction from '../../fixtures/FakeProduction.js';
 import {
+  assertNoVisualDifference,
   executeWithServer,
   fixTextSpacing,
   generateMountOptions,
@@ -15,6 +16,7 @@ import {
 
 describe('ProductionHeader', function () {
   let performancesContainer;
+  let fakeJestPush;
 
   it('shows no performances available if none returned', async () => {
     await createWithPerformances([]);
@@ -74,6 +76,21 @@ describe('ProductionHeader', function () {
       expect(performance.text()).to.contain('No Tickets Available');
       expect(performance.find('button').text()).to.eq('SOLD OUT');
     });
+
+    it('sends user to warnings stage when they click book', async () => {
+      await performancesContainer
+        .findComponent(PerformanceOverview)
+        .vm.$emit('select');
+      expect(fakeJestPush.mock.calls.length).to.eq(1);
+      assertNoVisualDifference(fakeJestPush.mock.calls[0][0], {
+        name: 'production.book.warnings',
+        params: {
+          productionSlug: 'trash',
+          performanceID:
+            performancesContainer.vm.production.performances.edges[0].node.id,
+        },
+      });
+    });
   });
 
   let createWithPerformances = async (performances, productionOverrides) => {
@@ -100,6 +117,11 @@ describe('ProductionHeader', function () {
         generateMountOptions(['router'], {
           propsData: {
             production: gqlResult.data.production,
+          },
+          mocks: {
+            $router: {
+              push: (fakeJestPush = jest.fn()),
+            },
           },
         })
       );

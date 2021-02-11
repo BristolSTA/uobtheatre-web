@@ -20,8 +20,11 @@
           class="h-full"
           @select="
             $router.push({
-              name: 'production.book.select',
-              params: { productionSlug: production.slug },
+              name: 'production.book.warnings',
+              params: {
+                productionSlug: production.slug,
+                performanceID: performance.id,
+              },
             })
           "
         />

@@ -31,6 +31,7 @@ query productionBySlug($slug: String!) {
     performances {
       edges {
         node {
+          id
           venue {
             name
             slug

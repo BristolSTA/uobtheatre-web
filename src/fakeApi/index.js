@@ -116,15 +116,7 @@ export function makeServer({ environment = 'development' } = {}) {
         ],
       });
 
-      /**
-       * Fake Performance 1 - Legally Blonde, MTB, with 3 performances (19th,20th,21st (sold out))
-       */
-
-      let performances = server.createList('PerformanceNode', 3);
-      performances[0].soldOut = false;
-      performances[0].start = '2020-12-19T10:00:00';
-      performances[0].end = '2020-12-19T11:30:00';
-      performances[0].ticketOptions = [
+      let ticketOptions = [
         server.create('PerformanceSeatGroupNode', {
           seatGroup: BestSeatGroup,
           concessionTypes: generateConcessionTypeBookingTypes(
@@ -140,6 +132,16 @@ export function makeServer({ environment = 'development' } = {}) {
           ),
         }),
       ];
+
+      /**
+       * Fake Performance 1 - Legally Blonde, MTB, with 3 performances (19th,20th,21st (sold out))
+       */
+
+      let performances = server.createList('PerformanceNode', 3);
+      performances[0].soldOut = false;
+      performances[0].start = '2020-12-19T10:00:00';
+      performances[0].end = '2020-12-19T11:30:00';
+      performances[0].ticketOptions = ticketOptions;
       performances[0].discounts = [FamilyDiscount];
 
       let legallyBlonde = server.create('ProductionNode', 'withCoverImage', {
@@ -166,16 +168,18 @@ export function makeServer({ environment = 'development' } = {}) {
         logo_image: null,
       });
 
-      // server.create('ProductionNode', {
-      //   name: 'TRASh',
-      //   subtitle: 'The Really Artsy Show',
-      //   society: dramsoc,
-      //   start: DateTime.fromISO('2020-11-19'),
-      //   end: DateTime.fromISO('2020-11-19'),
-      //   performances: server.createList('PerformanceNode', 1, {
-      //     venue: winston,
-      //   }),
-      // });
+      server.create('ProductionNode', {
+        name: 'TRASh',
+        subtitle: 'The Really Artsy Show',
+        warnings: [],
+        society: dramsoc,
+        start: DateTime.fromISO('2020-11-19'),
+        end: DateTime.fromISO('2020-11-19'),
+        performances: server.createList('PerformanceNode', 1, {
+          ticketOptions: ticketOptions,
+        }),
+        __dont_factory: ['warnings'],
+      });
 
       /**
        * Fake Performance 3 - Present laughter
