@@ -16,34 +16,34 @@
       <div
         v-for="index in [currentProduction]"
         v-bind:key="index"
-        class="absolute top-0 bottom-0 left-0 right-0"
+        class="absolute top-0 bottom-0 left-0 right-0 bg-center bg-cover"
         ref="carousel"
         :style="{
-            'background-image': bannerBackgorund(bannerProductions[index]),
-          }"
+          'background-image': bannerBackgorund(bannerProductions[index]),
+        }"
       >
-          <div
-            class="flex items-center bg-black bg-opacity-40"
-            :style="{ height: vheight + 'vh' }"
+        <div
+          class="flex items-center bg-black bg-opacity-40"
+          :style="{ height: vheight + 'vh' }"
+        >
+          <router-link
+            class="container px-4 md:pl-12 lg:pl-4 lg:w-2/3"
+            :to="{
+              name: 'production',
+              params: { productionSlug: bannerProductions[index].slug },
+            }"
           >
-            <router-link
-              class="container px-4 md:pl-12 lg:pl-4 lg:w-2/3"
-              :to="{
-                name: 'production',
-                params: { productionSlug: bannerProductions[index].slug },
-              }"
-            >
-              <div class="text-2xl">
-                {{ bannerProductions[index].society.name }}
-              </div>
-              <div class="text-h1">{{ bannerProductions[index].name }}</div>
-              <div class="text-2xl">
-                {{ bannerProductions[index].start | dateFormat('d MMMM') }} -
-                {{ bannerProductions[index].end | dateFormat('d MMMM y') }}
-              </div>
-            </router-link>
-          </div>
+            <div class="text-2xl">
+              {{ bannerProductions[index].society.name }}
+            </div>
+            <div class="text-h1">{{ bannerProductions[index].name }}</div>
+            <div class="text-2xl">
+              {{ bannerProductions[index].start | dateFormat('d MMMM') }} -
+              {{ bannerProductions[index].end | dateFormat('d MMMM y') }}
+            </div>
+          </router-link>
         </div>
+      </div>
     </transition-group>
     <template v-if="this.carouselLength > 1">
       <div class="absolute flex justify-center w-full bottom-2">
