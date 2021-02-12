@@ -101,6 +101,7 @@ describe('Booking Class', () => {
     expect(booking).to.be.instanceOf(Booking);
     expect(booking.price_breakdown).to.eq(apiData.priceBreakdown);
     expect(booking.tickets.length).to.eq(4);
+    expect(booking.performance).to.eq(apiData.performance);
     expect(booking.dirty).to.be.false;
   });
   it('can get tickets', () => {

@@ -4,7 +4,6 @@ import { expect } from 'chai';
 import Booking from '@/classes/Booking';
 import OverviewBox from '@/components/overview/OverviewBox.vue';
 import TicketsOverview from '@/components/overview/TicketsOverview.vue';
-import { generatePriceBreakdown } from '@/fakeApi/booking.model';
 
 import FakeBooking from '../../fixtures/FakeBooking';
 import { mountWithRouterMock, runApolloQuery } from '../../helpers';

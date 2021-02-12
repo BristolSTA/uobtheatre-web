@@ -6,6 +6,7 @@ import ProductionHeader from '@/components/production/ProductionBanner.vue';
 
 import FakeProduction from '../../fixtures/FakeProduction.js';
 import {
+  assertNoVisualDifference,
   executeWithServer,
   fixTextSpacing,
   generateMountOptions,
@@ -16,25 +17,27 @@ describe('ProductionBanner', function () {
   let headerContainer;
 
   it('shows production details correctly', async () => {
+    let venue1 = {
+      name: 'The New Vic',
+      slug: 'the-new-vic',
+      publiclyListed: false,
+    };
+    let venue2 = {
+      name: 'The Newer Vic',
+      slug: 'the-newer-vic',
+      publiclyListed: true,
+    };
     await createWithPerformances([
       {
         start: DateTime.fromISO('2020-11-14'),
-        venue: {
-          name: 'The New Vic',
-          slug: 'the-new-vic',
-          publiclyListed: false,
-        },
+        venue: venue1,
         isInperson: true,
         isOnline: false,
         durationMins: 102,
       },
       {
         start: DateTime.fromISO('2020-11-15'),
-        venue: {
-          name: 'The Newer Vic',
-          slug: 'the-newer-vic',
-          publiclyListed: true,
-        },
+        venue: venue2,
         isInperson: true,
         isOnline: false,
         durationMins: 112,
@@ -60,6 +63,12 @@ describe('ProductionBanner', function () {
     expect(fixTextSpacing(headerContainer.text())).to.contain(
       'Live at The New Vic and The Newer Vic'
     );
+
+    assertNoVisualDifference(headerContainer.vm.venues, [
+      Object.assign({}, venue1, { __typename: 'VenueNode' }),
+      Object.assign({}, venue2, { __typename: 'VenueNode' }),
+    ]);
+
     expect(
       headerContainer.findAllComponents(RouterLinkStub).at(1).props('to').name
     ).to.equal('venue');
@@ -135,6 +144,7 @@ describe('ProductionBanner', function () {
         isOnline: true,
       },
     ]);
+    assertNoVisualDifference(headerContainer.vm.venues, []);
     expect(fixTextSpacing(headerContainer.text())).to.contain('View Online');
     expect(headerContainer.findAllComponents(RouterLinkStub).length).to.equal(
       1

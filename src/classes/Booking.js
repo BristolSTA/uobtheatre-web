@@ -72,13 +72,6 @@ export default class Booking {
   }
 
   /**
-   * @returns {Ticket[]} Array of tickets
-   */
-  get tickets() {
-    return this.tickets;
-  }
-
-  /**
    * Adds a ticket to the booking
    *
    * @param {Ticket} ticket Ticket to add

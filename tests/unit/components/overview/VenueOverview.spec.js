@@ -15,6 +15,7 @@ import { fixTextSpacing } from '../../helpers.js';
 describe('Venue overview box', function () {
   let venueOverviewComponent;
   let server;
+  let venue;
 
   beforeEach(async () => {
     // Create a venue and address
@@ -29,7 +30,7 @@ describe('Venue overview box', function () {
     };
 
     server = await executeWithServer(async (server) => {
-      server.create('venueNode', {
+      venue = server.create('venueNode', {
         name: 'Anson Theatre',
         slug: 'anson-theatre',
         description: 'not the anson rooms',
@@ -54,6 +55,23 @@ describe('Venue overview box', function () {
 
   afterEach(() => {
     server.shutdown();
+  });
+
+  it('skips api call if data object is passed', async () => {
+    venueOverviewComponent = mount(
+      VenueOverview,
+      generateMountOptions(['apollo', 'router'], {
+        propsData: {
+          venue_data: venue,
+        },
+      })
+    );
+
+    await waitFor(() => venueOverviewComponent.vm.venue);
+    expect(venueOverviewComponent.text()).to.contain('Anson Theatre');
+    expect(fixTextSpacing(venueOverviewComponent.text())).to.contain(
+      'Wills Memorial Building 69 Queens Road'
+    );
   });
 
   it('starts by showing loading spinner', () => {

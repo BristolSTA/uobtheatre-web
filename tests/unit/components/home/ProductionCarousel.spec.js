@@ -13,7 +13,6 @@ import {
 
 describe('ProductionCarousel', function () {
   let prodCarouselComponent;
-  let server;
   let bannerProductions;
 
   beforeEach(async () => {
