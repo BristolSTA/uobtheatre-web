@@ -29,7 +29,11 @@ export default {
     return api
       .post('auth/login/', { email: email, password: password })
       .then((data) => {
-        store.dispatch('authLogin', data.key, remember);
+        store.dispatch('authLogin', {
+          token: data.key,
+          userInfo: data.user,
+          remember,
+        });
       });
   },
 

@@ -212,7 +212,7 @@ export function makeServer({ environment = 'development' } = {}) {
        * A user
        */
 
-      server.create('user', {
+      server.create('userNode', {
         password: 'admin',
         email: 'admin@bristolsta.com',
         token: '36c86c19f8f8d73aa59c3a00814137bdee0ab8de',

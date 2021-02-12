@@ -4,8 +4,11 @@
       ><font-awesome-icon icon="user-edit" class="mr-2" /> Your
       Details</template
     >
-    <template v-slot:subtitle> Joe Bloogs </template>
-    <div>joe.bloggs@example.org</div>
+    <template v-slot:subtitle
+      >{{ $store.state.auth.user.firstName }}
+      {{ $store.state.auth.user.lastName }}</template
+    >
+    <div>{{ $store.state.auth.user.email }}</div>
   </overview-box>
 </template>
 
