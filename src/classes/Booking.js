@@ -51,6 +51,9 @@ export default class Booking {
         Ticket.fromAPIData(ticketAPIData)
       );
     }
+    if (bookingData.performance) {
+      this.performance = bookingData.performance;
+    }
     this.id = bookingData.id;
     this.dirty = false;
   }

@@ -1,7 +1,7 @@
 #import "../fragments/BookingFragments.gql"
 query bookingByID($bookingId: ID!) {
   booking(id: $bookingId) {
-    bookingReference
+    id
     bookingReference
     status
     priceBreakdown {
@@ -16,6 +16,16 @@ query bookingByID($bookingId: ID!) {
       concessionType {
         id
         name
+      }
+    }
+    performance {
+      id
+      production {
+        id
+        name
+      }
+      venue {
+        slug
       }
     }
   }
