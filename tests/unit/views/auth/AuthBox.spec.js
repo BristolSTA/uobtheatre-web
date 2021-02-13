@@ -15,7 +15,7 @@ describe('AuthBox', function () {
 
   beforeAll(() => {
     server = makeServer({ environment: 'test' });
-    server.create('user', {
+    server.create('userNode', {
       email: userEmail,
       password: userPassword,
       token: userToken,
