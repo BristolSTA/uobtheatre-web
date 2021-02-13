@@ -44,7 +44,7 @@ export default {
       this.booking.misc_costs.forEach((misc_cost) => {
         costs.push({
           name: misc_cost.name,
-          cost: misc_cost.value_pounds,
+          cost: (misc_cost.value / 100).toFixed(2),
         });
       });
 
