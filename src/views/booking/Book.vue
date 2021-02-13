@@ -15,6 +15,7 @@
         class="pb-2 md:pb-8"
         :production="production"
         :showBuyTicketsButton="false"
+        :showDetailedInfo="false"
       />
       <div class="flex flex-wrap mb-2 md:space-x-2 md:flex-nowrap">
         <booking-navigation
