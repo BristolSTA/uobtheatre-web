@@ -134,15 +134,70 @@ export function makeServer({ environment = 'development' } = {}) {
       ];
 
       /**
-       * Fake Performance 1 - Legally Blonde, MTB, with 3 performances (19th,20th,21st (sold out))
+       * Fake Performance 1 - Legally Blonde, MTB, with 4 performances (19th,20th,21st (sold out), 22nd (online))
        */
 
-      let performances = server.createList('PerformanceNode', 3);
-      performances[0].soldOut = false;
-      performances[0].start = '2020-12-19T10:00:00';
-      performances[0].end = '2020-12-19T11:30:00';
-      performances[0].ticketOptions = ticketOptions;
-      performances[0].discounts = [FamilyDiscount];
+      let performances = server.createList('PerformanceNode', 4);
+      performances[0].update({
+        soldOut: false,
+        isInperson: true,
+        isOnline: false,
+        doorsOpen: '2020-12-19T09:30:00',
+        start: '2020-12-19T10:00:00',
+        end: '2020-12-19T11:30:00',
+        ticketOptions: ticketOptions,
+        discounts: [FamilyDiscount],
+      });
+
+      performances[1].update({
+        soldOut: false,
+        isInperson: true,
+        isOnline: false,
+        doorsOpen: '2020-12-20T15:30:00',
+        start: '2020-12-20T16:00:00',
+        end: '2020-12-20T20:30:00',
+        ticketOptions: [
+          server.create('PerformanceSeatGroupNode', {
+            seatGroup: server.create('seatGroupNode', {
+              name: 'Seated',
+            }),
+            concessionTypes: generateConcessionTypeBookingTypes(
+              [AdultConcession, ChildConcession, StudentConcession],
+              server
+            ),
+          }),
+        ],
+      });
+      performances[2].update({
+        soldOut: true,
+        isInperson: true,
+        isOnline: false,
+        doorsOpen: '2020-12-21T15:30:00',
+        start: '2020-12-21T16:00:00',
+        end: '2020-12-21T20:30:00',
+      });
+      performances[3].update({
+        soldOut: false,
+        isInperson: false,
+        isOnline: true,
+        doorsOpen: '2020-12-22T15:30:00',
+        start: '2020-12-22T16:00:00',
+        end: '2020-12-22T20:30:00',
+        ticketOptions: [
+          server.create('PerformanceSeatGroupNode', {
+            seatGroup: server.create('seatGroupNode', {
+              name: 'Online Livestream',
+            }),
+            concessionTypes: [
+              server.create('concessionTypeBookingType', {
+                concessionType: server.create('concessionTypeNode', {
+                  name: 'Adult',
+                }),
+              }),
+            ],
+          }),
+        ],
+      });
 
       let legallyBlonde = server.create('ProductionNode', 'withCoverImage', {
         name: 'Legally Blonde',

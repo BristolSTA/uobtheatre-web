@@ -35,44 +35,46 @@
           </router-link>
         </p>
       </span>
-      <p>
-        <template v-if="hasInPersonPerformances"
-          >Live at
-          <span v-for="(venue, index) in venues" :key="index">
-            <template v-if="index < venueOverflow">
-              <template v-if="index > 0">and</template>
-              <router-link
-                class="hover:text-gray-300"
-                v-if="venue.publiclyListed"
-                :to="{
-                  name: 'venue',
-                  params: { venueSlug: venue.slug },
-                }"
-              >
-                {{ venue.name }}
-              </router-link>
-              <template v-else> {{ venue.name }} </template>
-            </template>
-            <template v-if="index == venueOverflow + 1"> and others</template>
+      <template v-if="detailed">
+        <p>
+          <template v-if="hasInPersonPerformances"
+            >Live at
+            <span v-for="(venue, index) in venues" :key="index">
+              <template v-if="index < venueOverflow">
+                <template v-if="index > 0">and</template>
+                <router-link
+                  class="hover:text-gray-300"
+                  v-if="venue.publiclyListed"
+                  :to="{
+                    name: 'venue',
+                    params: { venueSlug: venue.slug },
+                  }"
+                >
+                  {{ venue.name }}
+                </router-link>
+                <template v-else> {{ venue.name }} </template>
+              </template>
+              <template v-if="index == venueOverflow + 1"> and others</template>
+            </span>
+          </template>
+          <template v-if="hasOnlinePerformances && hasInPersonPerformances"
+            >and Online</template
+          >
+          <template v-if="!hasInPersonPerformances">View Online</template>
+        </p>
+        <p>
+          {{ displayStartEnd(production.start, production.end, 'd MMM') }}
+        </p>
+        <icon-list-item v-if="duration" icon="clock">
+          {{ duration }}
+        </icon-list-item>
+        <icon-list-item icon="ticket-alt" v-if="production.minSeatPrice">
+          Tickets available from
+          <span class="font-semibold">
+            £{{ (production.minSeatPrice / 100).toFixed(2) }}
           </span>
-        </template>
-        <template v-if="hasOnlinePerformances && hasInPersonPerformances"
-          >and Online</template
-        >
-        <template v-if="!hasInPersonPerformances">View Online</template>
-      </p>
-      <p>
-        {{ displayStartEnd(production.start, production.end, 'd MMM') }}
-      </p>
-      <icon-list-item v-if="duration" icon="clock">
-        {{ duration }}
-      </icon-list-item>
-      <icon-list-item icon="ticket-alt" v-if="production.minSeatPrice">
-        Tickets available from
-        <span class="font-semibold">
-          £{{ (production.minSeatPrice / 100).toFixed(2) }}
-        </span>
-      </icon-list-item>
+        </icon-list-item>
+      </template>
       <button
         v-if="showBuyTicketsButton && production.isBookable"
         class="w-full mt-4 font-semibold btn btn-green"
@@ -100,6 +102,9 @@ export default {
       required: true,
     },
     showBuyTicketsButton: {
+      default: true,
+    },
+    detailed: {
       default: true,
     },
   },
