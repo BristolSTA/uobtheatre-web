@@ -11,6 +11,9 @@ import Home from '@/views/Home.vue';
 const Venue = () => import('@/views/venues/Venue.vue');
 const Society = () => import('@/views/societies/Society.vue');
 
+import { auth as authMiddleware } from '@/middleware';
+import { authService } from '@/services';
+
 import * as Bindings from './bindings';
 
 Vue.use(VueRouter);
@@ -39,6 +42,9 @@ const routes = [
       path: '/production/:productionSlug/book/:performanceID?',
       component: () => import('@/views/booking/Book.vue'),
       children: getRoutes(),
+      meta: {
+        middleware: [authMiddleware],
+      },
     },
     [Bindings.bindProductionSlug()]
   ),
@@ -103,6 +109,7 @@ const router = new VueRouter({
 
 // Apply any middleware
 router.beforeEach((to, from, next) => {
+  authService.refreshAuthStatus();
   if (to.meta.middleware) {
     const middleware = Array.isArray(to.meta.middleware)
       ? to.meta.middleware

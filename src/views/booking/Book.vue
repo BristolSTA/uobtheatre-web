@@ -55,7 +55,6 @@
 
 <script>
 import Booking from '@/classes/Booking';
-import BookingStage from '@/classes/BookingStage';
 import TicketsMatrix from '@/classes/TicketsMatrix';
 import BookingNavigation from '@/components/booking/BookingNavigation.vue';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
@@ -112,9 +111,6 @@ export default {
         getPreviousStage(this.currentStageIndex, this.production, this.booking)
       );
     },
-    /**
-     * @param {BookingStage|null} stage Stage to navigate to. If not provided, defaults to the next stage
-     */
     navigateToStage(stage = null) {
       if (!stage)
         stage = getNextStage(

@@ -1,3 +1,5 @@
+import { auth } from '@/middleware';
+
 export default class {
   /**
    * ShouldBeUsedFunction
@@ -46,6 +48,7 @@ export default class {
           this.routeOptions.name ?? 'production.book.' + this.routeOptions.path,
         meta: {
           stage: this,
+          middleware: [auth],
         },
       },
       this.routeOptions

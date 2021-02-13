@@ -14,6 +14,7 @@ export default {
    * @returns {string|null} API Authentication Token
    */
   refreshAuthStatus() {
+    if (this.isLoggedIn()) return;
     return store.dispatch('authRemember');
   },
 
