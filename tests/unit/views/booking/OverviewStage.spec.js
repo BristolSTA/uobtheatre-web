@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import { expect } from 'chai';
 
 import Booking from '@/classes/Booking';
@@ -35,7 +35,7 @@ describe('Overview Stage', () => {
       booking.updateFromAPIData(data.booking);
       production = data.booking.performance.production;
 
-      overviewComponent = mount(
+      overviewComponent = shallowMount(
         OverviewStage,
         generateMountOptions(['router'], {
           propsData: {
@@ -61,7 +61,7 @@ describe('Overview Stage', () => {
   it('emits not eligible when booking dirty', async () => {
     booking.clearTickets();
 
-    overviewComponent = await mount(
+    overviewComponent = await shallowMount(
       OverviewStage,
       generateMountOptions(['router'], {
         propsData: {
