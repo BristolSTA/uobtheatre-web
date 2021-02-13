@@ -41,7 +41,7 @@ export default {
         name: () =>
           faker.random.arrayElement([
             'Theatre Improvement Levy',
-            'Booking Charge',
+            'Booking Fee',
           ]),
         description: () => faker.lorem.words(5),
         percentage: () => faker.random.arrayElement([null, 0.05]),

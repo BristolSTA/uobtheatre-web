@@ -1,4 +1,3 @@
-import { mount } from '@vue/test-utils';
 import { expect } from 'chai';
 
 import ProductionPage from '@/views/production/Production.vue';
@@ -7,7 +6,6 @@ import ProductionHeader from '@/views/production/ProductionHeader.vue';
 import ProductionPerformances from '@/views/production/ProductionPerformances.vue';
 
 import {
-  generateMountOptions,
   makeServer,
   mountWithRouterMock,
   runApolloQuery,

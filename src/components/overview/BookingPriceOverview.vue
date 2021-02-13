@@ -13,7 +13,7 @@
         <td class="px-2">£{{ cost.cost }}</td>
       </tr>
     </table>
-    <h3 class="text-h3">
+    <h3 class="text-h3" ref="total">
       Order Total:
       <span class="text-sta-orange">£{{ booking.total_price_pounds }}</span>
     </h3>

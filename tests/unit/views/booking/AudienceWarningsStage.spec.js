@@ -4,7 +4,6 @@ import gql from 'graphql-tag';
 
 import AudienceWarningsStage from '@/views/booking/stages/AudienceWarningsStage.vue';
 
-import FakeProduction from '../../fixtures/FakeProduction';
 import { executeWithServer, runApolloQuery } from '../../helpers';
 
 describe('Pick Performance Stage', () => {

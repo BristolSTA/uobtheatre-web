@@ -19,6 +19,7 @@ export default (server) => {
 
   server.create('miscCostNode', {
     percentage: 0.05,
+    name: 'Booking Fee',
     production: performance.production,
   });
 
