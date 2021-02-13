@@ -33,6 +33,11 @@
       </p>
       <p>{{ venue.address.city }}</p>
       <p>{{ venue.address.postcode }}</p>
+      <div class="p-2 mt-2 rounded bg-sta-gray" v-if="online">
+        <icon-list-item icon="info-circle"
+          >Online joining information will be sent via email</icon-list-item
+        >
+      </div>
     </div>
   </overview-box>
 </template>
@@ -53,6 +58,12 @@ export default {
   props: {
     venue_data: {
       requried: true,
+    },
+    online: {
+      required: false,
+    },
+    inPerson: {
+      required: false,
     },
   },
   data() {

@@ -34,6 +34,8 @@ fragment ProductionBasicInfo on ProductionNode {
         end
         durationMins
         soldOut
+        isInperson
+        isOnline
       }
     }
   }

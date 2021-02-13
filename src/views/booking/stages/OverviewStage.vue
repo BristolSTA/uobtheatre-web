@@ -6,7 +6,11 @@
         :performance="booking.performance"
       />
       <div class="grid grid-cols-1 gap-4 md:grid-cols-2 justify-evenly">
-        <venue-overview :venue_data="booking.performance.venue.slug" />
+        <venue-overview
+          :venue_data="booking.performance.venue.slug"
+          :online="booking.performance.isOnline"
+          :inPerson="booking.performance.isInperson"
+        />
         <user-overview :user="{}" />
       </div>
       <tickets-overview :booking="booking" />
