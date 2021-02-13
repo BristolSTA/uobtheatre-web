@@ -35,7 +35,7 @@
           </router-link>
         </p>
       </span>
-      <template v-if="detailed">
+      <template v-if="showDetailedInfo">
         <p>
           <template v-if="hasInPersonPerformances"
             >Live at
@@ -104,7 +104,7 @@ export default {
     showBuyTicketsButton: {
       default: true,
     },
-    detailed: {
+    showDetailedInfo: {
       default: true,
     },
   },

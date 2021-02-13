@@ -44,13 +44,11 @@ describe('ProductionBanner', function () {
       },
     ]);
 
-    // test correct show title
     expect(headerContainer.text()).to.contain('Legally Ginger');
-
-    // test correct society performing show
     expect(fixTextSpacing(headerContainer.text())).to.contain(
       'by Joe Bloggs Productions'
     );
+
     expect(
       headerContainer.findAllComponents(RouterLinkStub).at(0).props('to').name
     ).to.equal('society');
@@ -80,13 +78,8 @@ describe('ProductionBanner', function () {
       2
     );
 
-    // test production start and end dates
     expect(headerContainer.text()).to.contain('14 Nov - 18 Nov 2020');
-
-    // test for performance time to be the minimum length, in human format
     expect(headerContainer.text()).to.contain('1 hour, 42 minutes');
-
-    // test for correct ticket price
     expect(fixTextSpacing(headerContainer.text())).to.contain(
       'Tickets available from £4.24'
     );
@@ -228,8 +221,18 @@ describe('ProductionBanner', function () {
   });
 
   it('has tickets button that emits event', async () => {
-    let button = headerContainer.find('button');
-    await button.trigger('click');
+    await createWithPerformances([
+      {
+        venue: {
+          name: 'The Newer Vic',
+          slug: 'the-newer-vic',
+          publiclyListed: true,
+        },
+        isInperson: true,
+        isOnline: true,
+      },
+    ]);
+    await headerContainer.find('button').trigger('click');
     expect(headerContainer.emitted('on-buy-tickets-click').length).to.eq(1);
   });
 
@@ -242,7 +245,31 @@ describe('ProductionBanner', function () {
     expect(headerContainer.find('button').exists()).to.be.false;
   });
 
-  let createWithPerformances = async (performances, productionOverrides) => {
+  it('doesnt show buy tickets button when told to not be present', async () => {
+    await createWithPerformances([{}], {}, false);
+    expect(headerContainer.find('button').exists()).to.be.false;
+  });
+
+  it('doesnt show detailed data when told to not show', async () => {
+    await createWithPerformances([{}], {}, false, false);
+
+    expect(headerContainer.text()).to.contain('Legally Ginger');
+    expect(fixTextSpacing(headerContainer.text())).to.contain(
+      'by Joe Bloggs Productions'
+    );
+    expect(headerContainer.text()).to.not.contain('14 Nov - 18 Nov 2020');
+    expect(headerContainer.text()).to.not.contain('1 hour, 42 minutes');
+    expect(headerContainer.text()).to.not.contain(
+      'Tickets available from £4.24'
+    );
+  });
+
+  let createWithPerformances = async (
+    performances,
+    productionOverrides,
+    showBuyTicketsButton = true,
+    showDetailedInfo = true
+  ) => {
     await executeWithServer(async (server) => {
       productionOverrides = Object.assign(
         FakeProduction(server),
@@ -269,6 +296,8 @@ describe('ProductionBanner', function () {
         generateMountOptions(['router'], {
           propsData: {
             production: gqlResult.data.production,
+            showBuyTicketsButton: showBuyTicketsButton,
+            showDetailedInfo: showDetailedInfo,
           },
         })
       );
