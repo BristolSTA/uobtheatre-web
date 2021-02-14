@@ -74,6 +74,7 @@ describe('Booking Class', () => {
 
   beforeEach(() => {
     booking = new Booking();
+    booking.dirty = false;
   });
 
   let fakeTicket = (concessionEdge = null) => {
@@ -115,8 +116,18 @@ describe('Booking Class', () => {
   it('can add a ticket', () => {
     let ticket = fakeTicket();
     booking.addTicket(ticket, tickets_matrix);
+
     expect(booking.tickets).to.include(ticket);
     expect(booking.dirty).to.be.true;
+  });
+
+  it('cant add a ticket if matrix doesnt allow', () => {
+    let ticket = fakeTicket();
+    jest.spyOn(tickets_matrix, 'canAddTickets').mockReturnValueOnce(false);
+    booking.addTicket(ticket, tickets_matrix);
+
+    expect(booking.tickets).not.to.include(ticket);
+    expect(booking.dirty).to.be.false;
   });
 
   it('can set number of tickets', () => {
@@ -128,6 +139,10 @@ describe('Booking Class', () => {
 
     booking.setTicketCount(seat_group, concession_100_edge, 0, tickets_matrix);
     expect(booking.ticketCount(seat_group, concession_100_edge)).to.eq(0);
+
+    booking.setTicketCount(null, null, 0, tickets_matrix);
+    expect(booking.tickets.length).to.eq(0);
+
     expect(booking.dirty).to.be.true;
   });
 
@@ -268,7 +283,7 @@ describe('Booking Class', () => {
     booking.price_breakdown = bookingAPIData.priceBreakdown;
     booking.tickets = [fakeTicket(concession_100_edge)];
 
-    expect(booking.dirty).to.be.true;
+    booking.dirty = true; // Test that when dirty, it uses the estimate
     expect(JSON.stringify(booking.ticket_overview(tickets_matrix))).to.equal(
       JSON.stringify(booking.ticket_overview_estimate(tickets_matrix))
     ); // Stringified here due to not being visually difference, but generated at different times through mapping
