@@ -44,7 +44,8 @@
 import lo from 'lodash';
 
 import Booking from '@/classes/Booking';
-import OverviewBox from '@/components/overview/OverviewBox.vue';
+
+import OverviewBox from './OverviewBox.vue';
 
 export default {
   name: 'tickets-overview',

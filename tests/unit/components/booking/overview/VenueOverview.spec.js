@@ -2,15 +2,15 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { mount, RouterLinkStub } from '@vue/test-utils';
 import { expect } from 'chai';
 
-import OverviewBox from '@/components/overview/OverviewBox.vue';
-import VenueOverview from '@/components/overview/VenueOverview.vue';
+import OverviewBox from '@/components/booking/overview/OverviewBox.vue';
+import VenueOverview from '@/components/booking/overview/VenueOverview.vue';
 
 import {
   executeWithServer,
+  fixTextSpacing,
   generateMountOptions,
   waitFor,
-} from '../../helpers';
-import { fixTextSpacing } from '../../helpers.js';
+} from '../../../helpers';
 
 describe('Venue overview box', function () {
   let venueOverviewComponent;

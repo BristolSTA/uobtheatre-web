@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import OverviewBox from '@/components/overview/OverviewBox.vue';
+import OverviewBox from './OverviewBox.vue';
 
 export default {
   name: 'booking-price-overview',

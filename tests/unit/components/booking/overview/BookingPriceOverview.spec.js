@@ -2,12 +2,16 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { expect } from 'chai';
 
 import Booking from '@/classes/Booking';
-import BookingPriceOverview from '@/components/overview/BookingPriceOverview.vue';
-import OverviewBox from '@/components/overview/OverviewBox.vue';
+import BookingPriceOverview from '@/components/booking/overview/BookingPriceOverview.vue';
+import OverviewBox from '@/components/booking/overview/OverviewBox.vue';
 
-import FakeBooking from '../../fixtures/FakeBooking';
-import { mountWithRouterMock, runApolloQuery } from '../../helpers';
-import { executeWithServer, fixTextSpacing } from '../../helpers';
+import FakeBooking from '../../../fixtures/FakeBooking';
+import {
+  executeWithServer,
+  fixTextSpacing,
+  mountWithRouterMock,
+  runApolloQuery,
+} from '../../../helpers';
 
 describe('ticket overview box', function () {
   let bookingPriceOverviewComponent;

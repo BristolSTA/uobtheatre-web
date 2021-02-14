@@ -45,11 +45,11 @@
 <script>
 import gql from 'graphql-tag';
 
-import OverviewBox from '@/components/overview/OverviewBox.vue';
 import AddressFragments from '@/graphql/fragments/AddressFragment.gql';
 import { handle404Mixin } from '@/utils';
 
-import IconListItem from '../ui/IconListItem.vue';
+import IconListItem from '../../ui/IconListItem.vue';
+import OverviewBox from './OverviewBox.vue';
 
 export default {
   name: 'venue-overview',

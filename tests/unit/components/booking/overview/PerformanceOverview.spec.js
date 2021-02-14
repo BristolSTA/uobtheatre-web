@@ -2,11 +2,10 @@ import { mount } from '@vue/test-utils';
 import { expect } from 'chai';
 import gql from 'graphql-tag';
 
-import OverviewBox from '@/components/overview/OverviewBox.vue';
-import PerformanceOverview from '@/components/overview/PerformanceOverview.vue';
+import OverviewBox from '@/components/booking/overview/OverviewBox.vue';
+import PerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue';
 
-import { runApolloQuery } from '../../helpers';
-import { executeWithServer } from '../../helpers';
+import { executeWithServer, runApolloQuery } from '../../../helpers';
 
 describe('performance overview box', function () {
   let performanceOverviewComponent;

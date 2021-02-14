@@ -2,9 +2,9 @@ import { createLocalVue, mount } from '@vue/test-utils';
 import { expect } from 'chai';
 import Vuex from 'vuex';
 
-import UserOverview from '@/components/overview/UserOverview.vue';
+import UserOverview from '@/components/booking/overview/UserOverview.vue';
 
-import { fixTextSpacing } from '../../helpers';
+import { fixTextSpacing } from '../../../helpers';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

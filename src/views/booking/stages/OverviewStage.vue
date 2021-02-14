@@ -24,11 +24,11 @@
 
 <script>
 import Booking from '@/classes/Booking';
-import BookingPriceOverview from '@/components/overview/BookingPriceOverview.vue';
-import PerformanceOverview from '@/components/overview/PerformanceOverview.vue';
-import TicketsOverview from '@/components/overview/TicketsOverview.vue';
-import UserOverview from '@/components/overview/UserOverview.vue';
-import VenueOverview from '@/components/overview/VenueOverview.vue';
+import BookingPriceOverview from '@/components/booking/overview/BookingPriceOverview.vue';
+import PerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue';
+import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
+import UserOverview from '@/components/booking/overview/UserOverview.vue';
+import VenueOverview from '@/components/booking/overview/VenueOverview.vue';
 
 export default {
   name: 'overview-stage',
