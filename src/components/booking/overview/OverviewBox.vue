@@ -1,4 +1,4 @@
-<template>
+<template functional>
   <div class="p-4 text-white rounded-lg shadow bg-sta-gray-light">
     <div class="flex flex-wrap">
       <h2 class="flex-grow mb-1 text-h3 sm:text-h2">
