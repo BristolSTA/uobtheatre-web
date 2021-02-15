@@ -17,8 +17,8 @@
       >
         {{ performance.venue.name }}
       </router-link>
-      <template v-if="performance.isOnline && performance.isInperson"
-        >and
+      <template v-if="performance.isOnline && performance.isInperson">
+        and
       </template>
       <template v-if="performance.isOnline">Online</template>
     </div>
