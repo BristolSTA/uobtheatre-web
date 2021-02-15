@@ -38,6 +38,7 @@ let serializers = {};
 let factories = {};
 let queryResolvers = {};
 let mutationResolvers = {};
+let customResolvers = {};
 
 /**
  * Creates and installs the Mirage JS mock API server
@@ -62,6 +63,11 @@ export function makeServer({ environment = 'development' } = {}) {
       mutationResolvers = Object.assign(
         mutationResolvers,
         model.registerGQLMutationResolvers()
+      );
+    if (model.registerGQLCustomResolvers)
+      customResolvers = Object.assign(
+        customResolvers,
+        model.registerGQLCustomResolvers()
       );
   });
 
@@ -321,6 +327,7 @@ export function makeServer({ environment = 'development' } = {}) {
         resolvers: {
           Query: queryResolvers,
           Mutation: mutationResolvers,
+          ...customResolvers,
         },
       });
       this.post('/graphql', graphQLHandler);

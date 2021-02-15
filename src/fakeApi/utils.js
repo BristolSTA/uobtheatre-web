@@ -109,7 +109,20 @@ let generateConcessionTypeBookingTypes = (
   });
 };
 
+let authedUser = (context) => {
+  let authToken = context.request.requestHeaders.authorization;
+
+  if (!authToken) return null;
+
+  authToken = authToken.match(/Token (.+)$/)[1];
+
+  if (!authToken) return null;
+
+  return context.mirageSchema.userNodes.findBy({ token: authToken });
+};
+
 export {
+  authedUser,
   DefaultSerializer,
   generateConcessionTypeBookingTypes,
   graphQLOrderBy,

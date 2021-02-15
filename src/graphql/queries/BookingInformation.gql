@@ -1,32 +1,6 @@
-#import "../fragments/BookingFragments.gql"
+#import "../fragments/booking/DetailedBookingDetails.gql"
 query bookingByID($bookingId: ID!) {
   booking(id: $bookingId) {
-    id
-    bookingReference
-    status
-    priceBreakdown {
-      ...AllPriceBreakdown
-    }
-    tickets {
-      id
-      seatGroup {
-        id
-        name
-      }
-      concessionType {
-        id
-        name
-      }
-    }
-    performance {
-      id
-      production {
-        id
-        name
-      }
-      venue {
-        slug
-      }
-    }
+    ...DetailedBookingDetails
   }
 }

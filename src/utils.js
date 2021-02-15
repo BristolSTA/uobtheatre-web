@@ -1,4 +1,6 @@
 import { DateTime } from 'luxon';
+import Swal from 'sweetalert2';
+import resolveConfig from 'tailwindcss/resolveConfig';
 
 import store from '@/store';
 
@@ -66,6 +68,17 @@ let handle404Mixin = {
   },
 };
 
+let tailwindConfig = resolveConfig(require('../tailwind.config'));
+let swal = Swal.mixin({
+  background: tailwindConfig.theme.colors['sta-gray'].DEFAULT,
+  customClass: {
+    title: 'text-white',
+    content: 'text-white',
+  },
+  confirmButtonColor: tailwindConfig.theme.colors['sta-orange'].DEFAULT,
+  denyButtonColor: tailwindConfig.theme.colors['sta-rouge'].DEFAULT,
+});
+
 export {
   displayStartEnd,
   duration,
@@ -73,4 +86,6 @@ export {
   handle404Mixin,
   joinWithAnd,
   runPromiseWithLoading,
+  swal,
+  tailwindConfig,
 };

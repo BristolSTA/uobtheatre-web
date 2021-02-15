@@ -1,22 +1,18 @@
+import { mirageGraphQLFieldResolver } from '@miragejs/graphql';
 import faker from 'faker';
-import { Factory, Model, Response } from 'miragejs';
+import { Factory, Response } from 'miragejs';
 
-import { ValidationErrorResponse } from './utils';
+import { authedUser, ValidationErrorResponse } from './utils';
 
 export default {
-  registerModels() {
-    return {
-      UserNode: Model,
-    };
-  },
   registerFactories() {
     return {
       userNode: Factory.extend({
         firstName: () => faker.name.firstName(),
         lastName: () => faker.name.lastName(),
-        email: () => faker.email(),
-        password: () => faker.password(),
-        token: () => faker.token(),
+        email: () => faker.internet.email(),
+        password: () => faker.internet.password(),
+        token: () => faker.random.uuid(),
       }),
     };
   },
@@ -43,18 +39,24 @@ export default {
       );
     });
   },
+  registerGQLCustomResolvers() {
+    return {
+      UserNode: {
+        bookings(obj, args, context, info) {
+          args.performanceId = args.performance;
+          delete args.performance;
+          return mirageGraphQLFieldResolver(obj, args, context, info);
+        },
+      },
+    };
+  },
   registerGQLQueryResolvers() {
     return {
       authUser(obj, args, context) {
-        let authToken = context.request.requestHeaders.authorization;
+        let user = authedUser(context);
+        if (!user) return user;
 
-        if (!authToken) return null;
-
-        authToken = authToken.match(/Token (.+)$/)[1];
-
-        if (!authToken) return null;
-
-        return context.mirageSchema.userNodes.findBy({ token: authToken });
+        return user;
       },
     };
   },
@@ -70,6 +72,8 @@ export default {
         firstName: String!
         lastName: String!
         email: String!
+
+        bookings(offset: Int, before: String, after: String, first: Int, last: Int, bookingReference: UUID, user: ID, performance: ID, status: BookingStatus, id: ID): BookingNodeConnection!
       }
     `;
   },

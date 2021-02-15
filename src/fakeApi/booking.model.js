@@ -2,7 +2,7 @@ import faker from 'faker';
 import lo from 'lodash';
 import { belongsTo, Factory, Model } from 'miragejs';
 
-import { updateIfDoesntHave } from './utils';
+import { authedUser, updateIfDoesntHave } from './utils';
 
 export default {
   registerModels() {
@@ -69,12 +69,12 @@ export default {
   },
   registerGQLMutationResolvers() {
     return {
-      createBooking(obj, args, { mirageSchema }) {
+      createBooking(obj, args, context) {
         // Create the tickets
         let tickets = [];
         if (args.tickets) {
           tickets = args.tickets.map((ticket) =>
-            mirageSchema.create('ticketNode', {
+            context.mirageSchema.create('ticketNode', {
               seatGroupId: ticket.seatGroupId,
               concessionTypeId: ticket.concessionTypeId,
             })
@@ -82,15 +82,20 @@ export default {
         }
 
         // Create the booking
-        let booking = mirageSchema.create('bookingNode', {
-          performance: mirageSchema.performanceNodes.find(args.performanceId),
+        let booking = context.mirageSchema.create('bookingNode', {
+          performance: context.mirageSchema.performanceNodes.find(
+            args.performanceId
+          ),
           status: 'IN_PROGRESS',
+          bookingReference: faker.random.uuid(),
           tickets: tickets,
+          user: authedUser(context),
         });
+
         booking.update({
-          priceBreakdown: mirageSchema.create(
+          priceBreakdown: context.mirageSchema.create(
             'priceBreakdownNode',
-            generatePriceBreakdown(mirageSchema, booking)
+            generatePriceBreakdown(context.mirageSchema, booking)
           ),
         });
 
@@ -145,6 +150,7 @@ export default {
 
         
         tickets: [TicketNode]
+        user: UserNode
       }
 
       type PriceBreakdownNode implements Node {

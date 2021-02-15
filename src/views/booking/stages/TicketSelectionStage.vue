@@ -1,5 +1,5 @@
 <template>
-  <div class="text-white">
+  <div class="text-white" v-if="booking.performance">
     <div class="p-2 mb-2 md:text-center bg-sta-gray-light">
       <p class="text-h3">Selected Performance:</p>
       <p class="text-sta-orange">
@@ -118,7 +118,7 @@ import lo from 'lodash';
 import Booking from '@/classes/Booking';
 import Ticket from '@/classes/Ticket';
 import SeatGroup from '@/components/booking/SeatGroup.vue';
-import BookingFragments from '@/graphql/fragments/BookingFragments.gql';
+import PriceBreakdownFragment from '@/graphql/fragments/booking/AllPriceBreakdown.gql';
 
 export default {
   name: 'ticket-selection-stage',
@@ -203,7 +203,7 @@ export default {
                 ${queryBody}
               }
             }
-            ${BookingFragments}
+            ${PriceBreakdownFragment}
           `,
           variables: variables,
         });
@@ -217,7 +217,7 @@ export default {
                 ${queryBody}
               }
             }
-            ${BookingFragments}
+            ${PriceBreakdownFragment}
           `,
           variables: variables,
         });

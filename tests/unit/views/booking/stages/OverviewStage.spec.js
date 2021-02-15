@@ -9,12 +9,12 @@ import UserOverview from '@/components/booking/overview/UserOverview.vue';
 import VenueOverview from '@/components/booking/overview/VenueOverview.vue';
 import OverviewStage from '@/views/booking/stages/OverviewStage.vue';
 
-import FakeBooking from '../../fixtures/FakeBooking.js';
+import FakeBooking from '../../../fixtures/FakeBooking.js';
 import {
   executeWithServer,
   generateMountOptions,
   runApolloQuery,
-} from '../../helpers';
+} from '../../../helpers';
 
 describe('Overview Stage', () => {
   let overviewComponent;

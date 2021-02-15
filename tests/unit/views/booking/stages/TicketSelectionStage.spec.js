@@ -11,12 +11,12 @@ import ProductionFragment from '@/graphql/fragments/ProductionFragment.gql';
 import PerformanceTicketOptionsQuery from '@/graphql/queries/PerformanceTicketOptions.gql';
 import TicketSelectionStage from '@/views/booking/stages/TicketSelectionStage.vue';
 
-import FakePerformance from '../../fixtures/FakePerformance';
+import FakePerformance from '../../../fixtures/FakePerformance';
 import {
   executeWithServer,
   generateMountOptions,
   runApolloQuery,
-} from '../../helpers';
+} from '../../../helpers';
 
 describe('Ticket Selection Stage', () => {
   let stageComponent;

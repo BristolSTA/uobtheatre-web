@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import lo from 'lodash';
 
 import { makeServer as makeAPIServer } from '@/fakeApi';
+import store from '@/store';
 import { createClient } from '@/vue-apollo';
 import { createProvider } from '@/vue-apollo';
 
@@ -183,6 +184,20 @@ let runApolloQuery = (options) => {
     )
   );
 };
+let seedAndAuthAsUser = (server, overrides = {}) => {
+  let options = Object.assign(
+    {
+      token: '1234abcd',
+    },
+    overrides
+  );
+  store.commit('SET_AUTH_TOKEN', options.token);
+
+  let user = server.schema.userNodes.findBy({ token: options.token });
+
+  if (!user) user = server.create('userNode', options);
+  return user;
+};
 
 export {
   assertNoVisualDifference,
@@ -195,6 +210,7 @@ export {
   mountWithRouterMock,
   RouterLinkStub,
   runApolloQuery,
+  seedAndAuthAsUser,
   serialize,
   waitFor,
   waitForDOM,

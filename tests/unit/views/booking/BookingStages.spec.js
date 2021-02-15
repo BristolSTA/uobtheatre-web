@@ -50,10 +50,15 @@ describe('Booking Stages', () => {
     expect(getStageIndex(getNextStage(3, {}))).to.eq(4);
   });
 
-  //   it('gets the previous stage', () => {
-  //     expect(
-  //       getStageIndex(getPreviousStage(4, { warnings: ['strobe lighting'] }, {}))
-  //     ).to.eq(3);
-  //     //   expect(getStageIndex(getPreviousStage(4, {}))).to.eq(3);
-  //   });
+  it('gets the previous stage', () => {
+    expect(
+      getStageIndex(
+        getPreviousStage(stages[1], { warnings: ['strobe lighting'] }, {})
+      )
+    ).to.eq(0);
+    expect(
+      getStageIndex(getPreviousStage(1, { warnings: ['strobe lighting'] }, {}))
+    ).to.eq(0);
+    expect(getStageIndex(getPreviousStage(2, { warnings: [] }, {}))).to.eq(0);
+  });
 });

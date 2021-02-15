@@ -6,12 +6,12 @@ import PerformanceOverview from '@/components/production/PerformanceOverview.vue
 import ProductionFragment from '@/graphql/fragments/ProductionFragment.gql';
 import PickPerformanceStage from '@/views/booking/stages/PickPerformanceStage.vue';
 
-import FakeProduction from '../../fixtures/FakeProduction';
+import FakeProduction from '../../../fixtures/FakeProduction';
 import {
   executeWithServer,
   mountWithRouterMock,
   runApolloQuery,
-} from '../../helpers';
+} from '../../../helpers';
 
 describe('Pick Performance Stage', () => {
   let stageComponent;

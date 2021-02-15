@@ -59,6 +59,7 @@ import TicketsMatrix from '@/classes/TicketsMatrix';
 import BookingNavigation from '@/components/booking/BookingNavigation.vue';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
 import ClickableLink from '@/components/ui/ClickableLink.vue';
+import { swal } from '@/utils';
 
 import { getNextStage, getPreviousStage, getStageIndex } from './bookingStages';
 export default {
@@ -67,10 +68,6 @@ export default {
     production: {
       required: true,
     },
-  },
-  beforeRouteEnter(to, from, next) {
-    // TODO: Check here if the user has an exisiting booking (can see if they can enter the route they are trying to go to)
-    next();
   },
   beforeRouteUpdate(to, from, next) {
     // This is required incase the user navigated internally within the children ("nested") rotues or, for example, goes back, as the beforeEnter on the main route is not called (therefore slug not resolved)
@@ -103,6 +100,7 @@ export default {
       booking: new Booking(),
       ticket_matrix: null,
       maxAllowedStageIndex: getStageIndex(this.$route.meta.stage),
+      previousBooking: null,
     };
   },
   methods: {
@@ -135,6 +133,39 @@ export default {
     },
     loadDataForStage() {
       if (this.$route.params.performanceID) {
+        // Check if user already has a draft booking for this performnace if not already
+        if (this.previousBooking === null) {
+          this.$apollo
+            .query({
+              query: require('@/graphql/queries/DraftBookingForPerformance.gql'),
+              variables: {
+                performanceID: this.$route.params.performanceID,
+              },
+              fetchPolicy: 'no-cache',
+            })
+            .then(({ data }) => {
+              this.previousBooking = data.authUser.bookings.edges.length
+                ? data.authUser.bookings.edges[0].node
+                : false;
+              if (this.previousBooking) {
+                swal
+                  .fire({
+                    title: 'Resume previous booking?',
+                    text:
+                      'You previously started a booking for this performance. Would you like to resume it?',
+                    showCancelButton: true,
+                    confirmButtonText: 'Resume',
+                    cancelButtonText: 'No, start fresh',
+                  })
+                  .then((result) => {
+                    if (result.isConfirmed) {
+                      this.booking.updateFromAPIData(this.previousBooking);
+                    }
+                  });
+              }
+            });
+        }
+
         if (!this.booking.performance) {
           this.booking.performance = this.production.performances.edges
             .map((edge) => edge.node)
