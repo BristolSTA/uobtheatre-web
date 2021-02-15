@@ -1,11 +1,9 @@
 import { mount, RouterLinkStub } from '@vue/test-utils';
 import { expect } from 'chai';
-import lo from 'lodash';
 
 import { makeServer as makeAPIServer } from '@/fakeApi';
 import store from '@/store';
-import { createClient } from '@/vue-apollo';
-import { createProvider } from '@/vue-apollo';
+import { createClient, createProvider } from '@/vue-apollo';
 
 const waitForDOM = function (wrapper, selector) {
   return new Promise((resolve) => {
@@ -105,52 +103,6 @@ const executeWithServer = async (callback, closeServer = true) => {
   return server;
 };
 
-const serialize = (model, server, innersToSerialize = []) => {
-  let serializedModel = server.serializerOrRegistry.serialize(model);
-
-  innersToSerialize.forEach((relationship) => {
-    let serializedAccessor = Array.isArray(relationship)
-      ? relationship[0]
-      : relationship;
-    let modelAccessor = Array.isArray(relationship)
-      ? relationship[1]
-      : relationship;
-    return lo.set(
-      serializedModel,
-      relationship,
-      lo.get(serializedModel, serializedAccessor).map((_, index) => {
-        return serialize(model[modelAccessor].models[index], server);
-      })
-    );
-  });
-
-  return serializedModel;
-};
-
-const createFromFactoryAndSerialize = (
-  modelName,
-  count = 1,
-  overrides = {},
-  server = null,
-  innersToSerialize = []
-) => {
-  let exisitingServer = server != null;
-  if (!exisitingServer) {
-    server = makeServer();
-  }
-  let returnData;
-  if (count == 1) {
-    returnData = server.create(modelName, overrides);
-  } else {
-    returnData = server.createList(modelName, count, overrides);
-  }
-
-  let serialized = serialize(returnData, server, innersToSerialize);
-
-  if (!exisitingServer) server.shutdown();
-  return serialized;
-};
-
 let assertNoVisualDifference = (recieved, expected) => {
   expect(JSON.stringify(recieved)).to.eq(JSON.stringify(expected));
 };
@@ -201,7 +153,6 @@ let seedAndAuthAsUser = (server, overrides = {}) => {
 
 export {
   assertNoVisualDifference,
-  createFromFactoryAndSerialize,
   executeWithServer,
   fixTextSpacing,
   generateMountOptions,
@@ -211,7 +162,6 @@ export {
   RouterLinkStub,
   runApolloQuery,
   seedAndAuthAsUser,
-  serialize,
   waitFor,
   waitForDOM,
   waitForTick,
