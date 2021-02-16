@@ -48,7 +48,7 @@
             @select-performance="onSelectPerformance"
             @next-stage="navigateToStage()"
             @stage-unable="gotoPreviousStage()"
-          ></router-view>
+          />
         </div>
       </div>
     </div>
