@@ -88,7 +88,7 @@ describe('ProductionBanner', function () {
     expect(
       headerContainer
         .findComponent({
-          ref: 'featured_image',
+          ref: 'featured-image',
         })
         .attributes('src')
     ).to.equal('http://pathto.example/featured-image.png');
@@ -97,7 +97,7 @@ describe('ProductionBanner', function () {
     expect(
       headerContainer
         .findComponent({
-          ref: 'society_image',
+          ref: 'society-image',
         })
         .attributes('src')
     ).to.equal('http://pathto.example/logo-image.png');
@@ -110,7 +110,7 @@ describe('ProductionBanner', function () {
     expect(
       headerContainer
         .findComponent({
-          ref: 'society_image',
+          ref: 'society-image',
         })
         .exists()
     ).to.be.false;

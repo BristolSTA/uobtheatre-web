@@ -4,14 +4,14 @@
   >
     <div class="relative inline-block w-full max-w-xl m-8 md:w-2/3">
       <img
-        ref="featured_image"
+        ref="featured-image"
         class="w-full p-4 sm:p-8"
         :src="production.featuredImage.url"
         :alt="`${production.name} feature image`"
       />
       <img
         v-if="production.society.logo"
-        ref="society_image"
+        ref="society-image"
         :src="production.society.logo.url"
         :alt="`${production.society.name} logo`"
         class="absolute bottom-0 left-0 w-10 sm:w-20"

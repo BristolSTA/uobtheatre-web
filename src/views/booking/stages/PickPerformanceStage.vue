@@ -3,7 +3,7 @@
     <div
       v-for="(performanceGroup, time) in groupedPerformances"
       :key="time"
-      ref="performanceGroup"
+      ref="performance-group"
       class="mb-4"
     >
       <h2 class="mb-2 text-2xl font-semibold text-white">
