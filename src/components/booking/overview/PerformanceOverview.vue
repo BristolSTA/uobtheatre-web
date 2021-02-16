@@ -15,7 +15,7 @@
 import OverviewBox from './OverviewBox.vue';
 
 export default {
-  name: 'performance-overview-box',
+  name: 'PerformanceOverviewBox',
   components: { OverviewBox },
   props: {
     production: {

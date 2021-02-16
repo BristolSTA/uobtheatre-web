@@ -3,8 +3,8 @@
     <div
       v-for="(performanceGroup, time) in groupedPerformances"
       :key="time"
-      class="mb-4"
       ref="performanceGroup"
+      class="mb-4"
     >
       <h2 class="mb-2 text-2xl font-semibold text-white">
         {{ time }}

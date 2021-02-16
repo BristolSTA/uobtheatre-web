@@ -1,5 +1,5 @@
 <template>
-  <div class="text-white" v-if="booking.performance">
+  <div v-if="booking.performance" class="text-white">
     <div class="p-2 mb-2 md:text-center bg-sta-gray-light">
       <p class="text-h3">Selected Performance:</p>
       <p class="text-sta-orange">
@@ -7,7 +7,7 @@
         {{ booking.performance.start | dateFormat('T') }}
       </p>
     </div>
-    <div class="space-y-1" v-if="ticket_matrix">
+    <div v-if="ticket_matrix" class="space-y-1">
       <seat-group
         v-for="(ticket_option, index) in ticket_matrix.ticket_options"
         :key="index"
@@ -19,7 +19,7 @@
         "
         :expanded="
           selected_location_index == index ||
-          ticket_matrix.ticket_options.length == 1
+            ticket_matrix.ticket_options.length == 1
         "
         :current_tickets="booking.tickets"
         :discounts="ticket_matrix.discounts"
@@ -50,11 +50,11 @@
             </thead>
             <tbody>
               <tr
-                class="even:bg-sta-gray-light odd:bg-sta-gray"
                 v-for="(ticket, index) in booking.ticket_overview(
                   ticket_matrix
                 )"
                 :key="index"
+                class="even:bg-sta-gray-light odd:bg-sta-gray"
               >
                 <td class="p-2">
                   {{ ticket.seat_group.name }}
@@ -82,9 +82,9 @@
                   {{ booking.tickets.length }}
                 </td>
                 <td class="p-2 text-right">
-                  <template v-if="!booking.dirty"
-                    >£{{ booking.sub_total_price_pounds }}</template
-                  >
+                  <template v-if="!booking.dirty">
+                    £{{ booking.sub_total_price_pounds }}
+                  </template>
                   <font-awesome-icon
                     v-else
                     class="animate-spin"
@@ -121,7 +121,7 @@ import SeatGroup from '@/components/booking/SeatGroup.vue';
 import PriceBreakdownFragment from '@/graphql/fragments/booking/AllPriceBreakdown.gql';
 
 export default {
-  name: 'ticket-selection-stage',
+  name: 'TicketSelectionStage',
   components: { SeatGroup },
   props: {
     production: {

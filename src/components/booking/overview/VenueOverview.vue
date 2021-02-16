@@ -34,7 +34,7 @@
       </p>
       <p>{{ venue.address.city }}</p>
       <p>{{ venue.address.postcode }}</p>
-      <div class="p-2 mt-2 rounded bg-sta-gray" v-if="online">
+      <div v-if="online" class="p-2 mt-2 rounded bg-sta-gray">
         <icon-list-item icon="info-circle">
           Online joining information will be sent via email
         </icon-list-item>
@@ -52,7 +52,7 @@ import IconListItem from '../../ui/IconListItem.vue';
 import OverviewBox from './OverviewBox.vue';
 
 export default {
-  name: 'venue-overview',
+  name: 'VenueOverview',
   components: { OverviewBox, IconListItem },
   props: {
     venue_data: {

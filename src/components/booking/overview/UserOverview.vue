@@ -18,7 +18,7 @@
 import OverviewBox from './OverviewBox.vue';
 
 export default {
-  name: 'user-overview',
+  name: 'UserOverview',
   components: { OverviewBox },
 };
 </script>

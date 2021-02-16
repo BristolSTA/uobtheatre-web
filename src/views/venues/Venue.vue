@@ -87,6 +87,7 @@ import { createClient } from '@/vue-apollo';
 
 export default {
   name: 'VenuePage',
+  components: { IconListItem },
   mixins: [IconListItem],
   metaInfo() {
     const venueName = this.venue ? this.venue.name : 'Loading...';

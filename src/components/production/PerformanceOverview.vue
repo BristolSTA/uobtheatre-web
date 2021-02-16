@@ -8,8 +8,8 @@
     </h2>
     <div>
       <router-link
-        class="hover:text-gray-200"
         v-if="performance.isInperson"
+        class="hover:text-gray-200"
         :to="{
           name: 'venue',
           params: { venueSlug: performance.venue.slug },
@@ -30,17 +30,17 @@
     </div>
     <div class="flex-grow"></div>
     <button
+      v-if="performanceDisabled"
       class="w-2/3 mt-4 font-semibold text-center btn btn-rouge btn-outline disabled"
       disabled
-      v-if="performanceDisabled"
     >
       {{ disabledReason }}
     </button>
     <button
+      v-else
+      class="w-2/3 mt-4 font-semibold text-center btn btn-orange"
       @click="onBook"
       @keypress="onBook"
-      class="w-2/3 mt-4 font-semibold text-center btn btn-orange"
-      v-else
     >
       <slot name="select-button">Book</slot>
     </button>
@@ -55,11 +55,6 @@ export default {
       required: true,
     },
   },
-  methods: {
-    onBook() {
-      this.$emit('select', this.performance);
-    },
-  },
   computed: {
     humanDuration() {
       return humanizeDuration(this.performance.durationMins * 60 * 1000);
@@ -70,6 +65,11 @@ export default {
     disabledReason() {
       if (this.performance.soldOut) return 'SOLD OUT';
       return 'Unavailable';
+    },
+  },
+  methods: {
+    onBook() {
+      this.$emit('select', this.performance);
     },
   },
 };

@@ -49,7 +49,7 @@ import Booking from '@/classes/Booking';
 import OverviewBox from './OverviewBox.vue';
 
 export default {
-  name: 'tickets-overview',
+  name: 'TicketsOverview',
   components: { OverviewBox },
   props: {
     booking: {

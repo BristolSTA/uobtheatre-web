@@ -7,8 +7,8 @@
         expanded
           ? 'bg-sta-orange'
           : available
-          ? 'bg-sta-green'
-          : 'bg-sta-gray-dark border-2 border-sta-rouge',
+            ? 'bg-sta-green'
+            : 'bg-sta-gray-dark border-2 border-sta-rouge',
         available ? 'cursor-pointer' : '',
       ]"
       @click="onHeaderClick"
@@ -37,15 +37,15 @@
     </div>
     <div v-if="expanded" class="pb-2 bg-sta-gray">
       <div
-        class="px-2 pt-2 text-center text-sta-rouge"
         v-if="group_capacity_remaining < 10"
+        class="px-2 pt-2 text-center text-sta-rouge"
       >
         <template v-if="group_capacity_remaining != 0">
           Hurry! Only {{ group_capacity_remaining }} ticket{{
             group_capacity_remaining > 1 ? 's' : null
           }}
-          remaining in this location</template
-        >
+          remaining in this location
+        </template>
         <template v-else>No more tickets available at this location</template>
       </div>
       <concession-type
@@ -103,7 +103,7 @@ import ConcessionType from '@/components/booking/ConcessionType.vue';
 import GroupTicketButton from '@/components/booking/GroupTicketButton.vue';
 
 export default {
-  name: 'seat-location',
+  name: 'SeatLocation',
   components: { ConcessionType, GroupTicketButton },
   props: {
     expanded: {
@@ -122,6 +122,19 @@ export default {
       required: true,
     },
   },
+  computed: {
+    available() {
+      return (
+        this.group_capacity_remaining != 0 ||
+        this.currentLocationTickets.length != 0
+      );
+    },
+    currentLocationTickets() {
+      return this.current_tickets.filter((ticket) => {
+        return ticket.matches(this.ticket_option.seatGroup);
+      });
+    },
+  },
   methods: {
     onAddDiscountTickets(discount) {
       discount.requirements.forEach((requirement) => {
@@ -137,19 +150,6 @@ export default {
       if (this.available) {
         this.$emit('select-location');
       }
-    },
-  },
-  computed: {
-    available() {
-      return (
-        this.group_capacity_remaining != 0 ||
-        this.currentLocationTickets.length != 0
-      );
-    },
-    currentLocationTickets() {
-      return this.current_tickets.filter((ticket) => {
-        return ticket.matches(this.ticket_option.seatGroup);
-      });
     },
   },
 };

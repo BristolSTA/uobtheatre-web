@@ -9,7 +9,7 @@
         <venue-overview
           :venue_data="booking.performance.venue.slug"
           :online="booking.performance.isOnline"
-          :inPerson="booking.performance.isInperson"
+          :in-person="booking.performance.isInperson"
         />
         <user-overview :user="{}" />
       </div>
@@ -31,17 +31,13 @@ import UserOverview from '@/components/booking/overview/UserOverview.vue';
 import VenueOverview from '@/components/booking/overview/VenueOverview.vue';
 
 export default {
-  name: 'overview-stage',
+  name: 'OverviewStage',
   components: {
     VenueOverview,
     PerformanceOverview,
     UserOverview,
     TicketsOverview,
     BookingPriceOverview,
-  },
-  created() {
-    // Check eligability for this stage
-    if (this.booking.dirty) return this.$emit('stage-unable');
   },
   props: {
     production: {
@@ -51,6 +47,10 @@ export default {
       required: true,
       type: Booking,
     },
+  },
+  created() {
+    // Check eligability for this stage
+    if (this.booking.dirty) return this.$emit('stage-unable');
   },
 };
 </script>

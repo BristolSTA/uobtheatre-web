@@ -16,10 +16,10 @@
         <div class="flex justify-center space-x-1">
           <button
             class="w-8 h-8 p-0 btn btn-orange"
-            @click="minusTicket"
-            @keypress="minusTicket"
             :class="[!numTickets ? 'btn-gray-light' : 'btn-orange']"
             :disabled="!numTickets"
+            @click="minusTicket"
+            @keypress="minusTicket"
           >
             -
           </button>
@@ -27,6 +27,7 @@
             type="text"
             :value="numTickets"
             aria-label="number of tickets"
+            class="w-8 h-8 text-center text-black bg-white rounded-sm"
             @keypress.stop="
               if (!/^[0-9]$/i.test($event.key)) $event.preventDefault();
             "
@@ -40,14 +41,13 @@
                 $emit('set-tickets', event.target.value);
               }
             "
-            class="w-8 h-8 text-center text-black bg-white rounded-sm"
           />
           <button
             class="w-8 h-8 p-0 btn"
-            @click="addTicket"
-            @keypress="addTicket"
             :class="[max_add_allowed < 1 ? 'btn-gray-light' : 'btn-orange']"
             :disabled="max_add_allowed < 1"
+            @click="addTicket"
+            @keypress="addTicket"
           >
             +
           </button>
@@ -59,7 +59,7 @@
 
 <script>
 export default {
-  name: 'concession-type',
+  name: 'ConcessionType',
   props: {
     concession_type_edge: {
       required: true,
@@ -71,19 +71,19 @@ export default {
       required: true,
     },
   },
+  computed: {
+    numTickets() {
+      return this.current_tickets.filter((ticket) => {
+        return ticket.matches(null, this.concession_type_edge.concessionType);
+      }).length;
+    },
+  },
   methods: {
     addTicket() {
       this.$emit('add-ticket');
     },
     minusTicket() {
       this.$emit('remove-ticket');
-    },
-  },
-  computed: {
-    numTickets() {
-      return this.current_tickets.filter((ticket) => {
-        return ticket.matches(null, this.concession_type_edge.concessionType);
-      }).length;
     },
   },
 };

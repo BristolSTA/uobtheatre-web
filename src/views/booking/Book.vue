@@ -7,21 +7,22 @@
             name: 'production',
             params: { productionSlug: production.slug },
           }"
-          ><font-awesome-icon icon="chevron-left" />
+        >
+          <font-awesome-icon icon="chevron-left" />
           Back to Production
         </router-link>
       </div>
       <production-banner
         class="pb-2 md:pb-8"
         :production="production"
-        :showBuyTicketsButton="false"
-        :showDetailedInfo="false"
+        :show-buy-tickets-button="false"
+        :show-detailed-info="false"
       />
       <div class="flex flex-wrap mb-2 md:space-x-2 md:flex-nowrap">
         <booking-navigation
           class="hidden md:flex md:w-1/4"
-          :currentStageIndex="currentStageIndex"
-          :maxAllowedStageIndex="maxAllowedStageIndex"
+          :current-stage-index="currentStageIndex"
+          :max-allowed-stage-index="maxAllowedStageIndex"
           :production="production"
           :booking="booking"
           @goto-stage="navigateToStage"
@@ -32,8 +33,9 @@
             v-if="currentStageIndex > 0"
             class="text-white"
             @click="gotoPreviousStage"
-            ><font-awesome-icon icon="chevron-left" />Back</clickable-link
           >
+            <font-awesome-icon icon="chevron-left" />Back
+          </clickable-link>
         </div>
         <div
           id="booking-view"
@@ -75,6 +77,24 @@ export default {
     to.params.production = from.params.production;
     return next();
   },
+  data() {
+    return {
+      booking: new Booking(),
+      ticket_matrix: null,
+      maxAllowedStageIndex: getStageIndex(this.$route.meta.stage),
+      previousBooking: null,
+    };
+  },
+  computed: {
+    currentStageIndex() {
+      return getStageIndex(this.$route.meta.stage);
+    },
+  },
+  watch: {
+    currentStageIndex() {
+      this.loadDataForStage();
+    },
+  },
   mounted() {
     this.loadDataForStage();
     if (!this.$route.meta.stage.shouldBeUsed(this.production, this.booking)) {
@@ -87,19 +107,6 @@ export default {
   metaInfo() {
     return {
       title: `Book ${this.production.name}`,
-    };
-  },
-  watch: {
-    currentStageIndex() {
-      this.loadDataForStage();
-    },
-  },
-  data() {
-    return {
-      booking: new Booking(),
-      ticket_matrix: null,
-      maxAllowedStageIndex: getStageIndex(this.$route.meta.stage),
-      previousBooking: null,
     };
   },
   methods: {
@@ -192,11 +199,6 @@ export default {
       this.booking.performance = performance;
       this.booking.tickets = [];
       this.navigateToStage();
-    },
-  },
-  computed: {
-    currentStageIndex() {
-      return getStageIndex(this.$route.meta.stage);
     },
   },
 };
