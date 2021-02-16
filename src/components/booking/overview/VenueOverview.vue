@@ -1,8 +1,9 @@
 <template>
   <overview-box>
     <template v-slot:title>
-      <font-awesome-icon icon="building" class="mr-2" /> Venue</template
-    >
+      <font-awesome-icon icon="building" class="mr-2" />
+      Venue
+    </template>
     <template v-slot:subtitle>
       <font-awesome-icon
         v-if="!venue"
@@ -34,9 +35,9 @@
       <p>{{ venue.address.city }}</p>
       <p>{{ venue.address.postcode }}</p>
       <div class="p-2 mt-2 rounded bg-sta-gray" v-if="online">
-        <icon-list-item icon="info-circle"
-          >Online joining information will be sent via email</icon-list-item
-        >
+        <icon-list-item icon="info-circle">
+          Online joining information will be sent via email
+        </icon-list-item>
       </div>
     </div>
   </overview-box>

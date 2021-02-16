@@ -1,11 +1,9 @@
 import { mount, RouterLinkStub } from '@vue/test-utils';
 import { expect } from 'chai';
-import lo from 'lodash';
 
 import { makeServer as makeAPIServer } from '@/fakeApi';
 import store from '@/store';
-import { createClient } from '@/vue-apollo';
-import { createProvider } from '@/vue-apollo';
+import { createClient, createProvider } from '@/vue-apollo';
 
 const waitForDOM = function (wrapper, selector) {
   return new Promise((resolve) => {

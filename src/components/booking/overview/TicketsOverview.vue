@@ -1,8 +1,9 @@
 <template>
   <overview-box>
-    <template v-slot:title
-      ><font-awesome-icon icon="ticket-alt" class="mr-2" /> Tickets</template
-    >
+    <template v-slot:title>
+      <font-awesome-icon icon="ticket-alt" class="mr-2" />
+      Tickets
+    </template>
     <template v-slot:message_box>
       <table class="flex ml-auto table-auto">
         <tr>
@@ -25,8 +26,8 @@
         :key="index"
         class="p-2 px-4 rounded bg-sta-gray"
       >
-        <span class="font-semibold text-sta-orange"
-          >{{ groupedConcessions[0].seatGroup.name }}
+        <span class="font-semibold text-sta-orange">
+          {{ groupedConcessions[0].seatGroup.name }}
         </span>
         <div
           v-for="(concession, concession_index) in groupedConcessions"
