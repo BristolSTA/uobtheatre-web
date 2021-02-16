@@ -32,7 +32,7 @@
             v-if="currentStageIndex > 0"
             class="text-white"
             @click="gotoPreviousStage"
-            ><font-awesome-icon icon="chevron-left" /> Back</clickable-link
+            ><font-awesome-icon icon="chevron-left" />Back</clickable-link
           >
         </div>
         <div

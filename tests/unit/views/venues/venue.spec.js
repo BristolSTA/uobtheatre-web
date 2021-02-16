@@ -133,7 +133,8 @@ describe('Venue page', function () {
       venue: { address: { latitude: null } },
     });
 
-    expect(venuePageComponent.find('#venueMap').exists()).to.be.false;
+    expect(venuePageComponent.findComponent({ ref: 'venue-map' }).exists()).to
+      .be.false;
   });
 
   it('handles invalid venue', async () => {
