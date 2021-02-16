@@ -14,7 +14,7 @@
           class="px-3 py-2 text-white border rounded border-sta-orange"
           role="toggle"
           @click="navHidden = !navHidden"
-          @keydown="
+          @keypress="
             (e) => {
               e.target.click();
             }
@@ -46,14 +46,19 @@
           </router-link>
           <router-link
             v-if="!authService.isLoggedIn()"
-            :to="{ name: 'login' }"
+            :to="{ name: 'login', query: { redirect: $route.fullPath } }"
             class="mt-4 auth-button btn btn-orange btn-outline lg:mt-0"
           >
             Login
           </router-link>
           <clickable-link
             v-else
-            @click="authService.logout()"
+            @click="
+              () => {
+                authService.logout();
+                $router.push({ name: 'home' });
+              }
+            "
             class="mt-4 auth-button btn btn-orange btn-outline lg:mt-0"
           >
             Log Out

@@ -99,7 +99,11 @@ const api = new (class {
         })
         .catch((error) => {
           // HTTP 400 Code = Validation Error
-          if (error.response.status == 400 && error.response.data) {
+          if (
+            error.response &&
+            error.response.status == 400 &&
+            error.response.data
+          ) {
             let errors = new Errors();
             errors.record(error.response.data);
             return reject(errors, error.response.data);

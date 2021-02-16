@@ -5,7 +5,7 @@
         class="w-1/2 py-3 font-semibold rounded-none focus:outline-none"
         :class="[login ? 'bg-sta-orange' : 'bg-gray-200']"
         @click="$emit('go-login')"
-        @keydown="$emit('go-login')"
+        @keypress="$emit('go-login')"
       >
         Login
       </button>
@@ -13,7 +13,7 @@
         class="w-1/2 py-3 font-semibold rounded-none focus:outline-none"
         :class="[login ? 'bg-gray-200' : ' bg-sta-orange']"
         @click="$emit('go-signup')"
-        @keydown="$emit('go-signup')"
+        @keypress="$emit('go-signup')"
       >
         Sign Up
       </button>

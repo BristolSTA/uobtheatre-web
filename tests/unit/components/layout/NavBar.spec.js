@@ -8,11 +8,17 @@ import store from '@/store';
 import { mountWithRouterMock, RouterLinkStub } from '../../helpers';
 
 describe('NavBar', function () {
-  let navbarComponent;
+  let navbarComponent, routerPushFake;
 
   beforeEach(async () => {
     navbarComponent = await mountWithRouterMock(NavBar, {
       store,
+      mocks: {
+        $route: {},
+        $router: {
+          push: (routerPushFake = jest.fn()),
+        },
+      },
     });
   });
 
@@ -84,6 +90,8 @@ describe('NavBar', function () {
     await logoutButton.trigger('click');
 
     expect(authService.logout.mock.calls.length).to.eq(1);
+    expect(routerPushFake.mock.calls.length).to.eq(1);
+    expect(routerPushFake.mock.calls[0][0].name).to.eq('home'); // Redirects home on logout
 
     jest.clearAllMocks();
   });

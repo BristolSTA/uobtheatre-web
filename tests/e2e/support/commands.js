@@ -9,8 +9,13 @@
 // ***********************************************
 //
 //
+
+const { default: config } = require('@/config');
+
 // -- This is a parent command --
-// Cypress.Commands.add("login", (email, password) => { ... })
+Cypress.Commands.add('login', () => {
+  cy.setCookie(config.auth.cookie, '36c86c19f8f8d73aa59c3a00814137bdee0ab8de');
+});
 //
 //
 // -- This is a child command --

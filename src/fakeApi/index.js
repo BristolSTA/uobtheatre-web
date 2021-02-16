@@ -3,17 +3,21 @@ import { createGraphQLHandler } from '@miragejs/graphql';
 import { DateTime } from 'luxon';
 import { createServer } from 'miragejs';
 
+import BookingInterface from './booking.model';
 import CastInterface from './cast.model';
+import ConcessionTypeInterface from './concessionType.model';
 import CrewInterface from './crew.model';
+import DiscountInterface from './discount.model';
 import PerformanceInterface from './performance.model';
 import ProductionInterface from './production.model';
 import ProductionTeamInterface from './productionTeam.model';
 import BaseGQLSchema from './schema.graphql';
+import SeatGroupInterface from './seatGroup.model';
 import SocietyInterface from './society.model';
 import UserInterface from './user.model';
+import { generateConcessionTypeBookingTypes } from './utils';
 import { RelationshipSerializer } from './utils';
 import VenueInterface from './venue.model';
-
 let apiModels = [
   ProductionInterface,
   PerformanceInterface,
@@ -23,6 +27,10 @@ let apiModels = [
   ProductionTeamInterface,
   VenueInterface,
   UserInterface,
+  SeatGroupInterface,
+  ConcessionTypeInterface,
+  BookingInterface,
+  DiscountInterface,
 ];
 
 let models = {};
@@ -30,6 +38,7 @@ let serializers = {};
 let factories = {};
 let queryResolvers = {};
 let mutationResolvers = {};
+let customResolvers = {};
 
 /**
  * Creates and installs the Mirage JS mock API server
@@ -55,6 +64,11 @@ export function makeServer({ environment = 'development' } = {}) {
         mutationResolvers,
         model.registerGQLMutationResolvers()
       );
+    if (model.registerGQLCustomResolvers)
+      customResolvers = Object.assign(
+        customResolvers,
+        model.registerGQLCustomResolvers()
+      );
   });
 
   return createServer({
@@ -72,34 +86,165 @@ export function makeServer({ environment = 'development' } = {}) {
     factories: Object.assign({}, factories),
 
     seeds(server) {
-      let dramsoc = server.create('SocietyNode', {
-        name: 'Dramsoc',
-        logo_image: null,
+      let AdultConcession = server.create('ConcessionTypeNode', {
+        name: 'Adult',
+        description: null,
+      });
+      let ChildConcession = server.create('ConcessionTypeNode', {
+        name: 'Child',
+      });
+      let StudentConcession = server.create('ConcessionTypeNode', {
+        name: 'Student',
+        description: 'Valid ID NOT required',
+      });
+      let BestSeatGroup = server.create('SeatGroupNode', {
+        name: 'The best seats in the house',
+        description: 'They are sooooo good',
+      });
+      let ProjSeatGroup = server.create('SeatGroupNode', {
+        name: 'Proj Seats',
+        description: null,
       });
 
-      let winston = server.create('VenueNode', {
-        name: 'Winston Theatre',
+      let FamilyDiscount = server.create('DiscountNode', {
+        name: 'Family Discount',
+        discount: 0.2,
+        seatGroup: null,
+        requirements: [
+          server.create('DiscountRequirementNode', {
+            number: 2,
+            concessionType: AdultConcession,
+          }),
+          server.create('DiscountRequirementNode', {
+            number: 2,
+            concessionType: ChildConcession,
+          }),
+        ],
       });
 
-      server.create('ProductionNode', 'withCoverImage', {
+      let ticketOptions = [
+        server.create('PerformanceSeatGroupNode', {
+          seatGroup: BestSeatGroup,
+          concessionTypes: generateConcessionTypeBookingTypes(
+            [AdultConcession, ChildConcession, StudentConcession],
+            server
+          ),
+        }),
+        server.create('PerformanceSeatGroupNode', {
+          seatGroup: ProjSeatGroup,
+          concessionTypes: generateConcessionTypeBookingTypes(
+            [AdultConcession, ChildConcession, StudentConcession],
+            server
+          ),
+        }),
+      ];
+
+      /**
+       * Fake Performance 1 - Legally Blonde, MTB, with 4 performances (19th,20th,21st (sold out), 22nd (online))
+       */
+
+      let performances = server.createList('PerformanceNode', 4);
+      performances[0].update({
+        soldOut: false,
+        isInperson: true,
+        isOnline: false,
+        doorsOpen: '2020-12-19T09:30:00',
+        start: '2020-12-19T10:00:00',
+        end: '2020-12-19T11:30:00',
+        ticketOptions: ticketOptions,
+        discounts: [FamilyDiscount],
+      });
+
+      performances[1].update({
+        soldOut: false,
+        isInperson: true,
+        isOnline: false,
+        doorsOpen: '2020-12-20T15:30:00',
+        start: '2020-12-20T16:00:00',
+        end: '2020-12-20T20:30:00',
+        ticketOptions: [
+          server.create('PerformanceSeatGroupNode', {
+            seatGroup: server.create('seatGroupNode', {
+              name: 'Seated',
+            }),
+            concessionTypes: generateConcessionTypeBookingTypes(
+              [AdultConcession, ChildConcession, StudentConcession],
+              server
+            ),
+          }),
+        ],
+      });
+      performances[2].update({
+        soldOut: true,
+        isInperson: true,
+        isOnline: false,
+        doorsOpen: '2020-12-21T15:30:00',
+        start: '2020-12-21T16:00:00',
+        end: '2020-12-21T20:30:00',
+      });
+      performances[3].update({
+        soldOut: false,
+        isInperson: false,
+        isOnline: true,
+        doorsOpen: '2020-12-22T15:30:00',
+        start: '2020-12-22T16:00:00',
+        end: '2020-12-22T20:30:00',
+        ticketOptions: [
+          server.create('PerformanceSeatGroupNode', {
+            seatGroup: server.create('seatGroupNode', {
+              name: 'Online Livestream',
+            }),
+            concessionTypes: [
+              server.create('concessionTypeBookingType', {
+                concessionType: server.create('concessionTypeNode', {
+                  name: 'Adult',
+                }),
+              }),
+            ],
+          }),
+        ],
+      });
+
+      let legallyBlonde = server.create('ProductionNode', 'withCoverImage', {
         name: 'Legally Blonde',
         ageRating: 10,
         society: server.create('SocietyNode', {
           name: 'MTB',
         }),
-        performances: server.createList('PerformanceNode', 3),
+        performances: performances,
+      });
+
+      server.create('MiscCostNode', {
+        production: legallyBlonde,
+        name: 'Booking Fee',
+        percentage: 0.05,
+      });
+
+      // /**
+      //  * Fake Performance 2 - TRASh, Dramsoc, 1 performance, no warnings
+      //  */
+
+      let dramsoc = server.create('SocietyNode', {
+        name: 'Dramsoc',
+        logo_image: null,
       });
 
       server.create('ProductionNode', {
         name: 'TRASh',
         subtitle: 'The Really Artsy Show',
+        warnings: [],
         society: dramsoc,
         start: DateTime.fromISO('2020-11-19'),
         end: DateTime.fromISO('2020-11-19'),
         performances: server.createList('PerformanceNode', 1, {
-          venue: winston,
+          ticketOptions: ticketOptions,
         }),
+        __dont_factory: ['warnings'],
       });
+
+      /**
+       * Fake Performance 3 - Present laughter - Not bookable
+       */
 
       server.create('ProductionNode', 'withCoverImage', {
         name: 'Present Laughter',
@@ -109,19 +254,18 @@ export function makeServer({ environment = 'development' } = {}) {
         isBookable: false,
       });
 
-      server.create('ProductionNode', {
-        name: 'Decade',
-        society: dramsoc,
-        start: DateTime.fromISO('2018-10-18'),
-        end: DateTime.fromISO('2018-10-18'),
-        isBookable: false,
-      });
-
+      /**
+       * Fake Performance 4 - A complete random production called A Default Production
+       */
       server.create('ProductionNode', {
         name: 'A Default Production',
       });
 
-      server.create('user', {
+      /**
+       * A user
+       */
+
+      server.create('userNode', {
         password: 'admin',
         email: 'admin@bristolsta.com',
         token: '36c86c19f8f8d73aa59c3a00814137bdee0ab8de',
@@ -174,7 +318,8 @@ export function makeServer({ environment = 'development' } = {}) {
       const graphQLHandler = createGraphQLHandler(graphQLSchema, this.schema, {
         resolvers: {
           Query: queryResolvers,
-          Mutations: mutationResolvers,
+          Mutation: mutationResolvers,
+          ...customResolvers,
         },
       });
       this.post('/graphql', graphQLHandler);
