@@ -1,0 +1,90 @@
+<template>
+  <div class="text-white">
+    <div class="flex items-center p-2">
+      <div class="w-3/4 pl-2">
+        <p class="font-semibold">
+          {{ concession_type_edge.concessionType.name }}
+        </p>
+        <p class="text-sm">
+          {{ concession_type_edge.concessionType.description }}
+        </p>
+      </div>
+      <div class="flex-col w-1/2 space-y-1 sm:w-1/4">
+        <div class="flex justify-center font-semibold font">
+          £{{ (concession_type_edge.price / 100).toFixed(2) }}
+        </div>
+        <div class="flex justify-center space-x-1">
+          <button
+            class="w-8 h-8 p-0 btn btn-orange"
+            @click="minusTicket"
+            @keypress="minusTicket"
+            :class="[!numTickets ? 'btn-gray-light' : 'btn-orange']"
+            :disabled="!numTickets"
+          >
+            -
+          </button>
+          <input
+            type="text"
+            :value="numTickets"
+            aria-label="number of tickets"
+            @keypress.stop="
+              if (!/^[0-9]$/i.test($event.key)) $event.preventDefault();
+            "
+            @input="
+              (event) => {
+                if (
+                  isNaN(event.target.value) ||
+                  event.target.value - numTickets > max_add_allowed
+                )
+                  return;
+                $emit('set-tickets', event.target.value);
+              }
+            "
+            class="w-8 h-8 text-center text-black bg-white rounded-sm"
+          />
+          <button
+            class="w-8 h-8 p-0 btn"
+            @click="addTicket"
+            @keypress="addTicket"
+            :class="[max_add_allowed < 1 ? 'btn-gray-light' : 'btn-orange']"
+            :disabled="max_add_allowed < 1"
+          >
+            +
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'concession-type',
+  props: {
+    concession_type_edge: {
+      required: true,
+    },
+    current_tickets: {
+      required: true,
+    },
+    max_add_allowed: {
+      required: true,
+    },
+  },
+  methods: {
+    addTicket() {
+      this.$emit('add-ticket');
+    },
+    minusTicket() {
+      this.$emit('remove-ticket');
+    },
+  },
+  computed: {
+    numTickets() {
+      return this.current_tickets.filter((ticket) => {
+        return ticket.matches(null, this.concession_type_edge.concessionType);
+      }).length;
+    },
+  },
+};
+</script>

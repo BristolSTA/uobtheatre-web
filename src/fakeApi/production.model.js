@@ -12,7 +12,10 @@ export default {
         name: () => faker.random.words(3),
         subtitle: null,
         slug() {
-          return this.name.toLowerCase().replace(/ /g, '-');
+          return this.name
+            .toLowerCase()
+            .replace(/[^A-z ]/g, '')
+            .replace(/ /g, '-');
         },
         ageRating: null,
         facebookEvent: 'https://facebook.com',
@@ -22,7 +25,7 @@ export default {
           DateTime.local().plus({
             day: faker.random.number({ min: 1, max: 3 }),
           }),
-        minSeatPrice: () => faker.random.number({ min: 1, max: 10 }).toFixed(2),
+        minSeatPrice: () => faker.random.number({ min: 100, max: 1000 }),
         isBookable: () => true,
 
         withCoverImage: trait({

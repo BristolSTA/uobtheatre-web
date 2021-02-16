@@ -3,13 +3,18 @@ import Vue from 'vue';
 import Meta from 'vue-meta';
 import VueRouter from 'vue-router';
 
+import ProductionPageQuery from '@/graphql/queries/ProductionBySlug.gql';
 import Login from '@/views/auth/Login.vue';
+import { getRoutes } from '@/views/booking/bookingStages';
 import NotFoundError from '@/views/errors/NotFound.vue';
 import Home from '@/views/Home.vue';
-
 const Venue = () => import('@/views/venues/Venue.vue');
 const Society = () => import('@/views/societies/Society.vue');
-const Production = () => import('@/views/production/Production.vue');
+
+import { auth as authMiddleware } from '@/middleware';
+import { authService } from '@/services';
+
+import * as Bindings from './bindings';
 
 Vue.use(VueRouter);
 Vue.use(Meta);
@@ -20,21 +25,51 @@ const routes = [
     name: 'home',
     component: Home,
   },
-  {
-    path: '/production/:productionSlug',
-    name: 'production',
-    component: Production,
-  },
+
+  /**
+   * Production Pages
+   */
+  Bindings.routeWithBindings(
+    {
+      path: '/production/:productionSlug',
+      name: 'production',
+      component: () => import('@/views/production/Production.vue'),
+    },
+    [Bindings.bindProductionSlug(ProductionPageQuery)]
+  ),
+  Bindings.routeWithBindings(
+    {
+      path: '/production/:productionSlug/book/:performanceID?',
+      component: () => import('@/views/booking/Book.vue'),
+      children: getRoutes(),
+      meta: {
+        middleware: [authMiddleware],
+      },
+    },
+    [Bindings.bindProductionSlug()]
+  ),
+
+  /**
+   * Venue Pages
+   */
   {
     path: '/venues/:venueSlug',
     name: 'venue',
     component: Venue,
   },
+
+  /**
+   * Society Pages
+   */
   {
     path: '/societies/:societySlug',
     name: 'society',
     component: Society,
   },
+
+  /**
+   * Auth Pages
+   */
   {
     path: '/login',
     name: 'login',
@@ -47,6 +82,10 @@ const routes = [
     component: Login,
     props: { login: false },
   },
+
+  /**
+   * Error and Wildcard Pages
+   */
   { path: '/404', name: '404', component: NotFoundError },
   { path: '*', redirect: '/404' },
 ];
@@ -70,6 +109,7 @@ const router = new VueRouter({
 
 // Apply any middleware
 router.beforeEach((to, from, next) => {
+  authService.refreshAuthStatus();
   if (to.meta.middleware) {
     const middleware = Array.isArray(to.meta.middleware)
       ? to.meta.middleware

@@ -31,6 +31,7 @@ query productionBySlug($slug: String!) {
     performances {
       edges {
         node {
+          id
           venue {
             name
             slug
@@ -39,6 +40,7 @@ query productionBySlug($slug: String!) {
           doorsOpen
           start
           end
+          soldOut
           durationMins
           isOnline
           isInperson

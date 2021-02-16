@@ -117,7 +117,7 @@ describe('Society page', function () {
       expect(links.at(0).props('to').name).to.equal('production');
       expect(links.at(0).props('to').params.productionSlug).to.equal('bins');
 
-      expect(links.at(1).props('to').name).to.equal('production.book');
+      expect(links.at(1).props('to').name).to.equal('production.book.select');
       expect(links.at(1).props('to').params.productionSlug).to.equal('bins');
 
       expect(links.at(2).props('to').name).to.equal('production');

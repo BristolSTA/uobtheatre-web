@@ -16,18 +16,25 @@ let updateIfDoesntHave = function (model, keyValues, value) {
       [keyValues]: value,
     };
   }
-  let updateObj = {};
-  Object.keys(keyValues).forEach((key) => {
-    let shouldGenerateIfCan =
-      !model.__dont_factory || !model.__dont_factory.includes(key);
-    let attributeIsNotFilled = !model[key] || model[key].length == 0;
-    if (shouldGenerateIfCan && attributeIsNotFilled) {
-      value = keyValues[key];
-      if (typeof value === 'function') value = value();
-      updateObj[key] = value;
-    }
+
+  if (keyValues.constructor == Object) {
+    keyValues = [keyValues];
+  }
+
+  keyValues.forEach((keyValuesSet) => {
+    let updateObj = {};
+    Object.keys(keyValuesSet).forEach((key) => {
+      let shouldGenerateIfCan =
+        !model.__dont_factory || !model.__dont_factory.includes(key);
+      let attributeIsNotFilled = !model[key] || model[key].length == 0;
+      if (shouldGenerateIfCan && attributeIsNotFilled) {
+        value = keyValuesSet[key];
+        if (typeof value === 'function') value = value();
+        updateObj[key] = value;
+      }
+    });
+    model.update(updateObj);
   });
-  model.update(updateObj);
 };
 
 let RelationshipSerializer = (relationships) =>
@@ -83,8 +90,39 @@ let graphQLOrderBy = (records, args) => {
   return records;
 };
 
+let generateConcessionTypeBookingTypes = (
+  concessionTypes,
+  server,
+  overrides = []
+) => {
+  return concessionTypes.map((concessionType, index) => {
+    return server.create(
+      'ConcessionTypeBookingType',
+      Object.assign(
+        {},
+        {
+          concessionType: concessionType,
+        },
+        overrides.length ? overrides[index] : null
+      )
+    );
+  });
+};
+
+let authedUser = (context) => {
+  let authToken =
+    context.request.requestHeaders.authorization &&
+    context.request.requestHeaders.authorization.match(/Token (.+)$/)[1];
+
+  if (!authToken) return null;
+
+  return context.mirageSchema.userNodes.findBy({ token: authToken });
+};
+
 export {
+  authedUser,
   DefaultSerializer,
+  generateConcessionTypeBookingTypes,
   graphQLOrderBy,
   NotFoundResponse,
   paginatedResponse,

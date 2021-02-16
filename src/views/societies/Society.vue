@@ -68,7 +68,7 @@
                   <router-link
                     class="px-3 py-1.5 my-1 text-sm text-center font-semibold btn btn-orange"
                     :to="{
-                      name: 'production.book',
+                      name: 'production.book.select',
                       params: { productionSlug: production.slug },
                     }"
                   >

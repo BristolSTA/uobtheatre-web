@@ -66,8 +66,8 @@ describe('Venue page', function () {
         .attributes('src')
     ).to.equal('http://pathto.example/venue-image.png');
 
-    expect(venuePageComponent.findComponent({ ref: 'mapContainer' }).exists())
-      .to.be.true;
+    expect(venuePageComponent.findComponent({ ref: 'venue-map' }).exists()).to
+      .be.true;
   });
 
   describe('venue address', () => {
@@ -135,8 +135,8 @@ describe('Venue page', function () {
       venue: { address: { latitude: null } },
     });
 
-    expect(venuePageComponent.findComponent({ ref: 'mapContainer' }).exists())
-      .to.be.false;
+    expect(venuePageComponent.findComponent({ ref: 'venue-map' }).exists()).to
+      .be.false;
   });
 
   it('handles invalid venue', async () => {

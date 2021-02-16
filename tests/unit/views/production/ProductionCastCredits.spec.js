@@ -1,12 +1,17 @@
 import { mount } from '@vue/test-utils';
 import { RouterLinkStub } from '@vue/test-utils';
 import { expect } from 'chai';
+import { DateTime } from 'luxon';
 
 import ProductionCastCredits from '@/views/production/ProductionCastCredits.vue';
 
-import FakePerformance from '../../fixtures/FakePerformance';
-import FakeProduction from '../../fixtures/FakeProduction';
-import { fixTextSpacing, generateMountOptions } from '../../helpers.js';
+import FakeProduction from '../../fixtures/FakeProduction.js';
+import {
+  executeWithServer,
+  fixTextSpacing,
+  generateMountOptions,
+  runApolloQuery,
+} from '../../helpers.js';
 
 describe('CastCreditsContainer', function () {
   let castCreditsContainer;
@@ -15,7 +20,7 @@ describe('CastCreditsContainer', function () {
     it('shows the correct overview', async () => {
       await createWithPerformances([
         {
-          start: Date('2020-11-14'),
+          start: DateTime.fromISO('2020-11-14'),
           isInperson: true,
           isOnline: false,
         },
@@ -39,7 +44,7 @@ describe('CastCreditsContainer', function () {
     it('shows the correct show information', async () => {
       await createWithPerformances([
         {
-          start: Date('2020-11-14'),
+          start: DateTime.fromISO('2020-11-14'),
           isInperson: true,
           isOnline: false,
         },
@@ -85,12 +90,17 @@ describe('CastCreditsContainer', function () {
       await createWithPerformances(
         [
           {
-            start: Date('2020-11-14'),
+            start: DateTime.fromISO('2020-11-14'),
             isInperson: false,
             isOnline: true,
           },
         ],
-        { warnings: [], ageRating: null, facebookEvent: null }
+        {
+          __dont_factory: ['warnings'],
+          warnings: [],
+          ageRating: null,
+          facebookEvent: null,
+        }
       );
 
       // no warnings
@@ -113,7 +123,7 @@ describe('CastCreditsContainer', function () {
     it('shows the correct medium for online and in person', async () => {
       await createWithPerformances([
         {
-          start: Date('2020-11-14'),
+          start: DateTime.fromISO('2020-11-14'),
           isInperson: true,
           isOnline: true,
         },
@@ -137,7 +147,7 @@ describe('CastCreditsContainer', function () {
     beforeEach(async () => {
       await createWithPerformances([
         {
-          start: Date('2020-11-14'),
+          start: DateTime.fromISO('2020-11-14'),
           isInperson: true,
           isOnline: false,
         },
@@ -190,24 +200,33 @@ describe('CastCreditsContainer', function () {
     });
   });
 
-  let createWithPerformances = (performances, productionOverrides) => {
-    let perfs = [];
-    performances.forEach((perf) => {
-      perfs.push({
-        node: Object.assign(FakePerformance(), perf),
-      });
-    });
+  let createWithPerformances = async (performances, productionOverrides) => {
+    await executeWithServer(async (server) => {
+      productionOverrides = Object.assign(
+        FakeProduction(server),
+        productionOverrides,
+        {
+          performances: performances.map((perf) => {
+            return server.create('performanceNode', perf);
+          }),
+        }
+      );
+      let production = server.create('productionNode', productionOverrides);
 
-    let production = Object.assign(FakeProduction(), productionOverrides);
-    production.performances.edges = perfs;
-
-    castCreditsContainer = mount(
-      ProductionCastCredits,
-      generateMountOptions(['router'], {
-        propsData: {
-          production: production,
+      let gqlResult = await runApolloQuery({
+        query: require('@/graphql/queries/ProductionBySlug.gql'),
+        variables: {
+          slug: production.slug,
         },
-      })
-    );
+      });
+      castCreditsContainer = mount(
+        ProductionCastCredits,
+        generateMountOptions(['router'], {
+          propsData: {
+            production: gqlResult.data.production,
+          },
+        })
+      );
+    });
   };
 });

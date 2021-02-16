@@ -68,7 +68,6 @@
         </div>
         <div
           v-if="venue.address.latitude && venue.address.longitude"
-          ref="mapContainer"
           class="flex justify-center w-full lg:w-3/5 h-96 lg:mb-4"
         >
           <div ref="venue-map" class="w-full"></div>
@@ -84,13 +83,11 @@ import L from 'leaflet';
 
 import IconListItem from '@/components/ui/IconListItem.vue';
 import AddressFragment from '@/graphql/fragments/AddressFragment.gql';
-import { handle404Mixin } from '@/utils';
 import { createClient } from '@/vue-apollo';
 
 export default {
   name: 'VenuePage',
-  components: { IconListItem },
-  mixins: [IconListItem, handle404Mixin],
+  mixins: [IconListItem],
   metaInfo() {
     const venueName = this.venue ? this.venue.name : 'Loading...';
     return {

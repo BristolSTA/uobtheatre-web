@@ -1,14 +1,22 @@
-import { mount, RouterLinkStub } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 import { expect } from 'chai';
+import { DateTime } from 'luxon';
 
+import PerformanceOverview from '@/components/production/PerformanceOverview.vue';
 import ProductionPerformances from '@/views/production/ProductionPerformances.vue';
 
-import FakePerformance from '../../fixtures/FakePerformance.js';
 import FakeProduction from '../../fixtures/FakeProduction.js';
-import { fixTextSpacing } from '../../helpers.js';
+import {
+  assertNoVisualDifference,
+  executeWithServer,
+  fixTextSpacing,
+  generateMountOptions,
+  runApolloQuery,
+} from '../../helpers.js';
 
 describe('ProductionHeader', function () {
   let performancesContainer;
+  let fakeJestPush;
 
   it('shows no performances available if none returned', async () => {
     await createWithPerformances([]);
@@ -20,8 +28,8 @@ describe('ProductionHeader', function () {
       await createWithPerformances([
         // An available in-person & online performance
         {
-          start: new Date('28 November 2020 16:00:00 GMT').toISOString(),
-          end: new Date('28 November 2020 18:00:00 GMT').toISOString(),
+          start: DateTime.fromISO('2020-11-28T16:00:00'),
+          end: DateTime.fromISO('2020-11-28T18:00:00'),
           soldOut: false,
           disabled: false,
           isOnline: true,
@@ -29,8 +37,8 @@ describe('ProductionHeader', function () {
         },
         // A sold out performance
         {
-          start: new Date('30 November 2020 18:00:00 GMT').toISOString(),
-          end: new Date('30 November 2020 20:00:00 GMT').toISOString(),
+          start: DateTime.fromISO('2020-11-30T18:00:00'),
+          end: DateTime.fromISO('2020-11-30T20:00:00'),
           soldOut: true,
           disabled: false,
           isOnline: true,
@@ -39,25 +47,22 @@ describe('ProductionHeader', function () {
       ]);
     });
 
-    it('displays three performances', () => {
+    it('displays two performances', () => {
       expect(performancesContainer.findAll('.performance').length).to.eq(2);
     });
-    it('first performance is available and correct', () => {
-      let performance = performancesContainer.findAll('.performance').at(0);
-      let links = performance.findAll('a');
 
-      expect(performance.text()).to.contain('Saturday 28 Nov');
-      expect(performance.find('div.bg-sta-green').exists()).to.be.true;
-      expect(fixTextSpacing(performance.text())).to.contain(
-        'Winston Theatre and Online'
+    it('displays the correct number of performance overviews', () => {
+      let overviews = performancesContainer.findAllComponents(
+        PerformanceOverview
       );
-      expect(links.length).to.equal(2);
-      expect(links.at(0).text()).to.eq('Winston Theatre');
-      expect(performance.text()).to.contain('Starting at 16:00');
-      expect(performance.text()).to.contain('Tickets Available');
-      expect(links.at(1).text()).to.eq('Book');
-      //TODO: Test for link to booking page
-      //TODO: Test for link to venue page
+      let production = performancesContainer.vm.production;
+      expect(overviews.length).to.eq(2);
+      expect(overviews.at(0).props('performance')).to.eq(
+        production.performances.edges[0].node
+      );
+      expect(overviews.at(1).props('performance')).to.eq(
+        production.performances.edges[1].node
+      );
     });
 
     it('second performance is sold out and correct', () => {
@@ -71,26 +76,55 @@ describe('ProductionHeader', function () {
       expect(performance.text()).to.contain('No Tickets Available');
       expect(performance.find('button').text()).to.eq('SOLD OUT');
     });
-  });
 
-  let createWithPerformances = (performances, productionOverrides) => {
-    let perfs = [];
-    performances.forEach((perf) => {
-      perfs.push({
-        node: Object.assign(FakePerformance(), perf),
+    it('sends user to warnings stage when they click book', async () => {
+      await performancesContainer
+        .findComponent(PerformanceOverview)
+        .vm.$emit('select');
+      expect(fakeJestPush.mock.calls.length).to.eq(1);
+      assertNoVisualDifference(fakeJestPush.mock.calls[0][0], {
+        name: 'production.book.warnings',
+        params: {
+          productionSlug: 'trash',
+          performanceID:
+            performancesContainer.vm.production.performances.edges[0].node.id,
+        },
       });
     });
+  });
 
-    let production = Object.assign(FakeProduction(), productionOverrides);
-    production.performances.edges = perfs;
+  let createWithPerformances = async (performances, productionOverrides) => {
+    await executeWithServer(async (server) => {
+      productionOverrides = Object.assign(
+        FakeProduction(server),
+        productionOverrides,
+        {
+          performances: performances.map((perf) => {
+            return server.create('performanceNode', perf);
+          }),
+        }
+      );
+      let production = server.create('productionNode', productionOverrides);
 
-    performancesContainer = mount(ProductionPerformances, {
-      propsData: {
-        production: production,
-      },
-      stubs: {
-        RouterLink: RouterLinkStub,
-      },
+      let gqlResult = await runApolloQuery({
+        query: require('@/graphql/queries/ProductionBySlug.gql'),
+        variables: {
+          slug: production.slug,
+        },
+      });
+      performancesContainer = mount(
+        ProductionPerformances,
+        generateMountOptions(['router'], {
+          propsData: {
+            production: gqlResult.data.production,
+          },
+          mocks: {
+            $router: {
+              push: (fakeJestPush = jest.fn()),
+            },
+          },
+        })
+      );
     });
   };
 });

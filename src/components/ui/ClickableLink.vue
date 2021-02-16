@@ -2,7 +2,7 @@
   <a
     class="cursor-pointer"
     @click="$emit('click')"
-    @keydown="
+    @keypress="
       (e) => {
         e.target.click();
       }

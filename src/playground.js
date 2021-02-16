@@ -4,6 +4,8 @@ import Vue from 'vue';
 import Playground from '@/Playground.vue';
 import { createProvider } from '@/vue-apollo';
 
+import store from './store';
+
 require('./extensions');
 /**
  * Import server
@@ -22,4 +24,5 @@ import './assets/styles/app.scss';
 new Vue({
   render: (h) => h(Playground),
   apolloProvider: createProvider(),
+  store,
 }).$mount('#app');
