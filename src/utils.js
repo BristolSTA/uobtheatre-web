@@ -43,31 +43,6 @@ let runPromiseWithLoading = async (promises) => {
   store.commit('SET_NOT_LOADING');
 };
 
-let handle404 = (err, next) => {
-  if (err.response && err.response.status == 404) {
-    next({ name: '404' });
-  }
-};
-let handle404Mixin = {
-  methods: {
-    /**
-     * Checks if the API response is a 404, and if it is, redirects the user to the 404 page
-     *
-     * @param {any} err Axios error response object
-     */
-
-    handle404(err) {
-      handle404(err, this.$router.push);
-    },
-
-    check404(objectToCheck) {
-      if (objectToCheck == null) {
-        this.$router.push({ name: '404' });
-      }
-    },
-  },
-};
-
 let tailwindConfig = resolveConfig(require('../tailwind.config'));
 let swal = Swal.mixin({
   background: tailwindConfig.theme.colors['sta-gray'].DEFAULT,
@@ -82,8 +57,6 @@ let swal = Swal.mixin({
 export {
   displayStartEnd,
   duration,
-  handle404,
-  handle404Mixin,
   joinWithAnd,
   runPromiseWithLoading,
   swal,

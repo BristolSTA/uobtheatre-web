@@ -46,7 +46,6 @@
 import gql from 'graphql-tag';
 
 import AddressFragments from '@/graphql/fragments/AddressFragment.gql';
-import { handle404Mixin } from '@/utils';
 
 import IconListItem from '../../ui/IconListItem.vue';
 import OverviewBox from './OverviewBox.vue';
@@ -54,7 +53,6 @@ import OverviewBox from './OverviewBox.vue';
 export default {
   name: 'venue-overview',
   components: { OverviewBox, IconListItem },
-  mixins: [handle404Mixin],
   props: {
     venue_data: {
       requried: true,

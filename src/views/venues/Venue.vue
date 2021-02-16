@@ -82,13 +82,12 @@ import L from 'leaflet';
 
 import IconListItem from '@/components/ui/IconListItem.vue';
 import AddressFragment from '@/graphql/fragments/AddressFragment.gql';
-import { handle404Mixin } from '@/utils';
 import { createClient } from '@/vue-apollo';
 
 export default {
   components: { IconListItem },
   name: 'venue-page',
-  mixins: [IconListItem, handle404Mixin],
+  mixins: [IconListItem],
   metaInfo() {
     const venueName = this.venue ? this.venue.name : 'Loading...';
     return {

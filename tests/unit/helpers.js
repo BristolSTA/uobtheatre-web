@@ -105,70 +105,10 @@ const executeWithServer = async (callback, closeServer = true) => {
   return server;
 };
 
-const serialize = (model, server, innersToSerialize = []) => {
-  let serializedModel = server.serializerOrRegistry.serialize(model);
-
-  innersToSerialize.forEach((relationship) => {
-    let serializedAccessor = Array.isArray(relationship)
-      ? relationship[0]
-      : relationship;
-    let modelAccessor = Array.isArray(relationship)
-      ? relationship[1]
-      : relationship;
-    return lo.set(
-      serializedModel,
-      relationship,
-      lo.get(serializedModel, serializedAccessor).map((_, index) => {
-        return serialize(model[modelAccessor].models[index], server);
-      })
-    );
-  });
-
-  return serializedModel;
-};
-
-const createFromFactoryAndSerialize = (
-  modelName,
-  count = 1,
-  overrides = {},
-  server = null,
-  innersToSerialize = []
-) => {
-  let exisitingServer = server != null;
-  if (!exisitingServer) {
-    server = makeServer();
-  }
-  let returnData;
-  if (count == 1) {
-    returnData = server.create(modelName, overrides);
-  } else {
-    returnData = server.createList(modelName, count, overrides);
-  }
-
-  let serialized = serialize(returnData, server, innersToSerialize);
-
-  if (!exisitingServer) server.shutdown();
-  return serialized;
-};
-
 let assertNoVisualDifference = (recieved, expected) => {
   expect(JSON.stringify(recieved)).to.eq(JSON.stringify(expected));
 };
 
-let mapRelationshipsToEdges = (resource, relationships) => {
-  relationships.forEach((relationship) => {
-    if (resource[relationship]) {
-      resource[relationship] = {
-        edges: resource[relationship].map((node) => {
-          return {
-            node,
-          };
-        }),
-      };
-    }
-  });
-  return resource;
-};
 let client = null;
 let runApolloQuery = (options) => {
   if (!client) {
@@ -201,17 +141,14 @@ let seedAndAuthAsUser = (server, overrides = {}) => {
 
 export {
   assertNoVisualDifference,
-  createFromFactoryAndSerialize,
   executeWithServer,
   fixTextSpacing,
   generateMountOptions,
   makeServer,
-  mapRelationshipsToEdges,
   mountWithRouterMock,
   RouterLinkStub,
   runApolloQuery,
   seedAndAuthAsUser,
-  serialize,
   waitFor,
   waitForDOM,
   waitForTick,

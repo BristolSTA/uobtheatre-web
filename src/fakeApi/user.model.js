@@ -53,10 +53,7 @@ export default {
   registerGQLQueryResolvers() {
     return {
       authUser(obj, args, context) {
-        let user = authedUser(context);
-        if (!user) return user;
-
-        return user;
+        return authedUser(context);
       },
     };
   },

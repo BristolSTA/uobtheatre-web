@@ -76,7 +76,6 @@ export default {
     return next();
   },
   mounted() {
-    //TODO: Test this
     this.loadDataForStage();
     if (!this.$route.meta.stage.shouldBeUsed(this.production, this.booking)) {
       return this.navigateToStage();
