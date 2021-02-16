@@ -17,7 +17,7 @@ import {
 } from '../../helpers';
 
 describe('Create Booking Page', () => {
-  let component, production, server, performanceModel, routerPushFake;
+  let bookingComponent, production, server, performanceModel, routerPushFake;
   let fakeComponent = {
     name: 'router-view',
     template: '<div />',
@@ -44,7 +44,7 @@ describe('Create Booking Page', () => {
     server.shutdown();
   });
   beforeEach(() => {
-    component = shallowMount(Book, {
+    bookingComponent = shallowMount(Book, {
       propsData: {
         production: production,
       },
@@ -64,7 +64,7 @@ describe('Create Booking Page', () => {
   });
 
   it('has a production banner', () => {
-    let banner = component.findComponent(ProductionBanner);
+    let banner = bookingComponent.findComponent(ProductionBanner);
     expect(banner.exists()).to.be.true;
     expect(banner.props('production')).to.eq(production);
     expect(banner.props('showBuyTicketsButton')).to.eq(false);
@@ -72,28 +72,30 @@ describe('Create Booking Page', () => {
   });
 
   it('has booking navigation', () => {
-    let bookingNavigation = component.findComponent(BookingNavigation);
+    let bookingNavigation = bookingComponent.findComponent(BookingNavigation);
     expect(bookingNavigation.exists()).to.be.true;
     expect(bookingNavigation.props('currentStageIndex')).to.eq(0);
     expect(bookingNavigation.props('maxAllowedStageIndex')).to.eq(0);
     expect(bookingNavigation.props('production')).to.eq(production);
-    expect(bookingNavigation.props('booking')).to.eq(component.vm.booking);
+    expect(bookingNavigation.props('booking')).to.eq(
+      bookingComponent.vm.booking
+    );
   });
 
   it('has a router view', async () => {
-    await component.setData({
+    await bookingComponent.setData({
       ticket_matrix: 'fakeMatrix',
     });
-    let routerview = component.findComponent(fakeComponent);
+    let routerview = bookingComponent.findComponent(fakeComponent);
     expect(routerview.exists()).to.be.true;
     expect(routerview.props('production')).to.eq(production);
-    expect(routerview.props('booking')).to.eq(component.vm.booking);
+    expect(routerview.props('booking')).to.eq(bookingComponent.vm.booking);
     expect(routerview.props('ticket_matrix')).to.eq('fakeMatrix');
   });
 
   it('loads required data on mount if has a performance id', async () => {
     seedAndAuthAsUser(server);
-    component = shallowMount(
+    bookingComponent = shallowMount(
       Book,
       generateMountOptions(['apollo'], {
         propsData: {
@@ -113,18 +115,20 @@ describe('Create Booking Page', () => {
       })
     );
 
-    await waitFor(() => component.vm.ticket_matrix);
+    await waitFor(() => bookingComponent.vm.ticket_matrix);
 
-    expect(component.vm.booking.performance.id).to.eq(performanceModel.id);
-    expect(component.vm.ticket_matrix).not.to.be.null;
+    expect(bookingComponent.vm.booking.performance.id).to.eq(
+      performanceModel.id
+    );
+    expect(bookingComponent.vm.ticket_matrix).not.to.be.null;
   });
 
   it('reacts to booking navigation goto stage event', async () => {
-    let bookingNavigation = component.findComponent(BookingNavigation);
+    let bookingNavigation = bookingComponent.findComponent(BookingNavigation);
 
     await bookingNavigation.vm.$emit('goto-stage', stages[1]);
 
-    expect(component.vm.maxAllowedStageIndex).to.eq(1);
+    expect(bookingComponent.vm.maxAllowedStageIndex).to.eq(1);
     expect(routerPushFake.mock.calls).length(1);
     expect(routerPushFake.mock.calls[0][0].name).to.eq(
       stages[1].getRouteName()
@@ -132,13 +136,13 @@ describe('Create Booking Page', () => {
   });
 
   it('reacts to the router view emitting select performance event', async () => {
-    let routerview = component.findComponent(fakeComponent);
+    let routerview = bookingComponent.findComponent(fakeComponent);
 
     await routerview.vm.$emit('select-performance', {
       id: 1,
     });
 
-    expect(component.vm.booking.performance.id).to.eq(1);
+    expect(bookingComponent.vm.booking.performance.id).to.eq(1);
     expect(routerPushFake.mock.calls).length(1);
     expect(routerPushFake.mock.calls[0][0].name).to.eq(
       stages[1].getRouteName()
@@ -146,8 +150,8 @@ describe('Create Booking Page', () => {
   });
 
   it('reacts to the router view emitting next stage event', async () => {
-    component.vm.$route.meta.stage = stages[1];
-    let routerview = component.findComponent(fakeComponent);
+    bookingComponent.vm.$route.meta.stage = stages[1];
+    let routerview = bookingComponent.findComponent(fakeComponent);
 
     await routerview.vm.$emit('next-stage');
 
@@ -157,8 +161,8 @@ describe('Create Booking Page', () => {
   });
 
   it('reacts to the router view emitting stage unable event', async () => {
-    component.vm.$route.meta.stage = stages[1];
-    let routerview = component.findComponent(fakeComponent);
+    bookingComponent.vm.$route.meta.stage = stages[1];
+    let routerview = bookingComponent.findComponent(fakeComponent);
 
     await routerview.vm.$emit('stage-unable');
 
@@ -179,7 +183,7 @@ describe('Create Booking Page', () => {
       stub = jest.spyOn(swal, 'fire');
 
       mount = () => {
-        component = shallowMount(
+        bookingComponent = shallowMount(
           Book,
           generateMountOptions(['apollo'], {
             propsData: {
@@ -207,20 +211,22 @@ describe('Create Booking Page', () => {
       stub.mockResolvedValue({ isConfirmed: true });
       mount();
       let updateStub = jest
-        .spyOn(component.vm.booking, 'updateFromAPIData')
+        .spyOn(bookingComponent.vm.booking, 'updateFromAPIData')
         .mockImplementation();
 
       await waitFor(() => stub.mock.calls.length);
 
       expect(stub.mock.calls).length(1);
       expect(updateStub.mock.calls).length(1);
-      expect(updateStub.mock.calls[0][0]).to.eq(component.vm.previousBooking);
+      expect(updateStub.mock.calls[0][0]).to.eq(
+        bookingComponent.vm.previousBooking
+      );
     });
     it('can decline to resume booking', async () => {
       stub.mockResolvedValue({ isConfirmed: false });
       mount();
       let updateStub = jest
-        .spyOn(component.vm.booking, 'updateFromAPIData')
+        .spyOn(bookingComponent.vm.booking, 'updateFromAPIData')
         .mockImplementation();
 
       await waitFor(() => stub.mock.calls.length);
@@ -233,7 +239,7 @@ describe('Create Booking Page', () => {
   describe('mounted middleware', () => {
     let fakePush;
     let mount = (stage = stages[0]) => {
-      component = shallowMount(Book, {
+      bookingComponent = shallowMount(Book, {
         propsData: {
           production: production,
         },
