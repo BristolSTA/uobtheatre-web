@@ -243,7 +243,7 @@ export function makeServer({ environment = 'development' } = {}) {
       });
 
       /**
-       * Fake Performance 3 - Present laughter
+       * Fake Performance 3 - Present laughter - Not bookable
        */
 
       server.create('ProductionNode', 'withCoverImage', {
@@ -254,20 +254,12 @@ export function makeServer({ environment = 'development' } = {}) {
         isBookable: false,
       });
 
-      // server.create('ProductionNode', {
-      //   name: 'Decade',
-      //   society: dramsoc,
-      //   start: DateTime.fromISO('2018-10-18'),
-      //   end: DateTime.fromISO('2018-10-18'),
-      //   isBookable: false,
-      // });
-
-      // /**
-      //  * Fake Performance 4 - A complete random production called A Default Production
-      //  */
-      // server.create('ProductionNode', {
-      //   name: 'A Default Production',
-      // });
+      /**
+       * Fake Performance 4 - A complete random production called A Default Production
+       */
+      server.create('ProductionNode', {
+        name: 'A Default Production',
+      });
 
       /**
        * A user
