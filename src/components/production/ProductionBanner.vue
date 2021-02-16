@@ -100,12 +100,15 @@ export default {
   props: {
     production: {
       required: true,
+      type: Object,
     },
     showBuyTicketsButton: {
       default: true,
+      type: Boolean,
     },
     showDetailedInfo: {
       default: true,
+      type: Boolean,
     },
   },
   data() {

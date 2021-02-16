@@ -53,6 +53,7 @@ export default {
   props: {
     performance: {
       required: true,
+      type: Object,
     },
   },
   computed: {

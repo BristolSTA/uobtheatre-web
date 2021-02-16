@@ -3,15 +3,15 @@
     <div class="flex items-center p-2">
       <div class="w-3/4 pl-2">
         <p class="font-semibold">
-          {{ concession_type_edge.concessionType.name }}
+          {{ concessionTypeEdge.concessionType.name }}
         </p>
         <p class="text-sm">
-          {{ concession_type_edge.concessionType.description }}
+          {{ concessionTypeEdge.concessionType.description }}
         </p>
       </div>
       <div class="flex-col w-1/2 space-y-1 sm:w-1/4">
         <div class="flex justify-center font-semibold font">
-          £{{ (concession_type_edge.price / 100).toFixed(2) }}
+          £{{ (concessionTypeEdge.price / 100).toFixed(2) }}
         </div>
         <div class="flex justify-center space-x-1">
           <button
@@ -35,7 +35,7 @@
               (event) => {
                 if (
                   isNaN(event.target.value) ||
-                  event.target.value - numTickets > max_add_allowed
+                  event.target.value - numTickets > maxAddAllowed
                 )
                   return;
                 $emit('set-tickets', event.target.value);
@@ -44,8 +44,8 @@
           />
           <button
             class="w-8 h-8 p-0 btn"
-            :class="[max_add_allowed < 1 ? 'btn-gray-light' : 'btn-orange']"
-            :disabled="max_add_allowed < 1"
+            :class="[maxAddAllowed < 1 ? 'btn-gray-light' : 'btn-orange']"
+            :disabled="maxAddAllowed < 1"
             @click="addTicket"
             @keypress="addTicket"
           >
@@ -61,20 +61,23 @@
 export default {
   name: 'ConcessionType',
   props: {
-    concession_type_edge: {
+    concessionTypeEdge: {
       required: true,
+      type: Object,
     },
-    current_tickets: {
+    currentTickets: {
       required: true,
+      type: Array,
     },
-    max_add_allowed: {
+    maxAddAllowed: {
       required: true,
+      type: Number,
     },
   },
   computed: {
     numTickets() {
-      return this.current_tickets.filter((ticket) => {
-        return ticket.matches(null, this.concession_type_edge.concessionType);
+      return this.currentTickets.filter((ticket) => {
+        return ticket.matches(null, this.concessionTypeEdge.concessionType);
       }).length;
     },
   },

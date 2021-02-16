@@ -26,14 +26,16 @@
 </template>
 
 <script>
-import OverviewBox from './OverviewBox.vue';
+import Booking from '@/classes/Booking';
 
+import OverviewBox from './OverviewBox.vue';
 export default {
   name: 'BookingPriceOverview',
   components: { OverviewBox },
   props: {
     booking: {
       required: true,
+      type: Booking,
     },
   },
   computed: {

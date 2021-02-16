@@ -7,7 +7,7 @@
       />
       <div class="grid grid-cols-1 gap-4 md:grid-cols-2 justify-evenly">
         <venue-overview
-          :venue_data="booking.performance.venue.slug"
+          :venue-data="booking.performance.venue.slug"
           :online="booking.performance.isOnline"
           :in-person="booking.performance.isInperson"
         />
@@ -42,6 +42,7 @@ export default {
   props: {
     production: {
       required: true,
+      type: Object,
     },
     booking: {
       required: true,

@@ -25,6 +25,7 @@ export default {
   props: {
     value: {
       required: true,
+      validator: () => true,
     },
     name: {
       required: true,
@@ -36,9 +37,13 @@ export default {
     },
     autocomplete: {
       required: false,
+      validator: () => true,
+      default: null,
     },
     errors: {
       required: false,
+      type: [Array, Object],
+      default: null,
     },
   },
   computed: {

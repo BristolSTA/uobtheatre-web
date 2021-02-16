@@ -46,7 +46,7 @@ describe('Venue overview box', function () {
         VenueOverview,
         generateMountOptions(['apollo', 'router'], {
           propsData: {
-            venue_data: 'anson-theatre',
+            venueData: 'anson-theatre',
           },
         })
       );
@@ -62,7 +62,7 @@ describe('Venue overview box', function () {
       VenueOverview,
       generateMountOptions(['apollo', 'router'], {
         propsData: {
-          venue_data: venue,
+          venueData: venue,
         },
       })
     );

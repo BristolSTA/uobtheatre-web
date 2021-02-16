@@ -20,9 +20,11 @@ export default {
   props: {
     production: {
       required: true,
+      type: Object,
     },
     performance: {
       required: true,
+      type: Object,
     },
   },
 };

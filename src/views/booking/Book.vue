@@ -44,7 +44,7 @@
           <router-view
             :production="production"
             :booking="booking"
-            :ticket_matrix="ticket_matrix"
+            :ticket-matrix="ticketMatrix"
             @select-performance="onSelectPerformance"
             @next-stage="navigateToStage()"
             @stage-unable="gotoPreviousStage()"
@@ -69,6 +69,7 @@ export default {
   props: {
     production: {
       required: true,
+      type: Object,
     },
   },
   beforeRouteUpdate(to, from, next) {
@@ -80,7 +81,7 @@ export default {
   data() {
     return {
       booking: new Booking(),
-      ticket_matrix: null,
+      ticketMatrix: null,
       maxAllowedStageIndex: getStageIndex(this.$route.meta.stage),
       previousBooking: null,
     };
@@ -181,7 +182,7 @@ export default {
             );
         }
 
-        if (!this.ticket_matrix) {
+        if (!this.ticketMatrix) {
           this.$apollo
             .query({
               query: require('@/graphql/queries/PerformanceTicketOptions.gql'),
@@ -190,7 +191,7 @@ export default {
               },
             })
             .then((result) => {
-              this.ticket_matrix = new TicketsMatrix(result.data.performance);
+              this.ticketMatrix = new TicketsMatrix(result.data.performance);
             });
         }
       }

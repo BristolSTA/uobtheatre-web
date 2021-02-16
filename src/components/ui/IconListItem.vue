@@ -15,6 +15,8 @@ export default {
   props: {
     icon: {
       requried: true,
+      type: [Array, String],
+      default: null,
     },
   },
 };

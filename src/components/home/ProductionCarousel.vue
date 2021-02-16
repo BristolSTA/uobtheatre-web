@@ -45,7 +45,7 @@
         </div>
       </div>
     </transition-group>
-    <template v-if="this.carouselLength > 1">
+    <template v-if="carouselLength > 1">
       <div class="absolute flex justify-center w-full bottom-2">
         <ul class="flex items-center p-0 space-x-3 whitespace-nowrap">
           <li v-for="n in carouselLength" :key="n">
@@ -96,18 +96,23 @@ export default {
   props: {
     bannerProductions: {
       required: true,
+      type: Array,
     },
     vheight: {
       default: 50,
+      type: Number,
     },
     autoplay: {
       default: true,
+      type: Boolean,
     },
     autoplaySpeed: {
       default: 5000,
+      type: Number,
     },
     pauseOnHover: {
       default: true,
+      type: Boolean,
     },
   },
   data() {

@@ -55,14 +55,14 @@ export default {
   name: 'VenueOverview',
   components: { OverviewBox, IconListItem },
   props: {
-    venue_data: {
+    venueData: {
       requried: true,
+      type: [Object, String],
+      default: null,
     },
     online: {
-      required: false,
-    },
-    inPerson: {
-      required: false,
+      default: false,
+      type: Boolean,
     },
   },
   data() {
@@ -86,12 +86,12 @@ export default {
       `,
       variables() {
         return {
-          slug: this.venue_data,
+          slug: this.venueData,
         };
       },
       skip() {
-        if (typeof this.venue_data != 'string') {
-          this.venue = this.venue_data;
+        if (typeof this.venueData != 'string') {
+          this.venue = this.venueData;
           return true;
         }
         return false;

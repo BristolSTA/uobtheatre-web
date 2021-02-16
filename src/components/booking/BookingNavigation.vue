@@ -16,21 +16,26 @@
 </template>
 
 <script>
+import Booking from '@/classes/Booking';
 import Stages, { getStageIndex } from '@/views/booking/bookingStages';
 export default {
   name: 'BookingNavigation',
   props: {
     currentStageIndex: {
       required: true,
+      type: Number,
     },
     maxAllowedStageIndex: {
       required: true,
+      type: Number,
     },
     production: {
       required: true,
+      type: Object,
     },
     booking: {
       required: true,
+      type: Booking,
     },
   },
   computed: {

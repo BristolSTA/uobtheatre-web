@@ -19,7 +19,7 @@
           class="inline-block text-h3 lg:text-h2"
           :class="{ 'line-through': !available }"
         >
-          {{ ticket_option.seatGroup.name }}
+          {{ ticketOption.seatGroup.name }}
         </h3>
         <h3
           v-if="!available"
@@ -27,8 +27,8 @@
         >
           Sold Out
         </h3>
-        <p v-if="expanded && ticket_option.seatGroup.description" class="p-2">
-          {{ ticket_option.seatGroup.description }}
+        <p v-if="expanded && ticketOption.seatGroup.description" class="p-2">
+          {{ ticketOption.seatGroup.description }}
         </p>
       </div>
       <div v-if="available" class="flex items-center pr-4 text-3xl">
@@ -37,44 +37,44 @@
     </div>
     <div v-if="expanded" class="pb-2 bg-sta-gray">
       <div
-        v-if="group_capacity_remaining < 10"
+        v-if="groupCapacityRemaining < 10"
         class="px-2 pt-2 text-center text-sta-rouge"
       >
-        <template v-if="group_capacity_remaining != 0">
-          Hurry! Only {{ group_capacity_remaining }} ticket{{
-            group_capacity_remaining > 1 ? 's' : null
+        <template v-if="groupCapacityRemaining != 0">
+          Hurry! Only {{ groupCapacityRemaining }} ticket{{
+            groupCapacityRemaining > 1 ? 's' : null
           }}
           remaining in this location
         </template>
         <template v-else>No more tickets available at this location</template>
       </div>
       <concession-type
-        v-for="(concession_type_edge, index) in ticket_option.concessionTypes"
+        v-for="(concessionTypeEdge, index) in ticketOption.concessionTypes"
         :key="index"
-        :concession_type_edge="concession_type_edge"
-        :current_tickets="currentLocationTickets"
-        :max_add_allowed="group_capacity_remaining"
+        :concession-type-edge="concessionTypeEdge"
+        :current-tickets="currentLocationTickets"
+        :max-add-allowed="groupCapacityRemaining"
         @add-ticket="
           $emit(
             'add-ticket',
-            ticket_option.seatGroup,
-            concession_type_edge.concessionType
+            ticketOption.seatGroup,
+            concessionTypeEdge.concessionType
           )
         "
         @set-tickets="
           (num) =>
             $emit(
               'set-tickets',
-              ticket_option.seatGroup,
-              concession_type_edge.concessionType,
+              ticketOption.seatGroup,
+              concessionTypeEdge.concessionType,
               num
             )
         "
         @remove-ticket="
           $emit(
             'remove-ticket',
-            ticket_option.seatGroup,
-            concession_type_edge.concessionType
+            ticketOption.seatGroup,
+            concessionTypeEdge.concessionType
           )
         "
       />
@@ -83,10 +83,10 @@
           v-for="(discount, index) in discounts.filter(
             (discount) =>
               (!discount.seatGroup ||
-                discount.seatGroup.id == ticket_option.seatGroup.id) &&
+                discount.seatGroup.id == ticketOption.seatGroup.id) &&
               discount.requirements
                 .map((req) => req.number)
-                .reduce((a, b) => a + b, 0) <= group_capacity_remaining
+                .reduce((a, b) => a + b, 0) <= groupCapacityRemaining
           )"
           :key="index"
           :discount="discount"
@@ -108,30 +108,35 @@ export default {
   props: {
     expanded: {
       required: true,
+      type: Boolean,
     },
-    ticket_option: {
+    ticketOption: {
       required: true,
+      type: Object,
     },
-    group_capacity_remaining: {
+    groupCapacityRemaining: {
       required: true,
+      type: Number,
     },
-    current_tickets: {
+    currentTickets: {
       required: true,
+      type: Array,
     },
     discounts: {
       required: true,
+      type: Array,
     },
   },
   computed: {
     available() {
       return (
-        this.group_capacity_remaining != 0 ||
+        this.groupCapacityRemaining != 0 ||
         this.currentLocationTickets.length != 0
       );
     },
     currentLocationTickets() {
-      return this.current_tickets.filter((ticket) => {
-        return ticket.matches(this.ticket_option.seatGroup);
+      return this.currentTickets.filter((ticket) => {
+        return ticket.matches(this.ticketOption.seatGroup);
       });
     },
   },
@@ -140,7 +145,7 @@ export default {
       discount.requirements.forEach((requirement) => {
         this.$emit(
           'add-ticket',
-          this.ticket_option.seatGroup,
+          this.ticketOption.seatGroup,
           requirement.concessionType,
           requirement.number
         );

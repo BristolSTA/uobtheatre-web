@@ -25,6 +25,7 @@ export default {
   props: {
     discount: {
       required: true,
+      type: Object,
     },
   },
   methods: {

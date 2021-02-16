@@ -21,7 +21,7 @@ describe('Create Booking Page', () => {
   let fakeComponent = {
     name: 'router-view',
     template: '<div />',
-    props: ['production', 'booking', 'ticket_matrix'],
+    props: ['production', 'booking', 'ticketMatrix'],
   };
   beforeAll(async () => {
     server = await executeWithServer(async (server) => {
@@ -84,13 +84,13 @@ describe('Create Booking Page', () => {
 
   it('has a router view', async () => {
     await bookingComponent.setData({
-      ticket_matrix: 'fakeMatrix',
+      ticketMatrix: 'fakeMatrix',
     });
     let routerview = bookingComponent.findComponent(fakeComponent);
     expect(routerview.exists()).to.be.true;
     expect(routerview.props('production')).to.eq(production);
     expect(routerview.props('booking')).to.eq(bookingComponent.vm.booking);
-    expect(routerview.props('ticket_matrix')).to.eq('fakeMatrix');
+    expect(routerview.props('ticketMatrix')).to.eq('fakeMatrix');
   });
 
   it('loads required data on mount if has a performance id', async () => {
@@ -115,12 +115,12 @@ describe('Create Booking Page', () => {
       })
     );
 
-    await waitFor(() => bookingComponent.vm.ticket_matrix);
+    await waitFor(() => bookingComponent.vm.ticketMatrix);
 
     expect(bookingComponent.vm.booking.performance.id).to.eq(
       performanceModel.id
     );
-    expect(bookingComponent.vm.ticket_matrix).not.to.be.null;
+    expect(bookingComponent.vm.ticketMatrix).not.to.be.null;
   });
 
   it('reacts to booking navigation goto stage event', async () => {
