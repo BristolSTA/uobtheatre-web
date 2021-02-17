@@ -1,11 +1,10 @@
 import { mount } from '@vue/test-utils';
 import { expect } from 'chai';
 
-import { makeServer } from '@/fakeApi';
 import store from '@/store';
 import UserAuthBox from '@/views/auth/UserAuthBox.vue';
 
-import { waitFor } from '../../helpers';
+import { executeWithServer, waitFor } from '../../helpers';
 
 describe('AuthBox', function () {
   let authBoxComponent, server;
@@ -13,13 +12,14 @@ describe('AuthBox', function () {
     userPassword = 'admin',
     userToken = '36c86c19f8f8d73aa59c3a00814137bdee0ab8de';
 
-  beforeAll(() => {
-    server = makeServer({ environment: 'test' });
-    server.create('userNode', {
-      email: userEmail,
-      password: userPassword,
-      token: userToken,
-    });
+  beforeAll(async () => {
+    server = await executeWithServer((server) => {
+      server.create('userNode', {
+        email: userEmail,
+        password: userPassword,
+        token: userToken,
+      });
+    }, false);
   });
 
   afterAll(() => {

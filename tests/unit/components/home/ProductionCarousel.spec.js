@@ -48,7 +48,7 @@ describe('ProductionCarousel', function () {
       });
 
       let { data } = await runApolloQuery({
-        query: require('@/views/HomeUpcomingProductions.gql'),
+        query: require('@/graphql/queries/HomeUpcomingProductions.gql'),
       });
 
       jest.useFakeTimers();

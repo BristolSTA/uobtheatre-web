@@ -1,10 +1,7 @@
 /* eslint-disable */
 import Vue from 'vue';
 import VueApollo from 'vue-apollo';
-import {
-  createApolloClient,
-  restartWebsockets,
-} from 'vue-cli-plugin-apollo/graphql-client';
+import { createApolloClient } from 'vue-cli-plugin-apollo/graphql-client';
 import config from '@/config';
 import store from '@/store';
 
@@ -29,7 +26,7 @@ const defaultOptions = {
   httpEndpoint,
   // You can use `wss` for secure connection (recommended in production)
   // Use `null` to disable subscriptions
-  wsEndpoint: null, //process.env.VUE_APP_GRAPHQL_WS || 'ws://localhost:4000/graphql'
+  wsEndpoint: null,
   // LocalStorage token
   tokenName: AUTH_TOKEN,
   // Enable Automatic Query persisting with Apollo Engine
@@ -40,25 +37,11 @@ const defaultOptions = {
   // Is being rendered on the server?
   ssr: false,
 
-  // Override default apollo link
-  // note: don't override httpLink here, specify httpLink options in the
-  // httpLinkOptions property of defaultOptions.
-  // link: myLink
-
-  // Override default cache
-  // cache: myCache
-
   // Override the way the Authorization header is set
   getAuth: (tokenName) => {
     if (!store.state.auth.token) return;
     return `Token ${store.state.auth.token}`;
   },
-
-  // Additional ApolloClient options
-  // apollo: { ... }
-
-  // Client local data (see apollo-link-state)
-  // clientState: { resolvers: { ... }, defaults: { ... } }
 };
 
 export function createClient(options = {}) {
@@ -93,39 +76,4 @@ export function createProvider(options = {}) {
   });
 
   return apolloProvider;
-}
-
-// Manually call this when user log in
-/**
- * @param apolloClient
- * @param token
- */
-export async function onLogin(apolloClient, token) {
-  if (typeof localStorage !== 'undefined' && token) {
-    localStorage.setItem(AUTH_TOKEN, token);
-  }
-  if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient);
-  try {
-    await apolloClient.resetStore();
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.log('%cError on cache reset (login)', 'color: orange;', e.message);
-  }
-}
-
-// Manually call this when user log out
-/**
- * @param apolloClient
- */
-export async function onLogout(apolloClient) {
-  if (typeof localStorage !== 'undefined') {
-    localStorage.removeItem(AUTH_TOKEN);
-  }
-  if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient);
-  try {
-    await apolloClient.resetStore();
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.log('%cError on cache reset (logout)', 'color: orange;', e.message);
-  }
 }

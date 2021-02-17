@@ -1,9 +1,13 @@
 import { expect } from 'chai';
 
-import { makeServer } from '@/fakeApi';
 import Venue from '@/views/venues/Venue.vue';
 
-import { fixTextSpacing, mountWithRouterMock, waitFor } from '../../helpers';
+import {
+  executeWithServer,
+  fixTextSpacing,
+  mountWithRouterMock,
+  waitFor,
+} from '../../helpers';
 
 describe('Venue page', function () {
   let venuePageComponent;
@@ -11,28 +15,28 @@ describe('Venue page', function () {
   let address;
 
   beforeEach(async () => {
-    server = makeServer({ environment: 'test' });
-
-    // Create a venue
-    server.create('VenueNode', {
-      name: 'Anson Theatre',
-      slug: 'anson-theatre',
-      description: 'not the anson rooms',
-      image: server.create('GrapheneImageFieldNode', {
-        url: 'http://pathto.example/venue-image.png',
-      }),
-      publiclyListed: true,
-      internalCapacity: '420',
-      address: server.create('AddressNode', {
-        buildingName: 'Wills Memorial Building',
-        street: 'Queens Road',
-        buildingNumber: '69',
-        city: 'London',
-        postcode: 'BS69 420',
-        latitude: '123.4567',
-        longitude: '987.654',
-      }),
-    });
+    server = await executeWithServer((server) => {
+      // Create a venue
+      server.create('VenueNode', {
+        name: 'Anson Theatre',
+        slug: 'anson-theatre',
+        description: 'not the anson rooms',
+        image: server.create('GrapheneImageFieldNode', {
+          url: 'http://pathto.example/venue-image.png',
+        }),
+        publiclyListed: true,
+        internalCapacity: '420',
+        address: server.create('AddressNode', {
+          buildingName: 'Wills Memorial Building',
+          street: 'Queens Road',
+          buildingNumber: '69',
+          city: 'London',
+          postcode: 'BS69 420',
+          latitude: '123.4567',
+          longitude: '987.654',
+        }),
+      });
+    }, false);
 
     venuePageComponent = await mountWithRouterMock(
       Venue,

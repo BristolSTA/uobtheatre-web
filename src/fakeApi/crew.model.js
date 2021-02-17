@@ -26,8 +26,9 @@ export default {
     type CrewRoleNode implements Node {
       id: ID!
       name: String
-      department: String!
       crewMembers(offset: Int, before: String, after: String, first: Int, last: Int): CrewMemberNodeConnection!
+      
+      department: String!
     }
     `;
   },

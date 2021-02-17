@@ -1,9 +1,9 @@
 import authService from '../services/authService';
 
 /**
- * @param {object} root0 Root Parameters Object
- * @param {any} root0.next Next Middleware Resolver
- * @param {any} root0.to Incoming Route
+ * @param {object} routerContext Vue Router Context
+ * @param {any} routerContext.next Next Middleware Resolver
+ * @param {any} routerContext.to Incoming Route
  * @returns {any} Middleware Resolver
  */
 export default function auth({ next, to }) {

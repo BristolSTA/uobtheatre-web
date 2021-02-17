@@ -16,7 +16,6 @@ import SeatGroupInterface from './seatGroup.model';
 import SocietyInterface from './society.model';
 import UserInterface from './user.model';
 import { generateConcessionTypeBookingTypes } from './utils';
-import { RelationshipSerializer } from './utils';
 import VenueInterface from './venue.model';
 let apiModels = [
   ProductionInterface,
@@ -34,7 +33,6 @@ let apiModels = [
 ];
 
 let models = {};
-let serializers = {};
 let factories = {};
 let queryResolvers = {};
 let mutationResolvers = {};
@@ -48,22 +46,29 @@ let customResolvers = {};
  */
 export function makeServer({ environment = 'development' } = {}) {
   apiModels.forEach((model) => {
+    // Register models
     if (model.registerModels)
       models = Object.assign(models, model.registerModels());
-    if (model.registerSerializers)
-      serializers = Object.assign(serializers, model.registerSerializers());
+
+    // Register factories
     if (model.registerFactories)
       factories = Object.assign(factories, model.registerFactories());
+
+    // Register query type resolvers
     if (model.registerGQLQueryResolvers)
       queryResolvers = Object.assign(
         queryResolvers,
         model.registerGQLQueryResolvers()
       );
+
+    // Register mutation type resolvers
     if (model.registerGQLMutationResolvers)
       mutationResolvers = Object.assign(
         mutationResolvers,
         model.registerGQLMutationResolvers()
       );
+
+    // Register custom-typed resolvers
     if (model.registerGQLCustomResolvers)
       customResolvers = Object.assign(
         customResolvers,
@@ -75,13 +80,6 @@ export function makeServer({ environment = 'development' } = {}) {
     environment,
 
     models: Object.assign({}, models),
-
-    serializers: Object.assign(
-      {
-        application: RelationshipSerializer(true),
-      },
-      serializers
-    ),
 
     factories: Object.assign({}, factories),
 

@@ -2,12 +2,12 @@ import { RouterLinkStub } from '@vue/test-utils';
 import { expect } from 'chai';
 
 import ProductionCarousel from '@/components/home/ProductionCarousel.vue';
-import { makeServer } from '@/fakeApi';
 import Home from '@/views/Home.vue';
 
 import {
   fixTextSpacing,
   generateMountOptions,
+  makeServer,
   mountWithRouterMock,
   waitFor,
 } from '../helpers';
@@ -17,7 +17,7 @@ describe('Home', function () {
   let server;
 
   beforeEach(async () => {
-    server = makeServer({ environment: 'test' });
+    server = makeServer();
     homepageComponent = await mountWithRouterMock(
       Home,
       generateMountOptions(['apollo'])

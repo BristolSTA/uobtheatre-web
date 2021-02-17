@@ -27,13 +27,14 @@ export function routeWithBindings(routeOptions, bindings) {
  */
 
 /**
- * Automatically injectionsd the production prop based on productionSlug
+ * Automatically injects the production prop based on productionSlug
  *
  * @param {any} query Optional GraphQL query to override default
  * @returns {Promise} API Service Promise
  */
 export function bindProductionSlug(query = null) {
   return (to, next) => {
+    // Load query
     if (!query) {
       query = gql`
         query production($slug: String!) {
@@ -44,8 +45,10 @@ export function bindProductionSlug(query = null) {
         ${ProductionFragment}
       `;
     }
+
     let { apolloClient } = createClient();
 
+    // Execute query
     return apolloClient
       .query({
         query: query,

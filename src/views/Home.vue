@@ -131,7 +131,7 @@ export default {
   },
   apollo: {
     upcomingProductions: {
-      query: require('./HomeUpcomingProductions.gql'),
+      query: require('@/graphql/queries/HomeUpcomingProductions.gql'),
       update: (data) => data.productions.edges.map((edge) => edge.node),
     },
   },

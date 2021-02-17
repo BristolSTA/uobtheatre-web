@@ -1,14 +1,12 @@
-import { Response, Serializer } from 'miragejs';
+import { Response } from 'miragejs';
 
-let paginatedResponse = (data) => {
-  return {
-    count: 2,
-    next: null,
-    previous: null,
-    results: data.models ? data.models : data,
-  };
-};
-
+/**
+ * Updates a MirageJS model with factoried relationships if another value not already given
+ *
+ * @param {*} model MirageJS Model
+ * @param {object|string} keyValues Key value pairs, where the key is the name of the relationship to populate, and the value is either a static constant or callable function to run
+ * @param {?any} value If keyValues is a string, this value is set as the relationship's value
+ */
 let updateIfDoesntHave = function (model, keyValues, value) {
   // By default, assume keyValues is a dictonary of key value pairs
   if (keyValues instanceof String) {
@@ -37,27 +35,23 @@ let updateIfDoesntHave = function (model, keyValues, value) {
   });
 };
 
-let RelationshipSerializer = (relationships) =>
-  DefaultSerializer.extend({
-    include:
-      relationships === true
-        ? function () {
-            return this.primaryResource
-              ? Object.keys(this.primaryResource.associations)
-              : [];
-          }
-        : relationships,
-  });
-
-let DefaultSerializer = Serializer.extend({
-  embed: true,
-  root: false,
-});
-
+/**
+ * Creates a 404 response for MirageJS
+ *
+ * @returns {Response} MirageJS Reponse Object
+ */
 let NotFoundResponse = () => {
   return new Response(404);
 };
 
+/**
+ * A Django Rest Framework equivilent of a validation error response, used to send a validation error response via MirageJS
+ *
+ * @param {object} fieldErrors Set of field errors (i.e. for a specific field)
+ * @param {Array<string>} nonFieldErrors List of non-field errors as strings
+ * @param {?number} errorCode HTTP Error code to send with response. Defaults to 400
+ * @returns {Response} MirageJS Reponse Object
+ */
 let ValidationErrorResponse = (
   fieldErrors,
   nonFieldErrors,
@@ -73,6 +67,13 @@ let ValidationErrorResponse = (
   return new Response(errorCode, {}, data);
 };
 
+/**
+ * Performs a graphene-like order by on a set of records from a GraphQL query
+ *
+ * @param {any} records Records as returned from the mirageGraphQLFieldResolver
+ * @param {object} args Args parameter from the GraphQL query
+ * @returns {?Array} Sorted records
+ */
 let graphQLOrderBy = (records, args) => {
   const { orderBy } = args;
 
@@ -90,6 +91,14 @@ let graphQLOrderBy = (records, args) => {
   return records;
 };
 
+/**
+ * Generates ConcessionTypeBookingType instances for use as part of a performance's ticket options relationship
+ *
+ * @param {Array} concessionTypes Array of MirageJS Concession Type nodes
+ * @param {any} server MirageJS Server Instance
+ * @param {?Array<object>} overrides An array of overrides for the ConcessionTypeBookingType, where by the object at each index will be merged into the options for the concessionType at that index
+ * @returns {Array} Array of ConcessionTypeBookingType instances, ready to be inserted as ticketOptions
+ */
 let generateConcessionTypeBookingTypes = (
   concessionTypes,
   server,
@@ -109,6 +118,12 @@ let generateConcessionTypeBookingTypes = (
   });
 };
 
+/**
+ * Attempts to find the matching user based on GraphQL request authorization headers
+ *
+ * @param {any} context MirageJS / GraphQL Context Object
+ * @returns {?object} The MirageJS User Node model or null if not found
+ */
 let authedUser = (context) => {
   let authToken =
     context.request.requestHeaders.authorization &&
@@ -121,12 +136,9 @@ let authedUser = (context) => {
 
 export {
   authedUser,
-  DefaultSerializer,
   generateConcessionTypeBookingTypes,
   graphQLOrderBy,
   NotFoundResponse,
-  paginatedResponse,
-  RelationshipSerializer,
   updateIfDoesntHave,
   ValidationErrorResponse,
 };
