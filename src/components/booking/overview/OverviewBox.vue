@@ -4,8 +4,8 @@
       <h2 class="flex-grow mb-1 text-h3 sm:text-h2">
         <slot name="title"></slot>
       </h2>
-      <div v-if="$slots.message_box" class="pb-1 pr-1 sm:pr-4 sm:pb-0">
-        <slot name="message_box"></slot>
+      <div v-if="$slots.messageBox" class="pb-1 pr-1 sm:pr-4 sm:pb-0">
+        <slot name="messageBox"></slot>
       </div>
     </div>
     <div v-if="$slots.subtitle" class="font-semibold text-sta-orange">
