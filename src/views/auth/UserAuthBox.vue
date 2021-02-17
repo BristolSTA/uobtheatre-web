@@ -1,5 +1,5 @@
 <template>
-  <div class="shadow-2xl bg-sta-gray w-80 relative">
+  <div class="relative shadow-2xl bg-sta-gray w-80">
     <div role="navigation" class="flex items-center space-x-1">
       <button
         class="w-1/2 py-3 font-semibold rounded-none focus:outline-none"
@@ -20,8 +20,8 @@
     </div>
     <div
       v-if="loading"
-      ref="loading_overlay"
-      class="flex items-center justify-center absolute w-full h-full bg-sta-gray-dark bg-opacity-95 top-0 text-white text-3xl z-10"
+      ref="loading-overlay"
+      class="absolute top-0 z-10 flex items-center justify-center w-full h-full text-3xl text-white bg-sta-gray-dark bg-opacity-95"
     >
       <font-awesome-icon class="animate-spin" icon="circle-notch" />
     </div>
@@ -38,23 +38,23 @@
       </div>
       <text-input
         name="Email"
-        v-model="email"
         autocomplete="email"
         :errors="login_errors"
+        v-model="email"
       />
       <text-input
         name="Password"
-        v-model="password"
         type="password"
         autocomplete="current-password"
         :errors="login_errors"
+        v-model="password"
       />
       <label for="remember_me" class="flex items-center space-x-2">
         <input
-          type="checkbox"
           id="remember_me"
-          v-model="remember_me"
+          type="checkbox"
           class="w-5 h-5 border rounded-sm border-sta-grey focus:outline-none"
+          v-model="remember_me"
         />
         <span class="text-xs font-semibold text-white">Remember me?</span>
       </label>
@@ -74,8 +74,8 @@
         </clickable-link>
       </p>
       <p>
-        <a href="/login" class="text-sta-orange hover:text-sta-orange-dark"
-          >Forgot your password?
+        <a href="/login" class="text-sta-orange hover:text-sta-orange-dark">
+          Forgot your password?
         </a>
       </p>
     </form>
@@ -123,11 +123,12 @@ import TextInput from '@/components/ui/TextInput.vue';
 import { authService } from '@/services';
 
 export default {
-  name: 'user-auth-box',
+  name: 'UserAuthBox',
   components: { ClickableLink, TextInput },
   props: {
     login: {
       default: true,
+      type: Boolean,
     },
   },
   data() {

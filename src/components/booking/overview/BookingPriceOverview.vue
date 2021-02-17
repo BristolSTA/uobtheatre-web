@@ -15,7 +15,7 @@
       </tr>
     </table>
     <div class="p-1 px-2 text-center rounded bg-sta-gray">
-      <h3 class="text-h3" ref="total">
+      <h3 ref="total" class="text-h3">
         Order Total:
         <span class="px-4 text-sta-orange">
           £{{ booking.total_price_pounds }}
@@ -26,14 +26,16 @@
 </template>
 
 <script>
-import OverviewBox from './OverviewBox.vue';
+import Booking from '@/classes/Booking';
 
+import OverviewBox from './OverviewBox.vue';
 export default {
-  name: 'booking-price-overview',
+  name: 'BookingPriceOverview',
   components: { OverviewBox },
   props: {
     booking: {
       required: true,
+      type: Booking,
     },
   },
   computed: {

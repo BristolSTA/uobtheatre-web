@@ -49,24 +49,6 @@ export default {
       }),
     };
   },
-  registerRoutes() {
-    // Booking resource endpoints
-    this.resource('bookings', { except: ['create', 'update'] });
-    this.post('bookings', function (schema, request) {
-      request.requestBody = JSON.stringify({
-        booking: JSON.parse(request.requestBody),
-      });
-      let attrs = this.normalizedRequestAttrs('booking');
-      return schema.bookings.create(attrs);
-    });
-    this.put('bookings/:id', function (schema, request) {
-      request.requestBody = JSON.stringify({
-        booking: JSON.parse(request.requestBody),
-      });
-      let attrs = this.normalizedRequestAttrs('booking');
-      return schema.bookings.find(request.params.id).update(attrs);
-    });
-  },
   registerGQLMutationResolvers() {
     return {
       createBooking(obj, args, context) {
@@ -146,10 +128,9 @@ export default {
         bookingReference: UUID!
         performance: PerformanceNode!
         status: BookingStatus!
+        tickets: [TicketNode!]
         priceBreakdown: PriceBreakdownNode
 
-        
-        tickets: [TicketNode]
         user: UserNode
       }
 
@@ -163,14 +144,7 @@ export default {
         miscCostsValue: Int
         totalPrice: Int
 
-        
         ticketsDiscountedPrice: Int
-      }
-
-      type TicketNode {
-        id: ID!
-        seatGroup: SeatGroupNode!
-        concessionType: ConcessionTypeNode!
       }
 
       type PriceBreakdownTicketNode {
@@ -179,7 +153,6 @@ export default {
         seatGroup: SeatGroupNode
         totalPrice: Int
 
-        
         concessionType: ConcessionTypeNode
       }
 

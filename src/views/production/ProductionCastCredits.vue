@@ -5,30 +5,30 @@
         class="inline-block font-semibold hover:text-sta-rouge"
         :class="{ 'text-sta-rouge': overview }"
       >
-        <clickable-link @click="overview = true">Overview</clickable-link>
+        <clickable-link @click="overview = true"> Overview </clickable-link>
       </li>
       <li
         class="inline-block ml-6 font-semibold hover:text-sta-rouge"
         :class="{ 'text-sta-rouge': !overview }"
       >
-        <clickable-link @click="overview = false"
-          >Cast &amp; Credits</clickable-link
-        >
+        <clickable-link @click="overview = false">
+          Cast &amp; Credits
+        </clickable-link>
       </li>
     </ul>
     <div
       v-if="overview"
-      class="flex flex-wrap p-4 lg:flex-nowrap lg:space-x-4"
       ref="overview"
+      class="flex flex-wrap p-4 lg:flex-nowrap lg:space-x-4"
     >
       <div
         class="flex-none order-1 w-full mb-4 text-center sm:w-1/2 lg:w-auto lg:mb-0"
       >
         <img
+          ref="poster-image"
           class="inline-block max-h-80"
           :src="production.posterImage.url"
           alt="show poster"
-          ref="poster_image"
         />
       </div>
       <div class="flex-grow order-3 mt-4 lg:mt-0 lg:order-2">
@@ -39,13 +39,13 @@
       >
         <h3 class="text-xl font-semibold uppercase">Show Information</h3>
         <p v-if="medium"><strong>Medium:</strong> {{ medium }}</p>
-        <p v-if="production.ageRating" ref="age_rating">
+        <p v-if="production.ageRating" ref="age-rating">
           Ages {{ production.ageRating }}+
         </p>
         <div
           v-if="production.warnings.length"
-          class="p-3 bg-sta-rouge"
           ref="warnings"
+          class="p-3 bg-sta-rouge"
         >
           <span class="text-xl font-semibold uppercase">Audience Warnings</span>
           <ul class="list-disc list-inside">
@@ -68,21 +68,21 @@
         </p>
         <a
           v-if="production.facebookEvent"
+          ref="facebook-link"
           :href="production.facebookEvent"
           class="font-semibold uppercase text-sta-green"
           target="_blank"
-          ref="facebook_link"
         >
-          <icon-list-item :icon="['fab', 'facebook']"
-            >Facebook Event</icon-list-item
-          ></a
-        >
+          <icon-list-item :icon="['fab', 'facebook']">
+            Facebook Event
+          </icon-list-item>
+        </a>
       </div>
     </div>
-    <div v-else class="flex flex-wrap justify-center" ref="cast_credits">
+    <div v-else ref="cast-credits" class="flex flex-wrap justify-center">
       <div
+        v-if="production.productionTeam.length"
         class="cast-credit-section lg:w-1/2"
-        v-if="this.production.productionTeam.length"
       >
         <h1 class="crew-section-header">Production Team</h1>
         <div class="flex flex-wrap justify-center">
@@ -96,7 +96,9 @@
               :key="index"
               class="crew-item"
             >
-              <h4 class="font-semibold uppercase">{{ group[0].role }}</h4>
+              <h4 class="font-semibold uppercase">
+                {{ group[0].role }}
+              </h4>
               <p v-for="(member, gIndex) in group" :key="gIndex">
                 {{ member.name }}
               </p>
@@ -104,10 +106,7 @@
           </div>
         </div>
       </div>
-      <div
-        class="cast-credit-section lg:w-1/2"
-        v-if="this.production.crew.length"
-      >
+      <div v-if="production.crew.length" class="cast-credit-section lg:w-1/2">
         <h1 class="uppercase crew-section-header">Crew</h1>
         <div class="flex flex-wrap justify-center">
           <div
@@ -130,7 +129,7 @@
           </div>
         </div>
       </div>
-      <div class="w-full p-4 text-center" v-if="this.production.cast.length">
+      <div v-if="production.cast.length" class="w-full p-4 text-center">
         <h1 class="uppercase crew-section-header">Cast</h1>
         <div class="flex flex-wrap justify-center space-y-4">
           <div
@@ -177,11 +176,12 @@ import lodash from 'lodash';
 import ClickableLink from '@/components/ui/ClickableLink.vue';
 import IconListItem from '@/components/ui/IconListItem.vue';
 export default {
-  name: 'production-cast-and-credits',
+  name: 'ProductionCastAndCredits',
   components: { ClickableLink, IconListItem },
   props: {
     production: {
       required: true,
+      type: Object,
     },
   },
   data() {

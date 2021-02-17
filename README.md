@@ -49,8 +49,8 @@ Here are the important areas to take a look at:
 
 To build on a standalone system:
 
-1. Run `yarn build`
-2. Run `yarn setup` to create the `.env` file from the example. Edit this as required.
+1. Run `yarn setup` to create the `.env` file from the example. Edit this as required.
+2. Run `yarn build`
 3. Deploy the files from `/dist`
 
 If using docker:
@@ -67,12 +67,12 @@ Checkout the `.env.example` file to see the environment variables to set/overrid
 yarn test:unit
 ```
 
+Add `--watch` to automatically re-run tests as you change files
+
 ### End-to-end tests
 
 ```
-yarn test:e2e --headless
+yarn test:e2e
 ```
 
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Add `--headless` to use without the GUI

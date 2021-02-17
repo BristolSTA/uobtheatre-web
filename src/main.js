@@ -15,7 +15,7 @@ import './assets/styles/app.scss';
 import 'leaflet/dist/leaflet.css';
 
 /**
- * Import server
+ * Import server & Vue Apollo
  */
 import { makeServer } from '@/fakeApi';
 import { createProvider } from '@/vue-apollo';
@@ -28,7 +28,7 @@ if (
 }
 
 /**
- * Create view app
+ * Create Vue app
  */
 new Vue({
   router,

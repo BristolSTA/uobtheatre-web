@@ -1,8 +1,8 @@
 <template>
-  <div class="h-screen flex flex-col">
+  <div class="flex flex-col h-screen">
     <nav-bar />
     <main class="flex-1">
-      <slot />
+      <slot></slot>
     </main>
     <footer-bar />
   </div>
@@ -12,7 +12,7 @@
 import FooterBar from './FooterBar.vue';
 import NavBar from './NavBar.vue';
 export default {
-  components: { NavBar, FooterBar },
   name: 'Layout',
+  components: { NavBar, FooterBar },
 };
 </script>

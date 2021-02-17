@@ -2,13 +2,13 @@
   <nav class="flex flex-col space-y-4">
     <button
       v-for="(stage, index) in applicableStages"
-      tag="button"
       :key="index"
+      tag="button"
       :class="stylesForButton(stage)"
       class="block text-center btn"
+      :disabled="stylesForButton(stage).includes('disabled')"
       @click="onSelectStage(stage)"
       @keypress="onSelectStage(stage)"
-      :disabled="stylesForButton(stage).includes('disabled')"
     >
       {{ stage.name }}
     </button>
@@ -16,21 +16,33 @@
 </template>
 
 <script>
+import Booking from '@/classes/Booking';
 import Stages, { getStageIndex } from '@/views/booking/bookingStages';
 export default {
-  name: 'booking-navigation',
+  name: 'BookingNavigation',
   props: {
     currentStageIndex: {
       required: true,
+      type: Number,
     },
     maxAllowedStageIndex: {
       required: true,
+      type: Number,
     },
     production: {
       required: true,
+      type: Object,
     },
     booking: {
       required: true,
+      type: Booking,
+    },
+  },
+  computed: {
+    applicableStages() {
+      return Stages.filter((stage) => {
+        return stage.shouldBeUsed(this.production, this.booking);
+      });
     },
   },
   methods: {
@@ -48,13 +60,6 @@ export default {
     onSelectStage(stage) {
       if (getStageIndex(stage) == this.currentStageIndex) return;
       this.$emit('goto-stage', stage);
-    },
-  },
-  computed: {
-    applicableStages() {
-      return Stages.filter((stage) => {
-        return stage.shouldBeUsed(this.production, this.booking);
-      });
     },
   },
 };

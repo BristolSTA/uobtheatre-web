@@ -6,7 +6,7 @@ import ProductionHeader from '@/views/production/ProductionHeader.vue';
 import ProductionPerformances from '@/views/production/ProductionPerformances.vue';
 
 import {
-  makeServer,
+  executeWithServer,
   mountWithRouterMock,
   runApolloQuery,
   waitFor,
@@ -20,26 +20,26 @@ describe('Production', function () {
   let headerComponent, castCreditsComponent, performancesComponent;
 
   beforeEach(async () => {
-    server = makeServer();
-
-    // Create a production
-    server.create('productionNode', {
-      name: 'Legally Ginger',
-      slug: 'legally-ginger',
-    });
-
-    let { data } = await runApolloQuery({
-      query: require('@/graphql/queries/ProductionBySlug.gql'),
-      variables: {
+    server = await executeWithServer(async (server) => {
+      // Create a production
+      server.create('productionNode', {
+        name: 'Legally Ginger',
         slug: 'legally-ginger',
-      },
-    });
-    productionObject = data.production;
-    productionPageComponent = await mountWithRouterMock(ProductionPage, {
-      propsData: {
-        production: productionObject,
-      },
-    });
+      });
+
+      let { data } = await runApolloQuery({
+        query: require('@/graphql/queries/ProductionBySlug.gql'),
+        variables: {
+          slug: 'legally-ginger',
+        },
+      });
+      productionObject = data.production;
+      productionPageComponent = await mountWithRouterMock(ProductionPage, {
+        propsData: {
+          production: productionObject,
+        },
+      });
+    }, false);
   });
 
   afterEach(() => {

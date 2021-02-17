@@ -13,10 +13,10 @@
           </div>
         </div>
       </div>
-      <production-carousel v-else :bannerProductions="bannerProductions" />
+      <production-carousel v-else :banner-productions="bannerProductions" />
     </div>
 
-    <div class="container mt-4 text-white" ref="whatson">
+    <div ref="whatson" class="container mt-4 text-white">
       <h1 class="text-h1">What's On</h1>
       <div
         v-for="(production, index) in upcomingProductionsToShow"
@@ -51,7 +51,8 @@
               name: 'production',
               params: { productionSlug: production.slug },
             }"
-            ><h2 class="font-semibold text-h2 hover:text-gray-300">
+          >
+            <h2 class="font-semibold text-h2 hover:text-gray-300">
               {{ production.name }}
             </h2>
           </router-link>
@@ -68,7 +69,8 @@
               params: { productionSlug: production.slug },
             }"
             class="mt-6 btn btn-rouge"
-            >More Information
+          >
+            More Information
           </router-link>
         </div>
       </div>
@@ -87,8 +89,8 @@
         class="flex items-center py-10 text-center"
       >
         <div class="w-full">
-          <router-link to="/" class="btn btn-outline btn-orange"
-            >View All Upcoming Productions
+          <router-link to="/" class="btn btn-outline btn-orange">
+            View All Upcoming Productions
           </router-link>
         </div>
       </div>
@@ -129,7 +131,7 @@ export default {
   },
   apollo: {
     upcomingProductions: {
-      query: require('./HomeUpcomingProductions.gql'),
+      query: require('@/graphql/queries/HomeUpcomingProductions.gql'),
       update: (data) => data.productions.edges.map((edge) => edge.node),
     },
   },

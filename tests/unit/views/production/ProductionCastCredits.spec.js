@@ -35,7 +35,7 @@ describe('CastCreditsContainer', function () {
       expect(
         castCreditsContainer
           .findComponent({
-            ref: 'poster_image',
+            ref: 'poster-image',
           })
           .attributes('src')
       ).to.equal('http://pathto.example/poster-image.png');
@@ -60,7 +60,7 @@ describe('CastCreditsContainer', function () {
       expect(castCreditsContainer.text()).to.contain('Medium: In Person Only');
 
       //correct age rating
-      expect(castCreditsContainer.findComponent({ ref: 'age_rating' }).exists())
+      expect(castCreditsContainer.findComponent({ ref: 'age-rating' }).exists())
         .to.be.true;
       expect(castCreditsContainer.text()).to.contain('Ages 18+');
 
@@ -79,7 +79,7 @@ describe('CastCreditsContainer', function () {
       ).to.equal('joe-bloggs-productions');
 
       // correct facebook link
-      let link = castCreditsContainer.findComponent({ ref: 'facebook_link' });
+      let link = castCreditsContainer.findComponent({ ref: 'facebook-link' });
       expect(link.exists()).to.be.true;
       expect(link.attributes('href')).to.eq(
         'https://facebook.com/legally-ginger'
@@ -108,12 +108,12 @@ describe('CastCreditsContainer', function () {
         .to.be.false;
 
       // no age rating
-      expect(castCreditsContainer.findComponent({ ref: 'age_rating' }).exists())
+      expect(castCreditsContainer.findComponent({ ref: 'age-rating' }).exists())
         .to.be.false;
 
       // no facebook link
       expect(
-        castCreditsContainer.findComponent({ ref: 'facebook_link' }).exists()
+        castCreditsContainer.findComponent({ ref: 'facebook-link' }).exists()
       ).to.be.false;
 
       //online only medium
@@ -155,7 +155,7 @@ describe('CastCreditsContainer', function () {
       await castCreditsContainer.setData({ overview: false });
 
       castCredits = castCreditsContainer.findComponent({
-        ref: 'cast_credits',
+        ref: 'cast-credits',
       });
     });
 

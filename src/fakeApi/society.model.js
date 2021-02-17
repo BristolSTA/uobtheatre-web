@@ -20,7 +20,7 @@ export default {
             },
             banner: () => {
               return server.create('GrapheneImageFieldNode', {
-                url: 'https://via.placeholder.com/1200x480',
+                url: 'https://via.placeholder.com/1200x720',
               });
             },
           });

@@ -1,20 +1,22 @@
 <template>
   <div class="flex">
-    <div class="w-6 text-center mr-1">
+    <div class="w-6 mr-1 text-center">
       <font-awesome-icon :icon="icon" />
     </div>
     <div>
-      <slot />
+      <slot></slot>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'icon-list-item',
+  name: 'IconListItem',
   props: {
     icon: {
       requried: true,
+      type: [Array, String],
+      default: null,
     },
   },
 };

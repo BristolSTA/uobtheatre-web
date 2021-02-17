@@ -27,9 +27,10 @@ export default {
   registerGQLTypes() {
     return `
     type ConcessionTypeBookingType {
-      concessionType: ConcessionTypeNode
       price: Int
       pricePounds: String
+      
+      concessionType: ConcessionTypeNode
     } 
     `;
   },

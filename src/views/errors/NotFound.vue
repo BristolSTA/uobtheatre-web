@@ -7,7 +7,7 @@
 <script>
 import Error from './Error';
 export default {
-  name: 'error-404',
+  name: 'Error404',
   components: {
     Error,
   },

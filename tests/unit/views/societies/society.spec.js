@@ -2,45 +2,44 @@ import { RouterLinkStub } from '@vue/test-utils';
 import { expect } from 'chai';
 import { DateTime } from 'luxon';
 
-import { makeServer } from '@/fakeApi';
 import Society from '@/views/societies/Society.vue';
 
-import { mountWithRouterMock, waitFor } from '../../helpers';
+import { executeWithServer, mountWithRouterMock, waitFor } from '../../helpers';
 
 describe('Society page', function () {
   let societyPageComponent;
   let server;
 
   beforeEach(async () => {
-    server = makeServer({ environment: 'test' });
+    server = await executeWithServer((server) => {
+      // Create a society
+      let testSociety = server.create('SocietyNode', {
+        name: 'Drama Society',
+        slug: 'drama-soc',
+        description: 'not a musical theatre society',
+        logo: server.create('GrapheneImageFieldNode', {
+          url: 'http://pathto.example/society-logo.png',
+        }),
+        banner: server.create('GrapheneImageFieldNode', {
+          url: 'http://pathto.example/society-banner.png',
+        }),
+      });
 
-    // Create a society
-    let testSociety = server.create('SocietyNode', {
-      name: 'Drama Society',
-      slug: 'drama-soc',
-      description: 'not a musical theatre society',
-      logo: server.create('GrapheneImageFieldNode', {
-        url: 'http://pathto.example/society-logo.png',
-      }),
-      banner: server.create('GrapheneImageFieldNode', {
-        url: 'http://pathto.example/society-banner.png',
-      }),
-    });
-
-    server.create('ProductionNode', {
-      name: 'Bins',
-      slug: 'bins',
-      isBookable: true,
-      end: DateTime.fromISO('2020-10-18'),
-      society: testSociety,
-    });
-    server.create('ProductionNode', {
-      name: 'Centuary',
-      slug: 'centuary',
-      isBookable: false,
-      end: DateTime.fromISO('2019-10-19'),
-      society: testSociety,
-    });
+      server.create('ProductionNode', {
+        name: 'Bins',
+        slug: 'bins',
+        isBookable: true,
+        end: DateTime.fromISO('2020-10-18'),
+        society: testSociety,
+      });
+      server.create('ProductionNode', {
+        name: 'Centuary',
+        slug: 'centuary',
+        isBookable: false,
+        end: DateTime.fromISO('2019-10-19'),
+        society: testSociety,
+      });
+    }, false);
 
     societyPageComponent = await mountWithRouterMock(
       Society,
@@ -74,7 +73,7 @@ describe('Society page', function () {
     expect(
       societyPageComponent
         .findComponent({
-          ref: 'society_logo',
+          ref: 'society-logo',
         })
         .attributes('src')
     ).to.equal('http://pathto.example/society-logo.png');

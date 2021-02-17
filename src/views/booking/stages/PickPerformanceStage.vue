@@ -3,8 +3,8 @@
     <div
       v-for="(performanceGroup, time) in groupedPerformances"
       :key="time"
+      ref="performance-group"
       class="mb-4"
-      ref="performanceGroup"
     >
       <h2 class="mb-2 text-2xl font-semibold text-white">
         {{ time }}
@@ -33,6 +33,7 @@ export default {
   props: {
     production: {
       required: true,
+      type: Object,
     },
   },
   computed: {

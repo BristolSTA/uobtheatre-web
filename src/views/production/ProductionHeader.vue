@@ -10,11 +10,12 @@
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
 
 export default {
-  components: { ProductionBanner },
   name: 'ProductionHeader',
+  components: { ProductionBanner },
   props: {
     production: {
       required: true,
+      type: Object,
     },
   },
 };

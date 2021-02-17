@@ -15,9 +15,9 @@
     >
       <div
         v-for="index in [currentProduction]"
-        v-bind:key="index"
-        class="absolute top-0 bottom-0 left-0 right-0 bg-center bg-cover"
+        :key="index"
         ref="carousel"
+        class="absolute top-0 bottom-0 left-0 right-0 bg-center bg-cover"
         :style="{
           'background-image': bannerBackgorund(bannerProductions[index]),
         }"
@@ -45,7 +45,7 @@
         </div>
       </div>
     </transition-group>
-    <template v-if="this.carouselLength > 1">
+    <template v-if="carouselLength > 1">
       <div class="absolute flex justify-center w-full bottom-2">
         <ul class="flex items-center p-0 space-x-3 whitespace-nowrap">
           <li v-for="n in carouselLength" :key="n">
@@ -92,22 +92,27 @@
 import { displayStartEnd } from '@/utils';
 
 export default {
-  name: 'production-carousel',
+  name: 'ProductionCarousel',
   props: {
     bannerProductions: {
       required: true,
+      type: Array,
     },
     vheight: {
       default: 50,
+      type: Number,
     },
     autoplay: {
       default: true,
+      type: Boolean,
     },
     autoplaySpeed: {
       default: 5000,
+      type: Number,
     },
     pauseOnHover: {
       default: true,
+      type: Boolean,
     },
   },
   data() {
@@ -117,16 +122,16 @@ export default {
       autoplayInterval: null,
     };
   },
+  computed: {
+    carouselLength() {
+      return this.bannerProductions.length;
+    },
+  },
   mounted() {
     this.enableAutoPlay();
   },
   beforeDestroy() {
     this.disableAutoPlay();
-  },
-  computed: {
-    carouselLength() {
-      return this.bannerProductions.length;
-    },
   },
   methods: {
     bannerBackgorund(bannerProduction) {

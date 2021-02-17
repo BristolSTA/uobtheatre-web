@@ -5,8 +5,9 @@
         <router-link :to="{ name: 'home' }">
           <span
             class="text-3xl tracking-tight text-white uppercase sm:text-4xl"
-            >{{ $appName }}</span
           >
+            {{ $appName }}
+          </span>
         </router-link>
       </div>
       <div class="block lg:hidden">
@@ -31,7 +32,7 @@
         </button>
       </div>
       <div
-        ref="collapsableNavbar"
+        ref="collapsable-navbar"
         class="w-full lg:flex lg:items-center lg:w-auto"
         :class="navHidden ? 'hidden' : 'block'"
       >
@@ -53,13 +54,13 @@
           </router-link>
           <clickable-link
             v-else
+            class="mt-4 auth-button btn btn-orange btn-outline lg:mt-0"
             @click="
               () => {
                 authService.logout();
                 $router.push({ name: 'home' });
               }
             "
-            class="mt-4 auth-button btn btn-orange btn-outline lg:mt-0"
           >
             Log Out
           </clickable-link>

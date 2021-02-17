@@ -1,9 +1,9 @@
 <template>
   <label :for="inputId">
-    <span class="text-white text-xs font-semibold">{{ name }}</span>
+    <span class="text-xs font-semibold text-white">{{ name }}</span>
     <input
-      class="w-full p-1 rounded-sm focus:outline-none"
       :id="inputId"
+      class="w-full p-1 rounded-sm focus:outline-none"
       :name="inputId"
       :type="type"
       :value="value"
@@ -11,31 +11,44 @@
       @input="onInput"
     />
     <span
-      class="text-sta-rouge text-xs font-semibold"
       v-if="errors && errors.has(inputId)"
-      >{{ errors.get(inputId) }}</span
+      class="text-xs font-semibold text-sta-rouge"
     >
+      {{ errors.get(inputId) }}
+    </span>
   </label>
 </template>
 
 <script>
 export default {
-  name: 'text-input',
+  name: 'TextInput',
   props: {
     value: {
       required: true,
+      validator: () => true,
     },
     name: {
       required: true,
+      type: String,
     },
     type: {
       default: 'text',
+      type: String,
     },
     autocomplete: {
       required: false,
+      validator: () => true,
+      default: null,
     },
     errors: {
       required: false,
+      type: [Array, Object],
+      default: null,
+    },
+  },
+  computed: {
+    inputId() {
+      return this.name.replace(/ /g, '_').toLowerCase();
     },
   },
   methods: {
@@ -44,11 +57,6 @@ export default {
       if (this.errors) {
         this.errors.clear(this.inputId);
       }
-    },
-  },
-  computed: {
-    inputId() {
-      return this.name.replace(/ /g, '_').toLowerCase();
     },
   },
 };

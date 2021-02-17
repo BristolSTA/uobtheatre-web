@@ -21,10 +21,11 @@
 
 <script>
 export default {
-  name: 'group-ticket-button',
+  name: 'GroupTicketButton',
   props: {
     discount: {
       required: true,
+      type: Object,
     },
   },
   methods: {

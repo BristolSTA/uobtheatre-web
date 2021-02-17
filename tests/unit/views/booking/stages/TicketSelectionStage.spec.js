@@ -63,7 +63,7 @@ describe('Ticket Selection Stage', () => {
           propsData: {
             production: production,
             booking: booking,
-            ticket_matrix: ticket_types,
+            ticketMatrix: ticket_types,
           },
         })
       );
@@ -78,27 +78,23 @@ describe('Ticket Selection Stage', () => {
     let seatGroupComponents = stageComponent.findAllComponents(SeatGroup);
     expect(seatGroupComponents.length).to.eq(2);
     expect(
-      seatGroupComponents.at(0).props('ticket_option').seatGroup.name
+      seatGroupComponents.at(0).props('ticketOption').seatGroup.name
     ).to.eq('Best seats in the house');
     expect(
-      seatGroupComponents.at(1).props('ticket_option').seatGroup.name
+      seatGroupComponents.at(1).props('ticketOption').seatGroup.name
     ).to.eq('The Meh Seats');
     expect(seatGroupComponents.at(1).props('discounts').length).to.eq(1);
-    expect(seatGroupComponents.at(1).props('current_tickets').length).to.eq(0);
-    expect(seatGroupComponents.at(1).props('group_capacity_remaining')).to.eq(
-      10
-    );
+    expect(seatGroupComponents.at(1).props('currentTickets').length).to.eq(0);
+    expect(seatGroupComponents.at(1).props('groupCapacityRemaining')).to.eq(10);
 
     ticket_types.performance_capacity_remaining = 5;
     await stageComponent.vm.$forceUpdate();
 
-    expect(seatGroupComponents.at(1).props('group_capacity_remaining')).to.eq(
-      5
-    );
+    expect(seatGroupComponents.at(1).props('groupCapacityRemaining')).to.eq(5);
 
     await stageComponent.vm.booking.tickets.push(new Ticket(1, 1));
 
-    expect(seatGroupComponents.at(1).props('current_tickets').length).to.eq(1);
+    expect(seatGroupComponents.at(1).props('currentTickets').length).to.eq(1);
   });
 
   it('reacts to select location event and toggles accordion', async () => {
@@ -191,7 +187,7 @@ describe('Ticket Selection Stage', () => {
       propsData: {
         production: production,
         booking: stageComponent.vm.booking,
-        ticket_matrix: ticket_types,
+        ticketMatrix: ticket_types,
       },
     });
     expect(lo.debounce.mock.calls.length).to.eq(1);

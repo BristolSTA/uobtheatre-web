@@ -32,9 +32,9 @@ describe('Seat Location Component', () => {
       seatGroupComponent = mount(SeatGroup, {
         propsData: {
           expanded: false,
-          ticket_option: (ticketOption = data.performance.ticketOptions[0]),
-          group_capacity_remaining: 100,
-          current_tickets: [],
+          ticketOption: (ticketOption = data.performance.ticketOptions[0]),
+          groupCapacityRemaining: 100,
+          currentTickets: [],
           discounts: (discounts = data.performance.discounts),
         },
       });
@@ -73,23 +73,23 @@ describe('Seat Location Component', () => {
   it('displays correct ticket warnings', async () => {
     await seatGroupComponent.setProps({
       expanded: true,
-      group_capacity_remaining: 9,
+      groupCapacityRemaining: 9,
     });
     expect(fixTextSpacing(seatGroupComponent.text())).to.contain(
       'Hurry! Only 9 tickets remaining in this location'
     );
 
     //check for upper limit
-    await seatGroupComponent.setProps({ group_capacity_remaining: 10 });
+    await seatGroupComponent.setProps({ groupCapacityRemaining: 10 });
     expect(seatGroupComponent.text()).not.to.contain('Hurry!');
 
     //check for lower limit
-    await seatGroupComponent.setProps({ group_capacity_remaining: 1 });
+    await seatGroupComponent.setProps({ groupCapacityRemaining: 1 });
     expect(fixTextSpacing(seatGroupComponent.text())).to.contain(
       'Hurry! Only 1 ticket remaining in this location'
     );
 
-    await seatGroupComponent.setProps({ group_capacity_remaining: 0 });
+    await seatGroupComponent.setProps({ groupCapacityRemaining: 0 });
     expect(fixTextSpacing(seatGroupComponent.text())).to.contain(
       'No more tickets available at this location'
     );
@@ -99,7 +99,7 @@ describe('Seat Location Component', () => {
     let tickets = [new Ticket(1, 1), new Ticket(1, 1), new Ticket(1, 2)];
     await seatGroupComponent.setProps({
       expanded: true,
-      current_tickets: tickets,
+      currentTickets: tickets,
     });
 
     expect(seatGroupComponent.findComponent({ ref: 'ticket-warning' }).exists())
@@ -109,17 +109,17 @@ describe('Seat Location Component', () => {
     expect(components.length).to.eq(2);
 
     expect(
-      components.at(0).props('concession_type_edge').concessionType.name
+      components.at(0).props('concessionTypeEdge').concessionType.name
     ).to.eq('Adult');
 
-    expect(components.at(0).props('max_add_allowed')).to.eq(100);
+    expect(components.at(0).props('maxAddAllowed')).to.eq(100);
 
-    expect(components.at(0).props('current_tickets').length).to.eq(3);
+    expect(components.at(0).props('currentTickets').length).to.eq(3);
 
     expect(
-      components.at(1).props('concession_type_edge').concessionType.name
+      components.at(1).props('concessionTypeEdge').concessionType.name
     ).to.eq('Student');
-    expect(components.at(1).props('current_tickets').length).to.eq(3);
+    expect(components.at(1).props('currentTickets').length).to.eq(3);
   });
 
   it('contains the correct amount of group ticket buttons', async () => {
@@ -161,7 +161,7 @@ describe('Seat Location Component', () => {
   });
   it('doesnt display group ticket buttons if the remaining capacity doesnt allow for it', async () => {
     await seatGroupComponent.setProps({
-      group_capacity_remaining: 2,
+      groupCapacityRemaining: 2,
     });
     expect(
       seatGroupComponent.findAllComponents(GroupTicketButton).length
@@ -170,7 +170,7 @@ describe('Seat Location Component', () => {
   describe('sold out group', () => {
     beforeEach(() => {
       seatGroupComponent.setProps({
-        group_capacity_remaining: 0,
+        groupCapacityRemaining: 0,
       });
     });
 
@@ -189,7 +189,7 @@ describe('Seat Location Component', () => {
     describe('with tickets from group', () => {
       beforeEach(async () => {
         await seatGroupComponent.setProps({
-          current_tickets: [
+          currentTickets: [
             new Ticket(
               ticketOption.seatGroup.id,
               ticketOption.concessionTypes[0].concessionType.id

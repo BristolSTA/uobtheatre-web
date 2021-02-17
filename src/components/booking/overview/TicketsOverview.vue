@@ -4,7 +4,7 @@
       <font-awesome-icon icon="ticket-alt" class="mr-2" />
       Tickets
     </template>
-    <template v-slot:message_box>
+    <template v-slot:messageBox>
       <table class="flex ml-auto table-auto">
         <tr>
           <th class="pr-4">
@@ -49,7 +49,7 @@ import Booking from '@/classes/Booking';
 import OverviewBox from './OverviewBox.vue';
 
 export default {
-  name: 'tickets-overview',
+  name: 'TicketsOverview',
   components: { OverviewBox },
   props: {
     booking: {

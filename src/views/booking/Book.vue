@@ -7,21 +7,22 @@
             name: 'production',
             params: { productionSlug: production.slug },
           }"
-          ><font-awesome-icon icon="chevron-left" />
+        >
+          <font-awesome-icon icon="chevron-left" />
           Back to Production
         </router-link>
       </div>
       <production-banner
         class="pb-2 md:pb-8"
         :production="production"
-        :showBuyTicketsButton="false"
-        :showDetailedInfo="false"
+        :show-buy-tickets-button="false"
+        :show-detailed-info="false"
       />
       <div class="flex flex-wrap mb-2 md:space-x-2 md:flex-nowrap">
         <booking-navigation
           class="hidden md:flex md:w-1/4"
-          :currentStageIndex="currentStageIndex"
-          :maxAllowedStageIndex="maxAllowedStageIndex"
+          :current-stage-index="currentStageIndex"
+          :max-allowed-stage-index="maxAllowedStageIndex"
           :production="production"
           :booking="booking"
           @goto-stage="navigateToStage"
@@ -32,8 +33,9 @@
             v-if="currentStageIndex > 0"
             class="text-white"
             @click="gotoPreviousStage"
-            ><font-awesome-icon icon="chevron-left" />Back</clickable-link
           >
+            <font-awesome-icon icon="chevron-left" />Back
+          </clickable-link>
         </div>
         <div
           id="booking-view"
@@ -42,11 +44,11 @@
           <router-view
             :production="production"
             :booking="booking"
-            :ticket_matrix="ticket_matrix"
+            :ticket-matrix="ticketMatrix"
             @select-performance="onSelectPerformance"
             @next-stage="navigateToStage()"
             @stage-unable="gotoPreviousStage()"
-          ></router-view>
+          />
         </div>
       </div>
     </div>
@@ -67,6 +69,7 @@ export default {
   props: {
     production: {
       required: true,
+      type: Object,
     },
   },
   beforeRouteUpdate(to, from, next) {
@@ -74,6 +77,24 @@ export default {
     // Lets reuse the exisiting production object from the first route
     to.params.production = from.params.production;
     return next();
+  },
+  data() {
+    return {
+      booking: new Booking(),
+      ticketMatrix: null,
+      maxAllowedStageIndex: getStageIndex(this.$route.meta.stage),
+      previousBooking: null,
+    };
+  },
+  computed: {
+    currentStageIndex() {
+      return getStageIndex(this.$route.meta.stage);
+    },
+  },
+  watch: {
+    currentStageIndex() {
+      this.loadDataForStage();
+    },
   },
   mounted() {
     this.loadDataForStage();
@@ -87,19 +108,6 @@ export default {
   metaInfo() {
     return {
       title: `Book ${this.production.name}`,
-    };
-  },
-  watch: {
-    currentStageIndex() {
-      this.loadDataForStage();
-    },
-  },
-  data() {
-    return {
-      booking: new Booking(),
-      ticket_matrix: null,
-      maxAllowedStageIndex: getStageIndex(this.$route.meta.stage),
-      previousBooking: null,
     };
   },
   methods: {
@@ -174,7 +182,7 @@ export default {
             );
         }
 
-        if (!this.ticket_matrix) {
+        if (!this.ticketMatrix) {
           this.$apollo
             .query({
               query: require('@/graphql/queries/PerformanceTicketOptions.gql'),
@@ -183,7 +191,7 @@ export default {
               },
             })
             .then((result) => {
-              this.ticket_matrix = new TicketsMatrix(result.data.performance);
+              this.ticketMatrix = new TicketsMatrix(result.data.performance);
             });
         }
       }
@@ -192,11 +200,6 @@ export default {
       this.booking.performance = performance;
       this.booking.tickets = [];
       this.navigateToStage();
-    },
-  },
-  computed: {
-    currentStageIndex() {
-      return getStageIndex(this.$route.meta.stage);
     },
   },
 };

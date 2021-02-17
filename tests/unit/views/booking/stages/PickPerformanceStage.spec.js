@@ -77,7 +77,7 @@ describe('Pick Performance Stage', () => {
 
   it('groups the performances into their times of day', () => {
     let overview = stageComponent.findAllComponents({
-      ref: 'performanceGroup',
+      ref: 'performance-group',
     });
 
     expect(overview.at(0).find('h2').text()).to.eq('Morning');

@@ -1,5 +1,5 @@
 <template>
-  <div class="text-white" v-if="booking.performance">
+  <div v-if="booking.performance" class="text-white">
     <div class="p-2 mb-2 md:text-center bg-sta-gray-light">
       <p class="text-h3">Selected Performance:</p>
       <p class="text-sta-orange">
@@ -7,22 +7,20 @@
         {{ booking.performance.start | dateFormat('T') }}
       </p>
     </div>
-    <div class="space-y-1" v-if="ticket_matrix">
+    <div v-if="ticketMatrix" class="space-y-1">
       <seat-group
-        v-for="(ticket_option, index) in ticket_matrix.ticket_options"
+        v-for="(ticketOption, index) in ticketMatrix.ticket_options"
         :key="index"
-        :ticket_option="ticket_option"
-        :group_capacity_remaining="
-          ticket_matrix.capacityRemainingForSeatGroup(
-            ticket_option.seatGroup.id
-          )
+        :ticket-option="ticketOption"
+        :group-capacity-remaining="
+          ticketMatrix.capacityRemainingForSeatGroup(ticketOption.seatGroup.id)
         "
         :expanded="
           selected_location_index == index ||
-          ticket_matrix.ticket_options.length == 1
+            ticketMatrix.ticket_options.length == 1
         "
-        :current_tickets="booking.tickets"
-        :discounts="ticket_matrix.discounts"
+        :current-tickets="booking.tickets"
+        :discounts="ticketMatrix.discounts"
         @select-location="
           selected_location_index =
             selected_location_index != index ? index : null
@@ -50,11 +48,9 @@
             </thead>
             <tbody>
               <tr
-                class="even:bg-sta-gray-light odd:bg-sta-gray"
-                v-for="(ticket, index) in booking.ticket_overview(
-                  ticket_matrix
-                )"
+                v-for="(ticket, index) in booking.ticket_overview(ticketMatrix)"
                 :key="index"
+                class="even:bg-sta-gray-light odd:bg-sta-gray"
               >
                 <td class="p-2">
                   {{ ticket.seat_group.name }}
@@ -82,9 +78,9 @@
                   {{ booking.tickets.length }}
                 </td>
                 <td class="p-2 text-right">
-                  <template v-if="!booking.dirty"
-                    >£{{ booking.sub_total_price_pounds }}</template
-                  >
+                  <template v-if="!booking.dirty">
+                    £{{ booking.sub_total_price_pounds }}
+                  </template>
                   <font-awesome-icon
                     v-else
                     class="animate-spin"
@@ -117,22 +113,25 @@ import lo from 'lodash';
 
 import Booking from '@/classes/Booking';
 import Ticket from '@/classes/Ticket';
+import TicketMatrix from '@/classes/TicketsMatrix';
 import SeatGroup from '@/components/booking/SeatGroup.vue';
 import PriceBreakdownFragment from '@/graphql/fragments/booking/AllPriceBreakdown.gql';
 
 export default {
-  name: 'ticket-selection-stage',
+  name: 'TicketSelectionStage',
   components: { SeatGroup },
   props: {
     production: {
       required: true,
+      type: Object,
     },
     booking: {
       required: true,
       type: Booking,
     },
-    ticket_matrix: {
+    ticketMatrix: {
       required: true,
+      type: TicketMatrix,
     },
   },
   data() {
@@ -147,7 +146,7 @@ export default {
     onAddTicket(seat_group, concession_type, number = 1) {
       this.booking.addTicket(
         new Ticket(seat_group.id, concession_type.id),
-        this.ticket_matrix,
+        this.ticketMatrix,
         number
       );
       this.interaction_timer();
@@ -157,16 +156,12 @@ export default {
         seat_group,
         concession_type,
         number,
-        this.ticket_matrix
+        this.ticketMatrix
       );
       this.interaction_timer();
     },
     onRemoveTicket(seat_group, concession_type) {
-      this.booking.removeTicket(
-        seat_group,
-        concession_type,
-        this.ticket_matrix
-      );
+      this.booking.removeTicket(seat_group, concession_type, this.ticketMatrix);
       this.interaction_timer();
     },
     async updateAPI() {
