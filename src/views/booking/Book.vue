@@ -20,7 +20,7 @@
       />
       <div class="flex flex-wrap mb-2 md:space-x-2 md:flex-nowrap">
         <booking-navigation
-          class="hidden md:flex md:w-1/4"
+          class="hidden md:flex md:w-1/4 md:flex-none"
           :current-stage-index="currentStageIndex"
           :max-allowed-stage-index="maxAllowedStageIndex"
           :production="production"
@@ -61,6 +61,7 @@ import TicketsMatrix from '@/classes/TicketsMatrix';
 import BookingNavigation from '@/components/booking/BookingNavigation.vue';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
 import ClickableLink from '@/components/ui/ClickableLink.vue';
+import config from '@/config';
 import { swal } from '@/utils';
 
 import { getNextStage, getPreviousStage, getStageIndex } from './bookingStages';
@@ -97,6 +98,11 @@ export default {
     },
   },
   mounted() {
+    // Preload Square Script
+    let squareScript = document.createElement('script');
+    squareScript.setAttribute('src', config.services.square.script);
+    document.head.appendChild(squareScript);
+
     this.loadDataForStage();
     if (!this.$route.meta.stage.shouldBeUsed(this.production, this.booking)) {
       return this.navigateToStage();

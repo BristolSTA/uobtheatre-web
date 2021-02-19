@@ -18,11 +18,9 @@ export default {
       discountRequirementNode: Factory.extend({
         number: () => faker.random.number({ min: 1, max: 10 }),
 
-        afterCreate(booking, server) {
-          updateIfDoesntHave(booking, {
-            concessionType: () => {
-              return server.create('concessionTypeNode');
-            },
+        afterCreate(discountRequirement, server) {
+          updateIfDoesntHave(discountRequirement, {
+            concessionType: () => server.create('concessionTypeNode'),
           });
         },
       }),

@@ -72,4 +72,9 @@ describe('Overview Stage', () => {
     );
     expect(overviewComponent.emitted('stage-unable')).to.be.ok;
   });
+
+  it('emits next stage when button clicked', () => {
+    overviewComponent.find('button:last-of-type').trigger('click');
+    expect(overviewComponent.emitted('next-stage')).to.be.ok;
+  });
 });

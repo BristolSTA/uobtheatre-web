@@ -17,7 +17,13 @@
       <booking-price-overview :booking="booking" />
     </div>
     <div class="mt-4 text-center">
-      <button class="font-semibold btn btn-orange">Pay Now</button>
+      <button
+        class="font-semibold btn btn-orange"
+        @click="$emit('next-stage')"
+        @keypress="$emit('next-stage')"
+      >
+        Proceed to payment
+      </button>
     </div>
   </div>
 </template>

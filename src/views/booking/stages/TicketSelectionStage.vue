@@ -130,8 +130,8 @@ export default {
       type: Booking,
     },
     ticketMatrix: {
-      required: true,
       type: TicketMatrix,
+      default: null,
     },
   },
   data() {

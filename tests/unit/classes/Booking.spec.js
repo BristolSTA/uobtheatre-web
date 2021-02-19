@@ -104,6 +104,10 @@ describe('Booking Class', () => {
     expect(booking.tickets.length).to.eq(4);
     expect(booking.performance).to.eq(apiData.performance);
     expect(booking.dirty).to.be.false;
+    expect(booking.idempotency_key).length(36);
+  });
+  it('has a idempotency key', () => {
+    expect(booking.idempotency_key).length(36);
   });
   it('can get tickets', () => {
     expect(booking.tickets).to.be.instanceOf(Array);
@@ -234,6 +238,13 @@ describe('Booking Class', () => {
     expect(booking.tickets_total_price_pounds_estimate(tickets_matrix)).to.eq(
       '16.00'
     );
+  });
+  it('can get total booking price in pounds', () => {
+    expect(booking.total_price).to.eq(0);
+
+    booking.price_breakdown = bookingAPIData.priceBreakdown;
+
+    expect(booking.total_price).to.eq(3728);
   });
   it('can get total booking price in pounds', () => {
     expect(booking.total_price_pounds).to.eq('0.00');

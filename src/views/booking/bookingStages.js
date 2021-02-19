@@ -1,6 +1,7 @@
 import BookingStage from '@/classes/BookingStage';
 import AudienceWarningsStage from '@/views/booking/stages/AudienceWarningsStage.vue';
 import OverviewStage from '@/views/booking/stages/OverviewStage.vue';
+import PaymentStage from '@/views/booking/stages/PaymentStage.vue';
 import PickPerformanceStage from '@/views/booking/stages/PickPerformanceStage.vue';
 import TicketSelectionStage from '@/views/booking/stages/TicketSelectionStage.vue';
 
@@ -38,11 +39,7 @@ let stages = [
   ),
   new BookingStage(
     'Payment',
-    {
-      render(createElement) {
-        return createElement('h1', 'Payment Here');
-      },
-    },
+    PaymentStage,
     {
       path: 'pay',
     },

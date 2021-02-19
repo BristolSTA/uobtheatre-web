@@ -20,4 +20,14 @@ export default {
   auth: {
     cookie: 'uobtheatre-auth',
   },
+  services: {
+    square: {
+      script:
+        process.env.NODE_ENV !== 'production'
+          ? 'https://js.squareupsandbox.com/v2/paymentform'
+          : 'https://js.squareup.com/v2/paymentform',
+      application_id: process.env.VUE_APP_SQUARE_APP_ID,
+      location_id: process.env.VUE_APP_SQUARE_LOC_ID,
+    },
+  },
 };

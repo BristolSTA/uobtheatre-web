@@ -10,6 +10,16 @@ export default {
       miscCostNode: Model.extend({
         production: belongsTo('productionNode'),
       }),
+      paymentNode: Model.extend({
+        squareId: () => faker.random.uuid(),
+        referenceId: () => faker.random.uuid(),
+        ammount: () => faker.random.number({ min: 100, max: 1000 }),
+        ammountCurrency: 'GBP',
+        time: new Date(),
+        status: 'COMPLETED',
+        cardBrand: 'VISA',
+        cardLastFour: '4567',
+      }),
     };
   },
   registerFactories() {
@@ -108,6 +118,33 @@ export default {
 
         return booking;
       },
+      payBooking(obj, args, { mirageSchema }) {
+        let booking = mirageSchema.bookingNodes.find(args.id);
+
+        // Check same price
+        if (args.total !== booking.priceBreakdown.totalPrice) {
+          throw 'Price difference!';
+        }
+
+        booking.update({
+          status: 'PAID',
+        });
+
+        let payment = booking.createPayment({
+          squareId: faker.random.uuid(),
+          referenceId: faker.random
+            .number({ min: 1000, max: 50000 })
+            .toString(),
+          ammount: booking.priceBreakdown.totalPrice,
+          ammountCurrency: 'GBP',
+          time: new Date(),
+          status: 'COMPLETED',
+          cardBrand: 'VISA',
+          cardLastFour: '4567',
+        });
+
+        return payment;
+      },
     };
   },
   registerGQLQueries() {
@@ -132,6 +169,7 @@ export default {
         priceBreakdown: PriceBreakdownNode
 
         user: UserNode
+        payments: [PaymentNode]
       }
 
       type PriceBreakdownNode implements Node {
@@ -147,7 +185,8 @@ export default {
         ticketsDiscountedPrice: Int
       }
 
-      type PriceBreakdownTicketNode {
+      type PriceBreakdownTicketNode implements Node  {
+        id: ID!
         ticketPrice: Int
         number: Int
         seatGroup: SeatGroupNode
@@ -156,12 +195,25 @@ export default {
         concessionType: ConcessionTypeNode
       }
 
+      type PaymentNode implements Node {
+        id: ID!
+        squareId: String!
+        referenceId: String!
+        ammount: Int!
+        ammountCurrency: String!
+        time: DateTime!
+        status: String!
+        cardBrand: String!
+        cardLastFour: String!
+      }
+
     `;
   },
   registerGQLMutations() {
     return `
       createBooking(performanceId: ID!, tickets: [CreateTicketInput]) : BookingNode
       updateBooking(id: ID!, tickets: [CreateTicketInput]) : BookingNode
+      payBooking(id: ID!, nonce: String!, idempotencyKey: String!, total: Int!) : PaymentNode!
     `;
   },
 };
