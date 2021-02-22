@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import lo from 'lodash';
+
 import ErrorHelper from './ErrorHelper.vue';
 export default {
   name: 'TextInput',
@@ -49,10 +51,15 @@ export default {
       default: false,
       type: Boolean,
     },
+    errorKey: {
+      required: false,
+      default: null,
+      type: String,
+    },
   },
   computed: {
     inputId() {
-      return this.name.replace(/ /g, '_').toLowerCase();
+      return this.errorKey ?? lo.camelCase(this.name.replace(/ /g, ''));
     },
   },
   methods: {
