@@ -10,19 +10,17 @@
       :autocomplete="autocomplete"
       :required="required"
       @input="onInput"
+      @blur="$emit('blur')"
     />
-    <span
-      v-if="errors && errors.has(inputId)"
-      class="text-xs font-semibold text-sta-rouge"
-    >
-      {{ errors.get(inputId) }}
-    </span>
+    <error-helper :errors="errors" :field-name="inputId" />
   </label>
 </template>
 
 <script>
+import ErrorHelper from './ErrorHelper.vue';
 export default {
   name: 'TextInput',
+  components: { ErrorHelper },
   props: {
     value: {
       required: true,

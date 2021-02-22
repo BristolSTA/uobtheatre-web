@@ -99,15 +99,15 @@ const api = new (class {
         })
         .catch((error) => {
           // HTTP 400 Code = Validation Error
-          if (
-            error.response &&
-            error.response.status == 400 &&
-            error.response.data
-          ) {
-            let errors = new Errors();
-            errors.record(error.response.data);
-            return reject(errors, error.response.data);
-          }
+          // if (
+          //   error.response &&
+          //   error.response.status == 400 &&
+          //   error.response.data
+          // ) {
+          //   let errors = new Errors();
+          //   errors.record(error.response.data);
+          //   return reject(errors, error.response.data);
+          // }
           reject(error);
         });
     });
@@ -163,110 +163,4 @@ let paginatedResource = class {
   }
 };
 
-/**
- * Errors class for wrapping (validaiton) errors from the API
- */
-let Errors = class {
-  /**
-   * Create a new Errors instance.
-   */
-  constructor() {
-    this.resetErrors();
-  }
-
-  /**
-   * Resets errors object
-   */
-  resetErrors() {
-    this.errors = {
-      field_errors: {},
-      non_field_errors: [],
-    };
-  }
-
-  /**
-   * Determine if an error exists for the given field.
-   *
-   * @param {string} field The field name
-   * @returns {boolean} Whether the field has errors
-   */
-  has(field) {
-    return Object.prototype.hasOwnProperty.call(
-      this.errors.field_errors,
-      field
-    );
-  }
-
-  /**
-   * Determine if we have any errors.
-   *
-   * @returns {boolean} Whether there are any errors
-   */
-  any() {
-    return (
-      Object.keys(this.errors.field_errors).length > 0 ||
-      Object.keys(this.errors.non_field_errors).length > 0
-    );
-  }
-
-  /**
-   * Retrieve the error message for a field.
-   *
-   * @param {string} field The field name
-   * @returns {string} The error message
-   */
-  get(field) {
-    if (this.errors.field_errors[field]) {
-      return this.errors.field_errors[field][0];
-    }
-  }
-
-  /**
-   * @returns {boolean} Whether there are generic errors
-   */
-  hasGenericErrors() {
-    return this.getGenericErrors().length !== 0;
-  }
-
-  /**
-   * Retrieve the generic (i.e. non-field) errors
-   *
-   * @returns {Array | null} Array of generic errors
-   */
-  getGenericErrors() {
-    return this.errors.non_field_errors;
-  }
-
-  /**
-   * Record the new errors.
-   *
-   * @param {object} errors API Errors Object
-   */
-  record(errors) {
-    let non_field_errors = errors.non_field_errors;
-    delete errors['non_field_errors'];
-    let field_errors = errors;
-
-    this.errors = {
-      field_errors: field_errors ?? {},
-      non_field_errors: non_field_errors ?? [],
-    };
-  }
-
-  /**
-   * Clear one or all error fields.
-   *
-   * @param {string|null} field The field name
-   */
-  clear(field) {
-    if (field) {
-      delete this.errors.field_errors[field];
-
-      return;
-    }
-
-    this.resetErrors();
-  }
-};
-
-export { Errors, paginatedResource };
+export { paginatedResource };

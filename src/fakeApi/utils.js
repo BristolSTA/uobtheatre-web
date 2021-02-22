@@ -36,15 +36,6 @@ let updateIfDoesntHave = function (model, keyValues, value) {
 };
 
 /**
- * Creates a 404 response for MirageJS
- *
- * @returns {Response} MirageJS Reponse Object
- */
-let NotFoundResponse = () => {
-  return new Response(404);
-};
-
-/**
  * A Django Rest Framework equivilent of a validation error response, used to send a validation error response via MirageJS
  *
  * @param {object} fieldErrors Set of field errors (i.e. for a specific field)
@@ -134,11 +125,70 @@ let authedUser = (context) => {
   return context.mirageSchema.userNodes.findBy({ token: authToken });
 };
 
+let NonFieldError = class extends Error {
+  constructor(message, code) {
+    super(message);
+    this.message = message;
+    this.code = code;
+  }
+};
+let FieldError = class extends Error {
+  constructor(message, field, code) {
+    super(message);
+    this.message = message;
+    this.field = field;
+    this.code = code;
+  }
+};
+
+let mutationWithErrorsResolver = (resolver) => {
+  return (obj, args, context, info) => {
+    let res = {
+      success: true,
+      errors: [],
+    };
+
+    let addError = (err) => {
+      res.success = false;
+
+      if (err instanceof NonFieldError) {
+        res.errors.push(
+          context.mirageSchema.create('NonFieldError', {
+            message: err.message,
+            code: err.code,
+          })
+        );
+      } else if (err instanceof FieldError) {
+        res.errors.push(
+          context.mirageSchema.create('FieldError', {
+            message: err.message,
+            field: err.field,
+            code: err.code,
+          })
+        );
+      }
+    };
+
+    try {
+      return Object.assign(res, resolver(obj, args, context, info, addError));
+    } catch (err) {
+      if (err instanceof NonFieldError || err instanceof FieldError) {
+        addError(err);
+      } else {
+        throw err;
+      }
+      return res;
+    }
+  };
+};
+
 export {
   authedUser,
+  FieldError,
   generateConcessionTypeBookingTypes,
   graphQLOrderBy,
-  NotFoundResponse,
+  mutationWithErrorsResolver,
+  NonFieldError,
   updateIfDoesntHave,
   ValidationErrorResponse,
 };

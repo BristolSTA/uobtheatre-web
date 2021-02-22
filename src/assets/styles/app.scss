@@ -16,6 +16,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.5s;
+  }
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
+  }
+}
+
 @layer components {
   .btn {
     @apply rounded-sm px-6 py-2 cursor-pointer inline-block;
@@ -46,7 +57,7 @@
       @apply border-sta-#{$color};
       @apply text-sta-#{$color};
     }
-    .btn-#{$color}:hover:not(.disabled) {
+    .btn-#{$color}:hover:not(.disabled):not([disabled]) {
       $hov-color: 'bg-sta-#{$color}-dark';
       @if (str-index($color, '-light')) {
         $new-col: str-replace($color, '-light', '');
