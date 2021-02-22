@@ -38,7 +38,9 @@
       </div>
       <text-input
         name="Email"
+        type="email"
         autocomplete="email"
+        required
         :errors="login_errors"
         v-model="email"
       />
@@ -46,6 +48,7 @@
         name="Password"
         type="password"
         autocomplete="current-password"
+        required
         :errors="login_errors"
         v-model="password"
       />

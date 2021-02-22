@@ -151,8 +151,8 @@ export default {
               fetchPolicy: 'no-cache',
             })
             .then(({ data }) => {
-              this.previousBooking = data.authUser.bookings.edges.length
-                ? data.authUser.bookings.edges[0].node
+              this.previousBooking = data.me.bookings.edges.length
+                ? data.me.bookings.edges[0].node
                 : false;
               if (this.previousBooking) {
                 swal

@@ -8,6 +8,7 @@
       :type="type"
       :value="value"
       :autocomplete="autocomplete"
+      :required="required"
       @input="onInput"
     />
     <span
@@ -44,6 +45,11 @@ export default {
       required: false,
       type: [Array, Object],
       default: null,
+    },
+    required: {
+      required: false,
+      default: false,
+      type: Boolean,
     },
   },
   computed: {

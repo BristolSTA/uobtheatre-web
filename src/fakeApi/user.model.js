@@ -52,14 +52,14 @@ export default {
   },
   registerGQLQueryResolvers() {
     return {
-      authUser(obj, args, context) {
+      me(obj, args, context) {
         return authedUser(context);
       },
     };
   },
   registerGQLQueries() {
     return `
-      authUser: UserNode
+      me: UserNode
     `;
   },
   registerGQLTypes() {

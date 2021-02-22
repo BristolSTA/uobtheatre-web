@@ -1,6 +1,6 @@
 #import "../fragments/booking/DetailedBookingDetails.gql"
 query userDraftBookingForPerformance($performanceID: ID!) {
-  authUser {
+  me {
     bookings(performance: $performanceID, status: IN_PROGRESS) {
       edges {
         node {

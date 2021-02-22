@@ -52,7 +52,7 @@ export default new Vuex.Store({
         .query({
           query: gql`
             {
-              authUser {
+              me {
                 firstName
                 lastName
                 email
@@ -61,7 +61,7 @@ export default new Vuex.Store({
           `,
         })
         .then(({ data }) => {
-          context.commit('SET_AUTH_USER', data.authUser);
+          context.commit('SET_AUTH_USER', data.me);
         });
 
       return cookieVal;
