@@ -14,6 +14,7 @@ import {
   faMapMarkedAlt,
   faMoneyCheckAlt,
   faTicketAlt,
+  faTimesCircle,
   faUserEdit,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -40,6 +41,7 @@ library.add(
   faLink,
   faBuilding,
   faUserEdit,
+  faTimesCircle,
   faMoneyCheckAlt
 );
 Vue.component('font-awesome-icon', FontAwesomeIcon);

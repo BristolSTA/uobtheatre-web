@@ -86,6 +86,17 @@ const routes = [
     component: Login,
     props: { login: false },
   },
+  {
+    path: '/login/forgot',
+    name: 'login.forgot',
+    component: () => import('@/views/auth/ForgotPassword.vue'),
+  },
+  {
+    path: '/login/activate/:activationToken',
+    props: true,
+    name: 'login.activate',
+    component: () => import('@/views/auth/ActivateAccount.vue'),
+  },
 
   /**
    * Error and Wildcard Pages

@@ -148,25 +148,29 @@ let mutationWithErrorsResolver = (resolver) => {
       errors: [],
     };
 
-    let addError = (err) => {
+    let addError = (errs) => {
+      if (!Array.isArray(errs)) errs = [errs];
+
       res.success = false;
 
-      if (err instanceof NonFieldError) {
-        res.errors.push(
-          context.mirageSchema.create('NonFieldError', {
-            message: err.message,
-            code: err.code,
-          })
-        );
-      } else if (err instanceof FieldError) {
-        res.errors.push(
-          context.mirageSchema.create('FieldError', {
-            message: err.message,
-            field: err.field,
-            code: err.code,
-          })
-        );
-      }
+      errs.forEach((err) => {
+        if (err instanceof NonFieldError) {
+          res.errors.push(
+            context.mirageSchema.create('NonFieldError', {
+              message: err.message,
+              code: err.code,
+            })
+          );
+        } else if (err instanceof FieldError) {
+          res.errors.push(
+            context.mirageSchema.create('FieldError', {
+              message: err.message,
+              field: err.field,
+              code: err.code,
+            })
+          );
+        }
+      });
     };
 
     try {

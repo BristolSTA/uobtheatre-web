@@ -1,8 +1,8 @@
 import { mount } from '@vue/test-utils';
 import { expect } from 'chai';
 
+import UserAuthBox from '@/components/auth/UserAuthBox.vue';
 import store from '@/store';
-import UserAuthBox from '@/views/auth/UserAuthBox.vue';
 
 import { executeWithServer, waitFor } from '../../helpers';
 

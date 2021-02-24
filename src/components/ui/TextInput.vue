@@ -3,7 +3,7 @@
     <span class="text-xs font-semibold text-white">{{ name }}</span>
     <input
       :id="inputId"
-      class="w-full p-1 rounded-sm focus:outline-none"
+      class="w-full p-1 text-black rounded-sm focus:outline-none"
       :name="inputId"
       :type="type"
       :value="value"

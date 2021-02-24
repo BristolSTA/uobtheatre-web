@@ -30,12 +30,7 @@
       class="flex flex-col p-6 space-y-2"
       @submit.prevent="attemptLogin"
     >
-      <div
-        v-if="login_errors && login_errors.hasGenericErrors()"
-        class="text-sm font-semibold text-sta-rouge"
-      >
-        <p>Error: {{ login_errors.getGenericErrors()[0] }}</p>
-      </div>
+      <non-field-error :errors="login_errors" />
       <text-input
         name="Email"
         type="email"
@@ -77,39 +72,93 @@
         </clickable-link>
       </p>
       <p>
-        <a href="/login" class="text-sta-orange hover:text-sta-orange-dark">
+        <router-link
+          :to="{ name: 'login.forgot' }"
+          class="text-sta-orange hover:text-sta-orange-dark"
+        >
           Forgot your password?
-        </a>
+        </router-link>
       </p>
     </form>
 
-    <form v-else class="flex flex-col p-6 space-y-2">
-      <!-- TODO: Implement -->
-      Currently unavailable...
-      <!-- <text-input name="Full Name" v-model="name" autocomplete="name" />
-      <text-input name="Email" v-model="email" autocomplete="username email" />
+    <form
+      v-else
+      class="flex flex-col p-6 space-y-2"
+      @submit.prevent="attemptSignup"
+    >
+      <non-field-error :errors="signup_errors" />
+      <!-- <transition name="fade1" mode="out-in"> -->
+      <text-input
+        v-if="(!firstName || !lastName) && !signup_errors"
+        name="Full Name"
+        autocomplete="name"
+        required
+        v-model="fullName"
+        @blur="guessNameParts"
+      />
+      <div v-else class="flex flex-col space-y-2">
+        <text-input
+          name="First Name"
+          autocomplete="given-name"
+          :errors="signup_errors"
+          required
+          v-model="firstName"
+        />
+        <text-input
+          name="Last Name"
+          autocomplete="family-name"
+          required
+          :errors="signup_errors"
+          v-model="lastName"
+        />
+      </div>
+      <!-- </transition> -->
+      <text-input
+        name="Email"
+        type="email"
+        autocomplete="username email"
+        :errors="signup_errors"
+        required
+        v-model="email"
+      />
       <text-input
         name="Password"
-        v-model="password"
         type="password"
+        :errors="signup_errors"
+        error-key="password1"
         autocomplete="new-password"
+        required
+        v-model="password"
+      />
+      <text-input
+        name="Confirm Password"
+        type="password"
+        :errors="signup_errors"
+        autocomplete="off"
+        error-key="password2"
+        required
+        v-model="confirmedPassword"
       />
       <label for="accept_terms" class="flex items-center space-x-2">
         <input
-          type="checkbox"
           id="accept_terms"
-          v-model="accepted_terms"
+          type="checkbox"
+          required
           class="w-5 h-5 border rounded-sm border-sta-grey focus:outline-none"
+          v-model="accepted_terms"
         />
         <span class="text-xs font-semibold text-white">
-          Accept the Terms of Use?
+          I have read and agree to the Terms of Use
+          <!-- TODO: Link to ToS -->
         </span>
+        <error-helper :errors="signup_errors" field-name="acceptedTerms" />
       </label>
       <button
         class="w-full text-xl font-semibold text-center btn btn-orange btn-outline"
+        :disabled="!accepted_terms"
       >
         Sign Up
-      </button> -->
+      </button>
 
       <p class="mt-2 text-white">
         <clickable-link @click="$emit('go-login')">
@@ -122,12 +171,15 @@
 
 <script>
 import ClickableLink from '@/components/ui/ClickableLink.vue';
+import ErrorHelper from '@/components/ui/ErrorHelper.vue';
+import NonFieldError from '@/components/ui/NonFieldError.vue';
 import TextInput from '@/components/ui/TextInput.vue';
 import { authService } from '@/services';
+import { swalToast } from '@/utils';
 
 export default {
   name: 'UserAuthBox',
-  components: { ClickableLink, TextInput },
+  components: { ClickableLink, TextInput, ErrorHelper, NonFieldError },
   props: {
     login: {
       default: true,
@@ -136,8 +188,11 @@ export default {
   },
   data() {
     return {
-      name: null,
+      fullName: null,
+      firstName: null,
+      lastName: null,
       password: null,
+      confirmedPassword: null,
       email: null,
       accepted_terms: false,
       remember_me: false,
@@ -167,6 +222,38 @@ export default {
       }
 
       this.loading = false;
+    },
+    async attemptSignup() {
+      this.loading = true;
+      this.signup_errors = null;
+
+      try {
+        await authService.register({
+          firstName: this.firstName,
+          lastName: this.lastName,
+          email: this.email,
+          password: this.password,
+          confirmedPassword: this.confirmedPassword,
+        });
+
+        swalToast.fire({
+          icon: 'success',
+          title: 'Account Created',
+          text: 'Please check your emails to verify your account',
+          showConfirmButton: true,
+          position: 'bottom-end',
+        });
+        return this.$router.push({ name: 'home' });
+      } catch (errors) {
+        this.signup_errors = errors;
+      }
+
+      this.loading = false;
+    },
+    guessNameParts() {
+      var components = this.fullName.split(' ');
+      this.firstName = components.shift();
+      this.lastName = components.join(' ');
     },
   },
 };

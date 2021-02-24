@@ -1,9 +1,9 @@
 import { mount, shallowMount } from '@vue/test-utils';
 import { expect } from 'chai';
 
+import AuthBox from '@/components/auth/UserAuthBox.vue';
 import { authService } from '@/services';
 import Login from '@/views/auth/Login.vue';
-import AuthBox from '@/views/auth/UserAuthBox.vue';
 
 jest.mock('@/services');
 
