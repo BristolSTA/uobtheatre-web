@@ -3,7 +3,7 @@
     <div role="navigation" class="flex items-center space-x-1">
       <button
         class="w-1/2 py-3 font-semibold rounded-none focus:outline-none"
-        :class="[login ? 'bg-sta-orange' : 'bg-gray-200']"
+        :class="[login ? 'bg-sta-orange' : 'bg-gray-200 hover:bg-gray-400']"
         @click="$emit('go-login')"
         @keypress="$emit('go-login')"
       >
@@ -11,7 +11,7 @@
       </button>
       <button
         class="w-1/2 py-3 font-semibold rounded-none focus:outline-none"
-        :class="[login ? 'bg-gray-200' : ' bg-sta-orange']"
+        :class="[login ? 'bg-gray-200 hover:bg-gray-400' : ' bg-sta-orange']"
         @click="$emit('go-signup')"
         @keypress="$emit('go-signup')"
       >

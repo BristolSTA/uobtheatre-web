@@ -78,7 +78,9 @@ export default {
         });
 
         if (!user) {
-          throw new NonFieldError('Invalid Credentials');
+          throw new NonFieldError(
+            'Unable to log in with provided credentials.'
+          );
         }
 
         return {

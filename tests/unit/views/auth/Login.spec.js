@@ -1,9 +1,11 @@
-import { mount, shallowMount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import { expect } from 'chai';
 
 import AuthBox from '@/components/auth/UserAuthBox.vue';
 import { authService } from '@/services';
 import Login from '@/views/auth/Login.vue';
+
+import { mountWithRouterMock } from '../../helpers';
 
 jest.mock('@/services');
 
@@ -11,8 +13,8 @@ describe('Login', function () {
   let loginComponent, authBoxComponent;
   let fakeReplace;
 
-  beforeEach(() => {
-    loginComponent = mount(Login, {
+  beforeEach(async () => {
+    loginComponent = await mountWithRouterMock(Login, {
       mocks: {
         $router: {
           replace: (fakeReplace = jest.fn()),
@@ -37,7 +39,15 @@ describe('Login', function () {
     expect(authBoxComponent.props('login')).to.be.false;
   });
 
+  it('doesnt react to switch to login if already on login', async () => {
+    await authBoxComponent.vm.$emit('go-login');
+    expect(fakeReplace.mock.calls).to.be.empty;
+  });
+
   it('reacts to switch to login', async () => {
+    await loginComponent.setProps({
+      login: false,
+    });
     await authBoxComponent.vm.$emit('go-login');
     expect(fakeReplace.mock.calls[0][0].name).to.eq('login');
   });
@@ -45,6 +55,14 @@ describe('Login', function () {
   it('reacts to switch to signup', async () => {
     await authBoxComponent.vm.$emit('go-signup');
     expect(fakeReplace.mock.calls[0][0].name).to.eq('signup');
+  });
+
+  it('doesnt react to switch to signup if already on signup', async () => {
+    await loginComponent.setProps({
+      login: false,
+    });
+    await authBoxComponent.vm.$emit('go-signup');
+    expect(fakeReplace.mock.calls).to.be.empty;
   });
 
   it('redirects if user is already authenticated', async () => {

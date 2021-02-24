@@ -2,8 +2,18 @@
   <auth-page-template>
     <user-auth-box
       :login="login"
-      @go-login="$router.replace({ name: 'login' })"
-      @go-signup="$router.replace({ name: 'signup' })"
+      @go-login="
+        () => {
+          if (login) return;
+          $router.replace({ name: 'login' });
+        }
+      "
+      @go-signup="
+        () => {
+          if (!login) return;
+          $router.replace({ name: 'signup' });
+        }
+      "
     />
   </auth-page-template>
 </template>

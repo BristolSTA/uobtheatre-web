@@ -107,7 +107,7 @@ const mountWithRouterMock = async function (
 const generateMountOptions = function (types = [], options = {}) {
   if (!options['stubs']) options.stubs = {};
   if (types.includes('apollo')) {
-    options.apolloProvider = createProvider();
+    options.apolloProvider = createProvider({}, true);
   }
   if (types.includes('router')) {
     options.stubs.RouterLink = RouterLinkStub;

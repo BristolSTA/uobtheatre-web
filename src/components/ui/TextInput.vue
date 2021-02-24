@@ -59,7 +59,9 @@ export default {
   },
   computed: {
     inputId() {
-      return this.errorKey ?? lo.camelCase(this.name.replace(/ /g, ''));
+      return (
+        this.errorKey ?? lo.chain(this.name).lowerCase().camelCase().value()
+      );
     },
   },
   methods: {

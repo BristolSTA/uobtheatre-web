@@ -1,10 +1,9 @@
-import { mount } from '@vue/test-utils';
 import { expect } from 'chai';
 
 import UserAuthBox from '@/components/auth/UserAuthBox.vue';
 import store from '@/store';
 
-import { executeWithServer, waitFor } from '../../helpers';
+import { executeWithServer, mountWithRouterMock, waitFor } from '../../helpers';
 
 describe('AuthBox', function () {
   let authBoxComponent, server;
@@ -27,7 +26,7 @@ describe('AuthBox', function () {
   });
 
   it('can switch between login and signup', async () => {
-    authBoxComponent = mount(UserAuthBox);
+    authBoxComponent = await mountWithRouterMock(UserAuthBox);
     let buttons = authBoxComponent.findAll('div[role=navigation] button');
     expect(authBoxComponent.emitted('go-login')).to.be.undefined;
     expect(authBoxComponent.emitted('go-signup')).to.be.undefined;
@@ -52,7 +51,7 @@ describe('AuthBox', function () {
   });
 
   it('loading screen overlays correctly', async () => {
-    authBoxComponent = mount(UserAuthBox);
+    authBoxComponent = await mountWithRouterMock(UserAuthBox);
     expect(authBoxComponent.findComponent({ ref: 'loading-overlay' }).exists())
       .to.be.false;
 
@@ -65,8 +64,8 @@ describe('AuthBox', function () {
   });
 
   describe('LoginSection', () => {
-    beforeEach(() => {
-      authBoxComponent = mount(UserAuthBox, {
+    beforeEach(async () => {
+      authBoxComponent = await mountWithRouterMock(UserAuthBox, {
         propsData: {
           login: true,
         },
@@ -85,7 +84,7 @@ describe('AuthBox', function () {
 
       // Email Input
       expect(email_input.attributes('autocomplete')).to.eq('email');
-      expect(email_input.attributes('type')).to.eq('text');
+      expect(email_input.attributes('type')).to.eq('email');
       expect(email_input.attributes.value).to.be.undefined;
       expect(authBoxComponent.vm.email).to.eq(null);
       email_input.setValue('someone@example.org');
@@ -124,7 +123,7 @@ describe('AuthBox', function () {
 
     it('redirects to intended on successful login if has', async () => {
       let fakePush;
-      authBoxComponent = mount(UserAuthBox, {
+      authBoxComponent = await mountWithRouterMock(UserAuthBox, {
         propsData: {
           login: true,
         },
@@ -153,7 +152,7 @@ describe('AuthBox', function () {
 
     it('redirects to home on successful login if no intended', async () => {
       let fakePush;
-      authBoxComponent = mount(UserAuthBox, {
+      authBoxComponent = await mountWithRouterMock(UserAuthBox, {
         propsData: {
           login: true,
         },
