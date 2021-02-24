@@ -27,7 +27,7 @@ export default {
   components: { AuthPageTemplate },
   metaInfo() {
     return {
-      title: 'Reset Password',
+      title: 'Verify Account',
     };
   },
   props: {
