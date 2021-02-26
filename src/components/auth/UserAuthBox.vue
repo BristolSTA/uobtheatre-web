@@ -170,6 +170,8 @@
 </template>
 
 <script>
+import lo from 'lodash';
+
 import ClickableLink from '@/components/ui/ClickableLink.vue';
 import ErrorHelper from '@/components/ui/ErrorHelper.vue';
 import NonFieldError from '@/components/ui/NonFieldError.vue';
@@ -251,7 +253,7 @@ export default {
       this.loading = false;
     },
     guessNameParts() {
-      var components = this.fullName.split(' ');
+      var components = lo.trim(this.fullName).split(' ');
       this.firstName = components.shift();
       this.lastName = components.join(' ');
     },

@@ -2,7 +2,7 @@
 import Vue from 'vue';
 import VueApollo from 'vue-apollo';
 import { createApolloClient } from 'vue-cli-plugin-apollo/graphql-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+// import { InMemoryCache } from 'apollo-cache-inmemory';
 import config from '@/config';
 import store from '@/store';
 
@@ -38,11 +38,11 @@ const defaultOptions = {
   // Is being rendered on the server?
   ssr: false,
 
-  cache: new InMemoryCache({
+  inMemoryCacheOptions: {
     fragmentMatcher: {
       GQLErrorUnion: ['NonFieldError', 'FieldError'],
     },
-  }),
+  },
 
   // Override the way the Authorization header is set
   getAuth: (tokenName) => {
