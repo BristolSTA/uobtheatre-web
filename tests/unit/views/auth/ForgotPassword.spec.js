@@ -29,24 +29,9 @@ describe('Forgot Password', function () {
     loggedInSpy.mockReturnValueOnce(true);
 
     let next = jest.fn();
-    forgotPasswordComponent = shallowMount(
-      ForgotPassword,
-      generateMountOptions(['router'], {
-        mocks: {
-          $route: {
-            query: {},
-          },
-        },
-      })
-    );
 
     // Call guard
-    ForgotPassword.beforeRouteEnter.call(
-      forgotPasswordComponent.vm,
-      undefined,
-      undefined,
-      next
-    );
+    ForgotPassword.beforeRouteEnter.call(undefined, undefined, undefined, next);
 
     // Should redirect to named "home" route
     expect(next.mock.calls[0][0].name).equal('home');
@@ -57,21 +42,9 @@ describe('Forgot Password', function () {
     loggedInSpy.mockReturnValueOnce(false);
 
     let next = jest.fn();
-    forgotPasswordComponent = generateMountOptions(['router'], {
-      mocks: {
-        $route: {
-          query: {},
-        },
-      },
-    });
 
     // Call guard
-    ForgotPassword.beforeRouteEnter.call(
-      forgotPasswordComponent.vm,
-      undefined,
-      undefined,
-      next
-    );
+    ForgotPassword.beforeRouteEnter.call(undefined, undefined, undefined, next);
 
     // Should have no params
     expect(next.mock.calls[0]).to.be.empty;

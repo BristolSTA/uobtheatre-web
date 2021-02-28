@@ -70,10 +70,9 @@ describe('Login', function () {
     authService.isLoggedIn.mockReturnValueOnce(true);
 
     let next = jest.fn();
-    loginComponent = shallowMount(Login);
 
     // Call guard
-    Login.beforeRouteEnter.call(loginComponent.vm, undefined, undefined, next);
+    Login.beforeRouteEnter.call(undefined, undefined, undefined, next);
 
     // Should redirect to named "home" route
     expect(next.mock.calls[0][0].name).equal('home');
@@ -87,10 +86,9 @@ describe('Login', function () {
     authService.isLoggedIn.mockReturnValueOnce(false);
 
     let next = jest.fn();
-    loginComponent = shallowMount(Login);
 
     // Call guard
-    Login.beforeRouteEnter.call(loginComponent.vm, undefined, undefined, next);
+    Login.beforeRouteEnter.call(undefined, undefined, undefined, next);
 
     // Should have no params
     expect(next.mock.calls[0]).to.be.empty;
