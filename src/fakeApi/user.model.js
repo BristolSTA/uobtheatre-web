@@ -151,11 +151,6 @@ export default {
       }),
     };
   },
-  registerGQLQueries() {
-    return `
-      me: UserNode
-    `;
-  },
   registerGQLMutations() {
     return `
       login(password: String!, email: String): ObtainJSONWebToken
