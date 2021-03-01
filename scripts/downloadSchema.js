@@ -1,10 +1,10 @@
 /**
- * Fetches the GraphQL API Schema from the uobtheatre-api repository, and install it into the fake API
+ * Fetches the GraphQL API Schema from the uobtheatre-api repository, and installs it into the fake API
  *
  * Examples:
  * yarn api:download-schema [ Downloads the API Schema based on the present schema lockfile ]
  * yarn api:download-schema update [ Downloads the latest API Schema from the main branch, and locks to that commit ]
- * yarn api:download-schema update <commit> [ Downloads the latest API Schema for a specific commit, and locks to that commit ]
+ * yarn api:download-schema update <commit> [ Downloads the API Schema for a specific commit, and locks to that commit ]
  */
 return (async () => {
   const got = require('got');
@@ -13,7 +13,7 @@ return (async () => {
   let lockFile = './schema.lock';
 
   if (process.argv[2] == 'update') {
-    let lock = process.argv[3] ?? null;
+    let lock = process.argv[3] ? process.argv[3] : null;
     if (!lock) {
       const response = await got(
         'https://api.github.com/repos/BristolSTA/uobtheatre-api/commits/main'
