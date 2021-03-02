@@ -259,6 +259,8 @@ export function makeServer({ environment = 'development' } = {}) {
         name: 'A Default Production',
       });
 
+      server.createList('ProductionNode', 20);
+
       /**
        * A user
        */
