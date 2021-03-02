@@ -17,11 +17,6 @@ export default {
         email: () => faker.internet.email(),
         password: () => faker.internet.password(),
         token: () => faker.random.uuid(),
-        afterCreate(userNode, server) {
-          updateIfDoesntHave(userNode, {
-            address: () => server.create('AddressNode'),
-          });
-        },
       }),
     };
   },
@@ -80,7 +75,6 @@ export default {
         email: String!
 
         bookings(offset: Int, before: String, after: String, first: Int, last: Int, bookingReference: UUID, user: ID, performance: ID, status: BookingStatus, id: ID): BookingNodeConnection!
-        address: AddressNode
       }
     `;
   },
