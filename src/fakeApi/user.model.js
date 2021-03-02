@@ -2,11 +2,7 @@ import { mirageGraphQLFieldResolver } from '@miragejs/graphql';
 import faker from 'faker';
 import { Factory, Response } from 'miragejs';
 
-import {
-  authedUser,
-  updateIfDoesntHave,
-  ValidationErrorResponse,
-} from './utils';
+import { authedUser, ValidationErrorResponse } from './utils';
 
 export default {
   registerFactories() {
