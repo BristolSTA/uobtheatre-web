@@ -23,6 +23,12 @@ export default {
               return server.create('performanceNode');
             },
           });
+          node.update({
+            priceBreakdown: server.create(
+              'PriceBreakdownNode',
+              generatePriceBreakdown(server.schema, node)
+            ),
+          });
         },
       }),
       ticketNode: Factory.extend({

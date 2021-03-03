@@ -43,8 +43,11 @@ export default {
     return {
       UserNode: {
         bookings(obj, args, context, info) {
-          args.performanceId = args.performance;
-          delete args.performance;
+          if (args.performance) {
+            args.performanceId = args.performance;
+            delete args.performance;
+          }
+
           return mirageGraphQLFieldResolver(obj, args, context, info);
         },
       },

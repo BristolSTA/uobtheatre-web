@@ -263,10 +263,30 @@ export function makeServer({ environment = 'development' } = {}) {
        * A user
        */
 
-      server.create('userNode', {
+      let user = server.create('userNode', {
         password: 'admin',
         email: 'admin@bristolsta.com',
         token: '36c86c19f8f8d73aa59c3a00814137bdee0ab8de',
+      });
+
+      /**
+       * A booking
+       */
+
+      server.create('bookingNode', {
+        status: 'PAID',
+        user: user,
+        performance: performances[0],
+        tickets: [
+          server.create('ticketNode', {
+            concessionType: AdultConcession,
+            seatGroup: BestSeatGroup,
+          }),
+          server.create('ticketNode', {
+            concessionType: StudentConcession,
+            seatGroup: BestSeatGroup,
+          }),
+        ],
       });
     },
 

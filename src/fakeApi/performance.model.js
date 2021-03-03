@@ -40,6 +40,9 @@ export default {
             venue: () => {
               return server.create('VenueNode');
             },
+            production: () => {
+              return server.create('ProductionNode');
+            },
           });
         },
       }),
