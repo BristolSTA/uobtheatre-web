@@ -1,0 +1,45 @@
+import { mount } from '@vue/test-utils';
+import { expect } from 'chai';
+
+import ProductionTile from '@/components/production/ProductionTile';
+
+import { generateMountOptions, RouterLinkStub } from '../../helpers';
+
+describe('Production Tile', () => {
+  let component;
+  beforeAll(() => {
+    component = mount(
+      ProductionTile,
+      generateMountOptions(['router'], {
+        propsData: {
+          production: {
+            slug: 'legally-ginger',
+            name: 'Legally Ginger',
+            featuredImage: {
+              url: 'example.org/feature-image.png',
+            },
+            start: '2021-03-03T14:00:00',
+            end: '2021-03-06T14:00:00',
+          },
+        },
+      })
+    );
+  });
+
+  it('links to production page', () => {
+    let link = component.findComponent(RouterLinkStub);
+    expect(link.props('to').name).to.eq('production');
+    expect(link.props('to').params.productionSlug).to.eq('legally-ginger');
+  });
+  it('has feature image', () => {
+    expect(component.find('img').attributes('src')).to.eq(
+      'example.org/feature-image.png'
+    );
+  });
+  it('has show name', () => {
+    expect(component.text()).to.contain('Legally Ginger');
+  });
+  it('has show dates', () => {
+    expect(component.text()).to.contain('3 Mar - 6 Mar 2021');
+  });
+});

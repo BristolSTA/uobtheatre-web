@@ -55,7 +55,6 @@ export default {
     handleScroll() {
       if (this.$apollo.queries.productions.loading) return;
       let bottomLoaderEl = this.$refs['bottom-loader'];
-
       if (
         bottomLoaderEl &&
         bottomLoaderEl.offsetTop <= window.scrollY + window.innerHeight

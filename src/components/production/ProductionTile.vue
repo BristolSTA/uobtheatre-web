@@ -1,11 +1,11 @@
 <template>
-  <div class="px-4 cursor-pointer production-tile sm:px-0">
+  <div class="px-4 cursor-pointer production-tile sm:px-0 hover:text-sta-green">
     <router-link
       :to="{ name: 'production', params: { productionSlug: production.slug } }"
     >
       <img
         class="max-w-full"
-        src="https://via.placeholder.com/1920x960"
+        :src="production.featuredImage.url"
         alt="show poster"
       />
       <h2
@@ -36,10 +36,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.production-tile:hover {
+.production-tile:hover .production-title {
   @apply text-sta-green;
-  .production-title {
-    @apply text-sta-green;
-  }
 }
 </style>
