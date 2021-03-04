@@ -6,6 +6,8 @@ import TicketsMatrix from './TicketsMatrix';
 export default class Booking {
   /** @member {number} */
   id;
+  /** @member {string} */
+  bookingReference;
   /** @member {object} */
   performance;
   /** @member {Ticket} */
@@ -53,6 +55,9 @@ export default class Booking {
     }
     if (bookingData.performance) {
       this.performance = bookingData.performance;
+    }
+    if (bookingData.bookingReference) {
+      this.bookingReference = bookingData.bookingReference;
     }
     this.id = bookingData.id;
     this.dirty = false;

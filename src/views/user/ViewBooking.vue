@@ -8,18 +8,21 @@
         :show-buy-tickets-button="false"
         :show-detailed-info="false"
       />
-      <div class="space-y-4">
+      <div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <performance-overview
+          class="lg:col-span-2"
           :production="production"
           :performance="booking.performance"
         />
         <venue-overview
+          class="lg:col-span-1"
           :venue-data="booking.performance.venue.slug"
           :online="booking.performance.isOnline"
           :in-person="booking.performance.isInperson"
         />
-        <payment-overview :booking="booking" />
-        <tickets-overview :booking="booking" />
+
+        <payment-overview class="lg:col-span-1" :booking="booking" />
+        <tickets-overview class="lg:col-span-2" :booking="booking" />
       </div>
     </div>
   </div>

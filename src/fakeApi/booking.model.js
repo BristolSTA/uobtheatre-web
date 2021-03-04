@@ -16,7 +16,7 @@ export default {
     return {
       bookingNode: Factory.extend({
         bookingReference: () => faker.random.uuid(),
-        status: 'INPROGRESS',
+        status: 'IN_PROGRESS',
         afterCreate(node, server) {
           updateIfDoesntHave(node, {
             performance: () => {
@@ -74,7 +74,7 @@ export default {
           performance: context.mirageSchema.performanceNodes.find(
             args.performanceId
           ),
-          status: 'INPROGRESS',
+          status: 'IN_PROGRESS',
           bookingReference: faker.random.uuid(),
           tickets: tickets,
           user: authedUser(context),

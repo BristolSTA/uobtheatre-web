@@ -13,6 +13,7 @@ import {
   faLink,
   faMapMarkedAlt,
   faMoneyCheckAlt,
+  faTheaterMasks,
   faTicketAlt,
   faUserEdit,
 } from '@fortawesome/free-solid-svg-icons';
@@ -40,7 +41,8 @@ library.add(
   faLink,
   faBuilding,
   faUserEdit,
-  faMoneyCheckAlt
+  faMoneyCheckAlt,
+  faTheaterMasks
 );
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 

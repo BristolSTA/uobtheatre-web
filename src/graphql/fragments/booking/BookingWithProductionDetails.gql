@@ -37,6 +37,7 @@ fragment BookingWithProductionDetails on BookingNode {
     }
     start
     end
+    durationMins
     venue {
       slug
     }
