@@ -90,8 +90,8 @@ export default {
   data() {
     return {
       navItems: [
-        ['/', 'Events'],
-        ['/', 'Societies'],
+        [{ name: 'productions' }, 'Whats On'],
+        [{ name: 'societies' }, 'Societies'],
         ['/', 'Venues'],
         ['/', 'Contact'],
       ],
