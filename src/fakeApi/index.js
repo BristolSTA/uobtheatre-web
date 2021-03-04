@@ -260,7 +260,7 @@ export function makeServer({ environment = 'development' } = {}) {
       });
 
       server.createList('ProductionNode', 20);
-
+      server.createList('SocietyNode', 20);
       /**
        * A user
        */
