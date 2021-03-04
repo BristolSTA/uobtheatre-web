@@ -1,6 +1,7 @@
 <template>
-  <div class="min-h-full bg-sta-gray">
+  <div class="min-h-full mb-10 text-white bg-sta-gray">
     <div class="container">
+      <h1 class="pt-2 text-left text-h1">Booking Info</h1>
       <production-banner
         class="pb-2 md:pb-8"
         :production="production"
@@ -12,14 +13,12 @@
           :production="production"
           :performance="booking.performance"
         />
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 justify-evenly">
-          <venue-overview
-            :venue-data="booking.performance.venue.slug"
-            :online="booking.performance.isOnline"
-            :in-person="booking.performance.isInperson"
-          />
-          <user-overview :user="{}" />
-        </div>
+        <venue-overview
+          :venue-data="booking.performance.venue.slug"
+          :online="booking.performance.isOnline"
+          :in-person="booking.performance.isInperson"
+        />
+        <payment-overview :booking="booking" />
         <tickets-overview :booking="booking" />
       </div>
     </div>
@@ -28,9 +27,9 @@
 
 <script>
 import Booking from '@/classes/Booking';
+import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue';
 import PerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue';
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
-import UserOverview from '@/components/booking/overview/UserOverview.vue';
 import VenueOverview from '@/components/booking/overview/VenueOverview.vue';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
 
@@ -39,9 +38,9 @@ export default {
   components: {
     VenueOverview,
     PerformanceOverview,
-    UserOverview,
     TicketsOverview,
     ProductionBanner,
+    PaymentOverview,
   },
   props: {},
   data() {
