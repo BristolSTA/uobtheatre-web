@@ -1,10 +1,10 @@
-#import "../fragments/booking/DetailedBookingDetails.gql"
-query userDraftBookingForPerformance {
+#import "../fragments/booking/BookingWithProductionDetails.gql"
+query userPaidBookingForPerformance {
   authUser {
     bookings(status: PAID) {
       edges {
         node {
-          ...DetailedBookingDetails
+          ...BookingWithProductionDetails
         }
       }
     }

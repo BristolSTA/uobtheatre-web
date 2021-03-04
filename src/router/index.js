@@ -55,7 +55,7 @@ const routes = [
   {
     path: '/user/booking',
     name: 'user-booking',
-    component: () => import('@/views/booking/ViewBooking.vue'),
+    component: () => import('@/views/user/ViewBooking.vue'),
   },
 
   /**

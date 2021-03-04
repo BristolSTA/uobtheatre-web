@@ -1,0 +1,44 @@
+#import "./AllPriceBreakdown.gql"
+fragment BookingWithProductionDetails on BookingNode {
+  id
+  bookingReference
+  status
+  priceBreakdown {
+    ...AllPriceBreakdown
+  }
+  tickets {
+    id
+    seatGroup {
+      id
+      name
+    }
+    concessionType {
+      id
+      name
+    }
+  }
+  performance {
+    id
+    production {
+      id
+      name
+      slug
+      subtitle
+      society {
+        name
+        slug
+        logo {
+          url
+        }
+      }
+      featuredImage {
+        url
+      }
+    }
+    start
+    end
+    venue {
+      slug
+    }
+  }
+}
