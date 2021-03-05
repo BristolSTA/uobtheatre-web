@@ -24,34 +24,38 @@
         <payment-overview class="lg:col-span-1" :booking="booking" />
         <tickets-overview class="lg:col-span-2" :booking="booking" />
       </div>
+    </div>
 
-      <div class="mt-4">
-        <div
-          ref="header"
-          class="flex py-2 pl-4 cursor-pointer hover:bg-opacity-80"
-          :class="[expanded ? 'bg-sta-orange' : 'bg-sta-green']"
-          @click="ticketToggle"
-          @keypress="ticketToggle"
-        >
-          <div class="flex-grow">
-            <h3 class="inline-block text-h3 lg:text-h2">Tickets</h3>
-          </div>
-          <div class="flex items-center pr-4 text-3xl">
-            <font-awesome-icon
-              :icon="expanded ? 'chevron-up' : 'chevron-down'"
-            />
-          </div>
+    <div class="mt-4 md:container">
+      <div
+        ref="header"
+        class="flex py-2 pl-4 cursor-pointer hover:bg-opacity-80"
+        :class="[expanded ? 'bg-sta-orange' : 'bg-sta-green']"
+        @click="ticketToggle"
+        @keypress="ticketToggle"
+      >
+        <div class="flex-grow">
+          <h3 class="inline-block text-h2">Tickets</h3>
         </div>
-        <div v-if="expanded" class="p-4 bg-sta-gray-dark">
-          <div class="flex justify-center w-full space-x-4">
-            <ticket
-              v-for="(ticket, index) in booking.tickets"
-              :key="index"
-              :booking="booking"
-              :ticket="ticket"
-              :user="user"
-            />
-          </div>
+        <div class="flex items-center pr-4 text-3xl">
+          <font-awesome-icon :icon="expanded ? 'chevron-up' : 'chevron-down'" />
+        </div>
+      </div>
+      <div
+        v-if="expanded"
+        class="flex justify-center w-full py-4 md:px-4 bg-sta-gray-dark"
+      >
+        <div
+          class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+        >
+          <ticket
+            v-for="(ticket, index) in booking.tickets"
+            :key="index"
+            :booking="booking"
+            :ticket="ticket"
+            :user="user"
+            :index="index"
+          />
         </div>
       </div>
     </div>

@@ -286,6 +286,14 @@ export function makeServer({ environment = 'development' } = {}) {
             concessionType: StudentConcession,
             seatGroup: BestSeatGroup,
           }),
+          server.create('ticketNode', {
+            concessionType: ChildConcession,
+            seatGroup: ProjSeatGroup,
+          }),
+          server.create('ticketNode', {
+            concessionType: ChildConcession,
+            seatGroup: ProjSeatGroup,
+          }),
         ],
       });
     },

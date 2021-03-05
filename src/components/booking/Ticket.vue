@@ -1,5 +1,8 @@
 <template>
-  <div class="p-4 pt-2 text-black bg-white w-80 rounded-xl">
+  <div
+    class="p-4 pt-2 text-black bg-white rounded-xl"
+    style="max-width: 320px; min-width: 240px"
+  >
     <h1 class="text-h2">TRASh</h1>
     <p>
       Date: {{ booking.performance.start | dateFormat('EEEE d MMMM kkkk') }}
@@ -15,7 +18,12 @@
     </div>
     <p>Booking Ref: {{ booking.bookingReference }}</p>
     <!-- <p>Paid On: 3 Jan 2020</p> -->
-    <p>By: {{ fullName }}</p>
+    <div class="flex justify-between w-full">
+      <p>Booked By: {{ fullName }}</p>
+      <p class="text-sm italic text-right text-gray-500">
+        {{ ticketNum }}
+      </p>
+    </div>
   </div>
 </template>
 
@@ -43,6 +51,10 @@ export default {
       required: true,
       type: Object,
     },
+    index: {
+      required: true,
+      type: Number,
+    },
   },
   computed: {
     qrString() {
@@ -51,13 +63,17 @@ export default {
           `ref:${this.booking.bookingReference}`,
           `concessionType:${this.ticket.concession_type.name}`,
           `seatGroup:${this.ticket.seat_group.name}`,
-          `user:Jelgar`,
+          `user:${this.fullName}`,
+          `ticketNum:${this.ticketNum}`,
         ],
         ';'
       );
     },
     fullName() {
       return lo.join([this.user.firstName, this.user.lastName], ' ');
+    },
+    ticketNum() {
+      return ('0' + this.index).slice(-2);
     },
   },
 };
