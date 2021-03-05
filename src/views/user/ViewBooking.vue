@@ -35,9 +35,9 @@
         @keypress="ticketToggle"
       >
         <div class="flex-grow">
-          <h3 class="inline-block text-h2">Tickets</h3>
+          <h3 class="inline-block text-h2">View Tickets</h3>
         </div>
-        <div class="flex items-center pr-4 text-3xl">
+        <div class="flex items-center pr-4 text-h2">
           <font-awesome-icon :icon="expanded ? 'chevron-up' : 'chevron-down'" />
         </div>
       </div>
