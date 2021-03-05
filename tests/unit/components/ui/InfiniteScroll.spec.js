@@ -55,7 +55,7 @@ describe('Infinite Scroll', () => {
     );
   });
 
-  it('runs first page query on mount and emits events (no next cursor)', async () => {
+  it('runs first page query on mount and emits events (no next page)', async () => {
     // Should be loading
     expect(infiniteScrollComponent.emitted('loadingChange').length).to.eq(1);
     expect(infiniteScrollComponent.emitted('loadingChange')[0][0]).to.be.true;
@@ -72,6 +72,7 @@ describe('Infinite Scroll', () => {
         queryName: {
           pageInfo: {
             endCursor: null,
+            hasNextPage: false,
           },
         },
       },
@@ -94,13 +95,14 @@ describe('Infinite Scroll', () => {
     ).to.be.false;
   });
 
-  it('runs first page query on mount and emits events (next cursor)', async () => {
+  it('runs first page query on mount and emits events (next page)', async () => {
     // Resolve the query
     let result = {
       data: {
         queryName: {
           pageInfo: {
             endCursor: 'abcdefg',
+            hasNextPage: true,
           },
         },
       },
@@ -123,13 +125,14 @@ describe('Infinite Scroll', () => {
     ).to.be.true;
   });
 
-  it('runs query with next cursor when loader scrolled into view', async () => {
+  it.only('runs query with next cursor when loader scrolled into view', async () => {
     // Resolve the query
     let result = {
       data: {
         queryName: {
           pageInfo: {
             endCursor: 'abcdefg',
+            hasNextPage: true,
           },
         },
       },
@@ -165,9 +168,11 @@ describe('Infinite Scroll', () => {
       afterCursor: 'abcdefg',
     });
 
-    result.data.queryName.pageInfo.endCursor = null;
+    result.data.queryName.pageInfo.hasNextPage = false;
     promiseResolve(result);
     await waitFor(() => !infiniteScrollComponent.vm.loading);
+    await infiniteScrollComponent.vm.$nextTick();
+    console.log(infiniteScrollComponent.html());
 
     expect(infiniteScrollComponent.emitted('loadingChange').length).to.eq(4);
     expect(infiniteScrollComponent.emitted('newData').length).to.eq(2);
