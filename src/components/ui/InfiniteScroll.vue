@@ -67,11 +67,16 @@ export default {
       // Check for pageInfo
       if (
         !result.data[root].pageInfo ||
-        result.data[root].pageInfo.endCursor === undefined
+        result.data[root].pageInfo.endCursor === undefined ||
+        result.data[root].pageInfo.hasNextPage === undefined
       ) {
-        throw new Error(`endCursor was not returned for the query "${root}"`);
+        throw new Error(
+          `endCursor or hasNextPage was not returned for the query "${root}"`
+        );
       }
-      this.endCursor = result.data[root].pageInfo.endCursor;
+      this.endCursor = result.data[root].pageInfo.hasNextPage
+        ? result.data[root].pageInfo.endCursor
+        : null;
 
       // Emit with the new data
       this.$emit('newData', result.data[root]);
