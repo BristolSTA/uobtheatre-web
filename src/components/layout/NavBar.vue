@@ -41,7 +41,7 @@
             v-for="(item, index) in navItems"
             :key="index"
             :to="item[0]"
-            class="block mt-4 mr-6 font-semibold tracking-wide text-white uppercase lg:inline-block lg:mt-0 hover:text-sta-orange"
+            class="block mt-4 mr-6 font-semibold tracking-wide text-white uppercase lg:inline-block lg:mt-0 hover:text-sta-orange-dark"
           >
             {{ item[1] }}
           </router-link>
@@ -90,7 +90,7 @@ export default {
   data() {
     return {
       navItems: [
-        ['/', 'Events'],
+        [{ name: 'productions' }, 'Whats On'],
         ['/', 'Societies'],
         ['/', 'Venues'],
         ['/', 'Contact'],
