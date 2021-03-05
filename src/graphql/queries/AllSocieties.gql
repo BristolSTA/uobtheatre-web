@@ -1,0 +1,17 @@
+query allSocieties($afterCursor: String) {
+  societies(first: 9, after: $afterCursor) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    edges {
+      node {
+        name
+        slug
+        logo {
+          url
+        }
+      }
+    }
+  }
+}
