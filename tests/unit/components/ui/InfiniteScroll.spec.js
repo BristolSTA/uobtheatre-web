@@ -125,7 +125,7 @@ describe('Infinite Scroll', () => {
     ).to.be.true;
   });
 
-  it.only('runs query with next cursor when loader scrolled into view', async () => {
+  it('runs query with next cursor when loader scrolled into view', async () => {
     // Resolve the query
     let result = {
       data: {
