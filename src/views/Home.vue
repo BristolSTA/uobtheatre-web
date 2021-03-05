@@ -70,7 +70,7 @@
             }"
             class="mt-6 btn btn-rouge"
           >
-            More Information
+            More Information & Book
           </router-link>
         </div>
       </div>
@@ -89,8 +89,11 @@
         class="flex items-center py-10 text-center"
       >
         <div class="w-full">
-          <router-link to="/" class="btn btn-outline btn-orange">
-            View All Upcoming Productions
+          <router-link
+            :to="{ name: 'productions' }"
+            class="btn btn-outline btn-orange"
+          >
+            See More <font-awesome-icon icon="arrow-right" />
           </router-link>
         </div>
       </div>

@@ -2,6 +2,7 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 import {
+  faArrowRight,
   faBuilding,
   faChevronDown,
   faChevronLeft,
@@ -40,7 +41,8 @@ library.add(
   faLink,
   faBuilding,
   faUserEdit,
-  faMoneyCheckAlt
+  faMoneyCheckAlt,
+  faArrowRight
 );
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
