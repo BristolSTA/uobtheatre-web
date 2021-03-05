@@ -2,7 +2,6 @@
   <div class="min-h-full text-white bg-sta-gray">
     <div class="container">
       <h1 class="py-4 text-h1">Societies</h1>
-
       <infinite-scroll
         :apollo-query="require('@/graphql/queries/AllSocieties.gql')"
         @newData="handleNewData"
@@ -16,7 +15,7 @@
         </div>
       </infinite-scroll>
       <div
-        v-if="societies.length == 0 && !$apollo.queries.societies.loading"
+        v-if="societies && !societies.length"
         class="flex items-center text-center"
         style="height: 30vh"
       >
@@ -30,21 +29,23 @@
 
 <script>
 import SocietyTile from '@/components/society/SocietyTile.vue';
+import InfiniteScroll from '@/components/ui/InfiniteScroll.vue';
 export default {
   name: 'AllSocieties',
-  components: { SocietyTile },
+  components: { SocietyTile, InfiniteScroll },
   metaInfo: {
     title: 'Societies',
   },
   data() {
     return {
-      societies: [],
+      societies: null,
     };
   },
   methods: {
     handleNewData(data) {
+      console.log(data);
       if (!this.societies) this.societies = [];
-      this.societies.push(...data.societies.edges.map((edge) => edge.node));
+      this.societies.push(...data.edges.map((edge) => edge.node));
     },
   },
 };
