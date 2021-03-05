@@ -20,7 +20,7 @@
         style="height: 30vh"
       >
         <div class="w-full">
-          <p>Loading Societies</p>
+          <p>No Societies to show</p>
         </div>
       </div>
     </div>

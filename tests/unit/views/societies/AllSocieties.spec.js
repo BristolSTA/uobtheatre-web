@@ -31,16 +31,16 @@ describe('All Societies', () => {
       .true;
   });
 
-  describe('with no productions', () => {
-    it('displays no productions notice', async () => {
+  describe('with no societies', () => {
+    it('displays no societies notice', async () => {
       await waitFor(
         () => !allSocietiesComponent.findComponent(InfiniteScroll).vm.loading
       );
-      expect(allSocietiesComponent.text()).to.contain('Loading Societies');
+      expect(allSocietiesComponent.text()).to.contain('No Societies to show');
     });
   });
 
-  describe('with many productions', () => {
+  describe('with many societies', () => {
     beforeAll(async () => {
       server.create('societyNode', {
         name: 'Dramsoc',
@@ -97,7 +97,7 @@ describe('All Societies', () => {
       );
     });
 
-    it('fetches all the productions and doesnt display loader', async () => {
+    it('fetches all the societies and doesnt display loader', async () => {
       await waitFor(
         () => !allSocietiesComponent.findComponent(InfiniteScroll).vm.loading
       );
