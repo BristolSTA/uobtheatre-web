@@ -21,7 +21,7 @@ export default {
         },
         doorsOpen() {
           return DateTime.fromISO(this.start).minus({
-            hours: faker.random.number({ min: 1, max: 2 }),
+            minutes: faker.random.number({ min: 1, max: 20 }),
           });
         },
         description: faker.lorem.words(4),

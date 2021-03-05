@@ -25,6 +25,7 @@ fragment DetailedBookingDetails on BookingNode {
     }
     start
     end
+    doorsOpen
     venue {
       slug
     }
