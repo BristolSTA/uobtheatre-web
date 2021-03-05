@@ -5,9 +5,6 @@ import { createApolloClient } from 'vue-cli-plugin-apollo/graphql-client';
 import config from '@/config';
 import store from '@/store';
 
-// Install the vue plugin
-Vue.use(VueApollo);
-
 // Name of the localStorage item
 const AUTH_TOKEN = config.auth.cookie;
 
