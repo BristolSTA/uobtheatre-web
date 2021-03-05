@@ -138,10 +138,12 @@ export function makeServer({ environment = 'development' } = {}) {
       ];
 
       /**
-       * Fake Performance 1 - Legally Blonde, MTB, with 4 performances (19th,20th,21st (sold out), 22nd (online))
+       * Fake Production 1 - Legally Blonde, MTB, with 4 performances (19th,20th,21st (sold out), 22nd (online))
        */
 
-      let performances = server.createList('PerformanceNode', 4);
+      let performances = server.createList('PerformanceNode', 4, {
+        __dont_factory: ['production'],
+      });
       performances[0].update({
         soldOut: false,
         isInperson: true,
@@ -218,9 +220,9 @@ export function makeServer({ environment = 'development' } = {}) {
         percentage: 0.05,
       });
 
-      // /**
-      //  * Fake Performance 2 - TRASh, Dramsoc, 1 performance, no warnings
-      //  */
+      /**
+       * Fake Produciton 2 - TRASh, Dramsoc, 1 performance, no warnings
+       */
 
       let dramsoc = server.create('SocietyNode', {
         name: 'Dramsoc',
@@ -241,7 +243,7 @@ export function makeServer({ environment = 'development' } = {}) {
       });
 
       /**
-       * Fake Performance 3 - Present laughter - Not bookable
+       * Fake Production 3 - Present laughter - Not bookable
        */
 
       server.create('ProductionNode', 'withCoverImage', {
@@ -253,7 +255,7 @@ export function makeServer({ environment = 'development' } = {}) {
       });
 
       /**
-       * Fake Performance 4 - A complete random production called A Default Production
+       * Fake Production 4 - A complete random production called A Default Production
        */
       server.create('ProductionNode', {
         name: 'A Default Production',
