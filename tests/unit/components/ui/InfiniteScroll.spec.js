@@ -172,7 +172,6 @@ describe('Infinite Scroll', () => {
     promiseResolve(result);
     await waitFor(() => !infiniteScrollComponent.vm.loading);
     await infiniteScrollComponent.vm.$nextTick();
-    console.log(infiniteScrollComponent.html());
 
     expect(infiniteScrollComponent.emitted('loadingChange').length).to.eq(4);
     expect(infiniteScrollComponent.emitted('newData').length).to.eq(2);
