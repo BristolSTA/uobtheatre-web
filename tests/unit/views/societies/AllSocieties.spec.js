@@ -76,7 +76,6 @@ describe('All Societies', () => {
           .findComponent({ ref: 'bottom-loader' })
           .exists()
       ).to.be.true;
-      expect(allSocietiesComponent.text()).not.to.contain('MTB');
     });
   });
 
@@ -109,7 +108,10 @@ describe('All Societies', () => {
       ).to.eq('Dramsoc');
 
       expect(
-        allSocietiesComponent.findComponent({ ref: 'bottom-loader' }).exists()
+        allSocietiesComponent
+          .findComponent(InfiniteScroll)
+          .findComponent({ ref: 'bottom-loader' })
+          .exists()
       ).to.be.false;
     });
   });

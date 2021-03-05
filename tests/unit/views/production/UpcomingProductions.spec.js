@@ -83,9 +83,6 @@ describe('Upcoming Productions', () => {
           .findComponent({ ref: 'bottom-loader' })
           .exists()
       ).to.be.true;
-      expect(upcomingProductionsComponent.text()).not.to.contain(
-        'Once upon a time'
-      );
     });
   });
 
@@ -124,6 +121,7 @@ describe('Upcoming Productions', () => {
 
       expect(
         upcomingProductionsComponent
+          .findComponent(InfiniteScroll)
           .findComponent({ ref: 'bottom-loader' })
           .exists()
       ).to.be.false;
