@@ -43,7 +43,6 @@ export default {
   },
   methods: {
     handleNewData(data) {
-      console.log(data);
       if (!this.societies) this.societies = [];
       this.societies.push(...data.edges.map((edge) => edge.node));
     },
