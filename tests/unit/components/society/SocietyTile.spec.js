@@ -14,6 +14,7 @@ describe('Society Tile', () => {
         propsData: {
           society: {
             name: 'Dramsoc',
+            slug: 'dramsoc',
             logo: {
               url: 'example.org/logo.png',
             },
@@ -26,7 +27,7 @@ describe('Society Tile', () => {
   it('links to society page', () => {
     let link = societyTileComponent.findComponent(RouterLinkStub);
     expect(link.props('to').name).to.eq('society');
-    expect(link.props('to').params.productionSlug).to.eq('dramsoc');
+    expect(link.props('to').params.societySlug).to.eq('dramsoc');
   });
   it('has logo', () => {
     expect(societyTileComponent.find('img').attributes('src')).to.eq(

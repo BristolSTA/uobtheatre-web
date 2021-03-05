@@ -6,9 +6,9 @@ import ProductionTile from '@/components/production/ProductionTile';
 import { generateMountOptions, RouterLinkStub } from '../../helpers';
 
 describe('Production Tile', () => {
-  let component;
+  let productionTileComponent;
   beforeAll(() => {
-    component = mount(
+    productionTileComponent = mount(
       ProductionTile,
       generateMountOptions(['router'], {
         propsData: {
@@ -27,19 +27,19 @@ describe('Production Tile', () => {
   });
 
   it('links to production page', () => {
-    let link = component.findComponent(RouterLinkStub);
+    let link = productionTileComponent.findComponent(RouterLinkStub);
     expect(link.props('to').name).to.eq('production');
     expect(link.props('to').params.productionSlug).to.eq('legally-ginger');
   });
   it('has feature image', () => {
-    expect(component.find('img').attributes('src')).to.eq(
+    expect(productionTileComponent.find('img').attributes('src')).to.eq(
       'example.org/feature-image.png'
     );
   });
   it('has show name', () => {
-    expect(component.text()).to.contain('Legally Ginger');
+    expect(productionTileComponent.text()).to.contain('Legally Ginger');
   });
   it('has show dates', () => {
-    expect(component.text()).to.contain('3 Mar - 6 Mar 2021');
+    expect(productionTileComponent.text()).to.contain('3 Mar - 6 Mar 2021');
   });
 });
