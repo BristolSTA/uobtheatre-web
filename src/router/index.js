@@ -82,6 +82,12 @@ const routes = [
     component: Society,
   },
 
+  {
+    path: '/societies',
+    component: () => import('@/views/societies/AllSocieties.vue'),
+    name: 'societies',
+  },
+
   /**
    * Auth Pages
    */
