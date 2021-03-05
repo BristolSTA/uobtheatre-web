@@ -7,7 +7,6 @@ import config from '@/config';
 import { createClient } from '@/vue-apollo';
 
 Vue.use(Vuex);
-
 export default new Vuex.Store({
   state: {
     auth: {
