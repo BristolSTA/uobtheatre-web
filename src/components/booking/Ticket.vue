@@ -1,6 +1,6 @@
 <template>
   <div
-    class="p-4 pt-2 text-black bg-white rounded-xl"
+    class="flex flex-col p-4 pt-2 text-black bg-white rounded-xl"
     style="max-width: 320px; min-width: 240px"
   >
     <h1 class="text-h2">TRASh</h1>
@@ -13,8 +13,8 @@
       <p>1x {{ ticket.concession_type.name }}</p>
       <p class="text-right">{{ ticket.seat_group.name }}</p>
     </div>
-    <div class="flex justify-center w-full py-2">
-      <qrcode-vue :value="qrString" level="L" size="240" />
+    <div class="flex items-center justify-center flex-grow w-full py-2">
+      <qrcode-vue :value="qrString" level="M" size="240" />
     </div>
     <p>Booking Ref: {{ booking.bookingReference }}</p>
     <!-- <p>Paid On: 3 Jan 2020</p> -->
@@ -60,11 +60,8 @@ export default {
     qrString() {
       return lo.join(
         [
-          `ref:${this.booking.bookingReference}`,
-          `concessionType:${this.ticket.concession_type.name}`,
-          `seatGroup:${this.ticket.seat_group.name}`,
-          `user:${this.fullName}`,
-          `ticketNum:${this.ticketNum}`,
+          `bookingReference:${this.booking.bookingReference}`,
+          `ticketId:${this.ticket.id}`,
         ],
         ';'
       );
