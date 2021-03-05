@@ -58,8 +58,17 @@ const routes = [
     },
     [Bindings.bindProductionSlug()]
   ),
+
+  /**
+   * User Pages
+   */
   {
-    path: '/user/booking',
+    path: '/user',
+    name: 'user',
+    component: () => import('@/views/user/MyDetails.vue'),
+  },
+  {
+    path: '/user/booking/:bookingRef',
     name: 'user-booking',
     component: () => import('@/views/user/ViewBooking.vue'),
   },

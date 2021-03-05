@@ -298,6 +298,17 @@ export function makeServer({ environment = 'development' } = {}) {
           }),
         ],
       });
+      server.create('bookingNode', {
+        status: 'PAID',
+        user: user,
+        performance: performances[0],
+        tickets: [
+          server.create('ticketNode', {
+            concessionType: AdultConcession,
+            seatGroup: BestSeatGroup,
+          }),
+        ],
+      });
     },
 
     async routes() {

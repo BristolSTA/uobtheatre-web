@@ -70,6 +70,7 @@ import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
 import VenueOverview from '@/components/booking/overview/VenueOverview.vue';
 import Ticket from '@/components/booking/Ticket.vue';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
+import { createClient } from '@/vue-apollo';
 
 export default {
   name: 'ViewBooking',
@@ -90,22 +91,27 @@ export default {
       expanded: false,
     };
   },
-  apollo: {
-    booking: {
-      query: require('@/graphql/queries/PaidBookingForPerformance.gql'),
-      // variables: {
-      //   bookingId: 1,
-      // },
-      result({ data }) {
-        this.user = (({ firstName, lastName, email }) => ({
-          firstName,
-          lastName,
-          email,
-        }))(data.authUser);
-        this.booking.updateFromAPIData(data.authUser.bookings.edges[0].node);
-        this.production = this.booking.performance.production;
-      },
-    },
+  beforeRouteEnter(to, from, next) {
+    const { apolloClient } = createClient();
+    return apolloClient
+      .query({
+        query: require('@/graphql/queries/UserPaidBooking.gql'),
+        variables: {
+          bookingId: to.params.bookingRef,
+        },
+      })
+      .then(({ data }) => {
+        next((vm) => {
+          vm.user = (({ firstName, lastName, email }) => ({
+            firstName,
+            lastName,
+            email,
+          }))(data.authUser);
+          //$store.state.auth.user.firstName
+          vm.booking.updateFromAPIData(data.authUser.bookings.edges[0].node);
+          vm.production = vm.booking.performance.production;
+        });
+      });
   },
   methods: {
     ticketToggle() {

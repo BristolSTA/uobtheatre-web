@@ -1,10 +1,10 @@
 #import "../fragments/booking/BookingWithProductionDetails.gql"
-query userPaidBookingForPerformance {
+query userPaidBooking($bookingId: ID!) {
   authUser {
     firstName
     lastName
     email
-    bookings(status: PAID) {
+    bookings(id: $bookingId, status: PAID) {
       edges {
         node {
           ...BookingWithProductionDetails

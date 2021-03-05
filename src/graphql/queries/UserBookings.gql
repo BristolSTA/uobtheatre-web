@@ -1,0 +1,15 @@
+#import "../fragments/booking/DetailedBookingDetails.gql"
+query userPaidBookings {
+  authUser {
+    firstName
+    lastName
+    email
+    bookings(status: PAID) {
+      edges {
+        node {
+          ...DetailedBookingDetails
+        }
+      }
+    }
+  }
+}
