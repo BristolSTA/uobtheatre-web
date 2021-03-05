@@ -11,8 +11,8 @@
           class="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2 lg:grid-cols-3"
         >
           <production-tile
-            v-for="(production, i) in productions"
-            :key="i"
+            v-for="(production, index) in productions"
+            :key="index"
             :production="production"
           />
         </div>
