@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 
 import ProductionTile from '@/components/production/ProductionTile';
+import InfiniteScroll from '@/components/ui/InfiniteScroll';
 import UpcomingProductions from '@/views/production/UpcomingProductions';
 
 import {
@@ -18,58 +19,33 @@ describe('Upcoming Productions', () => {
   afterAll(() => {
     server.shutdown();
   });
-
-  it('registers scroll callback on mount', async () => {
-    let addEventListenerSpy = jest.spyOn(window, 'addEventListener');
-    let component = await mountWithRouterMock(
+  beforeEach(async () => {
+    component = await mountWithRouterMock(
       UpcomingProductions,
       generateMountOptions(['apollo'])
-    );
-    expect(addEventListenerSpy.mock.calls[0][0]).to.eq('scroll');
-    expect(addEventListenerSpy.mock.calls[0][1]).to.eq(
-      component.vm.handleScroll
     );
   });
 
-  it('removes scroll callback on destory', async () => {
-    let removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');
-    let component = await mountWithRouterMock(
-      UpcomingProductions,
-      generateMountOptions(['apollo'])
-    );
-    component.destroy();
-    expect(removeEventListenerSpy.mock.calls[0][0]).to.eq('scroll');
-    expect(removeEventListenerSpy.mock.calls[0][1]).to.eq(
-      component.vm.handleScroll
-    );
+  it('contains an infinite scroll instance', () => {
+    expect(component.findComponent(InfiniteScroll).exists()).to.be.true;
   });
 
   describe('with no productions', () => {
-    beforeEach(async () => {
-      component = await mountWithRouterMock(
-        UpcomingProductions,
-        generateMountOptions(['apollo'])
-      );
-    });
     it('displays no productions notice', async () => {
-      await waitFor(() => !component.vm.$apollo.queries.productions.loading);
+      await waitFor(() => !component.findComponent(InfiniteScroll).vm.loading);
       expect(component.text()).to.contain(
         'There are currently no upcoming productions'
       );
     });
   });
 
-  describe('with lots of productions', () => {
+  describe('with many productions', () => {
     beforeAll(async () => {
       // Seed 3 x 9 performances
       server.create('productionNode', {
         name: 'Legally Ginger',
       });
-      server.createList('productionNode', 8);
-      server.create('productionNode', {
-        name: 'Once upon a time',
-      });
-      server.createList('productionNode', 18);
+      server.createList('productionNode', 9);
     });
 
     afterAll(() => {
@@ -84,55 +60,28 @@ describe('Upcoming Productions', () => {
     });
 
     it('fetches first 9 performances and displays loader', async () => {
-      await waitFor(() => component.vm.productions.length);
+      await waitFor(() => !component.findComponent(InfiniteScroll).vm.loading);
       expect(component.findAllComponents(ProductionTile)).length(9);
       expect(
         component.findComponent(ProductionTile).props('production').name
       ).to.eq('Legally Ginger');
 
-      expect(component.findComponent({ ref: 'bottom-loader' }).exists());
+      expect(
+        component
+          .findComponent(InfiniteScroll)
+          .findComponent({ ref: 'bottom-loader' })
+          .exists()
+      ).to.be.true;
       expect(component.text()).not.to.contain('Once upon a time');
-    });
-
-    it('loads next chunk when loader scrolled into view', async () => {
-      let fetchMoreSpy = jest.spyOn(
-        component.vm.$apollo.queries.productions,
-        'fetchMore'
-      );
-      // Set the bottom loader to have a mock pixel height of 800
-      Object.defineProperty(component.vm.$refs['bottom-loader'], 'offsetTop', {
-        writable: false,
-        value: 800,
-      });
-      await waitFor(() => component.vm.productions.length);
-
-      // Expecting not to trigger the fetch routine (loader @ 800px, bottom of browser @ 768px)
-      component.vm.handleScroll();
-      expect(fetchMoreSpy.mock.calls).length(0);
-
-      // Should trigger fetch (loader @ 800px, bottom of browser @ 1000px)
-      window.scrollY = 1000 - 768;
-      component.vm.handleScroll();
-      expect(fetchMoreSpy.mock.calls).length(1);
-
-      return waitFor(() => component.vm.productions.length == 18).then(() => {
-        expect(
-          component.findAllComponents(ProductionTile).at(9).props('production')
-            .name
-        ).to.eq('Once upon a time');
-        expect(component.findComponent({ ref: 'bottom-loader' }).exists()).to.be
-          .true;
-      });
     });
   });
 
-  describe('with enough productions for one more page', () => {
+  describe('with some productions', () => {
     beforeAll(async () => {
-      // Seed 2 x 9 performances
       server.create('productionNode', {
         name: 'Legally Ginger',
       });
-      server.createList('productionNode', 17);
+      server.createList('productionNode', 2);
     });
 
     afterAll(() => {
@@ -146,31 +95,15 @@ describe('Upcoming Productions', () => {
       );
     });
 
-    it('can load one more page, and then no more', async () => {
-      let fetchMoreSpy = jest.spyOn(
-        component.vm.$apollo.queries.productions,
-        'fetchMore'
-      );
-      // Set the bottom loader to have a mock pixel height of 800
-      Object.defineProperty(component.vm.$refs['bottom-loader'], 'offsetTop', {
-        writable: false,
-        value: 800,
-      });
-      await waitFor(() => component.vm.productions.length);
+    it('fetches all the productions and doesnt display loader', async () => {
+      await waitFor(() => !component.findComponent(InfiniteScroll).vm.loading);
+      expect(component.findAllComponents(ProductionTile)).length(3);
+      expect(
+        component.findComponent(ProductionTile).props('production').name
+      ).to.eq('Legally Ginger');
 
-      // Should trigger fetch (loader @ 800px, bottom of browser @ 1000px)
-      window.scrollY = 1000 - 768;
-      component.vm.handleScroll();
-      expect(fetchMoreSpy.mock.calls).length(1);
-
-      return waitFor(() => component.vm.productions.length == 18).then(() => {
-        expect(component.findComponent({ ref: 'bottom-loader' }).exists()).to.be
-          .false;
-
-        // Check it doesn't trigger again
-        component.vm.handleScroll();
-        expect(fetchMoreSpy.mock.calls).length(1);
-      });
+      expect(component.findComponent({ ref: 'bottom-loader' }).exists()).to.be
+        .false;
     });
   });
 });
