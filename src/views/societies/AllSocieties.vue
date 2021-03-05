@@ -20,7 +20,8 @@
         style="height: 30vh"
       >
         <div class="w-full">
-          <p>No Societies to show</p>
+          <h2 class="text-h2">There are currently no societies</h2>
+          <p>Please be sure to check back soon!</p>
         </div>
       </div>
     </div>

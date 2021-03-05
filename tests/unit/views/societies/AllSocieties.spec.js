@@ -36,7 +36,9 @@ describe('All Societies', () => {
       await waitFor(
         () => !allSocietiesComponent.findComponent(InfiniteScroll).vm.loading
       );
-      expect(allSocietiesComponent.text()).to.contain('No Societies to show');
+      expect(allSocietiesComponent.text()).to.contain(
+        'There are currently no societies'
+      );
     });
   });
 
