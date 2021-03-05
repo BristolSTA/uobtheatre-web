@@ -38,6 +38,12 @@ const routes = [
     [Bindings.bindProductionSlug(ProductionPageQuery)]
   ),
 
+  {
+    path: '/productions',
+    component: () => import('@/views/production/UpcomingProductions.vue'),
+    name: 'productions',
+  },
+
   /**
    * Create Booking Pages
    */

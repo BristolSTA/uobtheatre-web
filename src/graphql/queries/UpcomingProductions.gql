@@ -1,0 +1,19 @@
+query upcomingProductions($afterCursor: String) {
+  productions(first: 9, orderBy: "start", after: $afterCursor) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    edges {
+      node {
+        name
+        slug
+        featuredImage {
+          url
+        }
+        start
+        end
+      }
+    }
+  }
+}
