@@ -20,7 +20,7 @@
     </template>
     <div>
       <p class="py-1">
-        Booking Ref : {{ booking.bookingReference.slice(0, 12) }}
+        Booking Ref: {{ booking.bookingReference.slice(0, 12) }}
       </p>
       <router-link
         class="btn btn-green"

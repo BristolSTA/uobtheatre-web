@@ -2,7 +2,7 @@
   <div class="min-h-full mb-10 text-white bg-sta-gray">
     <div class="container">
       <h1 class="pt-2 text-left text-h1">My Details</h1>
-      <div>
+      <div v-if="user">
         <div class="flex-wrap justify-center hidden m-6 md:flex lg:mx-10">
           <table class="w-full text-left align-text-top table-auto md:w-1/2">
             <tr class="mb-8">
@@ -46,7 +46,7 @@
           </div>
         </div>
       </div>
-      <div class="flex justify-center m-4">
+      <div v-if="user" class="flex justify-center m-4">
         <button class="btn btn-rouge btn-outline">Edit Details</button>
       </div>
     </div>
