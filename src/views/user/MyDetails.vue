@@ -30,7 +30,7 @@
             </tr>
           </table>
         </div>
-        <div class="flex flex-col justify-center my-4 text-center md:hidden">
+        <div class="flex flex-col justify-center m-2 text-center md:hidden">
           <strong class="text-sta-orange">First Name</strong>
           <p>{{ user.firstName }}</p>
           <strong class="pt-2 text-sta-orange">Last Name</strong>
@@ -46,22 +46,91 @@
           </div>
         </div>
       </div>
+      <div class="flex justify-center m-4">
+        <button class="btn btn-rouge btn-outline">Edit Details</button>
+      </div>
+    </div>
 
-      <div>
-        <div class="flex flex-wrap">
-          <booking-summary-overview
-            v-for="(booking, index) in bookings"
-            :key="index"
-            class="w-1/3"
-            :booking="booking"
-          />
+    <hr class="border-t-2 border-sta-gray-dark" />
+    <div class="container">
+      <h2 class="px-4 py-2 text-h2">My Bookings</h2>
+      <div v-if="!futureBookings.length" class="p-6 text-center">
+        <p class="p-2 text-h4">No Upcoming Bookings</p>
+        <router-link
+          class="m-2 btn btn-orange"
+          :to="{
+            name: 'productions',
+          }"
+        >
+          View What's On
+        </router-link>
+      </div>
+      <div v-else class="flex flex-wrap justify-center lg:flex-nowrap">
+        <div
+          v-for="(booking, index) in futureBookings"
+          :key="index"
+          class="w-full p-2 performance md:w-1/2 xl:w-1/3"
+        >
+          <booking-summary-overview class="h-full" :booking="booking" />
         </div>
+      </div>
+    </div>
+
+    <div v-if="pastBookings.length" class="flex justify-center sm:container">
+      <div
+        ref="prev-bookings"
+        class="w-full px-1 py-2 my-2 xl:w-3/4 md:p-2 bg-sta-gray-dark"
+      >
+        <h2 class="flex justify-center mb-2 text-2xl">Previous Bookings</h2>
+        <table class="w-full table-auto">
+          <tbody>
+            <tr
+              v-for="(booking, index) in pastBookings"
+              :key="index"
+              class="odd:bg-sta-gray-light even:bg-sta-gray"
+            >
+              <td class="px-2 sm:px-4">
+                <div>
+                  <router-link
+                    class="text-xl font-semibold hover:text-gray-300"
+                    :to="{
+                      name: 'production',
+                      params: {
+                        productionSlug: booking.performance.production.slug,
+                      },
+                    }"
+                  >
+                    {{ booking.performance.production.name }}
+                  </router-link>
+                  <p class="text-sta-orange">
+                    {{ booking.performance.start | dateFormat('d MMMM kkkk') }}
+                  </p>
+                </div>
+              </td>
+
+              <td class="px-2 py-2 text-right sm:px-4">
+                <p>Ref: {{ booking.bookingReference.slice(0, 12) }}</p>
+                <router-link
+                  class="px-2 py-1 text-sm sm:mr-2 btn btn-green btn-outline"
+                  :to="{
+                    name: 'user-booking',
+                    params: { bookingRef: booking.id },
+                  }"
+                >
+                  View Booking
+                </router-link>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { DateTime } from 'luxon';
+
 import Booking from '@/classes/Booking';
 import BookingSummaryOverview from '@/components/booking/overview/BookingSummaryOverview.vue';
 import { createClient } from '@/vue-apollo';
@@ -77,6 +146,27 @@ export default {
       bookings: [],
       user: null,
     };
+  },
+  computed: {
+    pastBookings() {
+      return this.bookings.filter((booking) => {
+        return this.pastBooking(booking);
+      });
+    },
+    futureBookings() {
+      return this.bookings.filter((booking) => {
+        return !this.pastBooking(booking);
+      });
+    },
+  },
+  methods: {
+    pastBooking(booking) {
+      return (
+        DateTime.fromISO(booking.performance.end).minus({
+          hours: 1,
+        }) < DateTime.utc()
+      );
+    },
   },
   beforeRouteEnter(to, from, next) {
     const { apolloClient } = createClient();

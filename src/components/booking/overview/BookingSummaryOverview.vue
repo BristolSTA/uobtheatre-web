@@ -2,16 +2,35 @@
   <overview-box>
     <template v-slot:title>
       <font-awesome-icon icon="theater-masks" class="mr-2" />
-      {{ booking.performance.production.name }}
+      <router-link
+        :to="{
+          name: 'production',
+          params: {
+            productionSlug: booking.performance.production.slug,
+          },
+        }"
+      >
+        {{ booking.performance.production.name }}
+      </router-link>
     </template>
     <template v-slot:subtitle>
-      <p class="text-h3">
+      <p class="font-semibold sm:text-h3">
         {{ booking.performance.start | dateFormat('EEEE d MMMM kkkk') }}
       </p>
     </template>
     <div>
-      <p class="py-1 text-h4">Booking Ref : {{ booking.bookingReference }}</p>
-      View Tickets Button
+      <p class="py-1">
+        Booking Ref : {{ booking.bookingReference.slice(0, 12) }}
+      </p>
+      <router-link
+        class="btn btn-green"
+        :to="{
+          name: 'user-booking',
+          params: { bookingRef: booking.id },
+        }"
+      >
+        View Tickets
+      </router-link>
     </div>
   </overview-box>
 </template>

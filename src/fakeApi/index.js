@@ -298,10 +298,53 @@ export function makeServer({ environment = 'development' } = {}) {
           }),
         ],
       });
+
       server.create('bookingNode', {
         status: 'PAID',
         user: user,
-        performance: performances[0],
+        performance: server.create('PerformanceNode', {
+          soldOut: false,
+          isInperson: true,
+          isOnline: false,
+          doorsOpen: '2019-10-07T17:30:00',
+          start: '2019-10-07T18:00:00',
+          end: '2019-10-07T19:30:00',
+          ticketOptions: ticketOptions,
+          discounts: [FamilyDiscount],
+          production: server.create('ProductionNode', 'withCoverImage', {
+            name: 'Chicago',
+            society: server.create('SocietyNode', {
+              name: 'Music Theatre Brizzle',
+            }),
+          }),
+        }),
+        tickets: [
+          server.create('ticketNode', {
+            concessionType: AdultConcession,
+            seatGroup: BestSeatGroup,
+          }),
+        ],
+      });
+
+      server.create('bookingNode', {
+        status: 'PAID',
+        user: user,
+        performance: server.create('PerformanceNode', {
+          soldOut: false,
+          isInperson: true,
+          isOnline: false,
+          doorsOpen: '2021-04-22T17:30:00',
+          start: '2021-04-22T18:00:00',
+          end: '2021-04-22T19:30:00',
+          ticketOptions: ticketOptions,
+          discounts: [FamilyDiscount],
+          production: server.create('ProductionNode', 'withCoverImage', {
+            name: 'TRASh',
+            society: server.create('SocietyNode', {
+              name: 'Dramsoc',
+            }),
+          }),
+        }),
         tickets: [
           server.create('ticketNode', {
             concessionType: AdultConcession,
