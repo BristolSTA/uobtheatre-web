@@ -1,6 +1,7 @@
-import { mount, RouterLinkStub } from '@vue/test-utils';
+import { createLocalVue, mount, RouterLinkStub } from '@vue/test-utils';
 import { expect } from 'chai';
 import { Class } from 'leaflet';
+import VueApollo from 'vue-apollo';
 
 import { makeServer as makeAPIServer } from '@/fakeApi';
 import store from '@/store';
@@ -107,7 +108,9 @@ const mountWithRouterMock = async function (
 const generateMountOptions = function (types = [], options = {}) {
   if (!options['stubs']) options.stubs = {};
   if (types.includes('apollo')) {
-    options.apolloProvider = createProvider({}, true);
+    if (!options['localVue']) options.localVue = createLocalVue();
+    options.localVue.use(VueApollo);
+    options.apolloProvider = createProvider();
   }
   if (types.includes('router')) {
     options.stubs.RouterLink = RouterLinkStub;

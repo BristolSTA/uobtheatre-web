@@ -38,6 +38,12 @@ const routes = [
     [Bindings.bindProductionSlug(ProductionPageQuery)]
   ),
 
+  {
+    path: '/productions',
+    component: () => import('@/views/production/UpcomingProductions.vue'),
+    name: 'productions',
+  },
+
   /**
    * Create Booking Pages
    */
@@ -69,6 +75,12 @@ const routes = [
     path: '/societies/:societySlug',
     name: 'society',
     component: Society,
+  },
+
+  {
+    path: '/societies',
+    component: () => import('@/views/societies/AllSocieties.vue'),
+    name: 'societies',
   },
 
   /**
