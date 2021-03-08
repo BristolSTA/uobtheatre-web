@@ -1,9 +1,11 @@
-import { mount, shallowMount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import { expect } from 'chai';
 
+import AuthBox from '@/components/auth/UserAuthBox.vue';
 import { authService } from '@/services';
 import Login from '@/views/auth/Login.vue';
-import AuthBox from '@/views/auth/UserAuthBox.vue';
+
+import { mountWithRouterMock } from '../../helpers';
 
 jest.mock('@/services');
 
@@ -11,8 +13,8 @@ describe('Login', function () {
   let loginComponent, authBoxComponent;
   let fakeReplace;
 
-  beforeEach(() => {
-    loginComponent = mount(Login, {
+  beforeEach(async () => {
+    loginComponent = await mountWithRouterMock(Login, {
       mocks: {
         $router: {
           replace: (fakeReplace = jest.fn()),
@@ -37,7 +39,15 @@ describe('Login', function () {
     expect(authBoxComponent.props('login')).to.be.false;
   });
 
+  it('doesnt react to switch to login if already on login', async () => {
+    await authBoxComponent.vm.$emit('go-login');
+    expect(fakeReplace.mock.calls).to.be.empty;
+  });
+
   it('reacts to switch to login', async () => {
+    await loginComponent.setProps({
+      login: false,
+    });
     await authBoxComponent.vm.$emit('go-login');
     expect(fakeReplace.mock.calls[0][0].name).to.eq('login');
   });
@@ -47,15 +57,22 @@ describe('Login', function () {
     expect(fakeReplace.mock.calls[0][0].name).to.eq('signup');
   });
 
+  it('doesnt react to switch to signup if already on signup', async () => {
+    await loginComponent.setProps({
+      login: false,
+    });
+    await authBoxComponent.vm.$emit('go-signup');
+    expect(fakeReplace.mock.calls).to.be.empty;
+  });
+
   it('redirects if user is already authenticated', async () => {
     // Mock Auth service
     authService.isLoggedIn.mockReturnValueOnce(true);
 
     let next = jest.fn();
-    loginComponent = shallowMount(Login);
 
     // Call guard
-    Login.beforeRouteEnter.call(loginComponent.vm, undefined, undefined, next);
+    Login.beforeRouteEnter.call(undefined, undefined, undefined, next);
 
     // Should redirect to named "home" route
     expect(next.mock.calls[0][0].name).equal('home');
@@ -69,10 +86,9 @@ describe('Login', function () {
     authService.isLoggedIn.mockReturnValueOnce(false);
 
     let next = jest.fn();
-    loginComponent = shallowMount(Login);
 
     // Call guard
-    Login.beforeRouteEnter.call(loginComponent.vm, undefined, undefined, next);
+    Login.beforeRouteEnter.call(undefined, undefined, undefined, next);
 
     // Should have no params
     expect(next.mock.calls[0]).to.be.empty;

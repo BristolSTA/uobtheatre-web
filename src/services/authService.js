@@ -1,6 +1,23 @@
-import api from '@/services/api';
+import gql from 'graphql-tag';
+
+import Errors from '@/classes/Errors';
+import { errorHandler } from '@/utils';
+import { createClient } from '@/vue-apollo';
 
 import store from '../store';
+
+let MutationErrorsPartial = `
+success
+errors {
+... on NonFieldError {
+    message
+}
+... on FieldError {
+    message
+    field
+}
+}
+`;
 
 export default {
   /**
@@ -27,15 +44,196 @@ export default {
    * @returns {Promise} API Response Promise
    */
   login(email, password, remember = false) {
-    return api
-      .post('auth/login/', { email: email, password: password })
-      .then((data) => {
-        store.dispatch('authLogin', {
-          token: data.key,
-          userInfo: data.user,
-          remember,
+    let { apolloClient } = createClient();
+
+    return new Promise((resolve, reject) => {
+      apolloClient
+        .mutate({
+          mutation: gql`
+            mutation($email: String!, $password: String!) {
+              login(email: $email, password: $password) {
+                ${MutationErrorsPartial}
+                token
+                user {
+                  firstName
+                  lastName
+                  email
+                }
+              }
+            }
+          `,
+          variables: {
+            email,
+            password,
+          },
+        })
+        .then((result) => {
+          if (!result.data.login.success)
+            return reject(Errors.createFromAPI(result.data.login.errors));
+
+          store.dispatch('authLogin', {
+            token: result.data.login.token,
+            userInfo: result.data.login.user,
+            remember,
+          });
+          return resolve(result.data.login);
+        })
+        .catch((e) => {
+          errorHandler(e);
+          reject();
         });
-      });
+    });
+  },
+
+  /**
+   * Attempt to register a new user
+   *
+   * @param {object} userDetails The users details
+   * @param {string} userDetails.firstName User's first name
+   * @param {string} userDetails.lastName User's last name
+   * @param {string} userDetails.email User's Email
+   * @param {string} userDetails.password User's Password
+   * @param {string} userDetails.confirmedPassword User's Password (Confirmation)
+   * @returns {Promise} API Response Promise
+   */
+  register({ firstName, lastName, email, password, confirmedPassword }) {
+    let { apolloClient } = createClient();
+
+    return new Promise((resolve, reject) => {
+      apolloClient
+        .mutate({
+          mutation: gql`
+            mutation(
+              $firstName: String!
+              $lastName: String!
+              $email: String!
+              $password: String!
+              $confirmedPassword: String!
+            ) {
+              register(
+                firstName: $firstName
+                lastName: $lastName
+                email: $email
+                password1: $password
+                password2: $confirmedPassword
+              ) {
+                ${MutationErrorsPartial}
+              }
+            }
+          `,
+          variables: {
+            email,
+            password,
+            confirmedPassword,
+            firstName,
+            lastName,
+          },
+        })
+        .then((result) => {
+          if (result.data.register.success) {
+            return resolve(result.data.register);
+          }
+          return reject(Errors.createFromAPI(result.data.register.errors));
+        })
+        .catch((e) => {
+          errorHandler(e);
+          reject();
+        });
+    });
+  },
+
+  requestPasswordReset({ email }) {
+    let { apolloClient } = createClient();
+
+    return new Promise((resolve, reject) => {
+      apolloClient
+        .mutate({
+          mutation: gql`
+            mutation($email: String!) {
+              sendPasswordResetEmail(email: $email) {
+                ${MutationErrorsPartial}
+              }
+            }
+          `,
+          variables: {
+            email,
+          },
+        })
+        .then((result) => {
+          if (result.data.sendPasswordResetEmail.success) {
+            return resolve(result.data.sendPasswordResetEmail);
+          }
+          return reject(
+            Errors.createFromAPI(result.data.sendPasswordResetEmail.errors)
+          );
+        })
+        .catch((e) => {
+          errorHandler(e);
+          reject();
+        });
+    });
+  },
+
+  resetPassword({ token, password, confirmedPassword }) {
+    let { apolloClient } = createClient();
+
+    return new Promise((resolve, reject) => {
+      apolloClient
+        .mutate({
+          mutation: gql`
+            mutation($token: String!, $password: String!, $confirmedPassword: String!) {
+              passwordReset(token: $token, newPassword1: $password, newPassword2: $confirmedPassword) {
+                ${MutationErrorsPartial}
+              }
+            }
+          `,
+          variables: {
+            token,
+            password,
+            confirmedPassword,
+          },
+        })
+        .then((result) => {
+          if (result.data.passwordReset.success) {
+            return resolve(result.data.passwordReset);
+          }
+          return reject(Errors.createFromAPI(result.data.passwordReset.errors));
+        })
+        .catch((e) => {
+          errorHandler(e);
+          reject();
+        });
+    });
+  },
+
+  activateAccount({ token }) {
+    let { apolloClient } = createClient();
+
+    return new Promise((resolve, reject) => {
+      apolloClient
+        .mutate({
+          mutation: gql`
+            mutation($token: String!) {
+              verifyAccount(token: $token) {
+                ${MutationErrorsPartial}
+              }
+            }
+          `,
+          variables: {
+            token,
+          },
+        })
+        .then((result) => {
+          if (result.data.verifyAccount.success) {
+            return resolve(result.data.verifyAccount);
+          }
+          return reject(Errors.createFromAPI(result.data.verifyAccount.errors));
+        })
+        .catch((e) => {
+          errorHandler(e);
+          reject();
+        });
+    });
   },
 
   /**

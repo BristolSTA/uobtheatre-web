@@ -15,6 +15,7 @@ import {
   faMapMarkedAlt,
   faMoneyCheckAlt,
   faTicketAlt,
+  faTimesCircle,
   faUserEdit,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -41,6 +42,7 @@ library.add(
   faLink,
   faBuilding,
   faUserEdit,
+  faTimesCircle,
   faMoneyCheckAlt,
   faArrowRight
 );

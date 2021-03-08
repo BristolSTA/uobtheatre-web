@@ -3,25 +3,26 @@
     <span class="text-xs font-semibold text-white">{{ name }}</span>
     <input
       :id="inputId"
-      class="w-full p-1 rounded-sm focus:outline-none"
+      class="w-full p-1 text-black rounded-sm focus:outline-none"
       :name="inputId"
       :type="type"
       :value="value"
       :autocomplete="autocomplete"
+      :required="required"
       @input="onInput"
+      @blur="$emit('blur')"
     />
-    <span
-      v-if="errors && errors.has(inputId)"
-      class="text-xs font-semibold text-sta-rouge"
-    >
-      {{ errors.get(inputId) }}
-    </span>
+    <error-helper :errors="errors" :field-name="inputId" />
   </label>
 </template>
 
 <script>
+import lo from 'lodash';
+
+import ErrorHelper from './ErrorHelper.vue';
 export default {
   name: 'TextInput',
+  components: { ErrorHelper },
   props: {
     value: {
       required: true,
@@ -45,10 +46,22 @@ export default {
       type: [Array, Object],
       default: null,
     },
+    required: {
+      required: false,
+      default: false,
+      type: Boolean,
+    },
+    errorKey: {
+      required: false,
+      default: null,
+      type: String,
+    },
   },
   computed: {
     inputId() {
-      return this.name.replace(/ /g, '_').toLowerCase();
+      return (
+        this.errorKey ?? lo.chain(this.name).lowerCase().camelCase().value()
+      );
     },
   },
   methods: {

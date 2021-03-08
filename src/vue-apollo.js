@@ -34,6 +34,12 @@ const defaultOptions = {
   // Is being rendered on the server?
   ssr: false,
 
+  inMemoryCacheOptions: {
+    fragmentMatcher: {
+      GQLErrorUnion: ['NonFieldError', 'FieldError'],
+    },
+  },
+
   // Override the way the Authorization header is set
   getAuth: (tokenName) => {
     if (!store.state.auth.token) return;
