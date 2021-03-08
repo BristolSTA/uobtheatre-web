@@ -87,7 +87,6 @@
       @submit.prevent="attemptSignup"
     >
       <non-field-error :errors="signup_errors" />
-      <!-- <transition name="fade1" mode="out-in"> -->
       <text-input
         v-if="(!firstName || !lastName) && !signup_errors"
         name="Full Name"
@@ -112,7 +111,6 @@
           v-model="lastName"
         />
       </div>
-      <!-- </transition> -->
       <text-input
         name="Email"
         type="email"
