@@ -151,22 +151,4 @@ export default {
       }),
     };
   },
-  registerGQLMutations() {
-    return `
-      login(password: String!, email: String): ObtainJSONWebToken
-      register(email: String!, password1: String!, password2: String!, firstName: String!, lastName: String!): Register
-    `;
-  },
-  registerGQLTypes() {
-    return `
-      type UserNode implements Node {
-        id: ID!
-        firstName: String!
-        lastName: String!
-        email: String!
-
-        bookings(offset: Int, before: String, after: String, first: Int, last: Int, bookingReference: UUID, user: ID, performance: ID, status: BookingStatus, id: ID): BookingNodeConnection!
-      }
-    `;
-  },
 };

@@ -186,6 +186,7 @@ describe('Infinite Scroll', () => {
         queryName: {
           pageInfo: {
             endCursor: null,
+            hasNextPage: false,
           },
         },
       },
