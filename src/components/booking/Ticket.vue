@@ -1,14 +1,13 @@
 <template>
-  <div
-    class="flex flex-col p-4 pt-2 text-black bg-white rounded-xl"
-    style="max-width: 320px; min-width: 240px"
-  >
+  <div class="flex flex-col p-4 pt-2 text-black bg-white rounded-xl">
     <h1 class="text-h2">TRASh</h1>
     <p>
-      Date: {{ booking.performance.start | dateFormat('EEEE d MMMM kkkk') }}
+      {{ booking.performance.start | dateFormat('EEEE d MMMM kkkk') }}
     </p>
-    <p>Doors: {{ booking.performance.doorsOpen | dateFormat('T') }}</p>
-    <p>Start: {{ booking.performance.start | dateFormat('T') }}</p>
+    <p>
+      Doors: {{ booking.performance.doorsOpen | dateFormat('t a') }} | Start:
+      {{ booking.performance.start | dateFormat('t a') }}
+    </p>
     <div class="flex justify-between w-full font-semibold">
       <p>1x {{ ticket.concession_type.name }}</p>
       <p class="text-right">{{ ticket.seat_group.name }}</p>

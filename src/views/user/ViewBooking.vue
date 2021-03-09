@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-full mb-10 text-white bg-sta-gray">
-    <div class="container">
+    <div v-if="booking.performance" class="container">
       <h1 class="pt-2 text-left text-h1">Booking Info</h1>
       <production-banner
         class="pb-2 md:pb-8"
@@ -28,35 +28,26 @@
 
     <div class="mt-4 md:container">
       <div
-        ref="header"
-        class="flex py-2 pl-4 cursor-pointer hover:bg-opacity-80"
+        class="flex items-center justify-between px-4 py-2 cursor-pointer hover:bg-opacity-80 text-h2"
         :class="[expanded ? 'bg-sta-orange' : 'bg-sta-green']"
         @click="ticketToggle"
         @keypress="ticketToggle"
       >
-        <div class="flex-grow">
-          <h3 class="inline-block text-h2">View Tickets</h3>
-        </div>
-        <div class="flex items-center pr-4 text-h2">
-          <font-awesome-icon :icon="expanded ? 'chevron-up' : 'chevron-down'" />
-        </div>
+        <h3 class="inline-block">View Tickets</h3>
+        <font-awesome-icon :icon="expanded ? 'chevron-up' : 'chevron-down'" />
       </div>
       <div
         v-if="expanded"
-        class="flex justify-center w-full py-4 md:px-4 bg-sta-gray-dark"
+        class="grid grid-cols-1 gap-4 px-4 py-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 bg-sta-gray-dark"
       >
-        <div
-          class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-        >
-          <ticket
-            v-for="(ticket, index) in booking.tickets"
-            :key="index"
-            :booking="booking"
-            :ticket="ticket"
-            :user="user"
-            :index="index"
-          />
-        </div>
+        <ticket
+          v-for="(ticket, index) in booking.tickets"
+          :key="index"
+          :booking="booking"
+          :ticket="ticket"
+          :user="$store.state.auth.user"
+          :index="index + 1"
+        />
       </div>
     </div>
   </div>
@@ -82,44 +73,44 @@ export default {
     PaymentOverview,
     Ticket,
   },
-  props: {},
   data() {
     return {
       booking: new Booking(),
-      production: null,
       user: null,
       expanded: false,
     };
   },
-  beforeRouteEnter(to, from, next) {
+  metaInfo() {
+    const production = this.production;
+    return {
+      title: production ? `Your booking for ${production.name}` : 'Loading...',
+    };
+  },
+  async beforeRouteEnter(to, from, next) {
     const { apolloClient } = createClient();
-    return apolloClient
-      .query({
-        query: require('@/graphql/queries/UserPaidBooking.gql'),
-        variables: {
-          bookingId: to.params.bookingRef,
-        },
-      })
-      .then(({ data }) => {
-        next((vm) => {
-          vm.user = (({ firstName, lastName, email }) => ({
-            firstName,
-            lastName,
-            email,
-          }))(data.me);
-          //$store.state.auth.user.firstName
-          vm.booking.updateFromAPIData(data.me.bookings.edges[0].node);
-          vm.production = vm.booking.performance.production;
-        });
-      });
+    let { data } = await apolloClient.query({
+      query: require('@/graphql/queries/UserPaidBooking.gql'),
+      variables: {
+        bookingId: to.params.bookingRef,
+      },
+    });
+
+    if (!data.authUser.bookings.edges[0]) return next({ name: '404' });
+
+    next((vm) => {
+      vm.booking.updateFromAPIData(data.authUser.bookings.edges[0].node);
+    });
+  },
+  computed: {
+    production() {
+      return this.booking.performance
+        ? this.booking.performance.production
+        : null;
+    },
   },
   methods: {
     ticketToggle() {
-      if (this.expanded) {
-        this.expanded = false;
-      } else {
-        this.expanded = true;
-      }
+      this.expanded = !this.expanded;
     },
   },
 };
