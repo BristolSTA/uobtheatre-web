@@ -1,7 +1,7 @@
 #import "../fragments/booking/BookingWithProductionDetails.gql"
 query userPaidBooking($bookingId: ID!) {
   me {
-    bookings(id: $bookingId, status: PAID) {
+    bookings(id: $bookingId, status: "PAID") {
       edges {
         node {
           ...BookingWithProductionDetails

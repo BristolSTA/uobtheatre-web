@@ -95,10 +95,10 @@ export default {
       },
     });
 
-    if (!data.authUser.bookings.edges[0]) return next({ name: '404' });
+    if (!data.me.bookings.edges[0]) return next({ name: '404' });
 
     next((vm) => {
-      vm.booking.updateFromAPIData(data.authUser.bookings.edges[0].node);
+      vm.booking.updateFromAPIData(data.me.bookings.edges[0].node);
     });
   },
   computed: {
