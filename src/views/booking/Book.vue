@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-full bg-sta-gray">
     <div class="container">
-      <div class="pt-2 text-white">
+      <!-- <div class="pt-2 text-white">
         <router-link
           :to="{
             name: 'production',
@@ -11,7 +11,8 @@
           <font-awesome-icon icon="chevron-left" />
           Back to Production
         </router-link>
-      </div>
+      </div> -->
+      <breadcrumbs />
       <production-banner
         class="pb-2 md:pb-8"
         :production="production"
@@ -60,12 +61,18 @@ import Booking from '@/classes/Booking';
 import TicketsMatrix from '@/classes/TicketsMatrix';
 import BookingNavigation from '@/components/booking/BookingNavigation.vue';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
+import Breadcrumbs from '@/components/ui/Breadcrumbs.vue';
 import ClickableLink from '@/components/ui/ClickableLink.vue';
 import { swal } from '@/utils';
 
 import { getNextStage, getPreviousStage, getStageIndex } from './bookingStages';
 export default {
-  components: { BookingNavigation, ProductionBanner, ClickableLink },
+  components: {
+    BookingNavigation,
+    ProductionBanner,
+    ClickableLink,
+    Breadcrumbs,
+  },
   props: {
     production: {
       required: true,
