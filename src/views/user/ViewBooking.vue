@@ -1,6 +1,16 @@
 <template>
   <div class="min-h-full mb-10 text-white bg-sta-gray">
     <div v-if="booking.performance" class="container">
+      <div class="pt-2 text-white">
+        <router-link
+          :to="{
+            name: 'user',
+          }"
+        >
+          <font-awesome-icon icon="chevron-left" />
+          Back to My Account
+        </router-link>
+      </div>
       <h1 class="pt-2 text-left text-h1">Booking Info</h1>
       <production-banner
         class="pb-2 md:pb-8"
@@ -8,6 +18,12 @@
         :show-buy-tickets-button="false"
         :show-detailed-info="false"
       />
+      <div class="w-full text-center lg:hidden">
+        <button class="btn" @click="jumpToTickets" @keypress="jumpToTickets">
+          Jump to tickets <font-awesome-icon icon="chevron-down" />
+        </button>
+      </div>
+
       <div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <performance-overview
           class="lg:col-span-2"
@@ -26,7 +42,7 @@
       </div>
     </div>
 
-    <div class="mt-4 md:container">
+    <div ref="tickets" class="mt-4 md:container">
       <div
         class="flex items-center justify-between px-4 py-2 cursor-pointer hover:bg-opacity-80 text-h2"
         :class="[expanded ? 'bg-sta-orange' : 'bg-sta-green']"
@@ -111,6 +127,10 @@ export default {
   methods: {
     ticketToggle() {
       this.expanded = !this.expanded;
+    },
+    jumpToTickets() {
+      this.expanded = true;
+      this.$refs.tickets.scrollIntoView();
     },
   },
 };

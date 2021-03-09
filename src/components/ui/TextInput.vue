@@ -29,7 +29,7 @@ export default {
       validator: () => true,
     },
     name: {
-      required: true,
+      default: '',
       type: String,
     },
     type: {

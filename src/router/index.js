@@ -65,7 +65,7 @@ const routes = [
   {
     path: '/user',
     name: 'user',
-    component: () => import('@/views/user/MyDetails.vue'),
+    component: () => import('@/views/user/MyAccount.vue'),
     meta: {
       middleware: [authMiddleware],
     },
