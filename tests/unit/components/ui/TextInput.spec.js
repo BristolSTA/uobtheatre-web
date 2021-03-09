@@ -24,15 +24,15 @@ describe('TextInput', () => {
     expect(inputs.length).to.eq(1);
 
     expect(inputs.at(0).attributes()).to.include({
-      id: 'an_input',
-      name: 'an_input',
+      id: 'anInput',
+      name: 'anInput',
       type: 'text',
     });
   });
 
   it('generates appropriate form id and name', async () => {
     await component.setProps({
-      name: 'EmAiL',
+      name: 'Email',
     });
     expect(input().attributes('id')).to.eq('email');
     expect(input().attributes('name')).to.eq('email');
@@ -40,8 +40,8 @@ describe('TextInput', () => {
     await component.setProps({
       name: 'A Seperated Label',
     });
-    expect(input().attributes('id')).to.eq('a_seperated_label');
-    expect(input().attributes('name')).to.eq('a_seperated_label');
+    expect(input().attributes('id')).to.eq('aSeperatedLabel');
+    expect(input().attributes('name')).to.eq('aSeperatedLabel');
   });
 
   it('can set an autocomplete value', async () => {
@@ -72,17 +72,17 @@ describe('TextInput', () => {
   });
 
   it('can display its errors', async () => {
-    expect(component.text()).not.to.contain('An error on the an_input field');
+    expect(component.text()).not.to.contain('An error on the anInput field');
 
     await component.setProps({
-      errors: fakeValidationErrors(['an_input']),
+      errors: fakeValidationErrors(['anInput']),
     });
 
-    expect(component.text()).to.contain('An error on the an_input field');
+    expect(component.text()).to.contain('An error on the anInput field');
 
     // Check behavior on typing
     input().trigger('input');
     await component.vm.$forceUpdate();
-    expect(component.text()).not.to.contain('An error on the an_input field');
+    expect(component.text()).not.to.contain('An error on the anInput field');
   });
 });

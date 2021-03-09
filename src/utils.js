@@ -70,9 +70,16 @@ let runPromiseWithLoading = async (promises) => {
  */
 let tailwindConfig = resolveConfig(require('../tailwind.config'));
 
+let errorHandler = (e) => {
+  // TODO: Implement sentry here
+  console.error(e);
+  apiErrorToast.fire();
+};
+
 /**
- * Default branded Sweetalert instance
+ * Default branded Sweetalert instances
  */
+
 let swal = Swal.mixin({
   background: tailwindConfig.theme.colors['sta-gray'].DEFAULT,
   customClass: {
@@ -82,12 +89,27 @@ let swal = Swal.mixin({
   confirmButtonColor: tailwindConfig.theme.colors['sta-orange'].DEFAULT,
   denyButtonColor: tailwindConfig.theme.colors['sta-rouge'].DEFAULT,
 });
+let swalToast = swal.mixin({
+  toast: true,
+  showConfirmButton: false,
+});
+let apiErrorToast = swalToast.mixin({
+  icon: 'error',
+  title: 'There was a server error while executing your request',
+  showConfirmButton: false,
+  position: 'bottom-end',
+  timerProgressBar: true,
+  timer: 4000,
+});
 
 export {
+  apiErrorToast,
   displayStartEnd,
   duration,
+  errorHandler,
   joinWithAnd,
   runPromiseWithLoading,
   swal,
+  swalToast,
   tailwindConfig,
 };

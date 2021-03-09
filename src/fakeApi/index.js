@@ -1,5 +1,4 @@
 import { stitchSchemas } from '@graphql-tools/stitch';
-import { createGraphQLHandler } from '@miragejs/graphql';
 import { DateTime } from 'luxon';
 import { createServer } from 'miragejs';
 
@@ -8,6 +7,7 @@ import CastInterface from './cast.model';
 import ConcessionTypeInterface from './concessionType.model';
 import CrewInterface from './crew.model';
 import DiscountInterface from './discount.model';
+import { createGraphQLHandler } from './mirageOverrides/handler';
 import PerformanceInterface from './performance.model';
 import ProductionInterface from './production.model';
 import ProductionTeamInterface from './productionTeam.model';
