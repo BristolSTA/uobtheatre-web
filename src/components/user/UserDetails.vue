@@ -68,18 +68,18 @@
       </button>
       <div v-else class="text-center">
         <button
-          class="btn btn-rouge"
-          @click="editToggle"
-          @keypress="editToggle"
-        >
-          Save Details
-        </button>
-        <button
-          class="ml-2 btn btn-orange"
+          class="btn btn-orange"
           @click="editToggle"
           @keypress="editToggle"
         >
           Cancel
+        </button>
+        <button
+          class="ml-2 btn btn-rouge"
+          @click="editToggle"
+          @keypress="editToggle"
+        >
+          Save Details
         </button>
         <p class="mt-2">
           Want to delete your account? Get in touch at

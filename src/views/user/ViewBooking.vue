@@ -19,7 +19,11 @@
         :show-detailed-info="false"
       />
       <div class="w-full text-center lg:hidden">
-        <button class="btn" @click="jumpToTickets" @keypress="jumpToTickets">
+        <button
+          class="p-2 py-1 m-1 btn"
+          @click="jumpToTickets"
+          @keypress="jumpToTickets"
+        >
           Jump to tickets <font-awesome-icon icon="chevron-down" />
         </button>
       </div>

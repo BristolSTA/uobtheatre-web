@@ -18,7 +18,7 @@
       <p class="pl-1 text-right">{{ ticket.seat_group.name }}</p>
     </div>
     <div class="flex items-center justify-center flex-grow w-full py-2">
-      <qrcode-vue :value="qrString" level="M" size="240" />
+      <qrcode-vue :value="qrString" level="L" size="240" />
     </div>
     <p>Booking Ref: {{ booking.bookingReference }}</p>
     <!-- <p>Paid On: 3 Jan 2020</p> -->
@@ -62,13 +62,7 @@ export default {
   },
   computed: {
     qrString() {
-      return lo.join(
-        [
-          `bookingReference:${this.booking.bookingReference}`,
-          `ticketId:${this.ticket.id}`,
-        ],
-        ';'
-      );
+      return btoa([this.booking.bookingReference, this.ticket.id]);
     },
     fullName() {
       return lo.join([this.user.firstName, this.user.lastName], ' ');

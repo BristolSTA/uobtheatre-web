@@ -31,52 +31,10 @@
     </div>
 
     <div v-if="pastBookings.length" class="flex justify-center sm:container">
-      <div
-        ref="prev-bookings"
-        class="w-full px-1 py-2 my-2 xl:w-3/4 md:p-2 bg-sta-gray-dark"
-      >
-        <h2 class="flex justify-center mb-2 text-2xl">Previous Bookings</h2>
-        <table class="w-full table-auto">
-          <tbody>
-            <tr
-              v-for="(booking, index) in pastBookings"
-              :key="index"
-              class="odd:bg-sta-gray-light even:bg-sta-gray"
-            >
-              <td class="px-2 sm:px-4">
-                <div>
-                  <router-link
-                    class="text-xl font-semibold hover:text-gray-300"
-                    :to="{
-                      name: 'production',
-                      params: {
-                        productionSlug: booking.performance.production.slug,
-                      },
-                    }"
-                  >
-                    {{ booking.performance.production.name }}
-                  </router-link>
-                  <p class="text-sta-orange">
-                    {{ booking.performance.start | dateFormat('d MMMM kkkk') }}
-                  </p>
-                </div>
-              </td>
-
-              <td class="px-2 py-2 text-right sm:px-4">
-                <p>Ref: {{ booking.bookingReference }}</p>
-                <router-link
-                  class="px-2 py-1 text-sm sm:mr-2 btn btn-green btn-outline"
-                  :to="{
-                    name: 'user.booking',
-                    params: { bookingRef: booking.id },
-                  }"
-                >
-                  View Booking
-                </router-link>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="w-full xl:w-3/4">
+        <bookings-table ref="prev-bookings" :bookings="pastBookings">
+          <template v-slot:title>Past Bookings</template>
+        </bookings-table>
       </div>
     </div>
   </div>
@@ -85,6 +43,7 @@
 <script>
 import Booking from '@/classes/Booking';
 import BookingSummaryOverview from '@/components/booking/overview/BookingSummaryOverview.vue';
+import BookingsTable from '@/components/user/BookingsTable.vue';
 import UserDetails from '@/components/user/UserDetails.vue';
 import { createClient } from '@/vue-apollo';
 
@@ -93,6 +52,7 @@ export default {
   components: {
     BookingSummaryOverview,
     UserDetails,
+    BookingsTable,
   },
   props: {},
   data() {
