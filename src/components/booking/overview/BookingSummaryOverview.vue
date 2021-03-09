@@ -23,11 +23,11 @@
       <router-link
         class="btn btn-green"
         :to="{
-          name: 'user-booking',
+          name: 'user.booking',
           params: { bookingRef: booking.id },
         }"
       >
-        View Tickets
+        View Booking &amp; Tickets
       </router-link>
     </div>
   </overview-box>

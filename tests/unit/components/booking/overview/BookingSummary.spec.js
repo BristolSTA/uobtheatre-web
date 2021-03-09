@@ -91,7 +91,7 @@ describe('booking summary overview box', function () {
         .findAllComponents(RouterLinkStub)
         .at(1)
         .props('to').name
-    ).to.equal('user-booking');
+    ).to.equal('user.booking');
     expect(
       bookingSummaryOverviewComponent
         .findAllComponents(RouterLinkStub)

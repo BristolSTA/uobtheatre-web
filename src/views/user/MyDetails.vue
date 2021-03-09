@@ -113,7 +113,7 @@
                 <router-link
                   class="px-2 py-1 text-sm sm:mr-2 btn btn-green btn-outline"
                   :to="{
-                    name: 'user-booking',
+                    name: 'user.booking',
                     params: { bookingRef: booking.id },
                   }"
                 >
@@ -144,6 +144,9 @@ export default {
       bookings: [],
       user: null,
     };
+  },
+  metaInfo: {
+    title: 'My Account',
   },
   computed: {
     pastBookings() {

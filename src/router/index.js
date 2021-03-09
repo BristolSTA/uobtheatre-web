@@ -66,11 +66,17 @@ const routes = [
     path: '/user',
     name: 'user',
     component: () => import('@/views/user/MyDetails.vue'),
+    meta: {
+      middleware: [authMiddleware],
+    },
   },
   {
     path: '/user/booking/:bookingRef',
     name: 'user.booking',
     component: () => import('@/views/user/ViewBooking.vue'),
+    meta: {
+      middleware: [authMiddleware],
+    },
   },
 
   /**
