@@ -1,18 +1,7 @@
 <template>
   <div class="min-h-full bg-sta-gray">
     <div class="container">
-      <!-- <div class="pt-2 text-white">
-        <router-link
-          :to="{
-            name: 'production',
-            params: { productionSlug: production.slug },
-          }"
-        >
-          <font-awesome-icon icon="chevron-left" />
-          Back to Production
-        </router-link>
-      </div> -->
-      <breadcrumbs />
+      <breadcrumbs :crumbs="crumbs" />
       <production-banner
         class="pb-2 md:pb-8"
         :production="production"
@@ -96,6 +85,21 @@ export default {
   computed: {
     currentStageIndex() {
       return getStageIndex(this.$route.meta.stage);
+    },
+    crumbs() {
+      return [
+        { text: 'Whats On', route: { name: 'productions' } },
+        {
+          text: this.production.name,
+          route: {
+            name: 'production',
+            params: {
+              productionSlug: this.production.slug,
+            },
+          },
+        },
+        { text: 'Book' },
+      ];
     },
   },
   watch: {

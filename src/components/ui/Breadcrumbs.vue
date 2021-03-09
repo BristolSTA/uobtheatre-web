@@ -17,17 +17,11 @@
 <script>
 export default {
   name: 'Breadcrumbs',
-  data() {
-    return {
-      crumbs: [
-        { text: 'Whats On', route: { name: 'productions' } },
-        {
-          text: 'Legally Blonde',
-          route: { name: 'production.legally-blonde' },
-        },
-        { text: 'Book' },
-      ],
-    };
+  props: {
+    crumbs: {
+      required: true,
+      type: Array,
+    },
   },
 };
 </script>
