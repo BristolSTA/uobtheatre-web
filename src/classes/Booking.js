@@ -310,8 +310,10 @@ export default class Booking {
    * @returns {boolean} True if in the future / current day or false
    */
   get is_active() {
-    // TODO: Should be active if performance end date date (i.e. day) is in the past (i.e. active whole day of show)
     let performanceEndTime = DateTime.fromISO(this.performance.end);
-    return performanceEndTime > DateTime.local();
+    return (
+      performanceEndTime > DateTime.local() ||
+      performanceEndTime.hasSame(DateTime.local(), 'day')
+    );
   }
 }
