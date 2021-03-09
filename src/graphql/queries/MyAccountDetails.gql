@@ -1,5 +1,5 @@
 #import "../fragments/booking/DetailedBookingDetails.gql"
-query userPaidBookings {
+query myAccountDetails {
   me {
     firstName
     lastName

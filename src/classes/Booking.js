@@ -1,4 +1,5 @@
 import lo from 'lodash';
+import { DateTime } from 'luxon';
 
 import Ticket from './Ticket';
 import TicketsMatrix from './TicketsMatrix';
@@ -303,5 +304,14 @@ export default class Booking {
         valuePounds: (misc_cost.value / 100).toFixed(2),
       });
     });
+  }
+
+  /**
+   * @returns {boolean} True if in the future / current day or false
+   */
+  get is_active() {
+    // TODO: Should be active if performance end date date (i.e. day) is in the past (i.e. active whole day of show)
+    let performanceEndTime = DateTime.fromISO(this.performance.end);
+    return performanceEndTime > DateTime.local();
   }
 }

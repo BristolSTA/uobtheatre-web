@@ -129,8 +129,6 @@
 </template>
 
 <script>
-import { DateTime } from 'luxon';
-
 import Booking from '@/classes/Booking';
 import BookingSummaryOverview from '@/components/booking/overview/BookingSummaryOverview.vue';
 import { createClient } from '@/vue-apollo';
@@ -149,44 +147,25 @@ export default {
   },
   computed: {
     pastBookings() {
-      return this.bookings.filter((booking) => {
-        return this.pastBooking(booking);
-      });
+      return this.bookings.filter((booking) => !booking.is_active);
     },
     futureBookings() {
-      return this.bookings.filter((booking) => {
-        return !this.pastBooking(booking);
-      });
+      return this.bookings.filter((booking) => booking.is_active);
     },
   },
-  methods: {
-    pastBooking(booking) {
-      return (
-        DateTime.fromISO(booking.performance.end).minus({
-          hours: 1,
-        }) < DateTime.utc()
-      );
-    },
-  },
-  beforeRouteEnter(to, from, next) {
+  async beforeRouteEnter(to, from, next) {
     const { apolloClient } = createClient();
-    return apolloClient
-      .query({
-        query: require('@/graphql/queries/UserBookings.gql'),
-      })
-      .then(({ data }) => {
-        next((vm) => {
-          vm.user = (({ firstName, lastName, email }) => ({
-            firstName,
-            lastName,
-            email,
-          }))(data.me);
-          //$store.state.auth.user.firstName
-          vm.bookings = data.me.bookings.edges.map((edge) =>
-            Booking.fromAPIData(edge.node)
-          );
-        });
-      });
+    let { data } = await apolloClient.query({
+      query: require('@/graphql/queries/MyAccountDetails.gql'),
+    });
+
+    next((vm) => {
+      vm.user = data.me;
+
+      vm.bookings = data.me.bookings.edges.map((edge) =>
+        Booking.fromAPIData(edge.node)
+      );
+    });
   },
 };
 </script>

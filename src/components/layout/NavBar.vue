@@ -46,6 +46,13 @@
             {{ item[1] }}
           </router-link>
           <router-link
+            v-if="authService.isLoggedIn()"
+            :to="{ name: 'user' }"
+            class="block mt-4 mr-6 font-semibold tracking-wide uppercase text-sta-green lg:inline-block lg:mt-0 hover:text-sta-orange-dark"
+          >
+            My Account
+          </router-link>
+          <router-link
             v-if="!authService.isLoggedIn()"
             :to="{ name: 'login', query: { redirect: $route.fullPath } }"
             class="mt-4 auth-button btn btn-orange btn-outline lg:mt-0"
@@ -92,8 +99,6 @@ export default {
       navItems: [
         [{ name: 'productions' }, 'Whats On'],
         [{ name: 'societies' }, 'Societies'],
-        ['/', 'Venues'],
-        ['/', 'Contact'],
       ],
       navHidden: true,
       authService: authService,

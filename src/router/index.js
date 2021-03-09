@@ -69,7 +69,7 @@ const routes = [
   },
   {
     path: '/user/booking/:bookingRef',
-    name: 'user-booking',
+    name: 'user.booking',
     component: () => import('@/views/user/ViewBooking.vue'),
   },
 
