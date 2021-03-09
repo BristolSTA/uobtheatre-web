@@ -106,9 +106,9 @@ export default {
             firstName,
             lastName,
             email,
-          }))(data.authUser);
+          }))(data.me);
           //$store.state.auth.user.firstName
-          vm.booking.updateFromAPIData(data.authUser.bookings.edges[0].node);
+          vm.booking.updateFromAPIData(data.me.bookings.edges[0].node);
           vm.production = vm.booking.performance.production;
         });
       });

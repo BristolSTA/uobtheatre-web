@@ -180,9 +180,9 @@ export default {
             firstName,
             lastName,
             email,
-          }))(data.authUser);
+          }))(data.me);
           //$store.state.auth.user.firstName
-          vm.bookings = data.authUser.bookings.edges.map((edge) =>
+          vm.bookings = data.me.bookings.edges.map((edge) =>
             Booking.fromAPIData(edge.node)
           );
         });
