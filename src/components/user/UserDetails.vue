@@ -1,6 +1,12 @@
+<script>
+/* eslint-disable vue/no-v-html */
+</script>
+
 <template>
-  <div class="flex flex-wrap items-center justify-center sm:p-8 lg:space-x-10">
-    <table class="w-full m-4 text-left align-text-top table-auto lg:w-2/3">
+  <div
+    class="flex flex-col flex-wrap items-center justify-center sm:p-8 lg:space-x-10"
+  >
+    <table class="m-4 text-left align-text-top">
       <tr>
         <th class="pb-2 pr-6 text-sta-orange" style="min-width: 8rem">
           First Name
@@ -9,6 +15,8 @@
           <p v-if="!editing">{{ user.firstName }}</p>
           <text-input
             v-else
+            name="firstName"
+            :show-label="false"
             autocomplete="given-name"
             :errors="signup_errors"
             required
@@ -22,6 +30,8 @@
           <p v-if="!editing">{{ user.lastName }}</p>
           <text-input
             v-else
+            name="lastName"
+            :show-label="false"
             autocomplete="family-name"
             required
             :errors="signup_errors"
@@ -33,21 +43,16 @@
         <th class="pb-2 pr-6 text-sta-orange">Email</th>
         <td class="pb-2">
           <p v-if="!editing" class="break-all">{{ user.email }}</p>
-          <text-input
-            v-else
-            type="email"
-            autocomplete="username email"
-            :errors="signup_errors"
-            :placeholder="user.email"
-            v-model="email"
-          />
+          <button v-else class="px-2 py-1 btn btn-orange btn-outline">
+            Change Email
+          </button>
         </td>
       </tr>
       <tr v-if="editing">
         <th class="pb-2 pr-6 text-sta-orange">Password</th>
         <td class="pb-2">
           <button class="px-2 py-1 btn btn-orange btn-outline">
-            Reset Password
+            Change Password
           </button>
         </td>
       </tr>
@@ -61,21 +66,33 @@
       >
         Edit Details
       </button>
-      <button
-        v-if="editing"
-        class="btn btn-rouge"
-        @click="editToggle"
-        @keypress="editToggle"
-      >
-        Save Details
-      </button>
+      <div v-else class="text-center">
+        <button
+          class="btn btn-rouge"
+          @click="editToggle"
+          @keypress="editToggle"
+        >
+          Save Details
+        </button>
+        <button
+          class="ml-2 btn btn-orange"
+          @click="editToggle"
+          @keypress="editToggle"
+        >
+          Cancel
+        </button>
+        <p class="mt-2">
+          Want to delete your account? Get in touch at
+          <span v-html="config.application.support_email"></span>
+        </p>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import TextInput from '@/components/ui/TextInput.vue';
-
+import config from '@/config';
 export default {
   name: 'UserDetails',
   components: {
@@ -90,7 +107,12 @@ export default {
   data() {
     return {
       editing: false,
+      firstName: null,
+      lastName: null,
     };
+  },
+  computed: {
+    config: () => config,
   },
   methods: {
     editToggle() {

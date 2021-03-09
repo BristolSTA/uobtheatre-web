@@ -2,9 +2,7 @@
   <div class="min-h-full mb-10 text-white bg-sta-gray">
     <div class="container">
       <h1 class="pt-2 text-left text-h1">My Details</h1>
-      <div v-if="user" class="flex flex-wrap justify-center">
-        <user-details :user="user" />
-      </div>
+      <user-details v-if="user" :user="user" />
     </div>
 
     <hr class="border-t-2 border-sta-gray-dark" />

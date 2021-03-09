@@ -1,6 +1,8 @@
 <template>
   <label :for="inputId">
-    <span class="text-xs font-semibold text-white">{{ name }}</span>
+    <span v-if="showLabel" class="text-xs font-semibold text-white">{{
+      name
+    }}</span>
     <input
       :id="inputId"
       class="w-full p-1 text-black rounded-sm focus:outline-none"
@@ -29,7 +31,7 @@ export default {
       validator: () => true,
     },
     name: {
-      default: '',
+      required: true,
       type: String,
     },
     type: {
@@ -55,6 +57,10 @@ export default {
       required: false,
       default: null,
       type: String,
+    },
+    showLabel: {
+      default: true,
+      type: Boolean,
     },
   },
   computed: {
