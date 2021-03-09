@@ -109,7 +109,7 @@
               </td>
 
               <td class="px-2 py-2 text-right sm:px-4">
-                <p>Ref: {{ booking.bookingReference.slice(0, 12) }}</p>
+                <p>Ref: {{ booking.bookingReference }}</p>
                 <router-link
                   class="px-2 py-1 text-sm sm:mr-2 btn btn-green btn-outline"
                   :to="{

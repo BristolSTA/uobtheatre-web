@@ -15,7 +15,7 @@ export default {
   registerFactories() {
     return {
       bookingNode: Factory.extend({
-        bookingReference: () => faker.random.uuid(),
+        bookingReference: () => faker.random.alphaNumeric(12),
         status: 'INPROGRESS',
         afterCreate(node, server) {
           updateIfDoesntHave(node, {

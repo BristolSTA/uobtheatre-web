@@ -19,9 +19,7 @@
       </p>
     </template>
     <div>
-      <p class="py-1">
-        Booking Ref: {{ booking.bookingReference.slice(0, 12) }}
-      </p>
+      <p class="py-1">Booking Ref: {{ booking.bookingReference }}</p>
       <router-link
         class="btn btn-green"
         :to="{

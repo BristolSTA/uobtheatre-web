@@ -5,8 +5,13 @@
       {{ booking.performance.start | dateFormat('EEEE d MMMM kkkk') }}
     </p>
     <p>
-      Doors: {{ booking.performance.doorsOpen | dateFormat('t a') }} | Start:
-      {{ booking.performance.start | dateFormat('t a') }}
+      <span class="pr-2">
+        Doors: {{ booking.performance.doorsOpen | dateFormat('t') }}
+      </span>
+      |
+      <span class="pl-2">
+        Start: {{ booking.performance.start | dateFormat('t') }}
+      </span>
     </p>
     <div class="flex justify-between w-full font-semibold">
       <p>1x {{ ticket.concession_type.name }}</p>
