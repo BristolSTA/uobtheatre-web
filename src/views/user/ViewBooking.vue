@@ -38,7 +38,7 @@
       </div>
       <div
         v-if="expanded"
-        class="grid grid-cols-1 gap-4 px-4 py-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 bg-sta-gray-dark"
+        class="grid grid-cols-1 gap-4 px-4 py-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 bg-sta-gray-dark"
       >
         <ticket
           v-for="(ticket, index) in booking.tickets"

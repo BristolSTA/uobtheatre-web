@@ -14,8 +14,8 @@
       </span>
     </p>
     <div class="flex justify-between w-full font-semibold">
-      <p>1x {{ ticket.concession_type.name }}</p>
-      <p class="text-right">{{ ticket.seat_group.name }}</p>
+      <p class="pr-1">1x {{ ticket.concession_type.name }}</p>
+      <p class="pl-1 text-right">{{ ticket.seat_group.name }}</p>
     </div>
     <div class="flex items-center justify-center flex-grow w-full py-2">
       <qrcode-vue :value="qrString" level="M" size="240" />
