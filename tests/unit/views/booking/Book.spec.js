@@ -3,12 +3,14 @@ import { expect } from 'chai';
 
 import BookingNavigation from '@/components/booking/BookingNavigation.vue';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
+import Breadcrumbs from '@/components/ui/Breadcrumbs.vue';
 import { swal } from '@/utils';
 import Book from '@/views/booking/Book.vue';
 import stages from '@/views/booking/bookingStages';
 
 import FakePerformance from '../../fixtures/FakePerformance';
 import {
+  assertNoVisualDifference,
   executeWithServer,
   generateMountOptions,
   runApolloQuery,
@@ -69,6 +71,24 @@ describe('Create Booking Page', () => {
     expect(banner.props('production')).to.eq(production);
     expect(banner.props('showBuyTicketsButton')).to.eq(false);
     expect(banner.props('showDetailedInfo')).to.eq(false);
+  });
+
+  it('has correct breadcrumbs', async () => {
+    let breadcrumbs = bookingComponent.findComponent(Breadcrumbs);
+    expect(breadcrumbs.exists()).to.be.true;
+    assertNoVisualDifference(breadcrumbs.props('crumbs'), [
+      { text: 'Whats On', route: { name: 'productions' } },
+      {
+        text: production.name,
+        route: {
+          name: 'production',
+          params: {
+            productionSlug: production.slug,
+          },
+        },
+      },
+      { text: 'Book' },
+    ]);
   });
 
   it('has booking navigation', () => {

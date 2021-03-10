@@ -1,17 +1,11 @@
 <template>
   <div class="min-h-full bg-sta-gray">
-    <div class="container">
-      <div class="pt-2 text-white">
-        <router-link
-          :to="{
-            name: 'production',
-            params: { productionSlug: production.slug },
-          }"
-        >
-          <font-awesome-icon icon="chevron-left" />
-          Back to Production
-        </router-link>
+    <div class="bg-sta-gray-light">
+      <div class="container">
+        <breadcrumbs :crumbs="crumbs" />
       </div>
+    </div>
+    <div class="container">
       <production-banner
         class="pb-2 md:pb-8"
         :production="production"
@@ -60,12 +54,18 @@ import Booking from '@/classes/Booking';
 import TicketsMatrix from '@/classes/TicketsMatrix';
 import BookingNavigation from '@/components/booking/BookingNavigation.vue';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
+import Breadcrumbs from '@/components/ui/Breadcrumbs.vue';
 import ClickableLink from '@/components/ui/ClickableLink.vue';
 import { swal } from '@/utils';
 
 import { getNextStage, getPreviousStage, getStageIndex } from './bookingStages';
 export default {
-  components: { BookingNavigation, ProductionBanner, ClickableLink },
+  components: {
+    BookingNavigation,
+    ProductionBanner,
+    ClickableLink,
+    Breadcrumbs,
+  },
   props: {
     production: {
       required: true,
@@ -89,6 +89,21 @@ export default {
   computed: {
     currentStageIndex() {
       return getStageIndex(this.$route.meta.stage);
+    },
+    crumbs() {
+      return [
+        { text: 'Whats On', route: { name: 'productions' } },
+        {
+          text: this.production.name,
+          route: {
+            name: 'production',
+            params: {
+              productionSlug: this.production.slug,
+            },
+          },
+        },
+        { text: 'Book' },
+      ];
     },
   },
   watch: {
