@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import { DateTime } from 'luxon';
 
 import Booking from '@/classes/Booking';
 import Ticket from '@/classes/Ticket';
@@ -21,6 +22,8 @@ describe('Booking Class', () => {
   let concession_500_edge;
   let tickets_matrix;
   let bookingAPIData;
+
+  jest.spyOn(DateTime, 'local');
 
   beforeAll(async () => {
     await executeWithServer(async (server) => {
@@ -330,5 +333,37 @@ describe('Booking Class', () => {
       booking.misc_costs,
       bookingAPIData.priceBreakdown.miscCosts
     );
+  });
+  it('can tell if a booking is active', () => {
+    booking.updateFromAPIData(bookingAPIData);
+    // Day before
+    DateTime.local.mockReturnValue(DateTime.fromISO('2020-03-08T10:00:00'));
+    expect(booking.is_active).to.be.true;
+
+    // 6 Hours before start
+    DateTime.local.mockReturnValue(DateTime.fromISO('2020-03-09T10:00:00'));
+    expect(booking.is_active).to.be.true;
+
+    // 40 minutes in
+    DateTime.local.mockReturnValue(DateTime.fromISO('2020-03-09T16:40:00'));
+    expect(booking.is_active).to.be.true;
+
+    // At end time
+    DateTime.local.mockReturnValue(DateTime.fromISO('2020-03-09T18:00:00'));
+    expect(booking.is_active).to.be.true;
+
+    // 1 Hour After Finish
+    DateTime.local.mockReturnValue(DateTime.fromISO('2020-03-09T19:00:00'));
+    expect(booking.is_active).to.be.true;
+  });
+  it('can tell if a booking is inactive', () => {
+    booking.updateFromAPIData(bookingAPIData);
+    // Midnight next day
+    DateTime.local.mockReturnValue(DateTime.fromISO('2020-03-10T00:00:00'));
+    expect(booking.is_active).to.be.false;
+
+    // 10AM Next Day
+    DateTime.local.mockReturnValue(DateTime.fromISO('2020-03-10T10:00:00'));
+    expect(booking.is_active).to.be.false;
   });
 });
