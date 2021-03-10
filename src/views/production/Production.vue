@@ -1,7 +1,9 @@
 <template>
   <div class="min-h-full bg-sta-gray">
-    <div class="container">
-      <breadcrumbs :crumbs="crumbs" />
+    <div class="bg-sta-gray-light">
+      <div class="container">
+        <breadcrumbs :crumbs="crumbs" />
+      </div>
     </div>
     <div
       v-if="!production"

@@ -1,7 +1,11 @@
 <template>
   <div class="min-h-full bg-sta-gray">
+    <div class="bg-sta-gray-light">
+      <div class="container">
+        <breadcrumbs :crumbs="crumbs" />
+      </div>
+    </div>
     <div class="container">
-      <breadcrumbs :crumbs="crumbs" />
       <production-banner
         class="pb-2 md:pb-8"
         :production="production"
