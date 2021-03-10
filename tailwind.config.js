@@ -23,7 +23,8 @@ module.exports = {
           DEFAULT: '#2B303A',
           dark: '#23272A',
           light: '#3D434E',
-          lighter: '#8D8B86',
+          lighter: '#908e89',
+          lightest: '#cecdca',
         },
         'sta-rouge': {
           DEFAULT: '#FF6978',
@@ -36,6 +37,7 @@ module.exports = {
         'sta-orange': {
           DEFAULT: '#FF9F1C',
           dark: '#CC6C00',
+          light: '#ffb833',
         },
       },
       opacity: {
