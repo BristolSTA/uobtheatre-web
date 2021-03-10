@@ -142,6 +142,7 @@ export default {
         if (args.token !== '1234abcd') throw new NonFieldError('Invalid Token');
       }),
       sendPasswordResetEmail: mutationWithErrorsResolver(() => {}),
+      updateAccount: mutationWithErrorsResolver(() => {}),
       passwordReset: mutationWithErrorsResolver((obj, args) => {
         if (args.token !== '1234abcd')
           throw new NonFieldError('Invalid Password Reset Token');
@@ -151,6 +152,10 @@ export default {
             'newPassword2'
           );
         }
+      }),
+      passwordChange: mutationWithErrorsResolver((obj, args) => {
+        if (args.newPassword1 !== args.newPassword2)
+          throw new FieldError('Passwords dont match', 'newPassword2');
       }),
     };
   },

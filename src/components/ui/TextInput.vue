@@ -21,6 +21,8 @@
 <script>
 import lo from 'lodash';
 
+import Errors from '@/classes/Errors';
+
 import ErrorHelper from './ErrorHelper.vue';
 export default {
   name: 'TextInput',
@@ -45,7 +47,7 @@ export default {
     },
     errors: {
       required: false,
-      type: [Array, Object],
+      type: Errors,
       default: null,
     },
     required: {

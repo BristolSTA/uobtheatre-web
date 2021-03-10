@@ -2,6 +2,7 @@ import { DateTime } from 'luxon';
 import Swal from 'sweetalert2';
 import resolveConfig from 'tailwindcss/resolveConfig';
 
+import Errors from '@/classes/Errors';
 import store from '@/store';
 
 /**
@@ -76,6 +77,16 @@ let errorHandler = (e) => {
   apiErrorToast.fire();
 };
 
+let performMutation = (apollo, options, mutationName) => {
+  return new Promise((resolve, reject) => {
+    apollo.mutate(options).then(({ data }) => {
+      if (!data[mutationName].success)
+        return reject(Errors.createFromAPI(data[mutationName].errors));
+      resolve(data);
+    });
+  });
+};
+
 /**
  * Default branded Sweetalert instances
  */
@@ -108,6 +119,7 @@ export {
   duration,
   errorHandler,
   joinWithAnd,
+  performMutation,
   runPromiseWithLoading,
   swal,
   swalToast,
