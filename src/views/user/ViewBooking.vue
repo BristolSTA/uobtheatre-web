@@ -1,16 +1,11 @@
 <template>
   <div class="min-h-full mb-10 text-white bg-sta-gray">
-    <div v-if="booking.performance" class="container">
-      <div class="pt-2 text-white">
-        <router-link
-          :to="{
-            name: 'user',
-          }"
-        >
-          <font-awesome-icon icon="chevron-left" />
-          Back to My Account
-        </router-link>
+    <div class="bg-sta-gray-light">
+      <div class="container">
+        <breadcrumbs :crumbs="crumbs" />
       </div>
+    </div>
+    <div v-if="booking.performance" class="container">
       <h1 class="pt-2 text-left text-h1">Booking Info</h1>
       <production-banner
         class="pb-2 md:pb-8"
@@ -81,6 +76,7 @@ import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
 import VenueOverview from '@/components/booking/overview/VenueOverview.vue';
 import Ticket from '@/components/booking/Ticket.vue';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
+import Breadcrumbs from '@/components/ui/Breadcrumbs.vue';
 import { createClient } from '@/vue-apollo';
 
 export default {
@@ -92,6 +88,7 @@ export default {
     ProductionBanner,
     PaymentOverview,
     Ticket,
+    Breadcrumbs,
   },
   data() {
     return {
@@ -126,6 +123,12 @@ export default {
       return this.booking.performance
         ? this.booking.performance.production
         : null;
+    },
+    crumbs() {
+      return [
+        { text: 'My Account', route: { name: 'user' } },
+        { text: 'Booking Details' },
+      ];
     },
   },
   methods: {
