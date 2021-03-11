@@ -15,7 +15,7 @@ export default {
   registerFactories() {
     return {
       bookingNode: Factory.extend({
-        bookingReference: () => faker.random.alphaNumeric(12),
+        reference: () => faker.random.alphaNumeric(12),
         status: 'INPROGRESS',
         afterCreate(node, server) {
           updateIfDoesntHave(node, {
@@ -75,7 +75,7 @@ export default {
             args.performanceId
           ),
           status: 'INPROGRESS',
-          bookingReference: faker.random.uuid(),
+          reference: faker.random.uuid(),
           tickets: tickets,
           user: authedUser(context),
         });
@@ -131,13 +131,13 @@ export default {
       
       type BookingNode implements Node {
         id: ID!
-        bookingReference: UUID!
         performance: PerformanceNode!
         status: BookingStatus!
         tickets: [TicketNode!]
         priceBreakdown: PriceBreakdownNode
 
         user: UserNode
+        reference: UUID!
       }
 
       type PriceBreakdownNode implements Node {

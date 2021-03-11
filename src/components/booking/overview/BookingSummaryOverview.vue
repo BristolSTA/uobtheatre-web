@@ -19,12 +19,12 @@
       </p>
     </template>
     <div>
-      <p class="py-1">Booking Ref: {{ booking.bookingReference }}</p>
+      <p class="py-1">Booking Ref: {{ booking.reference }}</p>
       <router-link
         class="btn btn-green"
         :to="{
           name: 'user.booking',
-          params: { bookingRef: booking.id },
+          params: { bookingRef: booking.reference },
         }"
       >
         View Booking &amp; Tickets

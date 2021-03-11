@@ -278,6 +278,7 @@ export function makeServer({ environment = 'development' } = {}) {
       server.create('bookingNode', {
         status: 'PAID',
         user: user,
+        reference: 'abcdef123456',
         performance: performances[0],
         tickets: [
           server.create('ticketNode', {
@@ -329,6 +330,7 @@ export function makeServer({ environment = 'development' } = {}) {
       server.create('bookingNode', {
         status: 'PAID',
         user: user,
+        reference: '123456abcdef',
         performance: server.create('PerformanceNode', {
           soldOut: false,
           isInperson: true,

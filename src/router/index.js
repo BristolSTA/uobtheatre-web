@@ -70,6 +70,16 @@ const routes = [
       middleware: [authMiddleware],
     },
   },
+
+  {
+    path: '/user/emailChange/:token',
+    props: true,
+    name: 'user.emailChange',
+    component: () => import('@/views/user/EmailChangeActivate.vue'),
+    meta: {
+      middleware: [authMiddleware],
+    },
+  },
   {
     path: '/user/booking/:bookingRef',
     name: 'user.booking',
@@ -154,6 +164,9 @@ const router = new VueRouter({
 
 // Apply any middleware
 router.beforeEach((to, from, next) => {
+  if (to.name) {
+    NProgress.start();
+  }
   authService.refreshAuthStatus();
   if (to.meta.middleware) {
     const middleware = Array.isArray(to.meta.middleware)
@@ -172,14 +185,6 @@ router.beforeEach((to, from, next) => {
   }
 
   return next();
-});
-
-// Set up navigation guards for loading stuff
-router.beforeResolve((to, _from, next) => {
-  if (to.name) {
-    NProgress.start();
-  }
-  next();
 });
 
 router.afterEach(() => {

@@ -5,9 +5,7 @@
       Payment
     </template>
     <template v-slot:subtitle>
-      <p class="text-h4">
-        Booking Ref : {{ booking.bookingReference.slice(0, 12) }}
-      </p>
+      <p class="text-h4">Booking Ref : {{ booking.reference }}</p>
     </template>
     <table class="my-2">
       <tr>

@@ -97,7 +97,7 @@ export default {
           position: 'bottom-end',
         });
         this.$emit('cancel');
-      } catch (errors) {
+      } catch ({ errors }) {
         this.errors = errors;
       }
       this.loading = false;

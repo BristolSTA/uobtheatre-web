@@ -39,30 +39,30 @@
         <payment-overview class="lg:col-span-1" :booking="booking" />
         <tickets-overview class="lg:col-span-2" :booking="booking" />
       </div>
-    </div>
 
-    <div ref="tickets" class="mt-4 md:container">
-      <div
-        class="flex items-center justify-between px-4 py-2 cursor-pointer hover:bg-opacity-80 text-h2"
-        :class="[expanded ? 'bg-sta-orange' : 'bg-sta-green']"
-        @click="ticketToggle"
-        @keypress="ticketToggle"
-      >
-        <h3 class="inline-block">View Tickets</h3>
-        <font-awesome-icon :icon="expanded ? 'chevron-up' : 'chevron-down'" />
-      </div>
-      <div
-        v-if="expanded"
-        class="grid grid-cols-1 gap-4 px-4 py-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 bg-sta-gray-dark"
-      >
-        <ticket
-          v-for="(ticket, index) in booking.tickets"
-          :key="index"
-          :booking="booking"
-          :ticket="ticket"
-          :user="$store.state.auth.user"
-          :index="index + 1"
-        />
+      <div ref="tickets" class="mt-4">
+        <div
+          class="flex items-center justify-between px-4 py-2 cursor-pointer hover:bg-opacity-80 text-h2"
+          :class="[expanded ? 'bg-sta-orange' : 'bg-sta-green']"
+          @click="ticketToggle"
+          @keypress="ticketToggle"
+        >
+          <h3 class="inline-block">View Tickets</h3>
+          <font-awesome-icon :icon="expanded ? 'chevron-up' : 'chevron-down'" />
+        </div>
+        <div
+          v-if="expanded"
+          class="grid grid-cols-1 gap-4 px-4 py-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 bg-sta-gray-dark"
+        >
+          <ticket
+            v-for="(ticket, index) in booking.tickets"
+            :key="index"
+            :booking="booking"
+            :ticket="ticket"
+            :user="$store.state.auth.user"
+            :index="index + 1"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -100,7 +100,7 @@ export default {
   metaInfo() {
     const production = this.production;
     return {
-      title: production ? `Your booking for ${production.name}` : 'Loading...',
+      title: production ? `Booking for ${production.name}` : 'Loading...',
     };
   },
   async beforeRouteEnter(to, from, next) {
@@ -108,7 +108,7 @@ export default {
     let { data } = await apolloClient.query({
       query: require('@/graphql/queries/UserPaidBooking.gql'),
       variables: {
-        bookingId: to.params.bookingRef,
+        bookingRef: to.params.bookingRef,
       },
     });
 

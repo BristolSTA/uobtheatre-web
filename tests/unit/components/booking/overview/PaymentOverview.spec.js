@@ -29,7 +29,7 @@ describe('ticket overview box', function () {
       });
       let bookingData = Object.assign({}, data.booking, {
         status: 'PAID',
-        bookingReference: 'ABS1352EBV54',
+        reference: 'ABS1352EBV54',
       });
       booking.updateFromAPIData(bookingData);
     });

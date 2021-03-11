@@ -1,7 +1,7 @@
 #import "./AllPriceBreakdown.gql"
 fragment DetailedBookingDetails on BookingNode {
   id
-  bookingReference
+  reference
   status
   priceBreakdown {
     ...AllPriceBreakdown

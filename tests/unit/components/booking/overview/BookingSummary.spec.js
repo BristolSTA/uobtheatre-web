@@ -29,7 +29,7 @@ describe('booking summary overview box', function () {
       });
       let bookingData = Object.assign({}, data.booking, {
         status: 'PAID',
-        bookingReference: 'ABS1352EBV54',
+        reference: 'ABS1352EBV54',
         performance: {
           production: { name: 'Legally Ginger', slug: 'legally-ginger' },
           start: '2019-10-07T18:00:00',

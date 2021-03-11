@@ -20,7 +20,7 @@
     <div class="flex items-center justify-center flex-grow w-full py-2">
       <qrcode-vue :value="qrString" level="L" size="240" />
     </div>
-    <p>Booking Ref: {{ booking.bookingReference }}</p>
+    <p>Booking Ref: {{ booking.reference }}</p>
     <!-- <p>Paid On: 3 Jan 2020</p> -->
     <div class="flex justify-between w-full">
       <p>Booked By: {{ fullName }}</p>
@@ -62,7 +62,7 @@ export default {
   },
   computed: {
     qrString() {
-      return btoa([this.booking.bookingReference, this.ticket.id]);
+      return btoa([this.booking.reference, this.ticket.id]);
     },
     fullName() {
       return lo.join([this.user.firstName, this.user.lastName], ' ');

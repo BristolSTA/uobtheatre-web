@@ -14,7 +14,7 @@ import FakePerformance from './FakePerformance';
  * Total: 3728p
  */
 
-export default (server) => {
+export default (server, overrides = {}) => {
   let performance = server.create('PerformanceNode', FakePerformance(server));
 
   server.create('miscCostNode', {
@@ -53,6 +53,7 @@ export default (server) => {
       }),
     ],
   });
+  bookingModel.update(overrides);
   bookingModel.update({
     priceBreakdown: server.create(
       'PriceBreakdownNode',

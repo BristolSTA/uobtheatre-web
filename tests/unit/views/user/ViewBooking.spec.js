@@ -1,7 +1,5 @@
-import { shallowMount } from '@vue/test-utils';
 import { expect } from 'chai';
 
-import Booking from '@/classes/Booking';
 import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue';
 import PerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue';
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
@@ -12,47 +10,47 @@ import FakeBooking from '../../fixtures/FakeBooking.js';
 import {
   executeWithServer,
   generateMountOptions,
-  runApolloQuery,
+  mountWithRouterMock,
+  seedAndAuthAsUser,
+  waitFor,
 } from '../../helpers';
 
-describe('Overview Stage', () => {
-  let overviewComponent;
-  let booking = new Booking();
+describe('View Booking', () => {
+  let component, server;
 
-  beforeEach(async () => {
-    await executeWithServer(async (server) => {
-      let bookingModel = FakeBooking(server);
-
-      let { data } = await runApolloQuery({
-        query: require('@/graphql/queries/BookingInformation.gql'),
-        variables: {
-          bookingId: bookingModel.id,
-        },
-      });
-      let bookingData = Object.assign({}, data.booking, {
+  beforeAll(async () => {
+    server = await executeWithServer(async (server) => {
+      let user = seedAndAuthAsUser(server);
+      let booking = FakeBooking(server, {
         status: 'PAID',
-        bookingReference: 'ABS1352EBV54',
+        reference: 'ABS1352EBV54',
+        user,
       });
-      booking.updateFromAPIData(bookingData);
-    });
-
-    overviewComponent = await shallowMount(
-      ViewBooking,
-      generateMountOptions(['router'], {
-        params: {
-          bookingRef: 1,
-        },
-      })
-    );
+    }, false);
   });
 
-  it('contains correct overview components', async () => {
-    expect(overviewComponent.findComponent(PerformanceOverview).exists()).to.be
-      .true;
-    expect(overviewComponent.findComponent(VenueOverview).exists()).to.be.true;
-    expect(overviewComponent.findComponent(TicketsOverview).exists()).to.be
-      .true;
-    expect(overviewComponent.findComponent(PaymentOverview).exists()).to.be
-      .true;
+  afterAll(() => {
+    server.shutdown();
+  });
+
+  beforeEach(async () => {
+    component = await mountWithRouterMock(
+      ViewBooking,
+      generateMountOptions(['apollo']),
+      {
+        params: {
+          bookingRef: 'ABS1352EBV54',
+        },
+      }
+    );
+    await waitFor(() => component.vm.booking.performance);
+    await component.vm.$nextTick();
+  });
+
+  it('contains correct components', async () => {
+    expect(component.findComponent(PerformanceOverview).exists()).to.be.true;
+    expect(component.findComponent(VenueOverview).exists()).to.be.true;
+    expect(component.findComponent(TicketsOverview).exists()).to.be.true;
+    expect(component.findComponent(PaymentOverview).exists()).to.be.true;
   });
 });

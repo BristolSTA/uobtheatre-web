@@ -174,8 +174,7 @@ export default {
           title: 'Details updated!',
           position: 'bottom-end',
         });
-      } catch (errors) {
-        console.log(errors);
+      } catch ({ errors }) {
         this.errors = errors;
       }
       this.loading = false;

@@ -79,11 +79,19 @@ let errorHandler = (e) => {
 
 let performMutation = (apollo, options, mutationName) => {
   return new Promise((resolve, reject) => {
-    apollo.mutate(options).then(({ data }) => {
-      if (!data[mutationName].success)
-        return reject(Errors.createFromAPI(data[mutationName].errors));
-      resolve(data);
-    });
+    apollo
+      .mutate(options)
+      .then(({ data }) => {
+        if (!data[mutationName].success)
+          return reject({
+            errors: Errors.createFromAPI(data[mutationName].errors),
+          });
+        resolve(data);
+      })
+      .catch((e) => {
+        errorHandler(e);
+        reject({});
+      });
   });
 };
 
