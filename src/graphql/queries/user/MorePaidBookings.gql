@@ -1,0 +1,21 @@
+#import "../../fragments/booking/BasicBookingDetails.gql"
+query morePaidBookings($afterCursor: String) {
+  me {
+    bookings(
+      first: 10
+      status: "PAID"
+      orderBy: "createdAt"
+      after: $afterCursor
+    ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          ...BasicBookingDetails
+        }
+      }
+    }
+  }
+}

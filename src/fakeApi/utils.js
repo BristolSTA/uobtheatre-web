@@ -61,12 +61,15 @@ let ValidationErrorResponse = (
 /**
  * Performs a graphene-like order by on a set of records from a GraphQL query
  *
- * @param {any} records Records as returned from the mirageGraphQLFieldResolver
+ * @param {any} getRecordsFunction Function that returns records from the mirageGraphQLFieldResolver. Is supplied with the args
  * @param {object} args Args parameter from the GraphQL query
  * @returns {?Array} Sorted records
  */
-let graphQLOrderBy = (records, args) => {
+let handleGraphQLOrderBy = (getRecordsFunction, args) => {
   const { orderBy } = args;
+  delete args.orderBy;
+
+  let records = getRecordsFunction(args);
 
   if (orderBy) {
     const orderByProp = orderBy.substring(1);
@@ -190,7 +193,7 @@ export {
   authedUser,
   FieldError,
   generateConcessionTypeBookingTypes,
-  graphQLOrderBy,
+  handleGraphQLOrderBy,
   mutationWithErrorsResolver,
   NonFieldError,
   updateIfDoesntHave,

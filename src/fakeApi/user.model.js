@@ -5,6 +5,7 @@ import { Factory } from 'miragejs';
 import {
   authedUser,
   FieldError,
+  handleGraphQLOrderBy,
   mutationWithErrorsResolver,
   NonFieldError,
 } from './utils';
@@ -25,12 +26,15 @@ export default {
     return {
       UserNode: {
         bookings(obj, args, context, info) {
+          // Bodge to overcome weird named params
           if (args.performance) {
             args.performanceId = args.performance;
             delete args.performance;
           }
 
-          return mirageGraphQLFieldResolver(obj, args, context, info);
+          return handleGraphQLOrderBy((args) => {
+            return mirageGraphQLFieldResolver(obj, args, context, info);
+          }, args);
         },
       },
     };
@@ -158,7 +162,7 @@ export default {
       verified: Boolean
       secondaryEmail: String
 
-      bookings(offset: Int, before: String, after: String, first: Int, last: Int, reference: UUID, user: ID, performance: ID, status: String, id: ID): BookingNodeConnection!
+      bookings(offset: Int, before: String, after: String, first: Int, last: Int, reference: UUID, user: ID, performance: ID, status: String, id: ID, orderBy: String): BookingNodeConnection!
     }
     `;
   },

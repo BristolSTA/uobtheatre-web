@@ -34,7 +34,7 @@
         v-model="confirmedNewPassword"
       />
       <div>
-        <button class="mr-2 btn btn-rouge">Update</button>
+        <button class="mr-2 btn btn-green">Update</button>
         <button
           class="btn btn-orange"
           @click.prevent="$emit('cancel')"

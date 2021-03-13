@@ -2,12 +2,12 @@
   <div class="min-h-full mb-10 text-white bg-sta-gray">
     <div class="container">
       <h1 class="pt-2 text-left text-h1">My Details</h1>
-      <user-details v-if="user" :user="user" />
+      <user-details v-if="user" class="pb-4" :user="user" />
     </div>
 
     <hr class="border-t-2 border-sta-gray-dark" />
     <div class="container">
-      <h2 class="px-4 py-2 text-h2">My Bookings</h2>
+      <h2 id="myBookings" class="px-4 py-2 text-h2">My Bookings</h2>
       <div v-if="!futureBookings.length" class="p-6 text-center">
         <p class="p-2 text-h4">No Upcoming Bookings</p>
         <router-link
@@ -30,9 +30,14 @@
       </div>
     </div>
 
-    <div v-if="pastBookings.length" class="flex justify-center sm:container">
+    <div class="flex justify-center sm:container">
       <div class="w-full xl:w-3/4">
-        <bookings-table ref="prev-bookings" :bookings="pastBookings">
+        <bookings-table
+          ref="prev-bookings"
+          :bookings="pastBookings"
+          :can-load-more="!!bookingsEndCursor"
+          @load-more="loadMoreBookings"
+        >
           <template v-slot:title>Past Bookings</template>
         </bookings-table>
       </div>
@@ -54,10 +59,11 @@ export default {
     UserDetails,
     BookingsTable,
   },
-  props: {},
   data() {
     return {
       bookings: [],
+      bookingsEndCursor: null,
+      loadingMore: false,
       user: null,
     };
   },
@@ -72,10 +78,32 @@ export default {
       return this.bookings.filter((booking) => booking.is_active);
     },
   },
+  methods: {
+    async loadMoreBookings() {
+      if (this.loadingMore) return;
+
+      this.loadingMore = true;
+      let { data } = await this.$apollo.query({
+        query: require('@/graphql/queries/user/MorePaidBookings.gql'),
+        variables: {
+          afterCursor: this.bookingsEndCursor,
+        },
+      });
+
+      this.loadingMore = false;
+      this.bookings.push(
+        ...data.me.bookings.edges.map((edge) => Booking.fromAPIData(edge.node))
+      );
+
+      this.bookingsEndCursor = null;
+      if (data.me.bookings.pageInfo.hasNextPage)
+        this.bookingsEndCursor = data.me.bookings.pageInfo.endCursor;
+    },
+  },
   async beforeRouteEnter(to, from, next) {
     const { apolloClient } = createClient();
     let { data } = await apolloClient.query({
-      query: require('@/graphql/queries/MyAccountDetails.gql'),
+      query: require('@/graphql/queries/user/MyAccountDetails.gql'),
     });
 
     next((vm) => {
@@ -84,6 +112,9 @@ export default {
       vm.bookings = data.me.bookings.edges.map((edge) =>
         Booking.fromAPIData(edge.node)
       );
+
+      if (data.me.bookings.pageInfo.hasNextPage)
+        vm.bookingsEndCursor = data.me.bookings.pageInfo.endCursor;
     });
   },
 };

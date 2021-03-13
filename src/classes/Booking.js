@@ -47,14 +47,16 @@ export default class Booking {
    */
   updateFromAPIData(bookingData) {
     this.raw = bookingData;
-    this.price_breakdown = bookingData.priceBreakdown;
-    this.price_breakdown.tickets = this.price_breakdown.tickets.map(
-      (ticketSummary) => {
-        ticketSummary.concession_type = ticketSummary.concessionType;
-        ticketSummary.seat_group = ticketSummary.seatGroup;
-        return ticketSummary;
-      }
-    );
+    if (bookingData.priceBreakdown) {
+      this.price_breakdown = bookingData.priceBreakdown;
+      this.price_breakdown.tickets = this.price_breakdown.tickets.map(
+        (ticketSummary) => {
+          ticketSummary.concession_type = ticketSummary.concessionType;
+          ticketSummary.seat_group = ticketSummary.seatGroup;
+          return ticketSummary;
+        }
+      );
+    }
     if (bookingData.tickets) {
       this.tickets = bookingData.tickets.map((ticketAPIData) =>
         Ticket.fromAPIData(ticketAPIData)

@@ -14,6 +14,7 @@ import {
   faLink,
   faMapMarkedAlt,
   faMoneyCheckAlt,
+  faSignInAlt,
   faTheaterMasks,
   faTicketAlt,
   faTimesCircle,
@@ -46,7 +47,8 @@ library.add(
   faTimesCircle,
   faMoneyCheckAlt,
   faTheaterMasks,
-  faArrowRight
+  faArrowRight,
+  faSignInAlt
 );
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 

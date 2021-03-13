@@ -4,7 +4,7 @@
 
 <template>
   <div
-    class="flex flex-col flex-wrap items-center justify-center sm:p-8 lg:space-x-10"
+    class="flex flex-col flex-wrap items-center justify-center lg:space-x-10"
   >
     <change-email
       v-if="editingEmail"
@@ -81,7 +81,7 @@
           </tr>
         </table>
         <div v-if="editing" class="m-4 text-center">
-          <button class="mr-2 btn btn-rouge">Save Details</button>
+          <button class="mr-2 btn btn-green">Save Details</button>
           <button
             class="btn btn-orange"
             @click.prevent="editToggle"

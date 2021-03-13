@@ -79,8 +79,8 @@ export default new Vuex.Store({
       Cookie.set(config.auth.cookie, token, {
         expires: remember ? 365 : null,
       });
-      context.commit('SET_AUTH_TOKEN', token);
       context.commit('SET_AUTH_USER', userInfo);
+      context.commit('SET_AUTH_TOKEN', token);
     },
     authLogout(context) {
       Cookie.remove(config.auth.cookie);
