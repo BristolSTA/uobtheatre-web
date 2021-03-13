@@ -1,15 +1,10 @@
-import { shallowMount } from '@vue/test-utils';
 import { expect } from 'chai';
 
 import { authService } from '@/services';
 import { swal, swalToast } from '@/utils';
 import ForgotPassword from '@/views/auth/ForgotPassword.vue';
 
-import {
-  executeWithServer,
-  generateMountOptions,
-  mountWithRouterMock,
-} from '../../helpers';
+import { executeWithServer, mountWithRouterMock } from '../../helpers';
 
 describe('Forgot Password', function () {
   let forgotPasswordComponent, server;

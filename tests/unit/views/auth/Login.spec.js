@@ -1,4 +1,3 @@
-import { shallowMount } from '@vue/test-utils';
 import { expect } from 'chai';
 
 import AuthBox from '@/components/auth/UserAuthBox.vue';
