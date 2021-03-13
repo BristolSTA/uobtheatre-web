@@ -43,4 +43,16 @@ fragment BookingWithProductionDetails on BookingNode {
       slug
     }
   }
+  payments {
+    edges {
+      node {
+        createdAt
+        type
+        provider
+        value
+        cardBrand
+        last4
+      }
+    }
+  }
 }

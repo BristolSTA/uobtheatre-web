@@ -61,7 +61,8 @@ Vue.prototype.$appName = config.application.name;
 // Filters
 
 Vue.filter('dateFormat', (date, format) => {
-  return DateTime.fromISO(date).toFormat(format);
+  date = date instanceof DateTime ? date : DateTime.fromISO(date);
+  return date.toFormat(format);
 });
 
 Vue.filter('truncate', (text, length, clamp) => {

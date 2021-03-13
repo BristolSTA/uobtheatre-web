@@ -1,3 +1,5 @@
+import { DateTime } from 'luxon';
+
 import { generatePriceBreakdown } from '@/fakeApi/booking.model';
 
 import FakePerformance from './FakePerformance';
@@ -14,7 +16,7 @@ import FakePerformance from './FakePerformance';
  * Total: 3728p
  */
 
-export default (server, overrides = {}) => {
+export default (server, overrides = {}, paid = false) => {
   let performance = server.create('PerformanceNode', FakePerformance(server));
 
   server.create('miscCostNode', {
@@ -32,8 +34,9 @@ export default (server, overrides = {}) => {
     performance.ticketOptions.models[0].concessionTypes.models[1]
       .concessionType;
 
-  let bookingModel = server.create('bookingNode', {
+  let bookingOverrides = {
     performance,
+    reference: 'ABS1352EBV54',
     tickets: [
       server.create('ticketNode', {
         seatGroup: bestSeatGroup,
@@ -52,7 +55,18 @@ export default (server, overrides = {}) => {
         concessionType: studentConcession,
       }),
     ],
-  });
+  };
+  let bookingModel;
+  if (paid) {
+    bookingModel = server.create('bookingNode', 'paid', bookingOverrides);
+    bookingModel.payments.models[0].update({
+      cardBrand: 'VISA',
+      last4: '1234',
+      value: 2575,
+      createdAt: DateTime.fromISO('2021-03-13T15:05:00'),
+    });
+  } else bookingModel = server.create('bookingNode', bookingOverrides);
+
   bookingModel.update(overrides);
   bookingModel.update({
     priceBreakdown: server.create(

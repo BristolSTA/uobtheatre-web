@@ -11,15 +11,20 @@ export default class Booking {
   reference;
   /** @member {object} */
   performance;
+  /** @member {object} */
+  payments;
   /** @member {Ticket} */
   tickets;
   /** @member {object} */
   price_breakdown;
   /** @member {boolean} dirty Whether the booking class is in sync with the API or not */
   dirty = true;
+  /** @member {object} */
+  raw;
 
   constructor() {
     this.tickets = [];
+    this.payments = [];
   }
 
   /**
@@ -41,6 +46,7 @@ export default class Booking {
    * @param {object} bookingData API Booking Data
    */
   updateFromAPIData(bookingData) {
+    this.raw = bookingData;
     this.price_breakdown = bookingData.priceBreakdown;
     this.price_breakdown.tickets = this.price_breakdown.tickets.map(
       (ticketSummary) => {
@@ -59,6 +65,9 @@ export default class Booking {
     }
     if (bookingData.reference) {
       this.reference = bookingData.reference;
+    }
+    if (bookingData.payments && bookingData.payments.edges.length) {
+      this.payments = bookingData.payments.edges.map((edge) => edge.node);
     }
     this.id = bookingData.id;
     this.dirty = false;
@@ -315,5 +324,10 @@ export default class Booking {
       performanceEndTime > DateTime.local() ||
       performanceEndTime.hasSame(DateTime.local(), 'day')
     );
+  }
+
+  get status() {
+    if (!this.raw.status) return '';
+    return this.raw.status;
   }
 }

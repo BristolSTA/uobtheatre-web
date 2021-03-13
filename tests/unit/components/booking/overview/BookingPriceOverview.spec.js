@@ -13,7 +13,7 @@ import {
   runApolloQuery,
 } from '../../../helpers';
 
-describe('ticket overview box', function () {
+describe('Booking Price Overview', function () {
   let bookingPriceOverviewComponent;
   let booking = new Booking();
 

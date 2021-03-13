@@ -21,11 +21,13 @@ describe('View Booking', () => {
   beforeAll(async () => {
     server = await executeWithServer(async (server) => {
       let user = seedAndAuthAsUser(server);
-      let booking = FakeBooking(server, {
-        status: 'PAID',
-        reference: 'ABS1352EBV54',
-        user,
-      });
+      FakeBooking(
+        server,
+        {
+          user,
+        },
+        true
+      );
     }, false);
   });
 

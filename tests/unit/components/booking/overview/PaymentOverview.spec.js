@@ -11,27 +11,31 @@ import {
   fixTextSpacing,
   mountWithRouterMock,
   runApolloQuery,
+  seedAndAuthAsUser,
 } from '../../../helpers';
 
-describe('ticket overview box', function () {
+describe('Payment Overview', function () {
   let paymentOverviewComponent;
   let booking = new Booking();
 
   beforeAll(async () => {
     await executeWithServer(async (server) => {
-      let bookingModel = FakeBooking(server);
+      let user = seedAndAuthAsUser(server);
+      FakeBooking(
+        server,
+        {
+          user,
+        },
+        true
+      );
 
       let { data } = await runApolloQuery({
-        query: require('@/graphql/queries/BookingInformation.gql'),
+        query: require('@/graphql/queries/UserPaidBooking.gql'),
         variables: {
-          bookingId: bookingModel.id,
+          bookingRef: 'ABS1352EBV54',
         },
       });
-      let bookingData = Object.assign({}, data.booking, {
-        status: 'PAID',
-        reference: 'ABS1352EBV54',
-      });
-      booking.updateFromAPIData(bookingData);
+      booking.updateFromAPIData(data.me.bookings.edges[0].node);
     });
     paymentOverviewComponent = await mountWithRouterMock(PaymentOverview, {
       propsData: {
@@ -49,12 +53,11 @@ describe('ticket overview box', function () {
     ).to.equal(1);
   });
 
-  it('has correct booking info', async () => {
+  it('has correct booking status', async () => {
     await paymentOverviewComponent.vm;
 
-    expect(paymentOverviewComponent.text()).to.contain('Payment');
-    expect(paymentOverviewComponent.text()).to.contain(
-      'Booking Ref : ABS1352EBV54'
+    expect(fixTextSpacing(paymentOverviewComponent.text())).to.contain(
+      'PAID using VISA ending 1234'
     );
   });
 
@@ -63,8 +66,7 @@ describe('ticket overview box', function () {
     let costRows = paymentOverviewComponent.findAll('tr');
 
     expect(costRows.length).to.eq(2);
-    expect(fixTextSpacing(costRows.at(0).text())).to.eq('Price Paid : £37.28');
-    // will fail - to be implemented
-    expect(fixTextSpacing(costRows.at(1).text())).to.eq('On : ');
+    expect(fixTextSpacing(costRows.at(0).text())).to.eq('Price Paid : £25.75');
+    expect(fixTextSpacing(costRows.at(1).text())).to.eq('On : Sat 13 Mar 2021');
   });
 });

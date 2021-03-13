@@ -13,7 +13,7 @@ import {
   runApolloQuery,
 } from '../../../helpers';
 
-describe('booking summary overview box', function () {
+describe('Booking Summary Overview', function () {
   let bookingSummaryOverviewComponent;
   let booking = new Booking();
 
@@ -97,6 +97,6 @@ describe('booking summary overview box', function () {
         .findAllComponents(RouterLinkStub)
         .at(1)
         .props('to').params.bookingRef
-    ).to.equal('1');
+    ).to.equal('ABS1352EBV54');
   });
 });

@@ -275,8 +275,7 @@ export function makeServer({ environment = 'development' } = {}) {
        * A booking
        */
 
-      server.create('bookingNode', {
-        status: 'PAID',
+      server.create('bookingNode', 'paid', {
         user: user,
         reference: 'abcdef123456',
         performance: performances[0],

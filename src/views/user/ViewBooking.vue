@@ -6,7 +6,8 @@
       </div>
     </div>
     <div v-if="booking.performance" class="container">
-      <h1 class="pt-2 text-left text-h1">Booking Info</h1>
+      <h1 class="pt-2 text-h1">Your Booking</h1>
+      <h2 class="text-h2 text-sta-orange">Reference {{ booking.reference }}</h2>
       <production-banner
         class="pb-2 md:pb-8"
         :production="production"

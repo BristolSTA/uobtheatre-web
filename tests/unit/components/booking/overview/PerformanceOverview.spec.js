@@ -7,7 +7,7 @@ import PerformanceOverview from '@/components/booking/overview/PerformanceOvervi
 
 import { executeWithServer, runApolloQuery } from '../../../helpers';
 
-describe('performance overview box', function () {
+describe('Performance Overview', function () {
   let performanceOverviewComponent;
   let production;
   let performance;
