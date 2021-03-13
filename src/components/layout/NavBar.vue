@@ -67,7 +67,7 @@
             </div>
             <div class="flex md:justify-end">
               <clickable-link
-                class="mt-4 auth-button btn btn-orange btn-outline"
+                class="mt-4 rounded-md auth-button btn btn-orange"
                 @click="
                   () => {
                     authService.logout();
