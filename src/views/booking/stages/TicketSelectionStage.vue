@@ -220,7 +220,8 @@ export default {
         });
         bookingResponse = bookingResponse.data.updateBooking.booking;
       }
-      // Check for changes since API called. TODO - this isn't very thorough...
+      // Check for changes since API called.
+      //TODO: - this isn't very thorough...
       if (this.booking.tickets.length == bookingResponse.tickets.length) {
         return this.booking.updateFromAPIData(bookingResponse);
       }

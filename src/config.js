@@ -15,8 +15,7 @@ export default {
     support_email: '&#115;upp&#111;rt&#64;uob&#116;h&#101;atre&#46;com',
   },
   api: {
-    general_endpoint: api_general_endpoint + '/api/v1',
-    graphql_endpoint: api_general_endpoint + '/graphql',
+    graphql_endpoint: api_general_endpoint + '/graphql/',
   },
   auth: {
     cookie: 'uobtheatre-auth',
