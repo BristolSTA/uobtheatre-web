@@ -27,7 +27,6 @@
       />
     </div>
     <p>Booking Ref: {{ booking.reference }}</p>
-    <!-- <p>Paid On: 3 Jan 2020</p> -->
     <div class="flex justify-between w-full">
       <p>Booked By: {{ fullName }}</p>
       <p class="text-sm italic text-right text-gray-500">

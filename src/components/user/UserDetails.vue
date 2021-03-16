@@ -8,12 +8,12 @@
   >
     <change-email
       v-if="editingEmail"
-      class="md:w-1/4"
+      class="md:w-1/2 xl:w-1/3"
       @cancel="editingEmail = false"
     />
     <change-password
       v-else-if="editingPassword"
-      class="md:w-1/4"
+      class="md:w-1/2 xl:w-1/3"
       @cancel="editingPassword = false"
     />
     <loading-container v-else :loading="loading" class="text-center">
