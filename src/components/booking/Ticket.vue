@@ -1,6 +1,8 @@
 <template>
   <div class="flex flex-col p-4 pt-2 text-black bg-white rounded-xl">
-    <h1 class="text-h2">TRASh</h1>
+    <h1 class="text-h2">
+      {{ booking.performance.production.name }}
+    </h1>
     <p>
       {{ booking.performance.start | dateFormat('EEEE d MMMM kkkk') }}
     </p>
@@ -40,6 +42,7 @@ import lo from 'lodash';
 import QrcodeVue from 'qrcode.vue';
 
 import Booking from '@/classes/Booking';
+import Ticket from '@/classes/Ticket';
 
 export default {
   name: 'Ticket',
@@ -53,7 +56,7 @@ export default {
     },
     ticket: {
       required: true,
-      type: Object,
+      type: Ticket,
     },
     user: {
       required: true,
