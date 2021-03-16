@@ -1,10 +1,17 @@
-import { mount } from '@vue/test-utils';
 import { expect } from 'chai';
 
+import Errors from '@/classes/Errors';
+import UserAuthBox from '@/components/auth/UserAuthBox.vue';
+import { authService } from '@/services';
 import store from '@/store';
-import UserAuthBox from '@/views/auth/UserAuthBox.vue';
+import { swalToast } from '@/utils';
 
-import { executeWithServer, waitFor } from '../../helpers';
+import {
+  executeWithServer,
+  mountWithRouterMock,
+  RouterLinkStub,
+  waitFor,
+} from '../../helpers';
 
 describe('AuthBox', function () {
   let authBoxComponent, server;
@@ -27,7 +34,7 @@ describe('AuthBox', function () {
   });
 
   it('can switch between login and signup', async () => {
-    authBoxComponent = mount(UserAuthBox);
+    authBoxComponent = await mountWithRouterMock(UserAuthBox);
     let buttons = authBoxComponent.findAll('div[role=navigation] button');
     expect(authBoxComponent.emitted('go-login')).to.be.undefined;
     expect(authBoxComponent.emitted('go-signup')).to.be.undefined;
@@ -52,7 +59,7 @@ describe('AuthBox', function () {
   });
 
   it('loading screen overlays correctly', async () => {
-    authBoxComponent = mount(UserAuthBox);
+    authBoxComponent = await mountWithRouterMock(UserAuthBox);
     expect(authBoxComponent.findComponent({ ref: 'loading-overlay' }).exists())
       .to.be.false;
 
@@ -64,9 +71,9 @@ describe('AuthBox', function () {
       .to.be.true;
   });
 
-  describe('LoginSection', () => {
-    beforeEach(() => {
-      authBoxComponent = mount(UserAuthBox, {
+  describe('Login Section', () => {
+    beforeEach(async () => {
+      authBoxComponent = await mountWithRouterMock(UserAuthBox, {
         propsData: {
           login: true,
         },
@@ -85,7 +92,7 @@ describe('AuthBox', function () {
 
       // Email Input
       expect(email_input.attributes('autocomplete')).to.eq('email');
-      expect(email_input.attributes('type')).to.eq('text');
+      expect(email_input.attributes('type')).to.eq('email');
       expect(email_input.attributes.value).to.be.undefined;
       expect(authBoxComponent.vm.email).to.eq(null);
       email_input.setValue('someone@example.org');
@@ -124,7 +131,7 @@ describe('AuthBox', function () {
 
     it('redirects to intended on successful login if has', async () => {
       let fakePush;
-      authBoxComponent = mount(UserAuthBox, {
+      authBoxComponent = await mountWithRouterMock(UserAuthBox, {
         propsData: {
           login: true,
         },
@@ -153,7 +160,7 @@ describe('AuthBox', function () {
 
     it('redirects to home on successful login if no intended', async () => {
       let fakePush;
-      authBoxComponent = mount(UserAuthBox, {
+      authBoxComponent = await mountWithRouterMock(UserAuthBox, {
         propsData: {
           login: true,
         },
@@ -177,8 +184,132 @@ describe('AuthBox', function () {
       expect(fakePush.mock.calls[0][0].name).to.eq('home');
       expect(store.state.auth.token).to.eq(userToken);
     });
+
     it('has link to reset password', () => {
-      //TODO: Implement
+      let link = authBoxComponent.findComponent(RouterLinkStub);
+      expect(link.text()).to.eq('Forgot your password?');
+      expect(link.props('to').name).to.eq('login.forgot');
+    });
+  });
+
+  describe('Sign Up Section', () => {
+    let swalToastStub;
+    let registerStub;
+    let routerPushStub;
+    beforeEach(async () => {
+      swalToastStub = jest.spyOn(swalToast, 'fire');
+      registerStub = jest.spyOn(authService, 'register');
+      authBoxComponent = await mountWithRouterMock(UserAuthBox, {
+        propsData: {
+          login: false,
+        },
+        mocks: {
+          $router: {
+            push: (routerPushStub = jest.fn()),
+          },
+        },
+      });
+    });
+
+    it('top nav button shows signup as active', () => {
+      let buttons = authBoxComponent.findAll('div[role=navigation] button');
+      expect(buttons.at(1).classes()).to.contain('bg-sta-orange');
+    });
+
+    it('shows full name input box initially', () => {
+      expect(authBoxComponent.find('input#fullName').exists()).to.be.true;
+      expect(authBoxComponent.find('input#firstName').exists()).to.be.false;
+      expect(authBoxComponent.find('input#lastName').exists()).to.be.false;
+    });
+
+    it('splits full name correctly', async () => {
+      let fullNameInputField = authBoxComponent.find('input#fullName');
+
+      fullNameInputField.setValue('Joe');
+      await fullNameInputField.trigger('blur');
+      expect(authBoxComponent.find('input#firstName').exists()).to.be.false;
+      expect(authBoxComponent.find('input#lastName').exists()).to.be.false;
+
+      fullNameInputField.setValue('Joe Bloggs');
+      await fullNameInputField.trigger('blur');
+      expect(authBoxComponent.find('input#firstName').element.value).to.eq(
+        'Joe'
+      );
+      expect(authBoxComponent.find('input#lastName').element.value).to.eq(
+        'Bloggs'
+      );
+    });
+
+    it('submit button blocked until ToS accepted', async () => {
+      let button = authBoxComponent.find('form button');
+      expect(button.attributes('disabled')).to.be.ok;
+
+      await authBoxComponent.find('input#accept_terms').setChecked();
+      expect(button.attributes('disabled')).to.not.be.ok;
+    });
+
+    it('can signup correctly', async () => {
+      let attemptSignupStub = jest
+        .spyOn(authBoxComponent.vm, 'attemptSignup')
+        .mockImplementation(() => {});
+      let fullNameInputField = authBoxComponent.find('input#fullName');
+      fullNameInputField.setValue('Joe Bloggs');
+      await fullNameInputField.trigger('blur');
+      await authBoxComponent
+        .find('input#email')
+        .setValue('joe.bloggs@example.org');
+      await authBoxComponent.find('input#password1').setValue('12345678');
+      await authBoxComponent.find('input#password2').setValue('12345678');
+      await authBoxComponent.find('input#accept_terms').setChecked();
+      await authBoxComponent.find('form').trigger('submit');
+      expect(attemptSignupStub.mock.calls).length(1);
+
+      attemptSignupStub.mockRestore();
+
+      return authBoxComponent.vm.attemptSignup().then(() => {
+        expect(registerStub.mock.calls).length(1);
+        expect(registerStub.mock.calls[0][0]).to.include({
+          firstName: 'Joe',
+          lastName: 'Bloggs',
+          email: 'joe.bloggs@example.org',
+          password: '12345678',
+          confirmedPassword: '12345678',
+        });
+        expect(swalToastStub.mock.calls).length(1);
+
+        expect(routerPushStub.mock.calls).length(1);
+        expect(routerPushStub.mock.calls[0][0].name).to.eq('home');
+      });
+    });
+
+    it('can display signup errors', async () => {
+      let attemptSignupStub = jest
+        .spyOn(authBoxComponent.vm, 'attemptSignup')
+        .mockImplementation(() => {});
+
+      let fullNameInputField = authBoxComponent.find('input#fullName');
+      fullNameInputField.setValue('Joe Bloggs');
+      await fullNameInputField.trigger('blur');
+      await authBoxComponent
+        .find('input#email')
+        .setValue('joe.bloggs@example.org');
+      await authBoxComponent.find('input#password1').setValue('12345678');
+      await authBoxComponent.find('input#password2').setValue('1234567');
+      await authBoxComponent.find('input#accept_terms').setChecked();
+      await authBoxComponent.find('form').trigger('submit');
+      expect(attemptSignupStub.mock.calls).length(1);
+
+      attemptSignupStub.mockRestore();
+
+      return authBoxComponent.vm.attemptSignup().then(() => {
+        expect(
+          authBoxComponent.findComponent({ ref: 'loading-overlay' }).exists()
+        ).to.be.false;
+        expect(authBoxComponent.vm.signup_errors).to.be.instanceOf(Errors);
+        expect(authBoxComponent.text()).to.contain(
+          'Your confirmed password does not match'
+        );
+      });
     });
   });
 });

@@ -38,6 +38,12 @@ const routes = [
     [Bindings.bindProductionSlug(ProductionPageQuery)]
   ),
 
+  {
+    path: '/productions',
+    component: () => import('@/views/production/UpcomingProductions.vue'),
+    name: 'productions',
+  },
+
   /**
    * Create Booking Pages
    */
@@ -52,6 +58,36 @@ const routes = [
     },
     [Bindings.bindProductionSlug()]
   ),
+
+  /**
+   * User Pages
+   */
+  {
+    path: '/user',
+    name: 'user',
+    component: () => import('@/views/user/MyAccount.vue'),
+    meta: {
+      middleware: [authMiddleware],
+    },
+  },
+
+  {
+    path: '/user/emailChange/:token',
+    props: true,
+    name: 'user.emailChange',
+    component: () => import('@/views/user/EmailChangeActivate.vue'),
+    meta: {
+      middleware: [authMiddleware],
+    },
+  },
+  {
+    path: '/user/booking/:bookingRef',
+    name: 'user.booking',
+    component: () => import('@/views/user/ViewBooking.vue'),
+    meta: {
+      middleware: [authMiddleware],
+    },
+  },
 
   /**
    * Venue Pages
@@ -71,6 +107,12 @@ const routes = [
     component: Society,
   },
 
+  {
+    path: '/societies',
+    component: () => import('@/views/societies/AllSocieties.vue'),
+    name: 'societies',
+  },
+
   /**
    * Auth Pages
    */
@@ -85,6 +127,17 @@ const routes = [
     name: 'signup',
     component: Login,
     props: { login: false },
+  },
+  {
+    path: '/login/forgot',
+    name: 'login.forgot',
+    component: () => import('@/views/auth/ForgotPassword.vue'),
+  },
+  {
+    path: '/login/activate/:activationToken',
+    props: true,
+    name: 'login.activate',
+    component: () => import('@/views/auth/ActivateAccount.vue'),
   },
 
   /**
@@ -111,6 +164,9 @@ const router = new VueRouter({
 
 // Apply any middleware
 router.beforeEach((to, from, next) => {
+  if (to.name) {
+    NProgress.start();
+  }
   authService.refreshAuthStatus();
   if (to.meta.middleware) {
     const middleware = Array.isArray(to.meta.middleware)
@@ -129,14 +185,6 @@ router.beforeEach((to, from, next) => {
   }
 
   return next();
-});
-
-// Set up navigation guards for loading stuff
-router.beforeResolve((to, _from, next) => {
-  if (to.name) {
-    NProgress.start();
-  }
-  next();
 });
 
 router.afterEach(() => {

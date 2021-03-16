@@ -7,7 +7,6 @@ import config from '@/config';
 import { createClient } from '@/vue-apollo';
 
 Vue.use(Vuex);
-
 export default new Vuex.Store({
   state: {
     auth: {
@@ -52,7 +51,7 @@ export default new Vuex.Store({
         .query({
           query: gql`
             {
-              authUser {
+              me {
                 firstName
                 lastName
                 email
@@ -61,7 +60,7 @@ export default new Vuex.Store({
           `,
         })
         .then(({ data }) => {
-          context.commit('SET_AUTH_USER', data.authUser);
+          context.commit('SET_AUTH_USER', data.me);
         });
 
       return cookieVal;
@@ -80,8 +79,8 @@ export default new Vuex.Store({
       Cookie.set(config.auth.cookie, token, {
         expires: remember ? 365 : null,
       });
-      context.commit('SET_AUTH_TOKEN', token);
       context.commit('SET_AUTH_USER', userInfo);
+      context.commit('SET_AUTH_TOKEN', token);
     },
     authLogout(context) {
       Cookie.remove(config.auth.cookie);

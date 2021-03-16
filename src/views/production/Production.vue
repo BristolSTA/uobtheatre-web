@@ -1,5 +1,10 @@
 <template>
   <div class="min-h-full bg-sta-gray">
+    <div class="bg-sta-gray-light">
+      <div class="container">
+        <breadcrumbs :crumbs="crumbs" />
+      </div>
+    </div>
     <div
       v-if="!production"
       class="justify-center py-20 text-xl font-semibold text-center text-white"
@@ -21,6 +26,8 @@
 </template>
 
 <script>
+import Breadcrumbs from '@/components/ui/Breadcrumbs.vue';
+
 import ProductionCastCredits from './ProductionCastCredits.vue';
 import ProductionHeader from './ProductionHeader.vue';
 import ProductionPerformances from './ProductionPerformances.vue';
@@ -30,6 +37,7 @@ export default {
     ProductionHeader,
     ProductionCastCredits,
     ProductionPerformances,
+    Breadcrumbs,
   },
   metaInfo() {
     const productionName = this.production
@@ -43,6 +51,17 @@ export default {
     production: {
       required: true,
       type: Object,
+    },
+  },
+  computed: {
+    route() {
+      return this.$route;
+    },
+    crumbs() {
+      return [
+        { text: 'Whats On', route: { name: 'productions' } },
+        { text: this.production.name },
+      ];
     },
   },
 };

@@ -12,7 +12,7 @@ import {
   waitFor,
 } from '../../../helpers';
 
-describe('Venue overview box', function () {
+describe('Venue Overview', function () {
   let venueOverviewComponent;
   let server;
   let venue;

@@ -1,3 +1,5 @@
+import { DateTime } from 'luxon';
+
 import { generateConcessionTypeBookingTypes } from '@/fakeApi/utils';
 
 export default (server) => {
@@ -11,6 +13,9 @@ export default (server) => {
 
   return {
     production: server.create('productionNode'),
+    doorsOpen: DateTime.fromISO('2020-03-09T15:00:00'),
+    start: DateTime.fromISO('2020-03-09T16:00:00'),
+    end: DateTime.fromISO('2020-03-09T18:00:00'),
     discounts: [
       server.create('discountNode', {
         percentage: 0.5,

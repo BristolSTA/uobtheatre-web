@@ -1,6 +1,6 @@
 import faker from 'faker';
 import { DateTime } from 'luxon';
-import { Factory } from 'miragejs';
+import { Factory, trait } from 'miragejs';
 
 import { updateIfDoesntHave } from './utils';
 
@@ -21,7 +21,7 @@ export default {
         },
         doorsOpen() {
           return DateTime.fromISO(this.start).minus({
-            hours: faker.random.number({ min: 1, max: 2 }),
+            minutes: faker.random.number({ min: 1, max: 20 }),
           });
         },
         description: faker.lorem.words(4),
@@ -35,11 +35,34 @@ export default {
         minSeatPrice: () => faker.random.number({ min: 100, max: 1000 }),
         capacityRemaining: () => faker.random.number({ min: 40, max: 100 }),
 
+        past: trait({
+          start() {
+            return DateTime.local().minus({
+              days: faker.random.number({ min: 1, max: 3 }),
+              hours: faker.random.number({ min: 1, max: 3 }),
+            });
+          },
+          end() {
+            return DateTime.fromISO(this.start).minus({
+              hours: faker.random.number({ min: 1, max: 3 }),
+            });
+          },
+          doorsOpen() {
+            return DateTime.fromISO(this.start).plus({
+              minutes: faker.random.number({ min: 1, max: 20 }),
+            });
+          },
+        }),
+
         afterCreate(performance, server) {
           updateIfDoesntHave(performance, {
             venue: () => {
               return server.create('VenueNode');
             },
+            production: () => {
+              return server.create('ProductionNode');
+            },
+            // breaks here
           });
         },
       }),

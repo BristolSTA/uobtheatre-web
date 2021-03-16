@@ -36,15 +36,6 @@ let updateIfDoesntHave = function (model, keyValues, value) {
 };
 
 /**
- * Creates a 404 response for MirageJS
- *
- * @returns {Response} MirageJS Reponse Object
- */
-let NotFoundResponse = () => {
-  return new Response(404);
-};
-
-/**
  * A Django Rest Framework equivilent of a validation error response, used to send a validation error response via MirageJS
  *
  * @param {object} fieldErrors Set of field errors (i.e. for a specific field)
@@ -70,12 +61,15 @@ let ValidationErrorResponse = (
 /**
  * Performs a graphene-like order by on a set of records from a GraphQL query
  *
- * @param {any} records Records as returned from the mirageGraphQLFieldResolver
+ * @param {any} getRecordsFunction Function that returns records from the mirageGraphQLFieldResolver. Is supplied with the args
  * @param {object} args Args parameter from the GraphQL query
  * @returns {?Array} Sorted records
  */
-let graphQLOrderBy = (records, args) => {
+let handleGraphQLOrderBy = (getRecordsFunction, args) => {
   const { orderBy } = args;
+  delete args.orderBy;
+
+  let records = getRecordsFunction(args);
 
   if (orderBy) {
     const orderByProp = orderBy.substring(1);
@@ -134,11 +128,74 @@ let authedUser = (context) => {
   return context.mirageSchema.userNodes.findBy({ token: authToken });
 };
 
+let NonFieldError = class extends Error {
+  constructor(message, code) {
+    super(message);
+    this.message = message;
+    this.code = code;
+  }
+};
+let FieldError = class extends Error {
+  constructor(message, field, code) {
+    super(message);
+    this.message = message;
+    this.field = field;
+    this.code = code;
+  }
+};
+
+let mutationWithErrorsResolver = (resolver) => {
+  return (obj, args, context, info) => {
+    let res = {
+      success: true,
+      errors: [],
+    };
+
+    let addError = (errs) => {
+      if (!Array.isArray(errs)) errs = [errs];
+
+      res.success = false;
+
+      errs.forEach((err) => {
+        if (err instanceof NonFieldError) {
+          res.errors.push(
+            context.mirageSchema.create('NonFieldError', {
+              message: err.message,
+              code: err.code,
+            })
+          );
+        } else if (err instanceof FieldError) {
+          res.errors.push(
+            context.mirageSchema.create('FieldError', {
+              message: err.message,
+              field: err.field,
+              code: err.code,
+            })
+          );
+        }
+      });
+    };
+
+    try {
+      return Object.assign(res, resolver(obj, args, context, info, addError));
+    } catch (err) {
+      if (err instanceof NonFieldError || err instanceof FieldError) {
+        addError(err);
+      } else {
+        throw err;
+      }
+      return res;
+    }
+  };
+};
+
 export {
   authedUser,
+  FieldError,
   generateConcessionTypeBookingTypes,
-  graphQLOrderBy,
-  NotFoundResponse,
+  handleGraphQLOrderBy,
+  mutationWithErrorsResolver,
+  NonFieldError,
   updateIfDoesntHave,
   ValidationErrorResponse,
 };

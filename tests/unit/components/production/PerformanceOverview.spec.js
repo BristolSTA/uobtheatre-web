@@ -17,7 +17,7 @@ describe('Pick Performance Stage', () => {
     await executeWithServer(async (server) => {
       performance = server.create('performanceNode', {
         start: DateTime.fromISO('2020-11-28T16:00:00'),
-        end: DateTime.fromISO('2020-11-28T18:00:00'),
+        end: DateTime.fromISO('2020-11-28T18:10:00'),
         soldOut: false,
         disabled: false,
         isOnline: true,
@@ -32,6 +32,7 @@ describe('Pick Performance Stage', () => {
           {performance(id: ${performance.id}) {
             start
             end
+            durationMins
             soldOut
             disabled
             isOnline
@@ -66,6 +67,9 @@ describe('Pick Performance Stage', () => {
       'Winston Theatre'
     );
     expect(performanceOverviewComponent.text()).to.contain('Starting at 16:00');
+    expect(performanceOverviewComponent.text()).to.contain(
+      '2 hours, 10 minutes'
+    );
     expect(performanceOverviewComponent.text()).to.contain('Tickets Available');
     expect(performanceOverviewComponent.find('button').text()).to.eq('Book');
   });

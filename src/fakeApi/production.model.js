@@ -3,7 +3,7 @@ import faker from 'faker';
 import { DateTime } from 'luxon';
 import { Factory, trait } from 'miragejs';
 
-import { graphQLOrderBy, updateIfDoesntHave } from './utils';
+import { handleGraphQLOrderBy, updateIfDoesntHave } from './utils';
 
 export default {
   registerFactories() {
@@ -77,30 +77,12 @@ export default {
       }),
     };
   },
-  registerGQLQueries() {
-    return `
-      productions(
-        offset: Int
-        before: String
-        after: String
-        first: Int
-        last: Int
-        id: ID
-        slug: String
-        orderBy: String
-        future: Boolean
-      ): ProductionNodeConnection
-  `;
-  },
   registerGQLQueryResolvers() {
     return {
       productions(obj, args, context, info) {
-        delete args.orderBy;
-
-        let records = mirageGraphQLFieldResolver(obj, args, context, info);
-        records = graphQLOrderBy(records, args);
-
-        return records;
+        return handleGraphQLOrderBy((args) => {
+          return mirageGraphQLFieldResolver(obj, args, context, info);
+        }, args);
       },
     };
   },

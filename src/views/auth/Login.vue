@@ -1,23 +1,32 @@
 <template>
-  <div class="h-screen bg-sta-gray login-background">
-    <div class="flex items-center justify-center h-full">
-      <user-auth-box
-        :login="login"
-        @go-login="$router.replace({ name: 'login' })"
-        @go-signup="$router.replace({ name: 'signup' })"
-      />
-    </div>
-  </div>
+  <auth-page-template>
+    <user-auth-box
+      :login="login"
+      @go-login="
+        () => {
+          if (login) return;
+          $router.replace({ name: 'login' });
+        }
+      "
+      @go-signup="
+        () => {
+          if (!login) return;
+          $router.replace({ name: 'signup' });
+        }
+      "
+    />
+  </auth-page-template>
 </template>
 
 <script>
+import UserAuthBox from '@/components/auth/UserAuthBox.vue';
 import { authService } from '@/services';
 
-import UserAuthBox from './UserAuthBox.vue';
+import AuthPageTemplate from './AuthPageTemplate.vue';
 
 export default {
   name: 'Login',
-  components: { UserAuthBox },
+  components: { UserAuthBox, AuthPageTemplate },
   props: {
     login: {
       default: true,
@@ -35,12 +44,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="scss">
-.login-background {
-  background-image: url('~@/assets/images/pros-arch-lit.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: top center;
-}
-</style>

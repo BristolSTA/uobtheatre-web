@@ -2,6 +2,7 @@ import { DateTime } from 'luxon';
 import Swal from 'sweetalert2';
 import resolveConfig from 'tailwindcss/resolveConfig';
 
+import Errors from '@/classes/Errors';
 import store from '@/store';
 
 /**
@@ -70,9 +71,34 @@ let runPromiseWithLoading = async (promises) => {
  */
 let tailwindConfig = resolveConfig(require('../tailwind.config'));
 
+let errorHandler = (e) => {
+  // TODO: Implement sentry here
+  console.error(e);
+  apiErrorToast.fire();
+};
+
+let performMutation = (apollo, options, mutationName) => {
+  return new Promise((resolve, reject) => {
+    apollo
+      .mutate(options)
+      .then(({ data }) => {
+        if (!data[mutationName].success)
+          return reject({
+            errors: Errors.createFromAPI(data[mutationName].errors),
+          });
+        resolve(data);
+      })
+      .catch((e) => {
+        errorHandler(e);
+        reject({});
+      });
+  });
+};
+
 /**
- * Default branded Sweetalert instance
+ * Default branded Sweetalert instances
  */
+
 let swal = Swal.mixin({
   background: tailwindConfig.theme.colors['sta-gray'].DEFAULT,
   customClass: {
@@ -82,12 +108,28 @@ let swal = Swal.mixin({
   confirmButtonColor: tailwindConfig.theme.colors['sta-orange'].DEFAULT,
   denyButtonColor: tailwindConfig.theme.colors['sta-rouge'].DEFAULT,
 });
+let swalToast = swal.mixin({
+  toast: true,
+  showConfirmButton: false,
+});
+let apiErrorToast = swalToast.mixin({
+  icon: 'error',
+  title: 'There was a server error while executing your request',
+  showConfirmButton: false,
+  position: 'bottom-end',
+  timerProgressBar: true,
+  timer: 4000,
+});
 
 export {
+  apiErrorToast,
   displayStartEnd,
   duration,
+  errorHandler,
   joinWithAnd,
+  performMutation,
   runPromiseWithLoading,
   swal,
+  swalToast,
   tailwindConfig,
 };
