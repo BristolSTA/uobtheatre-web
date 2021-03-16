@@ -332,9 +332,17 @@ export function makeServer({ environment = 'development' } = {}) {
           soldOut: false,
           isInperson: true,
           isOnline: false,
-          doorsOpen: DateTime.fromISO('2021-04-22T17:30:00'),
-          start: DateTime.fromISO('2021-04-22T18:00:00'),
-          end: DateTime.fromISO('2021-04-22T19:30:00'),
+          doorsOpen: DateTime.local().plus({
+            days: 1,
+          }),
+          start: DateTime.local().plus({
+            days: 1,
+            hours: 2,
+          }),
+          end: DateTime.local().plus({
+            days: 1,
+            hours: 3,
+          }),
           ticketOptions: ticketOptions,
           discounts: [FamilyDiscount],
           production: server.create('ProductionNode', 'withCoverImage', {

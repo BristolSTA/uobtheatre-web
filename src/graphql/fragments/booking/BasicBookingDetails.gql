@@ -5,6 +5,7 @@ fragment BasicBookingDetails on BookingNode {
   performance {
     id
     start
+    end
     production {
       id
       name

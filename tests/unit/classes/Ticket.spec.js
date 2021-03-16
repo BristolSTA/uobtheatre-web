@@ -96,4 +96,9 @@ describe('Ticket Class', () => {
       concessionTypeId: 4,
     });
   });
+
+  it('can generate a unique QR code string', () => {
+    ticket.id = 2;
+    expect(ticket.generateQRCodeString('abcd1234')).to.eq('YWJjZDEyMzQsMg==');
+  });
 });

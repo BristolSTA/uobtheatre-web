@@ -8,7 +8,7 @@
       <p class="text-h4">
         {{ booking.status }}
         <template v-if="booking.payments[0]">
-          using {{ booking.payments[0].cardBrand }} ending
+          using {{ booking.payments[0].cardBrand.replace('_', ' ') }} ending
           {{ booking.payments[0].last4 }}
         </template>
       </p>
