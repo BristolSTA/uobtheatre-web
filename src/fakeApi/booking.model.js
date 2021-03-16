@@ -1,6 +1,6 @@
 import faker from 'faker';
 import lo from 'lodash';
-import { belongsTo, Factory, Model } from 'miragejs';
+import { belongsTo, Factory, Model, trait } from 'miragejs';
 
 import { authedUser, updateIfDoesntHave } from './utils';
 
@@ -15,13 +15,30 @@ export default {
   registerFactories() {
     return {
       bookingNode: Factory.extend({
-        bookingReference: () => faker.random.uuid(),
+        reference: () => faker.random.alphaNumeric(12),
         status: 'INPROGRESS',
+
+        paid: trait({
+          status: 'PAID',
+          afterCreate(node, server) {
+            updateIfDoesntHave(node, {
+              payments: () => {
+                return [server.create('paymentNode')];
+              },
+            });
+          },
+        }),
         afterCreate(node, server) {
           updateIfDoesntHave(node, {
             performance: () => {
               return server.create('performanceNode');
             },
+          });
+          node.update({
+            priceBreakdown: server.create(
+              'PriceBreakdownNode',
+              generatePriceBreakdown(server.schema, node)
+            ),
           });
         },
       }),
@@ -47,6 +64,18 @@ export default {
         percentage: () => faker.random.arrayElement([null, 0.05]),
         value: () => faker.random.number({ min: 50, max: 400 }),
       }),
+      paymentNode: Factory.extend({
+        provider: () =>
+          faker.random.arrayElement(['CASH', 'SQUARE_ONLINE', 'SQUARE_POS']),
+        value: () => faker.random.number({ min: 1000, max: 3000 }),
+        type: 'PURCHASE',
+        curreny: 'GBP',
+        cardBrand: () =>
+          faker.random.arrayElement(['VISA', 'MASTERCARD', 'AMERICAN_EXPRESS']),
+        last4: '1234',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }),
     };
   },
   registerGQLMutationResolvers() {
@@ -69,7 +98,7 @@ export default {
             args.performanceId
           ),
           status: 'INPROGRESS',
-          bookingReference: faker.random.uuid(),
+          reference: faker.random.uuid(),
           tickets: tickets,
           user: authedUser(context),
         });
@@ -81,7 +110,7 @@ export default {
           ),
         });
 
-        return booking;
+        return { booking };
       },
       updateBooking(obj, args, { mirageSchema }) {
         // Update the tickets
@@ -98,7 +127,7 @@ export default {
           });
         }
         // Update the booking
-        let booking = mirageSchema.bookingNodes.find(args.id);
+        let booking = mirageSchema.bookingNodes.find(args.bookingId);
         booking.update({
           tickets: tickets,
         });
@@ -106,7 +135,7 @@ export default {
           generatePriceBreakdown(mirageSchema, booking)
         );
 
-        return booking;
+        return { booking };
       },
     };
   },
@@ -122,16 +151,25 @@ export default {
         seatGroupId: ID!
         concessionTypeId: ID!
       }
+
+      enum PaymentProvider {
+        CASH
+        SQUARE_ONLINE
+        SQUARE_POS
+      }
       
       type BookingNode implements Node {
         id: ID!
-        bookingReference: UUID!
+        createdAt: DateTime!
+        updatedAt: DateTime!
         performance: PerformanceNode!
         status: BookingStatus!
         tickets: [TicketNode!]
         priceBreakdown: PriceBreakdownNode
+        payments(offset: Int, before: String, after: String, first: Int, last: Int, type: String, provider: String, createdAt: DateTime, id: ID): PaymentNodeConnection
 
         user: UserNode
+        reference: UUID!
       }
 
       type PriceBreakdownNode implements Node {
@@ -156,12 +194,6 @@ export default {
         concessionType: ConcessionTypeNode
       }
 
-    `;
-  },
-  registerGQLMutations() {
-    return `
-      createBooking(performanceId: ID!, tickets: [CreateTicketInput]) : BookingNode
-      updateBooking(id: ID!, tickets: [CreateTicketInput]) : BookingNode
     `;
   },
 };

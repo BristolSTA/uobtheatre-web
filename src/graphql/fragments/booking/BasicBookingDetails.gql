@@ -1,0 +1,15 @@
+fragment BasicBookingDetails on BookingNode {
+  id
+  reference
+  status
+  performance {
+    id
+    start
+    end
+    production {
+      id
+      name
+      slug
+    }
+  }
+}

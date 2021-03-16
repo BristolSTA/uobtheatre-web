@@ -7,7 +7,7 @@ import PerformanceOverview from '@/components/booking/overview/PerformanceOvervi
 
 import { executeWithServer, runApolloQuery } from '../../../helpers';
 
-describe('performance overview box', function () {
+describe('Performance Overview', function () {
   let performanceOverviewComponent;
   let production;
   let performance;
@@ -55,7 +55,7 @@ describe('performance overview box', function () {
 
   describe('performance overview component', () => {
     it('has the correct performance information', async () => {
-      expect(performanceOverviewComponent.text()).to.contain('Legally Ginger');
+      expect(performanceOverviewComponent.text()).to.contain('Performance');
       expect(performanceOverviewComponent.text()).to.contain(
         'Friday 25 December 2020'
       );

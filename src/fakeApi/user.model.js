@@ -1,13 +1,13 @@
 import { mirageGraphQLFieldResolver } from '@miragejs/graphql';
 import faker from 'faker';
-import { Factory, Response } from 'miragejs';
+import { Factory } from 'miragejs';
 
 import {
   authedUser,
   FieldError,
+  handleGraphQLOrderBy,
   mutationWithErrorsResolver,
   NonFieldError,
-  ValidationErrorResponse,
 } from './utils';
 
 export default {
@@ -22,36 +22,19 @@ export default {
       }),
     };
   },
-  registerRoutes() {
-    this.post('api/v1/auth/login/', function (schema, request) {
-      let user = schema.userNodes.findBy({
-        email: JSON.parse(request.requestBody).email,
-      });
-      if (!user)
-        return ValidationErrorResponse(null, [
-          'Unable to log in with provided credentials.',
-        ]);
-      return new Response(
-        200,
-        {},
-        {
-          key: user.token,
-          user: {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-          },
-        }
-      );
-    });
-  },
   registerGQLCustomResolvers() {
     return {
       UserNode: {
         bookings(obj, args, context, info) {
-          args.performanceId = args.performance;
-          delete args.performance;
-          return mirageGraphQLFieldResolver(obj, args, context, info);
+          // Bodge to overcome weird named params
+          if (args.performance) {
+            args.performanceId = args.performance;
+            delete args.performance;
+          }
+
+          return handleGraphQLOrderBy((args) => {
+            return mirageGraphQLFieldResolver(obj, args, context, info);
+          }, args);
         },
       },
     };
@@ -139,6 +122,13 @@ export default {
         if (args.token !== '1234abcd') throw new NonFieldError('Invalid Token');
       }),
       sendPasswordResetEmail: mutationWithErrorsResolver(() => {}),
+      updateAccount: mutationWithErrorsResolver(() => {}),
+      sendSecondaryEmailActivation: mutationWithErrorsResolver(() => {}),
+      swapEmails: mutationWithErrorsResolver(() => {}),
+      removeSecondaryEmail: mutationWithErrorsResolver(() => {}),
+      verifySecondaryEmail: mutationWithErrorsResolver((obj, args) => {
+        if (args.token !== '1234abcd') throw new NonFieldError('Invalid Token');
+      }),
       passwordReset: mutationWithErrorsResolver((obj, args) => {
         if (args.token !== '1234abcd')
           throw new NonFieldError('Invalid Password Reset Token');
@@ -149,6 +139,31 @@ export default {
           );
         }
       }),
+      passwordChange: mutationWithErrorsResolver((obj, args) => {
+        if (args.newPassword1 !== args.newPassword2)
+          throw new FieldError('Passwords dont match', 'newPassword2');
+      }),
     };
+  },
+  registerGQLTypes() {
+    return `
+    type UserNode implements Node {
+      lastLogin: DateTime
+      isSuperuser: Boolean!
+      firstName: String!
+      lastName: String!
+      isStaff: Boolean!
+      isActive: Boolean!
+      dateJoined: DateTime!
+      id: ID!
+      email: String!
+      pk: Int
+      archived: Boolean
+      verified: Boolean
+      secondaryEmail: String
+
+      bookings(offset: Int, before: String, after: String, first: Int, last: Int, reference: UUID, user: ID, performance: ID, status: String, id: ID, orderBy: String): BookingNodeConnection!
+    }
+    `;
   },
 };

@@ -1,6 +1,8 @@
 <template>
   <label :for="inputId">
-    <span class="text-xs font-semibold text-white">{{ name }}</span>
+    <span v-if="showLabel" class="text-xs font-semibold text-white">{{
+      name
+    }}</span>
     <input
       :id="inputId"
       class="w-full p-1 text-black rounded-sm focus:outline-none"
@@ -18,6 +20,8 @@
 
 <script>
 import lo from 'lodash';
+
+import Errors from '@/classes/Errors';
 
 import ErrorHelper from './ErrorHelper.vue';
 export default {
@@ -43,7 +47,7 @@ export default {
     },
     errors: {
       required: false,
-      type: [Array, Object],
+      type: Errors,
       default: null,
     },
     required: {
@@ -55,6 +59,10 @@ export default {
       required: false,
       default: null,
       type: String,
+    },
+    showLabel: {
+      default: true,
+      type: Boolean,
     },
   },
   computed: {

@@ -14,6 +14,8 @@ import {
   faLink,
   faMapMarkedAlt,
   faMoneyCheckAlt,
+  faSignInAlt,
+  faTheaterMasks,
   faTicketAlt,
   faTimesCircle,
   faUserEdit,
@@ -44,7 +46,9 @@ library.add(
   faUserEdit,
   faTimesCircle,
   faMoneyCheckAlt,
-  faArrowRight
+  faTheaterMasks,
+  faArrowRight,
+  faSignInAlt
 );
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
@@ -59,7 +63,8 @@ Vue.prototype.$appName = config.application.name;
 // Filters
 
 Vue.filter('dateFormat', (date, format) => {
-  return DateTime.fromISO(date).toFormat(format);
+  date = date instanceof DateTime ? date : DateTime.fromISO(date);
+  return date.toFormat(format);
 });
 
 Vue.filter('truncate', (text, length, clamp) => {

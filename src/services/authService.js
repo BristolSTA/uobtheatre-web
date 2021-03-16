@@ -1,23 +1,11 @@
 import gql from 'graphql-tag';
 
 import Errors from '@/classes/Errors';
+import ErrorsPartial from '@/graphql/partials/ErrorsPartial';
 import { errorHandler } from '@/utils';
 import { createClient } from '@/vue-apollo';
 
 import store from '../store';
-
-let MutationErrorsPartial = `
-success
-errors {
-... on NonFieldError {
-    message
-}
-... on FieldError {
-    message
-    field
-}
-}
-`;
 
 export default {
   /**
@@ -52,7 +40,7 @@ export default {
           mutation: gql`
             mutation($email: String!, $password: String!) {
               login(email: $email, password: $password) {
-                ${MutationErrorsPartial}
+                ${ErrorsPartial}
                 token
                 user {
                   firstName
@@ -117,7 +105,7 @@ export default {
                 password1: $password
                 password2: $confirmedPassword
               ) {
-                ${MutationErrorsPartial}
+                ${ErrorsPartial}
               }
             }
           `,
@@ -151,7 +139,7 @@ export default {
           mutation: gql`
             mutation($email: String!) {
               sendPasswordResetEmail(email: $email) {
-                ${MutationErrorsPartial}
+                ${ErrorsPartial}
               }
             }
           `,
@@ -183,7 +171,7 @@ export default {
           mutation: gql`
             mutation($token: String!, $password: String!, $confirmedPassword: String!) {
               passwordReset(token: $token, newPassword1: $password, newPassword2: $confirmedPassword) {
-                ${MutationErrorsPartial}
+                ${ErrorsPartial}
               }
             }
           `,
@@ -215,7 +203,7 @@ export default {
           mutation: gql`
             mutation($token: String!) {
               verifyAccount(token: $token) {
-                ${MutationErrorsPartial}
+                ${ErrorsPartial}
               }
             }
           `,

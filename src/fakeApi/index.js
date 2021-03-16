@@ -138,10 +138,12 @@ export function makeServer({ environment = 'development' } = {}) {
       ];
 
       /**
-       * Fake Performance 1 - Legally Blonde, MTB, with 4 performances (19th,20th,21st (sold out), 22nd (online))
+       * Fake Production 1 - Legally Blonde, MTB, with 4 performances (19th,20th,21st (sold out), 22nd (online))
        */
 
-      let performances = server.createList('PerformanceNode', 4);
+      let performances = server.createList('PerformanceNode', 4, {
+        __dont_factory: ['production'],
+      });
       performances[0].update({
         soldOut: false,
         isInperson: true,
@@ -218,9 +220,9 @@ export function makeServer({ environment = 'development' } = {}) {
         percentage: 0.05,
       });
 
-      // /**
-      //  * Fake Performance 2 - TRASh, Dramsoc, 1 performance, no warnings
-      //  */
+      /**
+       * Fake Produciton 2 - TRASh, Dramsoc, 1 performance, no warnings
+       */
 
       let dramsoc = server.create('SocietyNode', {
         name: 'Dramsoc',
@@ -241,7 +243,7 @@ export function makeServer({ environment = 'development' } = {}) {
       });
 
       /**
-       * Fake Performance 3 - Present laughter - Not bookable
+       * Fake Production 3 - Present laughter - Not bookable
        */
 
       server.create('ProductionNode', 'withCoverImage', {
@@ -253,7 +255,7 @@ export function makeServer({ environment = 'development' } = {}) {
       });
 
       /**
-       * Fake Performance 4 - A complete random production called A Default Production
+       * Fake Production 4 - A complete random production called A Default Production
        */
       server.create('ProductionNode', {
         name: 'A Default Production',
@@ -263,10 +265,99 @@ export function makeServer({ environment = 'development' } = {}) {
        * A user
        */
 
-      server.create('userNode', {
+      let user = server.create('userNode', {
         password: 'admin',
         email: 'admin@bristolsta.com',
         token: '36c86c19f8f8d73aa59c3a00814137bdee0ab8de',
+      });
+
+      /**
+       * A booking
+       */
+
+      server.create('bookingNode', 'paid', {
+        user: user,
+        reference: 'abcdef123456',
+        performance: performances[0],
+        tickets: [
+          server.create('ticketNode', {
+            concessionType: AdultConcession,
+            seatGroup: BestSeatGroup,
+          }),
+          server.create('ticketNode', {
+            concessionType: StudentConcession,
+            seatGroup: BestSeatGroup,
+          }),
+          server.create('ticketNode', {
+            concessionType: ChildConcession,
+            seatGroup: ProjSeatGroup,
+          }),
+          server.create('ticketNode', {
+            concessionType: ChildConcession,
+            seatGroup: ProjSeatGroup,
+          }),
+        ],
+      });
+
+      server.create('bookingNode', 'paid', {
+        user: user,
+        performance: server.create('PerformanceNode', {
+          soldOut: false,
+          isInperson: true,
+          isOnline: false,
+          doorsOpen: DateTime.fromISO('2019-10-07T17:30:00'),
+          start: DateTime.fromISO('2019-10-07T18:00:00'),
+          end: DateTime.fromISO('2019-10-07T19:30:00'),
+          ticketOptions: ticketOptions,
+          discounts: [FamilyDiscount],
+          production: server.create('ProductionNode', 'withCoverImage', {
+            name: 'Chicago',
+            society: server.create('SocietyNode', {
+              name: 'Music Theatre Brizzle',
+            }),
+          }),
+        }),
+        tickets: [
+          server.create('ticketNode', {
+            concessionType: AdultConcession,
+            seatGroup: BestSeatGroup,
+          }),
+        ],
+      });
+
+      server.create('bookingNode', 'paid', {
+        user: user,
+        reference: '123456abcdef',
+        performance: server.create('PerformanceNode', {
+          soldOut: false,
+          isInperson: true,
+          isOnline: false,
+          doorsOpen: DateTime.local().plus({
+            days: 1,
+          }),
+          start: DateTime.local().plus({
+            days: 1,
+            hours: 2,
+          }),
+          end: DateTime.local().plus({
+            days: 1,
+            hours: 3,
+          }),
+          ticketOptions: ticketOptions,
+          discounts: [FamilyDiscount],
+          production: server.create('ProductionNode', 'withCoverImage', {
+            name: 'TRASh',
+            society: server.create('SocietyNode', {
+              name: 'Dramsoc',
+            }),
+          }),
+        }),
+        tickets: [
+          server.create('ticketNode', {
+            concessionType: AdultConcession,
+            seatGroup: BestSeatGroup,
+          }),
+        ],
       });
     },
 

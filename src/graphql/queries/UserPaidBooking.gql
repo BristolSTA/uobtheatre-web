@@ -1,0 +1,12 @@
+#import "../fragments/booking/BookingWithProductionDetails.gql"
+query userPaidBooking($bookingRef: UUID!) {
+  me {
+    bookings(reference: $bookingRef, status: "PAID") {
+      edges {
+        node {
+          ...BookingWithProductionDetails
+        }
+      }
+    }
+  }
+}

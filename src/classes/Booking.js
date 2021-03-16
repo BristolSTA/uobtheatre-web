@@ -1,4 +1,5 @@
 import lo from 'lodash';
+import { DateTime } from 'luxon';
 
 import Ticket from './Ticket';
 import TicketsMatrix from './TicketsMatrix';
@@ -6,17 +7,24 @@ import TicketsMatrix from './TicketsMatrix';
 export default class Booking {
   /** @member {number} */
   id;
+  /** @member {string} */
+  reference;
   /** @member {object} */
   performance;
+  /** @member {object} */
+  payments;
   /** @member {Ticket} */
   tickets;
   /** @member {object} */
   price_breakdown;
   /** @member {boolean} dirty Whether the booking class is in sync with the API or not */
   dirty = true;
+  /** @member {object} */
+  raw;
 
   constructor() {
     this.tickets = [];
+    this.payments = [];
   }
 
   /**
@@ -38,14 +46,17 @@ export default class Booking {
    * @param {object} bookingData API Booking Data
    */
   updateFromAPIData(bookingData) {
-    this.price_breakdown = bookingData.priceBreakdown;
-    this.price_breakdown.tickets = this.price_breakdown.tickets.map(
-      (ticketSummary) => {
-        ticketSummary.concession_type = ticketSummary.concessionType;
-        ticketSummary.seat_group = ticketSummary.seatGroup;
-        return ticketSummary;
-      }
-    );
+    this.raw = bookingData;
+    if (bookingData.priceBreakdown) {
+      this.price_breakdown = bookingData.priceBreakdown;
+      this.price_breakdown.tickets = this.price_breakdown.tickets.map(
+        (ticketSummary) => {
+          ticketSummary.concession_type = ticketSummary.concessionType;
+          ticketSummary.seat_group = ticketSummary.seatGroup;
+          return ticketSummary;
+        }
+      );
+    }
     if (bookingData.tickets) {
       this.tickets = bookingData.tickets.map((ticketAPIData) =>
         Ticket.fromAPIData(ticketAPIData)
@@ -53,6 +64,12 @@ export default class Booking {
     }
     if (bookingData.performance) {
       this.performance = bookingData.performance;
+    }
+    if (bookingData.reference) {
+      this.reference = bookingData.reference;
+    }
+    if (bookingData.payments && bookingData.payments.edges.length) {
+      this.payments = bookingData.payments.edges.map((edge) => edge.node);
     }
     this.id = bookingData.id;
     this.dirty = false;
@@ -298,5 +315,21 @@ export default class Booking {
         valuePounds: (misc_cost.value / 100).toFixed(2),
       });
     });
+  }
+
+  /**
+   * @returns {boolean} True if in the future / current day or false
+   */
+  get is_active() {
+    let performanceEndTime = DateTime.fromISO(this.performance.end);
+    return (
+      performanceEndTime > DateTime.local() ||
+      performanceEndTime.hasSame(DateTime.local(), 'day')
+    );
+  }
+
+  get status() {
+    if (!this.raw.status) return '';
+    return this.raw.status;
   }
 }

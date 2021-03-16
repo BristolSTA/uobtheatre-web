@@ -130,7 +130,7 @@ export default {
       type: Booking,
     },
     ticketMatrix: {
-      required: true,
+      default: null,
       type: TicketMatrix,
     },
   },
@@ -166,20 +166,22 @@ export default {
     },
     async updateAPI() {
       let queryBody = `
-        id
-        tickets {
+        booking {
           id
-          seatGroup {
+          tickets {
             id
-            name
+            seatGroup {
+              id
+              name
+            }
+            concessionType {
+              id
+              name
+            }
           }
-          concessionType {
-            id
-            name
+          priceBreakdown {
+            ...AllPriceBreakdown
           }
-        }
-        priceBreakdown {
-          ...AllPriceBreakdown
         }`;
 
       let variables = {
@@ -193,7 +195,7 @@ export default {
         // We haven't got a booking yet, lets create one
         bookingResponse = await this.$apollo.mutate({
           mutation: gql`
-            mutation($performanceID: ID!, $tickets: [CreateTicketInput]) {
+            mutation($performanceID: IdInputField!, $tickets: [CreateTicketInput]) {
               createBooking(performanceId: $performanceID, tickets: $tickets) {
                 ${queryBody}
               }
@@ -202,13 +204,13 @@ export default {
           `,
           variables: variables,
         });
-        bookingResponse = bookingResponse.data.createBooking;
+        bookingResponse = bookingResponse.data.createBooking.booking;
       } else {
         // We have a booking, lets update it
         bookingResponse = await this.$apollo.mutate({
           mutation: gql`
-            mutation($id: ID!, $tickets: [CreateTicketInput]) {
-              updateBooking(id: $id, tickets: $tickets) {
+            mutation($id: IdInputField!, $tickets: [CreateTicketInput]) {
+              updateBooking(bookingId: $id, tickets: $tickets) {
                 ${queryBody}
               }
             }
@@ -216,9 +218,10 @@ export default {
           `,
           variables: variables,
         });
-        bookingResponse = bookingResponse.data.updateBooking;
+        bookingResponse = bookingResponse.data.updateBooking.booking;
       }
-      // Check for changes since API called. TODO - this isn't very thorough...
+      // Check for changes since API called.
+      //TODO: - this isn't very thorough...
       if (this.booking.tickets.length == bookingResponse.tickets.length) {
         return this.booking.updateFromAPIData(bookingResponse);
       }

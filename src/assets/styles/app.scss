@@ -36,7 +36,8 @@
     &[disabled] {
       @apply cursor-not-allowed;
     }
-    &:hover:not(.disabled) {
+    &:hover:not(.disabled),
+    &:hover:not([disabled]) {
       @apply bg-sta-gray-light;
     }
     &:focus {
