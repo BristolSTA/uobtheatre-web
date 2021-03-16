@@ -7,7 +7,9 @@
     </div>
     <div v-if="booking.performance" class="container">
       <h1 class="pt-2 text-h1">Your Booking</h1>
-      <h2 class="text-h2 text-sta-orange">Reference {{ booking.reference }}</h2>
+      <h2 class="text-h2 text-sta-orange">
+        Reference - {{ booking.reference }}
+      </h2>
       <production-banner
         class="pb-2 md:pb-8"
         :production="production"
@@ -16,6 +18,7 @@
       />
       <div class="w-full text-center lg:hidden">
         <button
+          id="ticket-jump"
           class="p-2 py-1 m-1 btn"
           @click="jumpToTickets"
           @keypress="jumpToTickets"
@@ -41,8 +44,9 @@
         <tickets-overview class="lg:col-span-2" :booking="booking" />
       </div>
 
-      <div ref="tickets" class="mt-4">
+      <div class="mt-4">
         <div
+          ref="tickets"
           class="flex items-center justify-between px-4 py-2 cursor-pointer hover:bg-opacity-80 text-h2"
           :class="[expanded ? 'bg-sta-orange' : 'bg-sta-green']"
           @click="ticketToggle"

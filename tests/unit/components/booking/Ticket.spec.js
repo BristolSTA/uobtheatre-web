@@ -1,4 +1,4 @@
-import { shallowMount } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 import { expect } from 'chai';
 import QrcodeVue from 'qrcode.vue';
 
@@ -33,7 +33,7 @@ describe('Ticket component', function () {
       });
       booking.updateFromAPIData(bookingData);
     });
-    ticketComponent = shallowMount(Ticket, {
+    ticketComponent = mount(Ticket, {
       propsData: {
         booking: booking,
         ticket: booking.tickets[0],
@@ -43,6 +43,7 @@ describe('Ticket component', function () {
         },
         index: 1,
       },
+      stubs: ['qrcode-vue'],
     });
   });
 
@@ -50,8 +51,8 @@ describe('Ticket component', function () {
     expect(ticketComponent.findComponent(QrcodeVue).exists()).to.be.true;
 
     expect(
-      ticketComponent.vm.$props.ticket.generateQRCodeString(
-        ticketComponent.vm.$props.booking.reference
+      ticketComponent.vm.ticket.generateQRCodeString(
+        ticketComponent.vm.booking.reference
       )
     ).to.eq('QUJTMTM1MkVCVjU0LDE=');
   });
