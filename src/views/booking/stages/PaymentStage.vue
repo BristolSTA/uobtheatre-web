@@ -141,28 +141,30 @@ export default {
       let result = await this.$apollo.mutate({
         mutation: gql`
           mutation(
-            $bookingID: ID!
+            $bookingID: IdInputField!
             $nonce: String!
-            $idempotencyKey: String!
             $totalPrice: Int!
           ) {
             payBooking(
-              id: $bookingID
+              bookingId: $bookingID
               nonce: $nonce
-              idempotencyKey: $idempotencyKey
-              total: $totalPrice
+              price: $totalPrice
             ) {
-              ammount
-              ammountCurrency
-              cardBrand
-              cardLastFour
+              payment {
+                value
+                currency
+                cardBrand
+                last4
+              }
+              booking {
+                reference
+              }
             }
           }
         `,
         variables: {
           bookingID: this.booking.id,
           nonce: nonce,
-          idempotencyKey: this.booking.idempotency_key,
           totalPrice: this.booking.total_price,
         },
       });
@@ -184,7 +186,10 @@ export default {
             result.dismiss === Swal.DismissReason.timer ||
             result.isConfirmed
           ) {
-            alert('WOULD NOW REDIRECT TO BOOKING CONFIRMATION PAGE / SCREEN');
+            this.$router.replace({
+              name: 'user.booking',
+              params: { bookingRef: result.data.payBooking.booking.reference },
+            });
           }
         });
       console.log(result);
@@ -226,17 +231,21 @@ export default {
   height: 56px;
   box-sizing: border-box;
   display: inline-block;
-  @apply bg-sta-gray text-white rounded-lg;
+  @apply bg-sta-gray;
+  @apply text-white;
+  @apply rounded-lg;
 }
 
 /* Define how SqPaymentForm iframes should look when they have focus */
 .sq-input--focus {
-  @apply border border-sta-green;
+  @apply border;
+  @apply border-sta-green;
 }
 
 /* Define how SqPaymentForm iframes should look when they contain invalid values */
 .sq-input--error {
-  @apply border-2 border-sta-rouge;
+  @apply border-2;
+  @apply border-sta-rouge;
 }
 
 .button-google-pay {

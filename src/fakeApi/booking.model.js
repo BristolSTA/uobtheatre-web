@@ -11,14 +11,14 @@ export default {
         production: belongsTo('productionNode'),
       }),
       paymentNode: Model.extend({
-        squareId: () => faker.random.uuid(),
-        referenceId: () => faker.random.uuid(),
-        ammount: () => faker.random.number({ min: 100, max: 1000 }),
-        ammountCurrency: 'GBP',
-        time: new Date(),
+        providerPaymentId: () => faker.random.uuid(),
+        // referenceId: () => faker.random.uuid(),
+        value: () => faker.random.number({ min: 100, max: 1000 }),
+        currency: 'GBP',
+        createdAt: new Date(),
         status: 'COMPLETED',
         cardBrand: 'VISA',
-        cardLastFour: '4567',
+        last4: '4567',
       }),
     };
   },
@@ -160,17 +160,19 @@ export default {
         });
 
         let payment = booking.createPayment({
-          squareId: faker.random.uuid(),
-          referenceId: faker.random
-            .number({ min: 1000, max: 50000 })
-            .toString(),
-          ammount: booking.priceBreakdown.totalPrice,
-          ammountCurrency: 'GBP',
-          time: new Date(),
+          providerPaymentId: faker.random.uuid(),
+          // referenceId: faker.random
+          //   .number({ min: 1000, max: 50000 })
+          //   .toString(),
+          value: booking.priceBreakdown.totalPrice,
+          currency: 'GBP',
+          createdAt: new Date(),
           status: 'COMPLETED',
           cardBrand: 'VISA',
-          cardLastFour: '4567',
+          last4: '4567',
         });
+
+        console.log(payment);
 
         return payment;
       },
@@ -206,7 +208,6 @@ export default {
         payments(offset: Int, before: String, after: String, first: Int, last: Int, type: String, provider: String, createdAt: DateTime, id: ID): PaymentNodeConnection
 
         user: UserNode
-        payments: [PaymentNode]
         reference: UUID!
       }
 
@@ -231,18 +232,6 @@ export default {
         totalPrice: Int
 
         concessionType: ConcessionTypeNode
-      }
-
-      type PaymentNode implements Node {
-        id: ID!
-        squareId: String!
-        referenceId: String!
-        ammount: Int!
-        ammountCurrency: String!
-        time: DateTime!
-        status: String!
-        cardBrand: String!
-        cardLastFour: String!
       }
 
     `;

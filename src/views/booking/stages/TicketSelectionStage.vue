@@ -17,7 +17,7 @@
         "
         :expanded="
           selected_location_index == index ||
-          ticketMatrix.ticket_options.length == 1
+            ticketMatrix.ticket_options.length == 1
         "
         :current-tickets="booking.tickets"
         :discounts="ticketMatrix.discounts"
