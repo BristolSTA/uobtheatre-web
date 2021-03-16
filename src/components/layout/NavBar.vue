@@ -11,6 +11,7 @@
           {{ $appName }}
         </router-link>
         <button
+          role="toggle"
           class="rounded-lg md:hidden focus:outline-none focus:shadow-outline"
           @click="open = !open"
           @keypress="open = !open"
