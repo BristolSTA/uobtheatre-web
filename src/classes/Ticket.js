@@ -58,6 +58,16 @@ export default class {
   }
 
   /**
+   * Returns the Base 64 encoded string to use in the QR code
+   *
+   * @param {string} booking_reference Booking Reference
+   * @returns {string} Base 64 encoded string
+   */
+  generateQRCodeString(booking_reference) {
+    return btoa([booking_reference, this.id]);
+  }
+
+  /**
    * @returns {object} API Data object that represents the ticket
    */
   get apiData() {
