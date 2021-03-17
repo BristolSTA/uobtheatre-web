@@ -6,7 +6,7 @@
     "serve": "./node_modules/.bin/vue-cli-service serve",
     "build": "./node_modules/.bin/vue-cli-service build",
     "test:unit": "./node_modules/.bin/vue-cli-service test:unit",
-    "test:e2e": "VUE_APP_CYPRESS=true vue-cli-service test:e2e",
+    "test:e2e": "NODE_ENV=development vue-cli-service test:e2e",
     "lint": "./node_modules/.bin/vue-cli-service lint",
     "api:download-schema": "node scripts/downloadSchema.js",
     "playground": "vue-cli-service serve src/playground.js",

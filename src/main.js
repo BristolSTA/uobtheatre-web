@@ -22,12 +22,11 @@ import 'leaflet/dist/leaflet.css';
  */
 import { createProvider } from '@/vue-apollo';
 
-if (
-  process.env.VUE_APP_CYPRESS ||
-  (process.env.NODE_ENV === 'development' && !process.env.VUE_APP_API_BASE)
-) {
-  const { makeServer } = require('@/fakeApi');
-  makeServer({ environment: 'development' });
+if (process.env.NODE_ENV === 'development') {
+  if (!process.env.VUE_APP_API_BASE) {
+    const { makeServer } = require('@/fakeApi');
+    makeServer({ environment: 'development' });
+  }
 }
 
 /**
