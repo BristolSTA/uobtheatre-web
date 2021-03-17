@@ -363,6 +363,7 @@ export function makeServer({ environment = 'development' } = {}) {
 
     async routes() {
       this.namespace = '/fakeapi';
+      this.passthrough();
 
       apiModels.forEach((model) => {
         if (model.registerRoutes) model.registerRoutes.bind(this)();
