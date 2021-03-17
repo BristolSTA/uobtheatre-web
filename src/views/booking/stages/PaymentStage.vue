@@ -14,6 +14,7 @@
         }}
       </p>
     </div>
+    <all-errors-display class="text-center" :errors="errors" />
     <div class="grid grid-cols-2">
       <div>
         <h2 class="mb-2 text-center text-white text-h2">Pay with card</h2>
@@ -26,12 +27,14 @@
           </div>
 
           <div
-            v-if="errors.length"
+            v-if="squareErrors.length"
             class="p-2 text-white border-2 border-sta-rouge"
           >
             Whoops! There was an error with your details:
             <ul class="list-disc list-inside">
-              <li v-for="(item, index) in errors" :key="index">{{ item }}</li>
+              <li v-for="(item, index) in squareErrors" :key="index">
+                {{ item }}
+              </li>
             </ul>
           </div>
 
@@ -74,10 +77,12 @@ import gql from 'graphql-tag';
 import Swal from 'sweetalert2';
 
 import Booking from '@/classes/Booking';
+import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue';
 import config from '@/config';
 import { performMutation, swal } from '@/utils';
 export default {
   name: 'PaymentStage',
+  components: { AllErrorsDisplay },
   props: {
     booking: {
       required: true,
@@ -87,7 +92,8 @@ export default {
   data() {
     return {
       paymentForm: null,
-      errors: [],
+      errors: null,
+      squareErrors: [],
       progressPopup: null,
       enabledDigitalWallets: {
         google: false,
@@ -156,9 +162,9 @@ export default {
       this.paymentForm.requestCardNonce();
     },
     async onNonceRecieved(errors, nonce) {
-      this.errors = [];
+      this.squareErrors = [];
       if (errors) {
-        this.errors = errors.map((error) => error.message);
+        this.squareErrors = errors.map((error) => error.message);
         this.progressPopup.close();
         return;
       }
@@ -216,8 +222,8 @@ export default {
               params: { bookingRef: data.payBooking.booking.reference },
             });
           });
-      } catch (errors) {
-        console.log('ERRORS', errors);
+      } catch ({ errors }) {
+        this.errors = errors;
       }
 
       this.progressPopup.close();
@@ -229,7 +235,6 @@ export default {
       if (methods.applePay === true) {
         this.enabledDigitalWallets.apple = true;
       }
-      console.log(methods);
     },
     onCreatePaymentRequest() {
       // Used to create payment request for GPay

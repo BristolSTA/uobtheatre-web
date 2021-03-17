@@ -7,8 +7,8 @@
         expanded
           ? 'bg-sta-orange'
           : available
-            ? 'bg-sta-green'
-            : 'bg-sta-gray-dark border-2 border-sta-rouge',
+          ? 'bg-sta-green'
+          : 'bg-sta-gray-dark border-2 border-sta-rouge',
         available ? 'cursor-pointer' : '',
       ]"
       @click="onHeaderClick"
@@ -27,7 +27,7 @@
         >
           Sold Out
         </h3>
-        <p v-if="expanded && ticketOption.seatGroup.description" class="p-2">
+        <p v-if="expanded && ticketOption.seatGroup.description" class="py-2">
           {{ ticketOption.seatGroup.description }}
         </p>
       </div>

@@ -83,6 +83,10 @@ export default class {
     return this.errors.non_field_errors;
   }
 
+  get all_errors() {
+    return [...this.non_field_errors, ...this.errors.field_errors];
+  }
+
   /**
    * Record the new errors.
    *
