@@ -363,7 +363,7 @@ export function makeServer({ environment = 'development' } = {}) {
 
     async routes() {
       this.namespace = '/fakeapi';
-      this.passthrough(() => true);
+      this.passthrough('https://pci-connect.squareupsandbox.com/**');
 
       apiModels.forEach((model) => {
         if (model.registerRoutes) model.registerRoutes.bind(this)();
