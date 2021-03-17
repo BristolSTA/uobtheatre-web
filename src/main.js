@@ -20,13 +20,13 @@ import 'leaflet/dist/leaflet.css';
 /**
  * Import server & Vue Apollo
  */
-import { makeServer } from '@/fakeApi';
 import { createProvider } from '@/vue-apollo';
 
 if (
   process.env.VUE_APP_CYPRESS ||
   (process.env.NODE_ENV === 'development' && !process.env.VUE_APP_API_BASE)
 ) {
+  const { makeServer } = require('@/fakeApi');
   makeServer({ environment: 'development' });
 }
 
