@@ -2,7 +2,12 @@ import faker from 'faker';
 import lo from 'lodash';
 import { belongsTo, Factory, Model, trait } from 'miragejs';
 
-import { authedUser, updateIfDoesntHave } from './utils';
+import {
+  authedUser,
+  mutationWithErrorsResolver,
+  NonFieldError,
+  updateIfDoesntHave,
+} from './utils';
 
 export default {
   registerModels() {
@@ -107,8 +112,8 @@ export default {
           performance: context.mirageSchema.performanceNodes.find(
             args.performanceId
           ),
+          reference: faker.random.alphaNumeric(12),
           status: 'INPROGRESS',
-          reference: faker.random.uuid(),
           tickets: tickets,
           user: authedUser(context),
         });
@@ -147,12 +152,14 @@ export default {
 
         return { booking };
       },
-      payBooking(obj, args, { mirageSchema }) {
-        let booking = mirageSchema.bookingNodes.find(args.id);
+      payBooking: mutationWithErrorsResolver((obj, args, { mirageSchema }) => {
+        let booking = mirageSchema.bookingNodes.find(args.bookingId);
 
         // Check same price
-        if (args.total !== booking.priceBreakdown.totalPrice) {
-          throw 'Price difference!';
+        if (args.price !== booking.priceBreakdown.totalPrice) {
+          throw new NonFieldError(
+            'There was a price difference between the booking and the requested price'
+          );
         }
 
         booking.update({
@@ -160,22 +167,23 @@ export default {
         });
 
         let payment = booking.createPayment({
+          type: 'PURCHASE',
+          provider: 'SQUARE_ONLINE',
           providerPaymentId: faker.random.uuid(),
-          // referenceId: faker.random
-          //   .number({ min: 1000, max: 50000 })
-          //   .toString(),
           value: booking.priceBreakdown.totalPrice,
           currency: 'GBP',
           createdAt: new Date(),
+          updatedAt: new Date(),
           status: 'COMPLETED',
           cardBrand: 'VISA',
           last4: '4567',
         });
 
-        console.log(payment);
-
-        return payment;
-      },
+        return {
+          booking,
+          payment,
+        };
+      }),
     };
   },
   registerGQLQueries() {

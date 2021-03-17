@@ -116,6 +116,7 @@ import Ticket from '@/classes/Ticket';
 import TicketMatrix from '@/classes/TicketsMatrix';
 import SeatGroup from '@/components/booking/SeatGroup.vue';
 import PriceBreakdownFragment from '@/graphql/fragments/booking/AllPriceBreakdown.gql';
+import DetailBookingFragment from '@/graphql/fragments/booking/DetailedBookingDetails.gql';
 
 export default {
   name: 'TicketSelectionStage',
@@ -167,21 +168,7 @@ export default {
     async updateAPI() {
       let queryBody = `
         booking {
-          id
-          tickets {
-            id
-            seatGroup {
-              id
-              name
-            }
-            concessionType {
-              id
-              name
-            }
-          }
-          priceBreakdown {
-            ...AllPriceBreakdown
-          }
+          ...DetailedBookingDetails
         }`;
 
       let variables = {
@@ -201,6 +188,7 @@ export default {
               }
             }
             ${PriceBreakdownFragment}
+            ${DetailBookingFragment}
           `,
           variables: variables,
         });
@@ -215,6 +203,7 @@ export default {
               }
             }
             ${PriceBreakdownFragment}
+            ${DetailBookingFragment}
           `,
           variables: variables,
         });

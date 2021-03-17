@@ -2,7 +2,7 @@
   <div>
     <div class="space-y-4">
       <performance-overview
-        :production="production"
+        :production="booking.performance.production"
         :performance="booking.performance"
       />
       <div class="grid grid-cols-1 gap-4 md:grid-cols-2 justify-evenly">
@@ -46,10 +46,6 @@ export default {
     BookingPriceOverview,
   },
   props: {
-    production: {
-      required: true,
-      type: Object,
-    },
     booking: {
       required: true,
       type: Booking,
