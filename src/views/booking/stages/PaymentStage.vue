@@ -228,13 +228,14 @@ export default {
 
       this.progressPopup.close();
     },
-    onMethodsSupported(methods) {
+    onMethodsSupported(methods, unsuportedReason) {
       if (methods.googlePay === true) {
         this.enabledDigitalWallets.google = true;
       }
       if (methods.applePay === true) {
         this.enabledDigitalWallets.apple = true;
       }
+      console.log(methods, unsuportedReason);
     },
     onCreatePaymentRequest() {
       // Used to create payment request for GPay
