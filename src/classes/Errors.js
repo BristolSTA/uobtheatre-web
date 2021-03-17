@@ -83,6 +83,9 @@ export default class {
     return this.errors.non_field_errors;
   }
 
+  /**
+   * @returns {Array<object>} List of errors
+   */
   get all_errors() {
     return [...this.non_field_errors, ...this.errors.field_errors];
   }
