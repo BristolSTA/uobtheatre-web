@@ -15,7 +15,7 @@
       </p>
     </div>
     <all-errors-display class="text-center" :errors="errors" />
-    <div class="grid grid-cols-2">
+    <div class="grid grid-cols-1 xl:grid-cols-2">
       <div>
         <h2 class="mb-2 text-center text-white text-h2">Pay with card</h2>
         <div class="container space-y-3">
@@ -53,16 +53,20 @@
         class="text-center"
       >
         <h2 class="mb-2 text-white text-h2">Pay with a digital wallet</h2>
-        <button
-          v-show="enabledDigitalWallets.google"
-          id="sq-google-pay"
-          class="button-google-pay"
-        ></button>
-        <button
-          v-show="enabledDigitalWallets.apple"
-          id="sq-apple-pay"
-          class="apple-pay-button apple-pay-button-white"
-        ></button>
+        <div>
+          <button
+            v-show="enabledDigitalWallets.google"
+            id="sq-google-pay"
+            class="button-google-pay"
+          ></button>
+        </div>
+        <div>
+          <button
+            v-show="enabledDigitalWallets.apple"
+            id="sq-apple-pay"
+            class="apple-pay-button apple-pay-button-white"
+          ></button>
+        </div>
       </div>
     </div>
     <p class="mt-4 text-center text-sta-gray-lighter">
@@ -235,7 +239,7 @@ export default {
       if (methods.applePay === true) {
         this.enabledDigitalWallets.apple = true;
       }
-      console.log(methods, unsuportedReason);
+      console.debug(methods, unsuportedReason);
     },
     onCreatePaymentRequest() {
       // Used to create payment request for GPay
