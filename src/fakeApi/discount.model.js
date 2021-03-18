@@ -26,21 +26,4 @@ export default {
       }),
     };
   },
-  registerGQLTypes() {
-    return `
-      type DiscountNode implements Node {
-        id: ID!
-        name: String!
-        percentage: Float!
-        seatGroup: SeatGroupNode
-        requirements: [DiscountRequirementNode]
-      }
-
-      type DiscountRequirementNode implements Node {
-        id: ID!
-        number: Int!
-        concessionType: ConcessionTypeNode!
-      }
-    `;
-  },
 };
