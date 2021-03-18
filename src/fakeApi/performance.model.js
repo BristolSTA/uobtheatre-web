@@ -72,9 +72,4 @@ export default {
       }),
     };
   },
-  registerGQLQueries() {
-    return `
-      performance(id: ID!): PerformanceNode
-    `;
-  },
 };

@@ -187,6 +187,7 @@ export default {
     };
   },
   registerGQLQueries() {
+    // only here for tests, not expected to be in the real schema
     return `
       booking(id: ID!): BookingNode
     `;
