@@ -192,20 +192,6 @@ export default {
       booking(id: ID!): BookingNode
     `;
   },
-  registerGQLTypes() {
-    return `
-      type PriceBreakdownTicketNode implements Node  {
-        ticketPrice: Int
-        number: Int
-        seatGroup: SeatGroupNode
-        totalPrice: Int
-        concessionType: ConcessionTypeNode
-
-        id: ID!
-      }
-
-    `;
-  },
 };
 
 /**
