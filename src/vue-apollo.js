@@ -43,7 +43,7 @@ const defaultOptions = {
   // Override the way the Authorization header is set
   getAuth: (tokenName) => {
     if (!store.state.auth.token) return;
-    return `Token ${store.state.auth.token}`;
+    return `JWT ${store.state.auth.token}`;
   },
 };
 

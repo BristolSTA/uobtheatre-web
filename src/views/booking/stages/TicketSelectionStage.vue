@@ -197,7 +197,7 @@ export default {
         // We have a booking, lets update it
         bookingResponse = await this.$apollo.mutate({
           mutation: gql`
-            mutation($id: IdInputField!, $tickets: [CreateTicketInput]) {
+            mutation($id: IdInputField!, $tickets: [UpdateTicketInput]) {
               updateBooking(bookingId: $id, tickets: $tickets) {
                 ${queryBody}
               }

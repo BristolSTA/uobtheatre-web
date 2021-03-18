@@ -7,8 +7,8 @@
         expanded
           ? 'bg-sta-orange'
           : available
-          ? 'bg-sta-green'
-          : 'bg-sta-gray-dark border-2 border-sta-rouge',
+            ? 'bg-sta-green'
+            : 'bg-sta-gray-dark border-2 border-sta-rouge',
         available ? 'cursor-pointer' : '',
       ]"
       @click="onHeaderClick"

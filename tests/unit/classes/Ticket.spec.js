@@ -83,7 +83,6 @@ describe('Ticket Class', () => {
 
   it('can convert to API data', () => {
     expect(ticket.apiData).to.include({
-      id: null,
       seatGroupId: 2,
       concessionTypeId: 4,
     });

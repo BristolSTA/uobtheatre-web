@@ -1,5 +1,5 @@
 #import "../fragments/booking/BookingWithProductionDetails.gql"
-query userPaidBooking($bookingRef: UUID!) {
+query userPaidBooking($bookingRef: String!) {
   me {
     bookings(reference: $bookingRef, status: "PAID") {
       edges {

@@ -96,7 +96,7 @@ let generateConcessionTypeBookingTypes = (
 let authedUser = (context) => {
   let authToken =
     context.request.requestHeaders.authorization &&
-    context.request.requestHeaders.authorization.match(/Token (.+)$/)[1];
+    context.request.requestHeaders.authorization.match(/JWT (.+)$/)[1];
 
   if (!authToken) return null;
 
