@@ -6,7 +6,7 @@ export default {
     return {
       ImageNode: Factory.extend({
         url: 'https://via.placeholder.com/1920x960',
-        name: () => faker.lorem.words(2),
+        altText: () => faker.lorem.words(2),
       }),
     };
   },
