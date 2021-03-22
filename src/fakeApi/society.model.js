@@ -14,12 +14,12 @@ export default {
         afterCreate(node, server) {
           updateIfDoesntHave(node, {
             logo: () => {
-              return server.create('GrapheneImageFieldNode', {
+              return server.create('ImageNode', {
                 url: 'https://via.placeholder.com/500x500/0000FF',
               });
             },
             banner: () => {
-              return server.create('GrapheneImageFieldNode', {
+              return server.create('ImageNode', {
                 url: 'https://via.placeholder.com/1200x720',
               });
             },

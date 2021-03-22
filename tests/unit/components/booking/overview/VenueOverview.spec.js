@@ -34,7 +34,7 @@ describe('Venue Overview', function () {
         name: 'Anson Theatre',
         slug: 'anson-theatre',
         description: 'not the anson rooms',
-        image: server.create('grapheneImageFieldNode', {
+        image: server.create('ImageNode', {
           url: 'http://pathto.example/venue-image.png',
         }),
         publiclyListed: true,

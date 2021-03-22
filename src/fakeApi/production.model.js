@@ -31,7 +31,7 @@ export default {
         withCoverImage: trait({
           afterCreate(production, server) {
             production.update({
-              coverImage: server.create('GrapheneImageFieldNode', {
+              coverImage: server.create('ImageNode', {
                 url: 'https://via.placeholder.com/1800x1000',
               }),
             });
@@ -41,12 +41,12 @@ export default {
         afterCreate(production, server) {
           updateIfDoesntHave(production, {
             posterImage: () => {
-              return server.create('GrapheneImageFieldNode', {
+              return server.create('ImageNode', {
                 url: 'https://via.placeholder.com/400x566',
               });
             },
             featuredImage: () => {
-              return server.create('GrapheneImageFieldNode', {
+              return server.create('ImageNode', {
                 url: 'https://via.placeholder.com/1920x960',
               });
             },
