@@ -95,7 +95,7 @@ export default {
   },
   registerGQLMutationResolvers() {
     return {
-      createBooking(obj, args, context) {
+      createBooking: mutationWithErrorsResolver((obj, args, context) => {
         // Create the tickets
         let tickets = [];
         if (args.tickets) {
@@ -126,32 +126,34 @@ export default {
         });
 
         return { booking };
-      },
-      updateBooking(obj, args, { mirageSchema }) {
-        // Update the tickets
-        let tickets = [];
-        if (args.tickets) {
-          tickets = args.tickets.map((ticket) => {
-            if (ticket.id) {
-              return mirageSchema.ticketNodes.find(ticket.id);
-            }
-            return mirageSchema.create('ticketNode', {
-              seatGroupId: ticket.seatGroupId,
-              concessionTypeId: ticket.concessionTypeId,
+      }),
+      updateBooking: mutationWithErrorsResolver(
+        (obj, args, { mirageSchema }) => {
+          // Update the tickets
+          let tickets = [];
+          if (args.tickets) {
+            tickets = args.tickets.map((ticket) => {
+              if (ticket.id) {
+                return mirageSchema.ticketNodes.find(ticket.id);
+              }
+              return mirageSchema.create('ticketNode', {
+                seatGroupId: ticket.seatGroupId,
+                concessionTypeId: ticket.concessionTypeId,
+              });
             });
+          }
+          // Update the booking
+          let booking = mirageSchema.bookingNodes.find(args.bookingId);
+          booking.update({
+            tickets: tickets,
           });
-        }
-        // Update the booking
-        let booking = mirageSchema.bookingNodes.find(args.bookingId);
-        booking.update({
-          tickets: tickets,
-        });
-        booking.priceBreakdown.update(
-          generatePriceBreakdown(mirageSchema, booking)
-        );
+          booking.priceBreakdown.update(
+            generatePriceBreakdown(mirageSchema, booking)
+          );
 
-        return { booking };
-      },
+          return { booking };
+        }
+      ),
       payBooking: mutationWithErrorsResolver((obj, args, { mirageSchema }) => {
         let booking = mirageSchema.bookingNodes.find(args.bookingId);
 

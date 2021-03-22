@@ -108,6 +108,9 @@ export default {
   mounted() {
     this.setupForm();
   },
+  destroyed() {
+    this.paymentForm.destroy();
+  },
   methods: {
     setupForm() {
       // eslint-disable-next-line no-undef
@@ -232,14 +235,14 @@ export default {
 
       this.progressPopup.close();
     },
-    onMethodsSupported(methods, unsuportedReason) {
+    onMethodsSupported(methods, unsupportedReason) {
       if (methods.googlePay === true) {
         this.enabledDigitalWallets.google = true;
       }
       if (methods.applePay === true) {
         this.enabledDigitalWallets.apple = true;
       }
-      console.debug(methods, unsuportedReason);
+      if (unsupportedReason) console.debug(methods, unsupportedReason);
     },
     onCreatePaymentRequest() {
       // Used to create payment request for GPay

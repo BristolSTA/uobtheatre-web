@@ -13,14 +13,14 @@ import { assertNoVisualDifference } from '../../helpers';
 describe('Booking Stages', () => {
   let fakeComponent = new (class {})();
 
-  it('get routes', () => {
+  it('can get routes', () => {
     assertNoVisualDifference(
       getRoutes(),
       stages.map((stage) => stage.generateRoute())
     );
   });
 
-  it('test index', () => {
+  it('can get stage index', () => {
     let stage = new BookingStage('My Booking Stage', fakeComponent, {
       path: 'my-booking-stage',
     });
@@ -32,7 +32,7 @@ describe('Booking Stages', () => {
     expect(getStageIndex(stages[5])).to.eq(-1);
   });
 
-  it('gets the next stage', () => {
+  it('can get the next stage', () => {
     expect(
       getStageIndex(getNextStage(null, { warnings: ['strobe lighting'] }))
     ).to.eq(1);
@@ -50,7 +50,7 @@ describe('Booking Stages', () => {
     expect(getStageIndex(getNextStage(3, {}))).to.eq(4);
   });
 
-  it('gets the previous stage', () => {
+  it('can get the previous stage', () => {
     expect(
       getStageIndex(
         getPreviousStage(stages[1], { warnings: ['strobe lighting'] }, {})
