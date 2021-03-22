@@ -8,7 +8,7 @@ import PagementStage from '@/views/booking/stages/PaymentStage.vue';
 import { executeWithServer, generateMountOptions } from '../../../helpers';
 
 describe('Payment Stage', () => {
-  let component, paymentFormFuncMock, routerPushMock;
+  let paymentStageComponent, paymentFormFuncMock, routerPushMock;
 
   jest.spyOn(swal, 'fire').mockImplementation(() => {
     return Promise.resolve();
@@ -45,7 +45,7 @@ describe('Payment Stage', () => {
         totalPrice: 1050,
       },
     });
-    component = mount(
+    paymentStageComponent = mount(
       PagementStage,
       generateMountOptions(['apollo'], {
         propsData: {
@@ -71,80 +71,88 @@ describe('Payment Stage', () => {
     );
     expect(
       window.SqPaymentForm.mock.calls[0][0].callbacks.cardNonceResponseReceived
-    ).to.eq(component.vm.onNonceRecieved);
+    ).to.eq(paymentStageComponent.vm.onNonceRecieved);
     expect(
       window.SqPaymentForm.mock.calls[0][0].callbacks.methodsSupported
-    ).to.eq(component.vm.onMethodsSupported);
+    ).to.eq(paymentStageComponent.vm.onMethodsSupported);
     expect(
       window.SqPaymentForm.mock.calls[0][0].callbacks.createPaymentRequest
-    ).to.eq(component.vm.onCreatePaymentRequest);
+    ).to.eq(paymentStageComponent.vm.onCreatePaymentRequest);
   });
 
   it('destroys payment form on destroy', () => {
-    component.destroy();
+    paymentStageComponent.destroy();
     expect(paymentFormFuncMock.destroy.mock.calls).length(1);
   });
 
   it('handles methods supported callback', async () => {
-    expect(component.find('#sq-google-pay').attributes('style')).to.contain(
-      'display: none'
-    );
-    expect(component.find('#sq-apple-pay').attributes('style')).to.contain(
-      'display: none'
-    );
+    expect(
+      paymentStageComponent.find('#sq-google-pay').attributes('style')
+    ).to.contain('display: none');
+    expect(
+      paymentStageComponent.find('#sq-apple-pay').attributes('style')
+    ).to.contain('display: none');
 
-    component.vm.onMethodsSupported({ googlePay: false, applePay: false });
-    await component.vm.$nextTick();
+    paymentStageComponent.vm.onMethodsSupported({
+      googlePay: false,
+      applePay: false,
+    });
+    await paymentStageComponent.vm.$nextTick();
 
-    expect(component.find('#sq-google-pay').attributes('style')).to.contain(
-      'display: none'
-    );
-    expect(component.find('#sq-apple-pay').attributes('style')).to.contain(
-      'display: none'
-    );
+    expect(
+      paymentStageComponent.find('#sq-google-pay').attributes('style')
+    ).to.contain('display: none');
+    expect(
+      paymentStageComponent.find('#sq-apple-pay').attributes('style')
+    ).to.contain('display: none');
 
-    component.vm.onMethodsSupported({ googlePay: true, applePay: false });
-    await component.vm.$nextTick();
+    paymentStageComponent.vm.onMethodsSupported({
+      googlePay: true,
+      applePay: false,
+    });
+    await paymentStageComponent.vm.$nextTick();
 
-    expect(component.find('#sq-google-pay').attributes('style')).not.to.contain(
-      'display: none'
-    );
-    expect(component.find('#sq-apple-pay').attributes('style')).to.contain(
-      'display: none'
-    );
+    expect(
+      paymentStageComponent.find('#sq-google-pay').attributes('style')
+    ).not.to.contain('display: none');
+    expect(
+      paymentStageComponent.find('#sq-apple-pay').attributes('style')
+    ).to.contain('display: none');
 
-    component.vm.onMethodsSupported({ applePay: true });
-    await component.vm.$nextTick();
+    paymentStageComponent.vm.onMethodsSupported({ applePay: true });
+    await paymentStageComponent.vm.$nextTick();
 
-    expect(component.find('#sq-google-pay').attributes('style')).not.to.contain(
-      'display: none'
-    );
-    expect(component.find('#sq-apple-pay').attributes('style')).not.to.contain(
-      'display: none'
-    );
+    expect(
+      paymentStageComponent.find('#sq-google-pay').attributes('style')
+    ).not.to.contain('display: none');
+    expect(
+      paymentStageComponent.find('#sq-apple-pay').attributes('style')
+    ).not.to.contain('display: none');
   });
 
   it('requests card nonce on pay click', () => {
-    component.find('button#sq-creditcard').trigger('click');
+    paymentStageComponent.find('button#sq-creditcard').trigger('click');
     expect(paymentFormFuncMock.requestCardNonce.mock.calls).length(1);
   });
 
   it('handles card nonce recieved (with square errors)', async () => {
     let popupClose;
-    component.setData({
+    paymentStageComponent.setData({
       progressPopup: {
         close: (popupClose = jest.fn()),
       },
     });
-    component.vm.onNonceRecieved([
+    paymentStageComponent.vm.onNonceRecieved([
       { message: 'An issue with the CVV' },
       { message: 'An issue with the Expiry Date' },
     ]);
-    await component.vm.$nextTick();
+    await paymentStageComponent.vm.$nextTick();
     expect(popupClose.mock.calls).length(1);
 
-    expect(component.text()).to.contain('An issue with the CVV');
-    expect(component.text()).to.contain('An issue with the Expiry Date');
+    expect(paymentStageComponent.text()).to.contain('An issue with the CVV');
+    expect(paymentStageComponent.text()).to.contain(
+      'An issue with the Expiry Date'
+    );
   });
 
   describe('with valid card / nonce input', () => {
@@ -159,8 +167,8 @@ describe('Payment Stage', () => {
     });
 
     beforeEach(() => {
-      component.vm.booking.id = booking.id;
-      component.setData({
+      paymentStageComponent.vm.booking.id = booking.id;
+      paymentStageComponent.setData({
         progressPopup: {
           close: (popupClose = jest.fn()),
         },
@@ -172,7 +180,10 @@ describe('Payment Stage', () => {
     });
 
     it('pays for booking', async () => {
-      await component.vm.onNonceRecieved(null, 'cnon:card-nonce-ok');
+      await paymentStageComponent.vm.onNonceRecieved(
+        null,
+        'cnon:card-nonce-ok'
+      );
 
       // Loading popup should close
       expect(popupClose.mock.calls).length(1);
@@ -186,9 +197,12 @@ describe('Payment Stage', () => {
     });
 
     it('shows any mutation errors', async () => {
-      component.vm.booking.price_breakdown.totalPrice = 1000;
-      await component.vm.onNonceRecieved(null, 'cnon:card-nonce-ok');
-      expect(component.text()).to.contain(
+      paymentStageComponent.vm.booking.price_breakdown.totalPrice = 1000;
+      await paymentStageComponent.vm.onNonceRecieved(
+        null,
+        'cnon:card-nonce-ok'
+      );
+      expect(paymentStageComponent.text()).to.contain(
         'There was a price difference between the booking and the requested price'
       );
     });

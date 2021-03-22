@@ -21,17 +21,19 @@ const store = new Vuex.Store({
 });
 
 describe('User Overview', () => {
-  let component;
+  let userOverviewComponent;
   beforeEach(() => {
-    component = mount(UserOverview, {
+    userOverviewComponent = mount(UserOverview, {
       store,
       localVue,
     });
   });
 
   it('shows users details from veux', () => {
-    expect(fixTextSpacing(component.text())).to.contain('Joe Bloggs');
-    expect(fixTextSpacing(component.text())).to.contain(
+    expect(fixTextSpacing(userOverviewComponent.text())).to.contain(
+      'Joe Bloggs'
+    );
+    expect(fixTextSpacing(userOverviewComponent.text())).to.contain(
       'joe.bloggs@example.org'
     );
   });
