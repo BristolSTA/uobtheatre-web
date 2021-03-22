@@ -17,10 +17,10 @@ describe('Society page', function () {
         name: 'Drama Society',
         slug: 'drama-soc',
         description: 'not a musical theatre society',
-        logo: server.create('GrapheneImageFieldNode', {
+        logo: server.create('ImageNode', {
           url: 'http://pathto.example/society-logo.png',
         }),
-        banner: server.create('GrapheneImageFieldNode', {
+        banner: server.create('ImageNode', {
           url: 'http://pathto.example/society-banner.png',
         }),
       });

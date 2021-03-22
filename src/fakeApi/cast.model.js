@@ -14,7 +14,7 @@ export default {
           if (Math.random() > 0.5) {
             updateIfDoesntHave(castNode, {
               profilePicture: () =>
-                server.create('GrapheneImageFieldNode', {
+                server.create('ImageNode', {
                   url: 'https://via.placeholder.com/100x100/FBD400',
                 }),
             });
