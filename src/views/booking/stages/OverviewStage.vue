@@ -2,7 +2,7 @@
   <div>
     <div class="space-y-4">
       <performance-overview
-        :production="production"
+        :production="booking.performance.production"
         :performance="booking.performance"
       />
       <div class="grid grid-cols-1 gap-4 md:grid-cols-2 justify-evenly">
@@ -17,7 +17,13 @@
       <booking-price-overview :booking="booking" />
     </div>
     <div class="mt-4 text-center">
-      <button class="font-semibold btn btn-orange">Pay Now</button>
+      <button
+        class="font-semibold btn btn-orange"
+        @click="$emit('next-stage')"
+        @keypress="$emit('next-stage')"
+      >
+        Proceed to payment
+      </button>
     </div>
   </div>
 </template>
@@ -40,10 +46,6 @@ export default {
     BookingPriceOverview,
   },
   props: {
-    production: {
-      required: true,
-      type: Object,
-    },
     booking: {
       required: true,
       type: Booking,

@@ -71,10 +71,12 @@ export default class {
    * @returns {object} API Data object that represents the ticket
    */
   get apiData() {
-    return {
-      id: this.id,
+    let ticket_data = {
       seatGroupId: this.seat_group.id,
       concessionTypeId: this.concession_type.id,
     };
+    if (this.id) ticket_data.id = this.id;
+
+    return ticket_data;
   }
 }

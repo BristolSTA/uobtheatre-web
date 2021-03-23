@@ -2,7 +2,12 @@ import faker from 'faker';
 import lo from 'lodash';
 import { belongsTo, Factory, Model, trait } from 'miragejs';
 
-import { authedUser, updateIfDoesntHave } from './utils';
+import {
+  authedUser,
+  mutationWithErrorsResolver,
+  NonFieldError,
+  updateIfDoesntHave,
+} from './utils';
 
 export default {
   registerModels() {
@@ -10,13 +15,23 @@ export default {
       miscCostNode: Model.extend({
         production: belongsTo('productionNode'),
       }),
+      paymentNode: Model.extend({
+        providerPaymentId: () => faker.random.uuid(),
+        // referenceId: () => faker.random.uuid(),
+        value: () => faker.random.number({ min: 100, max: 1000 }),
+        currency: 'GBP',
+        createdAt: new Date(),
+        status: 'COMPLETED',
+        cardBrand: 'VISA',
+        last4: '4567',
+      }),
     };
   },
   registerFactories() {
     return {
       bookingNode: Factory.extend({
         reference: () => faker.random.alphaNumeric(12),
-        status: 'INPROGRESS',
+        status: 'IN_PROGRESS',
 
         paid: trait({
           status: 'PAID',
@@ -80,7 +95,7 @@ export default {
   },
   registerGQLMutationResolvers() {
     return {
-      createBooking(obj, args, context) {
+      createBooking: mutationWithErrorsResolver((obj, args, context) => {
         // Create the tickets
         let tickets = [];
         if (args.tickets) {
@@ -97,8 +112,8 @@ export default {
           performance: context.mirageSchema.performanceNodes.find(
             args.performanceId
           ),
-          status: 'INPROGRESS',
-          reference: faker.random.uuid(),
+          reference: faker.random.alphaNumeric(12),
+          status: 'IN_PROGRESS',
           tickets: tickets,
           user: authedUser(context),
         });
@@ -111,89 +126,72 @@ export default {
         });
 
         return { booking };
-      },
-      updateBooking(obj, args, { mirageSchema }) {
-        // Update the tickets
-        let tickets = [];
-        if (args.tickets) {
-          tickets = args.tickets.map((ticket) => {
-            if (ticket.id) {
-              return mirageSchema.ticketNodes.find(ticket.id);
-            }
-            return mirageSchema.create('ticketNode', {
-              seatGroupId: ticket.seatGroupId,
-              concessionTypeId: ticket.concessionTypeId,
+      }),
+      updateBooking: mutationWithErrorsResolver(
+        (obj, args, { mirageSchema }) => {
+          // Update the tickets
+          let tickets = [];
+          if (args.tickets) {
+            tickets = args.tickets.map((ticket) => {
+              if (ticket.id) {
+                return mirageSchema.ticketNodes.find(ticket.id);
+              }
+              return mirageSchema.create('ticketNode', {
+                seatGroupId: ticket.seatGroupId,
+                concessionTypeId: ticket.concessionTypeId,
+              });
             });
+          }
+          // Update the booking
+          let booking = mirageSchema.bookingNodes.find(args.bookingId);
+          booking.update({
+            tickets: tickets,
           });
-        }
-        // Update the booking
-        let booking = mirageSchema.bookingNodes.find(args.bookingId);
-        booking.update({
-          tickets: tickets,
-        });
-        booking.priceBreakdown.update(
-          generatePriceBreakdown(mirageSchema, booking)
-        );
+          booking.priceBreakdown.update(
+            generatePriceBreakdown(mirageSchema, booking)
+          );
 
-        return { booking };
-      },
+          return { booking };
+        }
+      ),
+      payBooking: mutationWithErrorsResolver((obj, args, { mirageSchema }) => {
+        let booking = mirageSchema.bookingNodes.find(args.bookingId);
+
+        // Check same price
+        if (args.price !== booking.priceBreakdown.totalPrice) {
+          throw new NonFieldError(
+            'There was a price difference between the booking and the requested price'
+          );
+        }
+
+        booking.update({
+          status: 'PAID',
+        });
+
+        let payment = booking.createPayment({
+          type: 'PURCHASE',
+          provider: 'SQUARE_ONLINE',
+          providerPaymentId: faker.random.uuid(),
+          value: booking.priceBreakdown.totalPrice,
+          currency: 'GBP',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          status: 'COMPLETED',
+          cardBrand: 'VISA',
+          last4: '4567',
+        });
+
+        return {
+          booking,
+          payment,
+        };
+      }),
     };
   },
   registerGQLQueries() {
+    // only here for tests, not expected to be in the real schema
     return `
       booking(id: ID!): BookingNode
-    `;
-  },
-  registerGQLTypes() {
-    return `
-      input CreateTicketInput {
-        id: ID
-        seatGroupId: ID!
-        concessionTypeId: ID!
-      }
-
-      enum PaymentProvider {
-        CASH
-        SQUARE_ONLINE
-        SQUARE_POS
-      }
-      
-      type BookingNode implements Node {
-        id: ID!
-        createdAt: DateTime!
-        updatedAt: DateTime!
-        performance: PerformanceNode!
-        status: BookingStatus!
-        tickets: [TicketNode!]
-        priceBreakdown: PriceBreakdownNode
-        payments(offset: Int, before: String, after: String, first: Int, last: Int, type: String, provider: String, createdAt: DateTime, id: ID): PaymentNodeConnection
-
-        user: UserNode
-        reference: UUID!
-      }
-
-      type PriceBreakdownNode implements Node {
-        id: ID!
-        tickets: [PriceBreakdownTicketNode]
-        ticketsPrice: Int
-        discountsValue: Int
-        miscCosts: [MiscCostNode]
-        subtotalPrice: Int
-        miscCostsValue: Int
-        totalPrice: Int
-
-        ticketsDiscountedPrice: Int
-      }
-
-      type PriceBreakdownTicketNode {
-        ticketPrice: Int
-        number: Int
-        seatGroup: SeatGroupNode
-        totalPrice: Int
-
-        concessionType: ConcessionTypeNode
-      }
-
     `;
   },
 };

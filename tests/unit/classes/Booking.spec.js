@@ -239,6 +239,13 @@ describe('Booking Class', () => {
     );
   });
   it('can get total booking price in pounds', () => {
+    expect(booking.total_price).to.eq(0);
+
+    booking.price_breakdown = bookingAPIData.priceBreakdown;
+
+    expect(booking.total_price).to.eq(3728);
+  });
+  it('can get total booking price in pounds', () => {
     expect(booking.total_price_pounds).to.eq('0.00');
 
     booking.price_breakdown = bookingAPIData.priceBreakdown;

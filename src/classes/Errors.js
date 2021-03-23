@@ -84,6 +84,13 @@ export default class {
   }
 
   /**
+   * @returns {Array<object>} List of errors
+   */
+  get all_errors() {
+    return [...this.non_field_errors, ...this.errors.field_errors];
+  }
+
+  /**
    * Record the new errors.
    *
    * @param {object} errors GraphQL Errors Object

@@ -19,7 +19,7 @@ describe('ProductionCarousel', function () {
     await executeWithServer(async (server) => {
       server.create('ProductionNode', {
         name: 'My production without a picture',
-        coverImage: server.create('GrapheneImageFieldNode', {
+        coverImage: server.create('ImageNode', {
           url: 'http://pathto.example/my-image0.png',
         }),
         society: server.create('SocietyNode', { name: 'Dramatic Pause' }),
@@ -28,7 +28,7 @@ describe('ProductionCarousel', function () {
       });
       server.create('ProductionNode', {
         name: 'Upside Down Cake',
-        coverImage: server.create('GrapheneImageFieldNode', {
+        coverImage: server.create('ImageNode', {
           url: 'http://pathto.example/my-image.png',
         }),
         society: server.create('SocietyNode', {
@@ -39,7 +39,7 @@ describe('ProductionCarousel', function () {
       });
       server.create('ProductionNode', {
         name: 'Legally Ginger',
-        coverImage: server.create('GrapheneImageFieldNode', {
+        coverImage: server.create('ImageNode', {
           url: 'http://pathto.example/my-image2.png',
         }),
         society: server.create('SocietyNode', { name: 'MTB' }),

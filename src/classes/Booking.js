@@ -218,11 +218,18 @@ export default class Booking {
   }
 
   /**
+   * @returns {number} Total cost / price of the booking in pennies
+   */
+  get total_price() {
+    if (!this.price_breakdown) return 0;
+    return this.price_breakdown.totalPrice;
+  }
+
+  /**
    * @returns {string} Total cost / price of the booking in pounds
    */
   get total_price_pounds() {
-    if (!this.price_breakdown) return (0).toFixed(2);
-    return (this.price_breakdown.totalPrice / 100).toFixed(2);
+    return (this.total_price / 100).toFixed(2);
   }
 
   /**

@@ -18,7 +18,7 @@ export default {
         afterCreate(venue, server) {
           updateIfDoesntHave(venue, {
             image: () => {
-              return server.create('GrapheneImageFieldNode', {
+              return server.create('ImageNode', {
                 url: 'https://via.placeholder.com/1920x960',
               });
             },

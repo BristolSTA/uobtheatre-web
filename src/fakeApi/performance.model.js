@@ -72,35 +72,4 @@ export default {
       }),
     };
   },
-  registerGQLTypes() {
-    return `
-      type PerformanceNode implements Node {
-        id: ID!
-        production: ProductionNode!
-        venue: VenueNode
-        doorsOpen: DateTime
-        start: DateTime
-        end: DateTime
-        description: String
-        extraInformation: String
-        disabled: Boolean!
-        seatGroups(offset: Int, before: String, after: String, first: Int, last: Int): SeatGroupNodeConnection!
-        capacity: Int
-        capacityRemaining: Int
-        ticketOptions: [PerformanceSeatGroupNode]
-        minSeatPrice: Int
-
-        durationMins: Int
-        isInperson: Boolean!
-        isOnline: Boolean!
-        soldOut: Boolean!
-        discounts: [DiscountNode]
-      }
-    `;
-  },
-  registerGQLQueries() {
-    return `
-      performance(id: ID!): PerformanceNode
-    `;
-  },
 };

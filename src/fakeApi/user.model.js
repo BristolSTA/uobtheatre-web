@@ -145,25 +145,4 @@ export default {
       }),
     };
   },
-  registerGQLTypes() {
-    return `
-    type UserNode implements Node {
-      lastLogin: DateTime
-      isSuperuser: Boolean!
-      firstName: String!
-      lastName: String!
-      isStaff: Boolean!
-      isActive: Boolean!
-      dateJoined: DateTime!
-      id: ID!
-      email: String!
-      pk: Int
-      archived: Boolean
-      verified: Boolean
-      secondaryEmail: String
-
-      bookings(offset: Int, before: String, after: String, first: Int, last: Int, reference: UUID, user: ID, performance: ID, status: String, id: ID, orderBy: String): BookingNodeConnection!
-    }
-    `;
-  },
 };

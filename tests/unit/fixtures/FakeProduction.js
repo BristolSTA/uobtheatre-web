@@ -7,15 +7,15 @@ export default (server) => {
     description: 'The description of the show.',
     society: server.create('societyNode', {
       name: 'Joe Bloggs Productions',
-      logo: server.create('GrapheneImageFieldNode', {
+      logo: server.create('ImageNode', {
         url: 'http://pathto.example/logo-image.png',
       }),
       slug: 'joe-bloggs-productions',
     }),
-    posterImage: server.create('GrapheneImageFieldNode', {
+    posterImage: server.create('ImageNode', {
       url: 'http://pathto.example/poster-image.png',
     }),
-    featuredImage: server.create('GrapheneImageFieldNode', {
+    featuredImage: server.create('ImageNode', {
       url: 'http://pathto.example/featured-image.png',
     }),
     coverImage: null,
@@ -64,7 +64,7 @@ export default (server) => {
       server.create('castMemberNode', {
         name: 'Kit',
         role: 'Crazy person',
-        profilePicture: server.create('GrapheneImageFieldNode', {
+        profilePicture: server.create('ImageNode', {
           url: 'http://pathto.example/profile-pic.png',
         }),
       }),

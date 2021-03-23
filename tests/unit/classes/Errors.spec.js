@@ -86,6 +86,12 @@ describe('Errors', () => {
     expect(nonFieldErrors[0].message).to.eq('An general issue');
   });
 
+  it('can get all errors', () => {
+    expect(errors.all_errors).length(3);
+    expect(errors.all_errors).to.include.members(errors.non_field_errors);
+    expect(errors.all_errors).to.include.members(errors.errors.field_errors);
+  });
+
   it('can record new errors', () => {
     errors.record([
       {

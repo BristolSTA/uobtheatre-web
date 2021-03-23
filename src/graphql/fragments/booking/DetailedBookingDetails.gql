@@ -30,5 +30,6 @@ fragment DetailedBookingDetails on BookingNode {
     venue {
       slug
     }
+    durationMins
   }
 }

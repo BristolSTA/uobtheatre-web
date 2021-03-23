@@ -152,7 +152,7 @@ describe('Home', function () {
     // Seed a production that can be featured
     server.create('ProductionNode', {
       name: 'Upside Down Cake',
-      coverImage: server.create('GrapheneImageFieldNode', {
+      coverImage: server.create('ImageNode', {
         url: 'http://pathto.example/my-image.png',
       }),
       society: server.create('SocietyNode', { name: 'Joe Bloggs Productions' }),
@@ -161,7 +161,7 @@ describe('Home', function () {
     });
     server.create('ProductionNode', {
       name: 'Legally Ginger',
-      coverImage: server.create('GrapheneImageFieldNode', {
+      coverImage: server.create('ImageNode', {
         url: 'http://pathto.example/my-image2.png',
       }),
       society: server.create('SocietyNode', { name: 'MTB' }),

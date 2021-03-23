@@ -30,6 +30,10 @@
         @remove-ticket="onRemoveTicket"
       />
     </div>
+    <all-errors-display
+      :errors="errors"
+      class="p-2 text-center bg-sta-gray-dark"
+    />
     <div v-if="booking.tickets.length" class="flex my-4">
       <div
         class="px-4 pb-2 mx-auto text-center border-4 border-dashed rounded-md min-w-1/2 border-sta-gray"
@@ -115,11 +119,15 @@ import Booking from '@/classes/Booking';
 import Ticket from '@/classes/Ticket';
 import TicketMatrix from '@/classes/TicketsMatrix';
 import SeatGroup from '@/components/booking/SeatGroup.vue';
+import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue';
 import PriceBreakdownFragment from '@/graphql/fragments/booking/AllPriceBreakdown.gql';
+import DetailBookingFragment from '@/graphql/fragments/booking/DetailedBookingDetails.gql';
+import ErrorsPartial from '@/graphql/partials/ErrorsPartial';
+import { performMutation } from '@/utils';
 
 export default {
   name: 'TicketSelectionStage',
-  components: { SeatGroup },
+  components: { SeatGroup, AllErrorsDisplay },
   props: {
     production: {
       required: true,
@@ -130,8 +138,8 @@ export default {
       type: Booking,
     },
     ticketMatrix: {
-      default: null,
       type: TicketMatrix,
+      default: null,
     },
   },
   data() {
@@ -140,6 +148,7 @@ export default {
       selected_location_index: null,
 
       interaction_timer: lo.debounce(this.updateAPI, 2 * 1000),
+      errors: null,
     };
   },
   methods: {
@@ -166,22 +175,9 @@ export default {
     },
     async updateAPI() {
       let queryBody = `
+        ${ErrorsPartial}
         booking {
-          id
-          tickets {
-            id
-            seatGroup {
-              id
-              name
-            }
-            concessionType {
-              id
-              name
-            }
-          }
-          priceBreakdown {
-            ...AllPriceBreakdown
-          }
+          ...DetailedBookingDetails
         }`;
 
       let variables = {
@@ -191,37 +187,52 @@ export default {
       };
 
       let bookingResponse;
-      if (!this.booking.id) {
-        // We haven't got a booking yet, lets create one
-        bookingResponse = await this.$apollo.mutate({
-          mutation: gql`
+      try {
+        if (!this.booking.id) {
+          // We haven't got a booking yet, lets create one
+          let data = await performMutation(
+            this.$apollo,
+            {
+              mutation: gql`
             mutation($performanceID: IdInputField!, $tickets: [CreateTicketInput]) {
               createBooking(performanceId: $performanceID, tickets: $tickets) {
                 ${queryBody}
               }
             }
             ${PriceBreakdownFragment}
+            ${DetailBookingFragment}
           `,
-          variables: variables,
-        });
-        bookingResponse = bookingResponse.data.createBooking.booking;
-      } else {
-        // We have a booking, lets update it
-        bookingResponse = await this.$apollo.mutate({
-          mutation: gql`
-            mutation($id: IdInputField!, $tickets: [CreateTicketInput]) {
+              variables: variables,
+            },
+            'createBooking'
+          );
+          bookingResponse = data.createBooking.booking;
+        } else {
+          // We have a booking, lets update it
+          let data = await performMutation(
+            this.$apollo,
+            {
+              mutation: gql`
+            mutation($id: IdInputField!, $tickets: [UpdateTicketInput]) {
               updateBooking(bookingId: $id, tickets: $tickets) {
                 ${queryBody}
               }
             }
             ${PriceBreakdownFragment}
+            ${DetailBookingFragment}
           `,
-          variables: variables,
-        });
-        bookingResponse = bookingResponse.data.updateBooking.booking;
+              variables: variables,
+            },
+            'updateBooking'
+          );
+          bookingResponse = data.updateBooking.booking;
+        }
+      } catch ({ errors }) {
+        this.errors = errors;
+        return;
       }
+
       // Check for changes since API called.
-      //TODO: - this isn't very thorough...
       if (this.booking.tickets.length == bookingResponse.tickets.length) {
         return this.booking.updateFromAPIData(bookingResponse);
       }

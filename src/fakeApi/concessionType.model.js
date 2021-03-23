@@ -24,14 +24,4 @@ export default {
       }),
     };
   },
-  registerGQLTypes() {
-    return `
-    type ConcessionTypeBookingType {
-      price: Int
-      pricePounds: String
-      
-      concessionType: ConcessionTypeNode
-    } 
-    `;
-  },
 };

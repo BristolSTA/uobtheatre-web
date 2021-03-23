@@ -1,5 +1,3 @@
-import { Response } from 'miragejs';
-
 /**
  * Updates a MirageJS model with factoried relationships if another value not already given
  *
@@ -33,29 +31,6 @@ let updateIfDoesntHave = function (model, keyValues, value) {
     });
     model.update(updateObj);
   });
-};
-
-/**
- * A Django Rest Framework equivilent of a validation error response, used to send a validation error response via MirageJS
- *
- * @param {object} fieldErrors Set of field errors (i.e. for a specific field)
- * @param {Array<string>} nonFieldErrors List of non-field errors as strings
- * @param {?number} errorCode HTTP Error code to send with response. Defaults to 400
- * @returns {Response} MirageJS Reponse Object
- */
-let ValidationErrorResponse = (
-  fieldErrors,
-  nonFieldErrors,
-  errorCode = 400
-) => {
-  let data = {};
-  if (fieldErrors) {
-    data['field_errors'] = fieldErrors;
-  }
-  if (nonFieldErrors) {
-    data['non_field_errors'] = nonFieldErrors;
-  }
-  return new Response(errorCode, {}, data);
 };
 
 /**
@@ -121,7 +96,7 @@ let generateConcessionTypeBookingTypes = (
 let authedUser = (context) => {
   let authToken =
     context.request.requestHeaders.authorization &&
-    context.request.requestHeaders.authorization.match(/Token (.+)$/)[1];
+    context.request.requestHeaders.authorization.match(/JWT (.+)$/)[1];
 
   if (!authToken) return null;
 
@@ -197,5 +172,4 @@ export {
   mutationWithErrorsResolver,
   NonFieldError,
   updateIfDoesntHave,
-  ValidationErrorResponse,
 };
