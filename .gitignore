@@ -8,6 +8,7 @@ node_modules
 
 # Fake API Temp Files
 src/fakeApi/schema.graphql
+src/fakeApi/db.json
 
 # local env files
 .env.local
