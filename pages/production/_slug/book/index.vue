@@ -28,7 +28,7 @@ import lo from 'lodash'
 import { DateTime } from 'luxon'
 
 import PerformanceOverview from '@/components/production/PerformanceOverview.vue'
-import BookingStage from '~/classes/BookingStage'
+import BookingStage from '@/classes/BookingStage'
 export default {
   stageInfo: new BookingStage({
     name: 'Select Performance',

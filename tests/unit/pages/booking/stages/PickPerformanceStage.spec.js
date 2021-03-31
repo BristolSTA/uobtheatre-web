@@ -5,13 +5,13 @@ import { DateTime } from 'luxon'
 import PerformanceOverview from '@/components/production/PerformanceOverview.vue'
 import ProductionFragment from '@/graphql/fragments/ProductionFragment.gql'
 
+import PickPerformanceStage from '@/pages/production/_slug/book/index.vue'
 import FakeProduction from '../../../fixtures/FakeProduction'
 import {
   executeWithServer,
   mountWithRouterMock,
   runApolloQuery,
 } from '../../../helpers'
-import PickPerformanceStage from '~/pages/production/_slug/book/index.vue'
 
 describe('Pick Performance Stage', () => {
   let stageComponent

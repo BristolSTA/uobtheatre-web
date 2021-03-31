@@ -59,7 +59,7 @@
                 title="Your Bookings"
                 subtitle="View bookings and tickets"
                 icon="theater-masks"
-                :route="{ path: 'user', hash: '#myBookings' }"
+                :route="{ path: '/user', hash: '#myBookings' }"
               />
             </div>
             <div class="flex md:justify-end">

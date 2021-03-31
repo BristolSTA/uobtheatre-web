@@ -2,9 +2,8 @@
   <div class="relative">
     <button
       class="flex flex-row items-center w-full px-4 py-2 mt-2 font-semibold text-left text-white bg-transparent rounded-lg bg-sta-gray-light md:w-auto md:inline md:mt-0 md:ml-4 hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:shadow-outline"
-      @click="open = !open"
-      @keypress="open = !open"
-      @blur="open = false"
+      @click.stop="open = !open"
+      @keypress.stop="open = !open"
     >
       <slot></slot>
       <svg
@@ -23,6 +22,7 @@
     <transition name="fade">
       <div
         v-show="open"
+        @click.stop
         class="right-0 z-10 w-full mt-2 origin-top-right md:absolute md:max-w-screen-sm md:w-screen"
       >
         <div class="px-2 py-2 bg-white rounded-md shadow-lg">
@@ -40,8 +40,19 @@ export default {
       open: false,
     }
   },
+  mounted() {
+    document.addEventListener('click', this.hideMenu)
+  },
+  destroyed() {
+    document.removeEventListener('click', this.hideMenu)
+  },
   watch: {
     $route() {
+      this.open = false
+    },
+  },
+  methods: {
+    hideMenu() {
       this.open = false
     },
   },
