@@ -79,7 +79,7 @@ describe('Production', function () {
     expect(breadcrumbs.exists()).to.be.true
 
     assertNoVisualDifference(breadcrumbs.props('crumbs'), [
-      { text: 'Whats On', route: { name: 'productions' } },
+      { text: 'Whats On', route: '/productions' },
       {
         text: 'Legally Ginger',
       },

@@ -80,13 +80,13 @@
                 title="Login"
                 subtitle="With an exisiting account"
                 icon="sign-in-alt"
-                :route="{ name: 'login' }"
+                route="/login"
               />
               <dropdown-item
                 title="Register"
                 subtitle="Create a new account"
                 icon="user-edit"
-                :route="{ name: 'signup' }"
+                route="/signup"
               />
             </div>
           </template>

@@ -71,7 +71,7 @@ export default {
     },
     crumbs() {
       return [
-        { text: 'Whats On', route: { name: 'productions' } },
+        { text: 'Whats On', route: '/productions' },
         { text: this.production.name },
       ]
     },
