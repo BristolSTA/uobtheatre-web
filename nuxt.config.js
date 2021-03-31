@@ -43,7 +43,6 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '~/plugins/vue-filters.js',
-    '~/plugins/mirage.js',
     '~/plugins/initial-auth.js',
     '~/plugins/auth-helpers.js',
   ],
@@ -67,6 +66,9 @@ export default {
 
     // Dotenv
     '@nuxtjs/dotenv',
+
+    // Mirage JS
+    '~/modules/mirage',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules

@@ -45,6 +45,9 @@ jobs:
       - name: Install dependencies 👨🏻‍💻
         run: yarn
 
+      - name: Download API Schema 📩
+        run: yarn api:download-schema
+
       - name: Run linter 👀
         run: yarn lint
 

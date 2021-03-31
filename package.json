@@ -12,8 +12,8 @@
     "lint:style": "stylelint \"**/*.{vue,css}\" --ignore-path .gitignore",
     "lint": "yarn lint:js && yarn lint:style",
     "test:unit": "jest",
-    "pretest:e2e:dev": "yarn dev",
-    "pretest:e2e": "yarn build && yarn start",
+    "pretest:e2e:dev": "USE_MIRAGE=true yarn generate --devtools && yarn start",
+    "pretest:e2e": "yarn generate && yarn start",
     "test:e2e:silent": "cypress run"
   },
   "lint-staged": {
