@@ -56,7 +56,7 @@ export default {
     '@nuxtjs/eslint-module',
 
     // // https://go.nuxtjs.dev/stylelint
-    // '@nuxtjs/stylelint-module',
+    '@nuxtjs/stylelint-module',
 
     // TailwindCSS
     '@nuxtjs/tailwindcss',
@@ -103,9 +103,7 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {
-    terser: false,
-  },
+  build: {},
 
   // Apollo Configuration
   apollo: {
