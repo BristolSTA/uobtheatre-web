@@ -70,9 +70,12 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - run: yarn
-        name: Install Yarn Dependencies
+        name: Install Yarn Dependencies 👨🏻‍💻
 
-      - name: Run End-to-End Tests
+      - name: Download API Schema 📩
+        run: yarn api:download-schema
+
+      - name: Run End-to-End Tests 🧪
         uses: cypress-io/github-action@v2
         with:
           start: yarn pretest:e2e:dev
