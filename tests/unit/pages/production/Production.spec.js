@@ -10,7 +10,6 @@ import {
   assertNoVisualDifference,
   executeWithServer,
   mountWithRouterMock,
-  runApolloQuery,
   waitFor,
 } from '../../helpers'
 
@@ -75,7 +74,7 @@ describe('Production', function () {
     expect(productionPageComponent.vm.production.name).to.eq('Legally Ginger')
   })
 
-  it('has correct breadcrumbs', async () => {
+  it('has correct breadcrumbs', () => {
     const breadcrumbs = productionPageComponent.findComponent(Breadcrumbs)
     expect(breadcrumbs.exists()).to.be.true
 

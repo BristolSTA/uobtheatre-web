@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * Fetches the GraphQL API Schema from the uobtheatre-api repository, and installs it into the fake API
  *
@@ -12,7 +13,7 @@ return (async () => {
   let url = 'https://raw.githubusercontent.com/BristolSTA/uobtheatre-api/'
   const lockFile = './schema.lock'
 
-  if (process.argv[2] == 'update') {
+  if (process.argv[2] === 'update') {
     let lock = process.argv[3] ? process.argv[3] : null
     if (!lock) {
       const response = await got(

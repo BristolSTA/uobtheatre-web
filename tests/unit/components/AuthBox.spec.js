@@ -3,7 +3,6 @@ import { expect } from 'chai'
 import Errors from '@/classes/Errors'
 import UserAuthBox from '@/components/auth/UserAuthBox.vue'
 import { authService } from '@/services'
-import store from '@/store'
 import { swalToast } from '@/utils'
 
 import {

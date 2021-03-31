@@ -1,4 +1,3 @@
-import { shallowMount } from '@vue/test-utils'
 import { expect } from 'chai'
 
 import stages from '@/pages/production/_slug/book/-bookingStages'
@@ -158,7 +157,7 @@ describe('Create Booking Page', () => {
       await waitFor(() => bookingComponent.vm.ticketMatrix)
     })
 
-    it('loads required data on mount if has a performance id', async () => {
+    it('loads required data on mount if has a performance id', () => {
       expect(bookingComponent.vm.booking.performance.id).to.eq(
         performanceModel.id
       )

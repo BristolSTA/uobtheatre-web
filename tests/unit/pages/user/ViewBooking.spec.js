@@ -66,7 +66,7 @@ describe('View Booking', () => {
     await viewBookingComponent.vm.$nextTick()
   })
 
-  it('contains correct components', async () => {
+  it('contains correct components', () => {
     expect(viewBookingComponent.findComponent(PerformanceOverview).exists()).to
       .be.true
     expect(viewBookingComponent.findComponent(VenueOverview).exists()).to.be
@@ -77,7 +77,7 @@ describe('View Booking', () => {
       .true
   })
 
-  it('has correct breadcrumbs', async () => {
+  it('has correct breadcrumbs', () => {
     const breadcrumbs = viewBookingComponent.findComponent(Breadcrumbs)
     expect(breadcrumbs.exists()).to.be.true
 

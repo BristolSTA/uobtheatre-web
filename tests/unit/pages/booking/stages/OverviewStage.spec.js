@@ -47,7 +47,7 @@ describe('Overview Stage', () => {
     })
   })
 
-  it('contains correct overview components', async () => {
+  it('contains correct overview components', () => {
     expect(overviewComponent.findComponent(PerformanceOverview).exists()).to.be
       .true
     expect(overviewComponent.findComponent(VenueOverview).exists()).to.be.true

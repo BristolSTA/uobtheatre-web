@@ -1,4 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { RouterLinkStub } from '@vue/test-utils'
 import { expect } from 'chai'
 

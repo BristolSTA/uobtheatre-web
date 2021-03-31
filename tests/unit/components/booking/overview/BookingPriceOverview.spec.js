@@ -1,4 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { expect } from 'chai'
 
 import Booking from '@/classes/Booking'

@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 import Errors from '@/classes/Errors'
 import ErrorsPartial from '@/graphql/partials/ErrorsPartial'
-import { errorHandler, ValidationError } from '@/utils'
+import { ValidationError } from '@/utils'
 export default {
   /**
    * @param {object} context Nuxt Context

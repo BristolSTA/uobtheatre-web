@@ -330,7 +330,7 @@ export default {
     background-repeat: no-repeat;
     background-position: 50% 50%;
     border-radius: 5px;
-    padding: 0px;
+    padding: 0;
     box-sizing: border-box;
     min-width: 200px;
     min-height: 32px;

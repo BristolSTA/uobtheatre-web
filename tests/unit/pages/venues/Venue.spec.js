@@ -82,7 +82,7 @@ describe('Venue page', function () {
     })
 
     // building number and name
-    it('has the correct address', async () => {
+    it('has the correct address', () => {
       expect(fixTextSpacing(addressContainer.text())).to.contain(
         'Wills Memorial Building 69 Queens Road'
       )

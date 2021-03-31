@@ -158,7 +158,7 @@ describe('Payment Stage', () => {
   describe('with valid card / nonce input', () => {
     let server, booking, popupClose
     beforeAll(async () => {
-      server = await executeWithServer(async (server) => {
+      server = await executeWithServer((server) => {
         booking = server.create('bookingNode', {
           reference: 'abcd1234',
         })

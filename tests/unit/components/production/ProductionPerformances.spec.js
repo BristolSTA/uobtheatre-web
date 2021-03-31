@@ -7,7 +7,6 @@ import ProductionPerformances from '@/components/production/ProductionPerformanc
 
 import FakeProduction from '../../fixtures/FakeProduction.js'
 import {
-  assertNoVisualDifference,
   executeWithServer,
   fixTextSpacing,
   generateMountOptions,

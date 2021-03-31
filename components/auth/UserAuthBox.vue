@@ -183,7 +183,7 @@ import ErrorHelper from '@/components/ui/ErrorHelper.vue'
 import NonFieldError from '@/components/ui/NonFieldError.vue'
 import TextInput from '@/components/ui/TextInput.vue'
 import { authService } from '@/services'
-import { getValidationErrors, swalToast, ValidationError } from '@/utils'
+import { getValidationErrors, swalToast } from '@/utils'
 
 export default {
   name: 'UserAuthBox',

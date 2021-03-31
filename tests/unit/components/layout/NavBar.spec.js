@@ -3,7 +3,6 @@ import { expect } from 'chai'
 import DropdownNavItem from '@/components/layout/DropdownNavItem.vue'
 import NavBar from '@/components/layout/NavBar.vue'
 import ClickableLink from '@/components/ui/ClickableLink.vue'
-import { authService } from '@/services'
 
 import {
   fixTextSpacing,
