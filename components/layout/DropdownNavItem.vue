@@ -22,8 +22,8 @@
     <transition name="fade">
       <div
         v-show="open"
-        @click.stop
         class="right-0 z-10 w-full mt-2 origin-top-right md:absolute md:max-w-screen-sm md:w-screen"
+        @click.stop
       >
         <div class="px-2 py-2 bg-white rounded-md shadow-lg">
           <slot name="content" :open="open"></slot>
@@ -40,16 +40,16 @@ export default {
       open: false,
     }
   },
+  watch: {
+    $route() {
+      this.open = false
+    },
+  },
   mounted() {
     document.addEventListener('click', this.hideMenu)
   },
   destroyed() {
     document.removeEventListener('click', this.hideMenu)
-  },
-  watch: {
-    $route() {
-      this.open = false
-    },
   },
   methods: {
     hideMenu() {

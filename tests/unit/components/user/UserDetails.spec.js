@@ -21,7 +21,7 @@ describe('User Details', () => {
   beforeEach(() => {
     userDetailsComponent = mount(
       UserDetails,
-      generateMountOptions(['apollo'], {
+      generateMountOptions(['apollo', 'config'], {
         propsData: {
           user: {
             firstName: 'Joe',
