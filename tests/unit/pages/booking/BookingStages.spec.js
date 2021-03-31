@@ -1,0 +1,54 @@
+import { expect } from 'chai'
+
+import BookingStage from '@/classes/BookingStage'
+import stages, {
+  getNextStage,
+  getPreviousStage,
+  getStageIndex,
+} from '@/pages/production/_slug/book/-bookingStages'
+
+describe('Booking Stages', () => {
+  const fakeComponent = new (class {})()
+
+  it('can get stage index', () => {
+    const stage = new BookingStage('My Booking Stage', fakeComponent, {
+      path: 'my-booking-stage',
+    })
+    expect(getStageIndex(stage)).to.eq(-1)
+
+    expect(getStageIndex(stages[0].stageInfo)).to.eq(0)
+    expect(getStageIndex(stages[4].stageInfo)).to.eq(4)
+
+    expect(getStageIndex(undefined)).to.eq(-1)
+  })
+
+  it('can get the next stage', () => {
+    expect(
+      getStageIndex(getNextStage(null, { warnings: ['strobe lighting'] }))
+    ).to.eq(1)
+    // with warnings
+    expect(
+      getStageIndex(getNextStage(0, { warnings: ['strobe lighting'] }))
+    ).to.eq(1)
+    expect(
+      getStageIndex(getNextStage(1, { warnings: ['strobe lighting'] }))
+    ).to.eq(2)
+    // no warnings
+    expect(getStageIndex(getNextStage(0, { warnings: [] }))).to.eq(2)
+
+    expect(getStageIndex(getNextStage(2, {}))).to.eq(3)
+    expect(getStageIndex(getNextStage(3, {}))).to.eq(4)
+  })
+
+  it('can get the previous stage', () => {
+    expect(
+      getStageIndex(
+        getPreviousStage(stages[1], { warnings: ['strobe lighting'] }, {})
+      )
+    ).to.eq(0)
+    expect(
+      getStageIndex(getPreviousStage(1, { warnings: ['strobe lighting'] }, {}))
+    ).to.eq(0)
+    expect(getStageIndex(getPreviousStage(2, { warnings: [] }, {}))).to.eq(0)
+  })
+})
