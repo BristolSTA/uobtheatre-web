@@ -20,8 +20,8 @@ export default () => {
     services: {
       square: {
         script:
-          process.env.NODE_ENV !== 'production' &&
-          !process.env.APP_SQUARE_APP_ID.startsWith('sandbox')
+          process.env.NODE_ENV !== 'production' ||
+          process.env.APP_SQUARE_APP_ID.startsWith('sandbox')
             ? 'https://js.squareupsandbox.com/v2/paymentform'
             : 'https://js.squareup.com/v2/paymentform',
         application_id: process.env.APP_SQUARE_APP_ID,
