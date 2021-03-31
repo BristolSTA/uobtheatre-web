@@ -62,10 +62,10 @@ describe('NavBar', function () {
     expect(links.at(2).text()).to.eq('About Us')
 
     // Fourth link should be our "Login" section in the dropdown
-    expect(links.at(3).props('to').name).to.eq('login')
+    expect(links.at(3).props('to')).to.eq('/login')
 
     // Final link should be our "Register" section in the dropdown
-    expect(links.at(4).props('to').name).to.eq('signup')
+    expect(links.at(4).props('to')).to.eq('/signup')
   })
 
   it('can toggle the mobile navbar', async () => {
@@ -95,15 +95,15 @@ describe('NavBar', function () {
       navbarComponent
         .findComponent(DropdownNavItem)
         .findComponent(RouterLinkStub)
-        .props('to').name
-    ).to.eq('login')
+        .props('to')
+    ).to.eq('/login')
     expect(
       navbarComponent
         .findComponent(DropdownNavItem)
         .findAllComponents(RouterLinkStub)
         .at(1)
-        .props('to').name
-    ).to.eq('signup')
+        .props('to')
+    ).to.eq('/signup')
     jest.clearAllMocks()
   })
 

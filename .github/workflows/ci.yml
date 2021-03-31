@@ -52,7 +52,7 @@ jobs:
         run: yarn lint
 
       - name: Run tests 🧪
-        run: yarn test:unit
+        run: yarn test:unit --coverage
 
   e2e:
     runs-on: ubuntu-latest
