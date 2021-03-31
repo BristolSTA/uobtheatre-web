@@ -1,14 +1,8 @@
 import { createApolloClient } from 'vue-cli-plugin-apollo/graphql-client'
-import config from '@/config'
 import VueApollo from 'vue-apollo'
-
-// Http endpoint
-const httpEndpoint = config.api.graphql_endpoint
 
 // Config
 const defaultOptions = {
-  // You can use `https` for secure connection (recommended in production)
-  httpEndpoint,
   // You can use `wss` for secure connection (recommended in production)
   // Use `null` to disable subscriptions
   wsEndpoint: null,
@@ -25,6 +19,7 @@ const defaultOptions = {
 export default (context) => {
   return {
     ...defaultOptions,
+    httpEndpoint: context.$config.api.graphql_endpoint,
   }
 }
 

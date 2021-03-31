@@ -35,7 +35,6 @@ import ProductionTile from '@/components/production/ProductionTile.vue'
 import InfiniteScroll from '@/components/ui/InfiniteScroll.vue'
 export default {
   components: { ProductionTile, InfiniteScroll },
-  middleware: 'authed',
   data() {
     return {
       productions: null,

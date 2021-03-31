@@ -91,7 +91,7 @@
           </button>
           <p class="mt-2">
             Want to delete your account? Get in touch at
-            <span v-html="config.application.support_email"></span>
+            <span v-html="$config.application.support_email"></span>
           </p>
         </div>
       </form>
@@ -109,7 +109,6 @@
 
 <script>
 import TextInput from '@/components/ui/TextInput.vue'
-import config from '@/config'
 import ChangeEmail from './ChangeEmail.vue'
 import ChangePassword from './ChangePassword.vue'
 import LoadingContainer from '../ui/LoadingContainer.vue'
@@ -145,9 +144,6 @@ export default {
       loading: false,
       errors: null,
     }
-  },
-  computed: {
-    config: () => config,
   },
   methods: {
     editToggle() {

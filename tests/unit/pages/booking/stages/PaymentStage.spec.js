@@ -47,7 +47,7 @@ describe('Payment Stage', () => {
     })
     paymentStageComponent = mount(
       PagementStage,
-      generateMountOptions(['apollo'], {
+      generateMountOptions(['apollo', 'config'], {
         propsData: {
           booking,
         },

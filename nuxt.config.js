@@ -8,6 +8,8 @@ export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
 
+  publicRuntimeConfig: config(),
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'UOB Theatre',
@@ -64,9 +66,6 @@ export default {
     // Font Awesome
     '@nuxtjs/fontawesome',
 
-    // Dotenv
-    '@nuxtjs/dotenv',
-
     // Mirage JS
     '~/modules/mirage',
   ],
@@ -111,7 +110,7 @@ export default {
       default: '~/plugins/vue-apollo.config.js',
     },
     // Name of cookie to store token
-    tokenName: config.auth.cookie,
+    tokenName: config().auth.cookie,
 
     // Sets the authentication type for any authorized request.
     authenticationType: 'JWT',

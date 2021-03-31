@@ -36,12 +36,12 @@
     &[disabled] {
       @apply cursor-not-allowed;
     }
+    &:focus {
+      @apply outline-none;
+    }
     &:hover:not(.disabled),
     &:hover:not([disabled]) {
       @apply bg-sta-gray-light;
-    }
-    &:focus {
-      @apply outline-none;
     }
   }
 
@@ -80,5 +80,3 @@
     @apply font-semibold;
   }
 }
-
-@import './nprogress';

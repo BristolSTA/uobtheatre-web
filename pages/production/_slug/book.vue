@@ -56,7 +56,6 @@ import BookingNavigation from '@/components/booking/BookingNavigation.vue'
 import ProductionBanner from '@/components/production/ProductionBanner.vue'
 import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
 import ClickableLink from '@/components/ui/ClickableLink.vue'
-import config from '@/config'
 import { swal } from '@/utils'
 
 import ProductionFragment from '@/graphql/fragments/ProductionFragment.gql'
@@ -110,7 +109,7 @@ export default {
   head() {
     return {
       title: `Book ${this.production.name}`,
-      script: [{ src: config.services.square.script, defer: true }],
+      script: [{ src: this.$config.services.square.script, defer: true }],
     }
   },
   computed: {

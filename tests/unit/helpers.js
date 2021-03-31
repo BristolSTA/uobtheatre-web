@@ -1,11 +1,13 @@
 import { createLocalVue, mount, RouterLinkStub } from '@vue/test-utils'
 import { expect } from 'chai'
 import VueApollo from 'vue-apollo'
+import config from '@/config'
 
 import { makeServer as makeAPIServer } from '@/fakeApi'
 import { createProvider } from '@/plugins/vue-apollo.config'
 
 const defaultApolloClientOptions = {
+  httpEndpoint: '/fakeapi/graphql/',
   apollo: {
     defaultOptions: {
       query: {
@@ -128,6 +130,10 @@ const mountWithRouterMock = async function (
  */
 const generateMountOptions = function (types = [], options = {}) {
   if (!options.stubs) options.stubs = {}
+  if (!options.mocks) options.mocks = {}
+  if (types.includes('config')) {
+    options.mocks.$config = config()
+  }
   if (types.includes('apollo') || types.includes('apollo-new')) {
     if (!options.localVue) options.localVue = createLocalVue()
     options.localVue.use(VueApollo)
@@ -210,9 +216,9 @@ const seedAndAuthAsUser = (server, overrides = {}) => {
     overrides
   )
   apolloProvider = createProvider(
-    {
+    Object.assign(defaultApolloClientOptions, {
       getAuth: () => `JWT ${options.token}`,
-    },
+    }),
     defaultVueApolloOptions
   )
 

@@ -82,7 +82,6 @@ import Swal from 'sweetalert2'
 
 import Booking from '@/classes/Booking'
 import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue'
-import config from '@/config'
 import { getValidationErrors, performMutation, swal } from '@/utils'
 import BookingStage from '@/classes/BookingStage'
 export default {
@@ -120,8 +119,8 @@ export default {
     setupForm() {
       // eslint-disable-next-line no-undef
       this.paymentForm = new SqPaymentForm({
-        applicationId: config.services.square.application_id,
-        locationId: config.services.square.location_id,
+        applicationId: this.$config.services.square.application_id,
+        locationId: this.$config.services.square.location_id,
         inputClass: 'sq-input',
         autoBuild: false,
         inputStyles: [
