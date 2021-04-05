@@ -18,6 +18,22 @@ export default {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
+        hid: 'og:title',
+        name: 'og:title',
+        content: 'UOB Theatre',
+      },
+      {
+        hid: 'og:site_name',
+        name: 'og:site_name',
+        content: 'UOB Theatre',
+      },
+      {
+        hid: 'og:description',
+        name: 'og:description',
+        content:
+          'From Aristophanes to Ayckbourn, from Puccini to pantomime, Bristol Student Theatre has it all. Find out about our performances, buy tickets, discover our societies and how to get involved, and sign up to our newsletter to stay updated with all the latest shows.',
+      },
+      {
         hid: 'description',
         name: 'description',
         content:
