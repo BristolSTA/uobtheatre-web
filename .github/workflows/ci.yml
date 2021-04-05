@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@master
+        
+      - name: Copy Testing Env ✉
         run: cp .env.test .env
 
       - name: Setup node env 🏗
