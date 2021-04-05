@@ -37,7 +37,7 @@
     "luxon": "^1.25.0",
     "nuxt": "^2.15.3",
     "qrcode.vue": "^1.7.0",
-    "square": "^8.1.1",
+    "square": "^9.1.0",
     "sweetalert2": "^10.14.1"
   },
   "devDependencies": {
