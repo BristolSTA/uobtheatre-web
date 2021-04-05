@@ -1,66 +1,60 @@
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { expect } from 'chai';
+import { expect } from 'chai'
 
-import Booking from '@/classes/Booking';
-import BookingPriceOverview from '@/components/booking/overview/BookingPriceOverview.vue';
-import OverviewBox from '@/components/booking/overview/OverviewBox.vue';
+import Booking from '@/classes/Booking'
+import BookingPriceOverview from '@/components/booking/overview/BookingPriceOverview.vue'
+import OverviewBox from '@/components/booking/overview/OverviewBox.vue'
 
-import FakeBooking from '../../../fixtures/FakeBooking';
+import FakeBooking from '../../../fixtures/FakeBooking'
 import {
   executeWithServer,
   fixTextSpacing,
   mountWithRouterMock,
   runApolloQuery,
-} from '../../../helpers';
+} from '../../../helpers'
 
 describe('Booking Price Overview', function () {
-  let bookingPriceOverviewComponent;
-  let booking = new Booking();
+  let bookingPriceOverviewComponent
+  const booking = new Booking()
 
   beforeAll(async () => {
     await executeWithServer(async (server) => {
-      let bookingModel = FakeBooking(server);
+      const bookingModel = FakeBooking(server)
 
-      let { data } = await runApolloQuery({
+      const { data } = await runApolloQuery({
         query: require('@/graphql/queries/BookingInformation.gql'),
         variables: {
           bookingId: bookingModel.id,
         },
-      });
-      booking.updateFromAPIData(data.booking);
-    });
+      })
+      booking.updateFromAPIData(data.booking)
+    })
     bookingPriceOverviewComponent = await mountWithRouterMock(
       BookingPriceOverview,
       {
         propsData: {
-          booking: booking,
+          booking,
         },
       }
-    );
-  });
+    )
+  })
 
   it('has overview box component', () => {
     expect(bookingPriceOverviewComponent.findComponent(OverviewBox).exists()).to
-      .be.true;
+      .be.true
+  })
 
-    expect(
-      bookingPriceOverviewComponent.findAllComponents(FontAwesomeIcon).length
-    ).to.equal(1);
-  });
+  it('has correct costs info', () => {
+    const costRows = bookingPriceOverviewComponent.findAll('tr')
 
-  it('has correct costs info', async () => {
-    await bookingPriceOverviewComponent.vm;
-    let costRows = bookingPriceOverviewComponent.findAll('tr');
-
-    expect(costRows.length).to.eq(2);
+    expect(costRows.length).to.eq(2)
     expect(fixTextSpacing(costRows.at(0).text())).to.eq(
       'Tickets Including any discounts : £35.50'
-    );
-    expect(fixTextSpacing(costRows.at(1).text())).to.eq('Booking Fee : £1.78');
+    )
+    expect(fixTextSpacing(costRows.at(1).text())).to.eq('Booking Fee : £1.78')
     expect(
       fixTextSpacing(
         bookingPriceOverviewComponent.findComponent({ ref: 'total' }).text()
       )
-    ).to.eq('Order Total: £37.28');
-  });
-});
+    ).to.eq('Order Total: £37.28')
+  })
+})

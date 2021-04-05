@@ -1,12 +1,12 @@
-import { mount } from '@vue/test-utils';
-import { expect } from 'chai';
+import { mount } from '@vue/test-utils'
+import { expect } from 'chai'
 
-import SocietyTile from '@/components/society/SocietyTile.vue';
+import SocietyTile from '@/components/society/SocietyTile.vue'
 
-import { generateMountOptions, RouterLinkStub } from '../../helpers';
+import { generateMountOptions, RouterLinkStub } from '../../helpers'
 
 describe('Society Tile', () => {
-  let societyTileComponent;
+  let societyTileComponent
   beforeAll(() => {
     societyTileComponent = mount(
       SocietyTile,
@@ -21,20 +21,19 @@ describe('Society Tile', () => {
           },
         },
       })
-    );
-  });
+    )
+  })
 
   it('links to society page', () => {
-    let link = societyTileComponent.findComponent(RouterLinkStub);
-    expect(link.props('to').name).to.eq('society');
-    expect(link.props('to').params.societySlug).to.eq('dramsoc');
-  });
+    const link = societyTileComponent.findComponent(RouterLinkStub)
+    expect(link.props('to')).to.eq('/society/dramsoc')
+  })
   it('has logo', () => {
     expect(societyTileComponent.find('img').attributes('src')).to.eq(
       'example.org/logo.png'
-    );
-  });
+    )
+  })
   it('has society name', () => {
-    expect(societyTileComponent.text()).to.contain('Dramsoc');
-  });
-});
+    expect(societyTileComponent.text()).to.contain('Dramsoc')
+  })
+})
