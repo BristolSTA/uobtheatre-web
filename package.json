@@ -38,7 +38,7 @@
     "nuxt": "^2.15.4",
     "qrcode.vue": "^1.7.0",
     "square": "^9.1.0",
-    "sweetalert2": "^10.15.7"
+    "sweetalert2": "^10.16.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.1",
