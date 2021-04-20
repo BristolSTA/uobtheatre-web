@@ -23,9 +23,9 @@ export default {
         start: () => DateTime.local(),
         end: () =>
           DateTime.local().plus({
-            day: faker.random.number({ min: 1, max: 3 }),
+            day: faker.datatype.number({ min: 1, max: 3 }),
           }),
-        minSeatPrice: () => faker.random.number({ min: 100, max: 1000 }),
+        minSeatPrice: () => faker.datatype.number({ min: 100, max: 1000 }),
         isBookable: () => true,
 
         withCoverImage: trait({

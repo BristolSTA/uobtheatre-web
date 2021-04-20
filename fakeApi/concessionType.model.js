@@ -12,7 +12,7 @@ export default {
       }),
       concessionTypeBookingType: Factory.extend({
         price() {
-          return faker.random.number({ min: 1, max: 10 }) * 100
+          return faker.datatype.number({ min: 1, max: 10 }) * 100
         },
         afterCreate(node, server) {
           updateIfDoesntHave(node, {

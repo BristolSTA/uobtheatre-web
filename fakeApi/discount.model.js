@@ -16,7 +16,7 @@ export default {
         percentage: () => faker.random.float({ max: 0.5, min: 0 }),
       }),
       discountRequirementNode: Factory.extend({
-        number: () => faker.random.number({ min: 1, max: 10 }),
+        number: () => faker.datatype.number({ min: 1, max: 10 }),
 
         afterCreate(discountRequirement, server) {
           updateIfDoesntHave(discountRequirement, {

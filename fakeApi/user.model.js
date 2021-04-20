@@ -18,7 +18,7 @@ export default {
         lastName: () => faker.name.lastName(),
         email: () => faker.internet.email(),
         password: () => faker.internet.password(),
-        token: () => faker.random.uuid(),
+        token: () => faker.datatype.uuid(),
       }),
     }
   },
@@ -106,7 +106,7 @@ export default {
           context.mirageSchema.userNodes.create({
             email: args.email,
             password: args.password,
-            token: faker.random.uuid(),
+            token: faker.datatype.uuid(),
           })
 
           return null

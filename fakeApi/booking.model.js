@@ -16,9 +16,9 @@ export default {
         production: belongsTo('productionNode'),
       }),
       paymentNode: Model.extend({
-        providerPaymentId: () => faker.random.uuid(),
-        // referenceId: () => faker.random.uuid(),
-        value: () => faker.random.number({ min: 100, max: 1000 }),
+        providerPaymentId: () => faker.datatype.uuid(),
+        // referenceId: () => faker.datatype.uuid(),
+        value: () => faker.datatype.number({ min: 100, max: 1000 }),
         currency: 'GBP',
         createdAt: new Date(),
         status: 'COMPLETED',
@@ -77,12 +77,12 @@ export default {
           ]),
         description: () => faker.lorem.words(5),
         percentage: () => faker.random.arrayElement([null, 0.05]),
-        value: () => faker.random.number({ min: 50, max: 400 }),
+        value: () => faker.datatype.number({ min: 50, max: 400 }),
       }),
       paymentNode: Factory.extend({
         provider: () =>
           faker.random.arrayElement(['CASH', 'SQUARE_ONLINE', 'SQUARE_POS']),
-        value: () => faker.random.number({ min: 1000, max: 3000 }),
+        value: () => faker.datatype.number({ min: 1000, max: 3000 }),
         type: 'PURCHASE',
         curreny: 'GBP',
         cardBrand: () =>
@@ -171,7 +171,7 @@ export default {
         const payment = booking.createPayment({
           type: 'PURCHASE',
           provider: 'SQUARE_ONLINE',
-          providerPaymentId: faker.random.uuid(),
+          providerPaymentId: faker.datatype.uuid(),
           value: booking.priceBreakdown.totalPrice,
           currency: 'GBP',
           createdAt: new Date(),
