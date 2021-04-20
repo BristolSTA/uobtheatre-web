@@ -12,7 +12,7 @@ export default {
         slug() {
           return this.name.toLowerCase().replace(/ /g, '-')
         },
-        internalCapacity: () => faker.random.number({ min: 50, max: 200 }),
+        internalCapacity: () => faker.datatype.number({ min: 50, max: 200 }),
         description: () => faker.lorem.paragraphs(1),
         publiclyListed: true,
         afterCreate(venue, server) {
@@ -31,7 +31,7 @@ export default {
       addressNode: Factory.extend({
         buildingName: () => `The ${faker.random.words(1)} Building`,
         street: () => faker.address.streetName(),
-        buildingNumber: () => faker.random.number({ min: 100, max: 110 }),
+        buildingNumber: () => faker.datatype.number({ min: 100, max: 110 }),
         city: 'Bristol',
         postcode: () => faker.address.zipCode(),
         latitude: () => faker.address.latitude(),

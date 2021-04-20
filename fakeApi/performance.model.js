@@ -10,18 +10,18 @@ export default {
       performanceNode: Factory.extend({
         start() {
           return DateTime.local().plus({
-            days: faker.random.number({ min: 1, max: 3 }),
-            hours: faker.random.number({ min: 1, max: 3 }),
+            days: faker.datatype.number({ min: 1, max: 3 }),
+            hours: faker.datatype.number({ min: 1, max: 3 }),
           })
         },
         end() {
           return DateTime.fromISO(this.start).plus({
-            hours: faker.random.number({ min: 1, max: 3 }),
+            hours: faker.datatype.number({ min: 1, max: 3 }),
           })
         },
         doorsOpen() {
           return DateTime.fromISO(this.start).minus({
-            minutes: faker.random.number({ min: 1, max: 20 }),
+            minutes: faker.datatype.number({ min: 1, max: 20 }),
           })
         },
         description: faker.lorem.words(4),
@@ -32,24 +32,24 @@ export default {
         durationMins() {
           return Math.round((this.end - this.start) / (1000 * 60))
         },
-        minSeatPrice: () => faker.random.number({ min: 100, max: 1000 }),
-        capacityRemaining: () => faker.random.number({ min: 40, max: 100 }),
+        minSeatPrice: () => faker.datatype.number({ min: 100, max: 1000 }),
+        capacityRemaining: () => faker.datatype.number({ min: 40, max: 100 }),
 
         past: trait({
           start() {
             return DateTime.local().minus({
-              days: faker.random.number({ min: 1, max: 3 }),
-              hours: faker.random.number({ min: 1, max: 3 }),
+              days: faker.datatype.number({ min: 1, max: 3 }),
+              hours: faker.datatype.number({ min: 1, max: 3 }),
             })
           },
           end() {
             return DateTime.fromISO(this.start).minus({
-              hours: faker.random.number({ min: 1, max: 3 }),
+              hours: faker.datatype.number({ min: 1, max: 3 }),
             })
           },
           doorsOpen() {
             return DateTime.fromISO(this.start).plus({
-              minutes: faker.random.number({ min: 1, max: 20 }),
+              minutes: faker.datatype.number({ min: 1, max: 20 }),
             })
           },
         }),
@@ -67,8 +67,8 @@ export default {
         },
       }),
       performanceSeatGroupNode: Factory.extend({
-        capacity: () => faker.random.number({ min: 50, max: 100 }),
-        capacityRemaining: () => faker.random.number({ min: 0, max: 100 }),
+        capacity: () => faker.datatype.number({ min: 50, max: 100 }),
+        capacityRemaining: () => faker.datatype.number({ min: 0, max: 100 }),
       }),
     }
   },
