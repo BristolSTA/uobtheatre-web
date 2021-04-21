@@ -28,7 +28,7 @@
             Performance Starts: {{ performance.start | dateFormat('t') }}
           </p>
           <icon-list-item icon="clock">
-            {{ humanDuration }}
+            {{ humanDuration(performance.durationMins) }}
           </icon-list-item>
           <div class="flex justify-center sm:block">
             <div class="px-3 py-2 m-2 w-max bg-sta-rouge">
@@ -72,8 +72,9 @@
 
 <script>
 import IconListItem from '@/components/ui/IconListItem.vue'
-import humanizeDuration from 'humanize-duration'
+import { humanDuration } from '@/utils'
 import Clock from '@/components/ui/Clock.vue'
+
 export default {
   name: 'Overview',
   components: {
@@ -90,10 +91,8 @@ export default {
       type: Object,
     },
   },
-  computed: {
-    humanDuration() {
-      return humanizeDuration(this.performance.durationMins * 60 * 1000)
-    },
+  methods: {
+    humanDuration,
   },
 }
 </script>

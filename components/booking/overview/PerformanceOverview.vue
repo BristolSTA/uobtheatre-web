@@ -19,17 +19,16 @@
         </p>
       </div>
       <icon-list-item icon="clock">
-        {{ humanDuration }}
+        {{ humanDuration(performance.durationMins) }}
       </icon-list-item>
     </div>
   </overview-box>
 </template>
 
 <script>
-import humanizeDuration from 'humanize-duration'
-
 import IconListItem from '@/components/ui/IconListItem.vue'
 
+import { humanDuration } from '@/utils'
 import OverviewBox from './OverviewBox.vue'
 
 export default {
@@ -45,10 +44,8 @@ export default {
       type: Object,
     },
   },
-  computed: {
-    humanDuration() {
-      return humanizeDuration(this.performance.durationMins * 60 * 1000)
-    },
+  methods: {
+    humanDuration,
   },
 }
 </script>

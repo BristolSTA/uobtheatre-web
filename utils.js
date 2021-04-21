@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 import Swal from 'sweetalert2'
 import resolveConfig from 'tailwindcss/resolveConfig'
+import humanizeDuration from 'humanize-duration'
 
 import Errors from '@/classes/Errors'
 
@@ -48,6 +49,16 @@ const displayStartEnd = (start, end, format) => {
 
   result += `${end.toFormat(format + ' y')}`
   return result
+}
+
+/**
+ * Generates a readable string for a given duration in minuites
+ *
+ * @param {number} durationMins number of minuites
+ * @returns {string} Formatted readable duration string
+ */
+const humanDuration = (durationMins) => {
+  return humanizeDuration(durationMins * 60 * 1000)
 }
 
 /**
@@ -129,6 +140,7 @@ const apiErrorToast = swalToast.mixin({
 export {
   apiErrorToast,
   displayStartEnd,
+  humanDuration,
   duration,
   errorHandler,
   joinWithAnd,
