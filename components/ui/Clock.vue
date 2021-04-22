@@ -1,6 +1,6 @@
 <template>
-  <div v-if="hours | minutes | seconds">
-    {{ hours }} : {{ minutes }} : {{ seconds }}
+  <div v-if="hours | minutes | seconds" class="font-mono">
+    {{ hours }}:{{ minutes }}:{{ seconds }}
   </div>
 </template>
 

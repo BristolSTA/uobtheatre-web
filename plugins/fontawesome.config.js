@@ -17,6 +17,8 @@ export default {
     'faTicketAlt',
     'faTimesCircle',
     'faUserEdit',
+    'faClipboardList',
+    'faCashRegister',
   ],
   brands: ['faFacebook'],
 }

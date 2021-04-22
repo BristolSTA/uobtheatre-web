@@ -15,11 +15,9 @@
         </div>
       </div>
       <div class="w-full sm:w-1/2">
-        <clock
-          class="py-2 text-5xl font-semibold text-center sm:font-normal md:text-6xl"
-        />
+        <clock class="py-2 text-5xl text-center md:text-6xl" />
       </div>
-      <div class="flex justify-center w-full sm:block sm:w-1/2">
+      <div v-if="detailed" class="hidden w-full sm:block sm:w-1/2">
         <div>
           <p class="text-sta-green">
             Doors Open: {{ performance.doorsOpen | dateFormat('t') }}
@@ -90,6 +88,11 @@ export default {
       required: true,
       type: Object,
     },
+  },
+  data() {
+    return {
+      detailed: true,
+    }
   },
   methods: {
     humanDuration,
