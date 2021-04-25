@@ -2,6 +2,7 @@
 # TODO: Optimise the production basic info fragment to not get performances
 query performanceTicketOptions($id: ID!) {
   performance(id: $id) {
+    id
     capacityRemaining
     venue {
       name

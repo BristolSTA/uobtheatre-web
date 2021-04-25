@@ -38,7 +38,7 @@
           </div>
         </div>
       </div>
-      <div class="flex justify-center w-full sm:w-1/2">
+      <div v-if="detailed" class="flex justify-center w-full sm:w-1/2">
         <div class="max-w-sm p-4 mx-4 lg:px-10 bg-sta-gray-light">
           <table class="w-full table-fixed">
             <tr>
@@ -91,11 +91,10 @@ export default {
       required: true,
       type: Object,
     },
-  },
-  data() {
-    return {
-      detailed: true,
-    }
+    detailed: {
+      default: true,
+      type: Boolean,
+    },
   },
   methods: {
     humanDuration,
