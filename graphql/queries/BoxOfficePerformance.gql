@@ -1,0 +1,22 @@
+#import "../fragments/ProductionFragment.gql"
+# TODO: Optimise the production basic info fragment to not get performances
+query performanceTicketOptions($id: ID!) {
+  performance(id: $id) {
+    capacityRemaining
+    venue {
+      name
+      slug
+    }
+    disabled
+    doorsOpen
+    start
+    end
+    durationMins
+    soldOut
+    isInperson
+    isOnline
+    production {
+      ...ProductionBasicInfo
+    }
+  }
+}

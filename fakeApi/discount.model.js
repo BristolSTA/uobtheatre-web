@@ -13,7 +13,7 @@ export default {
             'Family Discount',
             'Mates Rate Discount',
           ]),
-        percentage: () => faker.random.float({ max: 0.5, min: 0 }),
+        percentage: () => faker.datatype.float({ max: 0.5, min: 0 }),
       }),
       discountRequirementNode: Factory.extend({
         number: () => faker.datatype.number({ min: 1, max: 10 }),

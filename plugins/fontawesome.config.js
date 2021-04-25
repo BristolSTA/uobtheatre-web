@@ -19,6 +19,8 @@ export default {
     'faUserEdit',
     'faClipboardList',
     'faCashRegister',
+    'faUserCheck',
+    'faCalendar',
   ],
   brands: ['faFacebook'],
 }

@@ -62,6 +62,9 @@
               <td class="w-1/5 pl-2 text-sta-orange">50</td>
             </tr>
           </table>
+          <div class="text-sm text-right text-gray-500">
+            Last updated x seconds ago
+          </div>
         </div>
       </div>
     </div>

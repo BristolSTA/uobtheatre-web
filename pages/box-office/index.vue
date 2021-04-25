@@ -1,127 +1,116 @@
 <template>
-  <div class="sm:container">
-    <div class="sm:py-10">
-      <overview
-        :production="production"
-        :performance="production.performances.edges[0].node"
-      />
-    </div>
-    <div class="flex flex-wrap justify-center">
-      <div
-        v-for="(box, index) in data"
-        :key="index"
-        class="w-full p-2 md:w-1/3 lg:w-1/4 2xl:w-1/5"
+  <div class="container flex flex-col items-center justify-center h-full">
+    <div v-if="performances.length">
+      <h1 class="text-h1">Select a performance</h1>
+      <select
+        v-if="performances.length > 4"
+        v-model="selectedPerformance"
+        class="w-full p-2 text-gray-700"
       >
-        <div class="w-full h-full p-4 bg-sta-green hover:bg-sta-orange">
-          <menu-tile route="/box-office" :icon="box.icon" :name="box.name">
-            <template #description>A description</template>
-          </menu-tile>
+        <option selected disabled>Select one...</option>
+        <option v-for="(performance, index) in performances" :key="index">
+          {{ performance.production.name }} -
+          {{ performance.start | dateFormat('cccc dd MMMM T') }}
+        </option>
+      </select>
+      <div v-else class="flex mt-2 space-x-2">
+        <div
+          v-for="(performance, index) in performances"
+          :key="index"
+          class="w-1/2 max-w-md p-3 text-center rounded cursor-pointer bg-sta-gray-light hover:bg-sta-gray-dark"
+          @click="selectedPerformance = performance"
+        >
+          <img :src="performance.production.featuredImage.url" class="w-full" />
+          <h3 class="text-xl font-semibold text-sta-orange">
+            {{ performance.production.name }}
+          </h3>
+          <span
+            >{{ performance.start | dateFormat('cccc dd MMMM T') }} (Doors
+            {{ performance.doorsOpen | dateFormat('T') }})</span
+          >
+        </div>
+      </div>
+      <div class="flex justify-center mt-2">
+        <div class="p-2 text-gray-400 rounded bg-sta-gray-dark">
+          <font-awesome-icon icon="calendar" />
+          <select class="w-auto outline-none cursor-pointer bg-sta-gray-dark">
+            <option selected>Today</option>
+            <option>Tomorrow</option>
+            <option>Other</option>
+          </select>
         </div>
       </div>
     </div>
-    <hr class="border-t-2 border-sta-gray-dark" />
-    <div class="flex justify-center my-4">
-      <div class="w-full px-1 py-2 sm:p-2 lg:w-3/4 bg-sta-gray-dark">
-        <h2 class="flex justify-center mb-2 text-2xl">Complimentary Tickets</h2>
-        <table class="w-full table-auto">
-          <tbody>
-            <tr
-              v-for="(box, index) in data"
-              :key="index"
-              class="odd:bg-sta-gray-light even:bg-sta-gray"
-            >
-              <td class="px-4 py-2 text-xl font-semibold hover:text-gray-300">
-                {{ box.person }}
-              </td>
-              <td class="px-4">0 / 3 Collected</td>
-              <td class="px-4 text-right">
-                <div>
-                  <button
-                    class="w-8 h-8 p-0 m-1 rounded-md btn"
-                    :class="[
-                      !numTickets ? 'btn-rouge btn-outline' : 'btn-orange',
-                    ]"
-                    :disabled="!numTickets"
-                    @click="minusTicket"
-                    @keypress="minusTicket"
-                  >
-                    -
-                  </button>
-                  <button
-                    class="w-8 h-8 p-0 m-1 rounded-md btn"
-                    :class="[
-                      maxAddAllowed < 1
-                        ? 'btn-rouge btn-outline'
-                        : 'btn-orange',
-                    ]"
-                    :disabled="maxAddAllowed < 1"
-                    @click="addTicket"
-                    @keypress="addTicket"
-                  >
-                    +
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="flex justify-center mt-2">
-          <button class="m-2 btn btn-rouge btn-outline">Cancel</button>
-          <button class="m-2 btn btn-green">Confim</button>
-        </div>
-      </div>
+    <div v-else>
+      <h1 class="text-h1">No performances available</h1>
+      <p>
+        There are no performances available for you to open a box office for.
+      </p>
+      <p>
+        If you believe this is a mistake, please contact your Society or a
+        member of the STA
+      </p>
     </div>
   </div>
 </template>
 
 <script>
-import ProductionPageQuery from '@/graphql/queries/ProductionBySlug.gql'
-import Overview from '@/components/box-office/Overview.vue'
-// import IconListItem from '@/components/ui/IconListItem.vue'
-import MenuTile from '@/components/box-office/MenuTile.vue'
-
+// TODO: Actually finish
 export default {
-  name: 'BoxOffice',
-  components: { Overview, MenuTile },
-  async asyncData({ params, error, app }) {
-    // Execute query
-    const { data } = await app.apolloProvider.defaultClient.query({
-      query: ProductionPageQuery,
-      variables: {
-        slug: 'legally-blonde',
-      },
-    })
-
-    const production = data.production
-    if (!production)
-      return error({
-        statusCode: 404,
-        message: 'This production does not exists',
-      })
+  asyncData({ params, error, app }) {
+    // TODO: Implement query
     return {
-      production,
+      performances: [
+        {
+          id: 1,
+          venue: {
+            name: 'Winston Theatre',
+          },
+          start: '2020-12-19T15:00:00',
+          doorsOpen: '2020-12-19T14:30:00',
+          production: {
+            name: 'Legally Blonde',
+            featuredImage: {
+              url: 'https://via.placeholder.com/1920x960',
+              __typename: 'ImageNode',
+            },
+            __typename: 'ProductionNode',
+          },
+          __typename: 'PerformanceNode',
+        },
+        {
+          id: 2,
+          venue: {
+            name: 'Pegg Theatre',
+          },
+          start: '2020-12-19T19:00:00',
+          doorsOpen: '2020-12-19T18:00:00',
+          production: {
+            name: 'TRASh',
+            featuredImage: {
+              url: 'https://via.placeholder.com/1920x960',
+              __typename: 'ImageNode',
+            },
+            __typename: 'ProductionNode',
+          },
+          __typename: 'PerformanceNode',
+        },
+      ],
     }
   },
   data() {
     return {
-      data: [
-        {
-          name: 'Sell Tickets',
-          icon: 'cash-register',
-          person: 'James',
-        },
-        {
-          name: 'Comp Tickets',
-          icon: 'ticket-alt',
-          person: 'Toof',
-        },
-        {
-          name: 'View All Bookings',
-          icon: 'clipboard-list',
-          person: 'Tomm',
-        },
-      ],
+      selectedPerformance: null,
+      performances: [],
     }
+  },
+  head: {
+    title: 'Box Office Select',
+  },
+  watch: {
+    selectedPerformance(performance) {
+      this.$router.push(`/box-office/${performance.id}`)
+    },
   },
 }
 </script>
