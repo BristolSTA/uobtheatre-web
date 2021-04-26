@@ -21,6 +21,8 @@ export default {
     'faCashRegister',
     'faUserCheck',
     'faCalendar',
+    'faSquare',
+    'faCheckSquare',
   ],
   brands: ['faFacebook'],
 }
