@@ -52,6 +52,11 @@ export default {
         href:
           'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap',
       },
+      {
+        rel: 'stylesheet',
+        href:
+          'https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@360;600&display=swap',
+      },
     ],
   },
 

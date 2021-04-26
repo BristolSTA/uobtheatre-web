@@ -26,10 +26,12 @@
         size="240"
       />
     </div>
-    <p>Booking Ref: {{ booking.reference }}</p>
+    <p>
+      Booking Ref: <span class="font-mono">{{ booking.reference }}</span>
+    </p>
     <div class="flex justify-between w-full">
       <p>Booked By: {{ fullName }}</p>
-      <p class="text-sm italic text-right text-gray-500">
+      <p class="font-mono text-sm italic text-right text-gray-400">
         {{ ticketNum }}
       </p>
     </div>

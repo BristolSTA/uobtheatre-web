@@ -12,7 +12,9 @@
       </p>
     </template>
     <div>
-      <p class="py-1">Booking Ref: {{ booking.reference }}</p>
+      <p class="py-1">
+        Booking Ref: <span class="font-mono">{{ booking.reference }}</span>
+      </p>
       <NuxtLink
         class="btn btn-green"
         :to="`/user/booking/${booking.reference}`"
