@@ -11,7 +11,7 @@
           <small v-if="cost.subtext">{{ cost.subtext }}</small>
         </td>
         <td class="px-2">:</td>
-        <td class="px-2">£{{ cost.cost }}</td>
+        <td class="px-2 font-mono">£{{ cost.cost }}</td>
       </tr>
     </table>
     <div class="p-1 px-2 text-center rounded bg-sta-gray">

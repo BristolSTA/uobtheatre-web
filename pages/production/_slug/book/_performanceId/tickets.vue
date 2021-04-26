@@ -61,7 +61,7 @@
                 </td>
                 <td class="p-2">{{ ticket.concessionType.name }}</td>
                 <td class="p-2 text-center">{{ ticket.number }}</td>
-                <td class="p-2 text-right">
+                <td class="p-2 font-mono text-right">
                   £{{ (ticket.totalPrice / 100).toFixed(2) }}
                 </td>
               </tr>
@@ -71,7 +71,7 @@
                 <td></td>
                 <th class="p-2">Discounts</th>
                 <td></td>
-                <td class="p-2 text-right whitespace-nowrap">
+                <td class="p-2 font-mono text-right whitespace-nowrap">
                   -£{{ booking.discountsValuePounds }}
                 </td>
               </tr>
@@ -81,7 +81,7 @@
                 <td class="p-2 text-center">
                   {{ booking.tickets.length }}
                 </td>
-                <td class="p-2 text-right">
+                <td class="p-2 font-mono text-right">
                   <template v-if="!booking.dirty">
                     £{{ booking.subTotalPricePounds }}
                   </template>
