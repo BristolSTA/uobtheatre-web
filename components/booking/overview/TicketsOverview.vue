@@ -33,7 +33,7 @@
           v-for="(concession, concession_index) in groupedConcessions"
           :key="concession_index"
         >
-          <span class="font-mono">{{ concession.number }}</span> x
+          <strong class="font-mono">{{ concession.number }}</strong> x
           {{ concession.concessionType.name }}
         </div>
       </div>

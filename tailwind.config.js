@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     fontFamily: {
       body: ['Montserrat', 'sans-serif'],
-      mono: ['"Source Code Pro"', 'monospace'],
+      mono: ['"Roboto Mono"', 'monospace'],
     },
     container: {
       center: true,

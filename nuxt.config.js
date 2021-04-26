@@ -55,7 +55,7 @@ export default {
       {
         rel: 'stylesheet',
         href:
-          'https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@300;400;600&display=swap',
+          'https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@360;600&display=swap',
       },
     ],
   },
