@@ -7,20 +7,24 @@
         expanded
           ? 'bg-sta-orange'
           : index % 2 == 0
-          ? 'bg-sta-gray'
-          : 'bg-sta-gray-light',
+          ? 'bg-sta-gray-light'
+          : 'bg-sta-gray',
       ]"
       @click="$emit('select-booking')"
       @keypress="$emit('select-booking')"
     >
-      <div class="flex-grow">
-        <h3 class="inline-block text-h3 lg:text-h2">Booking</h3>
+      <div class="flex flex-grow">
+        <div>{{ booking.name }}</div>
+        <div class="px-2 font-mono w-30">{{ booking.reference }}</div>
+        <div class="text-right">
+          £{{ (booking.priceBreakdown.totalPrice / 100).toFixed(2) }}
+        </div>
       </div>
     </div>
     <div
       v-if="expanded"
       class="pb-2 bg-sta-gray"
-      :class="[index % 2 == 0 ? 'bg-sta-gray' : 'bg-sta-gray-light']"
+      :class="[index % 2 == 0 ? 'bg-sta-gray-light' : 'bg-sta-gray']"
     >
       aaaaaaaaaaaa
     </div>
@@ -32,6 +36,10 @@ export default {
   name: 'SeatLocation',
   components: {},
   props: {
+    booking: {
+      required: true,
+      type: Object,
+    },
     expanded: {
       required: true,
       type: Boolean,

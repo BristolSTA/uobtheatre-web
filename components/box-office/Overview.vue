@@ -43,23 +43,23 @@
           <table class="w-full table-fixed">
             <tr>
               <td class="font-semibold">Total Tickets</td>
-              <td class="w-1/5 pl-2 text-sta-orange">200</td>
+              <td class="w-1/5 pl-2 font-mono text-sta-orange">200</td>
             </tr>
             <tr>
               <td class="font-semibold">Total Sold</td>
-              <td class="w-1/5 pl-2 text-sta-orange">150</td>
+              <td class="w-1/5 pl-2 font-mono text-sta-orange">150</td>
             </tr>
             <tr>
               <td class="pl-6 font-semibold">Collected</td>
-              <td class="w-1/5 pl-2 text-sta-orange">100</td>
+              <td class="w-1/5 pl-2 font-mono text-sta-orange">100</td>
             </tr>
             <tr>
               <td class="pl-6 font-semibold">To be Collected</td>
-              <td class="w-1/5 pl-2 text-sta-orange">50</td>
+              <td class="w-1/5 pl-2 font-mono text-sta-orange">50</td>
             </tr>
             <tr>
               <td class="font-semibold">Avaliable to Sell</td>
-              <td class="w-1/5 pl-2 text-sta-orange">50</td>
+              <td class="w-1/5 pl-2 font-mono text-sta-orange">50</td>
             </tr>
           </table>
           <div class="text-sm text-right text-gray-500">
