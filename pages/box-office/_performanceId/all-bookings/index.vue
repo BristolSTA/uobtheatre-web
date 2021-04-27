@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="sm:container">
-      <div class="sm:py-4">
+      <div class="sm:py-6">
         <overview
           :production="performance.production"
           :performance="performance"

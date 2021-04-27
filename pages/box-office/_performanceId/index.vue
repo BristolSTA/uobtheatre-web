@@ -16,7 +16,7 @@
         <menu-tile
           v-for="(box, index) in navItems"
           :key="index"
-          :route="`/box-office/${performance.id}/all-bookings`"
+          :route="box.route"
           :icon="box.icon"
           :name="box.name"
           class="w-full mb-4 md:mr-4 bg-sta-green hover:bg-sta-orange md:w-1/3 lg:w-1/4 2xl:w-1/5"
@@ -38,7 +38,9 @@
                 <td class="px-4 py-2 text-xl font-semibold hover:text-gray-300">
                   Name
                 </td>
-                <td class="px-4">0 / 3 Collected</td>
+                <td class="px-4">
+                  <span class="font-mono">0/3</span> Collected
+                </td>
                 <td class="px-4 text-right">
                   <div>
                     <button
@@ -106,25 +108,28 @@ export default {
       })
     return {
       performance,
+      navItems: [
+        {
+          name: 'Check or Collect Tickets',
+          icon: 'user-check',
+          route: '/box-office',
+        },
+        {
+          name: 'Sell Tickets',
+          icon: 'cash-register',
+          route: `/box-office/${performance.id}/sell`,
+        },
+        {
+          name: 'View Bookings',
+          icon: 'clipboard-list',
+          route: `/box-office/${performance.id}/all-bookings`,
+        },
+      ],
     }
   },
   data() {
     return {
       performance: null,
-      navItems: [
-        {
-          name: 'Check or Collect Tickets',
-          icon: 'user-check',
-        },
-        {
-          name: 'Sell Tickets',
-          icon: 'cash-register',
-        },
-        {
-          name: 'View Bookings',
-          icon: 'clipboard-list',
-        },
-      ],
     }
   },
   head() {
