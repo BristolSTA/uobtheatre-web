@@ -12,6 +12,7 @@ export default {
     'faLink',
     'faMapMarkedAlt',
     'faMoneyCheckAlt',
+    'faMoneyBill',
     'faSignInAlt',
     'faTheaterMasks',
     'faTicketAlt',

@@ -1,10 +1,5 @@
 <template>
   <div class="min-h-full bg-sta-gray">
-    <div class="bg-sta-gray-light">
-      <div class="container">
-        <breadcrumbs :crumbs="crumbs" />
-      </div>
-    </div>
     <div class="container">
       <production-banner
         class="pb-2 md:pb-8"
@@ -54,7 +49,6 @@ import Booking from '@/classes/Booking'
 import TicketsMatrix from '@/classes/TicketsMatrix'
 import BookingNavigation from '@/components/booking/BookingNavigation.vue'
 import ProductionBanner from '@/components/production/ProductionBanner.vue'
-import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
 import ClickableLink from '@/components/ui/ClickableLink.vue'
 import { swal } from '@/utils'
 
@@ -70,7 +64,6 @@ export default {
     BookingNavigation,
     ProductionBanner,
     ClickableLink,
-    Breadcrumbs,
   },
   middleware: 'authed',
   async asyncData({ params, app, error }) {

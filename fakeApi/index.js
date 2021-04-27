@@ -17,6 +17,7 @@ import SocietyInterface from './society.model'
 import UserInterface from './user.model'
 import { generateConcessionTypeBookingTypes } from './utils'
 import VenueInterface from './venue.model'
+import BoxOffice from './boxOffice'
 const apiModels = [
   ProductionInterface,
   PerformanceInterface,
@@ -30,6 +31,7 @@ const apiModels = [
   ConcessionTypeInterface,
   BookingInterface,
   DiscountInterface,
+  BoxOffice,
 ]
 
 let models = {}

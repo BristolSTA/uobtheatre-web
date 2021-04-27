@@ -1,10 +1,5 @@
 <template>
   <div class="min-h-full bg-sta-gray">
-    <div class="bg-sta-gray-light">
-      <div class="sm:container">
-        <breadcrumbs :crumbs="crumbs" />
-      </div>
-    </div>
     <div class="sm:container">
       <div class="sm:py-6">
         <overview
@@ -16,22 +11,29 @@
       <h2 class="mb-2 text-center text-h2">All Bookings</h2>
 
       <div class="flex justify-center mb-4">
-        <div class="w-full px-1 py-2 sm:p-2 lg:w-3/4 bg-sta-gray-dark">
-          <div class="flex w-full px-4 font-semibold">
-            <div class="flex-grow">Name<sort-icon /></div>
-            <div class="px-2 w-36">Booking Ref<sort-icon /></div>
-            <div class="w-20 px-1 text-center md:w-40 xl:w-52 2xl:w-72">
-              Checked In?<sort-icon />
+        <div class="w-full lg:w-3/4">
+          <!-- TODO: Implement search and filter -->
+          <input
+            type="text"
+            class="w-64 p-2 m-2 text-gray-800 rounded outline-none"
+            placeholder="Search on name or booking reference"
+          />
+          <div class="px-1 py-2 bg-sta-gray-dark sm:p-2">
+            <div class="flex w-full px-4 font-semibold">
+              <div class="flex-grow">Name<sort-icon /></div>
+              <div class="px-2 w-36">Booking Ref<sort-icon /></div>
+              <div class="w-20 px-1 text-center md:w-40 xl:w-52 2xl:w-72">
+                Checked In?<sort-icon />
+              </div>
+              <div class="w-20 text-right">Price<sort-icon /></div>
             </div>
-            <div class="w-20 text-right">Price<sort-icon /></div>
-          </div>
-          <div class="mt-1">
             <booking-row
               v-for="(booking, index) in bookings"
               :key="index"
               :expanded="selected_booking_index == index"
               :index="index"
               :booking="booking"
+              class="mt-1"
               @select-booking="
                 selected_booking_index =
                   selected_booking_index != index ? index : null
@@ -45,35 +47,20 @@
 </template>
 
 <script>
-import BoxOfficePerformance from '@/graphql/queries/BoxOfficePerformance.gql'
 import Booking from '@/classes/Booking.js'
 
-import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
 import Overview from '@/components/box-office/Overview.vue'
 import BookingRow from '@/components/box-office/BookingRow.vue'
 import SortIcon from '@/components/ui/SortIcon.vue'
 
 export default {
-  components: { Overview, BookingRow, Breadcrumbs, SortIcon },
-  props: {},
-  async asyncData({ params, error, app }) {
-    // Execute query
-    const { data } = await app.apolloProvider.defaultClient.query({
-      query: BoxOfficePerformance,
-      variables: {
-        id: params.performanceId,
-      },
-    })
+  components: { Overview, BookingRow, SortIcon },
 
-    const performance = data.performance
-    if (!performance)
-      return error({
-        statusCode: 404,
-        message: 'This performance does not exist',
-      })
-    return {
-      performance,
-    }
+  props: {
+    performance: {
+      required: true,
+      type: Object,
+    },
   },
   data() {
     return {
@@ -472,7 +459,12 @@ export default {
       return [
         { text: 'Box Office', route: '/box-office' },
         {
-          text: `${this.performance.production.name} on day X`,
+          text: `${
+            this.performance.production.name
+          } on ${this.$options.filters.dateFormat(
+            this.performance.start,
+            'ccc dd MMM T'
+          )}`,
           route: `/box-office/${this.performance.id}`,
         },
         {

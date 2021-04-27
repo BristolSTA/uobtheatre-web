@@ -18,35 +18,15 @@
     <div class="grid grid-cols-1 xl:grid-cols-2">
       <div>
         <h2 class="mb-2 text-center text-white text-h2">Pay with card</h2>
-        <div class="container space-y-3">
-          <div id="sq-card-number"></div>
-          <div class="grid grid-cols-3 gap-3">
-            <div id="sq-expiration-date"></div>
-            <div id="sq-cvv"></div>
-            <div id="sq-postal-code"></div>
-          </div>
-
-          <div
-            v-if="squareErrors.length"
-            class="p-2 text-white border-2 border-sta-rouge"
-          >
-            Whoops! There was an error with your details:
-            <ul class="list-disc list-inside">
-              <li v-for="(item, index) in squareErrors" :key="index">
-                {{ item }}
-              </li>
-            </ul>
-          </div>
-
-          <button
-            id="sq-creditcard"
-            class="w-full btn btn-orange"
-            @click.prevent="onPayClick"
-            @keypress.prevent="onPayClick"
-          >
-            Pay £{{ booking.totalPricePounds }}
-          </button>
-        </div>
+        <card-payment
+          class="container"
+          :price="booking.totalPricePounds"
+          @enableGPay="enabledDigitalWallets.google = true"
+          @enableApplePay="enabledDigitalWallets.apple = true"
+          @paying="onPaying"
+          @nonceError="progressPopup.cancel()"
+          @nonceRecieved="onNonceRecieved"
+        />
       </div>
       <div
         v-show="Object.values(enabledDigitalWallets).find((val) => !!val)"
@@ -84,13 +64,14 @@ import Booking from '@/classes/Booking'
 import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue'
 import { getValidationErrors, performMutation, swal } from '@/utils'
 import BookingStage from '@/classes/BookingStage'
+import CardPayment from '@/components/square/CardPayment.vue'
 export default {
   stageInfo: new BookingStage({
     name: 'Payment',
     routeName: 'production-slug-book-performanceId-pay',
     eligable: (production, booking) => !booking.dirty,
   }),
-  components: { AllErrorsDisplay },
+  components: { AllErrorsDisplay, CardPayment },
   props: {
     booking: {
       required: true,
@@ -109,77 +90,16 @@ export default {
       },
     }
   },
-  mounted() {
-    this.setupForm()
-  },
-  destroyed() {
-    this.paymentForm.destroy()
-  },
   methods: {
-    setupForm() {
-      // eslint-disable-next-line no-undef
-      this.paymentForm = new SqPaymentForm({
-        applicationId: this.$config.services.square.application_id,
-        locationId: this.$config.services.square.location_id,
-        inputClass: 'sq-input',
-        autoBuild: false,
-        inputStyles: [
-          {
-            fontSize: '16px',
-            lineHeight: '24px',
-            padding: '16px',
-            placeholderColor: '#a0a0a0',
-            color: '#fff',
-            backgroundColor: 'transparent',
-          },
-        ],
-        cardNumber: {
-          elementId: 'sq-card-number',
-          placeholder: 'Card Number',
-        },
-        cvv: {
-          elementId: 'sq-cvv',
-          placeholder: 'CVV',
-        },
-        expirationDate: {
-          elementId: 'sq-expiration-date',
-          placeholder: 'MM/YY',
-        },
-        postalCode: {
-          elementId: 'sq-postal-code',
-          placeholder: 'Post Code',
-        },
-        googlePay: {
-          elementId: 'sq-google-pay',
-        },
-        applePay: {
-          elementId: 'sq-apple-pay',
-        },
-        callbacks: {
-          cardNonceResponseReceived: this.onNonceRecieved,
-          methodsSupported: this.onMethodsSupported,
-          createPaymentRequest: this.onCreatePaymentRequest,
-        },
-      })
-      this.paymentForm.build()
-    },
-    onPayClick() {
+    onPaying() {
       this.progressPopup = swal.fire({
         title: 'Confirming your booking...',
         didOpen: () => {
           Swal.showLoading()
         },
       })
-      this.paymentForm.requestCardNonce()
     },
-    async onNonceRecieved(errors, nonce) {
-      this.squareErrors = []
-      if (errors) {
-        this.squareErrors = errors.map((error) => error.message)
-        this.progressPopup.close()
-        return
-      }
-
+    async onNonceRecieved(nonce) {
       try {
         const data = await performMutation(
           this.$apollo,
@@ -237,30 +157,6 @@ export default {
       }
 
       this.progressPopup.close()
-    },
-    onMethodsSupported(methods, unsupportedReason) {
-      if (methods.googlePay === true) {
-        this.enabledDigitalWallets.google = true
-      }
-      if (methods.applePay === true) {
-        this.enabledDigitalWallets.apple = true
-      }
-      // eslint-disable-next-line no-console
-      if (unsupportedReason) console.debug(methods, unsupportedReason)
-    },
-    onCreatePaymentRequest() {
-      // Used to create payment request for GPay
-      return {
-        requestShippingAddress: false,
-        requestBillingInfo: true,
-        currencyCode: 'GBP',
-        countryCode: 'GB',
-        total: {
-          label: 'UOB Theatre',
-          amount: this.booking.totalPricePounds,
-          pending: false,
-        },
-      }
     },
   },
 }
