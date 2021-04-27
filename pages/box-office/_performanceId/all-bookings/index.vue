@@ -18,12 +18,12 @@
       <div class="flex justify-center mb-4">
         <div class="w-full px-1 py-2 sm:p-2 lg:w-3/4 bg-sta-gray-dark">
           <div class="flex w-full px-4 font-semibold">
-            <div class="flex-grow">Name</div>
-            <div class="px-2 w-36">Booking Ref</div>
+            <div class="flex-grow">Name<sort-icon /></div>
+            <div class="px-2 w-36">Booking Ref<sort-icon /></div>
             <div class="w-20 px-1 text-center md:w-40 xl:w-52 2xl:w-72">
-              Checked In?
+              Checked In?<sort-icon />
             </div>
-            <div class="w-20 text-right">Price</div>
+            <div class="w-20 text-right">Price<sort-icon /></div>
           </div>
           <div class="mt-1">
             <booking-row
@@ -51,9 +51,10 @@ import Booking from '@/classes/Booking.js'
 import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
 import Overview from '@/components/box-office/Overview.vue'
 import BookingRow from '@/components/box-office/BookingRow.vue'
+import SortIcon from '@/components/ui/SortIcon.vue'
 
 export default {
-  components: { Overview, BookingRow, Breadcrumbs },
+  components: { Overview, BookingRow, Breadcrumbs, SortIcon },
   props: {},
   async asyncData({ params, error, app }) {
     // Execute query

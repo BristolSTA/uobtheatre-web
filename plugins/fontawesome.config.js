@@ -23,6 +23,10 @@ export default {
     'faCalendar',
     'faSquare',
     'faCheckSquare',
+    'faSearch',
+    'faSort',
+    'faSortUp',
+    'faSortDown',
   ],
   brands: ['faFacebook'],
 }
