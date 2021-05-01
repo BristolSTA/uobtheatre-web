@@ -1327,6 +1327,11 @@
     date-fns "^1.27.2"
     figures "^1.7.0"
 
+"@cypress/mount-utils@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@cypress/mount-utils/-/mount-utils-1.0.0.tgz#9cb57596d155d7dc9ef523177f92605cbf836d1c"
+  integrity sha512-wDhSRzSGYSUCvMlE0E1qIVxnMIXidW10iITGREDbgUdMrERZiPtEP728vl67QE6s6K+8DM7a1SXzh2jIoyuRIw==
+
 "@cypress/request@^2.88.5":
   version "2.88.5"
   resolved "https://registry.yarnpkg.com/@cypress/request/-/request-2.88.5.tgz#8d7ecd17b53a849cfd5ab06d5abe7d84976375d7"
@@ -1353,11 +1358,12 @@
     tunnel-agent "^0.6.0"
     uuid "^3.3.2"
 
-"@cypress/vue@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@cypress/vue/-/vue-2.2.0.tgz#09899b7e2fc4d9ad926cbdbe14271bcedb9a2384"
-  integrity sha512-kNYoc192MNTJ5h3j/e8oydfF3qXVjlEI42PDmOC9otbNwjTgyyYgvxGNujM96YIzEEYPctWqBDxS0mhokpp3OQ==
+"@cypress/vue@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@cypress/vue/-/vue-2.2.1.tgz#7fac639748b67ac0b61d025045ad369884bda451"
+  integrity sha512-PQMAsFPJN/ypyeq/0f1d31UDZi4ciO4WlkM7D78045KbyyEXlH6L4XogyuncJfN0WmuuOAyMHvLA0f0NGebDgg==
   dependencies:
+    "@cypress/mount-utils" "1.0.0"
     "@vue/test-utils" "^1.1.3"
 
 "@cypress/webpack-preprocessor@^5.1.1":
