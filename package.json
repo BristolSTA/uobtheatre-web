@@ -30,7 +30,7 @@
     "@nuxtjs/apollo": "^4.0.1-rc.5",
     "@nuxtjs/pwa": "^3.3.5",
     "core-js": "^3.11.1",
-    "humanize-duration": "^3.24.0",
+    "humanize-duration": "^3.25.2",
     "js-cookie": "^2.2.1",
     "leaflet": "^1.7.1",
     "lodash": "^4.17.20",
