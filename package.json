@@ -37,7 +37,6 @@
     "luxon": "^1.25.0",
     "nuxt": "^2.15.4",
     "qrcode.vue": "^1.7.0",
-    "square": "^9.1.0",
     "sweetalert2": "^10.16.0"
   },
   "devDependencies": {
@@ -67,7 +66,7 @@
     "eslint-plugin-cypress": "^2.11.2",
     "eslint-plugin-jsdoc": "^32.3.0",
     "eslint-plugin-nuxt": "^2.0.0",
-    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^7.7.0",
     "faker": "^5.5.3",
     "fibers": "^5.0.0",
