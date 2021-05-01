@@ -2,12 +2,12 @@
 # yarn lockfile v1
 
 
-"@apimatic/schema@^0.5.1":
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/@apimatic/schema/-/schema-0.5.1.tgz#673aa4ddcf31311ba9dfbf0e514cb35ab3b3b9f9"
-  integrity sha512-ZtAtLOjDEqxot017qRGK+gvNbZv5tNNDmYiYOpBhFiZwulTZUHT9NwJG+V5nIhdEqIpy5E8ty1C4tTzangfNoQ==
+"@apimatic/schema@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@apimatic/schema/-/schema-0.6.0.tgz#b239f38c0e0d8509bc29dfbfd98452d71cf68617"
+  integrity sha512-JgG32LQRLphHRWsn64vIt7wD2m+JH46swM6ZrY7g1rdiGiKV5m+A+TBrJKoUUQRmS14azMgePNZY30NauWqzLg==
   dependencies:
-    lodash.flatten "^4.4.0"
+    tslib "^2.1.0"
 
 "@apollo/client@^3.1.5":
   version "3.3.13"
@@ -14759,12 +14759,12 @@ sprintf-js@~1.0.2:
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
   integrity sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=
 
-square@^9.1.0:
-  version "9.1.0"
-  resolved "https://registry.yarnpkg.com/square/-/square-9.1.0.tgz#016ffb3cbf67828c31a0ea24c3753e5c7ea2ebad"
-  integrity sha512-DVSV/F/2U+fQ0F+OgfQQRkGs0rSUKpsqKAo/m+Gtt2oPaL4hQff/QaALldxG2gCD3oQqzdy3Q9Oevce11ytPWA==
+square@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/square/-/square-10.0.0.tgz#63a1c980f362af830397de065e3c4309a2573038"
+  integrity sha512-yv2TgeASMliSXyPrKi6+3O/MYRXymE1Mg1sw52uQbiEfsOejZlT+qAsZl0ZXC1v6J/OT+85YXEWdVG2jOELxJw==
   dependencies:
-    "@apimatic/schema" "^0.5.1"
+    "@apimatic/schema" "^0.6.0"
     "@types/node" "^14.14.30"
     axios "^0.21.1"
     detect-node "^2.0.4"
