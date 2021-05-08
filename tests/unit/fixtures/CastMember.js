@@ -1,3 +1,5 @@
+import Production from './Production'
+
 export default (overrides = {}) => {
   return Object.assign(
     {
@@ -7,7 +9,7 @@ export default (overrides = {}) => {
         url: 'https://via.placeholder.com/100x100/FBD400',
       },
       role: 'Peter Pan',
-      production: null, // TODO: Production model
+      production: Production(),
     },
     overrides
   )

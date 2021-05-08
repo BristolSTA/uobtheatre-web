@@ -1,6 +1,8 @@
 import CastMember from './CastMember'
 import CrewMember from './CrewMember'
 import Performance from './Peformance'
+import ProductionTeamMember from './ProductionTeamMember'
+import Society from './Society'
 import GenericNodeConnection from './support/GenericNodeConnection'
 
 export default (overrides = {}) => {
@@ -30,9 +32,9 @@ export default (overrides = {}) => {
       },
       cast: [CrewMember()],
       crew: [CastMember()],
-      productionTeam: [ProductionTeam()],
+      productionTeam: [ProductionTeamMember()],
       society: Society(),
-      warnings: [Warnings()],
+      warnings: [{ warning: 'Strobe Lighting' }, { warning: 'Nudity' }],
       performances: GenericNodeConnection([Performance()]),
     },
     overrides
