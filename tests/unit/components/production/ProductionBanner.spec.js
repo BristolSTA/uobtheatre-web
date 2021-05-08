@@ -4,14 +4,14 @@ import { DateTime } from 'luxon'
 
 import ProductionHeader from '@/components/production/ProductionBanner.vue'
 
-import FakeProduction from '../../fixtures/FakeProduction.js'
 import {
   assertNoVisualDifference,
-  executeWithServer,
   fixTextSpacing,
   generateMountOptions,
-  runApolloQuery,
 } from '../../helpers.js'
+import Production from '../../fixtures/Production.js'
+import Performance from '../../fixtures/Performance.js'
+import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection.js'
 
 describe('ProductionBanner', function () {
   let headerContainer
@@ -45,23 +45,16 @@ describe('ProductionBanner', function () {
     ])
 
     expect(headerContainer.text()).to.contain('Legally Ginger')
-    expect(fixTextSpacing(headerContainer.text())).to.contain(
-      'by Joe Bloggs Productions'
-    )
+    expect(fixTextSpacing(headerContainer.text())).to.contain('by STA')
 
     expect(
       headerContainer.findAllComponents(RouterLinkStub).at(0).props('to')
-    ).to.equal('/society/joe-bloggs-productions')
+    ).to.equal('/society/sta')
 
     // test combination of two venues
     expect(fixTextSpacing(headerContainer.text())).to.contain(
       'Live at The New Vic and The Newer Vic'
     )
-
-    assertNoVisualDifference(headerContainer.vm.venues, [
-      Object.assign({}, venue1, { __typename: 'VenueNode' }),
-      Object.assign({}, venue2, { __typename: 'VenueNode' }),
-    ])
 
     expect(
       headerContainer.findAllComponents(RouterLinkStub).at(1).props('to')
@@ -71,7 +64,7 @@ describe('ProductionBanner', function () {
     expect(headerContainer.text()).to.contain('14 Nov - 18 Nov 2020')
     expect(headerContainer.text()).to.contain('1 hour, 42 minutes')
     expect(fixTextSpacing(headerContainer.text())).to.contain(
-      'Tickets available from £4.24'
+      'Tickets available from £1.20'
     )
 
     // correct feature image
@@ -240,53 +233,34 @@ describe('ProductionBanner', function () {
     await createWithPerformances([{}], {}, false, false)
 
     expect(headerContainer.text()).to.contain('Legally Ginger')
-    expect(fixTextSpacing(headerContainer.text())).to.contain(
-      'by Joe Bloggs Productions'
-    )
+    expect(fixTextSpacing(headerContainer.text())).to.contain('by STA')
     expect(headerContainer.text()).to.not.contain('14 Nov - 18 Nov 2020')
     expect(headerContainer.text()).to.not.contain('1 hour, 42 minutes')
     expect(headerContainer.text()).to.not.contain(
-      'Tickets available from £4.24'
+      'Tickets available from £1.20'
     )
   })
 
-  const createWithPerformances = async (
+  const createWithPerformances = (
     performances,
     productionOverrides,
     showBuyTicketsButton = true,
     showDetailedInfo = true
   ) => {
-    await executeWithServer(async (server) => {
-      productionOverrides = Object.assign(
-        FakeProduction(server),
-        productionOverrides,
-        {
-          performances: performances.map((perf) => {
-            if (perf.venue) {
-              perf.venue = server.create('venueNode', perf.venue)
-            }
-            return server.create('performanceNode', perf)
-          }),
-        }
-      )
-      const production = server.create('productionNode', productionOverrides)
+    const production = Production(productionOverrides)
+    production.performances = GenericNodeConnection(
+      performances.map((performance) => Performance(performance))
+    )
 
-      const gqlResult = await runApolloQuery({
-        query: require('@/graphql/queries/ProductionBySlug.gql'),
-        variables: {
-          slug: production.slug,
+    headerContainer = mount(
+      ProductionHeader,
+      generateMountOptions(['router'], {
+        propsData: {
+          production,
+          showBuyTicketsButton,
+          showDetailedInfo,
         },
       })
-      headerContainer = mount(
-        ProductionHeader,
-        generateMountOptions(['router'], {
-          propsData: {
-            production: gqlResult.data.production,
-            showBuyTicketsButton,
-            showDetailedInfo,
-          },
-        })
-      )
-    })
+    )
   }
 })

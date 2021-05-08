@@ -7,16 +7,16 @@ import ChangePassword from '@/components/user/ChangePassword.vue'
 import UserDetails from '@/components/user/UserDetails.vue'
 import { swalToast } from '@/utils'
 
-import { executeWithServer, generateMountOptions, waitFor } from '../../helpers'
+import {
+  generateApolloMock,
+  generateMountOptions,
+  waitFor,
+} from '../../helpers'
+import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse'
+import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 
 describe('User Details', () => {
-  let userDetailsComponent, server
-  beforeAll(async () => {
-    server = await executeWithServer(null, false)
-  })
-  afterAll(() => {
-    server.shutdown()
-  })
+  let userDetailsComponent
 
   beforeEach(() => {
     userDetailsComponent = mount(
@@ -28,6 +28,11 @@ describe('User Details', () => {
             lastName: 'Bloggs',
             email: 'joe.bloggs@example.org',
           },
+        },
+        apollo: {
+          mutationResponses: [
+            GenericApolloResponse('updateAccount', GenericMutationResponse()),
+          ],
         },
       })
     )

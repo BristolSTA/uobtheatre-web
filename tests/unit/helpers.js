@@ -134,33 +134,35 @@ const generateMountOptions = function (types = [], options = {}) {
     options.mocks.$config = config()
   }
   if (types.includes('apollo') || types.includes('apollo-new')) {
-    let queryCount = 0
-    let mutationCount = 0
-    const queryCallstack = options.apollo ? options.apollo.queryResponses : []
-    const mutationCallstack = options.apollo
-      ? options.apollo.mutationResponses
-      : []
+    options.mocks.$apollo = generateApolloMock(options.apollo)
     delete options.apollo
-
-    options.mocks.$apollo = {
-      query: jest.fn(() => {
-        queryCount++
-        if (queryCallstack[queryCount - 1])
-          return Promise.resolve(queryCallstack[queryCount - 1])
-        return Promise.resolve()
-      }),
-      mutate: jest.fn(() => {
-        mutationCount++
-        if (mutationCallstack[mutationCount - 1])
-          return Promise.resolve(mutationCallstack[mutationCount - 1])
-        return Promise.resolve()
-      }),
-    }
   }
   if (types.includes('router')) {
     options.stubs.NuxtLink = RouterLinkStub
   }
   return options
+}
+
+const generateApolloMock = function (options) {
+  let queryCount = 0
+  let mutationCount = 0
+  const queryCallstack = options ? options.queryResponses : []
+  const mutationCallstack = options ? options.mutationResponses : []
+
+  return {
+    query: jest.fn(() => {
+      queryCount++
+      if (queryCallstack[queryCount - 1])
+        return Promise.resolve(queryCallstack[queryCount - 1])
+      return Promise.resolve()
+    }),
+    mutate: jest.fn(() => {
+      mutationCount++
+      if (mutationCallstack[mutationCount - 1])
+        return Promise.resolve(mutationCallstack[mutationCount - 1])
+      return Promise.resolve()
+    }),
+  }
 }
 
 /**
@@ -248,6 +250,7 @@ export {
   executeWithServer,
   fixTextSpacing,
   generateMountOptions,
+  generateApolloMock,
   makeServer,
   mountWithRouterMock,
   RouterLinkStub,

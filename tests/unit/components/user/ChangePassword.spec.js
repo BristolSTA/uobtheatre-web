@@ -6,14 +6,22 @@ import ChangePassword from '@/components/user/ChangePassword.vue'
 import { swalToast } from '@/utils'
 
 import { generateMountOptions, waitFor } from '../../helpers'
+import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
+import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse'
+import GenericError from '../../fixtures/support/GenericError'
 
 describe('Change Password', () => {
-  let component
-  beforeEach(() => {
-    component = mount(ChangePassword, generateMountOptions(['apollo']))
-  })
-
   it('can update their password', async () => {
+    const component = mount(
+      ChangePassword,
+      generateMountOptions(['apollo'], {
+        apollo: {
+          mutationResponses: [
+            GenericApolloResponse('passwordChange', GenericMutationResponse()),
+          ],
+        },
+      })
+    )
     const stub = jest.spyOn(swalToast, 'fire')
     const inputs = component.findAll('input')
     inputs.at(0).setValue('oldPassword')
@@ -29,6 +37,22 @@ describe('Change Password', () => {
   })
 
   it('can show errors', async () => {
+    const component = mount(
+      ChangePassword,
+      generateMountOptions(['apollo'], {
+        apollo: {
+          mutationResponses: [
+            GenericApolloResponse(
+              'passwordChange',
+              GenericMutationResponse({
+                success: false,
+                errors: [GenericError('Passwords dont match')],
+              })
+            ),
+          ],
+        },
+      })
+    )
     expect(component.findComponent(NonFieldError).exists()).to.be.true
 
     const inputs = component.findAll('input')

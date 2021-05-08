@@ -27,7 +27,6 @@ export default (overrides = {}) => {
       minSeatPrice: 250,
       durationMins: 120,
       isInperson: true,
-
       isOnline: false,
       soldOut: false,
     },

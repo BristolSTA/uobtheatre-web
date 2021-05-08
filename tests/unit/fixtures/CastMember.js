@@ -4,7 +4,7 @@ export default (overrides = {}) => {
       id: 1,
       name: 'Joe Bloggs',
       profilePicture: {
-        url: 'https://via.placeholder.com/100x100/FBD400',
+        url: 'http://pathto.example/profile-pic.png',
       },
       role: 'Peter Pan',
       production: null,

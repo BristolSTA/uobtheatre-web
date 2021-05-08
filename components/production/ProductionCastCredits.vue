@@ -117,7 +117,7 @@
               class="crew-item"
             >
               <h4 class="font-semibold uppercase">
-                {{ group[0].role.department }}
+                {{ group[0].role.department.description }}
               </h4>
               <p v-for="(member, gIndex) in group" :key="gIndex">
                 {{ member.name }}

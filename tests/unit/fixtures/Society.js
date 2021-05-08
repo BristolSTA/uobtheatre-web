@@ -10,7 +10,7 @@ export default (overrides = {}, includeProductions = false) => {
       name: 'STA',
       description: 'We do it in the dark',
       logo: {
-        url: 'https://via.placeholder.com/500x500/0000FF',
+        url: 'http://pathto.example/logo-image.png',
       },
       banner: {
         url: 'https://via.placeholder.com/1200x720',

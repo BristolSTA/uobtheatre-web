@@ -5,13 +5,14 @@ import { DateTime } from 'luxon'
 
 import ProductionCastCredits from '@/components/production/ProductionCastCredits'
 
-import FakeProduction from '../../fixtures/FakeProduction.js'
-import {
-  executeWithServer,
-  fixTextSpacing,
-  generateMountOptions,
-  runApolloQuery,
-} from '../../helpers.js'
+import { fixTextSpacing, generateMountOptions } from '../../helpers.js'
+import Production from '../../fixtures/Production.js'
+import Performance from '../../fixtures/Performance.js'
+import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection.js'
+import CrewMember from '../../fixtures/CrewMember.js'
+import CrewRole from '../../fixtures/CrewRole.js'
+import ProductionTeamMember from '../../fixtures/ProductionTeamMember.js'
+import CastMember from '../../fixtures/CastMember.js'
 
 describe('Production Cast and Credits', function () {
   let castCreditsContainer
@@ -66,12 +67,12 @@ describe('Production Cast and Credits', function () {
 
       // correct description
       expect(fixTextSpacing(castCreditsContainer.text())).to.contain(
-        'A production by Joe Bloggs Productions'
+        'A production by STA'
       )
 
       expect(
         castCreditsContainer.findAllComponents(RouterLinkStub).at(0).props('to')
-      ).to.equal('/society/joe-bloggs-productions')
+      ).to.equal('/society/sta')
 
       // correct facebook link
       const link = castCreditsContainer.findComponent({ ref: 'facebook-link' })
@@ -140,13 +141,46 @@ describe('Production Cast and Credits', function () {
     let castCredits
 
     beforeEach(async () => {
-      await createWithPerformances([
+      await createWithPerformances(
+        [
+          {
+            start: DateTime.fromISO('2020-11-14'),
+            isInperson: true,
+            isOnline: false,
+          },
+        ],
         {
-          start: DateTime.fromISO('2020-11-14'),
-          isInperson: true,
-          isOnline: false,
-        },
-      ])
+          crew: [
+            CrewMember({
+              name: 'James E',
+              role: CrewRole({ department: { description: 'Lighting' } }),
+            }),
+            CrewMember({
+              name: 'Alex T',
+              role: CrewRole({ department: { description: 'Lighting' } }),
+            }),
+            CrewMember({
+              name: 'Tom S',
+              role: CrewRole({ department: { description: 'Sound' } }),
+            }),
+          ],
+          productionTeam: [
+            ProductionTeamMember({ name: 'Joe Bloggs', role: 'Producer' }),
+            ProductionTeamMember({
+              name: 'Jill Bloggs',
+              role: 'Musical Director',
+            }),
+          ],
+          cast: [
+            CastMember({ name: 'Kit', role: 'Crazy Person' }),
+            CastMember({
+              name: 'John',
+              role: 'Good Guy',
+              profilePicture: null,
+            }),
+          ],
+        }
+      )
       await castCreditsContainer.setData({ overview: false })
 
       castCredits = castCreditsContainer.findComponent({
@@ -158,20 +192,21 @@ describe('Production Cast and Credits', function () {
       expect(castCredits.text()).to.contain('Production Team')
 
       expect(castCredits.text()).to.contain('Producer')
-      expect(castCredits.text()).to.contain('James')
+      expect(castCredits.text()).to.contain('Joe Bloggs')
 
       expect(castCredits.text()).to.contain('Musical Director')
-      expect(castCredits.text()).to.contain('Nicole')
+      expect(castCredits.text()).to.contain('Jill Bloggs')
     })
 
     it('contains crew', () => {
       expect(castCredits.text()).to.contain('Crew')
 
       expect(castCredits.text()).to.contain('Sound')
-      expect(castCredits.text()).to.contain('Tom')
+      expect(castCredits.text()).to.contain('Tom S')
 
       expect(castCredits.text()).to.contain('Lighting')
-      expect(castCredits.text()).to.contain('Millie')
+      expect(castCredits.text()).to.contain('James E')
+      expect(castCredits.text()).to.contain('Alex T')
     })
 
     it('contains cast', () => {
@@ -180,7 +215,7 @@ describe('Production Cast and Credits', function () {
       const castArray = castCreditsContainer.findAll('.production-cast-member')
       // cast memeber with picture
       expect(castArray.at(0).text()).to.contain('Kit')
-      expect(castArray.at(0).text()).to.contain('Crazy person')
+      expect(castArray.at(0).text()).to.contain('Crazy Person')
 
       expect(castArray.at(0).find('img').exists()).to.be.true
       expect(castArray.at(0).find('img').attributes('src')).to.equal(
@@ -188,40 +223,26 @@ describe('Production Cast and Credits', function () {
       )
 
       // cast memebr no picture
-      expect(castArray.at(1).text()).to.contain('Alex T')
+      expect(castArray.at(1).text()).to.contain('John')
       expect(castArray.at(1).text()).to.contain('Good Guy')
 
       expect(castArray.at(1).find('img').exists()).to.be.false
     })
   })
 
-  const createWithPerformances = async (performances, productionOverrides) => {
-    await executeWithServer(async (server) => {
-      productionOverrides = Object.assign(
-        FakeProduction(server),
-        productionOverrides,
-        {
-          performances: performances.map((perf) => {
-            return server.create('performanceNode', perf)
-          }),
-        }
-      )
-      const production = server.create('productionNode', productionOverrides)
+  const createWithPerformances = (performances, productionOverrides) => {
+    const production = Production(productionOverrides)
+    production.performances = GenericNodeConnection(
+      performances.map((performance) => Performance(performance))
+    )
 
-      const gqlResult = await runApolloQuery({
-        query: require('@/graphql/queries/ProductionBySlug.gql'),
-        variables: {
-          slug: production.slug,
+    castCreditsContainer = mount(
+      ProductionCastCredits,
+      generateMountOptions(['router'], {
+        propsData: {
+          production,
         },
       })
-      castCreditsContainer = mount(
-        ProductionCastCredits,
-        generateMountOptions(['router'], {
-          propsData: {
-            production: gqlResult.data.production,
-          },
-        })
-      )
-    })
+    )
   }
 })
