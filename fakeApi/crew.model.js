@@ -16,20 +16,26 @@ export default {
       }),
       crewRoleNode: Factory.extend({
         name: null,
-        department: () =>
-          faker.random.arrayElement(['Stage Management', 'Lighting', 'Sound']),
+        afterCreate(node, server) {
+          updateIfDoesntHave(node, {
+            department: () =>
+              server.create(
+                'enumNode',
+                faker.random.arrayElement([
+                  {
+                    value: 'STAGE_MANAGEMENT',
+                    description: 'Stage Management',
+                  },
+                  { value: 'LIGHTING', description: 'Lighting' },
+                  {
+                    value: 'SOUND',
+                    description: 'Sound',
+                  },
+                ])
+              ),
+          })
+        },
       }),
     }
-  },
-  registerGQLTypes() {
-    return `
-    type CrewRoleNode implements Node {
-      id: ID!
-      name: String
-      crewMembers(offset: Int, before: String, after: String, first: Int, last: Int): CrewMemberNodeConnection!
-      
-      department: String!
-    }
-    `
   },
 }

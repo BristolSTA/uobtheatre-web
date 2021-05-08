@@ -190,7 +190,7 @@ export default {
       let i = 0
       return lodash
         .chain(this.production.crew)
-        .groupBy('role.department')
+        .groupBy('role.department.description')
         .groupBy(() => {
           const res = Math.floor(i % 2)
           i++

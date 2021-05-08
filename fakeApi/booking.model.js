@@ -9,37 +9,42 @@ import {
   updateIfDoesntHave,
 } from './utils'
 
+export const statusEnums = []
+
 export default {
   registerModels() {
     return {
       miscCostNode: Model.extend({
         production: belongsTo('productionNode'),
       }),
-      paymentNode: Model.extend({
-        providerPaymentId: () => faker.datatype.uuid(),
-        // referenceId: () => faker.datatype.uuid(),
-        value: () => faker.datatype.number({ min: 100, max: 1000 }),
-        currency: 'GBP',
-        createdAt: new Date(),
-        status: 'COMPLETED',
-        cardBrand: 'VISA',
-        last4: '4567',
-      }),
+      // paymentNode: Model.extend({
+      //   providerPaymentId: () => faker.datatype.uuid(),
+      //   // referenceId: () => faker.datatype.uuid(),
+      //   value: () => faker.datatype.number({ min: 100, max: 1000 }),
+      //   currency: 'GBP',
+      //   createdAt: new Date(),
+      //   status: 'COMPLETED',
+      //   cardBrand: 'VISA',
+      //   last4: '4567',
+      // }),
     }
   },
   registerFactories() {
     return {
       bookingNode: Factory.extend({
         reference: () => faker.random.alphaNumeric(12),
-        status: 'IN_PROGRESS',
 
         paid: trait({
-          status: 'PAID',
           afterCreate(node, server) {
             updateIfDoesntHave(node, {
               payments: () => {
                 return [server.create('paymentNode')]
               },
+              status: () =>
+                server.create('enumNode', {
+                  value: 'PAID',
+                  description: 'Paid',
+                }),
             })
           },
         }),
@@ -48,6 +53,11 @@ export default {
             performance: () => {
               return server.create('performanceNode')
             },
+            status: () =>
+              server.create('enumNode', {
+                value: 'IN_PROGRESS',
+                description: 'In Progress',
+              }),
           })
           node.update({
             priceBreakdown: server.create(
@@ -80,16 +90,31 @@ export default {
         value: () => faker.datatype.number({ min: 50, max: 400 }),
       }),
       paymentNode: Factory.extend({
-        provider: () =>
-          faker.random.arrayElement(['CASH', 'SQUARE_ONLINE', 'SQUARE_POS']),
         value: () => faker.datatype.number({ min: 1000, max: 3000 }),
-        type: 'PURCHASE',
         curreny: 'GBP',
         cardBrand: () =>
           faker.random.arrayElement(['VISA', 'MASTERCARD', 'AMERICAN_EXPRESS']),
         last4: '1234',
         createdAt: new Date(),
         updatedAt: new Date(),
+        afterCreate(node, server) {
+          updateIfDoesntHave(node, {
+            provider: () =>
+              server.create(
+                'enumNode',
+                faker.random.arrayElement([
+                  { value: 'CASH', description: 'Cash' },
+                  { value: 'SQUARE_ONLINE', description: 'Square Online' },
+                  { value: 'SQUARE_POS', description: 'Square Point-of-Sale' },
+                ])
+              ),
+            type: () =>
+              server.create('enumNode', {
+                value: 'PURCHASE',
+                description: 'Purchase',
+              }),
+          })
+        },
       }),
     }
   },
