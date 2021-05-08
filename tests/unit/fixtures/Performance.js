@@ -12,8 +12,8 @@ export default (overrides = {}) => {
       id: 1,
       production: Production(),
       venue: Venue(),
-      doorsOpen: '2020-03-09T16:00:00',
-      start: '2020-03-09T15:00:00',
+      doorsOpen: '2020-03-09T15:00:00',
+      start: '2020-03-09T16:00:00',
       end: '2020-03-09T18:00:00',
       description: 'the performance description',
       extraInformation: null,
@@ -25,9 +25,7 @@ export default (overrides = {}) => {
       capacityRemaining: 69,
       ticketOptions: [PerformanceSeatGroup()],
       minSeatPrice: 250,
-      durationMins() {
-        return Math.round((this.end - this.start) / (1000 * 60))
-      },
+      durationMins: 120,
       isInperson: true,
 
       isOnline: false,

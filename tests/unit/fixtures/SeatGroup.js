@@ -5,8 +5,8 @@ export default (overrides = {}) => {
   return Object.assign(
     {
       id: 1,
-      name: 'Best Seats in the House',
-      description: 'They really are the best',
+      name: 'Best seats in the house',
+      description: 'The best seats obviously',
       venue: Venue(),
       capacity: 100,
       seats: null,
