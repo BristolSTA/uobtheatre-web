@@ -1,4 +1,5 @@
 import ConcessionType from './ConcessionType'
+import SeatGroup from './SeatGroup'
 import MiscCost from './MiscCost'
 
 export default (overrides = {}) => {

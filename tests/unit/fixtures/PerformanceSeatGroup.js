@@ -1,4 +1,4 @@
-import ConcessionType from './ConcessionType'
+import ConcessionTypeBookingType from './ConcessionTypeBookingType'
 import SeatGroup from './SeatGroup'
 
 export default (overrides = {}) => {
@@ -8,13 +8,7 @@ export default (overrides = {}) => {
       seatGroup: SeatGroup(),
       capacity: 100,
       capacityRemaining: 30,
-      concessionTypes: [
-        {
-          concessionType: ConcessionType(),
-          price: 1000,
-          pricePounds: '10.00',
-        },
-      ],
+      concessionTypes: [ConcessionTypeBookingType()],
     },
     overrides
   )

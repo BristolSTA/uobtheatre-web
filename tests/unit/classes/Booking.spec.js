@@ -11,9 +11,12 @@ import PerformanceFixture from '../fixtures/Performance'
 // import FakePerformance from '../fixtures/FakePerformance'
 import {
   assertNoVisualDifference,
-  executeWithServer,
-  runApolloQuery,
+  // executeWithServer,
+  // runApolloQuery,
 } from '../helpers'
+import ConcessionTypeBookingType from '../fixtures/ConcessionTypeBookingType'
+import BookingFixture from '../fixtures/Booking'
+import ConcessionType from '../fixtures/ConcessionType'
 describe('Booking Class', () => {
   /** @member {Booking} */
   let booking
@@ -26,59 +29,32 @@ describe('Booking Class', () => {
 
   jest.spyOn(DateTime, 'local')
 
-  beforeAll(async () => {
-    await executeWithServer(async (server) => {
-      // const performance = server.create(
-      //   'performanceNode',
-      //   Object.assign({}, FakePerformance(server), {
-      //     ticketOptions: [
-      //       server.create('PerformanceSeatGroupNode', {
-      //         capacityRemaining: 100,
-      //         seatGroup: server.create('seatGroupNode'),
-      //         concessionTypes: generateConcessionTypeBookingTypes(
-      //           [
-      //             server.create('concessionTypeNode'),
-      //             server.create('concessionTypeNode'),
-      //             server.create('concessionTypeNode'),
-      //           ],
-      //           server,
-      //           [{ price: 100 }, { price: 1000 }, { price: 500 }]
-      //         ),
-      //       }),
-      //     ],
-      //   })
-      // )
-
-      const performance = PerformanceFixture()
-      seatGroup = performance.ticketOptions[0].seatGroup
-      concession100Edge = performance.ticketOptions[0].concessionTypes[0]
-      console.log(concession100Edge)
-
-      // seatGroup = performance.ticketOptions.models[0].seatGroup
-      // concession100Edge =
-      //   performance.ticketOptions.models[0].concessionTypes.models[0]
-      // concession1000Edge =
-      //   performance.ticketOptions.models[0].concessionTypes.models[1]
-      // concession500Edge =
-      //   performance.ticketOptions.models[0].concessionTypes.models[2]
-
-      // const { data } = await runApolloQuery({
-      //   query: require('@/graphql/queries/PerformanceTicketOptions.gql'),
-      //   variables: {
-      //     id: performance.id,
-      //   },
-      // })
-      ticketsMatrix = new TicketsMatrix(data.performance)
-
-      const bookingModel = FakeBooking(server)
-      const gqlResult = await runApolloQuery({
-        query: require('@/graphql/queries/BookingInformation.gql'),
-        variables: {
-          bookingId: bookingModel.id,
-        },
-      })
-      bookingAPIData = gqlResult.data.booking
+  beforeAll(() => {
+    const performance = PerformanceFixture()
+    seatGroup = performance.ticketOptions[0].seatGroup
+    concession100Edge = ConcessionTypeBookingType({
+      price: 100,
+      pricePounds: '1.00',
     })
+    concession1000Edge = ConcessionTypeBookingType({
+      concessionType: ConcessionType({ id: 2 }),
+      price: 1000,
+      pricePounds: '10.00',
+    })
+    concession500Edge = ConcessionTypeBookingType({
+      concessionType: ConcessionType({ id: 3 }),
+      price: 500,
+      pricePounds: '5.00',
+    })
+    performance.ticketOptions[0].concessionTypes = [
+      concession100Edge,
+      concession1000Edge,
+      concession500Edge,
+    ]
+
+    ticketsMatrix = new TicketsMatrix(performance)
+
+    bookingAPIData = BookingFixture()
   })
 
   beforeEach(() => {
@@ -95,23 +71,12 @@ describe('Booking Class', () => {
     )
   }
 
-  it('can be constructed from API data', async () => {
-    let apiData
-    await executeWithServer(async (server) => {
-      const bookingModel = FakeBooking(server)
-      const { data } = await runApolloQuery({
-        query: require('@/graphql/queries/BookingInformation.gql'),
-        variables: {
-          bookingId: bookingModel.id,
-        },
-      })
-      apiData = data.booking
-    })
-    booking = Booking.fromAPIData(apiData)
+  it('can be constructed from booking data', () => {
+    booking = Booking.fromAPIData(bookingAPIData)
     expect(booking).to.be.instanceOf(Booking)
-    expect(booking.priceBreakdown).to.eq(apiData.priceBreakdown)
-    expect(booking.tickets.length).to.eq(4)
-    expect(booking.performance).to.eq(apiData.performance)
+    expect(booking.priceBreakdown).to.eq(bookingAPIData.priceBreakdown)
+    expect(booking.tickets.length).to.eq(1)
+    expect(booking.performance).to.eq(bookingAPIData.performance)
     expect(booking.dirty).to.be.false
   })
   it('can get tickets', () => {
@@ -247,35 +212,35 @@ describe('Booking Class', () => {
 
     booking.priceBreakdown = bookingAPIData.priceBreakdown
 
-    expect(booking.totalPrice).to.eq(3728)
+    expect(booking.totalPrice).to.eq(485)
   })
   it('can get total booking price in pounds', () => {
     expect(booking.totalPricePounds).to.eq('0.00')
 
     booking.priceBreakdown = bookingAPIData.priceBreakdown
 
-    expect(booking.totalPricePounds).to.eq('37.28')
+    expect(booking.totalPricePounds).to.eq('4.85')
   })
   it('can get sub total booking price in pounds', () => {
     expect(booking.subTotalPricePounds).to.eq('0.00')
 
     booking.priceBreakdown = bookingAPIData.priceBreakdown
 
-    expect(booking.subTotalPricePounds).to.eq('35.50')
+    expect(booking.subTotalPricePounds).to.eq('4.90')
   })
   it('can get tickets price in pounds', () => {
     expect(booking.ticketsPricePounds).to.eq('0.00')
 
     booking.priceBreakdown = bookingAPIData.priceBreakdown
 
-    expect(booking.ticketsPricePounds).to.eq('36.00')
+    expect(booking.ticketsPricePounds).to.eq('5.00')
   })
   it('can get tickets discounted price in pounds', () => {
     expect(booking.ticketsDiscountedPricePounds).to.eq('0.00')
 
     booking.priceBreakdown = bookingAPIData.priceBreakdown
 
-    expect(booking.ticketsDiscountedPricePounds).to.eq('35.50')
+    expect(booking.ticketsDiscountedPricePounds).to.eq('4.90')
   })
   it('can tell if booking has discounts applied', () => {
     expect(booking.hasDiscounts).to.be.false
@@ -289,7 +254,7 @@ describe('Booking Class', () => {
 
     booking.priceBreakdown = bookingAPIData.priceBreakdown
 
-    expect(booking.discountsValuePounds).to.eq('0.50')
+    expect(booking.discountsValuePounds).to.eq('0.10')
   })
   it('can get ticket overview', () => {
     expect(booking.ticketOverview(ticketsMatrix)).to.be.empty
