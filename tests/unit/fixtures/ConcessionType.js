@@ -4,7 +4,7 @@ export default (overrides = {}) => {
       id: 1,
       name: 'Adult',
       description: 'People over 18 years of age',
-      seatBooking: null, // TODO: Ticket Node connection
+      seatBooking: null,
     },
     overrides
   )
