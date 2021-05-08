@@ -1,6 +1,12 @@
 <template>
-  <div>
-    <hr class="border-t-2 border-sta-gray-dark" />
+  <div class="container">
+    <div class="sm:py-6">
+      <overview
+        :production="performance.production"
+        :performance="performance"
+        :detailed="false"
+      />
+    </div>
     <div class="flex justify-center my-4">
       <div class="w-full px-1 py-2 sm:p-2 lg:w-3/4 bg-sta-gray-dark">
         <h2 class="flex justify-center mb-2 text-2xl">Complimentary Tickets</h2>
@@ -56,7 +62,10 @@
 </template>
 
 <script>
+import Overview from '@/components/box-office/Overview.vue'
+
 export default {
+  components: { Overview },
   props: {
     performance: {
       required: true,

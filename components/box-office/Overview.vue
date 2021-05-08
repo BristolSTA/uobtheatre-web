@@ -28,7 +28,10 @@
           <icon-list-item icon="clock">
             {{ humanDuration(performance.durationMins) }}
           </icon-list-item>
-          <div class="flex justify-center sm:block">
+          <div
+            v-if="production.warnings.length"
+            class="flex justify-center sm:block"
+          >
             <div class="px-3 py-2 m-2 w-max bg-sta-rouge">
               <p class="font-semibold">Warnings:</p>
               <div v-for="(warning, index) in production.warnings" :key="index">
@@ -62,7 +65,7 @@
               <td class="w-1/5 pl-2 font-mono text-sta-orange">50</td>
             </tr>
           </table>
-          <div class="text-sm text-right text-gray-500">
+          <div class="text-sm text-right text-sta-gray-lighter">
             Last updated x seconds ago
           </div>
         </div>

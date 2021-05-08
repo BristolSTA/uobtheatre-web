@@ -5,7 +5,7 @@
         <overview
           :production="performance.production"
           :performance="performance"
-          :detailed="false"
+          :detailed="detailed"
         />
       </div>
       <nuxt-child
@@ -52,6 +52,11 @@ export default {
       booking,
     }
   },
+  data() {
+    return {
+      detailed: true,
+    }
+  },
   computed: {
     crumbs() {
       return [
@@ -73,6 +78,7 @@ export default {
   },
   methods: {
     onNextStage() {
+      this.detailed = false
       this.$router.push(`/box-office/${this.performance.id}/sell/pay`)
     },
   },
