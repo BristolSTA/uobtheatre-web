@@ -1,50 +1,21 @@
 import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
-import gql from 'graphql-tag'
 
 import OverviewBox from '@/components/booking/overview/OverviewBox.vue'
 import PerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue'
 
-import { executeWithServer, runApolloQuery } from '../../../helpers'
+import Performance from '@/tests/unit/fixtures/Performance'
+import Production from '@/tests/unit/fixtures/Production'
 
 describe('Performance Overview', function () {
   let performanceOverviewComponent
-  let production
-  let performance
 
-  beforeAll(async () => {
-    await executeWithServer(async (server) => {
-      production = server.create('productionNode', {
-        name: 'Legally Ginger',
-      })
-      performance = server.create('performanceNode', {
-        production,
-        doorsOpen: '2020-12-25T09:00:00',
-        start: '2020-12-25T10:00:00',
-        end: '2020-12-25T12:00:00',
-        soldOut: false,
-      })
-
-      const { data } = await runApolloQuery({
-        query: gql`
-          {
-            performance(id: ${performance.id}) {
-              start
-              doorsOpen
-              production {
-                name
-              }
-            }
-          }
-        `,
-      })
-
-      performanceOverviewComponent = mount(PerformanceOverview, {
-        propsData: {
-          production: data.performance.production,
-          performance: data.performance,
-        },
-      })
+  beforeAll(() => {
+    performanceOverviewComponent = mount(PerformanceOverview, {
+      propsData: {
+        production: Production(),
+        performance: Performance(),
+      },
     })
   })
 
@@ -57,13 +28,13 @@ describe('Performance Overview', function () {
     it('has the correct performance information', () => {
       expect(performanceOverviewComponent.text()).to.contain('Performance')
       expect(performanceOverviewComponent.text()).to.contain(
-        'Friday 25 December 2020'
+        'Monday 9 March 2020'
       )
       expect(performanceOverviewComponent.text()).to.contain(
-        'Doors Open: 09:00'
+        'Doors Open: 15:00'
       )
       expect(performanceOverviewComponent.text()).to.contain(
-        'Performance Starts: 10:00'
+        'Performance Starts: 16:00'
       )
     })
   })
