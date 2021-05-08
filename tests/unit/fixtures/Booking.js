@@ -1,3 +1,5 @@
+import PerformanceNode from './Performance.js'
+import UserNode from './User.js'
 export default (overrides = {}) => {
   return Object.assign(
     {
@@ -5,8 +7,8 @@ export default (overrides = {}) => {
       createdAt: '2021-05-08T14:00:00.000',
       updatedAt: '2021-05-08T16:00:00.000',
       reference: 'yOIYg6Co8vGR',
-      user: null, // TODO: Implement user node
-      performance: null, // TODO: Performance node
+      user: UserNode(),
+      performance: PerformanceNode(),
       status: {
         value: 'PAID',
         description: 'Paid',

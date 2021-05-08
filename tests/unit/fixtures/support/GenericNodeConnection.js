@@ -1,3 +1,5 @@
+import GenericNodeEdge from './GenericNodeEdge'
+
 export default (edges = [], pageInfoOverrides = {}) => {
   return {
     pageInfo: Object.assign(
@@ -9,6 +11,6 @@ export default (edges = [], pageInfoOverrides = {}) => {
       },
       pageInfoOverrides
     ),
-    edges,
+    edges: edges.map((edge) => GenericNodeEdge(edge)),
   }
 }
