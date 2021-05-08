@@ -127,23 +127,32 @@ const mountWithRouterMock = async function (
  * @param {?object} options Optional options object to merge into generated option set
  * @returns {object} Vue mounting options
  */
-const generateMountOptions = function (
-  types = [],
-  options = {},
-  apolloCallstack = []
-) {
+const generateMountOptions = function (types = [], options = {}) {
   if (!options.stubs) options.stubs = {}
   if (!options.mocks) options.mocks = {}
   if (types.includes('config')) {
     options.mocks.$config = config()
   }
   if (types.includes('apollo') || types.includes('apollo-new')) {
-    let count = 0
+    let queryCount = 0
+    let mutationCount = 0
+    const queryCallstack = options.apollo ? options.apollo.queryResponses : []
+    const mutationCallstack = options.apollo
+      ? options.apollo.mutationResponses
+      : []
+    delete options.apollo
+
     options.mocks.$apollo = {
+      query: jest.fn(() => {
+        queryCount++
+        if (queryCallstack[queryCount - 1])
+          return Promise.resolve(queryCallstack[queryCount - 1])
+        return Promise.resolve()
+      }),
       mutate: jest.fn(() => {
-        count++
-        if (apolloCallstack[count - 1])
-          return Promise.resolve(apolloCallstack[count - 1])
+        mutationCount++
+        if (mutationCallstack[mutationCount - 1])
+          return Promise.resolve(mutationCallstack[mutationCount - 1])
         return Promise.resolve()
       }),
     }

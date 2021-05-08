@@ -5,17 +5,10 @@ import NonFieldError from '@/components/ui/NonFieldError.vue'
 import ChangePassword from '@/components/user/ChangePassword.vue'
 import { swalToast } from '@/utils'
 
-import { executeWithServer, generateMountOptions, waitFor } from '../../helpers'
+import { generateMountOptions, waitFor } from '../../helpers'
 
 describe('Change Password', () => {
-  let component, server
-  beforeAll(async () => {
-    server = await executeWithServer(null, false)
-  })
-  afterAll(() => {
-    server.shutdown()
-  })
-
+  let component
   beforeEach(() => {
     component = mount(ChangePassword, generateMountOptions(['apollo']))
   })

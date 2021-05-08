@@ -10,16 +10,19 @@ import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 
 describe('Change Email', () => {
   let component
-
   beforeEach(() => {
     component = mount(
       ChangeEmail,
-      generateMountOptions(['apollo'], {}, [
-        GenericApolloResponse(
-          'sendSecondaryEmailActivation',
-          GenericMutationResponse()
-        ),
-      ])
+      generateMountOptions(['apollo'], {
+        apollo: {
+          mutationResponses: [
+            GenericApolloResponse(
+              'sendSecondaryEmailActivation',
+              GenericMutationResponse()
+            ),
+          ],
+        },
+      })
     )
   })
 
