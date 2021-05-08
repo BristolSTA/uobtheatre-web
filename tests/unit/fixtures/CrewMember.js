@@ -1,4 +1,4 @@
-import CrewRole from './CrewRoleNode'
+import CrewRole from './CrewRole'
 export default (overrides = {}) => {
   return Object.assign(
     {
