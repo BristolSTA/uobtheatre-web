@@ -1,6 +1,5 @@
-import { createLocalVue, mount, RouterLinkStub } from '@vue/test-utils'
+import { mount, RouterLinkStub } from '@vue/test-utils'
 import { expect } from 'chai'
-import VueApollo from 'vue-apollo'
 import config from '@/config'
 
 import { makeServer as makeAPIServer } from '@/fakeApi'
@@ -128,19 +127,26 @@ const mountWithRouterMock = async function (
  * @param {?object} options Optional options object to merge into generated option set
  * @returns {object} Vue mounting options
  */
-const generateMountOptions = function (types = [], options = {}) {
+const generateMountOptions = function (
+  types = [],
+  options = {},
+  apolloCallstack = []
+) {
   if (!options.stubs) options.stubs = {}
   if (!options.mocks) options.mocks = {}
   if (types.includes('config')) {
     options.mocks.$config = config()
   }
   if (types.includes('apollo') || types.includes('apollo-new')) {
-    if (!options.localVue) options.localVue = createLocalVue()
-    options.localVue.use(VueApollo)
-    options.apolloProvider = types.includes('apollo-new')
-      ? createProvider(defaultApolloClientOptions, defaultVueApolloOptions)
-      : apolloProvider
-    options.apolloProvider.defaultClient.cache.reset()
+    let count = 0
+    options.mocks.$apollo = {
+      mutate: jest.fn(() => {
+        count++
+        if (apolloCallstack[count - 1])
+          return Promise.resolve(apolloCallstack[count - 1])
+        return Promise.resolve()
+      }),
+    }
   }
   if (types.includes('router')) {
     options.stubs.NuxtLink = RouterLinkStub

@@ -1,4 +1,3 @@
-import Booking from './Booking'
 import Discount from './Discount'
 import PerformanceSeatGroup from './PerformanceSeatGroup'
 import Production from './Production'

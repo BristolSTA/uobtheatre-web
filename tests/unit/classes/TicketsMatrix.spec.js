@@ -3,28 +3,11 @@ import { expect } from 'chai'
 import TicketsMatrix from '@/classes/TicketsMatrix'
 
 import Performance from '../fixtures/Performance'
-// import { executeWithServer, runApolloQuery } from '../helpers'
 
 describe('TicketsMatrix', () => {
   let matrix
   let apiData
-  let performance
   beforeEach(() => {
-    // await executeWithServer(async (server) => {
-    //   performance = server.create(
-    //     'performanceNode',
-    //     Object.assign({}, FakePerformance(server), { capacityRemaining: 100 })
-    //   )
-    //   const { data } = await runApolloQuery({
-    //     query: require('@/graphql/queries/PerformanceTicketOptions.gql'),
-    //     variables: {
-    //       id: performance.id,
-    //     },
-    //   })
-    //   apiData = data.performance
-    //   matrix = new TicketsMatrix(apiData)
-    // })
-
     apiData = Performance()
     matrix = new TicketsMatrix(apiData)
   })
