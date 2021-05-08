@@ -22,7 +22,7 @@ export default (overrides = {}) => {
       seatGroups: null,
       capacity: 207,
       discounts: [Discount()],
-      bookings: GenericNodeConnection([Booking()]),
+      bookings: GenericNodeConnection(),
       capacityRemaining: 69,
       ticketOptions: [PerformanceSeatGroup()],
       minSeatPrice: 250,

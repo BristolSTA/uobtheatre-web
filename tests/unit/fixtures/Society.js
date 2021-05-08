@@ -1,7 +1,7 @@
 import Production from './Production'
 import GenericNodeConnection from './support/GenericNodeConnection'
 
-export default (overrides = {}) => {
+export default (overrides = {}, includeProductions = false) => {
   return Object.assign(
     {
       id: 1,
@@ -16,7 +16,9 @@ export default (overrides = {}) => {
         url: 'https://via.placeholder.com/1200x720',
       },
       slug: 'sta',
-      productions: GenericNodeConnection([Production()]),
+      productions: includeProductions
+        ? GenericNodeConnection([Production()])
+        : GenericNodeConnection(),
     },
     overrides
   )

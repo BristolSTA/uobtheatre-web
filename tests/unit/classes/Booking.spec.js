@@ -4,10 +4,11 @@ import { DateTime } from 'luxon'
 import Booking from '@/classes/Booking'
 import Ticket from '@/classes/Ticket'
 import TicketsMatrix from '@/classes/TicketsMatrix'
-import { generateConcessionTypeBookingTypes } from '@/fakeApi/utils'
+// import { generateConcessionTypeBookingTypes } from '@/fakeApi/utils'
+import PerformanceFixture from '../fixtures/Performance'
 
-import FakeBooking from '../fixtures/FakeBooking'
-import FakePerformance from '../fixtures/FakePerformance'
+// import FakeBooking from '../fixtures/FakeBooking'
+// import FakePerformance from '../fixtures/FakePerformance'
 import {
   assertNoVisualDifference,
   executeWithServer,
@@ -27,41 +28,46 @@ describe('Booking Class', () => {
 
   beforeAll(async () => {
     await executeWithServer(async (server) => {
-      const performance = server.create(
-        'performanceNode',
-        Object.assign({}, FakePerformance(server), {
-          ticketOptions: [
-            server.create('PerformanceSeatGroupNode', {
-              capacityRemaining: 100,
-              seatGroup: server.create('seatGroupNode'),
-              concessionTypes: generateConcessionTypeBookingTypes(
-                [
-                  server.create('concessionTypeNode'),
-                  server.create('concessionTypeNode'),
-                  server.create('concessionTypeNode'),
-                ],
-                server,
-                [{ price: 100 }, { price: 1000 }, { price: 500 }]
-              ),
-            }),
-          ],
-        })
-      )
+      // const performance = server.create(
+      //   'performanceNode',
+      //   Object.assign({}, FakePerformance(server), {
+      //     ticketOptions: [
+      //       server.create('PerformanceSeatGroupNode', {
+      //         capacityRemaining: 100,
+      //         seatGroup: server.create('seatGroupNode'),
+      //         concessionTypes: generateConcessionTypeBookingTypes(
+      //           [
+      //             server.create('concessionTypeNode'),
+      //             server.create('concessionTypeNode'),
+      //             server.create('concessionTypeNode'),
+      //           ],
+      //           server,
+      //           [{ price: 100 }, { price: 1000 }, { price: 500 }]
+      //         ),
+      //       }),
+      //     ],
+      //   })
+      // )
 
-      seatGroup = performance.ticketOptions.models[0].seatGroup
-      concession100Edge =
-        performance.ticketOptions.models[0].concessionTypes.models[0]
-      concession1000Edge =
-        performance.ticketOptions.models[0].concessionTypes.models[1]
-      concession500Edge =
-        performance.ticketOptions.models[0].concessionTypes.models[2]
+      const performance = PerformanceFixture()
+      seatGroup = performance.ticketOptions[0].seatGroup
+      concession100Edge = performance.ticketOptions[0].concessionTypes[0]
+      console.log(concession100Edge)
 
-      const { data } = await runApolloQuery({
-        query: require('@/graphql/queries/PerformanceTicketOptions.gql'),
-        variables: {
-          id: performance.id,
-        },
-      })
+      // seatGroup = performance.ticketOptions.models[0].seatGroup
+      // concession100Edge =
+      //   performance.ticketOptions.models[0].concessionTypes.models[0]
+      // concession1000Edge =
+      //   performance.ticketOptions.models[0].concessionTypes.models[1]
+      // concession500Edge =
+      //   performance.ticketOptions.models[0].concessionTypes.models[2]
+
+      // const { data } = await runApolloQuery({
+      //   query: require('@/graphql/queries/PerformanceTicketOptions.gql'),
+      //   variables: {
+      //     id: performance.id,
+      //   },
+      // })
       ticketsMatrix = new TicketsMatrix(data.performance)
 
       const bookingModel = FakeBooking(server)

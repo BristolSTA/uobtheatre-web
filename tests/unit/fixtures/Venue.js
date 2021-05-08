@@ -3,7 +3,7 @@ import GenericConnection from './support/GenericNodeConnection'
 import PerformanceNode from './Performance.js'
 import ProductionNode from './Production.js'
 
-export default (overrides = {}) => {
+export default (overrides = {}, includePerformance = false) => {
   return Object.assign(
     {
       id: 1,
@@ -19,7 +19,9 @@ export default (overrides = {}) => {
       publicallyListed: true,
       slug: 'winston_theatre',
       seatGroups: GenericConnection(),
-      performances: GenericConnection([PerformanceNode()]),
+      performances: includePerformance
+        ? GenericConnection([PerformanceNode()])
+        : GenericConnection(),
       productions: GenericConnection([ProductionNode()]),
     },
     overrides

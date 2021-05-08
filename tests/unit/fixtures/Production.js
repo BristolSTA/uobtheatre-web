@@ -1,11 +1,11 @@
 import CastMember from './CastMember'
 import CrewMember from './CrewMember'
-import Performance from './Peformance'
+import Performance from './Performance'
 import ProductionTeamMember from './ProductionTeamMember'
 import Society from './Society'
 import GenericNodeConnection from './support/GenericNodeConnection'
 
-export default (overrides = {}) => {
+export default (overrides = {}, includePerformance = false) => {
   return Object.assign(
     {
       createdAt: '2020-05-08T14:00:00.000',
@@ -35,7 +35,9 @@ export default (overrides = {}) => {
       productionTeam: [ProductionTeamMember()],
       society: Society(),
       warnings: [{ warning: 'Strobe Lighting' }, { warning: 'Nudity' }],
-      performances: GenericNodeConnection([Performance()]),
+      performances: includePerformance
+        ? GenericNodeConnection([Performance()])
+        : GenericNodeConnection(),
     },
     overrides
   )
