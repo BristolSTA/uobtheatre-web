@@ -1,4 +1,4 @@
-export default (overrides) => {
+export default (overrides = {}) => {
   return Object.assign(
     {
       id: 1,

@@ -1,6 +1,6 @@
 import address from './Address'
 
-export default (overrides) => {
+export default (overrides = {}) => {
   return Object.assign(
     {
       address: address(),
