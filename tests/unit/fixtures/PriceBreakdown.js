@@ -1,20 +1,11 @@
-import ConcessionType from './ConcessionType'
-import SeatGroup from './SeatGroup'
 import MiscCost from './MiscCost'
+import PriceBreakdownTicket from './PriceBreakdownTicket'
 
 export default (overrides = {}) => {
   return Object.assign(
     {
       id: 1,
-      tickets: [
-        {
-          ticketPrice: 250,
-          number: 2,
-          seatGroup: SeatGroup(),
-          concessionType: ConcessionType(),
-          totalPrice: 500,
-        },
-      ],
+      tickets: [PriceBreakdownTicket()],
       ticketsPrice: 500,
       discountsValue: 10,
       miscCosts: [MiscCost()],
