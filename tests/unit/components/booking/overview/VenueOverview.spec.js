@@ -12,8 +12,6 @@ describe('Venue Overview', function () {
   let venueOverviewComponent
 
   beforeEach(async () => {
-    // Create a venue and address
-
     venueOverviewComponent = await mountWithRouterMock(VenueOverview, {
       data() {
         return {

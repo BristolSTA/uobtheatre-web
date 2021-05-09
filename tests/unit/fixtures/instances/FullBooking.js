@@ -9,18 +9,6 @@ import PriceBreakdownTicket from '../PriceBreakdownTicket'
 export default () => {
   const bookingdata = bookingFixture()
 
-  bookingdata.performance = {
-    id: '1',
-    production: {
-      id: '1',
-      name: 'Legally Blonde',
-      slug: 'legally-blonde',
-    },
-    venue: {
-      slug: 'anson-theatre',
-    },
-    durationMins: 120,
-  }
   const adult = ConcessionType({
     name: 'Adult',
     description: null,
@@ -30,7 +18,7 @@ export default () => {
   })
   const student = ConcessionType({
     name: 'Student',
-    id: '3',
+    id: '2',
     description: 'Valid ID NOT required',
   })
   const studentBooking = ConcessionTypeBookingType({

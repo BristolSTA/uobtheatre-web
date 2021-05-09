@@ -1,66 +1,62 @@
 import { RouterLinkStub } from '@vue/test-utils'
 import { expect } from 'chai'
-import { DateTime } from 'luxon'
 
 import ProductionCarousel from '@/components/home/ProductionCarousel.vue'
 
-import {
-  executeWithServer,
-  fixTextSpacing,
-  mountWithRouterMock,
-  runApolloQuery,
-} from '../../helpers'
+import { fixTextSpacing, mountWithRouterMock } from '../../helpers'
+import Production from '../../fixtures/Production'
+import Society from '../../fixtures/Society'
 
 describe('ProductionCarousel', function () {
   let prodCarouselComponent
   let bannerProductions
 
   beforeEach(async () => {
-    await executeWithServer(async (server) => {
-      server.create('ProductionNode', {
+    bannerProductions = [
+      Production({
+        id: 1,
         name: 'My production without a picture',
-        coverImage: server.create('ImageNode', {
+        slug: 'my-production-without-a-picture',
+        coverImage: {
           url: 'http://pathto.example/my-image0.png',
-        }),
-        society: server.create('SocietyNode', { name: 'Dramatic Pause' }),
-        start: DateTime.fromISO('2020-11-13'),
-        end: DateTime.fromISO('2020-11-14'),
-      })
-      server.create('ProductionNode', {
-        name: 'Upside Down Cake',
-        coverImage: server.create('ImageNode', {
-          url: 'http://pathto.example/my-image.png',
-        }),
-        society: server.create('SocietyNode', {
-          name: 'Joe Bloggs Productions',
-        }),
-        start: DateTime.fromISO('2020-11-14'),
-        end: DateTime.fromISO('2020-11-18'),
-      })
-      server.create('ProductionNode', {
-        name: 'Legally Ginger',
-        coverImage: server.create('ImageNode', {
-          url: 'http://pathto.example/my-image2.png',
-        }),
-        society: server.create('SocietyNode', { name: 'MTB' }),
-        start: DateTime.fromISO('2019-11-14'),
-        end: DateTime.fromISO('2019-11-18'),
-      })
-
-      const { data } = await runApolloQuery({
-        query: require('@/graphql/queries/HomeUpcomingProductions.gql'),
-      })
-
-      jest.useFakeTimers()
-      prodCarouselComponent = await mountWithRouterMock(ProductionCarousel, {
-        propsData: {
-          bannerProductions: (bannerProductions = data.productions.edges.map(
-            (edge) => edge.node
-          )),
-          autoplay: true,
-          pauseOnHover: true,
         },
-      })
+        society: Society({ name: 'Dramatic Pause', slug: 'dramatic-pause' }),
+        start: '2020-11-13T00:00:00.000',
+        end: '2020-11-14T00:00:00.000',
+      }),
+      Production({
+        id: 2,
+        name: 'Upside Down Cake',
+        slug: 'upside-down-cake',
+        coverImage: {
+          url: 'http://pathto.example/my-image.png',
+        },
+        society: Society({
+          name: 'Joe Bloggs Productions',
+          slug: 'joe-bloggs-productions',
+        }),
+        start: '2020-11-14T00:00:00.000',
+        end: '2020-11-18T00:00:00.000',
+      }),
+      Production({
+        id: 3,
+        name: 'Legally Ginger',
+        coverImage: {
+          url: 'http://pathto.example/my-image2.png',
+        },
+        society: Society({ name: 'MTB', slug: 'mtb' }),
+        start: '2019-11-14T00:00:00.000',
+        end: '2019-11-18T00:00:00.000',
+      }),
+    ]
+
+    jest.useFakeTimers()
+    prodCarouselComponent = await mountWithRouterMock(ProductionCarousel, {
+      propsData: {
+        bannerProductions,
+        autoplay: true,
+        pauseOnHover: true,
+      },
     })
   })
 

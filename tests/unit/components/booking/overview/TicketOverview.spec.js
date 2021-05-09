@@ -13,11 +13,11 @@ describe('Ticket Overview', function () {
   beforeAll(async () => {
     const bookingdata = FullBooking()
 
-    const bookingModel = Booking.fromAPIData(bookingdata)
+    const booking = Booking.fromAPIData(bookingdata)
 
     ticketOverviewComponent = await mountWithRouterMock(TicketsOverview, {
       propsData: {
-        booking: bookingModel,
+        booking,
       },
     })
   })
