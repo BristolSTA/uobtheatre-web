@@ -1,11 +1,11 @@
 export default (overrides = {}) => {
   return Object.assign(
     {
-      id: 1,
+      id: '1',
       name: 'Booking Fee',
       description: 'Supports theatre maintainance and website',
       percentage: 0.05,
-      value: null,
+      value: 5,
     },
     overrides
   )

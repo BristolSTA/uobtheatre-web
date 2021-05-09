@@ -11,7 +11,7 @@ export default (overrides = {}) => {
       miscCosts: [MiscCost()],
       subtotalPrice: 490,
       miscCostsValue: 5,
-      totalPrice: 485,
+      totalPrice: 495,
       ticketsDiscountedPrice: 490,
     },
     overrides

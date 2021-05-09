@@ -4,33 +4,22 @@ import Booking from '@/classes/Booking'
 import OverviewBox from '@/components/booking/overview/OverviewBox.vue'
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue'
 
-import FakeBooking from '../../../fixtures/FakeBooking'
-import {
-  executeWithServer,
-  fixTextSpacing,
-  mountWithRouterMock,
-  runApolloQuery,
-} from '../../../helpers'
+import FullBooking from '@/tests/unit/fixtures/instances/FullBooking'
+import { fixTextSpacing, mountWithRouterMock } from '../../../helpers'
 
 describe('Ticket Overview', function () {
   let ticketOverviewComponent
-  const booking = new Booking()
 
   beforeAll(async () => {
-    await executeWithServer(async (server) => {
-      const bookingModel = FakeBooking(server)
+    const bookingdata = FullBooking()
 
-      const { data } = await runApolloQuery({
-        query: require('@/graphql/queries/BookingInformation.gql'),
-        variables: {
-          bookingId: bookingModel.id,
-        },
-      })
-      booking.updateFromAPIData(data.booking)
-    })
+    const bookingModel = Booking.fromAPIData(bookingdata)
+
+    console.log(bookingModel.ticketOverview())
+
     ticketOverviewComponent = await mountWithRouterMock(TicketsOverview, {
       propsData: {
-        booking,
+        booking: bookingModel,
       },
     })
   })

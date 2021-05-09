@@ -4,8 +4,8 @@ export default {
       capacityRemaining: 10,
       seatGroup: {
         id: '1',
-        name: 'The best seats in the house',
-        description: 'They are sooooo good',
+        name: 'Best seats in the house',
+        description: 'The best seats obviously',
         __typename: 'SeatGroupNode',
       },
       concessionTypes: [
@@ -16,17 +16,7 @@ export default {
             description: null,
             __typename: 'ConcessionTypeNode',
           },
-          price: 300,
-          __typename: 'ConcessionTypeBookingType',
-        },
-        {
-          concessionType: {
-            id: '2',
-            name: 'Child',
-            description: 'occaecati reiciendis dolor odit voluptas',
-            __typename: 'ConcessionTypeNode',
-          },
-          price: 400,
+          price: 1000,
           __typename: 'ConcessionTypeBookingType',
         },
         {
@@ -46,7 +36,7 @@ export default {
       capacityRemaining: 11,
       seatGroup: {
         id: '2',
-        name: 'Proj Seats',
+        name: 'The Meh Seats',
         description: null,
         __typename: 'SeatGroupNode',
       },
@@ -58,17 +48,7 @@ export default {
             description: null,
             __typename: 'ConcessionTypeNode',
           },
-          price: 900,
-          __typename: 'ConcessionTypeBookingType',
-        },
-        {
-          concessionType: {
-            id: '2',
-            name: 'Child',
-            description: 'occaecati reiciendis dolor odit voluptas',
-            __typename: 'ConcessionTypeNode',
-          },
-          price: 400,
+          price: 1000,
           __typename: 'ConcessionTypeBookingType',
         },
         {
@@ -78,7 +58,7 @@ export default {
             description: 'Valid ID NOT required',
             __typename: 'ConcessionTypeNode',
           },
-          price: 100,
+          price: 800,
           __typename: 'ConcessionTypeBookingType',
         },
       ],
