@@ -21,19 +21,20 @@ export default () => {
     },
     durationMins: 120,
   }
-
-  const adult = ConcessionTypeBookingType({
-    concessionType: ConcessionType({
-      name: 'Adult',
-      description: null,
-    }),
+  const adult = ConcessionType({
+    name: 'Adult',
+    description: null,
   })
-  const student = ConcessionTypeBookingType({
-    concessionType: ConcessionType({
-      name: 'Student',
-      id: '3',
-      description: 'Valid ID NOT required',
-    }),
+  const adultBooking = ConcessionTypeBookingType({
+    concessionType: adult,
+  })
+  const student = ConcessionType({
+    name: 'Student',
+    id: '3',
+    description: 'Valid ID NOT required',
+  })
+  const studentBooking = ConcessionTypeBookingType({
+    concessionType: student,
     price: 800,
     pricePounds: '8.00',
   })
@@ -47,12 +48,12 @@ export default () => {
   bookingdata.performance.ticketOptions = [
     PerformanceSeatGroup({
       capacityRemaining: 10,
-      concessionTypes: [adult, student],
+      concessionTypes: [adultBooking, studentBooking],
     }),
     PerformanceSeatGroup({
       capacityRemaining: 11,
       seatGroup: mehSeatGroup,
-      concessionTypes: [adult, student],
+      concessionTypes: [adultBooking, studentBooking],
     }),
   ]
 
@@ -63,12 +64,12 @@ export default () => {
     }),
     Ticket({
       id: '9',
-      concessionType: student,
+      concessionType: studentBooking,
     }),
     Ticket({
       id: '10',
       seatGroup: mehSeatGroup,
-      concessionType: student,
+      concessionType: studentBooking,
     }),
   ]
 
@@ -93,7 +94,6 @@ export default () => {
       totalPrice: 100,
     }),
   ]
-  //   console.log(bookingdata)
 
   return bookingdata
 }

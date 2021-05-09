@@ -212,14 +212,14 @@ describe('Booking Class', () => {
 
     booking.priceBreakdown = bookingAPIData.priceBreakdown
 
-    expect(booking.totalPrice).to.eq(485)
+    expect(booking.totalPrice).to.eq(495)
   })
   it('can get total booking price in pounds', () => {
     expect(booking.totalPricePounds).to.eq('0.00')
 
     booking.priceBreakdown = bookingAPIData.priceBreakdown
 
-    expect(booking.totalPricePounds).to.eq('4.85')
+    expect(booking.totalPricePounds).to.eq('4.95')
   })
   it('can get sub total booking price in pounds', () => {
     expect(booking.subTotalPricePounds).to.eq('0.00')

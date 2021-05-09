@@ -15,8 +15,6 @@ describe('Ticket Overview', function () {
 
     const bookingModel = Booking.fromAPIData(bookingdata)
 
-    console.log(bookingModel.ticketOverview())
-
     ticketOverviewComponent = await mountWithRouterMock(TicketsOverview, {
       propsData: {
         booking: bookingModel,
