@@ -34,7 +34,7 @@ export default (overrides = {}, includePerformance = false) => {
       crew: [CastMember()],
       productionTeam: [ProductionTeamMember()],
       society: Society(),
-      warnings: [{ warning: 'Strobe Lighting' }, { warning: 'Nudity' }],
+      warnings: [{ description: 'Strobe Lighting' }, { description: 'Nudity' }],
       performances: includePerformance
         ? GenericNodeConnection([Performance()])
         : GenericNodeConnection(),

@@ -7,7 +7,7 @@
 
       <ul class="list-disc list-inside">
         <li v-for="(warning, index) in production.warnings" :key="index">
-          {{ warning.warning }}
+          {{ warning.description }}
         </li>
       </ul>
     </div>
