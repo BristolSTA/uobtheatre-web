@@ -1,18 +1,24 @@
-import { DateTime } from 'luxon';
+import { DateTime } from 'luxon'
 
-import { generateConcessionTypeBookingTypes } from '@/fakeApi/utils';
+import { generateConcessionTypeBookingTypes } from '@/fakeApi/utils'
+import FakeProduction from './FakeProduction'
 
 export default (server) => {
   // Seed fake types
-  let conc1 = server.create('concessionTypeNode', {
+  const conc1 = server.create('concessionTypeNode', {
     name: 'Adult',
-  });
-  let conc2 = server.create('concessionTypeNode', {
+  })
+  const conc2 = server.create('concessionTypeNode', {
     name: 'Student',
-  });
+  })
 
   return {
-    production: server.create('productionNode'),
+    production: server.create(
+      'productionNode',
+      Object.assign(FakeProduction(server), {
+        performances: [],
+      })
+    ),
     doorsOpen: DateTime.fromISO('2020-03-09T15:00:00'),
     start: DateTime.fromISO('2020-03-09T16:00:00'),
     end: DateTime.fromISO('2020-03-09T18:00:00'),
@@ -57,5 +63,5 @@ export default (server) => {
         ),
       }),
     ],
-  };
-};
+  }
+}

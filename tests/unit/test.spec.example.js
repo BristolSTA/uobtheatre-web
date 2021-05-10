@@ -1,8 +1,8 @@
 // Copy and rename this file to <testname>.spec.js
-import { expect } from 'chai';
+import { expect } from 'chai'
 
 describe('My Component', () => {
-  beforeEach(() => {});
+  beforeEach(() => {})
 
-  it('can do something', () => {});
-});
+  it('can do something', () => {})
+})

@@ -1,18 +1,22 @@
 module.exports = {
-  preset: '@vue/cli-plugin-unit-jest',
-  setupFilesAfterEnv: ['<rootDir>tests/unit/setup.js'],
-  coveragePathIgnorePatterns: [
-    '<rootDir>/tests/',
-    'src/main.js',
-    'src/registerServiceWorker.js',
-    'src/extensions.js',
-    'src/Playground.example.vue',
-    'src/Playground.vue',
-    'src/playground.js',
-    'src/fakeApi/*.*',
-  ],
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/$1',
+    '^~/(.*)$': '<rootDir>/$1',
+    '^vue$': 'vue/dist/vue.common.js',
+  },
+  moduleFileExtensions: ['js', 'vue', 'json'],
   transform: {
+    '^.+\\.js$': 'babel-jest',
+    '.*\\.(vue)$': 'vue-jest',
     '\\.(gql|graphql)$': 'jest-transform-graphql',
   },
-  collectCoverageFrom: ['src/**/*.{js,vue}'],
-};
+  collectCoverageFrom: [
+    '<rootDir>/components/**/*.vue',
+    '<rootDir>/pages/**/*.vue',
+  ],
+  watchPlugins: [
+    'jest-watch-typeahead/filename',
+    'jest-watch-typeahead/testname',
+  ],
+  setupFilesAfterEnv: ['<rootDir>tests/unit/setup.js'],
+}

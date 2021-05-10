@@ -1,8 +1,8 @@
-import { DateTime } from 'luxon';
+import { DateTime } from 'luxon'
 
-import { generatePriceBreakdown } from '@/fakeApi/booking.model';
+import { generatePriceBreakdown } from '@/fakeApi/booking.model'
 
-import FakePerformance from './FakePerformance';
+import FakePerformance from './FakePerformance'
 
 /**
  * Facts about this booking:
@@ -17,24 +17,22 @@ import FakePerformance from './FakePerformance';
  */
 
 export default (server, overrides = {}, paid = false) => {
-  let performance = server.create('PerformanceNode', FakePerformance(server));
+  const performance = server.create('PerformanceNode', FakePerformance(server))
 
   server.create('miscCostNode', {
     percentage: 0.05,
     name: 'Booking Fee',
     production: performance.production,
-  });
+  })
 
-  let bestSeatGroup = performance.ticketOptions.models[0].seatGroup;
-  let mehSeatGroup = performance.ticketOptions.models[1].seatGroup;
-  let adultConcession =
-    performance.ticketOptions.models[0].concessionTypes.models[0]
-      .concessionType;
-  let studentConcession =
-    performance.ticketOptions.models[0].concessionTypes.models[1]
-      .concessionType;
+  const bestSeatGroup = performance.ticketOptions.models[0].seatGroup
+  const mehSeatGroup = performance.ticketOptions.models[1].seatGroup
+  const adultConcession =
+    performance.ticketOptions.models[0].concessionTypes.models[0].concessionType
+  const studentConcession =
+    performance.ticketOptions.models[0].concessionTypes.models[1].concessionType
 
-  let bookingOverrides = {
+  const bookingOverrides = {
     performance,
     reference: 'ABS1352EBV54',
     tickets: [
@@ -55,24 +53,24 @@ export default (server, overrides = {}, paid = false) => {
         concessionType: studentConcession,
       }),
     ],
-  };
-  let bookingModel;
+  }
+  let bookingModel
   if (paid) {
-    bookingModel = server.create('bookingNode', 'paid', bookingOverrides);
+    bookingModel = server.create('bookingNode', 'paid', bookingOverrides)
     bookingModel.payments.models[0].update({
       cardBrand: 'VISA',
       last4: '1234',
       value: 2575,
       createdAt: DateTime.fromISO('2021-03-13T15:05:00'),
-    });
-  } else bookingModel = server.create('bookingNode', bookingOverrides);
+    })
+  } else bookingModel = server.create('bookingNode', bookingOverrides)
 
-  bookingModel.update(overrides);
+  bookingModel.update(overrides)
   bookingModel.update({
     priceBreakdown: server.create(
       'PriceBreakdownNode',
       generatePriceBreakdown(server.schema, bookingModel)
     ),
-  });
-  return bookingModel;
-};
+  })
+  return bookingModel
+}

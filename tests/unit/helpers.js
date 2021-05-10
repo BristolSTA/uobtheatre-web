@@ -1,11 +1,32 @@
-import { createLocalVue, mount, RouterLinkStub } from '@vue/test-utils';
-import { expect } from 'chai';
-import { Class } from 'leaflet';
-import VueApollo from 'vue-apollo';
+import { createLocalVue, mount, RouterLinkStub } from '@vue/test-utils'
+import { expect } from 'chai'
+import VueApollo from 'vue-apollo'
+import config from '@/config'
 
-import { makeServer as makeAPIServer } from '@/fakeApi';
-import store from '@/store';
-import { createClient, createProvider } from '@/vue-apollo';
+import { makeServer as makeAPIServer } from '@/fakeApi'
+import { createProvider } from '@/plugins/vue-apollo.config'
+
+const defaultApolloClientOptions = {
+  httpEndpoint: '/fakeapi/graphql/',
+  apollo: {
+    defaultOptions: {
+      query: {
+        fetchPolicy: 'no-cache',
+      },
+    },
+  },
+}
+
+const defaultVueApolloOptions = {
+  $query: {
+    fetchPolicy: 'no-cache',
+  },
+}
+
+let apolloProvider = createProvider(
+  defaultApolloClientOptions,
+  defaultVueApolloOptions
+)
 
 /**
  * Waits for a certain DOM element to be present
@@ -17,14 +38,14 @@ import { createClient, createProvider } from '@/vue-apollo';
 const waitForDOM = function (wrapper, selector) {
   return new Promise((resolve) => {
     const timer = setInterval(() => {
-      const userEl = wrapper.findAll(selector);
+      const userEl = wrapper.findAll(selector)
       if (userEl.length > 0) {
-        clearInterval(timer);
-        resolve();
+        clearInterval(timer)
+        resolve()
       }
-    }, 100);
-  });
-};
+    }, 100)
+  })
+}
 
 /**
  * Waits for a given callback function to return true
@@ -36,12 +57,12 @@ const waitFor = function (callback) {
   return new Promise((resolve) => {
     const timer = setInterval(() => {
       if (callback()) {
-        clearInterval(timer);
-        resolve();
+        clearInterval(timer)
+        resolve()
       }
-    }, 2);
-  });
-};
+    }, 2)
+  })
+}
 
 /**
  * Fixes test "contains" issues caused by content being spread over new lines.
@@ -51,14 +72,14 @@ const waitFor = function (callback) {
  * @returns {string} Fixed text
  */
 const fixTextSpacing = function (text) {
-  return text.replace(/\s\s+/g, ' ');
-};
+  return text.replace(/\s\s+/g, ' ')
+}
 
 /**
  * Mounts a vue component, mocking Vue Router funcitons including stubbing router-links and simulating beforeRouteEnter navigiation guards
  *
  * @param {Class} component Vue Component
- * @param {object} options Mounting options dictionary
+ * @param {object} mountOptions Mounting options dictionary
  * @param {object} to "to" route mock
  * @param {object} from "from" route mock
  * @param {?Function} next Optional custom implementation of "next" function
@@ -66,37 +87,39 @@ const fixTextSpacing = function (text) {
  */
 const mountWithRouterMock = async function (
   component,
-  options = {},
-  to,
-  from,
-  next
+  mountOptions = {},
+  contextOptions = {}
 ) {
-  // eslint-disable-next-line no-undef
-  if (!next) next = jest.fn();
+  contextOptions = Object.assign(
+    {
+      error: jest.fn(),
+      app: {
+        apolloProvider,
+      },
+    },
+    contextOptions
+  )
 
-  // Mount the component
-  let mountedComponent = mount(
-    component,
-    generateMountOptions(['router'], options)
-  );
+  if (component.asyncData) {
+    const dataObject = await component.asyncData.call(null, contextOptions)
 
-  // Run the component's beforeRouteEnter guard if it has one.
-  // Note: This is called after the component is mounted (when in reality, this should be called before the component is mounted)
-  if (component.beforeRouteEnter) {
-    await component.beforeRouteEnter.call(
-      mountedComponent.vm,
-      to,
-      from,
-      // eslint-disable-next-line no-undef
-      next.mockImplementation(async (callback) => {
-        if (typeof callback === 'function') await callback(mountedComponent.vm);
-        return;
-      })
-    );
+    // If the error handler has been called, abort
+    if (contextOptions.error.mock.calls.length) {
+      return
+    }
+    mountOptions.data = () => {
+      return dataObject
+    }
   }
 
-  return mountedComponent;
-};
+  // Mount the component
+  const mountedComponent = mount(
+    component,
+    generateMountOptions(['router'], mountOptions)
+  )
+
+  return mountedComponent
+}
 
 /**
  * Generates Vue mount options based on a request list of pre-built option sets
@@ -106,17 +129,24 @@ const mountWithRouterMock = async function (
  * @returns {object} Vue mounting options
  */
 const generateMountOptions = function (types = [], options = {}) {
-  if (!options['stubs']) options.stubs = {};
-  if (types.includes('apollo')) {
-    if (!options['localVue']) options.localVue = createLocalVue();
-    options.localVue.use(VueApollo);
-    options.apolloProvider = createProvider();
+  if (!options.stubs) options.stubs = {}
+  if (!options.mocks) options.mocks = {}
+  if (types.includes('config')) {
+    options.mocks.$config = config()
+  }
+  if (types.includes('apollo') || types.includes('apollo-new')) {
+    if (!options.localVue) options.localVue = createLocalVue()
+    options.localVue.use(VueApollo)
+    options.apolloProvider = types.includes('apollo-new')
+      ? createProvider(defaultApolloClientOptions, defaultVueApolloOptions)
+      : apolloProvider
+    options.apolloProvider.defaultClient.cache.reset()
   }
   if (types.includes('router')) {
-    options.stubs.RouterLink = RouterLinkStub;
+    options.stubs.NuxtLink = RouterLinkStub
   }
-  return options;
-};
+  return options
+}
 
 /**
  * Makes a MirageJS testing server
@@ -124,8 +154,8 @@ const generateMountOptions = function (types = [], options = {}) {
  * @returns {any} Mirage JS server instance
  */
 const makeServer = () => {
-  return makeAPIServer({ environment: 'test' });
-};
+  return makeAPIServer({ environment: 'test' })
+}
 
 /**
  * Creates and executes a function with a MirageJS server instance
@@ -135,13 +165,13 @@ const makeServer = () => {
  * @returns {any} Mirage JS server instance
  */
 const executeWithServer = async (callback, closeServer = true) => {
-  let server = makeServer();
-  if (callback) await callback(server);
+  const server = makeServer()
+  if (callback) await callback(server)
   if (closeServer) {
-    server.shutdown();
+    server.shutdown()
   }
-  return server;
-};
+  return server
+}
 
 /**
  * Asserts no visual differnce between recieved and expected objects
@@ -149,11 +179,10 @@ const executeWithServer = async (callback, closeServer = true) => {
  * @param {object|Array|string} recieved Recieved object
  * @param {object|Array|string} expected Expected object
  */
-let assertNoVisualDifference = (recieved, expected) => {
-  expect(JSON.stringify(recieved)).to.eq(JSON.stringify(expected));
-};
+const assertNoVisualDifference = (recieved, expected) => {
+  expect(JSON.stringify(recieved)).to.eq(JSON.stringify(expected))
+}
 
-let client = null;
 /**
  * Runs a GraphQL query through apollo.
  * Useful for getting data from the Fake API like the real components will
@@ -161,20 +190,16 @@ let client = null;
  * @param {object} options Dictionary of options for the apollo query
  * @returns {Promise} Apollo Query Promise
  */
-let runApolloQuery = (options) => {
-  if (!client) {
-    let { apolloClient } = createClient();
-    client = apolloClient;
-  }
-  return client.query(
+const runApolloQuery = (options) => {
+  return apolloProvider.defaultClient.query(
     Object.assign(
       {
         fetchPolicy: 'no-cache',
       },
       options
     )
-  );
-};
+  )
+}
 
 /**
  * Seeds a user if doesn't already exist, and programatically logs that user in
@@ -183,20 +208,25 @@ let runApolloQuery = (options) => {
  * @param {object} overrides Optional dictionary of overrides for the user model
  * @returns {object} MirageJS User Node Model
  */
-let seedAndAuthAsUser = (server, overrides = {}) => {
-  let options = Object.assign(
+const seedAndAuthAsUser = (server, overrides = {}) => {
+  const options = Object.assign(
     {
       token: '1234abcd',
     },
     overrides
-  );
-  store.commit('SET_AUTH_TOKEN', options.token);
+  )
+  apolloProvider = createProvider(
+    Object.assign(defaultApolloClientOptions, {
+      getAuth: () => `JWT ${options.token}`,
+    }),
+    defaultVueApolloOptions
+  )
 
-  let user = server.schema.userNodes.findBy({ token: options.token });
+  let user = server.schema.userNodes.findBy({ token: options.token })
 
-  if (!user) user = server.create('userNode', options);
-  return user;
-};
+  if (!user) user = server.create('userNode', options)
+  return user
+}
 
 export {
   assertNoVisualDifference,
@@ -210,4 +240,4 @@ export {
   seedAndAuthAsUser,
   waitFor,
   waitForDOM,
-};
+}

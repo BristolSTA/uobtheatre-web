@@ -1,17 +1,20 @@
-import { RouterLinkStub } from '@vue/test-utils';
-import { expect } from 'chai';
-import gql from 'graphql-tag';
-import { DateTime } from 'luxon';
+import { RouterLinkStub } from '@vue/test-utils'
+import { expect } from 'chai'
+import gql from 'graphql-tag'
+import { DateTime } from 'luxon'
 
-import PerformanceOverview from '@/components/production/PerformanceOverview.vue';
+import PerformanceOverview from '@/components/production/PerformanceOverview.vue'
 
-import { mountWithRouterMock } from '../../helpers';
-import { executeWithServer } from '../../helpers';
-import { fixTextSpacing, runApolloQuery } from '../../helpers.js';
+import {
+  mountWithRouterMock,
+  executeWithServer,
+  fixTextSpacing,
+  runApolloQuery,
+} from '../../helpers'
 
 describe('Pick Performance Stage', () => {
-  let performanceOverviewComponent;
-  let performance;
+  let performanceOverviewComponent
+  let performance
 
   beforeAll(async () => {
     await executeWithServer(async (server) => {
@@ -26,8 +29,8 @@ describe('Pick Performance Stage', () => {
           name: 'Winston Theatre',
           slug: 'winston-theatre',
         }),
-      });
-      let gqlResult = await runApolloQuery({
+      })
+      const gqlResult = await runApolloQuery({
         query: gql`
           {performance(id: ${performance.id}) {
             start
@@ -43,60 +46,54 @@ describe('Pick Performance Stage', () => {
             }
           }}
         `,
-      });
-      performance = gqlResult.data.performance;
-    });
+      })
+      performance = gqlResult.data.performance
+    })
     performanceOverviewComponent = await mountWithRouterMock(
       PerformanceOverview,
       {
         propsData: {
-          performance: performance,
+          performance,
         },
       }
-    );
-  });
+    )
+  })
 
-  it('An available in-person & online performance', async () => {
-    expect(performanceOverviewComponent.text()).to.contain('Saturday 28 Nov');
+  it('An available in-person & online performance', () => {
+    expect(performanceOverviewComponent.text()).to.contain('Saturday 28 Nov')
     expect(performanceOverviewComponent.find('div.bg-sta-green').exists()).to.be
-      .true;
+      .true
     expect(fixTextSpacing(performanceOverviewComponent.text())).to.contain(
       'Winston Theatre and Online'
-    );
+    )
     expect(performanceOverviewComponent.find('a').text()).to.eq(
       'Winston Theatre'
-    );
-    expect(performanceOverviewComponent.text()).to.contain('Starting at 16:00');
+    )
+    expect(performanceOverviewComponent.text()).to.contain('Starting at 16:00')
     expect(performanceOverviewComponent.text()).to.contain(
       '2 hours, 10 minutes'
-    );
-    expect(performanceOverviewComponent.text()).to.contain('Tickets Available');
-    expect(performanceOverviewComponent.find('button').text()).to.eq('Book');
-  });
+    )
+    expect(performanceOverviewComponent.text()).to.contain('Tickets Available')
+    expect(performanceOverviewComponent.find('button').text()).to.eq('Book')
+  })
 
-  it('has working venue link', async () => {
+  it('has working venue link', () => {
     expect(
       performanceOverviewComponent
         .findAllComponents(RouterLinkStub)
         .at(0)
-        .props('to').name
-    ).to.equal('venue');
-    expect(
-      performanceOverviewComponent
-        .findAllComponents(RouterLinkStub)
-        .at(0)
-        .props('to').params.venueSlug
-    ).to.equal('winston-theatre');
-  });
+        .props('to')
+    ).to.equal('/venue/winston-theatre')
+  })
 
   it('has correct booking link', async () => {
-    await performanceOverviewComponent.find('button').trigger('click');
+    await performanceOverviewComponent.find('button').trigger('click')
 
-    expect(performanceOverviewComponent.emitted('select').length).to.eq(1);
+    expect(performanceOverviewComponent.emitted('select').length).to.eq(1)
     expect(performanceOverviewComponent.emitted('select')[0][0]).to.equal(
       performance
-    );
-  });
+    )
+  })
 
   it('A disabled, in-person performance', async () => {
     await performanceOverviewComponent.setProps({
@@ -105,25 +102,25 @@ describe('Pick Performance Stage', () => {
         isOnline: false,
         isInperson: true,
       }),
-    });
+    })
 
     expect(performanceOverviewComponent.find('div.bg-sta-green').exists()).to.be
-      .false;
+      .false
     expect(performanceOverviewComponent.find('div.bg-sta-gray-dark').exists())
-      .to.be.true;
+      .to.be.true
     expect(performanceOverviewComponent.find('a').text()).to.eq(
       'Winston Theatre'
-    );
+    )
     expect(performanceOverviewComponent.text()).to.contain(
       'No Tickets Available'
-    );
+    )
     expect(performanceOverviewComponent.find('button').text()).to.eq(
       'Unavailable'
-    );
+    )
     expect(
       performanceOverviewComponent.find('button').attributes('disabled')
-    ).to.eq('disabled');
-  });
+    ).to.eq('disabled')
+  })
 
   it('A disabled, in-person performance', async () => {
     await performanceOverviewComponent.setProps({
@@ -133,26 +130,24 @@ describe('Pick Performance Stage', () => {
         isOnline: true,
         isInperson: false,
       }),
-    });
+    })
 
     expect(performanceOverviewComponent.find('div.bg-sta-green').exists()).to.be
-      .false;
+      .false
     expect(performanceOverviewComponent.find('div.bg-sta-gray-dark').exists())
-      .to.be.true;
+      .to.be.true
     expect(fixTextSpacing(performanceOverviewComponent.text())).to.contain(
       'Online'
-    );
+    )
     expect(
       performanceOverviewComponent.findAllComponents(RouterLinkStub).length
-    ).to.eq(0);
+    ).to.eq(0)
     expect(performanceOverviewComponent.text()).to.contain(
       'No Tickets Available'
-    );
-    expect(performanceOverviewComponent.find('button').text()).to.eq(
-      'SOLD OUT'
-    );
+    )
+    expect(performanceOverviewComponent.find('button').text()).to.eq('SOLD OUT')
     expect(
       performanceOverviewComponent.find('button').attributes('disabled')
-    ).to.eq('disabled');
-  });
-});
+    ).to.eq('disabled')
+  })
+})

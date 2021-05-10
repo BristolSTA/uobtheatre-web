@@ -7,6 +7,7 @@ module.exports = {
   theme: {
     fontFamily: {
       body: ['Montserrat', 'sans-serif'],
+      mono: ['"Roboto Mono"', 'monospace'],
     },
     container: {
       center: true,
@@ -61,4 +62,4 @@ module.exports = {
     },
   },
   plugins: [],
-};
+}

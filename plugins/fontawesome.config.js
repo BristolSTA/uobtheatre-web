@@ -1,0 +1,22 @@
+export default {
+  solid: [
+    'faArrowRight',
+    'faBuilding',
+    'faChevronDown',
+    'faChevronLeft',
+    'faChevronRight',
+    'faChevronUp',
+    'faCircleNotch',
+    'faClock',
+    'faInfoCircle',
+    'faLink',
+    'faMapMarkedAlt',
+    'faMoneyCheckAlt',
+    'faSignInAlt',
+    'faTheaterMasks',
+    'faTicketAlt',
+    'faTimesCircle',
+    'faUserEdit',
+  ],
+  brands: ['faFacebook'],
+}

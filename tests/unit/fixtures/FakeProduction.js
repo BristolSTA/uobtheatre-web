@@ -1,9 +1,10 @@
-import { DateTime } from 'luxon';
+import { DateTime } from 'luxon'
 
 export default (server) => {
   return {
     name: 'Legally Ginger',
-    subtitle: 'legally-ginger',
+    subtitle: 'A twist on a classic',
+    slug: 'legally-ginger',
     description: 'The description of the show.',
     society: server.create('societyNode', {
       name: 'Joe Bloggs Productions',
@@ -21,7 +22,6 @@ export default (server) => {
     coverImage: null,
     ageRating: 18,
     facebookEvent: 'https://facebook.com/legally-ginger',
-    slug: 'trash',
     start: DateTime.fromISO('2020-11-14T00:00:00.000+00:00'),
     end: DateTime.fromISO('2020-11-18T00:00:00.000+00:00'),
     minSeatPrice: 424,
@@ -79,5 +79,5 @@ export default (server) => {
         role: 'Musical Director',
       }),
     ],
-  };
-};
+  }
+}
