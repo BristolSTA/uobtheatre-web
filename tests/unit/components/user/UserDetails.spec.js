@@ -7,11 +7,7 @@ import ChangePassword from '@/components/user/ChangePassword.vue'
 import UserDetails from '@/components/user/UserDetails.vue'
 import { swalToast } from '@/utils'
 
-import {
-  generateApolloMock,
-  generateMountOptions,
-  waitFor,
-} from '../../helpers'
+import { generateMountOptions, waitFor } from '../../helpers'
 import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 

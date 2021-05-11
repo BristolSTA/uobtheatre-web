@@ -5,21 +5,17 @@ import { swal, swalToast } from '@/utils'
 import ForgotPassword from '@/pages/login/forgot.vue'
 
 import {
-  executeWithServer,
+  generateApolloMock,
   generateMountOptions,
   mountWithRouterMock,
 } from '../../helpers'
+import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
+import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse'
+import GenericErrorsResponse from '../../fixtures/support/GenericErrorsResponse'
+import GenericError from '../../fixtures/support/GenericError'
 
 describe('Forgot Password', function () {
-  let forgotPasswordComponent, server
-
-  beforeAll(async () => {
-    server = await executeWithServer(() => {}, false)
-  })
-
-  afterAll(() => {
-    server.shutdown()
-  })
+  let forgotPasswordComponent
 
   it('redirects if user is already authenticated', () => {
     expect(ForgotPassword.middleware).to.include('not-authed')
@@ -36,6 +32,14 @@ describe('Forgot Password', function () {
             $route: {
               query: {},
             },
+          },
+          apollo: {
+            mutationResponses: [
+              GenericApolloResponse(
+                'sendPasswordResetEmail',
+                GenericMutationResponse()
+              ),
+            ],
           },
         })
       )
@@ -80,6 +84,16 @@ describe('Forgot Password', function () {
               },
             },
           },
+          apollo: {
+            mutationResponses: [
+              GenericApolloResponse(
+                'passwordReset',
+                GenericErrorsResponse(
+                  GenericError('Invalid Password Reset Token')
+                )
+              ),
+            ],
+          },
         })
       )
     })
@@ -121,6 +135,16 @@ describe('Forgot Password', function () {
               },
             },
           },
+          apollo: {
+            mutationResponses: [
+              GenericApolloResponse(
+                'passwordReset',
+                GenericErrorsResponse(
+                  GenericError('Your confirmed password does not match!')
+                )
+              ),
+            ],
+          },
         })
       )
     })
@@ -144,6 +168,12 @@ describe('Forgot Password', function () {
       const resetStub = jest
         .spyOn(forgotPasswordComponent.vm, 'resetPassword')
         .mockImplementation(() => {})
+
+      forgotPasswordComponent.vm.$apollo = generateApolloMock({
+        mutationResponses: [
+          GenericApolloResponse('passwordReset', GenericMutationResponse()),
+        ],
+      })
 
       await forgotPasswordComponent
         .find('input#newPassword1')

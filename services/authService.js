@@ -73,11 +73,6 @@ export default {
           })
           return resolve(data.login)
         })
-      // TODO: REMOVE IF NOT NEEDED
-      // .catch((e) => {
-      //   errorHandler(e)
-      //   reject(e)
-      // })
     })
   },
 

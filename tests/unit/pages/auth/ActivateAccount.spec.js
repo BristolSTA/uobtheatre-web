@@ -5,18 +5,14 @@ import { authService } from '@/services'
 import { swalToast } from '@/utils'
 import ActivateAccount from '@/pages/login/activate/_token/index'
 
-import { executeWithServer, generateMountOptions, waitFor } from '../../helpers'
+import { generateMountOptions, waitFor } from '../../helpers'
+import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
+import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse'
+import GenericError from '../../fixtures/support/GenericError'
+import GenericErrorsResponse from '../../fixtures/support/GenericErrorsResponse'
 
 describe('Activate Account', function () {
-  let component, server
-
-  beforeAll(async () => {
-    server = await executeWithServer(() => {}, false)
-  })
-
-  afterAll(() => {
-    server.shutdown()
-  })
+  let component
 
   it('redirects if user is already authenticated', () => {
     expect(ActivateAccount.middleware).to.include('not-authed')
@@ -38,6 +34,11 @@ describe('Activate Account', function () {
               token: '1234abcd',
             },
           },
+        },
+        apollo: {
+          mutationResponses: [
+            GenericApolloResponse('verifyAccount', GenericMutationResponse()),
+          ],
         },
       })
     )
@@ -68,6 +69,14 @@ describe('Activate Account', function () {
               token: 'invalidCode',
             },
           },
+        },
+        apollo: {
+          mutationResponses: [
+            GenericApolloResponse(
+              'verifyAccount',
+              GenericErrorsResponse(GenericError('There was an error'))
+            ),
+          ],
         },
       })
     )

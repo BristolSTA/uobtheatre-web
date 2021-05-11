@@ -93,7 +93,9 @@ const mountWithRouterMock = async function (
     {
       error: jest.fn(),
       app: {
-        apolloProvider,
+        apolloProvider: {
+          defaultClient: mountOptions.mocks.$apollo,
+        },
       },
     },
     contextOptions
@@ -150,6 +152,8 @@ const generateApolloMock = function (options) {
   const mutationCallstack = options ? options.mutationResponses : []
 
   return {
+    queryCallstack,
+    mutationCallstack,
     query: jest.fn(() => {
       queryCount++
       if (queryCallstack[queryCount - 1])

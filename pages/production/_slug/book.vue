@@ -179,6 +179,7 @@ export default {
               this.previousBooking = data.me.bookings.edges.length
                 ? data.me.bookings.edges[0].node
                 : false
+
               if (this.previousBooking) {
                 swal
                   .fire({

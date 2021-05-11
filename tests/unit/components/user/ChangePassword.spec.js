@@ -9,6 +9,7 @@ import { generateMountOptions, waitFor } from '../../helpers'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse'
 import GenericError from '../../fixtures/support/GenericError'
+import GenericErrorsResponse from '../../fixtures/support/GenericErrorsResponse'
 
 describe('Change Password', () => {
   it('can update their password', async () => {
@@ -44,10 +45,7 @@ describe('Change Password', () => {
           mutationResponses: [
             GenericApolloResponse(
               'passwordChange',
-              GenericMutationResponse({
-                success: false,
-                errors: [GenericError('Passwords dont match')],
-              })
+              GenericErrorsResponse(GenericError('Passwords dont match'))
             ),
           ],
         },
