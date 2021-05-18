@@ -2,31 +2,6 @@ import { mount, RouterLinkStub } from '@vue/test-utils'
 import { expect } from 'chai'
 import config from '@/config'
 
-import { makeServer as makeAPIServer } from '@/fakeApi'
-import { createProvider } from '@/plugins/vue-apollo.config'
-
-const defaultApolloClientOptions = {
-  httpEndpoint: '/fakeapi/graphql/',
-  apollo: {
-    defaultOptions: {
-      query: {
-        fetchPolicy: 'no-cache',
-      },
-    },
-  },
-}
-
-const defaultVueApolloOptions = {
-  $query: {
-    fetchPolicy: 'no-cache',
-  },
-}
-
-let apolloProvider = createProvider(
-  defaultApolloClientOptions,
-  defaultVueApolloOptions
-)
-
 /**
  * Waits for a certain DOM element to be present
  *
@@ -170,15 +145,6 @@ const generateApolloMock = function (options) {
 }
 
 /**
- * Makes a MirageJS testing server
- *
- * @returns {any} Mirage JS server instance
- */
-const makeServer = () => {
-  return makeAPIServer({ environment: 'test' })
-}
-
-/**
  * Asserts no visual differnce between recieved and expected objects
  *
  * @param {object|Array|string} recieved Recieved object
@@ -202,12 +168,6 @@ const seedAndAuthAsUser = (server, overrides = {}) => {
     },
     overrides
   )
-  apolloProvider = createProvider(
-    Object.assign(defaultApolloClientOptions, {
-      getAuth: () => `JWT ${options.token}`,
-    }),
-    defaultVueApolloOptions
-  )
 
   let user = server.schema.userNodes.findBy({ token: options.token })
 
@@ -220,7 +180,6 @@ export {
   fixTextSpacing,
   generateMountOptions,
   generateApolloMock,
-  makeServer,
   mountWithRouterMock,
   RouterLinkStub,
   seedAndAuthAsUser,

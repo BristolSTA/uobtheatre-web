@@ -1,6 +1,5 @@
 import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
-import gql from 'graphql-tag'
 import lo from 'lodash'
 
 import Booking from '@/classes/Booking'
@@ -9,8 +8,6 @@ import TicketsMatrix from '@/classes/TicketsMatrix'
 import SeatGroup from '@/components/booking/SeatGroup.vue'
 import TicketSelectionStage from '@/pages/production/_slug/book/_performanceId/tickets.vue'
 
-import Production from '@/tests/unit/fixtures/Production'
-import Performance from '@/tests/unit/fixtures/Performance'
 import FullBooking from '@/tests/unit/fixtures/instances/FullBooking'
 import GenericApolloResponse from '@/tests/unit/fixtures/support/GenericApolloResponse'
 import GenericMutationResponse from '@/tests/unit/fixtures/support/GenericMutationResponse'

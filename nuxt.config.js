@@ -87,9 +87,6 @@ export default {
 
     // Font Awesome
     '@nuxtjs/fontawesome',
-
-    // Mirage JS
-    '~/modules/mirage',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules

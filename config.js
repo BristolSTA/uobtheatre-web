@@ -3,16 +3,13 @@
  */
 
 export default () => {
-  const apiGeneralEndpoint = process.env.APP_API_BASE
-    ? process.env.APP_API_BASE
-    : '/fakeapi'
   return {
     application: {
       name: process.env.APP_NAME ?? 'UOB Theatre',
       support_email: '&#115;upp&#111;rt&#64;uob&#116;h&#101;atre&#46;com',
     },
     api: {
-      graphql_endpoint: apiGeneralEndpoint + '/graphql/',
+      graphql_endpoint: process.env.APP_API_BASE + '/graphql/',
     },
     auth: {
       cookie: 'uobtheatre-auth',

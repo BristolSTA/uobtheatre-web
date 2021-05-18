@@ -1,6 +1,5 @@
 import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
-import gql from 'graphql-tag'
 
 import AudienceWarningsStage from '@/pages/production/_slug/book/_performanceId/warnings.vue'
 import Production from '@/tests/unit/fixtures/Production'
@@ -8,7 +7,7 @@ import Production from '@/tests/unit/fixtures/Production'
 describe('Audience Warnings Stage', () => {
   let stageComponent
 
-  beforeAll(async () => {
+  beforeAll(() => {
     stageComponent = mount(AudienceWarningsStage, {
       propsData: {
         production: Production(),

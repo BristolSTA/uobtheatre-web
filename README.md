@@ -11,6 +11,8 @@ Here is what we recommend you have installed and use to develop:
 - [Visual Studio Code](https://code.visualstudio.com/) - A code editor
 - [Docker](https://www.docker.com/get-started) - Develop without cluttering your PC
 
+> Side note: If you use our devcontainer setup, you will need to authenticate with the GitHub container registry so we can get uobtheatre-api! Follow the steps [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-to-the-container-registry)
+
 If you have the above, install the [VS Code Remote Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers), and when you open the folder with VS code, click open in remote container, and you'll be set up ready for the next step!
 
 ## Installing the application

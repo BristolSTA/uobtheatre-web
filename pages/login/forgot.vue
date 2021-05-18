@@ -33,7 +33,7 @@
               name="Password"
               type="password"
               :errors="errors"
-              error-key="newPassword1"
+              error-key="new_password1"
               autocomplete="new-password"
               required
             />
@@ -43,7 +43,7 @@
               type="password"
               :errors="errors"
               autocomplete="new-password"
-              error-key="newPassword2"
+              error-key="new_password2"
               required
             />
             <button class="btn btn-orange">Reset</button>

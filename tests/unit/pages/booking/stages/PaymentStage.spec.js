@@ -162,15 +162,7 @@ describe('Payment Stage', () => {
   })
 
   describe('with valid card / nonce input', () => {
-    let booking, popupClose
-    beforeAll(() => {
-      // booking.priceBreakdown.update({ totalPrice: 1050 })
-      // server = await executeWithServer((server) => {
-      //   booking = server.create('bookingNode', {
-      //     reference: 'abcd1234',
-      //   })
-      // }, false)
-    })
+    let popupClose
 
     beforeEach(() => {
       paymentStageComponent.vm.booking.id = 1

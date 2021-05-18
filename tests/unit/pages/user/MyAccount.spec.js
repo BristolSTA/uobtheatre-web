@@ -4,7 +4,6 @@ import BookingSummaryOverview from '@/components/booking/overview/BookingSummary
 import BookingsTable from '@/components/user/BookingsTable.vue'
 import UserDetails from '@/components/user/UserDetails.vue'
 import MyAccount from '@/pages/user/index'
-import { DateTime } from 'luxon'
 import {
   generateMountOptions,
   mountWithRouterMock,

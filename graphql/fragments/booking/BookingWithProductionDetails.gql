@@ -49,8 +49,12 @@ fragment BookingWithProductionDetails on BookingNode {
     edges {
       node {
         createdAt
-        type
-        provider
+        type {
+          value
+        }
+        provider {
+          value
+        }
         value
         cardBrand
         last4

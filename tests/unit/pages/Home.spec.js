@@ -8,7 +8,6 @@ import {
   fixTextSpacing,
   generateMountOptions,
   mountWithRouterMock,
-  waitFor,
 } from '../helpers'
 import Production from '../fixtures/Production'
 

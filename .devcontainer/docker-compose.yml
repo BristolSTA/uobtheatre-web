@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  uobtheatre-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    volumes:
+      - ..:/workspace/uobtheatre-web:cached
+
+  uobtheatre-api-migrate:
+    image: 'ghcr.io/bristolsta/api:latest'
+    command: python manage.py migrate && python manage.py loaddata uobtheatre/images/fixtures.json uobtheatre/addresses/fixtures.json uobtheatre/users/fixtures.json uobtheatre/venues/fixtures.json uobtheatre/societies/fixtures.json uobtheatre/productions/fixtures.json uobtheatre/bookings/fixtures.json
+
+    environment:
+      DATABASE_NAME: postgres
+      DATABASE_HOST: postgres
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DJANGO_SETTINGS_MODULE: config.settings.local
+
+  uobtheatre-api:
+    image: 'ghcr.io/bristolsta/api:latest'
+    ports:
+      - '8000:8000'
+    environment:
+      DATABASE_NAME: postgres
+      DATABASE_HOST: postgres
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DJANGO_SETTINGS_MODULE: config.settings.local
+
+  postgres:
+    image: postgres:11.6
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+volumes:
+  postgres_data:
