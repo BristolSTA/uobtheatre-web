@@ -5,7 +5,13 @@ import Booking from '@/classes/Booking'
 import { swal } from '@/utils'
 import PagementStage from '@/pages/production/_slug/book/_performanceId/pay.vue'
 
-import { executeWithServer, generateMountOptions } from '../../../helpers'
+import GenericApolloResponse from '@/tests/unit/fixtures/support/GenericApolloResponse'
+import GenericMutationResponse from '@/tests/unit/fixtures/support/GenericMutationResponse'
+import Payment from '@/tests/unit/fixtures/Payment'
+import FakeBooking from '@/tests/unit/fixtures/Booking'
+import GenericErrorsResponse from '@/tests/unit/fixtures/support/GenericErrorsResponse'
+import GenericError from '@/tests/unit/fixtures/support/GenericError'
+import { generateMountOptions } from '../../../helpers'
 
 describe('Payment Stage', () => {
   let paymentStageComponent, paymentFormFuncMock, routerPushMock
@@ -156,18 +162,18 @@ describe('Payment Stage', () => {
   })
 
   describe('with valid card / nonce input', () => {
-    let server, booking, popupClose
-    beforeAll(async () => {
-      server = await executeWithServer((server) => {
-        booking = server.create('bookingNode', {
-          reference: 'abcd1234',
-        })
-        booking.priceBreakdown.update({ totalPrice: 1050 })
-      }, false)
+    let booking, popupClose
+    beforeAll(() => {
+      // booking.priceBreakdown.update({ totalPrice: 1050 })
+      // server = await executeWithServer((server) => {
+      //   booking = server.create('bookingNode', {
+      //     reference: 'abcd1234',
+      //   })
+      // }, false)
     })
 
     beforeEach(() => {
-      paymentStageComponent.vm.booking.id = booking.id
+      paymentStageComponent.vm.booking.id = 1
       paymentStageComponent.setData({
         progressPopup: {
           close: (popupClose = jest.fn()),
@@ -175,11 +181,16 @@ describe('Payment Stage', () => {
       })
     })
 
-    afterAll(() => {
-      server.shutdown()
-    })
-
     it('pays for booking', async () => {
+      paymentStageComponent.vm.$apollo.mutationCallstack.push(
+        GenericApolloResponse(
+          'payBooking',
+          GenericMutationResponse({
+            payment: Payment(),
+            booking: FakeBooking(),
+          })
+        )
+      )
       await paymentStageComponent.vm.onNonceRecieved(null, 'cnon:card-nonce-ok')
 
       // Loading popup should close
@@ -187,10 +198,22 @@ describe('Payment Stage', () => {
 
       // Redirects to booking page - instantly pushed due to mock above of swal.fire
       expect(routerPushMock.mock.calls).length(1)
-      expect(routerPushMock.mock.calls[0][0]).to.eq('/user/booking/abcd1234')
+      expect(routerPushMock.mock.calls[0][0]).to.eq(
+        '/user/booking/yOIYg6Co8vGR'
+      )
     })
 
     it('shows any mutation errors', async () => {
+      paymentStageComponent.vm.$apollo.mutationCallstack.push(
+        GenericApolloResponse(
+          'payBooking',
+          GenericErrorsResponse(
+            GenericError(
+              'There was a price difference between the booking and the requested price'
+            )
+          )
+        )
+      )
       paymentStageComponent.vm.booking.priceBreakdown.totalPrice = 1000
       await paymentStageComponent.vm.onNonceRecieved(null, 'cnon:card-nonce-ok')
       expect(paymentStageComponent.text()).to.contain(

@@ -36,7 +36,7 @@ describe('Activate Account', function () {
           },
         },
         apollo: {
-          mutationResponses: [
+          mutationCallstack: [
             GenericApolloResponse('verifyAccount', GenericMutationResponse()),
           ],
         },
@@ -71,7 +71,7 @@ describe('Activate Account', function () {
           },
         },
         apollo: {
-          mutationResponses: [
+          mutationCallstack: [
             GenericApolloResponse(
               'verifyAccount',
               GenericErrorsResponse(GenericError('There was an error'))

@@ -2,23 +2,26 @@ import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
 
 import EmailChangeActivate from '@/pages/user/email-change/_token/index.vue'
-import { executeWithServer, generateMountOptions, waitFor } from '../../helpers'
+import { generateMountOptions, waitFor } from '../../helpers'
+import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
+import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse'
+import GenericErrorsResponse from '../../fixtures/support/GenericErrorsResponse'
 
 describe('Email Change Activate', function () {
-  let component, server
-
-  beforeAll(async () => {
-    server = await executeWithServer(null, false)
-  })
-
-  afterAll(() => {
-    server.shutdown()
-  })
+  let component
 
   it('adds secondary email with valid token', async () => {
     component = mount(
       EmailChangeActivate,
       generateMountOptions(['apollo'], {
+        apollo: {
+          mutationCallstack: [
+            GenericApolloResponse(
+              'verifySecondaryEmail',
+              GenericMutationResponse()
+            ),
+          ],
+        },
         mocks: {
           $route: {
             params: {
@@ -41,6 +44,14 @@ describe('Email Change Activate', function () {
     component = mount(
       EmailChangeActivate,
       generateMountOptions(['apollo'], {
+        apollo: {
+          mutationCallstack: [
+            GenericApolloResponse(
+              'verifySecondaryEmail',
+              GenericErrorsResponse()
+            ),
+          ],
+        },
         mocks: {
           $route: {
             params: {
@@ -64,6 +75,19 @@ describe('Email Change Activate', function () {
         generateMountOptions(['apollo'], {
           propsData: {
             token: '1234abcd',
+          },
+          apollo: {
+            mutationCallstack: [
+              GenericApolloResponse(
+                'verifySecondaryEmail',
+                GenericMutationResponse()
+              ),
+              GenericApolloResponse('swapEmails', GenericMutationResponse()),
+              GenericApolloResponse(
+                'removeSecondaryEmail',
+                GenericMutationResponse()
+              ),
+            ],
           },
           mocks: {
             $router: {

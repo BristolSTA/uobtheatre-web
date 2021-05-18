@@ -26,7 +26,7 @@ describe('User Details', () => {
           },
         },
         apollo: {
-          mutationResponses: [
+          mutationCallstack: [
             GenericApolloResponse('updateAccount', GenericMutationResponse()),
           ],
         },

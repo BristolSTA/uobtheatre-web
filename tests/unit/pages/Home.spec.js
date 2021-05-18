@@ -5,26 +5,21 @@ import ProductionCarousel from '@/components/home/ProductionCarousel.vue'
 import Home from '@/pages/index.vue'
 
 import {
-  executeWithServer,
   fixTextSpacing,
   generateMountOptions,
   mountWithRouterMock,
   waitFor,
 } from '../helpers'
+import Production from '../fixtures/Production'
 
 describe('Home', function () {
   let homepageComponent
-  let server
 
   beforeEach(async () => {
-    server = await executeWithServer(undefined, false)
     homepageComponent = await mountWithRouterMock(
       Home,
       generateMountOptions(['apollo'])
     )
-  })
-  afterEach(() => {
-    server.shutdown()
   })
 
   describe('Splashscreen', () => {
@@ -41,20 +36,11 @@ describe('Home', function () {
     })
 
     it('shows fallback with no featured production with image', async () => {
-      server.create('ProductionNode', {
-        name: 'My production without a picture',
-        society: server.create('SocietyNode', { name: 'Dramatic Pause' }),
-        start: new Date('2020-11-13'),
-        end: new Date('2020-11-14'),
-        __dont_factory: ['coverImage'],
+      homepageComponent = await mountWithRouterMock(Home, {
+        data() {
+          return { upcomingProductions: [Production({ coverImage: null })] }
+        },
       })
-
-      homepageComponent = await mountWithRouterMock(
-        Home,
-        generateMountOptions(['apollo-new'])
-      )
-
-      await waitFor(() => homepageComponent.vm.bannerProductions)
 
       expect(fixTextSpacing(homepageComponent.text())).to.contain(
         'Welcome to UOB Theatre The Home of Bristol Student Performing Arts'
@@ -64,18 +50,11 @@ describe('Home', function () {
     })
 
     it('shows carousel component with correct data', async () => {
-      seedProductions()
-
-      homepageComponent = await mountWithRouterMock(
-        Home,
-        generateMountOptions(['apollo-new'])
-      )
-
-      await waitFor(() => homepageComponent.vm.bannerProductions.length > 0)
+      await seedProductions()
 
       expect(homepageComponent.findComponent(ProductionCarousel).exists()).to.be
         .true
-      expect(homepageComponent.vm.bannerProductions.length).equals(2)
+      expect(homepageComponent.vm.bannerProductions.length).equals(3)
     })
   })
 
@@ -91,14 +70,8 @@ describe('Home', function () {
     })
 
     it('shows upcoming productions', async () => {
-      seedProductions()
+      await seedProductions()
 
-      homepageComponent = await mountWithRouterMock(
-        Home,
-        generateMountOptions(['apollo-new'])
-      )
-
-      await waitFor(() => homepageComponent.vm.upcomingProductions.length > 0)
       const whatsOnProductions = homepageComponent
         .findComponent({
           ref: 'whatson',
@@ -114,7 +87,7 @@ describe('Home', function () {
       // Is for the first production in the list
       expect(
         whatsOnProductions.at(0).find('div:last-of-type').text()
-      ).to.contain('My production without a picture')
+      ).to.contain('Legally Ginger')
       // Has correct dates
       expect(
         fixTextSpacing(whatsOnProductions.at(0).find('div:last-of-type').text())
@@ -123,7 +96,7 @@ describe('Home', function () {
       expect(whatsOnProductions.at(0).find('a').exists()).to.be.true
       expect(
         homepageComponent.findAllComponents(RouterLinkStub).at(2).props('to')
-      ).to.equal('/production/my-production-without-a-picture')
+      ).to.equal('/production/legally-ginger')
 
       // Second div should be reversed
       expect(whatsOnProductions.at(0).classes()).not.to.contain(
@@ -136,38 +109,27 @@ describe('Home', function () {
     })
   })
 
-  const seedProductions = () => {
-    // Seed a production that can't be featured (no cover photo)
-    server.create('ProductionNode', {
-      name: 'My production without a picture',
-      society: server.create('SocietyNode', { name: 'Dramatic Pause' }),
-      start: new Date('2020-11-13'),
-      end: new Date('2020-11-14'),
-      __dont_factory: ['coverImage'],
-    })
-    // Seed a production that can be featured
-    server.create('ProductionNode', {
-      name: 'Upside Down Cake',
-      coverImage: server.create('ImageNode', {
-        url: 'http://pathto.example/my-image.png',
-      }),
-      society: server.create('SocietyNode', { name: 'Joe Bloggs Productions' }),
-      start: new Date('2020-11-14'),
-      end: new Date('2020-11-18'),
-    })
-    server.create('ProductionNode', {
-      name: 'Legally Ginger',
-      coverImage: server.create('ImageNode', {
-        url: 'http://pathto.example/my-image2.png',
-      }),
-      society: server.create('SocietyNode', { name: 'MTB' }),
-      start: new Date('2019-11-14'),
-      end: new Date('2019-11-18'),
-    })
-    // Seed a second production that can be featured
-    server.create('ProductionNode', {
-      name: 'Not This One Again...',
-      society: server.create('SocietyNode', { name: 'Jill Bowls Films' }),
-    })
+  const seedProductions = async () => {
+    homepageComponent = await mountWithRouterMock(
+      Home,
+      generateMountOptions(['apollo'], {
+        data() {
+          return {
+            upcomingProductions: [
+              // Seed a production that can't be featured (no cover photo)
+              Production({
+                coverImage: null,
+                start: '2020-11-13',
+                end: '2020-11-14',
+              }),
+              // Seed a production that can be featured
+              Production({ id: 2, start: '2020-11-14', end: '2020-11-18' }),
+              Production({ id: 3, start: '2020-11-14', end: '2020-11-18' }),
+              Production({ id: 4 }),
+            ],
+          }
+        },
+      })
+    )
   }
 })

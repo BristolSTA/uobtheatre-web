@@ -14,7 +14,7 @@ export default (overrides = {}, includePerformance = false) => {
       description: 'not the anson rooms',
       address: Address(),
       image: {
-        url: 'https://via.placeholder.com/1920x960',
+        url: 'http://pathto.example/venue-image.png',
       },
       publicallyListed: true,
       slug: 'anson-theatre',

@@ -8,39 +8,33 @@ import ProductionPerformances from '@/components/production/ProductionPerformanc
 
 import {
   assertNoVisualDifference,
-  executeWithServer,
+  generateMountOptions,
   mountWithRouterMock,
   waitFor,
 } from '../../helpers'
+import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
+import Production from '../../fixtures/Production'
 
 describe('Production', function () {
-  let productionPageComponent
-  let server
-
-  let headerComponent, castCreditsComponent, performancesComponent
+  let productionPageComponent,
+    headerComponent,
+    castCreditsComponent,
+    performancesComponent
 
   beforeEach(async () => {
-    server = await executeWithServer(async (server) => {
-      // Create a production
-      server.create('productionNode', {
-        name: 'Legally Ginger',
-        slug: 'legally-ginger',
-      })
-
-      productionPageComponent = await mountWithRouterMock(
-        ProductionPage,
-        {},
-        {
-          params: {
-            slug: 'legally-ginger',
-          },
-        }
-      )
-    }, false)
-  })
-
-  afterEach(() => {
-    server.shutdown()
+    productionPageComponent = await mountWithRouterMock(
+      ProductionPage,
+      generateMountOptions(['apollo'], {
+        apollo: {
+          queryCallstack: [GenericApolloResponse('production', Production())],
+        },
+      }),
+      {
+        params: {
+          slug: 'legally-ginger',
+        },
+      }
+    )
   })
 
   const findComponents = () => {

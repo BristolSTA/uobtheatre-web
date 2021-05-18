@@ -17,7 +17,7 @@ describe('Change Password', () => {
       ChangePassword,
       generateMountOptions(['apollo'], {
         apollo: {
-          mutationResponses: [
+          mutationCallstack: [
             GenericApolloResponse('passwordChange', GenericMutationResponse()),
           ],
         },
@@ -42,7 +42,7 @@ describe('Change Password', () => {
       ChangePassword,
       generateMountOptions(['apollo'], {
         apollo: {
-          mutationResponses: [
+          mutationCallstack: [
             GenericApolloResponse(
               'passwordChange',
               GenericErrorsResponse(GenericError('Passwords dont match'))

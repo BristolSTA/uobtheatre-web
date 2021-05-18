@@ -13,7 +13,7 @@ export default (overrides = {}, includeProductions = false) => {
         url: 'http://pathto.example/logo-image.png',
       },
       banner: {
-        url: 'https://via.placeholder.com/1200x720',
+        url: 'http://pathto.example/society-banner.png',
       },
       slug: 'sta',
       productions: includeProductions

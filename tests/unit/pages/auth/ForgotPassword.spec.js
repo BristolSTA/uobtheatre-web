@@ -34,7 +34,7 @@ describe('Forgot Password', function () {
             },
           },
           apollo: {
-            mutationResponses: [
+            mutationCallstack: [
               GenericApolloResponse(
                 'sendPasswordResetEmail',
                 GenericMutationResponse()
@@ -85,7 +85,7 @@ describe('Forgot Password', function () {
             },
           },
           apollo: {
-            mutationResponses: [
+            mutationCallstack: [
               GenericApolloResponse(
                 'passwordReset',
                 GenericErrorsResponse(
@@ -136,7 +136,7 @@ describe('Forgot Password', function () {
             },
           },
           apollo: {
-            mutationResponses: [
+            mutationCallstack: [
               GenericApolloResponse(
                 'passwordReset',
                 GenericErrorsResponse(
@@ -170,7 +170,7 @@ describe('Forgot Password', function () {
         .mockImplementation(() => {})
 
       forgotPasswordComponent.vm.$apollo = generateApolloMock({
-        mutationResponses: [
+        mutationCallstack: [
           GenericApolloResponse('passwordReset', GenericMutationResponse()),
         ],
       })

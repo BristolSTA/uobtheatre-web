@@ -5,24 +5,26 @@ import InfiniteScroll from '@/components/ui/InfiniteScroll'
 import UpcomingProductions from '@/pages/productions'
 
 import {
-  executeWithServer,
   generateMountOptions,
   mountWithRouterMock,
   waitFor,
 } from '../../helpers'
+import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
+import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection'
+import Production from '../../fixtures/Production'
 
 describe('Upcoming Productions', () => {
-  let upcomingProductionsComponent, server
-  beforeAll(async () => {
-    server = await executeWithServer(() => {}, false)
-  })
-  afterAll(() => {
-    server.shutdown()
-  })
+  let upcomingProductionsComponent
   beforeEach(async () => {
     upcomingProductionsComponent = await mountWithRouterMock(
       UpcomingProductions,
-      generateMountOptions(['apollo'])
+      generateMountOptions(['apollo'], {
+        apollo: {
+          queryCallstack: [
+            GenericApolloResponse('productions', GenericNodeConnection()),
+          ],
+        },
+      })
     )
   })
 
@@ -45,22 +47,21 @@ describe('Upcoming Productions', () => {
 
   describe('with many productions', () => {
     let upcomingProductionsComponent
-    beforeAll(() => {
-      // Seed 3 x 9 performances
-      server.create('productionNode', {
-        name: 'Legally Ginger',
-      })
-      server.createList('productionNode', 9)
-    })
-
-    afterAll(() => {
-      server.db.emptyData()
-    })
-
     beforeEach(async () => {
       upcomingProductionsComponent = await mountWithRouterMock(
         UpcomingProductions,
-        generateMountOptions(['apollo'])
+        generateMountOptions(['apollo'], {
+          apollo: {
+            queryCallstack: [
+              GenericApolloResponse(
+                'productions',
+                GenericNodeConnection(Array(9).fill(Production()), {
+                  hasNextPage: true,
+                })
+              ),
+            ],
+          },
+        })
       )
     })
 
@@ -89,21 +90,20 @@ describe('Upcoming Productions', () => {
 
   describe('with some productions', () => {
     let upcomingProductionsComponent
-    beforeAll(() => {
-      server.create('productionNode', {
-        name: 'Legally Ginger',
-      })
-      server.createList('productionNode', 2)
-    })
-
-    afterAll(() => {
-      server.db.emptyData()
-    })
 
     beforeEach(async () => {
       upcomingProductionsComponent = await mountWithRouterMock(
         UpcomingProductions,
-        generateMountOptions(['apollo'])
+        generateMountOptions(['apollo'], {
+          apollo: {
+            queryCallstack: [
+              GenericApolloResponse(
+                'productions',
+                GenericNodeConnection(Array(3).fill(Production()))
+              ),
+            ],
+          },
+        })
       )
     })
 

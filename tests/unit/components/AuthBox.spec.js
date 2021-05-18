@@ -104,7 +104,7 @@ describe('AuthBox', function () {
 
     it('shows errors on incorrect credentials', async () => {
       authBoxComponent.vm.$apollo = generateApolloMock({
-        mutationResponses: [
+        mutationCallstack: [
           GenericApolloResponse(
             'login',
             GenericErrorsResponse(
@@ -146,7 +146,7 @@ describe('AuthBox', function () {
             },
           },
           apollo: {
-            mutationResponses: [
+            mutationCallstack: [
               GenericApolloResponse(
                 'login',
                 GenericMutationResponse({
@@ -202,7 +202,7 @@ describe('AuthBox', function () {
             },
           },
           apollo: {
-            mutationResponses: [
+            mutationCallstack: [
               GenericApolloResponse(
                 'login',
                 GenericMutationResponse({
@@ -310,7 +310,7 @@ describe('AuthBox', function () {
       attemptSignupStub.mockRestore()
 
       authBoxComponent.vm.$apollo = generateApolloMock({
-        mutationResponses: [
+        mutationCallstack: [
           GenericApolloResponse('register', GenericMutationResponse()),
         ],
       })
@@ -351,7 +351,7 @@ describe('AuthBox', function () {
       attemptSignupStub.mockRestore()
 
       authBoxComponent.vm.$apollo = generateApolloMock({
-        mutationResponses: [
+        mutationCallstack: [
           GenericApolloResponse(
             'register',
             GenericErrorsResponse(

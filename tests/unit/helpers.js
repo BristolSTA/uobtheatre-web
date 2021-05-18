@@ -94,7 +94,7 @@ const mountWithRouterMock = async function (
       error: jest.fn(),
       app: {
         apolloProvider: {
-          defaultClient: mountOptions.mocks.$apollo,
+          defaultClient: mountOptions.mocks ? mountOptions.mocks.$apollo : null,
         },
       },
     },
@@ -135,7 +135,7 @@ const generateMountOptions = function (types = [], options = {}) {
   if (types.includes('config')) {
     options.mocks.$config = config()
   }
-  if (types.includes('apollo') || types.includes('apollo-new')) {
+  if (types.includes('apollo')) {
     options.mocks.$apollo = generateApolloMock(options.apollo)
     delete options.apollo
   }
@@ -148,8 +148,8 @@ const generateMountOptions = function (types = [], options = {}) {
 const generateApolloMock = function (options) {
   let queryCount = 0
   let mutationCount = 0
-  const queryCallstack = options ? options.queryResponses : []
-  const mutationCallstack = options ? options.mutationResponses : []
+  const queryCallstack = options ? options.queryCallstack : []
+  const mutationCallstack = options ? options.mutationCallstack : []
 
   return {
     queryCallstack,
@@ -179,22 +179,6 @@ const makeServer = () => {
 }
 
 /**
- * Creates and executes a function with a MirageJS server instance
- *
- * @param {Function} callback Callback function. Called with the first parameter being the MirageJS server
- * @param {boolean} closeServer True = Server will be shutdown after callback executed. False = Not shutdown
- * @returns {any} Mirage JS server instance
- */
-const executeWithServer = async (callback, closeServer = true) => {
-  const server = makeServer()
-  if (callback) await callback(server)
-  if (closeServer) {
-    server.shutdown()
-  }
-  return server
-}
-
-/**
  * Asserts no visual differnce between recieved and expected objects
  *
  * @param {object|Array|string} recieved Recieved object
@@ -202,24 +186,6 @@ const executeWithServer = async (callback, closeServer = true) => {
  */
 const assertNoVisualDifference = (recieved, expected) => {
   expect(JSON.stringify(recieved)).to.eq(JSON.stringify(expected))
-}
-
-/**
- * Runs a GraphQL query through apollo.
- * Useful for getting data from the Fake API like the real components will
- *
- * @param {object} options Dictionary of options for the apollo query
- * @returns {Promise} Apollo Query Promise
- */
-const runApolloQuery = (options) => {
-  return apolloProvider.defaultClient.query(
-    Object.assign(
-      {
-        fetchPolicy: 'no-cache',
-      },
-      options
-    )
-  )
 }
 
 /**
@@ -251,14 +217,12 @@ const seedAndAuthAsUser = (server, overrides = {}) => {
 
 export {
   assertNoVisualDifference,
-  executeWithServer,
   fixTextSpacing,
   generateMountOptions,
   generateApolloMock,
   makeServer,
   mountWithRouterMock,
   RouterLinkStub,
-  runApolloQuery,
   seedAndAuthAsUser,
   waitFor,
   waitForDOM,

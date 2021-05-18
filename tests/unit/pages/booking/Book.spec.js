@@ -20,7 +20,7 @@ import Performance from '../../fixtures/Performance'
 import Booking from '../../fixtures/Booking'
 
 describe('Create Booking Page', () => {
-  let bookingComponent, performanceModel, routerPushFake
+  let bookingComponent, routerPushFake
   const fakeNuxtChild = {
     template: '<div />',
     stageInfo: stages[0].stageInfo,
@@ -40,7 +40,7 @@ describe('Create Booking Page', () => {
           },
         },
         apollo: {
-          queryResponses: [
+          queryCallstack: [
             GenericApolloResponse('production', Production({}, true)),
           ],
         },
@@ -138,7 +138,7 @@ describe('Create Booking Page', () => {
             },
           },
           apollo: {
-            queryResponses: [
+            queryCallstack: [
               ...bookingComponent.vm.$apollo.queryCallstack,
               GenericApolloResponse('me', {
                 bookings: GenericNodeConnection(),
@@ -202,7 +202,7 @@ describe('Create Booking Page', () => {
             },
 
             apollo: {
-              queryResponses: [
+              queryCallstack: [
                 ...bookingComponent.vm.$apollo.queryCallstack,
                 GenericApolloResponse('me', {
                   bookings: GenericNodeConnection([Booking()]),
@@ -267,7 +267,7 @@ describe('Create Booking Page', () => {
             },
           },
           apollo: {
-            queryResponses: [
+            queryCallstack: [
               ...bookingComponent.vm.$apollo.queryCallstack,
               GenericApolloResponse('me', {
                 bookings: GenericNodeConnection(),

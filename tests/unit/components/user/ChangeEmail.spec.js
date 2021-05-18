@@ -15,7 +15,7 @@ describe('Change Email', () => {
       ChangeEmail,
       generateMountOptions(['apollo'], {
         apollo: {
-          mutationResponses: [
+          mutationCallstack: [
             GenericApolloResponse(
               'sendSecondaryEmailActivation',
               GenericMutationResponse()
