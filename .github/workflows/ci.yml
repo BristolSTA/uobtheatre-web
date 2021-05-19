@@ -45,9 +45,6 @@ jobs:
       - name: Install dependencies 👨🏻‍💻
         run: yarn
 
-      - name: Download API Schema 📩
-        run: yarn api:download-schema
-
       - name: Run linter 👀
         run: yarn lint
 
@@ -74,9 +71,6 @@ jobs:
 
       - run: yarn
         name: Install Yarn Dependencies 👨🏻‍💻
-
-      - name: Download API Schema 📩
-        run: yarn api:download-schema
 
       - name: Run End-to-End Tests 🧪
         uses: cypress-io/github-action@v2
