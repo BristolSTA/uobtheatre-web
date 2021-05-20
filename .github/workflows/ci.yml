@@ -22,7 +22,7 @@ jobs:
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@master
-        
+
       - name: Setup node env 🏗
         uses: actions/setup-node@v2.1.5
         with:
@@ -60,7 +60,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-              
+
       - name: Copy Testing Env ✉
         run: cp .env.test .env
 
@@ -71,6 +71,9 @@ jobs:
 
       - run: yarn
         name: Install Yarn Dependencies 👨🏻‍💻
+
+      - name: Start Real API ⭐
+        run: docker-compose -f .devcontainer/docker-compose.yml up -d postgres uobtheatre-api uobtheatre-api-migrate
 
       - name: Run End-to-End Tests 🧪
         uses: cypress-io/github-action@v2
