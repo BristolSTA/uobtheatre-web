@@ -9,7 +9,8 @@ export default () => {
       support_email: '&#115;upp&#111;rt&#64;uob&#116;h&#101;atre&#46;com',
     },
     api: {
-      graphql_endpoint: process.env.APP_API_BASE + '/graphql/',
+      graphql_endpoint:
+        (process.env.API_BASE || 'http://localhost:8000') + '/graphql/',
     },
     auth: {
       cookie: 'uobtheatre-auth',
@@ -18,11 +19,11 @@ export default () => {
       square: {
         script:
           process.env.NODE_ENV !== 'production' ||
-          process.env.APP_SQUARE_APP_ID.startsWith('sandbox')
+          process.env.SQUARE_APP_ID.startsWith('sandbox')
             ? 'https://js.squareupsandbox.com/v2/paymentform'
             : 'https://js.squareup.com/v2/paymentform',
-        application_id: process.env.APP_SQUARE_APP_ID,
-        location_id: process.env.APP_SQUARE_LOC_ID,
+        application_id: process.env.SQUARE_APP_ID,
+        location_id: process.env.SQUARE_LOC_ID,
       },
     },
   }

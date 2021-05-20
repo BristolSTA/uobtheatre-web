@@ -25,6 +25,7 @@ export default {
     if (!this.isLoggedIn(context)) return
     return context.store.dispatch('auth/loadUserDetails', {
       apollo: context.app.apolloProvider.defaultClient,
+      nuxtContext: context,
     })
   },
 

@@ -7,7 +7,7 @@
             <slot name="title"> Oops! </slot>
           </h1>
           <h2 class="text-h2">
-            <slot name="subtitle"> {{ message }} </slot>
+            <slot name="subtitle"> {{ message }}</slot>
           </h2>
         </slot>
       </div>
