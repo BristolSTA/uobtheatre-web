@@ -18,7 +18,7 @@ If you have the above, install the [VS Code Remote Containers extension](https:/
 ## Installing the application
 
 1. Run `yarn dev`
-2. Visit the URL output in the command line
+2. Visit [`http://localhost:3000`](http://localhost:3000) in your browser
 
 You can now edit the project files, and the browser will reload the page automatically.
 
@@ -66,10 +66,10 @@ Add `--watch` to automatically re-run tests as you change files
 
 ### End-to-end tests
 
-Start the server with `yarn pretest:e2e:dev` (for testing with mirage) or `yarn pretest:e2e` (for testing with a live api).
+Start the server with `yarn pretest:e2e` (for testing with a live api).
 
 Then run:
+
 ```
 yarn test:e2e:silent
 ```
-

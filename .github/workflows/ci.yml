@@ -83,6 +83,6 @@ jobs:
       - name: Run End-to-End Tests 🧪
         uses: cypress-io/github-action@v2
         with:
-          start: yarn pretest:e2e:dev
+          start: yarn pretest:e2e
           wait-on: 'http://localhost:3000'
           headless: true

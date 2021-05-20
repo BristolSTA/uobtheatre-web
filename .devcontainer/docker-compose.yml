@@ -5,48 +5,36 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    command: /bin/sh -c "while sleep 1000; do :; done"
     ports:
       - '3000:3000'
-    command: /bin/sh -c "while sleep 1000; do :; done"
     volumes:
       - ..:/workspace/uobtheatre-web:cached
 
-  uobtheatre-api-migrate:
-    image: 'ghcr.io/bristolsta/api:latest'
-    command: bash -c "python manage.py migrate && python manage.py loaddata db.json"
-
-    environment:
-      DATABASE_NAME: postgres
-      DATABASE_HOST: postgres
-      DATABASE_USER: postgres
-      DATABASE_PASSWORD: postgres
-      DJANGO_SETTINGS_MODULE: config.settings.local
-    depends_on:
-      - postgres
-    links:
-      - postgres
-
   uobtheatre-api:
-    image: 'ghcr.io/bristolsta/api:latest'
+    image: 'ghcr.io/bristolsta/api-dev:latest'
     ports:
       - '8000:8000'
     environment:
-      DATABASE_NAME: postgres
-      DATABASE_HOST: postgres
-      DATABASE_USER: postgres
-      DATABASE_PASSWORD: postgres
+      POSTGRES_DB: uobtheatre_api
+      POSTGRES_PORT: 5432
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      SQUARE_ACCESS_TOKEN: EAAAEIaJSwq2b-jhw3xCf1y7mGNaj5c9HAj_KNmQKUcKKggNL10D8aXrvXgYG6ML
       DJANGO_SETTINGS_MODULE: config.settings.local
     depends_on:
       - postgres
     links:
       - postgres
+    command: /bin/sh -c "/start --seed-e2e"
 
   postgres:
     image: postgres:11.6
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: postgres
+      POSTGRES_DB: uobtheatre_api
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     healthcheck:

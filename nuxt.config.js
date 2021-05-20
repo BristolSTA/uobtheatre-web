@@ -2,6 +2,10 @@ import config from './config'
 import FaIconSet from './plugins/fontawesome.config'
 
 export default {
+  server: {
+    host: '0.0.0.0',
+    port: 3000,
+  },
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 
