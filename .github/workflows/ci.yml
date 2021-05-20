@@ -72,6 +72,9 @@ jobs:
       - run: yarn
         name: Install Yarn Dependencies 👨🏻‍💻
 
+      - name: Authenticate with GitHub Container Registry 🔒
+        run: docker login ghcr.io -u github-actions --password-stdin <<< ${{ secrets.GITHUB_TOKEN }}
+
       - name: Start Real API ⭐
         run: docker-compose -f .devcontainer/docker-compose.yml up -d postgres uobtheatre-api uobtheatre-api-migrate
 
