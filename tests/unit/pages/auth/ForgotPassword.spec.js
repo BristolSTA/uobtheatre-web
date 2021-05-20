@@ -100,10 +100,10 @@ describe('Forgot Password', function () {
 
     it('shows error message when resetting', async () => {
       await forgotPasswordComponent
-        .find('input#newPassword1')
+        .find('input#new_password1')
         .setValue('example1234')
       await forgotPasswordComponent
-        .find('input#newPassword2')
+        .find('input#new_password2')
         .setValue('example1234')
 
       await forgotPasswordComponent.vm.resetPassword()
@@ -151,10 +151,10 @@ describe('Forgot Password', function () {
 
     it('shows errors', async () => {
       await forgotPasswordComponent
-        .find('input#newPassword1')
+        .find('input#new_password1')
         .setValue('example1234')
       await forgotPasswordComponent
-        .find('input#newPassword2')
+        .find('input#new_password2')
         .setValue('example123')
 
       await forgotPasswordComponent.vm.resetPassword()
@@ -176,10 +176,10 @@ describe('Forgot Password', function () {
       })
 
       await forgotPasswordComponent
-        .find('input#newPassword1')
+        .find('input#new_password1')
         .setValue('example1234')
       await forgotPasswordComponent
-        .find('input#newPassword2')
+        .find('input#new_password2')
         .setValue('example1234')
       forgotPasswordComponent.find('form').trigger('submit')
 

@@ -13,7 +13,7 @@ services:
 
   uobtheatre-api-migrate:
     image: 'ghcr.io/bristolsta/api:latest'
-    command: python manage.py migrate && python manage.py loaddata uobtheatre/images/fixtures.json uobtheatre/addresses/fixtures.json uobtheatre/users/fixtures.json uobtheatre/venues/fixtures.json uobtheatre/societies/fixtures.json uobtheatre/productions/fixtures.json uobtheatre/bookings/fixtures.json
+    command: bash -c "python manage.py migrate && python manage.py loaddata db.json"
 
     environment:
       DATABASE_NAME: postgres
@@ -21,6 +21,10 @@ services:
       DATABASE_USER: postgres
       DATABASE_PASSWORD: postgres
       DJANGO_SETTINGS_MODULE: config.settings.local
+    depends_on:
+      - postgres
+    links:
+      - postgres
 
   uobtheatre-api:
     image: 'ghcr.io/bristolsta/api:latest'
@@ -32,15 +36,21 @@ services:
       DATABASE_USER: postgres
       DATABASE_PASSWORD: postgres
       DJANGO_SETTINGS_MODULE: config.settings.local
+    depends_on:
+      - postgres
+    links:
+      - postgres
 
   postgres:
     image: postgres:11.6
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ./data/postgres:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-
-volumes:
-  postgres_data:
+    healthcheck: 
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
