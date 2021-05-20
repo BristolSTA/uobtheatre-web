@@ -27,7 +27,7 @@ services:
       - postgres
     links:
       - postgres
-    command: /bin/sh -c "/start --seed-e2e"
+    command: /bin/sh -c "/start --single-seed-e2e"
 
   postgres:
     image: postgres:11.6
