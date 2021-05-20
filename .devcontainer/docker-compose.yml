@@ -21,7 +21,6 @@ services:
       POSTGRES_HOST: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      SQUARE_ACCESS_TOKEN: EAAAEIaJSwq2b-jhw3xCf1y7mGNaj5c9HAj_KNmQKUcKKggNL10D8aXrvXgYG6ML
       DJANGO_SETTINGS_MODULE: config.settings.local
     depends_on:
       - postgres
