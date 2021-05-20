@@ -78,7 +78,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Start Real API ⭐
-        run: docker-compose -f .devcontainer/docker-compose.yml up -d postgres uobtheatre-api uobtheatre-api-migrate
+        run: docker-compose -f .devcontainer/docker-compose.yml up -d postgres uobtheatre-api
 
       - name: Run End-to-End Tests 🧪
         uses: cypress-io/github-action@v2
