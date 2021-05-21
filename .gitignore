@@ -92,6 +92,3 @@ sw.*
 
 # Vim swap files
 *.swp
-
-# API Schema
-fakeApi/schema.*

@@ -4,16 +4,9 @@ import { DateTime } from 'luxon'
 import Booking from '@/classes/Booking'
 import Ticket from '@/classes/Ticket'
 import TicketsMatrix from '@/classes/TicketsMatrix'
-// import { generateConcessionTypeBookingTypes } from '@/fakeApi/utils'
 import PerformanceFixture from '../fixtures/Performance'
 
-// import FakeBooking from '../fixtures/FakeBooking'
-// import FakePerformance from '../fixtures/FakePerformance'
-import {
-  assertNoVisualDifference,
-  // executeWithServer,
-  // runApolloQuery,
-} from '../helpers'
+import { assertNoVisualDifference } from '../helpers'
 import ConcessionTypeBookingType from '../fixtures/ConcessionTypeBookingType'
 import BookingFixture from '../fixtures/Booking'
 import ConcessionType from '../fixtures/ConcessionType'
