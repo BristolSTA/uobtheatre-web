@@ -18,12 +18,7 @@
     "apollographql.vscode-apollo",
     "gruntfuggly.todo-tree"
   ],
-  "initializeCommand": [
-    "docker-compose",
-    "-f", ".devcontainer/docker-compose.yml",
-    "pull",
-    "uobtheatre-api"
-  ],
+  "initializeCommand": "docker-compose -f .devcontainer/docker-compose.yml pull uobtheatre-api && cp -n .devcontainer/.env.example .devcontainer/.env",
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],

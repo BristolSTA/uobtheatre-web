@@ -20,6 +20,7 @@ export default (context) => {
   return {
     ...defaultOptions,
     httpEndpoint: context.$config.api.graphql_endpoint,
+    authenticationType: 'JWT',
   }
 }
 

@@ -24,6 +24,8 @@ You can now edit the project files, and the browser will reload the page automat
 
 You can run `yarn lint [--fix]` to lint and fix files.
 
+> By default, you won't be able to test out payments via Square until you add the **sandbox** Square access token to the env file at `.devcontainer/.env` and rebuild the docker container (F1 > Rebuild Container)
+
 ## Project Structure and Form 🌴
 
 This project utilises the following:

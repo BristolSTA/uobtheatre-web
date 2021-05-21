@@ -9,11 +9,11 @@ export default {
    * @returns {boolean} Whether or not the user is logged in
    */
   isLoggedIn(context) {
-    return !!context.app.$apolloHelpers.getToken()
+    return context.$apolloHelpers.getToken() && !!context.store.state.auth.user
   },
 
   logout(context) {
-    context.app.$apolloHelpers.onLogout()
+    context.$apolloHelpers.onLogout()
     context.store.commit('auth/SET_AUTH_USER', null)
   },
 
@@ -22,7 +22,7 @@ export default {
    * @returns {string|null} API Authentication Token
    */
   refreshAuthUser(context) {
-    if (!this.isLoggedIn(context)) return
+    if (!context.$apolloHelpers.getToken()) return
     return context.store.dispatch('auth/loadUserDetails', {
       apollo: context.app.apolloProvider.defaultClient,
       nuxtContext: context,
@@ -67,7 +67,7 @@ export default {
             )
 
           componentContext.$apolloHelpers.onLogin(data.login.token, undefined, {
-            expires: remember ? 30 : null,
+            expires: remember ? 365 : null,
           })
           componentContext.$store.dispatch('auth/loadUserDetails', {
             userInfo: data.login.user,
