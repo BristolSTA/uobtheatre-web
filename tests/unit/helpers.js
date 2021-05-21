@@ -154,27 +154,6 @@ const assertNoVisualDifference = (recieved, expected) => {
   expect(JSON.stringify(recieved)).to.eq(JSON.stringify(expected))
 }
 
-/**
- * Seeds a user if doesn't already exist, and programatically logs that user in
- *
- * @param {any} server MirageJS Server Instance
- * @param {object} overrides Optional dictionary of overrides for the user model
- * @returns {object} MirageJS User Node Model
- */
-const seedAndAuthAsUser = (server, overrides = {}) => {
-  const options = Object.assign(
-    {
-      token: '1234abcd',
-    },
-    overrides
-  )
-
-  let user = server.schema.userNodes.findBy({ token: options.token })
-
-  if (!user) user = server.create('userNode', options)
-  return user
-}
-
 export {
   assertNoVisualDifference,
   fixTextSpacing,
@@ -182,7 +161,6 @@ export {
   generateApolloMock,
   mountWithRouterMock,
   RouterLinkStub,
-  seedAndAuthAsUser,
   waitFor,
   waitForDOM,
 }
