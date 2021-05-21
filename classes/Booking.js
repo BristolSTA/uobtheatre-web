@@ -276,8 +276,13 @@ export default class Booking {
    * @returns {Array} List of tickets grouped by seat group & concession type, giving capacity and price
    */
   ticketOverview(ticketMatrix = null) {
-    if (!this.priceBreakdown || this.dirty)
+    if (!this.priceBreakdown || this.dirty) {
+      if (!ticketMatrix)
+        throw new Error(
+          'A ticket matrix is required to generate the ticket overview'
+        )
       return this.ticketOverviewEstimate(ticketMatrix)
+    }
     return this.priceBreakdown.tickets
   }
 
@@ -307,6 +312,13 @@ export default class Booking {
             cocnessionTypeEdge.concessionType.id ===
             groupedTickets[0].concessionType.id
         )
+
+        if (!concessionTypeEdge) {
+          throw new Error(
+            `No matching concession type found for ticket details (Concession Type ID: ${groupedTickets[0].concessionType.id})`
+          )
+        }
+
         return {
           number: groupedTickets.length,
           concessionType: concessionTypeEdge.concessionType,

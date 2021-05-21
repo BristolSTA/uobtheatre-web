@@ -24,7 +24,7 @@
           @enableGPay="enabledDigitalWallets.google = true"
           @enableApplePay="enabledDigitalWallets.apple = true"
           @paying="onPaying"
-          @nonceError="progressPopup.cancel()"
+          @nonceError="progressPopup.close()"
           @nonceRecieved="onNonceRecieved"
         />
       </div>
@@ -155,7 +155,6 @@ export default {
       } catch (e) {
         this.errors = getValidationErrors(e)
       }
-
       this.progressPopup.close()
     },
   },

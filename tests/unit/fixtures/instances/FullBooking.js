@@ -6,22 +6,29 @@ import ConcessionType from '@/tests/unit/fixtures/ConcessionType'
 import Ticket from '@/tests/unit/fixtures/Ticket'
 import PriceBreakdownTicket from '../PriceBreakdownTicket'
 
-export default () => {
+/**
+ * Has
+ * 4 Tickets
+ *  2 Adult Best Seats in the House
+ *  1 Student Best Seats in the House
+ *  1 Student The Meh Seats
+ */
+export default (overrides = {}) => {
   const bookingdata = bookingFixture()
 
   const adult = ConcessionType({
     name: 'Adult',
     description: null,
   })
-  const adultBooking = ConcessionTypeBookingType({
+  const adultBookingType = ConcessionTypeBookingType({
     concessionType: adult,
   })
   const student = ConcessionType({
     name: 'Student',
-    id: '2',
+    id: 2,
     description: 'Valid ID NOT required',
   })
-  const studentBooking = ConcessionTypeBookingType({
+  const studentBookingType = ConcessionTypeBookingType({
     concessionType: student,
     price: 800,
     pricePounds: '8.00',
@@ -29,35 +36,35 @@ export default () => {
 
   const mehSeatGroup = SeatGroup({
     name: 'The Meh Seats',
-    id: '2',
+    id: 2,
     description: null,
   })
 
   bookingdata.performance.ticketOptions = [
     PerformanceSeatGroup({
       capacityRemaining: 10,
-      concessionTypes: [adultBooking, studentBooking],
+      concessionTypes: [adultBookingType, studentBookingType],
     }),
     PerformanceSeatGroup({
       capacityRemaining: 11,
       seatGroup: mehSeatGroup,
-      concessionTypes: [adultBooking, studentBooking],
+      concessionTypes: [adultBookingType, studentBookingType],
     }),
   ]
 
   bookingdata.tickets = [
-    Ticket({ id: '7' }),
+    Ticket({ id: 7 }),
     Ticket({
-      id: '8',
+      id: 8,
     }),
     Ticket({
-      id: '9',
-      concessionType: studentBooking,
+      id: 9,
+      concessionType: student,
     }),
     Ticket({
-      id: '10',
+      id: 10,
       seatGroup: mehSeatGroup,
-      concessionType: studentBooking,
+      concessionType: student,
     }),
   ]
 
@@ -83,5 +90,5 @@ export default () => {
     }),
   ]
 
-  return bookingdata
+  return Object.assign(bookingdata, overrides)
 }

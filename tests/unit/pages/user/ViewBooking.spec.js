@@ -71,16 +71,6 @@ describe('View Booking', () => {
       .true
   })
 
-  it('has correct breadcrumbs', () => {
-    const breadcrumbs = viewBookingComponent.findComponent(Breadcrumbs)
-    expect(breadcrumbs.exists()).to.be.true
-
-    assertNoVisualDifference(breadcrumbs.props('crumbs'), [
-      { text: 'My Account', route: '/user' },
-      { text: 'Booking Details' },
-    ])
-  })
-
   it('has working ticket dropdown', async () => {
     const ticketbanner = viewBookingComponent.findComponent({ ref: 'tickets' })
 

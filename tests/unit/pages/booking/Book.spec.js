@@ -62,19 +62,6 @@ describe('Create Booking Page', () => {
     expect(banner.props('showDetailedInfo')).to.eq(false)
   })
 
-  it('has correct breadcrumbs', () => {
-    const breadcrumbs = bookingComponent.findComponent(Breadcrumbs)
-    expect(breadcrumbs.exists()).to.be.true
-    assertNoVisualDifference(breadcrumbs.props('crumbs'), [
-      { text: 'Whats On', route: '/productions' },
-      {
-        text: 'Legally Ginger',
-        route: '/production/legally-ginger',
-      },
-      { text: 'Book' },
-    ])
-  })
-
   it('has booking navigation', () => {
     const bookingNavigation = bookingComponent.findComponent(BookingNavigation)
     expect(bookingNavigation.exists()).to.be.true

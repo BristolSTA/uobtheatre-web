@@ -67,16 +67,4 @@ describe('Production', function () {
     await waitFor(() => productionPageComponent.vm.production)
     expect(productionPageComponent.vm.production.name).to.eq('Legally Ginger')
   })
-
-  it('has correct breadcrumbs', () => {
-    const breadcrumbs = productionPageComponent.findComponent(Breadcrumbs)
-    expect(breadcrumbs.exists()).to.be.true
-
-    assertNoVisualDifference(breadcrumbs.props('crumbs'), [
-      { text: 'Whats On', route: '/productions' },
-      {
-        text: 'Legally Ginger',
-      },
-    ])
-  })
 })

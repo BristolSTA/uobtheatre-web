@@ -35,7 +35,7 @@
             <div class="px-3 py-2 m-2 w-max bg-sta-rouge">
               <p class="font-semibold">Warnings:</p>
               <div v-for="(warning, index) in production.warnings" :key="index">
-                <p class="px-2">- {{ warning.warning }}</p>
+                <p class="px-2">- {{ warning.description }}</p>
               </div>
             </div>
           </div>
