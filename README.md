@@ -33,12 +33,10 @@ This project utilises the following:
 - [Nuxt JS](https://nuxtjs.org/) - A powerful framework Vue applications
 - [Vue JS](https://vuejs.org/) - A progressive JavaScript framework for reactive content
 - [Tailwindcss](https://tailwindcss.com/) - A utility-first CSS framework
-- [MirageJS](https://miragejs.com/) - Provides a client-side framework to "mock" the real API server ([uobtheatre-api](https://github.com/BristolSTA/uobtheatre-api))
 
 Here are the important areas to take a look at:
 
 - `/components/` This folder contains reusable Vue components that are used across multiple components and pages
-- `/fakeApi/` This folder contains the files that setup the fake "mock" api instance for development environments
 - `/graphql/` This folder contains GraphQL queries, fragments and partials that are used by the application. Use this for larger, more complex queries.
 - `/layouts/` This folder contains the different page layouts available to Nuxt pages. The default layout is `default.vue`.
 - `/middleware/` This folder contains middleware available to pages, such as `authed` and `not-authed`.
