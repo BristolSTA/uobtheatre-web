@@ -42,6 +42,10 @@ Here are the important areas to take a look at:
 - `/middleware/` This folder contains middleware available to pages, such as `authed` and `not-authed`.
 - `/pages/` This folder contains all the pages for the application. The folder structure automatically generates the routes for the application. (Read more on that [here](https://nuxtjs.org/docs/2.x/features/file-system-routing))
 
+If you use VS Code, the uobtheatre-api is automatically put up with the dev container on port 9000.
+In this way, you can access the [GraphQLi interface](localhost:9000/graphql/) and the [Django admin panel](localhost:9000/admin/).
+This project is setup to automatically expect the API to be running at `localhost:9000`. If it is not, add `API_BASE={API_URL}` into your `.env` file.
+
 ## To build and deploy 🔨
 
 This application targets a "static" site (frequently known as a SPA). It does not use the SSR or Universal app mode that is available with Nuxt.

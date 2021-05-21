@@ -14,7 +14,7 @@ services:
   uobtheatre-api:
     image: 'ghcr.io/bristolsta/api-dev:latest'
     ports:
-      - '8000:8000'
+      - '9000:8000'
     environment:
       POSTGRES_DB: uobtheatre_api
       POSTGRES_PORT: 5432

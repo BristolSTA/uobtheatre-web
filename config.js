@@ -10,7 +10,7 @@ export default () => {
     },
     api: {
       graphql_endpoint:
-        (process.env.API_BASE || 'http://localhost:8000') + '/graphql/',
+        (process.env.API_BASE || 'http://localhost:9000') + '/graphql/',
     },
     auth: {
       cookie: 'uobtheatre-auth',
