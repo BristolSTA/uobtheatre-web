@@ -4,19 +4,26 @@ import { expect } from 'chai'
 import ChangeEmail from '@/components/user/ChangeEmail.vue'
 import { swal } from '@/utils'
 
-import { executeWithServer, generateMountOptions, waitFor } from '../../helpers'
+import { generateMountOptions, waitFor } from '../../helpers'
+import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse'
+import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 
 describe('Change Email', () => {
-  let component, server
-  beforeAll(async () => {
-    server = await executeWithServer(null, false)
-  })
-  afterAll(() => {
-    server.shutdown()
-  })
-
+  let component
   beforeEach(() => {
-    component = mount(ChangeEmail, generateMountOptions(['apollo']))
+    component = mount(
+      ChangeEmail,
+      generateMountOptions(['apollo'], {
+        apollo: {
+          mutationCallstack: [
+            GenericApolloResponse(
+              'sendSecondaryEmailActivation',
+              GenericMutationResponse()
+            ),
+          ],
+        },
+      })
+    )
   })
 
   it('can request email change', async () => {

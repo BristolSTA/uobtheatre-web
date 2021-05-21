@@ -1,76 +1,43 @@
 import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
-import gql from 'graphql-tag'
 import lo from 'lodash'
 
 import Booking from '@/classes/Booking'
 import Ticket from '@/classes/Ticket'
 import TicketsMatrix from '@/classes/TicketsMatrix'
 import SeatGroup from '@/components/booking/SeatGroup.vue'
-import ProductionFragment from '@/graphql/fragments/ProductionFragment.gql'
-import PerformanceTicketOptionsQuery from '@/graphql/queries/PerformanceTicketOptions.gql'
 import TicketSelectionStage from '@/pages/production/_slug/book/_performanceId/tickets.vue'
 
-import FakePerformance from '../../../fixtures/FakePerformance'
-import {
-  executeWithServer,
-  generateMountOptions,
-  runApolloQuery,
-} from '../../../helpers'
+import FullBooking from '@/tests/unit/fixtures/instances/FullBooking'
+import GenericApolloResponse from '@/tests/unit/fixtures/support/GenericApolloResponse'
+import GenericMutationResponse from '@/tests/unit/fixtures/support/GenericMutationResponse'
+import { generateMountOptions } from '../../../helpers'
 
 describe('Ticket Selection Stage', () => {
   let stageComponent
-  let server
   let ticketTypes
   let production
-  let performanceModel
+  let performance
 
-  beforeEach(async () => {
-    server = await executeWithServer(async (server) => {
-      performanceModel = server.create(
-        'performanceNode',
-        FakePerformance(server)
-      )
+  beforeEach(() => {
+    const bookingMock = FullBooking()
+    production = bookingMock.performance.production
+    performance = bookingMock.performance
 
-      let gqlResult = await runApolloQuery({
-        query: gql`
-          query production{
-            production(slug: "${performanceModel.production.slug}") {
-              ...ProductionBasicInfo
-            }
-          }
-          ${ProductionFragment}
-        `,
-      })
-      production = gqlResult.data.production
+    ticketTypes = new TicketsMatrix(performance)
+    const booking = new Booking()
+    booking.performance = performance
 
-      gqlResult = await runApolloQuery({
-        query: PerformanceTicketOptionsQuery,
-        variables: {
-          id: performanceModel.id,
+    stageComponent = mount(
+      TicketSelectionStage,
+      generateMountOptions(['apollo'], {
+        propsData: {
+          production,
+          booking,
+          ticketMatrix: ticketTypes,
         },
       })
-      const ticketOptions = gqlResult.data.performance
-
-      ticketTypes = new TicketsMatrix(ticketOptions)
-      const booking = new Booking()
-      booking.performance = production.performances.edges[0].node
-
-      stageComponent = mount(
-        TicketSelectionStage,
-        generateMountOptions(['apollo'], {
-          propsData: {
-            production,
-            booking,
-            ticketMatrix: ticketTypes,
-          },
-        })
-      )
-    }, false)
-  })
-
-  afterEach(() => {
-    server.shutdown()
+    )
   })
 
   it('displays the available seat locations', async () => {
@@ -84,7 +51,7 @@ describe('Ticket Selection Stage', () => {
     ).to.eq('The Meh Seats')
     expect(seatGroupComponents.at(1).props('discounts').length).to.eq(1)
     expect(seatGroupComponents.at(1).props('currentTickets').length).to.eq(0)
-    expect(seatGroupComponents.at(1).props('groupCapacityRemaining')).to.eq(10)
+    expect(seatGroupComponents.at(1).props('groupCapacityRemaining')).to.eq(11)
 
     ticketTypes.performanceCapacityRemaining = 5
     await stageComponent.vm.$forceUpdate()
@@ -93,8 +60,8 @@ describe('Ticket Selection Stage', () => {
 
     await stageComponent.vm.booking.tickets.push(
       new Ticket(
-        performanceModel.ticketOptions.models[0].seatGroup.id,
-        performanceModel.ticketOptions.models[0].concessionTypes.models[0].concessionType.id
+        performance.ticketOptions[0].seatGroup.id,
+        performance.ticketOptions[0].concessionTypes[0].concessionType.id
       )
     )
 
@@ -133,8 +100,8 @@ describe('Ticket Selection Stage', () => {
         ticketTypes.ticketOptions[0].concessionTypes[0].concessionType
       )
     expect(stageComponent.vm.booking.tickets.length).to.eq(1)
-    expect(stageComponent.vm.booking.tickets[0].seatGroup.id).to.eq('1')
-    expect(stageComponent.vm.booking.tickets[0].concessionType.id).to.eq('1')
+    expect(stageComponent.vm.booking.tickets[0].seatGroup.id).to.eq(1)
+    expect(stageComponent.vm.booking.tickets[0].concessionType.id).to.eq(1)
     expect(stageComponent.vm.interaction_timer.mock.calls.length).to.eq(1)
   })
 
@@ -149,8 +116,8 @@ describe('Ticket Selection Stage', () => {
         3
       )
     expect(stageComponent.vm.booking.tickets.length).to.eq(3)
-    expect(stageComponent.vm.booking.tickets[0].seatGroup.id).to.eq('1')
-    expect(stageComponent.vm.booking.tickets[0].concessionType.id).to.eq('1')
+    expect(stageComponent.vm.booking.tickets[0].seatGroup.id).to.eq(1)
+    expect(stageComponent.vm.booking.tickets[0].concessionType.id).to.eq(1)
     expect(stageComponent.vm.interaction_timer.mock.calls.length).to.eq(1)
   })
 
@@ -165,8 +132,8 @@ describe('Ticket Selection Stage', () => {
         2
       )
     expect(stageComponent.vm.booking.tickets.length).to.eq(2)
-    expect(stageComponent.vm.booking.tickets[0].seatGroup.id).to.eq('1')
-    expect(stageComponent.vm.booking.tickets[0].concessionType.id).to.eq('1')
+    expect(stageComponent.vm.booking.tickets[0].seatGroup.id).to.eq(1)
+    expect(stageComponent.vm.booking.tickets[0].concessionType.id).to.eq(1)
     expect(stageComponent.vm.interaction_timer.mock.calls.length).to.eq(1)
   })
 
@@ -174,8 +141,8 @@ describe('Ticket Selection Stage', () => {
     stageComponent.vm.interaction_timer = jest.fn()
     stageComponent.vm.booking.tickets = [
       new Ticket(
-        performanceModel.ticketOptions.models[0].seatGroup.id,
-        performanceModel.ticketOptions.models[0].concessionTypes.models[0].concessionType.id
+        performance.ticketOptions[0].seatGroup.id,
+        performance.ticketOptions[0].concessionTypes[0].concessionType.id
       ),
     ]
     await stageComponent
@@ -209,23 +176,23 @@ describe('Ticket Selection Stage', () => {
   describe('with selected tickets', () => {
     beforeEach(async () => {
       const booking = new Booking()
-      booking.performance = production.performances.edges[0].node
+      booking.performance = performance
       booking.tickets = [
         new Ticket(
-          performanceModel.ticketOptions.models[0].seatGroup.id,
-          performanceModel.ticketOptions.models[0].concessionTypes.models[0].concessionType.id
+          performance.ticketOptions[0].seatGroup.id,
+          performance.ticketOptions[0].concessionTypes[0].concessionType.id
         ),
         new Ticket(
-          performanceModel.ticketOptions.models[0].seatGroup.id,
-          performanceModel.ticketOptions.models[0].concessionTypes.models[0].concessionType.id
+          performance.ticketOptions[0].seatGroup.id,
+          performance.ticketOptions[0].concessionTypes[0].concessionType.id
         ),
         new Ticket(
-          performanceModel.ticketOptions.models[0].seatGroup.id,
-          performanceModel.ticketOptions.models[0].concessionTypes.models[1].concessionType.id
+          performance.ticketOptions[0].seatGroup.id,
+          performance.ticketOptions[0].concessionTypes[1].concessionType.id
         ),
         new Ticket(
-          performanceModel.ticketOptions.models[1].seatGroup.id,
-          performanceModel.ticketOptions.models[0].concessionTypes.models[1].concessionType.id
+          performance.ticketOptions[1].seatGroup.id,
+          performance.ticketOptions[0].concessionTypes[1].concessionType.id
         ),
       ]
       await stageComponent.setProps({
@@ -249,6 +216,14 @@ describe('Ticket Selection Stage', () => {
     })
 
     it('shows discount line if discount applied', async () => {
+      stageComponent.vm.$apollo.mutationCallstack.push(
+        GenericApolloResponse(
+          'createBooking',
+          GenericMutationResponse({
+            booking: FullBooking(),
+          })
+        )
+      )
       await stageComponent.vm.updateAPI() // Need to fetch from API to get discount on the tickets
 
       expect(
@@ -258,16 +233,32 @@ describe('Ticket Selection Stage', () => {
         stageComponent
           .find('table tfoot tr:first-of-type td:last-of-type')
           .text()
-      ).to.eq('-£0.50') // Fake API will do discount * 100 (pennies)
+      ).to.eq('-£0.10') // Fake API will do discount * 100 (pennies)
 
       // Delete the discount
-      performanceModel.discounts.models[0].destroy()
-
+      const bookingMock = FullBooking()
+      bookingMock.priceBreakdown.discountsValue = 0
+      stageComponent.vm.$apollo.mutationCallstack.push(
+        GenericApolloResponse(
+          'updateBooking',
+          GenericMutationResponse({
+            booking: bookingMock,
+          })
+        )
+      )
       await stageComponent.vm.updateAPI() // Need to fetch from API to get discount on the tickets
       expect(stageComponent.find('table').text()).not.to.contain('Discounts')
     })
 
     it('shows subtotal', async () => {
+      stageComponent.vm.$apollo.mutationCallstack.push(
+        GenericApolloResponse(
+          'createBooking',
+          GenericMutationResponse({
+            booking: FullBooking(),
+          })
+        )
+      )
       await stageComponent.vm.updateAPI() // Need to fetch from API to get discount on the tickets
 
       expect(
@@ -275,14 +266,21 @@ describe('Ticket Selection Stage', () => {
       ).to.contain('Subtotal')
       expect(
         stageComponent.find('table tfoot tr:last-of-type').text()
-      ).to.contain('£35.50') // £3.00 of tickets - £0.50 of discount
+      ).to.contain('£4.90')
     })
 
     it('shows loading spinner for subtotal while dirty', async () => {
       expect(stageComponent.find('table').text()).to.contain('Subtotal')
       expect(stageComponent.findComponent({ ref: 'subtotalSpinner' }).exists())
         .to.be.true
-
+      stageComponent.vm.$apollo.mutationCallstack.push(
+        GenericApolloResponse(
+          'createBooking',
+          GenericMutationResponse({
+            booking: FullBooking(),
+          })
+        )
+      )
       await stageComponent.vm.updateAPI()
 
       expect(stageComponent.findComponent({ ref: 'subtotalSpinner' }).exists())

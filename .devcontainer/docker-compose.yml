@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  uobtheatre-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    ports:
+      - '3000:3000'
+    volumes:
+      - ..:/workspace/uobtheatre-web:cached
+
+  uobtheatre-api:
+    image: 'ghcr.io/bristolsta/api-dev:latest'
+    ports:
+      - '9000:8000'
+    environment:
+      POSTGRES_DB: uobtheatre_api
+      POSTGRES_PORT: 5432
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      DJANGO_SETTINGS_MODULE: config.settings.local
+    env_file:
+      - ./.env
+    depends_on:
+      - postgres
+    links:
+      - postgres
+    command: /bin/sh -c "/start --single-seed-e2e"
+
+  postgres:
+    image: postgres:11.6
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: uobtheatre_api
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:

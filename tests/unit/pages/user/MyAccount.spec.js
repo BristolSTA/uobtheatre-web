@@ -5,32 +5,28 @@ import BookingsTable from '@/components/user/BookingsTable.vue'
 import UserDetails from '@/components/user/UserDetails.vue'
 import MyAccount from '@/pages/user/index'
 import {
-  executeWithServer,
   generateMountOptions,
   mountWithRouterMock,
   RouterLinkStub,
-  seedAndAuthAsUser,
   waitFor,
 } from '../../helpers'
+import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
+import User from '../../fixtures/User'
+import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection'
+import Booking from '../../fixtures/Booking'
+import Performance from '../../fixtures/Performance'
 
 describe('My Account', () => {
-  let myAccountComponent, server, user
-  beforeAll(async () => {
-    server = await executeWithServer((server) => {
-      user = seedAndAuthAsUser(server, {
-        firstName: 'Joe',
-      })
-    }, false)
-  })
-
-  afterAll(() => {
-    server.shutdown()
-  })
+  let myAccountComponent
 
   beforeEach(async () => {
     myAccountComponent = await mountWithRouterMock(
       MyAccount,
-      generateMountOptions(['apollo'])
+      generateMountOptions(['apollo'], {
+        apollo: {
+          queryCallstack: [GenericApolloResponse('me', User())],
+        },
+      })
     )
   })
 
@@ -38,7 +34,7 @@ describe('My Account', () => {
     expect(myAccountComponent.findComponent(UserDetails).exists()).to.be.true
     expect(
       myAccountComponent.findComponent(UserDetails).props('user').firstName
-    ).to.eq('Joe')
+    ).to.eq('Michael')
   })
 
   it('contains bookings table', () => {
@@ -67,18 +63,33 @@ describe('My Account', () => {
   })
 
   describe('with future bookings', () => {
-    let bookings
-    beforeAll(async () => {
-      bookings = server.createList('bookingNode', 2, 'paid', {
-        user,
-      })
+    beforeEach(async () => {
       myAccountComponent = await mountWithRouterMock(
         MyAccount,
-        generateMountOptions(['apollo'])
+        generateMountOptions(['apollo'], {
+          apollo: {
+            queryCallstack: [
+              GenericApolloResponse(
+                'me',
+                User({
+                  bookings: GenericNodeConnection([
+                    Booking({
+                      performance: Performance({
+                        end: '3000-05-17T10:00:00',
+                      }),
+                    }),
+                    Booking({
+                      performance: Performance({
+                        end: '3000-05-17T10:00:00',
+                      }),
+                    }),
+                  ]),
+                })
+              ),
+            ],
+          },
+        })
       )
-    })
-    afterAll(() => {
-      bookings.forEach((booking) => booking.destroy())
     })
     it('shows bookings', () => {
       expect(
@@ -88,20 +99,31 @@ describe('My Account', () => {
   })
 
   describe('with previous bookings', () => {
-    let bookings
-    beforeAll(async () => {
-      bookings = server.createList('bookingNode', 12, 'paid', {
-        user,
-        performance: server.create('performanceNode', 'past'),
-      })
+    beforeEach(async () => {
       myAccountComponent = await mountWithRouterMock(
         MyAccount,
-        generateMountOptions(['apollo'])
+        generateMountOptions(['apollo'], {
+          apollo: {
+            queryCallstack: [
+              GenericApolloResponse(
+                'me',
+                User({
+                  bookings: GenericNodeConnection(Array(10).fill(Booking()), {
+                    hasNextPage: true,
+                  }),
+                })
+              ),
+              GenericApolloResponse(
+                'me',
+                User({
+                  bookings: GenericNodeConnection(Array(2).fill(Booking())),
+                })
+              ),
+            ],
+          },
+        })
       )
       await myAccountComponent.vm.$nextTick()
-    })
-    afterAll(() => {
-      bookings.forEach((booking) => booking.destroy())
     })
 
     it('shows first 10 previous bookings', () => {

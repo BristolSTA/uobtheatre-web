@@ -2,7 +2,9 @@
 fragment DetailedBookingDetails on BookingNode {
   id
   reference
-  status
+  status {
+    description
+  }
   priceBreakdown {
     ...AllPriceBreakdown
   }

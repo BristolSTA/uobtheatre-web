@@ -5,37 +5,17 @@ import Booking from '@/classes/Booking'
 import BookingSummaryOverview from '@/components/booking/overview/BookingSummaryOverview.vue'
 import OverviewBox from '@/components/booking/overview/OverviewBox.vue'
 
-import FakeBooking from '../../../fixtures/FakeBooking'
-import {
-  executeWithServer,
-  mountWithRouterMock,
-  runApolloQuery,
-} from '../../../helpers'
+import FullBooking from '@/tests/unit/fixtures/instances/FullBooking'
+import { mountWithRouterMock } from '../../../helpers'
 
 describe('Booking Summary Overview', function () {
   let bookingSummaryOverviewComponent
-  const booking = new Booking()
 
   beforeAll(async () => {
-    await executeWithServer(async (server) => {
-      const bookingModel = FakeBooking(server)
+    const bookingdata = FullBooking()
 
-      const { data } = await runApolloQuery({
-        query: require('@/graphql/queries/BookingInformation.gql'),
-        variables: {
-          bookingId: bookingModel.id,
-        },
-      })
-      const bookingData = Object.assign({}, data.booking, {
-        status: 'PAID',
-        reference: 'ABS1352EBV54',
-        performance: {
-          production: { name: 'Legally Ginger', slug: 'legally-ginger' },
-          start: '2019-10-07T18:00:00',
-        },
-      })
-      booking.updateFromAPIData(bookingData)
-    })
+    const booking = Booking.fromAPIData(bookingdata)
+
     bookingSummaryOverviewComponent = await mountWithRouterMock(
       BookingSummaryOverview,
       {
@@ -56,10 +36,10 @@ describe('Booking Summary Overview', function () {
 
     expect(bookingSummaryOverviewComponent.text()).to.contain('Legally Ginger')
     expect(bookingSummaryOverviewComponent.text()).to.contain(
-      'Monday 7 October 2019'
+      'Monday 9 March 2020'
     )
     expect(bookingSummaryOverviewComponent.text()).to.contain(
-      'Booking Ref: ABS1352EBV54'
+      'Booking Ref: yOIYg6Co8vGR'
     )
   })
   it('has working links', async () => {
@@ -80,6 +60,6 @@ describe('Booking Summary Overview', function () {
         .findAllComponents(RouterLinkStub)
         .at(1)
         .props('to')
-    ).to.equal('/user/booking/ABS1352EBV54')
+    ).to.equal('/user/booking/yOIYg6Co8vGR')
   })
 })

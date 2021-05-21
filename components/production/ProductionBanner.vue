@@ -23,7 +23,7 @@
       <span class="font-semibold">
         <span class="text-h2">{{ production.name }}</span>
         <p class="mb-1 -mt-2 text-sta-gray-lighter">
-          {{ production.subtitle }} by
+          by
           <NuxtLink
             class="hover:text-gray-500"
             :to="`/society/${production.society.slug}`"

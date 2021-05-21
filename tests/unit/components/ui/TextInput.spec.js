@@ -3,7 +3,7 @@ import { expect } from 'chai'
 
 import TextInput from '@/components/ui/TextInput.vue'
 
-import { fakeValidationErrors } from '../../fixtures/FakeErrors'
+import { fakeValidationErrors } from '../../fixtures/instances/FakeErrors'
 
 describe('TextInput', () => {
   let component

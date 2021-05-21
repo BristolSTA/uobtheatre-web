@@ -1,56 +1,34 @@
 import { expect } from 'chai'
 
 import Venue from '@/pages/venue/_slug/index.vue'
+import FakeVenue from '../../fixtures/Venue'
 
 import {
-  executeWithServer,
   fixTextSpacing,
+  generateMountOptions,
   mountWithRouterMock,
   waitFor,
 } from '../../helpers'
+import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 
 describe('Venue page', function () {
   let venuePageComponent
-  let server
   let address
 
   beforeEach(async () => {
-    server = await executeWithServer((server) => {
-      // Create a venue
-      server.create('VenueNode', {
-        name: 'Anson Theatre',
-        slug: 'anson-theatre',
-        description: 'not the anson rooms',
-        image: server.create('ImageNode', {
-          url: 'http://pathto.example/venue-image.png',
-        }),
-        publiclyListed: true,
-        internalCapacity: '420',
-        address: server.create('AddressNode', {
-          buildingName: 'Wills Memorial Building',
-          street: 'Queens Road',
-          buildingNumber: '69',
-          city: 'London',
-          postcode: 'BS69 420',
-          latitude: '123.4567',
-          longitude: '987.654',
-        }),
-      })
-    }, false)
-
     venuePageComponent = await mountWithRouterMock(
       Venue,
-      {},
+      generateMountOptions(['apollo'], {
+        apollo: {
+          queryCallstack: [GenericApolloResponse('venue', FakeVenue())],
+        },
+      }),
       {
         params: {
           slug: 'anson-theatre',
         },
       }
     )
-  })
-
-  afterEach(() => {
-    server.shutdown()
   })
 
   it('fetches the venue', async () => {
@@ -147,7 +125,11 @@ describe('Venue page', function () {
     const errorFn = jest.fn()
     venuePageComponent = await mountWithRouterMock(
       Venue,
-      {},
+      generateMountOptions(['apollo'], {
+        apollo: {
+          queryCallstack: [GenericApolloResponse('venue')],
+        },
+      }),
       {
         error: errorFn,
         params: {

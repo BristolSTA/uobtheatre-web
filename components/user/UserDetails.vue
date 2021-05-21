@@ -113,12 +113,7 @@ import ChangeEmail from './ChangeEmail.vue'
 import ChangePassword from './ChangePassword.vue'
 import LoadingContainer from '../ui/LoadingContainer.vue'
 import gql from 'graphql-tag'
-import {
-  swalToast,
-  performMutation,
-  ValidationError,
-  getValidationErrors,
-} from '@/utils'
+import { swalToast, performMutation, getValidationErrors } from '@/utils'
 export default {
   name: 'UserDetails',
   components: {

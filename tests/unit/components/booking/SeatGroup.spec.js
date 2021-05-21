@@ -6,38 +6,41 @@ import ConcessionType from '@/components/booking/ConcessionType.vue'
 import GroupTicketButton from '@/components/booking/GroupTicketButton.vue'
 import SeatGroup from '@/components/booking/SeatGroup.vue'
 
-import FakePerformance from '../../fixtures/FakePerformance'
-import {
-  executeWithServer,
-  fixTextSpacing,
-  runApolloQuery,
-} from '../../helpers'
+import { fixTextSpacing } from '../../helpers'
+import Performance from '../../fixtures/Performance'
 
 describe('Seat Location Component', () => {
   let seatGroupComponent
   let ticketOption
   let discounts
-  beforeEach(async () => {
-    await executeWithServer(async (server) => {
-      const performance = server.create(
-        'performanceNode',
-        FakePerformance(server)
-      )
-      const { data } = await runApolloQuery({
-        query: require('@/graphql/queries/PerformanceTicketOptions.gql'),
-        variables: {
-          id: performance.id,
-        },
-      })
-      seatGroupComponent = mount(SeatGroup, {
-        propsData: {
-          expanded: false,
-          ticketOption: (ticketOption = data.performance.ticketOptions[0]),
-          groupCapacityRemaining: 100,
-          currentTickets: [],
-          discounts: (discounts = data.performance.discounts),
-        },
-      })
+  beforeEach(() => {
+    const performance = Performance()
+
+    const student = {
+      name: 'Student',
+      id: 2,
+    }
+    performance.ticketOptions[0].concessionTypes.push({
+      concessionType: student,
+      price: 800,
+      pricePounds: '8.00',
+    })
+
+    performance.discounts[0].requirements.push({
+      id: 1,
+      number: 2,
+      discount: null,
+      concessionType: student,
+    })
+
+    seatGroupComponent = mount(SeatGroup, {
+      propsData: {
+        expanded: false,
+        ticketOption: (ticketOption = performance.ticketOptions[0]),
+        groupCapacityRemaining: 100,
+        currentTickets: [],
+        discounts: (discounts = performance.discounts),
+      },
     })
   })
 
@@ -93,12 +96,8 @@ describe('Seat Location Component', () => {
     )
   })
 
-  it('contains the correct ammount of concession type components', async () => {
-    const tickets = [
-      new Ticket('1', '1'),
-      new Ticket('1', '1'),
-      new Ticket('1', '2'),
-    ]
+  it('contains the correct amount of concession type components', async () => {
+    const tickets = [new Ticket(1, 1), new Ticket(1, 1), new Ticket(1, 2)]
     await seatGroupComponent.setProps({
       expanded: true,
       currentTickets: tickets,
@@ -107,20 +106,28 @@ describe('Seat Location Component', () => {
     expect(seatGroupComponent.findComponent({ ref: 'ticket-warning' }).exists())
       .to.be.false
 
-    const components = seatGroupComponent.findAllComponents(ConcessionType)
-    expect(components.length).to.eq(2)
+    const concessionTypeComponents = seatGroupComponent.findAllComponents(
+      ConcessionType
+    )
+    expect(concessionTypeComponents.length).to.eq(2)
 
     expect(
-      components.at(0).props('concessionTypeEdge').concessionType.name
+      concessionTypeComponents.at(0).props('concessionTypeEdge').concessionType
+        .name
     ).to.eq('Adult')
 
-    expect(components.at(0).props('maxAddAllowed')).to.eq(100)
-    expect(components.at(0).props('currentTickets').length).to.eq(3)
+    expect(concessionTypeComponents.at(0).props('maxAddAllowed')).to.eq(100)
+    expect(concessionTypeComponents.at(0).props('currentTickets').length).to.eq(
+      3
+    )
 
     expect(
-      components.at(1).props('concessionTypeEdge').concessionType.name
+      concessionTypeComponents.at(1).props('concessionTypeEdge').concessionType
+        .name
     ).to.eq('Student')
-    expect(components.at(1).props('currentTickets').length).to.eq(3)
+    expect(concessionTypeComponents.at(1).props('currentTickets').length).to.eq(
+      3
+    )
   })
 
   it('contains the correct amount of group ticket buttons', async () => {

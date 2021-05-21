@@ -5,26 +5,23 @@ import { DateTime } from 'luxon'
 import PerformanceOverview from '@/components/production/PerformanceOverview.vue'
 import ProductionPerformances from '@/components/production/ProductionPerformances.vue'
 
-import FakeProduction from '../../fixtures/FakeProduction.js'
-import {
-  executeWithServer,
-  fixTextSpacing,
-  generateMountOptions,
-  runApolloQuery,
-} from '../../helpers.js'
+import { fixTextSpacing, generateMountOptions } from '../../helpers.js'
+import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection.js'
+import Production from '../../fixtures/Production.js'
+import Performance from '../../fixtures/Performance.js'
 
 describe('Production Performances', function () {
   let performancesContainer
   let fakeJestPush
 
-  it('shows no performances available if none returned', async () => {
-    await createWithPerformances([])
+  it('shows no performances available if none returned', () => {
+    createWithPerformances([])
     expect(performancesContainer.text()).to.contain('No Upcoming Performances')
   })
 
   describe('With performances', () => {
-    beforeEach(async () => {
-      await createWithPerformances([
+    beforeEach(() => {
+      createWithPerformances([
         // An available in-person & online performance
         {
           start: DateTime.fromISO('2020-11-28T16:00:00'),
@@ -36,6 +33,7 @@ describe('Production Performances', function () {
         },
         // A sold out performance
         {
+          id: 2,
           start: DateTime.fromISO('2020-11-30T18:00:00'),
           end: DateTime.fromISO('2020-11-30T20:00:00'),
           soldOut: true,
@@ -87,38 +85,25 @@ describe('Production Performances', function () {
     })
   })
 
-  const createWithPerformances = async (performances, productionOverrides) => {
-    await executeWithServer(async (server) => {
-      productionOverrides = Object.assign(
-        FakeProduction(server),
-        productionOverrides,
-        {
-          performances: performances.map((perf) => {
-            return server.create('performanceNode', perf)
-          }),
-        }
-      )
-      const production = server.create('productionNode', productionOverrides)
+  const createWithPerformances = (performances, productionOverrides) => {
+    const production = Production(productionOverrides)
+    production.performances = GenericNodeConnection(
+      performances.map((performance) => Performance(performance))
+    )
 
-      const gqlResult = await runApolloQuery({
-        query: require('@/graphql/queries/ProductionBySlug.gql'),
-        variables: {
-          slug: production.slug,
+    performancesContainer = mount(
+      ProductionPerformances,
+      generateMountOptions(['router'], {
+        propsData: {
+          production,
+        },
+
+        mocks: {
+          $router: {
+            push: (fakeJestPush = jest.fn()),
+          },
         },
       })
-      performancesContainer = mount(
-        ProductionPerformances,
-        generateMountOptions(['router'], {
-          propsData: {
-            production: gqlResult.data.production,
-          },
-          mocks: {
-            $router: {
-              push: (fakeJestPush = jest.fn()),
-            },
-          },
-        })
-      )
-    })
+    )
   }
 })

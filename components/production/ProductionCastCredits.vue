@@ -50,7 +50,7 @@
           <span class="text-xl font-semibold uppercase">Audience Warnings</span>
           <ul class="list-disc list-inside">
             <li v-for="(warning, index) in production.warnings" :key="index">
-              {{ warning.warning }}
+              {{ warning.description }}
             </li>
           </ul>
         </div>
@@ -117,7 +117,7 @@
               class="crew-item"
             >
               <h4 class="font-semibold uppercase">
-                {{ group[0].role.department }}
+                {{ group[0].role.department.description }}
               </h4>
               <p v-for="(member, gIndex) in group" :key="gIndex">
                 {{ member.name }}
@@ -190,7 +190,7 @@ export default {
       let i = 0
       return lodash
         .chain(this.production.crew)
-        .groupBy('role.department')
+        .groupBy('role.department.description')
         .groupBy(() => {
           const res = Math.floor(i % 2)
           i++
