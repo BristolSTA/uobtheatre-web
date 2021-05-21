@@ -7,38 +7,25 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
 import { swal } from '@/utils'
 import Book from '@/pages/production/_slug/book.vue'
 
-import FakePerformance from '../../fixtures/FakePerformance'
 import {
   assertNoVisualDifference,
-  executeWithServer,
   generateMountOptions,
   mountWithRouterMock,
-  seedAndAuthAsUser,
   waitFor,
 } from '../../helpers'
+import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
+import Production from '../../fixtures/Production'
+import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection'
+import Performance from '../../fixtures/Performance'
+import Booking from '../../fixtures/Booking'
 
 describe('Create Booking Page', () => {
-  let bookingComponent, server, performanceModel, routerPushFake, user
+  let bookingComponent, routerPushFake
   const fakeNuxtChild = {
     template: '<div />',
     stageInfo: stages[0].stageInfo,
     props: ['production', 'ticketMatrix', 'booking'],
   }
-
-  beforeAll(async () => {
-    server = await executeWithServer((server) => {
-      // Create a performance
-      user = seedAndAuthAsUser(server)
-      performanceModel = server.create(
-        'performanceNode',
-        FakePerformance(server)
-      )
-    }, false)
-  })
-
-  afterAll(() => {
-    server.shutdown()
-  })
 
   beforeEach(async () => {
     bookingComponent = await mountWithRouterMock(
@@ -51,6 +38,11 @@ describe('Create Booking Page', () => {
           $route: {
             params: {},
           },
+        },
+        apollo: {
+          queryCallstack: [
+            GenericApolloResponse('production', Production({}, true)),
+          ],
         },
         stubs: { NuxtChild: fakeNuxtChild },
       }),
@@ -141,9 +133,18 @@ describe('Create Booking Page', () => {
             },
             $route: {
               params: {
-                performanceId: performanceModel.id,
+                performanceId: 1,
               },
             },
+          },
+          apollo: {
+            queryCallstack: [
+              ...bookingComponent.vm.$apollo.queryCallstack,
+              GenericApolloResponse('me', {
+                bookings: GenericNodeConnection(),
+              }),
+              GenericApolloResponse('performance', Performance()),
+            ],
           },
           stubs: { NuxtChild: fakeNuxtChild },
         }),
@@ -158,9 +159,7 @@ describe('Create Booking Page', () => {
     })
 
     it('loads required data on mount if has a performance id', () => {
-      expect(bookingComponent.vm.booking.performance.id).to.eq(
-        performanceModel.id
-      )
+      expect(bookingComponent.vm.booking.performance.id).to.eq(1)
       expect(bookingComponent.vm.ticketMatrix).not.to.be.null
     })
 
@@ -175,9 +174,7 @@ describe('Create Booking Page', () => {
       expect(routerPushFake.mock.calls[0][0].name).to.eq(
         'production-slug-book-performanceId-warnings'
       )
-      expect(routerPushFake.mock.calls[0][0].params.performanceId).to.eq(
-        performanceModel.id
-      )
+      expect(routerPushFake.mock.calls[0][0].params.performanceId).to.eq(1)
       expect(routerPushFake.mock.calls[0][0].params.slug).to.eq(
         'legally-ginger'
       )
@@ -185,13 +182,8 @@ describe('Create Booking Page', () => {
   })
 
   describe('with exisiting draft booking', () => {
-    let booking, stub, mount
+    let stub, mount
     beforeAll(() => {
-      booking = server.create('bookingNode', {
-        user,
-        performance: performanceModel,
-      })
-
       stub = jest.spyOn(swal, 'fire')
 
       mount = async () => {
@@ -204,9 +196,19 @@ describe('Create Booking Page', () => {
               },
               $route: {
                 params: {
-                  performanceId: performanceModel.id,
+                  performanceId: 1,
                 },
               },
+            },
+
+            apollo: {
+              queryCallstack: [
+                ...bookingComponent.vm.$apollo.queryCallstack,
+                GenericApolloResponse('me', {
+                  bookings: GenericNodeConnection([Booking()]),
+                }),
+                GenericApolloResponse('performance', Performance()),
+              ],
             },
             stubs: { NuxtChild: fakeNuxtChild },
           }),
@@ -219,10 +221,6 @@ describe('Create Booking Page', () => {
       }
     })
 
-    afterAll(() => {
-      booking.destroy()
-    })
-
     afterEach(() => {
       stub.mockClear()
     })
@@ -230,17 +228,11 @@ describe('Create Booking Page', () => {
     it('can resume booking', async () => {
       stub.mockResolvedValue({ isConfirmed: true })
       await mount()
-      const updateStub = jest
-        .spyOn(bookingComponent.vm.booking, 'updateFromAPIData')
-        .mockImplementation()
 
       await waitFor(() => stub.mock.calls.length)
 
       expect(stub.mock.calls).length(1)
-      expect(updateStub.mock.calls).length(1)
-      expect(updateStub.mock.calls[0][0]).to.eq(
-        bookingComponent.vm.previousBooking
-      )
+      expect(bookingComponent.vm.booking.id).to.eq(1)
     })
     it('can decline to resume booking', async () => {
       stub.mockResolvedValue({ isConfirmed: false })
@@ -270,9 +262,18 @@ describe('Create Booking Page', () => {
             },
             $route: {
               params: {
-                performanceId: performanceModel.id,
+                performanceId: 1,
               },
             },
+          },
+          apollo: {
+            queryCallstack: [
+              ...bookingComponent.vm.$apollo.queryCallstack,
+              GenericApolloResponse('me', {
+                bookings: GenericNodeConnection(),
+              }),
+              GenericApolloResponse('performance', Performance()),
+            ],
           },
           stubs: {
             NuxtChild: fakeChild,

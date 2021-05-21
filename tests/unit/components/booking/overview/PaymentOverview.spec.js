@@ -4,38 +4,16 @@ import Booking from '@/classes/Booking'
 import OverviewBox from '@/components/booking/overview/OverviewBox.vue'
 import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue'
 
-import FakeBooking from '../../../fixtures/FakeBooking'
-import {
-  executeWithServer,
-  fixTextSpacing,
-  mountWithRouterMock,
-  runApolloQuery,
-  seedAndAuthAsUser,
-} from '../../../helpers'
+import FullBooking from '@/tests/unit/fixtures/instances/FullBooking'
+import { fixTextSpacing, mountWithRouterMock } from '../../../helpers'
 
 describe('Payment Overview', function () {
   let paymentOverviewComponent
-  const booking = new Booking()
 
   beforeAll(async () => {
-    await executeWithServer(async (server) => {
-      const user = seedAndAuthAsUser(server)
-      FakeBooking(
-        server,
-        {
-          user,
-        },
-        true
-      )
+    const bookingdata = FullBooking()
 
-      const { data } = await runApolloQuery({
-        query: require('@/graphql/queries/UserPaidBooking.gql'),
-        variables: {
-          bookingRef: 'ABS1352EBV54',
-        },
-      })
-      booking.updateFromAPIData(data.me.bookings.edges[0].node)
-    })
+    const booking = Booking.fromAPIData(bookingdata)
     paymentOverviewComponent = await mountWithRouterMock(PaymentOverview, {
       propsData: {
         booking,
@@ -52,7 +30,7 @@ describe('Payment Overview', function () {
     await paymentOverviewComponent.vm
 
     expect(fixTextSpacing(paymentOverviewComponent.text())).to.contain(
-      'PAID using VISA ending 1234'
+      'Paid using VISA ending 4441'
     )
   })
 
@@ -61,7 +39,7 @@ describe('Payment Overview', function () {
     const costRows = paymentOverviewComponent.findAll('tr')
 
     expect(costRows.length).to.eq(2)
-    expect(fixTextSpacing(costRows.at(0).text())).to.eq('Price Paid : £25.75')
-    expect(fixTextSpacing(costRows.at(1).text())).to.eq('On : Sat 13 Mar 2021')
+    expect(fixTextSpacing(costRows.at(0).text())).to.eq('Price Paid : £12.65')
+    expect(fixTextSpacing(costRows.at(1).text())).to.eq('On : Fri 8 May 2020')
   })
 })

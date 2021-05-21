@@ -1,69 +1,63 @@
 import { RouterLinkStub } from '@vue/test-utils'
 import { expect } from 'chai'
-import { DateTime } from 'luxon'
 
 import Society from '@/pages/society/_slug/index'
-import { executeWithServer, mountWithRouterMock, waitFor } from '../../helpers'
+import {
+  generateMountOptions,
+  mountWithRouterMock,
+  waitFor,
+} from '../../helpers'
+import FakeSociety from '../../fixtures/Society'
+import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
+import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection'
+import Production from '../../fixtures/Production'
 
 describe('Society page', function () {
   let societyPageComponent
-  let server
 
   beforeEach(async () => {
-    server = await executeWithServer((server) => {
-      // Create a society
-      const testSociety = server.create('SocietyNode', {
-        name: 'Drama Society',
-        slug: 'drama-soc',
-        description: 'not a musical theatre society',
-        logo: server.create('ImageNode', {
-          url: 'http://pathto.example/society-logo.png',
-        }),
-        banner: server.create('ImageNode', {
-          url: 'http://pathto.example/society-banner.png',
-        }),
-      })
-
-      server.create('ProductionNode', {
-        name: 'Bins',
-        slug: 'bins',
-        isBookable: true,
-        end: DateTime.fromISO('2020-10-18'),
-        society: testSociety,
-      })
-      server.create('ProductionNode', {
-        name: 'Centuary',
-        slug: 'centuary',
-        isBookable: false,
-        end: DateTime.fromISO('2019-10-19'),
-        society: testSociety,
-      })
-    }, false)
-
     societyPageComponent = await mountWithRouterMock(
       Society,
-      {},
+      generateMountOptions(['apollo'], {
+        apollo: {
+          queryCallstack: [
+            GenericApolloResponse(
+              'society',
+              FakeSociety({
+                productions: GenericNodeConnection([
+                  Production({
+                    name: 'Bins',
+                    slug: 'bins',
+                    isBookable: true,
+                    end: '2020-10-18T00:00:00',
+                  }),
+                  Production({
+                    name: 'Centuary',
+                    slug: 'centuary',
+                    isBookable: false,
+                    end: '2019-10-19T00:00:00',
+                  }),
+                ]),
+              })
+            ),
+          ],
+        },
+      }),
       {
         params: {
-          slug: 'drama-soc',
+          slug: 'sta',
         },
       }
     )
   })
 
-  afterEach(() => {
-    server.shutdown()
-  })
-
   it('fetches the society', async () => {
     await waitFor(() => societyPageComponent.vm.society)
-    expect(societyPageComponent.vm.society.name).to.eq('Drama Society')
+    expect(societyPageComponent.vm.society.name).to.eq('STA')
 
-    expect(societyPageComponent.text()).to.contain('Drama Society')
+    expect(societyPageComponent.text()).to.contain('STA')
 
-    expect(societyPageComponent.text()).to.contain(
-      'not a musical theatre society'
-    )
+    expect(societyPageComponent.text()).to.contain('We do it in the dark')
 
     expect(
       societyPageComponent
@@ -71,14 +65,14 @@ describe('Society page', function () {
           ref: 'society-logo',
         })
         .attributes('src')
-    ).to.equal('http://pathto.example/society-logo.png')
+    ).to.equal('http://pathto.example/logo-image.png')
   })
 
   it('shows society splashscreen', async () => {
     await waitFor(() => societyPageComponent.vm.society)
     const splashscreenContainer = societyPageComponent.find('#splashscreen')
 
-    expect(splashscreenContainer.text()).to.contain('Drama Society')
+    expect(splashscreenContainer.text()).to.contain('STA')
 
     expect(splashscreenContainer.attributes('style')).to.contain(
       'background-image: url(http://pathto.example/society-banner.png)'
@@ -117,7 +111,11 @@ describe('Society page', function () {
     const errorFn = jest.fn()
     societyPageComponent = await mountWithRouterMock(
       Society,
-      {},
+      generateMountOptions(['apollo'], {
+        apollo: {
+          queryCallstack: [GenericApolloResponse('society')],
+        },
+      }),
       {
         error: errorFn,
         params: {

@@ -1,35 +1,17 @@
 import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
-import gql from 'graphql-tag'
 
 import AudienceWarningsStage from '@/pages/production/_slug/book/_performanceId/warnings.vue'
-
-import { executeWithServer, runApolloQuery } from '../../../helpers'
+import Production from '@/tests/unit/fixtures/Production'
 
 describe('Audience Warnings Stage', () => {
   let stageComponent
 
-  beforeAll(async () => {
-    await executeWithServer(async (server) => {
-      const production = server.create('productionNode')
-
-      const { data } = await runApolloQuery({
-        query: gql`
-          query production {
-            production(slug: "${production.slug}") {
-              warnings {
-                warning
-              }
-            }
-          }
-        `,
-      })
-
-      stageComponent = mount(AudienceWarningsStage, {
-        propsData: {
-          production: data.production,
-        },
-      })
+  beforeAll(() => {
+    stageComponent = mount(AudienceWarningsStage, {
+      propsData: {
+        production: Production(),
+      },
     })
   })
 

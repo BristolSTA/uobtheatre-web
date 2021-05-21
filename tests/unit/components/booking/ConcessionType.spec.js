@@ -3,19 +3,14 @@ import { expect } from 'chai'
 
 import Ticket from '@/classes/Ticket'
 import ConcessionType from '@/components/booking/ConcessionType.vue'
+import PerformanceSeatGroup from '../../fixtures/PerformanceSeatGroup'
+
 describe('Concession Type', () => {
   let concessionTypeComponent
   beforeEach(() => {
     concessionTypeComponent = mount(ConcessionType, {
       propsData: {
-        concessionTypeEdge: {
-          concessionType: {
-            id: 1,
-            name: 'Adult',
-            description: 'A adult human',
-          },
-          price: 1000,
-        },
+        concessionTypeEdge: PerformanceSeatGroup().concessionTypes[0],
         maxAddAllowed: 10,
         currentTickets: [new Ticket(1, 1), new Ticket(1, 1), new Ticket(1, 2)], // Assumes that seat_group filtering already done as required
       },
@@ -30,7 +25,7 @@ describe('Concession Type', () => {
 
   it('displays description', () => {
     expect(concessionTypeComponent.find('p.text-sm').text()).to.eq(
-      'A adult human'
+      'People over 18 years of age'
     )
   })
 

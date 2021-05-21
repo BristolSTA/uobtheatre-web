@@ -1,48 +1,36 @@
 import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
-import gql from 'graphql-tag'
 
 import GroupTicketButton from '@/components/booking/GroupTicketButton.vue'
 
-import FakePerformance from '../../fixtures/FakePerformance'
-import { executeWithServer, runApolloQuery } from '../../helpers'
+import Performance from '../../fixtures/Performance'
 
 describe('Group Ticket Button', () => {
   let buttonComponent
-  beforeEach(async () => {
-    await executeWithServer(async (server) => {
-      const performance = server.create(
-        'performanceNode',
-        FakePerformance(server)
-      )
-      const { data } = await runApolloQuery({
-        query: gql`
-          {
-            performance(id: ${performance.id}) {
-              discounts {
-                name
-                seatGroup {
-                  id
-                  name
-                }
-                requirements {
-                  number
-                  concessionType {
-                    id
-                    name
-                  }
-                }
-              }
-            }
-          }
-        `,
-      })
+  beforeEach(() => {
+    const performance = Performance()
 
-      buttonComponent = mount(GroupTicketButton, {
-        propsData: {
-          discount: data.performance.discounts[0],
-        },
-      })
+    const student = {
+      name: 'Student',
+      id: 2,
+    }
+    performance.ticketOptions[0].concessionTypes.push({
+      concessionType: student,
+      price: 800,
+      pricePounds: '8.00',
+    })
+
+    performance.discounts[0].requirements.push({
+      id: 1,
+      number: 2,
+      discount: null,
+      concessionType: student,
+    })
+
+    buttonComponent = mount(GroupTicketButton, {
+      propsData: {
+        discount: performance.discounts[0],
+      },
     })
   })
 

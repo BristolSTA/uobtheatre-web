@@ -8,40 +8,34 @@ import Ticket from '@/components/booking/Ticket.vue'
 import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
 import ViewBooking from '@/pages/user/booking/_reference/index'
 
-import FakeBooking from '../../fixtures/FakeBooking.js'
+import FakeBooking from '../../fixtures/Booking.js'
 import {
   assertNoVisualDifference,
-  executeWithServer,
   generateMountOptions,
   mountWithRouterMock,
-  seedAndAuthAsUser,
   waitFor,
 } from '../../helpers'
+import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse.js'
+import User from '../../fixtures/User.js'
+import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection.js'
 
 describe('View Booking', () => {
-  let viewBookingComponent, server
-
-  beforeAll(async () => {
-    server = await executeWithServer((server) => {
-      const user = seedAndAuthAsUser(server)
-      FakeBooking(
-        server,
-        {
-          user,
-        },
-        true
-      )
-    }, false)
-  })
-
-  afterAll(() => {
-    server.shutdown()
-  })
+  let viewBookingComponent
 
   beforeEach(async () => {
     viewBookingComponent = await mountWithRouterMock(
       ViewBooking,
       generateMountOptions(['apollo'], {
+        apollo: {
+          queryCallstack: [
+            GenericApolloResponse(
+              'me',
+              User({
+                bookings: GenericNodeConnection([FakeBooking()]),
+              })
+            ),
+          ],
+        },
         mocks: {
           $store: {
             state: {
@@ -95,7 +89,7 @@ describe('View Booking', () => {
 
     await ticketbanner.trigger('click')
 
-    expect(viewBookingComponent.findAllComponents(Ticket).length).to.eq(4)
+    expect(viewBookingComponent.findAllComponents(Ticket).length).to.eq(1)
 
     await ticketbanner.trigger('click')
     expect(viewBookingComponent.vm.expanded).to.be.false

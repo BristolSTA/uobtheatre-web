@@ -5,24 +5,26 @@ import InfiniteScroll from '@/components/ui/InfiniteScroll'
 import AllSocieties from '@/pages/societies'
 
 import {
-  executeWithServer,
   generateMountOptions,
   mountWithRouterMock,
   waitFor,
 } from '../../helpers'
+import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
+import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection'
+import Society from '../../fixtures/Society'
 
 describe('All Societies', () => {
-  let allSocietiesComponent, server
-  beforeAll(async () => {
-    server = await executeWithServer(() => {}, false)
-  })
-  afterAll(() => {
-    server.shutdown()
-  })
+  let allSocietiesComponent
   beforeEach(async () => {
     allSocietiesComponent = await mountWithRouterMock(
       AllSocieties,
-      generateMountOptions(['apollo'])
+      generateMountOptions(['apollo'], {
+        apollo: {
+          queryCallstack: [
+            GenericApolloResponse('societies', GenericNodeConnection()),
+          ],
+        },
+      })
     )
   })
 
@@ -43,21 +45,21 @@ describe('All Societies', () => {
   })
 
   describe('with many societies', () => {
-    beforeAll(() => {
-      server.create('societyNode', {
-        name: 'Dramsoc',
-      })
-      server.createList('societyNode', 9)
-    })
-
-    afterAll(() => {
-      server.db.emptyData()
-    })
-
     beforeEach(async () => {
       allSocietiesComponent = await mountWithRouterMock(
         AllSocieties,
-        generateMountOptions(['apollo-new'])
+        generateMountOptions(['apollo'], {
+          apollo: {
+            queryCallstack: [
+              GenericApolloResponse(
+                'societies',
+                GenericNodeConnection(Array(9).fill(Society()), {
+                  hasNextPage: true,
+                })
+              ),
+            ],
+          },
+        })
       )
     })
 
@@ -68,7 +70,7 @@ describe('All Societies', () => {
       expect(allSocietiesComponent.findAllComponents(SocietyTile)).length(9)
       expect(
         allSocietiesComponent.findComponent(SocietyTile).props('society').name
-      ).to.eq('Dramsoc')
+      ).to.eq('STA')
 
       expect(
         allSocietiesComponent
@@ -80,21 +82,19 @@ describe('All Societies', () => {
   })
 
   describe('with some societies', () => {
-    beforeAll(() => {
-      server.create('societyNode', {
-        name: 'Dramsoc',
-      })
-      server.createList('societyNode', 2)
-    })
-
-    afterAll(() => {
-      server.db.emptyData()
-    })
-
     beforeEach(async () => {
       allSocietiesComponent = await mountWithRouterMock(
         AllSocieties,
-        generateMountOptions(['apollo'])
+        generateMountOptions(['apollo'], {
+          apollo: {
+            queryCallstack: [
+              GenericApolloResponse(
+                'societies',
+                GenericNodeConnection(Array(3).fill(Society()))
+              ),
+            ],
+          },
+        })
       )
     })
 
@@ -105,7 +105,7 @@ describe('All Societies', () => {
       expect(allSocietiesComponent.findAllComponents(SocietyTile)).length(3)
       expect(
         allSocietiesComponent.findComponent(SocietyTile).props('society').name
-      ).to.eq('Dramsoc')
+      ).to.eq('STA')
 
       expect(
         allSocietiesComponent

@@ -6,32 +6,20 @@ import { authService } from '@/services'
 import { swalToast } from '@/utils'
 
 import {
-  executeWithServer,
+  generateApolloMock,
   generateMountOptions,
   mountWithRouterMock,
   RouterLinkStub,
   waitFor,
 } from '../helpers'
+import GenericApolloResponse from '../fixtures/support/GenericApolloResponse'
+import GenericMutationResponse from '../fixtures/support/GenericMutationResponse'
+import GenericError from '../fixtures/support/GenericError'
+import User from '../fixtures/User'
+import GenericErrorsResponse from '../fixtures/support/GenericErrorsResponse'
 
 describe('AuthBox', function () {
-  let authBoxComponent, server
-  const userEmail = 'admin@bristolsta.com'
-  const userPassword = 'admin'
-  const userToken = '36c86c19f8f8d73aa59c3a00814137bdee0ab8de'
-
-  beforeAll(async () => {
-    server = await executeWithServer((server) => {
-      server.create('userNode', {
-        email: userEmail,
-        password: userPassword,
-        token: userToken,
-      })
-    }, false)
-  })
-
-  afterAll(() => {
-    server.shutdown()
-  })
+  let authBoxComponent
 
   it('can switch between login and signup', async () => {
     authBoxComponent = await mountWithRouterMock(UserAuthBox)
@@ -115,6 +103,16 @@ describe('AuthBox', function () {
     })
 
     it('shows errors on incorrect credentials', async () => {
+      authBoxComponent.vm.$apollo = generateApolloMock({
+        mutationCallstack: [
+          GenericApolloResponse(
+            'login',
+            GenericErrorsResponse(
+              GenericError('Unable to log in with provided credentials.')
+            )
+          ),
+        ],
+      })
       authBoxComponent.setData({
         email: 'nobody@example.org',
         password: 'fakeness',
@@ -147,10 +145,21 @@ describe('AuthBox', function () {
               push: (fakePush = jest.fn()),
             },
           },
+          apollo: {
+            mutationCallstack: [
+              GenericApolloResponse(
+                'login',
+                GenericMutationResponse({
+                  token: '36c86c19f8f8d73aa59c3a00814137bdee0ab8de',
+                  user: User(),
+                })
+              ),
+            ],
+          },
           data() {
             return {
-              email: userEmail,
-              password: userPassword,
+              email: 'm.pegg@example.org',
+              password: '1234',
             }
           },
         })
@@ -159,11 +168,15 @@ describe('AuthBox', function () {
       await authBoxComponent.vm.attemptLogin()
       expect(fakePush.mock.calls[0][0]).to.eq('/some/path')
       expect(onLoginFn.mock.calls).length(1)
-      expect(onLoginFn.mock.calls[0][0]).to.eq(userToken)
+      expect(onLoginFn.mock.calls[0][0]).to.eq(
+        '36c86c19f8f8d73aa59c3a00814137bdee0ab8de'
+      )
       expect(onLoginFn.mock.calls[0][2].expires).to.eq(null)
       expect(storeDispatchFn.mock.calls).length(1)
       expect(storeDispatchFn.mock.calls[0][0]).to.eq('auth/loadUserDetails')
-      expect(storeDispatchFn.mock.calls[0][1].userInfo.email).to.eq(userEmail)
+      expect(storeDispatchFn.mock.calls[0][1].userInfo.email).to.eq(
+        'm.pegg@example.org'
+      )
     })
 
     it('redirects to home on successful login if no intended', async () => {
@@ -188,10 +201,21 @@ describe('AuthBox', function () {
               push: (fakePush = jest.fn()),
             },
           },
+          apollo: {
+            mutationCallstack: [
+              GenericApolloResponse(
+                'login',
+                GenericMutationResponse({
+                  token: '36c86c19f8f8d73aa59c3a00814137bdee0ab8de',
+                  user: User(),
+                })
+              ),
+            ],
+          },
           data() {
             return {
-              email: userEmail,
-              password: userPassword,
+              email: 'm.pegg@example.org',
+              password: '1234',
             }
           },
         })
@@ -285,6 +309,12 @@ describe('AuthBox', function () {
 
       attemptSignupStub.mockRestore()
 
+      authBoxComponent.vm.$apollo = generateApolloMock({
+        mutationCallstack: [
+          GenericApolloResponse('register', GenericMutationResponse()),
+        ],
+      })
+
       return authBoxComponent.vm.attemptSignup().then(() => {
         expect(registerStub.mock.calls).length(1)
         expect(registerStub.mock.calls[0][0]).to.include({
@@ -319,6 +349,17 @@ describe('AuthBox', function () {
       expect(attemptSignupStub.mock.calls).length(1)
 
       attemptSignupStub.mockRestore()
+
+      authBoxComponent.vm.$apollo = generateApolloMock({
+        mutationCallstack: [
+          GenericApolloResponse(
+            'register',
+            GenericErrorsResponse(
+              GenericError('Your confirmed password does not match')
+            )
+          ),
+        ],
+      })
 
       return authBoxComponent.vm.attemptSignup().then(() => {
         expect(

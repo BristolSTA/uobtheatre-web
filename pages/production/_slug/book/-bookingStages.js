@@ -1,4 +1,3 @@
-// import BookingStage from '@/classes/BookingStage'
 import AudienceWarningsStage from '@/pages/production/_slug/book/_performanceId/warnings.vue'
 import OverviewStage from '@/pages/production/_slug/book/_performanceId/overview.vue'
 import PaymentStage from '@/pages/production/_slug/book/_performanceId/pay.vue'

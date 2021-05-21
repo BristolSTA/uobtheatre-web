@@ -1,32 +1,6 @@
-import { createLocalVue, mount, RouterLinkStub } from '@vue/test-utils'
+import { mount, RouterLinkStub } from '@vue/test-utils'
 import { expect } from 'chai'
-import VueApollo from 'vue-apollo'
 import config from '@/config'
-
-import { makeServer as makeAPIServer } from '@/fakeApi'
-import { createProvider } from '@/plugins/vue-apollo.config'
-
-const defaultApolloClientOptions = {
-  httpEndpoint: '/fakeapi/graphql/',
-  apollo: {
-    defaultOptions: {
-      query: {
-        fetchPolicy: 'no-cache',
-      },
-    },
-  },
-}
-
-const defaultVueApolloOptions = {
-  $query: {
-    fetchPolicy: 'no-cache',
-  },
-}
-
-let apolloProvider = createProvider(
-  defaultApolloClientOptions,
-  defaultVueApolloOptions
-)
 
 /**
  * Waits for a certain DOM element to be present
@@ -94,7 +68,9 @@ const mountWithRouterMock = async function (
     {
       error: jest.fn(),
       app: {
-        apolloProvider,
+        apolloProvider: {
+          defaultClient: mountOptions.mocks ? mountOptions.mocks.$apollo : null,
+        },
       },
     },
     contextOptions
@@ -134,13 +110,9 @@ const generateMountOptions = function (types = [], options = {}) {
   if (types.includes('config')) {
     options.mocks.$config = config()
   }
-  if (types.includes('apollo') || types.includes('apollo-new')) {
-    if (!options.localVue) options.localVue = createLocalVue()
-    options.localVue.use(VueApollo)
-    options.apolloProvider = types.includes('apollo-new')
-      ? createProvider(defaultApolloClientOptions, defaultVueApolloOptions)
-      : apolloProvider
-    options.apolloProvider.defaultClient.cache.reset()
+  if (types.includes('apollo')) {
+    options.mocks.$apollo = generateApolloMock(options.apollo)
+    delete options.apollo
   }
   if (types.includes('router')) {
     options.stubs.NuxtLink = RouterLinkStub
@@ -148,29 +120,28 @@ const generateMountOptions = function (types = [], options = {}) {
   return options
 }
 
-/**
- * Makes a MirageJS testing server
- *
- * @returns {any} Mirage JS server instance
- */
-const makeServer = () => {
-  return makeAPIServer({ environment: 'test' })
-}
+const generateApolloMock = function (options) {
+  let queryCount = 0
+  let mutationCount = 0
+  const queryCallstack = options ? options.queryCallstack : []
+  const mutationCallstack = options ? options.mutationCallstack : []
 
-/**
- * Creates and executes a function with a MirageJS server instance
- *
- * @param {Function} callback Callback function. Called with the first parameter being the MirageJS server
- * @param {boolean} closeServer True = Server will be shutdown after callback executed. False = Not shutdown
- * @returns {any} Mirage JS server instance
- */
-const executeWithServer = async (callback, closeServer = true) => {
-  const server = makeServer()
-  if (callback) await callback(server)
-  if (closeServer) {
-    server.shutdown()
+  return {
+    queryCallstack,
+    mutationCallstack,
+    query: jest.fn(() => {
+      queryCount++
+      if (queryCallstack[queryCount - 1])
+        return Promise.resolve(queryCallstack[queryCount - 1])
+      return Promise.resolve()
+    }),
+    mutate: jest.fn(() => {
+      mutationCount++
+      if (mutationCallstack[mutationCount - 1])
+        return Promise.resolve(mutationCallstack[mutationCount - 1])
+      return Promise.resolve()
+    }),
   }
-  return server
 }
 
 /**
@@ -183,61 +154,13 @@ const assertNoVisualDifference = (recieved, expected) => {
   expect(JSON.stringify(recieved)).to.eq(JSON.stringify(expected))
 }
 
-/**
- * Runs a GraphQL query through apollo.
- * Useful for getting data from the Fake API like the real components will
- *
- * @param {object} options Dictionary of options for the apollo query
- * @returns {Promise} Apollo Query Promise
- */
-const runApolloQuery = (options) => {
-  return apolloProvider.defaultClient.query(
-    Object.assign(
-      {
-        fetchPolicy: 'no-cache',
-      },
-      options
-    )
-  )
-}
-
-/**
- * Seeds a user if doesn't already exist, and programatically logs that user in
- *
- * @param {any} server MirageJS Server Instance
- * @param {object} overrides Optional dictionary of overrides for the user model
- * @returns {object} MirageJS User Node Model
- */
-const seedAndAuthAsUser = (server, overrides = {}) => {
-  const options = Object.assign(
-    {
-      token: '1234abcd',
-    },
-    overrides
-  )
-  apolloProvider = createProvider(
-    Object.assign(defaultApolloClientOptions, {
-      getAuth: () => `JWT ${options.token}`,
-    }),
-    defaultVueApolloOptions
-  )
-
-  let user = server.schema.userNodes.findBy({ token: options.token })
-
-  if (!user) user = server.create('userNode', options)
-  return user
-}
-
 export {
   assertNoVisualDifference,
-  executeWithServer,
   fixTextSpacing,
   generateMountOptions,
-  makeServer,
+  generateApolloMock,
   mountWithRouterMock,
   RouterLinkStub,
-  runApolloQuery,
-  seedAndAuthAsUser,
   waitFor,
   waitForDOM,
 }

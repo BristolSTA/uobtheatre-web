@@ -67,7 +67,7 @@ export default {
   },
   methods: {
     onBook() {
-      this.$emit('select', this.performance)
+      this.$emit('select')
     },
   },
 }

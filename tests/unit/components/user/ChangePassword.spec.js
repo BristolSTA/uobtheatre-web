@@ -5,22 +5,24 @@ import NonFieldError from '@/components/ui/NonFieldError.vue'
 import ChangePassword from '@/components/user/ChangePassword.vue'
 import { swalToast } from '@/utils'
 
-import { executeWithServer, generateMountOptions, waitFor } from '../../helpers'
+import { generateMountOptions, waitFor } from '../../helpers'
+import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
+import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse'
+import GenericError from '../../fixtures/support/GenericError'
+import GenericErrorsResponse from '../../fixtures/support/GenericErrorsResponse'
 
 describe('Change Password', () => {
-  let component, server
-  beforeAll(async () => {
-    server = await executeWithServer(null, false)
-  })
-  afterAll(() => {
-    server.shutdown()
-  })
-
-  beforeEach(() => {
-    component = mount(ChangePassword, generateMountOptions(['apollo']))
-  })
-
   it('can update their password', async () => {
+    const component = mount(
+      ChangePassword,
+      generateMountOptions(['apollo'], {
+        apollo: {
+          mutationCallstack: [
+            GenericApolloResponse('passwordChange', GenericMutationResponse()),
+          ],
+        },
+      })
+    )
     const stub = jest.spyOn(swalToast, 'fire')
     const inputs = component.findAll('input')
     inputs.at(0).setValue('oldPassword')
@@ -36,6 +38,19 @@ describe('Change Password', () => {
   })
 
   it('can show errors', async () => {
+    const component = mount(
+      ChangePassword,
+      generateMountOptions(['apollo'], {
+        apollo: {
+          mutationCallstack: [
+            GenericApolloResponse(
+              'passwordChange',
+              GenericErrorsResponse(GenericError('Passwords dont match'))
+            ),
+          ],
+        },
+      })
+    )
     expect(component.findComponent(NonFieldError).exists()).to.be.true
 
     const inputs = component.findAll('input')

@@ -1,5 +1,5 @@
 import { authService } from '@/services'
 
-export default (context) => {
-  authService.refreshAuthUser(context)
+export default async (context) => {
+  await authService.refreshAuthUser(context)
 }

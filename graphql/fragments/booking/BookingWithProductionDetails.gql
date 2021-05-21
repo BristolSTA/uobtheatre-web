@@ -2,7 +2,9 @@
 fragment BookingWithProductionDetails on BookingNode {
   id
   reference
-  status
+  status {
+    description
+  }
   priceBreakdown {
     ...AllPriceBreakdown
   }
@@ -47,8 +49,12 @@ fragment BookingWithProductionDetails on BookingNode {
     edges {
       node {
         createdAt
-        type
-        provider
+        type {
+          value
+        }
+        provider {
+          value
+        }
         value
         cardBrand
         last4

@@ -1,86 +1,34 @@
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { mount, RouterLinkStub } from '@vue/test-utils'
+import { RouterLinkStub } from '@vue/test-utils'
 import { expect } from 'chai'
 
 import OverviewBox from '@/components/booking/overview/OverviewBox.vue'
 import VenueOverview from '@/components/booking/overview/VenueOverview.vue'
 
-import {
-  executeWithServer,
-  fixTextSpacing,
-  generateMountOptions,
-  waitFor,
-} from '../../../helpers'
+import Venue from '@/tests/unit/fixtures/Venue'
+import { fixTextSpacing, mountWithRouterMock, waitFor } from '../../../helpers'
 
 describe('Venue Overview', function () {
   let venueOverviewComponent
-  let server
-  let venue
 
   beforeEach(async () => {
-    // Create a venue and address
-    const address = {
-      buildingName: 'Wills Memorial Building',
-      street: 'Queens Road',
-      buildingNumber: '69',
-      city: 'London',
-      postcode: 'BS69 420',
-      latitude: '123.4567',
-      longitude: '987.654',
-    }
-
-    server = await executeWithServer((server) => {
-      venue = server.create('venueNode', {
-        name: 'Anson Theatre',
-        slug: 'anson-theatre',
-        description: 'not the anson rooms',
-        image: server.create('ImageNode', {
-          url: 'http://pathto.example/venue-image.png',
-        }),
-        publiclyListed: true,
-        internalCapacity: '420',
-        address: server.create('addressNode', address),
-      })
-
-      venueOverviewComponent = mount(
-        VenueOverview,
-        generateMountOptions(['apollo', 'router'], {
-          propsData: {
-            venueData: 'anson-theatre',
-          },
-        })
-      )
-    }, false)
-  })
-
-  afterEach(() => {
-    server.shutdown()
-  })
-
-  it('skips api call if data object is passed', async () => {
-    venueOverviewComponent = mount(
-      VenueOverview,
-      generateMountOptions(['apollo', 'router'], {
-        propsData: {
-          venueData: venue,
-        },
-      })
-    )
-
-    await waitFor(() => venueOverviewComponent.vm.venue)
-    expect(venueOverviewComponent.text()).to.contain('Anson Theatre')
-    expect(fixTextSpacing(venueOverviewComponent.text())).to.contain(
-      'Wills Memorial Building 69 Queens Road'
-    )
+    venueOverviewComponent = await mountWithRouterMock(VenueOverview, {
+      data() {
+        return {
+          venue: Venue(),
+        }
+      },
+      propsData: {
+        venueData: Venue(),
+      },
+    })
   })
 
   it('starts by showing loading spinner', () => {
     expect(venueOverviewComponent.findComponent(FontAwesomeIcon).exists())
   })
 
-  it('has overview box component', async () => {
-    await waitFor(() => venueOverviewComponent.vm.venue)
-
+  it('has overview box component', () => {
     expect(venueOverviewComponent.findComponent(OverviewBox).exists()).to.be
       .true
 

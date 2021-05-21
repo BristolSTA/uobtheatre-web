@@ -52,6 +52,7 @@ export default {
     UserDetails,
     BookingsTable,
   },
+  middleware: 'authed',
   async asyncData({ app }) {
     const { data } = await app.apolloProvider.defaultClient.query({
       query: require('@/graphql/queries/user/MyAccountDetails.gql'),

@@ -4,30 +4,16 @@ import Booking from '@/classes/Booking'
 import BookingPriceOverview from '@/components/booking/overview/BookingPriceOverview.vue'
 import OverviewBox from '@/components/booking/overview/OverviewBox.vue'
 
-import FakeBooking from '../../../fixtures/FakeBooking'
-import {
-  executeWithServer,
-  fixTextSpacing,
-  mountWithRouterMock,
-  runApolloQuery,
-} from '../../../helpers'
+import FullBooking from '@/tests/unit/fixtures/instances/FullBooking'
+import { fixTextSpacing, mountWithRouterMock } from '../../../helpers'
 
 describe('Booking Price Overview', function () {
   let bookingPriceOverviewComponent
-  const booking = new Booking()
 
   beforeAll(async () => {
-    await executeWithServer(async (server) => {
-      const bookingModel = FakeBooking(server)
+    const bookingdata = FullBooking()
 
-      const { data } = await runApolloQuery({
-        query: require('@/graphql/queries/BookingInformation.gql'),
-        variables: {
-          bookingId: bookingModel.id,
-        },
-      })
-      booking.updateFromAPIData(data.booking)
-    })
+    const booking = Booking.fromAPIData(bookingdata)
     bookingPriceOverviewComponent = await mountWithRouterMock(
       BookingPriceOverview,
       {
@@ -48,13 +34,13 @@ describe('Booking Price Overview', function () {
 
     expect(costRows.length).to.eq(2)
     expect(fixTextSpacing(costRows.at(0).text())).to.eq(
-      'Tickets Including any discounts : £35.50'
+      'Tickets Including any discounts : £4.90'
     )
-    expect(fixTextSpacing(costRows.at(1).text())).to.eq('Booking Fee : £1.78')
+    expect(fixTextSpacing(costRows.at(1).text())).to.eq('Booking Fee : £0.05')
     expect(
       fixTextSpacing(
         bookingPriceOverviewComponent.findComponent({ ref: 'total' }).text()
       )
-    ).to.eq('Order Total: £37.28')
+    ).to.eq('Order Total: £4.95')
   })
 })
