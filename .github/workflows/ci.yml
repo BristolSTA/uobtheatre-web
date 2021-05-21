@@ -54,7 +54,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
+        node-version: [14.x]
 
     steps:
       - uses: actions/checkout@v2
@@ -76,6 +76,9 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Copy Dev Container Env 📁
+        run: cp .devcontainer/.env.example .devcontainer/.env
 
       - name: Start Real API ⭐
         run: docker-compose -f .devcontainer/docker-compose.yml up -d postgres uobtheatre-api
