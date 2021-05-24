@@ -68,6 +68,8 @@ export default {
 
           componentContext.$apolloHelpers.onLogin(data.login.token, undefined, {
             expires: remember ? 365 : null,
+            path: '/',
+            secure: false,
           })
           componentContext.$store.dispatch('auth/loadUserDetails', {
             userInfo: data.login.user,

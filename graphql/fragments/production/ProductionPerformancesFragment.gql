@@ -1,0 +1,21 @@
+fragment ProductionPerformances on ProductionNode {
+  performances {
+    edges {
+      node {
+        id
+        venue {
+          name
+          slug
+        }
+        disabled
+        doorsOpen
+        start
+        end
+        durationMins
+        soldOut
+        isInperson
+        isOnline
+      }
+    }
+  }
+}

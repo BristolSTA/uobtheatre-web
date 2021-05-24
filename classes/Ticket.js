@@ -25,6 +25,14 @@ export default class {
     return ticket
   }
 
+  static dataFromQRCode(rawQRCode) {
+    const result = JSON.parse(atob(rawQRCode))
+    return {
+      bookingReference: result[0],
+      ticketId: result[1],
+    }
+  }
+
   /**
    * Returns if this ticket matches the given parameters
    *
@@ -64,7 +72,7 @@ export default class {
    * @returns {string} Base 64 encoded string
    */
   generateQRCodeString(bookingReference) {
-    return btoa([bookingReference, this.id])
+    return btoa(JSON.stringify([bookingReference, this.id]))
   }
 
   /**

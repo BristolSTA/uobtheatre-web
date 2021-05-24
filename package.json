@@ -36,7 +36,8 @@
     "luxon": "^1.25.0",
     "nuxt": "^2.15.4",
     "qrcode.vue": "^1.7.0",
-    "sweetalert2": "^10.16.6"
+    "sweetalert2": "^10.16.6",
+    "vue-qrcode-reader": "^3.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.1",

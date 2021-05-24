@@ -1,13 +1,11 @@
 import { expect } from 'chai'
 
-import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
 import ProductionPage from '@/pages/production/_slug/index'
 import ProductionCastCredits from '@/components/production/ProductionCastCredits.vue'
 import ProductionHeader from '@/components/production/ProductionHeader.vue'
 import ProductionPerformances from '@/components/production/ProductionPerformances.vue'
 
 import {
-  assertNoVisualDifference,
   generateMountOptions,
   mountWithRouterMock,
   waitFor,

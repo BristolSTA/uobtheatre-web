@@ -55,48 +55,61 @@
 </template>
 
 <script>
-// TODO: Actually finish
+import BoxOfficePerformancesAvailable from '@/graphql/queries/box-office/BoxOfficePerformancesAvailable.gql'
+import { DateTime } from 'luxon'
 export default {
-  asyncData({ params, error, app }) {
-    // TODO: Implement query
+  async asyncData({ params, error, app }) {
+    // TODO: Implement actual query
+
+    const today = DateTime.now().set({ hour: 0, minute: 0, second: 0 })
+
+    const { data } = await app.apolloProvider.defaultClient.query({
+      query: BoxOfficePerformancesAvailable,
+      variables: {
+        date: today,
+      },
+    })
     return {
-      performances: [
-        {
-          id: 1,
-          venue: {
-            name: 'Winston Theatre',
-          },
-          start: '2020-12-19T15:00:00',
-          doorsOpen: '2020-12-19T14:30:00',
-          production: {
-            name: 'Legally Blonde',
-            featuredImage: {
-              url: 'https://via.placeholder.com/1920x960',
-              __typename: 'ImageNode',
-            },
-            __typename: 'ProductionNode',
-          },
-          __typename: 'PerformanceNode',
-        },
-        {
-          id: 2,
-          venue: {
-            name: 'Pegg Theatre',
-          },
-          start: '2020-12-19T19:00:00',
-          doorsOpen: '2020-12-19T18:00:00',
-          production: {
-            name: 'TRASh',
-            featuredImage: {
-              url: 'https://via.placeholder.com/1920x960',
-              __typename: 'ImageNode',
-            },
-            __typename: 'ProductionNode',
-          },
-          __typename: 'PerformanceNode',
-        },
-      ],
+      performances: data.performances.edges.map((edge) => edge.node),
     }
+    // return {
+    //   performances: [
+    //     {
+    //       id: 1,
+    //       venue: {
+    //         name: 'Winston Theatre',
+    //       },
+    //       start: '2020-12-19T15:00:00',
+    //       doorsOpen: '2020-12-19T14:30:00',
+    //       production: {
+    //         name: 'Legally Blonde',
+    //         featuredImage: {
+    //           url: 'https://via.placeholder.com/1920x960',
+    //           __typename: 'ImageNode',
+    //         },
+    //         __typename: 'ProductionNode',
+    //       },
+    //       __typename: 'PerformanceNode',
+    //     },
+    //     {
+    //       id: 2,
+    //       venue: {
+    //         name: 'Pegg Theatre',
+    //       },
+    //       start: '2020-12-19T19:00:00',
+    //       doorsOpen: '2020-12-19T18:00:00',
+    //       production: {
+    //         name: 'TRASh',
+    //         featuredImage: {
+    //           url: 'https://via.placeholder.com/1920x960',
+    //           __typename: 'ImageNode',
+    //         },
+    //         __typename: 'ProductionNode',
+    //       },
+    //       __typename: 'PerformanceNode',
+    //     },
+    //   ],
+    // }
   },
   data() {
     return {

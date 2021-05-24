@@ -52,7 +52,8 @@ import ProductionBanner from '@/components/production/ProductionBanner.vue'
 import ClickableLink from '@/components/ui/ClickableLink.vue'
 import { swal } from '@/utils'
 
-import ProductionFragment from '@/graphql/fragments/ProductionFragment.gql'
+import ProductionBasicInfoFragment from '@/graphql/fragments/production/ProductionBasicInfoFragment.gql'
+import ProductionPerformancesFragment from '@/graphql/fragments/production/ProductionPerformancesFragment.gql'
 import gql from 'graphql-tag'
 import {
   getNextStage,
@@ -72,9 +73,11 @@ export default {
         query production($slug: String!) {
           production(slug: $slug) {
             ...ProductionBasicInfo
+            ...ProductionPerformancesFragment
           }
         }
-        ${ProductionFragment}
+        ${ProductionBasicInfoFragment}
+        ${ProductionPerformancesFragment}
       `,
       variables: {
         slug: params.slug,

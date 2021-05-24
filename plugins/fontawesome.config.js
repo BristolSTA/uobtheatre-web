@@ -28,6 +28,8 @@ export default {
     'faSort',
     'faSortUp',
     'faSortDown',
+    'faCheck',
+    'faTimes',
   ],
   brands: ['faFacebook'],
 }

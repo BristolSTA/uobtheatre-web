@@ -1,0 +1,20 @@
+#import "../../fragments/production/ProductionBasicInfoFragment.gql"
+query boxOfficePerformances {
+  performances(first: 9, orderBy: "start") {
+    #TODO: Need some actual filtering / box office query thing here
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    edges {
+      node {
+        id
+        start
+        doorsOpen
+        production {
+          ...ProductionBasicInfo
+        }
+      }
+    }
+  }
+}

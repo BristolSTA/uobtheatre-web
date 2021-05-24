@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import BoxOfficePerformance from '@/graphql/queries/BoxOfficePerformance.gql'
+import BoxOfficePerformance from '@/graphql/queries/box-office/BoxOfficePerformance.gql'
 export default {
   async asyncData({ params, error, app }) {
     // Execute query

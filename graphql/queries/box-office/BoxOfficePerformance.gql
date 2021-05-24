@@ -1,6 +1,5 @@
-#import "../fragments/ProductionFragment.gql"
-# TODO: Optimise the production basic info fragment to not get performances
-query performanceTicketOptions($id: ID!) {
+#import "../../fragments/production/ProductionBasicInfoFragment.gql"
+query boxOfficePerformance($id: ID!) {
   performance(id: $id) {
     id
     capacityRemaining

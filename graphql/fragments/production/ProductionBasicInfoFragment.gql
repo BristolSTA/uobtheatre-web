@@ -20,24 +20,5 @@ fragment ProductionBasicInfo on ProductionNode {
   warnings {
     description
   }
-  performances {
-    edges {
-      node {
-        id
-        venue {
-          name
-          slug
-        }
-        disabled
-        doorsOpen
-        start
-        end
-        durationMins
-        soldOut
-        isInperson
-        isOnline
-      }
-    }
-  }
   isBookable
 }
