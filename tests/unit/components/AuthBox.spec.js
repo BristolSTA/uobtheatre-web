@@ -18,6 +18,8 @@ import GenericError from '../fixtures/support/GenericError'
 import User from '../fixtures/User'
 import GenericErrorsResponse from '../fixtures/support/GenericErrorsResponse'
 
+jest.spyOn(authService, 'queueRefresh').mockImplementation(() => {})
+
 describe('AuthBox', function () {
   let authBoxComponent
 
@@ -126,9 +128,10 @@ describe('AuthBox', function () {
 
     it('redirects to intended on successful login if has', async () => {
       let fakePush, onLoginFn, storeDispatchFn
+
       authBoxComponent = await mountWithRouterMock(
         UserAuthBox,
-        generateMountOptions(['apollo'], {
+        generateMountOptions(['apollo', 'config'], {
           mocks: {
             $route: {
               query: {
@@ -183,7 +186,7 @@ describe('AuthBox', function () {
       let fakePush
       authBoxComponent = await mountWithRouterMock(
         UserAuthBox,
-        generateMountOptions(['apollo'], {
+        generateMountOptions(['apollo', 'config'], {
           propsData: {
             login: true,
           },
