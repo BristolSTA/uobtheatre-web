@@ -22,6 +22,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       DJANGO_SETTINGS_MODULE: config.settings.local
+      BASE_URL: http://localhost:9000
     env_file:
       - ./.env
     depends_on:
