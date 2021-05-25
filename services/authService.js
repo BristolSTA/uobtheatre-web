@@ -1,4 +1,6 @@
 import gql from 'graphql-tag'
+import cookie from 'js-cookie'
+import jwtDecode from 'jwt-decode'
 
 import Errors from '@/classes/Errors'
 import ErrorsPartial from '@/graphql/partials/ErrorsPartial'
@@ -14,6 +16,8 @@ export default {
 
   logout(context) {
     context.$apolloHelpers.onLogout()
+    cookie.remove(context.$config.auth.refreshTokenKey)
+    cookie.remove(context.$config.auth.rememberKey)
     context.store.commit('auth/SET_AUTH_USER', null)
   },
 
@@ -21,12 +25,87 @@ export default {
    * @param {object} context Nuxt Context
    * @returns {string|null} API Authentication Token
    */
-  refreshAuthUser(context) {
+  async rememberUser(context) {
     if (!context.$apolloHelpers.getToken()) return
+
+    const refreshOutcome = await this.refreshUser(context)
+    if (!refreshOutcome) this.logout(context)
+
     return context.store.dispatch('auth/loadUserDetails', {
       apollo: context.app.apolloProvider.defaultClient,
       nuxtContext: context,
     })
+  },
+
+  /**
+   * Refreshes user token using the refresh token
+   *
+   * @param {object} context Nuxt Context
+   */
+  async refreshUser(context) {
+    const refreshToken = cookie.get(context.$config.auth.refreshTokenKey)
+    if (!refreshToken) return false
+
+    const provider = context.app
+      ? context.app.apolloProvider
+      : context.$apolloProvider
+
+    const { data } = await provider.defaultClient.mutate({
+      mutation: gql`
+        mutation($refreshToken: String!) {
+          refreshToken(refreshToken: $refreshToken) {
+            token
+            refreshToken
+          }
+        }
+      `,
+      variables: {
+        refreshToken,
+      },
+    })
+
+    if (!data.refreshToken.token) return this.logout(context)
+
+    this.setToken(
+      context,
+      data.refreshToken.token,
+      cookie.get(context.$config.auth.rememberKey)
+    )
+    this.setRefreshToken(context, data.refreshToken.refreshToken)
+    this.queueRefresh(context, data.refreshToken.token)
+    return true
+  },
+
+  setRefreshToken(context, token) {
+    cookie.set(context.$config.auth.refreshTokenKey, token, {
+      expires: null,
+    })
+  },
+
+  queueRefresh(context, token) {
+    const { exp } = jwtDecode(token)
+    const timeoutSeconds = exp - Math.round(Date.now() / 1000) - 30
+    setTimeout(() => {
+      this.refreshUser(context)
+    }, timeoutSeconds * 1000)
+  },
+
+  setToken(context, token, remember) {
+    if (remember)
+      cookie.set(context.$config.auth.rememberKey, true, {
+        expires: remember ? 365 : null,
+      })
+    else cookie.remove(context.$config.auth.rememberKey)
+
+    context.$apolloHelpers.onLogin(
+      token,
+      undefined,
+      {
+        expires: remember ? 365 : null,
+        path: '/',
+      },
+      true
+    )
   },
 
   /**
@@ -47,6 +126,7 @@ export default {
               login(email: $email, password: $password) {
                 ${ErrorsPartial}
                 token
+                refreshToken
                 user {
                   firstName
                   lastName
@@ -66,11 +146,9 @@ export default {
               new ValidationError(Errors.createFromAPI(data.login.errors))
             )
 
-          componentContext.$apolloHelpers.onLogin(data.login.token, undefined, {
-            expires: remember ? 365 : null,
-            path: '/',
-            secure: false,
-          })
+          this.setToken(componentContext, data.login.token, remember)
+          this.setRefreshToken(componentContext, data.login.refreshToken)
+          this.queueRefresh(componentContext, data.login.token)
           componentContext.$store.dispatch('auth/loadUserDetails', {
             userInfo: data.login.user,
           })

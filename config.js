@@ -14,6 +14,8 @@ export default () => {
     },
     auth: {
       cookie: 'uobtheatre-auth',
+      refreshTokenKey: 'uobtheatre-refresh-auth',
+      rememberKey: 'uobtheatre-remember-auth',
     },
     services: {
       square: {
