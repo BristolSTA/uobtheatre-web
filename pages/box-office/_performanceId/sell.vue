@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container">
-      <div class="sm:py-6">
+      <div class="py-1 sm:py-6">
         <overview
           :production="performance.production"
           :performance="performance"

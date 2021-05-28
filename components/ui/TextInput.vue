@@ -5,14 +5,19 @@
     }}</span>
     <input
       :id="inputId"
+      ref="input"
       class="w-full p-1 text-black rounded-sm focus:outline-none"
+      v-bind="$attrs"
+      :class="inputClass"
       :name="inputId"
       :type="type"
       :value="value"
       :autocomplete="autocomplete"
       :required="required"
       @input="onInput"
+      @focus="$emit('focus')"
       @blur="$emit('blur')"
+      @change="$emit('change')"
     />
     <error-helper :errors="errors" :field-name="inputId" />
   </label>
@@ -27,13 +32,18 @@ import ErrorHelper from './ErrorHelper.vue'
 export default {
   name: 'TextInput',
   components: { ErrorHelper },
+  inheritAttrs: false,
   props: {
     value: {
       required: true,
       validator: () => true,
     },
+    inputClass: {
+      default: null,
+      type: [String, Array, Object],
+    },
     name: {
-      required: true,
+      default: null,
       type: String,
     },
     type: {
@@ -78,6 +88,9 @@ export default {
       if (this.errors) {
         this.errors.clear(this.inputId)
       }
+    },
+    focus() {
+      this.$refs.input.focus()
     },
   },
 }

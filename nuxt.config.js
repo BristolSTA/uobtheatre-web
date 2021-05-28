@@ -20,7 +20,7 @@ export default {
     titleTemplate: (titleChunk) =>
       titleChunk
         ? `${titleChunk} - UOB Theatre`
-        : 'UOB Theatre | The Home of Bristol Student Theatre',
+        : 'UOB Theatre | The Home Of Bristol Student Theatre',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -127,7 +127,17 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    extend(config, ctx) {
+      config.module.rules.push({
+        test: /\.(ogg|mp3|wav|mpe?g)$/i,
+        loader: 'file-loader',
+        options: {
+          name: '[path][name].[ext]',
+        },
+      })
+    },
+  },
 
   // Apollo Configuration
   apollo: {

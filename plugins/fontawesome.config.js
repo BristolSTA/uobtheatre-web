@@ -30,6 +30,7 @@ export default {
     'faSortDown',
     'faCheck',
     'faTimes',
+    'faExclamation',
   ],
   brands: ['faFacebook'],
 }

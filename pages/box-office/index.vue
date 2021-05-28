@@ -1,5 +1,5 @@
 <template>
-  <div class="container flex flex-col items-center justify-center h-full">
+  <div class="container flex flex-col items-center justify-center h-full px-1">
     <div v-if="performances.length">
       <h1 class="text-h1">Select a performance</h1>
       <select
@@ -13,11 +13,11 @@
           {{ performance.start | dateFormat('cccc dd MMMM T') }}
         </option>
       </select>
-      <div v-else class="flex mt-2 space-x-2">
+      <div v-else class="grid grid-cols-2 gap-2 mt-2 md:grid-cols-4">
         <div
           v-for="(performance, index) in performances"
           :key="index"
-          class="w-1/2 max-w-md p-3 text-center rounded cursor-pointer bg-sta-gray-light hover:bg-sta-gray-dark"
+          class="max-w-md p-3 text-center rounded cursor-pointer bg-sta-gray-light hover:bg-sta-gray-dark"
           @click="selectedPerformance = performance"
         >
           <img :src="performance.production.featuredImage.url" class="w-full" />
@@ -58,6 +58,7 @@
 import BoxOfficePerformancesAvailable from '@/graphql/queries/box-office/BoxOfficePerformancesAvailable.gql'
 import { DateTime } from 'luxon'
 export default {
+  middleware: 'authed',
   async asyncData({ params, error, app }) {
     // TODO: Implement actual query
 
@@ -72,44 +73,6 @@ export default {
     return {
       performances: data.performances.edges.map((edge) => edge.node),
     }
-    // return {
-    //   performances: [
-    //     {
-    //       id: 1,
-    //       venue: {
-    //         name: 'Winston Theatre',
-    //       },
-    //       start: '2020-12-19T15:00:00',
-    //       doorsOpen: '2020-12-19T14:30:00',
-    //       production: {
-    //         name: 'Legally Blonde',
-    //         featuredImage: {
-    //           url: 'https://via.placeholder.com/1920x960',
-    //           __typename: 'ImageNode',
-    //         },
-    //         __typename: 'ProductionNode',
-    //       },
-    //       __typename: 'PerformanceNode',
-    //     },
-    //     {
-    //       id: 2,
-    //       venue: {
-    //         name: 'Pegg Theatre',
-    //       },
-    //       start: '2020-12-19T19:00:00',
-    //       doorsOpen: '2020-12-19T18:00:00',
-    //       production: {
-    //         name: 'TRASh',
-    //         featuredImage: {
-    //           url: 'https://via.placeholder.com/1920x960',
-    //           __typename: 'ImageNode',
-    //         },
-    //         __typename: 'ProductionNode',
-    //       },
-    //       __typename: 'PerformanceNode',
-    //     },
-    //   ],
-    // }
   },
   data() {
     return {

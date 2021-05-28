@@ -34,7 +34,7 @@ describe('Ticket component', function () {
       ticketComponent.vm.ticket.generateQRCodeString(
         ticketComponent.vm.booking.reference
       )
-    ).to.eq('eU9JWWc2Q284dkdSLDE=')
+    ).to.eq('WyJ5T0lZZzZDbzh2R1IiLDFd')
   })
 
   it('has the correct data', () => {

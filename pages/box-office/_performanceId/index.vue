@@ -1,6 +1,6 @@
 <template>
   <div class="sm:container">
-    <div class="sm:py-10">
+    <div class="py-1 sm:py-10">
       <overview
         :production="performance.production"
         :performance="performance"

@@ -9,6 +9,7 @@
 <script>
 import BoxOfficePerformance from '@/graphql/queries/box-office/BoxOfficePerformance.gql'
 export default {
+  middleware: 'authed',
   async asyncData({ params, error, app }) {
     // Execute query
     const { data } = await app.apolloProvider.defaultClient.query({

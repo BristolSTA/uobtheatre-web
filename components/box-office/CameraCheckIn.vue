@@ -1,35 +1,54 @@
 <template>
-  <div>
-    <div class="fixed top-0 bottom-0 left-0 right-0 md:static">
-      <qrcode-stream
-        class="md:max-w-md"
-        :camera="cameraOff ? 'off' : 'auto'"
-        @init="onInit"
-        @decode="onDecode"
-      >
-        <div class="mt-4 text-center">
-          <strong v-if="!cameraOff">Scan a ticket QR code</strong>
-        </div>
-      </qrcode-stream>
+  <div class="fixed top-0 bottom-0 left-0 right-0 md:static">
+    <camera-scanner
+      :on="!cameraOff"
+      class="bg-gray-800"
+      @invalidCode="onInvalidCode"
+      @scan="onScan"
+      @close="$emit('close')"
+    />
+    <div class="absolute bottom-0 left-0 right-0 py-1 mt-4 md:relative">
       <check-in-notification
-        v-if="checkedInData.booking"
+        v-if="checkedInData.success !== undefined"
+        :errors="checkedInData.errors"
         :booking="checkedInData.booking"
         :ticket="checkedInData.ticket"
+        :scan-data="checkedInData.scanData"
+        @close="closeNotificaton"
+      />
+    </div>
+    <div class="absolute mt-4 md:static">
+      <invalid-code-notification
+        v-if="invalidCode"
+        @close="invalidCode = false"
       />
     </div>
   </div>
 </template>
 
 <script>
-import { QrcodeStream } from 'vue-qrcode-reader'
-import Ticket from '@/classes/Ticket'
 import CheckInScan from '@/graphql/queries/box-office/CheckInScan.gql'
 import CheckInNotification from './CheckInNotification.vue'
+import InvalidCodeNotification from './InvalidCodeNotification.vue'
+import CameraScanner from './CameraScanner.vue'
+
+const checkedInDataState = () => {
+  return {
+    success: undefined,
+    errors: null,
+    booking: null,
+    ticket: null,
+    scanData: {},
+  }
+}
+
 export default {
   components: {
-    QrcodeStream,
     CheckInNotification,
+    InvalidCodeNotification,
+    CameraScanner,
   },
+
   props: {
     performanceId: {
       type: [String, Number],
@@ -39,64 +58,40 @@ export default {
   data() {
     return {
       cameraOff: false,
-      checkedInData: {
-        booking: null,
-        ticket: null,
-      },
+      invalidCode: false,
+      checkedInData: checkedInDataState(),
     }
   },
   methods: {
-    async onInit(promise) {
-      try {
-        await promise
-      } catch (error) {
-        if (error.name === 'NotAllowedError') {
-          // user denied camera access permisson
-          alert('User denied camera access')
-        } else if (error.name === 'NotFoundError') {
-          // no suitable camera device installed
-          alert('No cameras available')
-        } else if (error.name === 'NotSupportedError') {
-          // page is not served over HTTPS (or localhost)
-          alert('Denied access due https')
-        } else if (error.name === 'NotReadableError') {
-          // maybe camera is already in use
-          alert('Camera already in use')
-        } else if (error.name === 'OverconstrainedError') {
-          // did you requested the front camera although there is none?
-          alert('Overcontrained device query')
-        } else if (error.name === 'StreamApiNotSupportedError') {
-          // browser seems to be lacking features
-          alert('Device not able')
-        }
-      } finally {
-        // hide loading indicator
-        console.log('init ok!')
-      }
+    onInvalidCode() {
+      this.checkedInData = checkedInDataState()
+      this.invalidCode = true
     },
-    async onDecode(string) {
+    async onScan({ bookingReference, ticketId }) {
+      this.checkedInData = checkedInDataState()
+      this.invalidCode = false
       this.cameraOff = true
-      const { bookingReference, ticketId } = Ticket.dataFromQRCode(string)
-      console.log(string, bookingReference, ticketId)
-      try {
-        const { data } = await this.$apollo.mutate({
-          mutation: CheckInScan,
-          variables: {
-            reference: bookingReference,
-            performanceId: this.performanceId,
-            tickets: [{ ticketId }],
-          },
-        })
-        console.log(data)
-        this.checkedInData.booking = data.checkInBooking.booking
+
+      const { data } = await this.$apollo.mutate({
+        mutation: CheckInScan,
+        variables: {
+          reference: bookingReference,
+          performanceId: this.performanceId,
+          tickets: [{ ticketId }],
+        },
+      })
+      this.checkedInData.success = data.checkInBooking.success
+      this.checkedInData.booking = data.checkInBooking.booking
+      this.checkedInData.scanData = { bookingReference, ticketId }
+      if (data.checkInBooking.booking)
         this.checkedInData.ticket = data.checkInBooking.booking.tickets.find(
           (ticket) => ticket.id === ticketId
         )
-      } catch (e) {
-        console.log(e)
-      } finally {
-        this.cameraOff = false
-      }
+      this.checkedInData.errors = data.checkInBooking.errors
+      this.cameraOff = false
+    },
+    closeNotificaton() {
+      this.checkedInData = checkedInDataState()
     },
   },
 }
