@@ -79,7 +79,7 @@
     "postcss": "^8.2.13",
     "prettier": "^2.2.1",
     "sass": "^1.32.12",
-    "sass-loader": "10",
+    "sass-loader": "11",
     "stylelint": "^13.13.1",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^22.0.0",
