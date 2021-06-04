@@ -54,6 +54,7 @@ export default {
     TextInput,
     LoadingContainer,
   },
+  middleware: 'authed',
   data() {
     return {
       password: null,

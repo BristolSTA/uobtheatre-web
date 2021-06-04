@@ -1,0 +1,13 @@
+#import "../../fragments/booking/DetailedBookingDetails.gql"
+query boxOfficePerformance($id: ID!) {
+  performance(id: $id) {
+    id
+    bookings {
+      edges {
+        node {
+          ...DetailedBookingDetails
+        }
+      }
+    }
+  }
+}

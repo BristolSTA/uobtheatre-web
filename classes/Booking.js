@@ -216,6 +216,14 @@ export default class Booking {
     return (this.ticketsTotalPriceEstimate(ticketMatrix) / 100).toFixed(2)
   }
 
+  get allCheckedIn() {
+    return this.tickets.every((ticket) => ticket.checkedIn)
+  }
+
+  get numberCheckedIn() {
+    return this.tickets.filter((ticket) => ticket.checkedIn).length
+  }
+
   /**
    * @returns {number} Total cost / price of the booking in pennies
    */

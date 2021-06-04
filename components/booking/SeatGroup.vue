@@ -27,6 +27,9 @@
         >
           Sold Out
         </h3>
+        <span v-else-if="showCapacities"
+          >({{ groupCapacityRemaining }} available)</span
+        >
         <p v-if="expanded && ticketOption.seatGroup.description" class="py-2">
           {{ ticketOption.seatGroup.description }}
         </p>
@@ -125,6 +128,10 @@ export default {
     discounts: {
       required: true,
       type: Array,
+    },
+    showCapacities: {
+      default: false,
+      type: Boolean,
     },
   },
   computed: {

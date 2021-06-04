@@ -13,6 +13,7 @@
       "
       :current-tickets="booking.tickets"
       :discounts="ticketMatrix.discounts"
+      :show-capacities="showCapacities"
       @select-location="
         selected_location_index =
           selected_location_index != index ? index : null
@@ -42,6 +43,10 @@ export default {
     ticketMatrix: {
       type: TicketMatrix,
       default: null,
+    },
+    showCapacities: {
+      default: false,
+      type: Boolean,
     },
   },
   data() {

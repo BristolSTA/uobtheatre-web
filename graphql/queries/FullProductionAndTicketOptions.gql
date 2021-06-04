@@ -18,7 +18,7 @@ query performanceTicketOptions($id: ID!) {
     isOnline
     production {
       ...ProductionBasicInfo
-      ...ProductionPerformancesFragment
+      ...ProductionPerformances
     }
     capacityRemaining
     discounts {

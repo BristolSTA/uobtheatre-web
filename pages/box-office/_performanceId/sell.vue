@@ -5,7 +5,7 @@
         <overview
           :production="performance.production"
           :performance="performance"
-          :detailed="detailed"
+          :detailed="false"
         />
       </div>
       <nuxt-child
@@ -50,11 +50,6 @@ export default {
       ticketMatrix,
       performance,
       booking,
-    }
-  },
-  data() {
-    return {
-      detailed: true,
     }
   },
   computed: {

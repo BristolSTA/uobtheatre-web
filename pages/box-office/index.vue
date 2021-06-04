@@ -59,9 +59,7 @@ import BoxOfficePerformancesAvailable from '@/graphql/queries/box-office/BoxOffi
 import { DateTime } from 'luxon'
 export default {
   middleware: 'authed',
-  async asyncData({ params, error, app }) {
-    // TODO: Implement actual query
-
+  async asyncData({ app }) {
     const today = DateTime.now().set({ hour: 0, minute: 0, second: 0 })
 
     const { data } = await app.apolloProvider.defaultClient.query({

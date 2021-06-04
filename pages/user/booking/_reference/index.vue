@@ -86,6 +86,7 @@ export default {
     PaymentOverview,
     Ticket,
   },
+  middleware: 'authed',
   async asyncData({ app, params, error }) {
     const { data } = await app.apolloProvider.defaultClient.query({
       query: require('@/graphql/queries/UserPaidBooking.gql'),

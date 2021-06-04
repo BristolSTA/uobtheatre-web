@@ -20,7 +20,9 @@
         />
       </div>
       <div class="flex-grow">
-        <div class="flex flex-col justify-between mr-10 space-x-6 md:flex-row">
+        <div
+          class="flex flex-col justify-between md:mr-10 md:space-x-6 md:flex-row"
+        >
           <div v-if="errors">
             <strong>There was an issue with this ticket</strong>
             <p v-for="(error, index) in errors" :key="index">
@@ -36,10 +38,10 @@
             <p>Location: {{ ticket.seatGroup.name }}</p>
           </div>
           <div v-if="booking" class="px-2 py-1 bg-sta-green-dark">
-            <div class="flex justify-between md:mb-2">
+            <div class="flex justify-between space-x-2 md:mb-2">
               <h3 class="text-lg font-semibold">Booking Information</h3>
               <nuxt-link
-                :to="`bookings/${booking.reference}`"
+                :to="`bookings?q=${booking.reference}`"
                 class="block px-2 py-1 transition-colors bg-sta-orange hover:bg-sta-orange-dark"
               >
                 View / Check-in Booking
@@ -52,16 +54,23 @@
                   User: {{ booking.user.firstName }} {{ booking.user.lastName }}
                 </p>
                 <p>
-                  <strong>{{ booking.tickets.length }} tickets</strong>
+                  <strong
+                    >{{ booking.tickets.length }} tickets ({{
+                      bookingInstance.numberCheckedIn
+                    }}
+                    checked in)</strong
+                  >
                 </p>
               </div>
               <table>
                 <tr
                   v-for="(ticketGroup, index) in booking.priceBreakdown.tickets"
                   :key="index"
-                  class="border"
+                  class="text-sm border"
                 >
-                  <td class="px-1 pb-1">{{ ticketGroup.number }} x</td>
+                  <td class="px-1 pb-1 whitespace-nowrap">
+                    {{ ticketGroup.number }} x
+                  </td>
                   <td class="px-1 pb-1">
                     {{ ticketGroup.concessionType.name }},
                   </td>
@@ -83,6 +92,7 @@
 <script>
 import AudioPositive from '@/assets/audio/beep_positive.mp3'
 import AudioNegative from '@/assets/audio/beep_negative.mp3'
+import Booking from '@/classes/Booking'
 export default {
   props: {
     alreadyCheckedIn: {
@@ -104,6 +114,11 @@ export default {
     booking: {
       type: Object,
       default: null,
+    },
+  },
+  computed: {
+    bookingInstance() {
+      return Booking.fromAPIData(this.booking)
     },
   },
   mounted() {

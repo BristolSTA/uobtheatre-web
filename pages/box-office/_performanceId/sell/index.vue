@@ -2,9 +2,13 @@
   <div>
     <div class="p-2 my-2 text-white bg-sta-gray-dark">
       <div class="space-y-1">
+        <p class="font-semibold text-center">
+          {{ ticketMatrix.performanceCapacityRemaining }} tickets available
+        </p>
         <ticket-options
           :ticket-matrix="ticketMatrix"
           :booking="booking"
+          :show-capacities="true"
           @request-update="updateAPI"
         />
       </div>
@@ -43,6 +47,7 @@ import PriceBreakdownFragment from '@/graphql/fragments/booking/AllPriceBreakdow
 import DetailBookingFragment from '@/graphql/fragments/booking/DetailedBookingDetails.gql'
 import ErrorsPartial from '@/graphql/partials/ErrorsPartial'
 import { performMutation } from '@/utils'
+import FakeBooking from '@/tests/unit/fixtures/instances/FullBooking'
 import gql from 'graphql-tag'
 
 export default {
@@ -89,6 +94,12 @@ export default {
   },
   methods: {
     async updateAPI() {
+      // TODO: Implement here when API is ready
+
+      // eslint-disable-next-line vue/no-mutating-props
+      this.booking.updateFromAPIData(FakeBooking())
+      return
+      // eslint-disable-next-line no-unreachable
       const queryBody = `
         ${ErrorsPartial}
         booking {

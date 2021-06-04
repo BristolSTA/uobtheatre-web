@@ -15,9 +15,9 @@
       :autocomplete="autocomplete"
       :required="required"
       @input="onInput"
-      @focus="$emit('focus')"
-      @blur="$emit('blur')"
-      @change="$emit('change')"
+      @focus="$emit('focus', $event)"
+      @blur="$emit('blur', $event)"
+      @change="$emit('change', $event)"
     />
     <error-helper :errors="errors" :field-name="inputId" />
   </label>

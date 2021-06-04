@@ -7,7 +7,7 @@
       @scan="onScan"
       @close="$emit('close')"
     />
-    <div class="absolute bottom-0 left-0 right-0 py-1 mt-4 md:relative">
+    <div class="absolute bottom-0 left-0 right-0 pt-1 mt-4 md:relative">
       <check-in-notification
         v-if="checkedInData.success !== undefined"
         :errors="checkedInData.errors"

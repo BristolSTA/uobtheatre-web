@@ -1,6 +1,7 @@
 export default class {
   seatGroup = {}
   concessionType = {}
+  checkedIn = false
   id = null
 
   /**
@@ -22,6 +23,7 @@ export default class {
     )
     ticket.seatGroup = ticketAPIData.seatGroup
     ticket.concessionType = ticketAPIData.concessionType
+    if (ticketAPIData.checkedIn) ticket.checkedIn = ticketAPIData.checkedIn
     return ticket
   }
 
