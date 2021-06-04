@@ -5,46 +5,41 @@ import jwtDecode from 'jwt-decode'
 import Errors from '@/classes/Errors'
 import ErrorsPartial from '@/graphql/partials/ErrorsPartial'
 import { ValidationError } from '@/utils'
+
+let refreshTimer
+
 export default {
+  currentAuthToken(context) {
+    return context.store.state.auth.token
+  },
+
+  isRemembering(context) {
+    return cookie.get(context.$config.auth.rememberKey)
+  },
+
   /**
    * @param {object} context Nuxt Context
    * @returns {boolean} Whether or not the user is logged in
    */
   isLoggedIn(context) {
-    return context.$apolloHelpers.getToken() && !!context.store.state.auth.user
+    return !!this.currentAuthToken(context) && !!context.store.state.auth.user
   },
 
-  logout(context) {
-    context.$apolloHelpers.onLogout()
+  logout(context, trigger = true) {
+    clearTimeout(refreshTimer)
+    context.store.dispatch('auth/logout')
     cookie.remove(context.$config.auth.refreshTokenKey)
     cookie.remove(context.$config.auth.rememberKey)
-    context.store.commit('auth/SET_AUTH_USER', null)
+    if (trigger) window.localStorage.setItem('logout', Date.now())
   },
 
   /**
    * @param {object} context Nuxt Context
    * @returns {string|null} API Authentication Token
    */
-  async rememberUser(context) {
-    if (!context.$apolloHelpers.getToken()) return
-
-    const refreshOutcome = await this.refreshUser(context)
-    if (!refreshOutcome) this.logout(context)
-
-    return context.store.dispatch('auth/loadUserDetails', {
-      apollo: context.app.apolloProvider.defaultClient,
-      nuxtContext: context,
-    })
-  },
-
-  /**
-   * Refreshes user token using the refresh token
-   *
-   * @param {object} context Nuxt Context
-   */
-  async refreshUser(context) {
+  async silentRefresh(context) {
     const refreshToken = cookie.get(context.$config.auth.refreshTokenKey)
-    if (!refreshToken) return false
+    if (!refreshToken) return this.logout(context)
 
     const provider = context.app
       ? context.app.apolloProvider
@@ -66,46 +61,45 @@ export default {
 
     if (!data.refreshToken.token) return this.logout(context)
 
-    this.setToken(
-      context,
-      data.refreshToken.token,
-      cookie.get(context.$config.auth.rememberKey)
-    )
+    this.setToken(context, data.refreshToken.token)
     this.setRefreshToken(context, data.refreshToken.refreshToken)
     this.queueRefresh(context, data.refreshToken.token)
-    return true
-  },
 
-  setRefreshToken(context, token) {
-    cookie.set(context.$config.auth.refreshTokenKey, token, {
-      expires: null,
+    return context.store.dispatch('auth/loadUserDetails', {
+      apollo: context.app.apolloProvider.defaultClient,
+      nuxtContext: context,
     })
   },
 
-  queueRefresh(context, token) {
-    const { exp } = jwtDecode(token)
+  setRefreshToken(context, token, remember = null) {
+    const rememberLengthDays = 365
+    if (remember !== null) {
+      if (remember)
+        cookie.set(context.$config.auth.rememberKey, true, {
+          expires: remember ? rememberLengthDays : null,
+        })
+      else if (cookie.get(context.$config.auth.rememberKey)) {
+        cookie.remove(context.$config.auth.rememberKey)
+      }
+    }
+
+    cookie.set(context.$config.auth.refreshTokenKey, token, {
+      expires: this.isRemembering(context) ? rememberLengthDays : null,
+    })
+  },
+
+  queueRefresh(context) {
+    if (refreshTimer) clearTimeout(refreshTimer)
+    const { exp } = jwtDecode(this.currentAuthToken(context))
     const timeoutSeconds = exp - Math.round(Date.now() / 1000) - 30
-    setTimeout(() => {
-      this.refreshUser(context)
+    refreshTimer = setTimeout(() => {
+      refreshTimer = null
+      this.silentRefresh(context)
     }, timeoutSeconds * 1000)
   },
 
-  setToken(context, token, remember) {
-    if (remember)
-      cookie.set(context.$config.auth.rememberKey, true, {
-        expires: remember ? 365 : null,
-      })
-    else cookie.remove(context.$config.auth.rememberKey)
-
-    context.$apolloHelpers.onLogin(
-      token,
-      undefined,
-      {
-        expires: remember ? 365 : null,
-        path: '/',
-      },
-      true
-    )
+  setToken(context, token) {
+    context.store.dispatch('auth/login', token)
   },
 
   /**
@@ -146,10 +140,22 @@ export default {
               new ValidationError(Errors.createFromAPI(data.login.errors))
             )
 
-          this.setToken(componentContext, data.login.token, remember)
-          this.setRefreshToken(componentContext, data.login.refreshToken)
-          this.queueRefresh(componentContext, data.login.token)
-          componentContext.$store.dispatch('auth/loadUserDetails', {
+          const standardContext = {
+            store: componentContext.$store,
+            $config: componentContext.$config,
+            app: {
+              apolloProvider: componentContext.$apolloProvider,
+            },
+          }
+
+          this.setToken(standardContext, data.login.token)
+          this.setRefreshToken(
+            standardContext,
+            data.login.refreshToken,
+            remember
+          )
+          this.queueRefresh(standardContext)
+          standardContext.store.dispatch('auth/loadUserDetails', {
             userInfo: data.login.user,
           })
           return resolve(data.login)
