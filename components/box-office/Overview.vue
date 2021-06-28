@@ -46,27 +46,41 @@
           <table class="w-full table-fixed">
             <tr>
               <td class="font-semibold">Total Tickets</td>
-              <td class="w-1/5 pl-2 font-mono text-sta-orange">200</td>
+              <td class="w-1/5 pl-2 font-mono text-sta-orange">
+                {{ ticketBreakdown.totalCapacity }}
+              </td>
             </tr>
             <tr>
               <td class="font-semibold">Total Sold</td>
-              <td class="w-1/5 pl-2 font-mono text-sta-orange">150</td>
+              <td class="w-1/5 pl-2 font-mono text-sta-orange">
+                {{ ticketBreakdown.totalTicketsSold }}
+              </td>
             </tr>
             <tr>
               <td class="pl-6 font-semibold">Collected</td>
-              <td class="w-1/5 pl-2 font-mono text-sta-orange">100</td>
+              <td class="w-1/5 pl-2 font-mono text-sta-orange">
+                {{ ticketBreakdown.totalTicketsCheckedIn }}
+              </td>
             </tr>
             <tr>
               <td class="pl-6 font-semibold">To be Collected</td>
-              <td class="w-1/5 pl-2 font-mono text-sta-orange">50</td>
+              <td class="w-1/5 pl-2 font-mono text-sta-orange">
+                {{ ticketBreakdown.totalTicketsToCheckIn }}
+              </td>
             </tr>
             <tr>
               <td class="font-semibold">Avaliable to Sell</td>
-              <td class="w-1/5 pl-2 font-mono text-sta-orange">50</td>
+              <td class="w-1/5 pl-2 font-mono text-sta-orange">
+                {{ ticketBreakdown.totalTicketsAvailable }}
+              </td>
             </tr>
           </table>
-          <div class="text-sm text-right text-sta-gray-lighter">
-            Last updated x seconds ago
+          <div
+            v-if="lastUpdate"
+            class="text-sm text-right text-sta-gray-lighter"
+          >
+            Last updated
+            {{ lastUpdatedText }} ago
           </div>
         </div>
       </div>
@@ -99,8 +113,50 @@ export default {
       type: Boolean,
     },
   },
+  data() {
+    return {
+      ticketBreakdown: {},
+      lastUpdate: null,
+      lastUpdatedText: null,
+      timer: null,
+    }
+  },
+  watch: {
+    ticketBreakdown: {
+      deep: true,
+      handler() {
+        console.log('Changed!')
+      },
+    },
+  },
+  mounted() {
+    this.timer = setInterval(() => {
+      this.lastUpdatedText = humanDuration(
+        Math.round((new Date() - this.lastUpdate) / 1000) / 60
+      )
+    }, 500)
+  },
+  beforeDestroy() {
+    clearInterval(this.timer)
+  },
   methods: {
     humanDuration,
+  },
+  apollo: {
+    ticketBreakdown: {
+      query: require('@/graphql/queries/box-office/BoxOfficePerformanceTicketBreakdown.gql'),
+      variables() {
+        return {
+          id: this.performance.id,
+        }
+      },
+      pollInterval: 5000,
+      update: (data) => data.performance.ticketsBreakdown,
+      result() {
+        console.log('asd')
+        this.lastUpdate = new Date()
+      },
+    },
   },
 }
 </script>

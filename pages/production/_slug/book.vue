@@ -73,7 +73,7 @@ export default {
         query production($slug: String!) {
           production(slug: $slug) {
             ...ProductionBasicInfo
-            ...ProductionPerformancesFragment
+            ...ProductionPerformances
           }
         }
         ${ProductionBasicInfoFragment}
