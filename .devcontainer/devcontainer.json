@@ -1,11 +1,9 @@
 {
   "name": "uobtheatre-frontend",
-
   // Setup docker
   "dockerComposeFile": "docker-compose.yml",
   "service": "uobtheatre-web",
   "workspaceFolder": "/workspace/uobtheatre-web",
-
   // Add the IDs of extensions you want installed when the container is created.
   "extensions": [
     "dbaeumer.vscode-eslint",
@@ -18,8 +16,7 @@
     "apollographql.vscode-apollo",
     "gruntfuggly.todo-tree"
   ],
-  "initializeCommand": "docker-compose -f .devcontainer/docker-compose.yml pull uobtheatre-api && cp -n .devcontainer/.env.example .devcontainer/.env",
-
+  "initializeCommand": "cp -n .devcontainer/.env.example .devcontainer/.env && docker-compose -f .devcontainer/docker-compose.yml pull uobtheatre-api",
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
   // Use 'postCreateCommand' to run commands after the container is created.
