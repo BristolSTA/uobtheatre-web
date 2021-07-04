@@ -75,12 +75,16 @@
               </td>
             </tr>
           </table>
-          <div
-            v-if="lastUpdate"
-            class="text-sm text-right text-sta-gray-lighter"
-          >
-            Last updated
-            {{ lastUpdatedText }} ago
+          <div class="flex items-center space-x-2 text-sta-rouge">
+            <span class="relative flex w-3 h-3">
+              <span
+                class="absolute inline-flex w-full h-full rounded-full bg-sta-rouge animate-ping"
+              ></span>
+              <span
+                class="relative inline-flex w-3 h-3 rounded-full bg-sta-rouge"
+              ></span>
+            </span>
+            <p>Live</p>
           </div>
         </div>
       </div>
@@ -116,28 +120,7 @@ export default {
   data() {
     return {
       ticketBreakdown: {},
-      lastUpdate: null,
-      lastUpdatedText: null,
-      timer: null,
     }
-  },
-  watch: {
-    ticketBreakdown: {
-      deep: true,
-      handler() {
-        console.log('Changed!')
-      },
-    },
-  },
-  mounted() {
-    this.timer = setInterval(() => {
-      this.lastUpdatedText = humanDuration(
-        Math.round((new Date() - this.lastUpdate) / 1000) / 60
-      )
-    }, 500)
-  },
-  beforeDestroy() {
-    clearInterval(this.timer)
   },
   methods: {
     humanDuration,
@@ -152,10 +135,6 @@ export default {
       },
       pollInterval: 5000,
       update: (data) => data.performance.ticketsBreakdown,
-      result() {
-        console.log('asd')
-        this.lastUpdate = new Date()
-      },
     },
   },
 }
