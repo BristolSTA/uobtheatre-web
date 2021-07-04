@@ -2,12 +2,16 @@ import { authService } from '@/services'
 import gql from 'graphql-tag'
 
 export const state = () => ({
+  token: null,
   user: null,
 })
 
 export const mutations = {
   SET_AUTH_USER(state, userDetails) {
     state.user = userDetails
+  },
+  SET_TOKEN(state, token) {
+    state.token = token
   },
 }
 
@@ -30,5 +34,12 @@ export const actions = {
     if (!userInfo) return authService.logout(nuxtContext)
 
     context.commit('SET_AUTH_USER', userInfo)
+  },
+  login(context, token) {
+    context.commit('SET_TOKEN', token)
+  },
+  logout(context) {
+    context.commit('SET_AUTH_USER', null)
+    context.commit('SET_TOKEN', null)
   },
 }

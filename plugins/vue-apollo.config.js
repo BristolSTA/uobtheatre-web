@@ -1,5 +1,6 @@
 import { createApolloClient } from 'vue-cli-plugin-apollo/graphql-client'
 import VueApollo from 'vue-apollo'
+import authService from '@/services/authService'
 
 // Config
 const defaultOptions = {
@@ -21,6 +22,10 @@ export default (context) => {
     ...defaultOptions,
     httpEndpoint: context.$config.api.graphql_endpoint,
     authenticationType: 'JWT',
+    getAuth: () => {
+      if (authService.currentAuthToken(context))
+        return `JWT ${authService.currentAuthToken(context)}`
+    },
   }
 }
 

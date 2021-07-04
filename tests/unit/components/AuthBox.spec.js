@@ -127,7 +127,7 @@ describe('AuthBox', function () {
     })
 
     it('redirects to intended on successful login if has', async () => {
-      let fakePush, onLoginFn, storeDispatchFn
+      let fakePush, storeDispatchFn
 
       authBoxComponent = await mountWithRouterMock(
         UserAuthBox,
@@ -137,9 +137,6 @@ describe('AuthBox', function () {
               query: {
                 redirect: '/some/path',
               },
-            },
-            $apolloHelpers: {
-              onLogin: (onLoginFn = jest.fn()),
             },
             $store: {
               dispatch: (storeDispatchFn = jest.fn()),
@@ -170,14 +167,13 @@ describe('AuthBox', function () {
 
       await authBoxComponent.vm.attemptLogin()
       expect(fakePush.mock.calls[0][0]).to.eq('/some/path')
-      expect(onLoginFn.mock.calls).length(1)
-      expect(onLoginFn.mock.calls[0][0]).to.eq(
+      expect(storeDispatchFn.mock.calls).length(2)
+      expect(storeDispatchFn.mock.calls[0][0]).to.eq('auth/login')
+      expect(storeDispatchFn.mock.calls[0][1]).to.eq(
         '36c86c19f8f8d73aa59c3a00814137bdee0ab8de'
       )
-      expect(onLoginFn.mock.calls[0][2].expires).to.eq(null)
-      expect(storeDispatchFn.mock.calls).length(1)
-      expect(storeDispatchFn.mock.calls[0][0]).to.eq('auth/loadUserDetails')
-      expect(storeDispatchFn.mock.calls[0][1].userInfo.email).to.eq(
+      expect(storeDispatchFn.mock.calls[1][0]).to.eq('auth/loadUserDetails')
+      expect(storeDispatchFn.mock.calls[1][1].userInfo.email).to.eq(
         'm.pegg@example.org'
       )
     })
