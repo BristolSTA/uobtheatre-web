@@ -1,8 +1,8 @@
 #import "../../fragments/booking/DetailedBookingDetails.gql"
-query boxOfficePerformanceBookings($id: ID!) {
-  performance(id: $id) {
+query boxOfficePerformanceBooking($performanceId: ID!, $bookingId: ID!) {
+  performance(id: $performanceId) {
     id
-    bookings {
+    bookings(id: $bookingId) {
       edges {
         node {
           ...DetailedBookingDetails

@@ -133,6 +133,9 @@ export default {
           id: this.performance.id,
         }
       },
+      skip() {
+        return !this.detailed
+      },
       pollInterval: 5000,
       update: (data) => data.performance.ticketsBreakdown,
     },

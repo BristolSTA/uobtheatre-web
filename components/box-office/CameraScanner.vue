@@ -20,7 +20,7 @@
       class="flex flex-col items-center justify-center h-full space-y-3"
     >
       <template v-if="!error">
-        <font-awesome-icon icon="circle-notch" class="fa-3x animate-spin" />
+        <loading-icon size-class="fa-3x" />
         <strong>Loading Scanner...</strong>
       </template>
       <p v-else class="px-1 font-semibold text-center text-sta-rouge-dark">
@@ -34,8 +34,9 @@
 import AudioSingle from '@/assets/audio/beep_single.mp3'
 import Ticket from '@/classes/Ticket'
 import { QrcodeStream } from 'vue-qrcode-reader'
+import LoadingIcon from '../ui/LoadingIcon.vue'
 export default {
-  components: { QrcodeStream },
+  components: { QrcodeStream, LoadingIcon },
   props: {
     on: {
       type: Boolean,

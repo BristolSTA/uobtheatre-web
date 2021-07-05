@@ -6,7 +6,7 @@
       <template v-if="!addedOk && loading">
         <h1 class="text-h3">Adding email...</h1>
         <div>
-          <font-awesome-icon class="animate-spin text-h1" icon="circle-notch" />
+          <loading-icon size-class="text-h1" />
         </div>
       </template>
       <template v-else-if="addedOk">
@@ -47,12 +47,14 @@ import LoadingContainer from '@/components/ui/LoadingContainer.vue'
 import NonFieldError from '@/components/ui/NonFieldError.vue'
 import TextInput from '@/components/ui/TextInput.vue'
 import { getValidationErrors, performMutation, swalToast } from '@/utils'
+import LoadingIcon from '@/components/ui/LoadingIcon.vue'
 
 export default {
   components: {
     NonFieldError,
     TextInput,
     LoadingContainer,
+    LoadingIcon,
   },
   middleware: 'authed',
   data() {

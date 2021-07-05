@@ -57,14 +57,6 @@
                 </template>
               </tbody>
             </table>
-            <!-- <div class="flex items-center w-full px-4 font-semibold">
-              <div class="">Name</div>
-              <div class="px-2">Reference</div>
-              <div class="w-20 px-1 text-center md:w-40 xl:w-52 2xl:w-72">
-                Checked In?<sort-icon />
-              </div>
-              <div class="w-20 text-right">Price</div>
-            </div> -->
           </div>
         </div>
       </div>
@@ -157,6 +149,5 @@ export default {
       ]
     },
   },
-  methods: {},
 }
 </script>

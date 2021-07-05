@@ -49,12 +49,7 @@
               <template v-if="!booking.dirty">
                 £{{ booking.subTotalPricePounds }}
               </template>
-              <font-awesome-icon
-                v-else
-                ref="subtotalSpinner"
-                class="animate-spin"
-                icon="circle-notch"
-              />
+              <loading-icon ref="subtotalSpinner" size-class="" />
             </td>
           </tr>
         </tfoot>
@@ -66,9 +61,10 @@
 <script>
 import Booking from '@/classes/Booking'
 import TicketMatrix from '@/classes/TicketsMatrix'
+import LoadingIcon from '../ui/LoadingIcon.vue'
 
 export default {
-  components: {},
+  components: { LoadingIcon },
   props: {
     booking: {
       required: true,

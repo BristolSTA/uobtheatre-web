@@ -13,6 +13,7 @@
           >
             Alter Check Ins
           </button>
+          <loading-icon v-else-if="saving" />
           <template v-else>
             <button
               class="p-2 transition-colors rounded bg-sta-green hover:bg-sta-green-dark focus:outline-none"
@@ -21,7 +22,7 @@
               Save
             </button>
             <button
-              class="p-2 transition-colors bg-gray-400 rounded hover:bg-gray-500 focus:outline-none"
+              class="p-2 transition-colors bg-gray-400 roundedhover:bg-gray-500 focus:outline-none"
               @click="cancelEdits"
             >
               Cancel
@@ -64,7 +65,7 @@
                     ]"
                   />
                   <button
-                    v-if="editing"
+                    v-if="editing && !saving"
                     class="flex-none p-1 transition-colors rounded bg-sta-orange hover:bg-sta-orange-dark focus:outline-none"
                     @click="editingData[ticket.id] = !editingData[ticket.id]"
                   >
@@ -84,15 +85,17 @@
 import lo from 'lodash'
 import Booking from '@/classes/Booking'
 
+import CheckInMutation from '@/graphql/queries/box-office/CheckInTickets.gql'
+import UnCheckInMutation from '@/graphql/queries/box-office/UnCheckInTickets.gql'
+import BoxOfficePerformanceBooking from '@/graphql/queries/box-office/BoxOfficePerformanceBooking.gql'
+import LoadingIcon from '../ui/LoadingIcon.vue'
+
 export default {
+  components: { LoadingIcon },
   props: {
     booking: {
       required: true,
       type: Booking,
-    },
-    expanded: {
-      required: true,
-      type: Boolean,
     },
     index: {
       required: true,
@@ -103,6 +106,7 @@ export default {
     return {
       editing: false,
       editingData: null,
+      saving: false,
     }
   },
   computed: {
@@ -120,9 +124,62 @@ export default {
       )
       this.editing = true
     },
-    updateBookingCheckins() {
-      // TODO: Implmenet update call to API
-      this.editing = false
+    async updateBookingCheckins() {
+      this.saving = true
+      const ticketsToCheckIn = this.booking.tickets
+        .filter(
+          (ticket) => !ticket.checkedIn && this.editingData[ticket.id] === true
+        )
+        .map((ticket) => {
+          return { ticketId: ticket.id }
+        })
+      const ticketsToUnCheckIn = this.booking.tickets
+        .filter((ticket) => this.editingData[ticket.id] === false)
+        .map((ticket) => {
+          return { ticketId: ticket.id }
+        })
+
+      const queries = []
+
+      if (ticketsToCheckIn.length) {
+        queries.push(
+          this.$apollo.mutate({
+            mutation: CheckInMutation,
+            variables: {
+              reference: this.booking.reference,
+              performanceId: this.booking.performance.id,
+              tickets: ticketsToCheckIn,
+            },
+          })
+        )
+      }
+
+      if (ticketsToUnCheckIn.length) {
+        queries.push(
+          await this.$apollo.mutate({
+            mutation: UnCheckInMutation,
+            variables: {
+              reference: this.booking.reference,
+              performanceId: this.booking.performance.id,
+              tickets: ticketsToUnCheckIn,
+            },
+          })
+        )
+      }
+
+      await Promise.all(queries)
+
+      const { data } = await this.$apollo.query({
+        query: BoxOfficePerformanceBooking,
+        variables: {
+          performanceId: this.booking.performance.id,
+          bookingId: this.booking.id,
+        },
+      })
+
+      this.booking.updateFromAPIData(data.performance.bookings.edges[0].node)
+
+      this.editing = this.saving = false
     },
     cancelEdits() {
       this.editing = false

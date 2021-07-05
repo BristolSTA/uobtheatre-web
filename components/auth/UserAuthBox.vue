@@ -31,7 +31,7 @@
       ref="loading-overlay"
       class="absolute top-0 z-10 flex items-center justify-center w-full h-full text-3xl text-white bg-sta-gray-dark bg-opacity-95"
     >
-      <font-awesome-icon class="animate-spin" icon="circle-notch" />
+      <loading-icon size-class="" />
     </div>
     <form
       v-if="login"
@@ -184,10 +184,17 @@ import NonFieldError from '@/components/ui/NonFieldError.vue'
 import TextInput from '@/components/ui/TextInput.vue'
 import { authService } from '@/services'
 import { getValidationErrors, swalToast } from '@/utils'
+import LoadingIcon from '../ui/LoadingIcon.vue'
 
 export default {
   name: 'UserAuthBox',
-  components: { ClickableLink, TextInput, ErrorHelper, NonFieldError },
+  components: {
+    ClickableLink,
+    TextInput,
+    ErrorHelper,
+    NonFieldError,
+    LoadingIcon,
+  },
   props: {
     login: {
       default: true,

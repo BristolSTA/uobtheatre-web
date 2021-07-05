@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import CheckInScan from '@/graphql/queries/box-office/CheckInScan.gql'
+import CheckInScan from '@/graphql/queries/box-office/CheckInTickets.gql'
 import CheckInNotification from './CheckInNotification.vue'
 import HardwareScanner from './HardwareScanner.vue'
 

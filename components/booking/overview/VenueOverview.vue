@@ -5,11 +5,7 @@
       Venue
     </template>
     <template #subtitle>
-      <font-awesome-icon
-        v-if="!venue"
-        class="animate-spin"
-        icon="circle-notch"
-      />
+      <loading-icon v-if="!venue" />
       <NuxtLink
         v-else
         :to="`/venue/${venue.slug}`"
@@ -45,12 +41,13 @@ import gql from 'graphql-tag'
 
 import AddressFragments from '@/graphql/fragments/AddressFragment.gql'
 
+import LoadingIcon from '@/components/ui/LoadingIcon.vue'
 import IconListItem from '../../ui/IconListItem.vue'
 import OverviewBox from './OverviewBox.vue'
 
 export default {
   name: 'VenueOverview',
-  components: { OverviewBox, IconListItem },
+  components: { OverviewBox, IconListItem, LoadingIcon },
   props: {
     venueData: {
       requried: true,

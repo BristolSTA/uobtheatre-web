@@ -2,7 +2,7 @@
 mutation checkInBooking(
   $reference: String!
   $performanceId: IdInputField!
-  $tickets: [CheckInTicketInput]!
+  $tickets: [TicketIDInput]!
 ) {
   checkInBooking(
     bookingReference: $reference

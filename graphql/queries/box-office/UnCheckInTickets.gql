@@ -1,0 +1,26 @@
+#import "../../fragments/booking/DetailedBookingDetails.gql"
+mutation unCheckInBooking(
+  $reference: String!
+  $performanceId: IdInputField!
+  $tickets: [TicketIDInput]!
+) {
+  uncheckInBooking(
+    bookingReference: $reference
+    performanceId: $performanceId
+    tickets: $tickets
+  ) {
+    success
+    errors {
+      ... on NonFieldError {
+        message
+      }
+      ... on FieldError {
+        message
+        field
+      }
+    }
+    booking {
+      ...DetailedBookingDetails
+    }
+  }
+}
