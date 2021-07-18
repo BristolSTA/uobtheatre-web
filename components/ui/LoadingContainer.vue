@@ -3,11 +3,12 @@
     <div
       v-if="loading"
       ref="loading-overlay"
-      class="absolute top-0 z-10 flex items-center justify-center w-full h-full text-3xl text-white bg-sta-gray-dark bg-opacity-95"
+      :class="{ 'absolute bg-sta-gray-dark bg-opacity-95': showContent }"
+      class="top-0 z-10 flex items-center justify-center w-full h-full text-3xl text-white"
     >
-      <loading-icon size-class="" />
+      <loading-icon :size-class="loaderIconSize" />
     </div>
-    <slot></slot>
+    <slot v-if="showContent"></slot>
   </div>
 </template>
 
@@ -19,6 +20,19 @@ export default {
     loading: {
       default: false,
       type: Boolean,
+    },
+    hideContentWhenLoading: {
+      default: false,
+      type: Boolean,
+    },
+    loaderIconSize: {
+      default: '',
+      type: String,
+    },
+  },
+  computed: {
+    showContent() {
+      return !this.loading || !this.hideContentWhenLoading
     },
   },
 }

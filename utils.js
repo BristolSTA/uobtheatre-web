@@ -120,6 +120,7 @@ const swal = Swal.mixin({
   customClass: {
     title: 'text-white',
     content: 'text-white',
+    htmlContainer: 'text-white',
   },
   confirmButtonColor: tailwindConfig.theme.colors['sta-orange'].DEFAULT,
   denyButtonColor: tailwindConfig.theme.colors['sta-rouge'].DEFAULT,

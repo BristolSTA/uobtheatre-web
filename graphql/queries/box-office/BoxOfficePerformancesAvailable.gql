@@ -1,7 +1,11 @@
 #import "../../fragments/production/ProductionBasicInfoFragment.gql"
-query boxOfficePerformances {
-  performances(first: 9, orderBy: "start") {
-    #TODO: Need some actual filtering / box office query thing here
+query boxOfficePerformances($date: Date) {
+  performances(
+    first: 9
+    orderBy: "start"
+    runOn: $date
+    hasBoxofficePermissions: true
+  ) {
     pageInfo {
       hasNextPage
       endCursor

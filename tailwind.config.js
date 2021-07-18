@@ -61,5 +61,5 @@ module.exports = {
       flexDirection: ['odd'],
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/forms')],
 }

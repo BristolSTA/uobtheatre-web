@@ -73,6 +73,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '~/plugins/vue-filters.js',
+    '~/plugins/vue-tailwind.js',
     '~/plugins/initial-auth.js',
     '~/plugins/auth-helpers.js',
   ],

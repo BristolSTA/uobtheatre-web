@@ -1,5 +1,5 @@
-query upcomingProductions {
-  productions(first: 5, orderBy: "start") {
+query upcomingProductions($now: DateTime) {
+  productions(first: 5, orderBy: "start", end_Gte: $now) {
     edges {
       node {
         id
