@@ -55,6 +55,8 @@
       <t-datepicker
         v-if="!selectedDate"
         v-model="datePickerDate"
+        :required="true"
+        :clearable="false"
         class="text-black"
       />
     </div>
@@ -94,6 +96,9 @@ export default {
         return {
           date: this.dateToSearch,
         }
+      },
+      skip() {
+        return !this.dateToSearch || this.dateToSeach === ''
       },
       update: (data) => data.performances.edges.map((edge) => edge.node),
     },
