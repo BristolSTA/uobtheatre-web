@@ -29,7 +29,7 @@
     <div
       v-if="loading"
       ref="loading-overlay"
-      class="absolute top-0 z-10 flex items-center justify-center w-full h-full text-3xl text-white  bg-sta-gray-dark bg-opacity-95"
+      class="absolute top-0 z-10 flex items-center justify-center w-full h-full text-3xl text-white bg-sta-gray-dark bg-opacity-95"
     >
       <font-awesome-icon class="animate-spin" icon="circle-notch" />
     </div>
@@ -66,7 +66,7 @@
       </label>
 
       <button
-        class="w-full mt-2 text-xl font-semibold text-center  btn btn-orange btn-outline"
+        class="w-full mt-2 text-xl font-semibold text-center btn btn-orange btn-outline"
         type="submit"
       >
         Log In
@@ -160,7 +160,7 @@
         <error-helper :errors="signup_errors" field-name="acceptedTerms" />
       </label>
       <button
-        class="w-full text-xl font-semibold text-center  btn btn-orange btn-outline"
+        class="w-full text-xl font-semibold text-center btn btn-orange btn-outline"
         :disabled="!accepted_terms"
       >
         Sign Up
