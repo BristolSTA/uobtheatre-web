@@ -5,7 +5,7 @@
       :hide-content-when-loading="true"
     >
       <div v-if="performances.length">
-        <h1 class="text-h1">Select a performance</h1>
+        <h1 class="text-center text-h1">Select a performance</h1>
         <select
           v-if="performances.length > 4"
           v-model="selectedPerformance"
