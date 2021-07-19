@@ -85,8 +85,8 @@
 import lo from 'lodash'
 import Booking from '@/classes/Booking'
 
-import CheckInMutation from '@/graphql/queries/box-office/CheckInTickets.gql'
-import UnCheckInMutation from '@/graphql/queries/box-office/UnCheckInTickets.gql'
+import CheckInMutation from '@/graphql/mutations/box-office/CheckInTickets.gql'
+import UnCheckInMutation from '@/graphql/mutations/box-office/UnCheckInTickets.gql'
 import BoxOfficePerformanceBooking from '@/graphql/queries/box-office/BoxOfficePerformanceBooking.gql'
 import LoadingIcon from '../ui/LoadingIcon.vue'
 

@@ -24,6 +24,24 @@ fragment DetailedBookingDetails on BookingNode {
     }
     checkedIn
   }
+  payments {
+    edges {
+      node {
+        createdAt
+        type {
+          value
+          description
+        }
+        provider {
+          value
+          description
+        }
+        value
+        cardBrand
+        last4
+      }
+    }
+  }
   performance {
     id
     production {

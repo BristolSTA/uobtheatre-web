@@ -7,8 +7,6 @@
     <div class="grid grid-cols-2 gap-2 my-4">
       <div class="p-3 rounded bg-sta-gray-dark">
         <h2 class="text-center text-h2">Details</h2>
-        <text-input v-model="user.firstName" name="First Name" required />
-        <text-input v-model="user.lastName" name="Last Name" required />
         <text-input v-model="user.email" name="Email" type="email" required />
       </div>
       <div class="p-3 rounded bg-sta-gray-dark">
@@ -24,28 +22,47 @@
           <h3 class="text-center text-h3 text-sta-orange">
             £{{ booking.totalPricePounds }} due
           </h3>
-          <div class="grid grid-cols-2 gap-2">
-            <div class="text-center">
-              <button
-                class="p-2 transition-colors rounded bg-sta-green hover:bg-sta-green-dark"
-              >
-                <font-awesome-icon icon="money-check-alt" />
-                Paid using Card
-              </button>
-              <p class="text-sm">
-                Process the payment using the card machine. Press here once
-                authorised
-              </p>
+          <loading-container :loading="paying">
+            <all-errors-display class="text-center" :errors="errors" />
+            <div class="grid grid-cols-2 gap-2">
+              <div class="text-center">
+                <button
+                  class="
+                    p-2
+                    transition-colors
+                    rounded
+                    bg-sta-green
+                    hover:bg-sta-green-dark
+                    focus:outline-none
+                  "
+                  @click="payManualCard"
+                >
+                  <font-awesome-icon icon="money-check-alt" />
+                  Paid using Card
+                </button>
+                <p class="text-sm">
+                  Process the payment using the card machine. Press here once
+                  authorised
+                </p>
+              </div>
+              <div class="text-center">
+                <button
+                  class="
+                    p-2
+                    transition-colors
+                    rounded
+                    bg-sta-green
+                    hover:bg-sta-green-dark
+                    focus:outline-none
+                  "
+                  @click="payManualCash"
+                >
+                  <font-awesome-icon icon="money-bill" />
+                  Paid with Cash
+                </button>
+              </div>
             </div>
-            <div class="text-center">
-              <button
-                class="p-2 transition-colors rounded bg-sta-green hover:bg-sta-green-dark"
-              >
-                <font-awesome-icon icon="money-bill" />
-                Paid with Cash
-              </button>
-            </div>
-          </div>
+          </loading-container>
         </template>
       </div>
     </div>
@@ -57,8 +74,18 @@ import TextInput from '@/components/ui/TextInput.vue'
 import Booking from '@/classes/Booking'
 import BookingPriceOverview from '@/components/booking/overview/BookingPriceOverview.vue'
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue'
+import PayBooking from '@/graphql/mutations/booking/PayBooking.gql'
+import { getValidationErrors, performMutation } from '@/utils'
+import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue'
+import LoadingContainer from '@/components/ui/LoadingContainer.vue'
 export default {
-  components: { TextInput, BookingPriceOverview, TicketsOverview },
+  components: {
+    TextInput,
+    BookingPriceOverview,
+    TicketsOverview,
+    AllErrorsDisplay,
+    LoadingContainer,
+  },
   props: {
     booking: {
       required: true,
@@ -68,19 +95,49 @@ export default {
   data() {
     return {
       user: {
-        firstName: null,
-        lastName: null,
         email: null,
       },
+      paying: false,
+      errors: null,
     }
   },
   computed: {
     canPay() {
-      return (
-        this.user.firstName &&
-        this.user.lastName &&
-        /\S+@\S+\.\S+/.test(this.user.email)
-      )
+      return /\S+@\S+\.\S+/.test(this.user.email)
+    },
+  },
+  methods: {
+    payManualCash() {
+      this.pay('CASH')
+    },
+    payManualCard() {
+      this.pay('CARD')
+    },
+    async pay(method) {
+      this.paying = true
+      try {
+        const data = await performMutation(
+          this.$apollo,
+          {
+            mutation: PayBooking,
+            variables: {
+              id: this.booking.id,
+              totalPence: this.booking.totalPrice,
+              provider: method,
+            },
+          },
+          'payBooking'
+        )
+
+        this.booking.updateFromAPIData(data.payBooking.booking)
+        this.$router.push(
+          `/box-office/${this.booking.performance.id}/sell/complete`
+        )
+      } catch (e) {
+        this.errors = getValidationErrors(e)
+      } finally {
+        this.paying = false
+      }
     },
   },
 }

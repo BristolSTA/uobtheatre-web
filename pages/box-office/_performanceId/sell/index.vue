@@ -29,7 +29,7 @@
           @click="$emit('next-stage')"
           @keypress="$emit('next-stage')"
         >
-          Pay Now
+          Proceed to Payment
         </button>
       </div>
     </div>
@@ -39,16 +39,13 @@
 <script>
 import lo from 'lodash'
 import Booking from '@/classes/Booking'
-import TicketsMatrix from '@/classes/TicketsMatrix'
 import TicketOptions from '@/components/booking/TicketOptions.vue'
 import SelectedTicketsTable from '@/components/booking/SelectedTicketsTable.vue'
 import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue'
-import PriceBreakdownFragment from '@/graphql/fragments/booking/AllPriceBreakdown.gql'
-import DetailBookingFragment from '@/graphql/fragments/booking/DetailedBookingDetails.gql'
-import ErrorsPartial from '@/graphql/partials/ErrorsPartial'
+import CreateBooking from '@/graphql/mutations/booking/CreateBooking.gql'
+import UpdateBooking from '@/graphql/mutations/booking/UpdateBooking.gql'
 import { performMutation } from '@/utils'
-import FakeBooking from '@/tests/unit/fixtures/instances/FullBooking'
-import gql from 'graphql-tag'
+import TicketsMatrix from '@/classes/TicketsMatrix'
 
 export default {
   components: {
@@ -94,24 +91,6 @@ export default {
   },
   methods: {
     async updateAPI() {
-      // TODO: Implement here when API is ready
-
-      // eslint-disable-next-line vue/no-mutating-props
-      this.booking.updateFromAPIData(FakeBooking())
-      return
-      // eslint-disable-next-line no-unreachable
-      const queryBody = `
-        ${ErrorsPartial}
-        booking {
-          ...DetailedBookingDetails
-        }`
-
-      const variables = {
-        id: this.booking.id,
-        performanceID: this.booking.performance.id,
-        tickets: this.booking.toAPIData().tickets,
-      }
-
       let bookingResponse
       try {
         if (!this.booking.id) {
@@ -119,39 +98,29 @@ export default {
           const data = await performMutation(
             this.$apollo,
             {
-              mutation: gql`
-            mutation($performanceID: IdInputField!, $tickets: [CreateTicketInput]) {
-              createBoxOfficeBooking(performanceId: $performanceID, tickets: $tickets) {
-                ${queryBody}
-              }
-            }
-            ${PriceBreakdownFragment}
-            ${DetailBookingFragment}
-          `,
-              variables,
+              mutation: CreateBooking,
+              variables: {
+                performanceId: this.booking.performance.id,
+                tickets: this.booking.toAPIData().tickets,
+              },
             },
-            'createBoxOfficeBooking'
+            'createBooking'
           )
-          bookingResponse = data.createBoxOfficeBooking.booking
+          bookingResponse = data.createBooking.booking
         } else {
           // We have a booking, lets update it
           const data = await performMutation(
             this.$apollo,
             {
-              mutation: gql`
-            mutation($id: IdInputField!, $tickets: [UpdateTicketInput]) {
-              updateBoxOfficeBooking(bookingId: $id, tickets: $tickets) {
-                ${queryBody}
-              }
-            }
-            ${PriceBreakdownFragment}
-            ${DetailBookingFragment}
-          `,
-              variables,
+              mutation: UpdateBooking,
+              variables: {
+                id: this.booking.id,
+                tickets: this.booking.toAPIData().tickets,
+              },
             },
-            'updateBoxOfficeBooking'
+            'updateBooking'
           )
-          bookingResponse = data.updateBoxOfficeBooking.booking
+          bookingResponse = data.updateBooking.booking
         }
       } catch ({ errors }) {
         this.errors = errors

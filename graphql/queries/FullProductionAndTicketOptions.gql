@@ -17,6 +17,7 @@ query performanceTicketOptions($id: ID!) {
     isInperson
     isOnline
     production {
+      id
       ...ProductionBasicInfo
       ...ProductionPerformances
     }
@@ -36,6 +37,7 @@ query performanceTicketOptions($id: ID!) {
       }
     }
     ticketOptions {
+      id
       capacityRemaining
       seatGroup {
         id

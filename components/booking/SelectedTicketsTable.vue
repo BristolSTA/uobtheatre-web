@@ -49,7 +49,7 @@
               <template v-if="!booking.dirty">
                 £{{ booking.subTotalPricePounds }}
               </template>
-              <loading-icon ref="subtotalSpinner" size-class="" />
+              <loading-icon v-else ref="subtotalSpinner" size-class="" />
             </td>
           </tr>
         </tfoot>

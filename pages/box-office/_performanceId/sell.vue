@@ -32,6 +32,7 @@ export default {
       variables: {
         id: params.performanceId,
       },
+      fetchPolicy: 'no-cache',
     })
 
     const performance = data.performance

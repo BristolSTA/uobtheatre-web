@@ -128,18 +128,25 @@ const swal = Swal.mixin({
 const swalToast = swal.mixin({
   toast: true,
   showConfirmButton: false,
+  position: 'bottom-end',
 })
-const apiErrorToast = swalToast.mixin({
+const errorToast = swalToast.mixin({
+  icon: 'error',
+})
+const successToast = swalToast.mixin({
+  icon: 'success',
+})
+const apiErrorToast = errorToast.mixin({
   icon: 'error',
   title: 'There was a server error while executing your request',
-  showConfirmButton: false,
-  position: 'bottom-end',
   timerProgressBar: true,
   timer: 4000,
 })
 
 export {
   apiErrorToast,
+  errorToast,
+  successToast,
   displayStartEnd,
   humanDuration,
   duration,

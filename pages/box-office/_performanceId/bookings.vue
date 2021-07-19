@@ -12,12 +12,12 @@
 
       <div v-if="!scanning" class="flex justify-center mb-4">
         <div class="w-full px-2 lg:max-w-4xl">
-          <div class="flex space-x-2">
+          <div class="flex justify-between space-x-2">
             <input
               v-model="searchQuery"
               type="text"
               class="w-64 p-2 mb-2 text-gray-800 rounded outline-none"
-              placeholder="Search on name or booking reference"
+              placeholder="Search"
             />
             <div class="flex-none">
               <button
@@ -29,34 +29,36 @@
             </div>
           </div>
           <div class="px-1 py-2 bg-sta-gray-dark sm:p-2">
-            <table class="w-full">
-              <thead>
-                <th>Name</th>
-                <th>Reference</th>
-                <th>Checked In?<sort-icon /></th>
-                <th>Price</th>
-              </thead>
-              <tbody>
-                <template v-for="(booking, index) in bookings">
-                  <booking-row
-                    :key="`${index}-row`"
-                    :index="index"
-                    :booking="booking"
-                    :active="selected_booking_index == index"
-                    @select-booking="
-                      selected_booking_index =
-                        selected_booking_index != index ? index : null
-                    "
-                  />
-                  <booking-details-row
-                    v-if="selected_booking_index == index"
-                    :key="`${index}-details`"
-                    :index="index"
-                    :booking="booking"
-                  />
-                </template>
-              </tbody>
-            </table>
+            <loading-container :loading="$apollo.queries.bookings.loading">
+              <table class="w-full">
+                <thead>
+                  <th>Name</th>
+                  <th>Reference</th>
+                  <th>Checked In?<sort-icon /></th>
+                  <th>Price</th>
+                </thead>
+                <tbody>
+                  <template v-for="(booking, index) in bookings">
+                    <booking-row
+                      :key="`${index}-row`"
+                      :index="index"
+                      :booking="booking"
+                      :active="selected_booking_index == index"
+                      @select-booking="
+                        selected_booking_index =
+                          selected_booking_index != index ? index : null
+                      "
+                    />
+                    <booking-details-row
+                      v-if="selected_booking_index == index"
+                      :key="`${index}-details`"
+                      :index="index"
+                      :booking="booking"
+                    />
+                  </template>
+                </tbody>
+              </table>
+            </loading-container>
           </div>
         </div>
       </div>
@@ -92,6 +94,7 @@ import SortIcon from '@/components/ui/SortIcon.vue'
 import BoxOfficePerformanceBookings from '@/graphql/queries/box-office/BoxOfficePerformanceBookings.gql'
 import BookingDetailsRow from '@/components/box-office/BookingDetailsRow.vue'
 import HardwareScanner from '@/components/box-office/HardwareScanner.vue'
+import LoadingContainer from '@/components/ui/LoadingContainer.vue'
 
 export default {
   components: {
@@ -100,27 +103,13 @@ export default {
     SortIcon,
     BookingDetailsRow,
     HardwareScanner,
+    LoadingContainer,
   },
   props: {
     performance: {
       required: true,
       type: Object,
     },
-  },
-  async asyncData({ params, query, app }) {
-    // TODO: Implement search and filtering in query
-    const { data } = await app.apolloProvider.defaultClient.query({
-      query: BoxOfficePerformanceBookings,
-      variables: {
-        id: params.performanceId,
-      },
-    })
-    return {
-      bookings: data.performance.bookings.edges.map((edge) =>
-        Booking.fromAPIData(edge.node)
-      ),
-      searchQuery: query.q,
-    }
   },
   data() {
     return {
@@ -129,6 +118,22 @@ export default {
       searchQuery: null,
       scanning: false,
     }
+  },
+  apollo: {
+    bookings: {
+      query: BoxOfficePerformanceBookings,
+      variables() {
+        return {
+          id: this.$route.params.performanceId,
+          search: this.searchQuery,
+        }
+      },
+      debounce: 600,
+      update: (data) =>
+        data.performance.bookings.edges.map((edge) =>
+          Booking.fromAPIData(edge.node)
+        ),
+    },
   },
   computed: {
     crumbs() {
