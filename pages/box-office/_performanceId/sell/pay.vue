@@ -27,14 +27,7 @@
             <div class="grid grid-cols-2 gap-2">
               <div class="text-center">
                 <button
-                  class="
-                    p-2
-                    transition-colors
-                    rounded
-                    bg-sta-green
-                    hover:bg-sta-green-dark
-                    focus:outline-none
-                  "
+                  class="p-2 transition-colors rounded bg-sta-green hover:bg-sta-green-dark focus:outline-none"
                   @click="payManualCard"
                 >
                   <font-awesome-icon icon="money-check-alt" />
@@ -47,14 +40,7 @@
               </div>
               <div class="text-center">
                 <button
-                  class="
-                    p-2
-                    transition-colors
-                    rounded
-                    bg-sta-green
-                    hover:bg-sta-green-dark
-                    focus:outline-none
-                  "
+                  class="p-2 transition-colors rounded bg-sta-green hover:bg-sta-green-dark focus:outline-none"
                   @click="payManualCash"
                 >
                   <font-awesome-icon icon="money-bill" />
@@ -75,6 +61,7 @@ import Booking from '@/classes/Booking'
 import BookingPriceOverview from '@/components/booking/overview/BookingPriceOverview.vue'
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue'
 import PayBooking from '@/graphql/mutations/booking/PayBooking.gql'
+import SetBookingUser from '@/graphql/mutations/booking/SetBookingUser.gql'
 import { getValidationErrors, performMutation } from '@/utils'
 import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue'
 import LoadingContainer from '@/components/ui/LoadingContainer.vue'
@@ -115,7 +102,21 @@ export default {
     },
     async pay(method) {
       this.paying = true
+
       try {
+        // Set the booking's user
+        await performMutation(
+          this.$apollo,
+          {
+            mutation: SetBookingUser,
+            variables: {
+              id: this.booking.id,
+              email: this.user.email,
+            },
+          },
+          'updateBooking'
+        )
+
         const data = await performMutation(
           this.$apollo,
           {
