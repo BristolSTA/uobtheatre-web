@@ -41,7 +41,7 @@
     "sweetalert2": "^11.0.20"
   },
   "devDependencies": {
-    "@commitlint/cli": "^12.1.4",
+    "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^12.1.4",
     "@cypress/vue": "^2.2.3",
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
