@@ -16,17 +16,19 @@
       </NuxtLink>
     </template>
     <div v-if="venue">
-      <p v-if="venue.address.buildingName">
-        {{ venue.address.buildingName }}
-      </p>
-      <p>
-        <template v-if="venue.address.buildingNumber">
-          {{ venue.address.buildingNumber }}
-        </template>
-        {{ venue.address.street }}
-      </p>
-      <p>{{ venue.address.city }}</p>
-      <p>{{ venue.address.postcode }}</p>
+      <template v-if="venue.address">
+        <p v-if="venue.address.buildingName">
+          {{ venue.address.buildingName }}
+        </p>
+        <p>
+          <template v-if="venue.address.buildingNumber">
+            {{ venue.address.buildingNumber }}
+          </template>
+          {{ venue.address.street }}
+        </p>
+        <p>{{ venue.address.city }}</p>
+        <p>{{ venue.address.postcode }}</p>
+      </template>
       <div v-if="online" class="p-2 mt-2 rounded bg-sta-gray">
         <icon-list-item icon="info-circle">
           Online joining information will be sent via email

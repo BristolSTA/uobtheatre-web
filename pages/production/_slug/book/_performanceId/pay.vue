@@ -5,7 +5,8 @@
         {{ booking.performance.production.name }}
       </p>
       <p class="text-sta-orange">
-        {{ booking.performance.start | dateFormat('cccc d MMM') }}, Starting at
+        {{ booking.performance.start | dateFormat('cccc d MMM y') }}, Starting
+        at
         {{ booking.performance.start | dateFormat('T') }}
       </p>
       <p class="text-sta-orange">
