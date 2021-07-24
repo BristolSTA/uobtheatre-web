@@ -12,7 +12,7 @@
     "lint": "yarn lint:js && yarn lint:style",
     "test:unit": "jest",
     "pretest:e2e": "yarn generate --devtools && yarn start",
-    "pretest:e2e:local": "APP_API_BASE=http://uobtheatre-api:9000 yarn generate --devtools && yarn start",
+    "pretest:e2e:local": "API_BASE=http://uobtheatre-api:8000 yarn generate --devtools && yarn start",
     "test:e2e:silent": "cypress run"
   },
   "lint-staged": {
