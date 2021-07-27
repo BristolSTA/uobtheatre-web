@@ -49,7 +49,9 @@
                 >
               </td>
               <td class="pr-4">{{ ticket.concessionType.name }}</td>
-              <td class="pr-4 font-mono">{{ ticket.id }}</td>
+              <td class="pr-4 font-mono text-sm md:text-base">
+                {{ ticket.id }}
+              </td>
               <td class="pt-1 text-center">
                 <div class="flex items-center justify-center space-x-2">
                   <font-awesome-icon

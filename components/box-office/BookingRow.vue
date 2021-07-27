@@ -12,7 +12,7 @@
     @keypress="$emit('select-booking')"
   >
     <td class="p-2">James Jelgar</td>
-    <td class="p-2 font-mono">{{ booking.reference }}</td>
+    <td class="p-2 font-mono text-sm md:text-base">{{ booking.reference }}</td>
     <td class="p-2" style="width: 1%">
       <font-awesome-icon
         :icon="booking.allCheckedIn ? 'check-circle' : 'times-circle'"

@@ -16,7 +16,7 @@
             <input
               v-model="searchQuery"
               type="text"
-              class="w-64 p-2 mb-2 text-gray-800 rounded outline-none"
+              class="p-2 mb-2 text-gray-800 rounded outline-none w-44 md:w-64"
               placeholder="Search"
             />
             <div class="flex-none">
@@ -30,34 +30,36 @@
           </div>
           <div class="px-1 py-2 bg-sta-gray-dark sm:p-2">
             <loading-container :loading="$apollo.queries.bookings.loading">
-              <table class="w-full">
-                <thead>
-                  <th>Name</th>
-                  <th>Reference</th>
-                  <th>Checked In?<sort-icon /></th>
-                  <th>Price</th>
-                </thead>
-                <tbody>
-                  <template v-for="(booking, index) in bookings">
-                    <booking-row
-                      :key="`${index}-row`"
-                      :index="index"
-                      :booking="booking"
-                      :active="selected_booking_index == index"
-                      @select-booking="
-                        selected_booking_index =
-                          selected_booking_index != index ? index : null
-                      "
-                    />
-                    <booking-details-row
-                      v-if="selected_booking_index == index"
-                      :key="`${index}-details`"
-                      :index="index"
-                      :booking="booking"
-                    />
-                  </template>
-                </tbody>
-              </table>
+              <div class="overflow-auto">
+                <table class="w-full overflow-x-auto">
+                  <thead>
+                    <th>Name</th>
+                    <th>Reference</th>
+                    <th>Checked In?<sort-icon /></th>
+                    <th>Price</th>
+                  </thead>
+                  <tbody>
+                    <template v-for="(booking, index) in bookings">
+                      <booking-row
+                        :key="`${index}-row`"
+                        :index="index"
+                        :booking="booking"
+                        :active="selected_booking_index == index"
+                        @select-booking="
+                          selected_booking_index =
+                            selected_booking_index != index ? index : null
+                        "
+                      />
+                      <booking-details-row
+                        v-if="selected_booking_index == index"
+                        :key="`${index}-details`"
+                        :index="index"
+                        :booking="booking"
+                      />
+                    </template>
+                  </tbody>
+                </table>
+              </div>
             </loading-container>
           </div>
         </div>
