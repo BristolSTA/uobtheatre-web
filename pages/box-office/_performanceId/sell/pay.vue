@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="grid grid-cols-2 gap-2">
+    <div class="grid gap-2 md:grid-cols-2">
       <tickets-overview :booking="booking" />
       <booking-price-overview :booking="booking" />
     </div>
-    <div class="grid grid-cols-2 gap-2 my-4">
+    <div class="grid gap-2 my-4 md:grid-cols-2">
       <div class="p-3 rounded bg-sta-gray-dark">
         <h2 class="text-center text-h2">Details</h2>
         <text-input v-model="user.email" name="Email" type="email" required />

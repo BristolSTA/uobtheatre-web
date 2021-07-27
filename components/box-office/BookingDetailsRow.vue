@@ -22,7 +22,7 @@
               Save
             </button>
             <button
-              class="p-2 transition-colors bg-gray-400 roundedhover:bg-gray-500 focus:outline-none"
+              class="p-2 transition-colors bg-gray-400 rounded roundedhover:bg-gray-500 focus:outline-none"
               @click="cancelEdits"
             >
               Cancel
