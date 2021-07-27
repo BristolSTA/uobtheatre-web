@@ -141,7 +141,7 @@
         name="Confirm Password"
         type="password"
         :errors="signup_errors"
-        autocomplete="off"
+        autocomplete="new-password"
         error-key="password2"
         required
       />
