@@ -71,7 +71,7 @@ import { DateTime } from 'luxon'
 import LoadingContainer from '@/components/ui/LoadingContainer.vue'
 export default {
   components: { LoadingContainer },
-  middleware: 'authed',
+  middleware: ['authed', 'can-boxoffice'],
   data() {
     return {
       selectedPerformance: null,

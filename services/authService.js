@@ -124,11 +124,6 @@ export default {
                 ${ErrorsPartial}
                 token
                 refreshToken
-                user {
-                  firstName
-                  lastName
-                  email
-                }
               }
             }
           `,
@@ -159,7 +154,7 @@ export default {
           )
           this.queueRefresh(standardContext)
           standardContext.store.dispatch('auth/loadUserDetails', {
-            userInfo: data.login.user,
+            apollo: standardContext.app.apolloProvider.defaultClient,
           })
           return resolve(data.login)
         })
