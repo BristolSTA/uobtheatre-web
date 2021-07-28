@@ -55,15 +55,13 @@
     </loading-container>
     <div class="flex flex-col justify-center mt-2 space-y-2">
       <t-select v-model="selectedDate" :options="dateOptions" />
-      <div>
-        <t-datepicker
-          v-if="!selectedDate"
-          v-model="datePickerDate"
-          :required="true"
-          :clearable="false"
-          class="text-black"
-        />
-      </div>
+      <t-datepicker
+        v-if="!selectedDate"
+        v-model="datePickerDate"
+        :required="true"
+        :clearable="false"
+        class="text-black"
+      />
     </div>
   </div>
 </template>

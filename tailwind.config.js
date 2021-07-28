@@ -3,7 +3,10 @@ module.exports = {
     removeDeprecatedGapUtilities: true,
     // purgeLayersByDefault: true,
   },
-  purge: [],
+  purge: {
+    safelist: ['grid-cols-7'],
+    content: [],
+  },
   theme: {
     fontFamily: {
       body: ['Montserrat', 'sans-serif'],
