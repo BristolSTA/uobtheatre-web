@@ -31,6 +31,9 @@
             <h3 class="text-xl font-semibold text-sta-orange">
               {{ performance.production.name }}
             </h3>
+            <h4 class="text-sta-green">
+              {{ performance.venue.name }}
+            </h4>
             <span
               >{{ performance.start | dateFormat('cccc dd MMMM T') }} (Doors
               {{ performance.doorsOpen | dateFormat('T') }})</span
