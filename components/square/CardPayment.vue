@@ -53,13 +53,14 @@ export default {
     if (this.paymentForm) this.paymentForm.destroy()
   },
   mounted() {
-    this.timer = setInterval(() => {
-      // eslint-disable-next-line no-undef
+    const checkToInit = () => {
       if (typeof SqPaymentForm !== 'undefined') {
         clearInterval(this.timer)
         this.initSquare()
       }
-    }, 100)
+    }
+    checkToInit()
+    this.timer = setInterval(checkToInit, 100)
   },
   beforeDestroy() {
     clearInterval(this.timer)
