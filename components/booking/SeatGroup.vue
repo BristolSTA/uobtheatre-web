@@ -81,7 +81,7 @@
           )
         "
       />
-      <div v-if="discounts" class="flex justify-center w-full mt-2 mb-4">
+      <div v-if="discounts.length" class="flex justify-center w-full mt-2 mb-4">
         <group-ticket-button
           v-for="(discount, index) in discounts.filter(
             (discount) =>
