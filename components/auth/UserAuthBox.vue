@@ -156,9 +156,15 @@
         <span class="text-xs font-semibold text-white">
           I have read and agree to the
           <nuxt-link
-            href="/terms"
+            to="/terms"
             class="underline transition-colors hover:text-sta-orange"
             >Terms of Service</nuxt-link
+          >
+          and
+          <nuxt-link
+            to="/privacy"
+            class="underline transition-colors hover:text-sta-orange"
+            >Privacy</nuxt-link
           >
         </span>
         <error-helper :errors="signup_errors" field-name="acceptedTerms" />
