@@ -122,9 +122,7 @@ export default {
     },
   },
   mounted() {
-    let audio = new Audio(AudioPositive)
-    if (this.errors) audio = new Audio(AudioNegative)
-    audio.play()
+    new Audio(this.errors ? AudioNegative : AudioPositive).play()
   },
 }
 </script>

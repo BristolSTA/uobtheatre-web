@@ -42,6 +42,9 @@ export default {
     value() {
       this.invalidCode = false
     },
+    invalidCode(newVal) {
+      if (newVal) this.$emit('invalidCode')
+    },
   },
   mounted() {
     this.$refs.input.focus()

@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="p-2 mb-2 md:text-center bg-sta-gray-light">
+    <div
+      v-if="booking.performance && booking.performance.production"
+      class="p-2 mb-2 md:text-center bg-sta-gray-light"
+    >
       <p class="text-white text-h3">
         {{ booking.performance.production.name }}
       </p>

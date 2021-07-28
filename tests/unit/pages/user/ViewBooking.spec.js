@@ -5,12 +5,10 @@ import PerformanceOverview from '@/components/booking/overview/PerformanceOvervi
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue'
 import VenueOverview from '@/components/booking/overview/VenueOverview.vue'
 import Ticket from '@/components/booking/Ticket.vue'
-import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
 import ViewBooking from '@/pages/user/booking/_reference/index'
 
 import FakeBooking from '../../fixtures/Booking.js'
 import {
-  assertNoVisualDifference,
   generateMountOptions,
   mountWithRouterMock,
   waitFor,

@@ -74,7 +74,7 @@
             Cancel
           </button>
         </div>
-        <hardware-scanner
+        <ticket-scanner
           @scanned="
             ({ bookingReference }) => {
               searchQuery = bookingReference
@@ -95,8 +95,8 @@ import BookingRow from '@/components/box-office/BookingRow.vue'
 import SortIcon from '@/components/ui/SortIcon.vue'
 import BoxOfficePerformanceBookings from '@/graphql/queries/box-office/BoxOfficePerformanceBookings.gql'
 import BookingDetailsRow from '@/components/box-office/BookingDetailsRow.vue'
-import HardwareScanner from '@/components/box-office/HardwareScanner.vue'
 import LoadingContainer from '@/components/ui/LoadingContainer.vue'
+import TicketScanner from '@/components/ui/Inputs/TicketScanner.vue'
 
 export default {
   components: {
@@ -104,8 +104,8 @@ export default {
     BookingRow,
     SortIcon,
     BookingDetailsRow,
-    HardwareScanner,
     LoadingContainer,
+    TicketScanner,
   },
   props: {
     performance: {

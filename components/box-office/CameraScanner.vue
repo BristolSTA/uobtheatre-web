@@ -102,7 +102,7 @@ export default {
 
       try {
         const ticketData = Ticket.dataFromQRCode(string)
-        this.$emit('scan', ticketData)
+        this.$emit('scanned', ticketData)
       } catch (e) {
         const isAllowedSilentException =
           e instanceof SyntaxError ||

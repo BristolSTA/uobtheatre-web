@@ -154,8 +154,12 @@
           class="w-5 h-5 border rounded-sm border-sta-grey focus:outline-none"
         />
         <span class="text-xs font-semibold text-white">
-          I have read and agree to the Terms of Use
-          <!-- TODO: Link to ToS -->
+          I have read and agree to the
+          <nuxt-link
+            href="/terms"
+            class="underline transition-colors hover:text-sta-orange"
+            >Terms of Service</nuxt-link
+          >
         </span>
         <error-helper :errors="signup_errors" field-name="acceptedTerms" />
       </label>

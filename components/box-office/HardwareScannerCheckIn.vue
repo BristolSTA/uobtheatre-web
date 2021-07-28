@@ -1,6 +1,10 @@
 <template>
   <div>
-    <hardware-scanner v-model="scannedCode" @scanned="checkTicket" />
+    <hardware-scanner
+      v-model="scannedCode"
+      @scanned="checkTicket"
+      @invalidCode="$emit('invalidCode')"
+    />
     <check-in-notification
       v-if="checkedInData.success !== undefined"
       class="mt-4"
@@ -45,7 +49,9 @@ export default {
     }
   },
   methods: {
-    async checkTicket({ bookingReference, ticketId }) {
+    async checkTicket(scannedData) {
+      this.$emit('scanned', scannedData)
+      const { bookingReference, ticketId } = scannedData
       this.checkedInData = checkedInDataState()
       this.scannedCode = null
 

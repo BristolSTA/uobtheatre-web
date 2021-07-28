@@ -4,7 +4,7 @@
       :on="!cameraOff"
       class="bg-gray-800"
       @invalidCode="onInvalidCode"
-      @scan="onScan"
+      @scanned="onScan"
       @close="$emit('close')"
     />
     <div class="absolute bottom-0 left-0 right-0 pt-1 mt-4 md:relative">
@@ -67,7 +67,9 @@ export default {
       this.checkedInData = checkedInDataState()
       this.invalidCode = true
     },
-    async onScan({ bookingReference, ticketId }) {
+    async onScan(scannedData) {
+      this.$emit('scanned', scannedData)
+      const { bookingReference, ticketId } = scannedData
       this.checkedInData = checkedInDataState()
       this.invalidCode = false
       this.cameraOff = true

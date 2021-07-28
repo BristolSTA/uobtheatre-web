@@ -3,12 +3,10 @@ import { expect } from 'chai'
 import stages from '@/pages/production/_slug/book/-bookingStages'
 import BookingNavigation from '@/components/booking/BookingNavigation.vue'
 import ProductionBanner from '@/components/production/ProductionBanner.vue'
-import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
 import { swal } from '@/utils'
 import Book from '@/pages/production/_slug/book.vue'
 
 import {
-  assertNoVisualDifference,
   generateMountOptions,
   mountWithRouterMock,
   waitFor,

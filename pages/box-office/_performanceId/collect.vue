@@ -8,44 +8,21 @@
       />
     </div>
 
-    <camera-check-in
-      v-if="showCamera"
-      :performance-id="performance.id"
-      @close="showCamera = false"
-    />
-    <hardware-scanner-check-in v-else :performance-id="performance.id" />
-
-    <div class="flex justify-center my-6">
-      <button
-        class="p-5 text-lg bg-sta-green"
-        @click="showCamera = !showCamera"
-      >
-        <template v-if="!showCamera"
-          >Activate Camera Ticket Scanner Instead</template
-        >
-        <template v-if="showCamera">Use Hardware-based Scanner</template>
-      </button>
-    </div>
+    <ticket-scanner :check-in-mode="true" :performance-id="performance.id" />
   </div>
 </template>
 
 <script>
 import Overview from '@/components/box-office/Overview.vue'
-import CameraCheckIn from '@/components/box-office/CameraCheckIn.vue'
-import HardwareScannerCheckIn from '@/components/box-office/HardwareScannerCheckIn.vue'
+import TicketScanner from '@/components/ui/Inputs/TicketScanner.vue'
 
 export default {
-  components: { Overview, CameraCheckIn, HardwareScannerCheckIn },
+  components: { Overview, TicketScanner },
   props: {
     performance: {
       required: true,
       type: Object,
     },
-  },
-  data() {
-    return {
-      showCamera: false,
-    }
   },
   computed: {
     crumbs() {

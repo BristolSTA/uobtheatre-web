@@ -11,7 +11,7 @@
       v-if="squareErrors.length"
       class="p-2 text-white border-2 border-sta-rouge"
     >
-      Whoops! There was an error with your details:
+      Whoops! There was an error with your payment:
       <ul class="list-disc list-inside">
         <li v-for="(item, index) in squareErrors" :key="index">
           {{ item }}
@@ -46,64 +46,77 @@ export default {
     return {
       squareErrors: [],
       paymentForm: null,
+      timer: null,
     }
   },
   destroyed() {
     if (this.paymentForm) this.paymentForm.destroy()
   },
   mounted() {
-    const squareOptions = {
-      applicationId: this.$config.services.square.application_id,
-      locationId: this.$config.services.square.location_id,
-      inputClass: 'sq-input',
-      autoBuild: false,
-      inputStyles: [
-        {
-          fontSize: '16px',
-          lineHeight: '24px',
-          padding: '16px',
-          placeholderColor: '#a0a0a0',
-          color: '#fff',
-          backgroundColor: 'transparent',
-        },
-      ],
-      cardNumber: {
-        elementId: 'sq-card-number',
-        placeholder: 'Card Number',
-      },
-      cvv: {
-        elementId: 'sq-cvv',
-        placeholder: 'CVV',
-      },
-      expirationDate: {
-        elementId: 'sq-expiration-date',
-        placeholder: 'MM/YY',
-      },
-      postalCode: {
-        elementId: 'sq-postal-code',
-        placeholder: 'Post Code',
-      },
-      callbacks: {
-        cardNonceResponseReceived: this.onNonceRecieved,
-        methodsSupported: this.onMethodsSupported,
-        createPaymentRequest: this.onCreatePaymentRequest,
-      },
-    }
-    if (this.useWallets) {
-      Object.assign(squareOptions, {
-        googlePay: {
-          elementId: 'sq-google-pay',
-        },
-        applePay: {
-          elementId: 'sq-apple-pay',
-        },
-      })
-    }
-    // eslint-disable-next-line no-undef
-    this.paymentForm = new SqPaymentForm(squareOptions)
-    this.paymentForm.build()
+    this.timer = setInterval(() => {
+      // eslint-disable-next-line no-undef
+      if (typeof SqPaymentForm !== 'undefined') {
+        clearInterval(this.timer)
+        this.initSquare()
+      }
+    }, 100)
+  },
+  beforeDestroy() {
+    clearInterval(this.timer)
   },
   methods: {
+    initSquare() {
+      const squareOptions = {
+        applicationId: this.$config.services.square.application_id,
+        locationId: this.$config.services.square.location_id,
+        inputClass: 'sq-input',
+        autoBuild: false,
+        inputStyles: [
+          {
+            fontSize: '16px',
+            lineHeight: '24px',
+            padding: '16px',
+            placeholderColor: '#a0a0a0',
+            color: '#fff',
+            backgroundColor: 'transparent',
+          },
+        ],
+        cardNumber: {
+          elementId: 'sq-card-number',
+          placeholder: 'Card Number',
+        },
+        cvv: {
+          elementId: 'sq-cvv',
+          placeholder: 'CVV',
+        },
+        expirationDate: {
+          elementId: 'sq-expiration-date',
+          placeholder: 'MM/YY',
+        },
+        postalCode: {
+          elementId: 'sq-postal-code',
+          placeholder: 'Post Code',
+        },
+        callbacks: {
+          cardNonceResponseReceived: this.onNonceRecieved,
+          methodsSupported: this.onMethodsSupported,
+          createPaymentRequest: this.onCreatePaymentRequest,
+        },
+      }
+      if (this.useWallets) {
+        Object.assign(squareOptions, {
+          googlePay: {
+            elementId: 'sq-google-pay',
+          },
+          applePay: {
+            elementId: 'sq-apple-pay',
+          },
+        })
+      }
+      // eslint-disable-next-line no-undef
+      this.paymentForm = new SqPaymentForm(squareOptions)
+      this.paymentForm.build()
+    },
     onPayClick() {
       this.paymentForm.requestCardNonce()
       this.$emit('paying')
