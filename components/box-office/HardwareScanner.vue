@@ -5,11 +5,16 @@
       ref="input"
       :value="value"
       :placeholder="placeholder"
-      input-class="py-3 text-center focus:ring ring-sta-green"
+      :input-class="[
+        focused
+          ? 'focus:ring-sta-green'
+          : 'ring-sta-rouge bg-sta-rouge bg-opacity-40 placeholder-white',
+        'py-3 text-center ring focus:outline-none',
+      ]"
       @input="$emit('input', $event)"
       @change="handleScan"
-      @blur="placeholder = 'Click here then scan'"
-      @focus="placeholder = 'Scan a Ticket...'"
+      @blur="focused = false"
+      @focus="focused = true"
     />
 
     <invalid-code-notification
@@ -36,9 +41,14 @@ export default {
     return {
       placeholder: 'Scan a Ticket...',
       invalidCode: false,
+      focused: true,
     }
   },
   watch: {
+    focused(newVal) {
+      if (newVal) this.placeholder = 'Scan a Ticket...'
+      else this.placeholder = 'Click here to scan'
+    },
     value() {
       this.invalidCode = false
     },

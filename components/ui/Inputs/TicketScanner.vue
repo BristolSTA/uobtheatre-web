@@ -33,10 +33,16 @@
         class="p-5 text-lg bg-sta-green"
         @click="showCamera = !showCamera"
       >
-        <template v-if="!showCamera"
-          >Activate Camera Ticket Scanner Instead</template
-        >
-        <template v-if="showCamera">Use Hardware-based Scanner</template>
+        <div v-if="!showCamera" class="flex items-center">
+          <div class="px-4">
+            <font-awesome-icon icon="mobile-alt" class="fa-2x" />
+          </div>
+          <div class="text-center">
+            <p><strong>On a mobile?</strong></p>
+            Switch to Camera-based Scanner
+          </div>
+        </div>
+        <template v-if="showCamera">Switch to Hardware-based Scanner</template>
       </button>
     </div>
   </div>

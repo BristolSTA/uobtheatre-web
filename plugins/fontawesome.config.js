@@ -31,6 +31,7 @@ export default {
     'faCheck',
     'faTimes',
     'faExclamation',
+    'faMobileAlt',
   ],
   brands: ['faFacebook'],
 }

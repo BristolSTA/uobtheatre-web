@@ -31,10 +31,10 @@
     </p>
     <div class="flex justify-between w-full">
       <p>Booked By: {{ fullName }}</p>
-      <p class="font-mono text-sm italic text-right text-gray-400">
-        {{ ticketNum }}
-      </p>
     </div>
+    <p class="font-mono text-sm italic text-right text-gray-400">
+      {{ ticket.id }}
+    </p>
   </div>
 </template>
 
@@ -71,9 +71,6 @@ export default {
   computed: {
     fullName() {
       return lo.join([this.user.firstName, this.user.lastName], ' ')
-    },
-    ticketNum() {
-      return ('0' + this.index).slice(-2)
     },
   },
 }

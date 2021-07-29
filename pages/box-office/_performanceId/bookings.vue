@@ -55,6 +55,7 @@
                         :key="`${index}-details`"
                         :index="index"
                         :booking="booking"
+                        :highlight-ticket-id="scannedTicket"
                       />
                     </template>
                   </tbody>
@@ -76,8 +77,9 @@
         </div>
         <ticket-scanner
           @scanned="
-            ({ bookingReference }) => {
+            ({ bookingReference, ticketId }) => {
               searchQuery = bookingReference
+              scannedTicket = ticketId
               scanning = false
             }
           "
@@ -118,24 +120,10 @@ export default {
       selected_booking_index: null,
       bookings: [],
       searchQuery: null,
+
       scanning: false,
+      scannedTicket: null,
     }
-  },
-  apollo: {
-    bookings: {
-      query: BoxOfficePerformanceBookings,
-      variables() {
-        return {
-          id: this.$route.params.performanceId,
-          search: this.searchQuery,
-        }
-      },
-      debounce: 600,
-      update: (data) =>
-        data.performance.bookings.edges.map((edge) =>
-          Booking.fromAPIData(edge.node)
-        ),
-    },
   },
   computed: {
     crumbs() {
@@ -154,6 +142,30 @@ export default {
           text: 'All Bookings',
         },
       ]
+    },
+  },
+  mounted() {
+    if (this.$route.query.q) {
+      this.searchQuery = this.$route.query.q
+    }
+    if (this.$route.query.qTicket) {
+      this.scannedTicket = this.$route.query.qTicket
+    }
+  },
+  apollo: {
+    bookings: {
+      query: BoxOfficePerformanceBookings,
+      variables() {
+        return {
+          id: this.$route.params.performanceId,
+          search: this.searchQuery,
+        }
+      },
+      debounce: 600,
+      update: (data) =>
+        data.performance.bookings.edges.map((edge) =>
+          Booking.fromAPIData(edge.node)
+        ),
     },
   },
 }
