@@ -27,9 +27,9 @@ export default {
 
   logout(context, trigger = true) {
     clearTimeout(refreshTimer)
-    context.store.dispatch('auth/logout')
-    cookie.remove(context.$config.auth.refreshTokenKey)
-    cookie.remove(context.$config.auth.rememberKey)
+    context.store.dispatch('auth/logout') // Remove token
+    cookie.remove(context.$config.auth.refreshTokenKey) // Remove fresh token cookie
+    cookie.remove(context.$config.auth.rememberKey) // Remove remember cookie
     if (trigger) window.localStorage.setItem('logout', Date.now())
   },
 

@@ -164,7 +164,7 @@
           <nuxt-link
             to="/privacy"
             class="underline transition-colors hover:text-sta-orange"
-            >Privacy</nuxt-link
+            >Privacy Policy</nuxt-link
           >
         </span>
         <error-helper :errors="signup_errors" field-name="acceptedTerms" />
@@ -273,7 +273,7 @@ export default {
           showConfirmButton: true,
           position: 'bottom-end',
         })
-        return this.$router.push({ name: 'home' })
+        return this.$router.push('/')
       } catch (e) {
         this.signup_errors = getValidationErrors(e)
       }
