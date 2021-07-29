@@ -2,8 +2,10 @@
   <div class="container my-6 text-white">
     <ul class="text-xl uppercase">
       <li
-        class="inline-block font-semibold hover:text-sta-rouge"
-        :class="{ 'text-sta-rouge': overview & hasCastCrew }"
+        class="inline-block font-semibold"
+        :class="{
+          'text-sta-rouge hover:text-sta-rouge': overview & hasCastCrew,
+        }"
       >
         <clickable-link @click="overview = true"> Overview </clickable-link>
       </li>
@@ -12,7 +14,7 @@
         class="inline-block ml-6 font-semibold hover:text-sta-rouge"
         :class="{ 'text-sta-rouge': !overview }"
       >
-        <clickable-link @click="overview = false">
+        <clickable-link :disabled="!hasCastCrew" @click="overview = false">
           Cast &amp; Credits
         </clickable-link>
       </li>
