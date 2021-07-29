@@ -3,11 +3,12 @@
     <ul class="text-xl uppercase">
       <li
         class="inline-block font-semibold hover:text-sta-rouge"
-        :class="{ 'text-sta-rouge': overview }"
+        :class="{ 'text-sta-rouge': overview & hasCastCrew }"
       >
         <clickable-link @click="overview = true"> Overview </clickable-link>
       </li>
       <li
+        v-if="hasCastCrew"
         class="inline-block ml-6 font-semibold hover:text-sta-rouge"
         :class="{ 'text-sta-rouge': !overview }"
       >
@@ -202,6 +203,13 @@ export default {
     },
     sortedCast() {
       return lodash.sortBy(this.production.cast, 'profilePicture')
+    },
+    hasCastCrew() {
+      return Boolean(
+        this.production.crew.length ||
+          this.production.cast.length ||
+          this.production.productionTeam.length
+      )
     },
     medium() {
       if (!this.production.performances.edges.length) return null
