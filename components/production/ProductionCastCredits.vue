@@ -4,10 +4,13 @@
       <li
         class="inline-block font-semibold"
         :class="{
-          'text-sta-rouge hover:text-sta-rouge': overview & hasCastCrew,
+          'text-sta-rouge ': overview & hasCastCrew,
+          'hover:text-sta-rouge': !overview,
         }"
       >
-        <clickable-link @click="overview = true"> Overview </clickable-link>
+        <clickable-link :disabled="!hasCastCrew" @click="overview = true">
+          Overview
+        </clickable-link>
       </li>
       <li
         v-if="hasCastCrew"

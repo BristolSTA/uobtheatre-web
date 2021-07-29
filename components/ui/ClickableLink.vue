@@ -17,7 +17,7 @@ export default {
   name: 'ClickableLink',
   props: {
     disabled: {
-      default: true,
+      default: false,
       type: Boolean,
     },
   },
