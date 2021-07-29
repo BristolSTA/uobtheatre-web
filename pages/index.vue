@@ -110,6 +110,11 @@ export default {
     upcomingProductions: {
       query: require('@/graphql/queries/HomeUpcomingProductions.gql'),
       update: (data) => data.productions.edges.map((edge) => edge.node),
+      variables() {
+        return {
+          now: new Date(),
+        }
+      },
     },
   },
   computed: {

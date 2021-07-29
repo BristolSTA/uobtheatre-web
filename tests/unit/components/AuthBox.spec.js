@@ -173,9 +173,7 @@ describe('AuthBox', function () {
         '36c86c19f8f8d73aa59c3a00814137bdee0ab8de'
       )
       expect(storeDispatchFn.mock.calls[1][0]).to.eq('auth/loadUserDetails')
-      expect(storeDispatchFn.mock.calls[1][1].userInfo.email).to.eq(
-        'm.pegg@example.org'
-      )
+      expect(storeDispatchFn.mock.calls[1][1].apollo).to.not.be.undefined
     })
 
     it('redirects to home on successful login if no intended', async () => {

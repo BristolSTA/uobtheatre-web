@@ -32,7 +32,7 @@
               <tr>
                 <th class="pr-2 align-top">Address:</th>
                 <td class="align-top">
-                  <div ref="address">
+                  <div v-if="venue.address" ref="address">
                     <p v-if="venue.address.buildingName">
                       {{ venue.address.buildingName }}
                     </p>
@@ -60,7 +60,9 @@
         </div>
       </div>
       <div
-        v-if="venue.address.latitude && venue.address.longitude"
+        v-if="
+          venue.address && venue.address.latitude && venue.address.longitude
+        "
         class="flex justify-center w-full lg:w-3/5 h-96 lg:mb-4"
       >
         <div ref="venue-map" class="w-full"></div>
@@ -125,7 +127,12 @@ export default {
   },
   computed: {
     googleMapsLink() {
-      return `https://maps.google.com/?q=${this.venue.name},${this.venue.address.street},${this.venue.address.city}`
+      return (
+        `https://maps.google.com/?q=${this.venue.name}` +
+        (this.venue.address
+          ? `,${this.venue.address.street},${this.venue.address.city}`
+          : '')
+      )
     },
   },
   mounted() {
@@ -134,7 +141,7 @@ export default {
   methods: {
     createMap() {
       const venue = this.venue
-      if (!venue.address.latitude || !venue.address.longitude) return
+      if (!venue?.address?.latitude || !venue?.address?.longitude) return
       const map = L.map(this.$refs['venue-map']).setView(
         [venue.address.latitude, venue.address.longitude],
         14

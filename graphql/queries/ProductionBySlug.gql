@@ -28,7 +28,7 @@ query productionBySlug($slug: String!) {
     warnings {
       description
     }
-    performances {
+    performances(orderBy: "start") {
       edges {
         node {
           id

@@ -1,0 +1,27 @@
+#import "../../fragments/production/ProductionBasicInfoFragment.gql"
+query boxOfficePerformances($date: Date) {
+  performances(
+    first: 9
+    orderBy: "start"
+    runOn: $date
+    hasBoxofficePermissions: true
+  ) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    edges {
+      node {
+        id
+        start
+        doorsOpen
+        production {
+          ...ProductionBasicInfo
+        }
+        venue {
+          name
+        } 
+      }
+    }
+  }
+}

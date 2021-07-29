@@ -1,10 +1,5 @@
 <template>
   <div class="min-h-full mb-10 text-white bg-sta-gray">
-    <div class="bg-sta-gray-light">
-      <div class="container">
-        <breadcrumbs :crumbs="crumbs" />
-      </div>
-    </div>
     <div v-if="booking.performance" class="container">
       <h1 class="pt-2 text-h1">Your Booking</h1>
       <h2 class="text-h2 text-sta-orange">
@@ -81,7 +76,6 @@ import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue'
 import VenueOverview from '@/components/booking/overview/VenueOverview.vue'
 import Ticket from '@/components/booking/Ticket.vue'
 import ProductionBanner from '@/components/production/ProductionBanner.vue'
-import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
 
 export default {
   components: {
@@ -91,8 +85,8 @@ export default {
     ProductionBanner,
     PaymentOverview,
     Ticket,
-    Breadcrumbs,
   },
+  middleware: 'authed',
   async asyncData({ app, params, error }) {
     const { data } = await app.apolloProvider.defaultClient.query({
       query: require('@/graphql/queries/UserPaidBooking.gql'),

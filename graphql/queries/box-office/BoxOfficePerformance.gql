@@ -1,0 +1,22 @@
+#import "../../fragments/production/ProductionBasicInfoFragment.gql"
+query boxOfficePerformance($id: ID!) {
+  performance(id: $id) {
+    id
+    capacityRemaining
+    venue {
+      name
+      slug
+    }
+    disabled
+    doorsOpen
+    start
+    end
+    durationMins
+    soldOut
+    isInperson
+    isOnline
+    production {
+      ...ProductionBasicInfo
+    }
+  }
+}

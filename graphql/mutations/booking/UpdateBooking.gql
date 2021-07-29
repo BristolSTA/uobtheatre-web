@@ -1,0 +1,18 @@
+#import "../../fragments/booking/DetailedBookingDetails.gql"
+mutation updateBooking($id: IdInputField!, $tickets: [UpdateTicketInput]) {
+  updateBooking(bookingId: $id, tickets: $tickets) {
+    success
+    booking {
+      ...DetailedBookingDetails
+    }
+    errors {
+      ... on NonFieldError {
+        message
+      }
+      ... on FieldError {
+        message
+        field
+      }
+    }
+  }
+}

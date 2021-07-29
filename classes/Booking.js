@@ -216,6 +216,14 @@ export default class Booking {
     return (this.ticketsTotalPriceEstimate(ticketMatrix) / 100).toFixed(2)
   }
 
+  get allCheckedIn() {
+    return this.tickets.every((ticket) => ticket.checkedIn)
+  }
+
+  get numberCheckedIn() {
+    return this.tickets.filter((ticket) => ticket.checkedIn).length
+  }
+
   /**
    * @returns {number} Total cost / price of the booking in pennies
    */
@@ -276,8 +284,13 @@ export default class Booking {
    * @returns {Array} List of tickets grouped by seat group & concession type, giving capacity and price
    */
   ticketOverview(ticketMatrix = null) {
-    if (!this.priceBreakdown || this.dirty)
+    if (!this.priceBreakdown || this.dirty) {
+      if (!ticketMatrix)
+        throw new Error(
+          'A ticket matrix is required to generate the ticket overview'
+        )
       return this.ticketOverviewEstimate(ticketMatrix)
+    }
     return this.priceBreakdown.tickets
   }
 
@@ -307,6 +320,13 @@ export default class Booking {
             cocnessionTypeEdge.concessionType.id ===
             groupedTickets[0].concessionType.id
         )
+
+        if (!concessionTypeEdge) {
+          throw new Error(
+            `No matching concession type found for ticket details (Concession Type ID: ${groupedTickets[0].concessionType.id})`
+          )
+        }
+
         return {
           number: groupedTickets.length,
           concessionType: concessionTypeEdge.concessionType,

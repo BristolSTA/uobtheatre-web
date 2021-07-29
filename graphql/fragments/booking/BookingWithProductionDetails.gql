@@ -54,6 +54,7 @@ fragment BookingWithProductionDetails on BookingNode {
         }
         provider {
           value
+          description
         }
         value
         cardBrand

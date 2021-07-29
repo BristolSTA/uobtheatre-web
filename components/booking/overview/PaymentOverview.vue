@@ -7,9 +7,15 @@
     <template #subtitle>
       <p class="text-h4">
         {{ booking.status.description }}
-        <template v-if="booking.payments[0]">
-          using {{ booking.payments[0].cardBrand.replace('_', ' ') }} ending
-          {{ booking.payments[0].last4 }}
+        <template v-if="mainPayment">
+          using
+          <template v-if="mainPayment.cardBrand && mainPayment.last4"
+            >{{ mainPayment.cardBrand.replace('_', ' ') }} ending
+            {{ mainPayment.last4 }}</template
+          >
+          <template v-else>{{
+            mainPayment.provider.description.toLowerCase()
+          }}</template>
         </template>
       </p>
     </template>
@@ -47,6 +53,9 @@ export default {
     },
   },
   computed: {
+    mainPayment() {
+      return this.booking.payments[0]
+    },
     pricePaidPounds() {
       return (
         this.booking.payments

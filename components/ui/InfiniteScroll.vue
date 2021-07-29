@@ -6,13 +6,15 @@
       ref="bottom-loader"
       class="pb-4 text-4xl text-center"
     >
-      <font-awesome-icon icon="circle-notch" class="animate-spin" />
+      <loading-icon size-class="" />
     </p>
   </div>
 </template>
 
 <script>
+import LoadingIcon from './LoadingIcon.vue'
 export default {
+  components: { LoadingIcon },
   props: {
     apolloQuery: {
       required: true,

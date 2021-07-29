@@ -14,7 +14,7 @@
           View What's On
         </NuxtLink>
       </div>
-      <div v-else class="flex flex-wrap justify-center lg:flex-nowrap">
+      <div v-else class="flex flex-wrap justify-center">
         <div
           v-for="(booking, index) in futureBookings"
           :key="index"
