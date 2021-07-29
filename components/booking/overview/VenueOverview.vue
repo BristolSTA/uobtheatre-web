@@ -12,7 +12,7 @@
         target="_blank"
         title="Opens in a new tab"
       >
-        <icon-list-item icon="link">The {{ venue.name }}</icon-list-item>
+        <icon-list-item icon="link">{{ venue.name }}</icon-list-item>
       </NuxtLink>
     </template>
     <div v-if="venue">
