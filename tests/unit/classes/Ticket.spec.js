@@ -96,8 +96,17 @@ describe('Ticket Class', () => {
     })
   })
 
-  it('can generate a unique QR code string', () => {
+  it('can generate a QR code string', () => {
     ticket.id = 2
-    expect(ticket.generateQRCodeString('abcd1234')).to.eq('YWJjZDEyMzQsMg==')
+    expect(ticket.generateQRCodeString('abcd1234')).to.eq(
+      'WyJhYmNkMTIzNCIsMl0='
+    )
+  })
+
+  it('can get data from a QR code', () => {
+    expect(Ticket.dataFromQRCode('WyJhYmNkMTIzNCIsMl0')).to.include({
+      bookingReference: 'abcd1234',
+      ticketId: 2,
+    })
   })
 })

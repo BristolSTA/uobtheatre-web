@@ -91,7 +91,10 @@ export default {
   queueRefresh(context) {
     if (refreshTimer) clearTimeout(refreshTimer)
     const { exp } = jwtDecode(this.currentAuthToken(context))
-    const timeoutSeconds = exp - Math.round(Date.now() / 1000) - 30
+    let timeoutSeconds = exp - Math.round(Date.now() / 1000) - 30
+
+    if (timeoutSeconds < 1) timeoutSeconds = 1
+
     refreshTimer = setTimeout(() => {
       refreshTimer = null
       this.silentRefresh(context)
@@ -121,11 +124,6 @@ export default {
                 ${ErrorsPartial}
                 token
                 refreshToken
-                user {
-                  firstName
-                  lastName
-                  email
-                }
               }
             }
           `,
@@ -156,7 +154,7 @@ export default {
           )
           this.queueRefresh(standardContext)
           standardContext.store.dispatch('auth/loadUserDetails', {
-            userInfo: data.login.user,
+            apollo: standardContext.app.apolloProvider.defaultClient,
           })
           return resolve(data.login)
         })

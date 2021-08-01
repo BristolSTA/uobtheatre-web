@@ -5,12 +5,10 @@ import PerformanceOverview from '@/components/booking/overview/PerformanceOvervi
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue'
 import VenueOverview from '@/components/booking/overview/VenueOverview.vue'
 import Ticket from '@/components/booking/Ticket.vue'
-import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
 import ViewBooking from '@/pages/user/booking/_reference/index'
 
 import FakeBooking from '../../fixtures/Booking.js'
 import {
-  assertNoVisualDifference,
   generateMountOptions,
   mountWithRouterMock,
   waitFor,
@@ -69,16 +67,6 @@ describe('View Booking', () => {
       .true
     expect(viewBookingComponent.findComponent(PaymentOverview).exists()).to.be
       .true
-  })
-
-  it('has correct breadcrumbs', () => {
-    const breadcrumbs = viewBookingComponent.findComponent(Breadcrumbs)
-    expect(breadcrumbs.exists()).to.be.true
-
-    assertNoVisualDifference(breadcrumbs.props('crumbs'), [
-      { text: 'My Account', route: '/user' },
-      { text: 'Booking Details' },
-    ])
   })
 
   it('has working ticket dropdown', async () => {

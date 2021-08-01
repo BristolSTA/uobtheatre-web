@@ -6,7 +6,7 @@
       <template v-if="!error">
         <h1 class="text-h3">Activating your account...</h1>
         <div>
-          <font-awesome-icon class="animate-spin text-h1" icon="circle-notch" />
+          <loading-icon size-class="text-h1" />
         </div>
       </template>
       <template v-else>
@@ -22,9 +22,10 @@ import { authService } from '@/services'
 import { getValidationErrors, swalToast } from '@/utils'
 
 import AuthPageTemplate from '@/components/auth/AuthPageTemplate.vue'
+import LoadingIcon from '@/components/ui/LoadingIcon.vue'
 
 export default {
-  components: { AuthPageTemplate },
+  components: { AuthPageTemplate, LoadingIcon },
   middleware: 'not-authed',
   data() {
     return {

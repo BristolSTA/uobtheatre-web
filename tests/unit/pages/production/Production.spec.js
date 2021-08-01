@@ -1,13 +1,11 @@
 import { expect } from 'chai'
 
-import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
 import ProductionPage from '@/pages/production/_slug/index'
 import ProductionCastCredits from '@/components/production/ProductionCastCredits.vue'
 import ProductionHeader from '@/components/production/ProductionHeader.vue'
 import ProductionPerformances from '@/components/production/ProductionPerformances.vue'
 
 import {
-  assertNoVisualDifference,
   generateMountOptions,
   mountWithRouterMock,
   waitFor,
@@ -66,17 +64,5 @@ describe('Production', function () {
   it('fetches the production', async () => {
     await waitFor(() => productionPageComponent.vm.production)
     expect(productionPageComponent.vm.production.name).to.eq('Legally Ginger')
-  })
-
-  it('has correct breadcrumbs', () => {
-    const breadcrumbs = productionPageComponent.findComponent(Breadcrumbs)
-    expect(breadcrumbs.exists()).to.be.true
-
-    assertNoVisualDifference(breadcrumbs.props('crumbs'), [
-      { text: 'Whats On', route: '/productions' },
-      {
-        text: 'Legally Ginger',
-      },
-    ])
   })
 })

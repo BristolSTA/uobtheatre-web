@@ -13,42 +13,6 @@ describe('Pick Performance Stage', () => {
   let production
 
   beforeAll(async () => {
-    // await executeWithServer(async (server) => {
-    //   production = server.create(
-    //     'productionNode',
-    //     Object.assign({}, FakeProduction(server), {
-    //       performances: [
-    //         server.create('performanceNode', {
-    //           start: DateTime.fromISO('2020-12-25T10:00:00'),
-    //           end: DateTime.fromISO('2020-12-25T12:00:00'),
-    //           soldOut: false,
-    //         }),
-    //         server.create('performanceNode', {
-    //           start: DateTime.fromISO('2020-12-26T14:00:00'),
-    //           end: DateTime.fromISO('2020-12-26T16:00:00'),
-    //           soldOut: false,
-    //         }),
-    //         server.create('performanceNode', {
-    //           start: DateTime.fromISO('2020-12-27T18:00:00'),
-    //           end: DateTime.fromISO('2020-12-27T20:00:00'),
-    //           soldOut: false,
-    //         }),
-    //       ],
-    //     })
-    //   )
-    //   const gqlResult = await runApolloQuery({
-    //     query: gql`
-    //       query {
-    //         production(slug: "${production.slug}") {
-    //           ...ProductionBasicInfo
-    //         }
-    //       }
-    //       ${ProductionFragment}
-    //     `,
-    //   })
-    //   production = gqlResult.data.production
-
-    // })
     production = Production({
       performances: GenericNodeConnection([
         Performance({

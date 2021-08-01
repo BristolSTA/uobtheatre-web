@@ -1,0 +1,12 @@
+query boxOfficePerformanceTicketBreakdown($id: ID!) {
+  performance(id: $id) {
+    id
+    ticketsBreakdown {
+      totalCapacity
+      totalTicketsSold
+      totalTicketsCheckedIn
+      totalTicketsToCheckIn
+      totalTicketsAvailable
+    }
+  }
+}

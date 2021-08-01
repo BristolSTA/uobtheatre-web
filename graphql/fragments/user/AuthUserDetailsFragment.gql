@@ -1,0 +1,6 @@
+fragment AuthUserDetails on ExtendedUserNode {
+  firstName
+  lastName
+  email
+  canBoxoffice
+}

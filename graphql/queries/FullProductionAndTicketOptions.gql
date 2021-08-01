@@ -1,0 +1,57 @@
+#import "../fragments/production/ProductionBasicInfoFragment.gql"
+#import "../fragments/production/ProductionPerformancesFragment.gql"
+query performanceTicketOptions($id: ID!) {
+  performance(id: $id) {
+    id
+    capacityRemaining
+    venue {
+      name
+      slug
+    }
+    disabled
+    doorsOpen
+    start
+    end
+    durationMins
+    soldOut
+    isInperson
+    isOnline
+    production {
+      id
+      ...ProductionBasicInfo
+      ...ProductionPerformances
+    }
+    capacityRemaining
+    discounts {
+      name
+      seatGroup {
+        id
+        name
+      }
+      requirements {
+        number
+        concessionType {
+          id
+          name
+        }
+      }
+    }
+    ticketOptions {
+      id
+      capacityRemaining
+      seatGroup {
+        id
+        name
+        description
+      }
+      concessionTypes {
+        concessionType {
+          id
+          name
+          description
+        }
+        price
+      }
+    }
+  }
+}

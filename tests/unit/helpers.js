@@ -112,6 +112,9 @@ const generateMountOptions = function (types = [], options = {}) {
   }
   if (types.includes('apollo')) {
     options.mocks.$apollo = generateApolloMock(options.apollo)
+    options.mocks.$apolloProvider = {
+      defaultClient: options.mocks.$apollo,
+    }
     delete options.apollo
   }
   if (types.includes('router')) {

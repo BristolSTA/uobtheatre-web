@@ -1,0 +1,26 @@
+#import "../../fragments/booking/DetailedBookingDetails.gql"
+mutation createBooking(
+  $performanceId: IdInputField!
+  $tickets: [CreateTicketInput]
+  $targetUserEmail: String
+) {
+  createBooking(
+    performanceId: $performanceId
+    targetUserEmail: $targetUserEmail
+    tickets: $tickets
+  ) {
+    success
+    booking {
+      ...DetailedBookingDetails
+    }
+    errors {
+      ... on NonFieldError {
+        message
+      }
+      ... on FieldError {
+        message
+        field
+      }
+    }
+  }
+}

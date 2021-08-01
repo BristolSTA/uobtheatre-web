@@ -3,12 +3,10 @@ import { expect } from 'chai'
 import stages from '@/pages/production/_slug/book/-bookingStages'
 import BookingNavigation from '@/components/booking/BookingNavigation.vue'
 import ProductionBanner from '@/components/production/ProductionBanner.vue'
-import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
 import { swal } from '@/utils'
 import Book from '@/pages/production/_slug/book.vue'
 
 import {
-  assertNoVisualDifference,
   generateMountOptions,
   mountWithRouterMock,
   waitFor,
@@ -60,19 +58,6 @@ describe('Create Booking Page', () => {
     expect(banner.props('production').name).to.eq('Legally Ginger')
     expect(banner.props('showBuyTicketsButton')).to.eq(false)
     expect(banner.props('showDetailedInfo')).to.eq(false)
-  })
-
-  it('has correct breadcrumbs', () => {
-    const breadcrumbs = bookingComponent.findComponent(Breadcrumbs)
-    expect(breadcrumbs.exists()).to.be.true
-    assertNoVisualDifference(breadcrumbs.props('crumbs'), [
-      { text: 'Whats On', route: '/productions' },
-      {
-        text: 'Legally Ginger',
-        route: '/production/legally-ginger',
-      },
-      { text: 'Book' },
-    ])
   })
 
   it('has booking navigation', () => {

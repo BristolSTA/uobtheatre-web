@@ -5,6 +5,10 @@ fragment DetailedBookingDetails on BookingNode {
   status {
     description
   }
+  user {
+    firstName
+    lastName
+  }
   priceBreakdown {
     ...AllPriceBreakdown
   }
@@ -17,6 +21,25 @@ fragment DetailedBookingDetails on BookingNode {
     concessionType {
       id
       name
+    }
+    checkedIn
+  }
+  payments {
+    edges {
+      node {
+        createdAt
+        type {
+          value
+          description
+        }
+        provider {
+          value
+          description
+        }
+        value
+        cardBrand
+        last4
+      }
     }
   }
   performance {

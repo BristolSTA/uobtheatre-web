@@ -6,7 +6,7 @@
   "eslint.packageManager": "yarn",
   "eslint.validate": ["javascript", "javascriptreact", "vue"],
   "path-intellisense.mappings": {
-    "@": "${workspaceRoot}/src"
+    "@": "${workspaceRoot}"
   },
   "vetur.grammar.customBlocks": {
     "router": "js"

@@ -1,10 +1,5 @@
 <template>
   <div class="min-h-full bg-sta-gray">
-    <div class="bg-sta-gray-light">
-      <div class="container">
-        <breadcrumbs :crumbs="crumbs" />
-      </div>
-    </div>
     <div
       v-if="!production"
       class="justify-center py-20 text-xl font-semibold text-center text-white"
@@ -26,8 +21,6 @@
 </template>
 
 <script>
-import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
-
 import ProductionCastCredits from '@/components/production/ProductionCastCredits.vue'
 import ProductionHeader from '@/components/production/ProductionHeader.vue'
 import ProductionPerformances from '@/components/production/ProductionPerformances.vue'
@@ -38,7 +31,6 @@ export default {
     ProductionHeader,
     ProductionCastCredits,
     ProductionPerformances,
-    Breadcrumbs,
   },
   async asyncData({ params, error, app }) {
     // Execute query
