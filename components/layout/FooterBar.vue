@@ -7,10 +7,10 @@
             <li
               v-for="(item, index) in navItems"
               :key="index"
-              class="flex mt-2 text-center text-white md:text-left hover:text-sta-orange md:block"
+              class="flex mt-2 text-center text-white md:text-left md:block"
             >
               <NuxtLink :to="item[0]">
-                {{ item[1] }}
+                <span class="hover:text-sta-orange">{{ item[1] }}</span>
               </NuxtLink>
             </li>
           </ul>
