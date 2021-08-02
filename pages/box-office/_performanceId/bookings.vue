@@ -8,7 +8,7 @@
           :detailed="false"
         />
       </div>
-      <h2 class="mb-2 text-center text-h2">All Bookings</h2>
+      <h2 class="mb-2 text-center text-h2">Performance Bookings</h2>
 
       <div v-if="!scanning" class="flex justify-center mb-4">
         <div class="w-full px-2 lg:max-w-4xl">
@@ -74,15 +74,14 @@
         </div>
       </div>
       <div v-else>
-        <div class="text-center">
-          <p>Find a booking via scanning</p>
-          <button
-            class="p-2 transition-colors bg-gray-400 rounded focus:outline-none hover:bg-gray-500"
-            @click="scanning = false"
+        <h3 class="text-center text-h3">Find a booking</h3>
+        <p class="mb-6 text-center">
+          <nuxt-link
+            to="collect"
+            class="underline transition-colors hover:text-gray-300"
+            >Looking to check in tickets?</nuxt-link
           >
-            Cancel
-          </button>
-        </div>
+        </p>
         <ticket-scanner
           @scanned="
             ({ bookingReference, ticketId }) => {
@@ -92,6 +91,14 @@
             }
           "
         />
+        <div class="text-center">
+          <button
+            class="p-2 transition-colors bg-gray-400 rounded focus:outline-none hover:bg-gray-500"
+            @click="scanning = false"
+          >
+            Cancel
+          </button>
+        </div>
       </div>
     </div>
   </div>
