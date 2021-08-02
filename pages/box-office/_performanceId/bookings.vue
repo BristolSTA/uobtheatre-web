@@ -30,37 +30,45 @@
           </div>
           <div class="px-1 py-2 bg-sta-gray-dark sm:p-2">
             <loading-container :loading="$apollo.queries.bookings.loading">
-              <div class="overflow-auto">
-                <table class="w-full overflow-x-auto">
-                  <thead>
-                    <th>Name</th>
-                    <th>Reference</th>
-                    <th>Checked In?<sort-icon /></th>
-                    <th>Price</th>
-                  </thead>
-                  <tbody>
-                    <template v-for="(booking, index) in bookings">
-                      <booking-row
-                        :key="`${index}-row`"
-                        :index="index"
-                        :booking="booking"
-                        :active="selected_booking_index == index"
-                        @select-booking="
-                          selected_booking_index =
-                            selected_booking_index != index ? index : null
-                        "
-                      />
-                      <booking-details-row
-                        v-if="selected_booking_index == index"
-                        :key="`${index}-details`"
-                        :index="index"
-                        :booking="booking"
-                        :highlight-ticket-id="scannedTicket"
-                      />
-                    </template>
-                  </tbody>
-                </table>
-              </div>
+              <paginated-table
+                :page-info="pageInfo"
+                :current-cursor="offset"
+                @previousPage="
+                  () => {
+                    offset -= bookings.length
+                  }
+                "
+                @nextPage="
+                  () => {
+                    offset += bookings.length
+                  }
+                "
+              >
+                <template #head>
+                  <th>Name</th>
+                  <th>Reference</th>
+                  <th>Checked In?<sort-icon /></th>
+                  <th>Price</th></template
+                ><template v-for="(booking, index) in bookings">
+                  <booking-row
+                    :key="`${index}-row`"
+                    :index="index"
+                    :booking="booking"
+                    :active="selected_booking_index == index"
+                    @select-booking="
+                      selected_booking_index =
+                        selected_booking_index != index ? index : null
+                    "
+                  />
+                  <booking-details-row
+                    v-if="selected_booking_index == index"
+                    :key="`${index}-details`"
+                    :index="index"
+                    :booking="booking"
+                    :highlight-ticket-id="scannedTicket"
+                  />
+                </template>
+              </paginated-table>
             </loading-container>
           </div>
         </div>
@@ -99,6 +107,7 @@ import BoxOfficePerformanceBookings from '@/graphql/queries/box-office/BoxOffice
 import BookingDetailsRow from '@/components/box-office/BookingDetailsRow.vue'
 import LoadingContainer from '@/components/ui/LoadingContainer.vue'
 import TicketScanner from '@/components/ui/Inputs/TicketScanner.vue'
+import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue'
 
 export default {
   components: {
@@ -108,6 +117,7 @@ export default {
     BookingDetailsRow,
     LoadingContainer,
     TicketScanner,
+    PaginatedTable,
   },
   props: {
     performance: {
@@ -117,9 +127,12 @@ export default {
   },
   data() {
     return {
-      selected_booking_index: null,
       bookings: [],
+      pageInfo: {},
+      offset: 0,
       searchQuery: null,
+
+      selected_booking_index: null,
 
       scanning: false,
       scannedTicket: null,
@@ -159,13 +172,19 @@ export default {
         return {
           id: this.$route.params.performanceId,
           search: this.searchQuery,
+          offset: this.offset,
         }
       },
-      debounce: 600,
+      debounce: 100,
       update: (data) =>
         data.performance.bookings.edges.map((edge) =>
           Booking.fromAPIData(edge.node)
         ),
+      result(result) {
+        this.pageInfo = result.data.performance.bookings.pageInfo
+      },
+      fetchPolicy: 'no-cache',
+      notifyOnNetworkStatusChange: true,
     },
   },
 }

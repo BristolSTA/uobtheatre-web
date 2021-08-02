@@ -6,9 +6,10 @@
     <button
       class="relative inline-flex items-center px-2 py-2 text-sm font-medium"
       :class="[
-        inactiveButtonStyle,
-        canGoBackward ? 'cursor-pointer' : 'cursor-default',
+        [canGoBackward ? inactiveButtonStyle : disabledButtonStyle],
+        { 'cursor-pointer': canGoBackward },
       ]"
+      :disabled="!canGoBackward"
       @click="previousPage"
       @keypress="previousPage"
     >
@@ -27,27 +28,30 @@
         />
       </svg>
     </button>
-    <button
-      v-for="(page, index) in pageDisplay"
-      :key="index"
-      :disabled="isNaN(page)"
-      class="relative inline-flex items-center px-4 py-2 text-sm font-medium"
-      :class="[
-        page == currentPage ? activeButtonStyle : inactiveButtonStyle,
-        isNaN(page) ? 'cursor-default' : 'cursor-pointer',
-      ]"
-      @click="gotoPage(page)"
-      @keypress="gotoPage(page)"
+    <template v-if="pageDisplay"
+      ><button
+        v-for="(page, index) in pageDisplay"
+        :key="index"
+        :disabled="isNaN(page)"
+        class="relative inline-flex items-center px-4 py-2 text-sm font-medium"
+        :class="[
+          page == currentPage ? activeButtonStyle : inactiveButtonStyle,
+          isNaN(page) ? 'cursor-default' : 'cursor-pointer',
+        ]"
+        @click="gotoPage(page)"
+        @keypress="gotoPage(page)"
+      >
+        {{ page }}
+      </button></template
     >
-      {{ page }}
-    </button>
 
     <button
       class="relative inline-flex items-center px-2 py-2 text-sm font-medium"
       :class="[
-        inactiveButtonStyle,
-        canGoForward ? 'cursor-pointer' : 'cursor-default',
+        [canGoForward ? inactiveButtonStyle : disabledButtonStyle],
+        { 'cursor-pointer': canGoForward },
       ]"
+      :disabled="!canGoForward"
       @click="nextPage"
       @keypress="nextPage"
     >
@@ -72,12 +76,20 @@
 <script>
 export default {
   props: {
+    hasNextPage: {
+      default: undefined,
+      type: Boolean,
+    },
+    hasPreviousPage: {
+      default: undefined,
+      type: Boolean,
+    },
     numberOfPages: {
-      required: true,
+      default: null,
       type: Number,
     },
     currentPage: {
-      required: true,
+      default: null,
       type: Number,
     },
     numberPagesToDisplay: {
@@ -94,15 +106,21 @@ export default {
         'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 focus:outline-none',
       type: String,
     },
+    disabledButtonStyle: {
+      default:
+        'cursor-default bg-opacity-70 text-gray-700 border border-gray-300',
+      type: String,
+    },
   },
   computed: {
     canGoBackward() {
-      return this.currentPage > 1
+      return this.hasPreviousPage || this.currentPage > 1
     },
     canGoForward() {
-      return this.currentPage !== this.numberOfPages
+      return this.hasNextPage || this.currentPage !== this.numberOfPages
     },
     pageDisplay() {
+      if (!this.numberOfPages) return null
       let innerLength = this.numberPagesToDisplay - 2
       const innerMax = this.numberOfPages - 1
       const innerMin = 2
@@ -129,15 +147,15 @@ export default {
   methods: {
     previousPage() {
       if (!this.canGoBackward) return
-      this.$emit('previous-page')
+      this.$emit('previousPage')
     },
     nextPage() {
       if (!this.canGoForward) return
-      this.$emit('next-page')
+      this.$emit('nextPage')
     },
     gotoPage(page) {
       if (isNaN(page) || this.currentPage === page) return
-      this.$emit('goto-page', page)
+      this.$emit('gotoPage', page)
     },
   },
 }

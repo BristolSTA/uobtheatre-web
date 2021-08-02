@@ -51,7 +51,7 @@ export default {
         'checkInBooking'
       )
       successToast.fire({
-        timed: 4000,
+        timer: 4000,
         title: 'Tickets automatically checked in',
       })
     } catch (e) {

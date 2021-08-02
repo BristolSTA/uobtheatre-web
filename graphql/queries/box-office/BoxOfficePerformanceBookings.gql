@@ -1,8 +1,14 @@
 #import "../../fragments/booking/DetailedBookingDetails.gql"
-query boxOfficePerformanceBookings($id: ID!, $search: String) {
+query boxOfficePerformanceBookings($id: ID!, $search: String, $offset: Int) {
   performance(id: $id) {
     id
-    bookings(search: $search) {
+    bookings(search: $search, first: 10, offset: $offset) {
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
+      }
       edges {
         node {
           ...DetailedBookingDetails
