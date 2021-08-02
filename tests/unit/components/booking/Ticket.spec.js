@@ -48,6 +48,6 @@ describe('Ticket component', function () {
     expect(ticketComponent.text()).to.contain('Booking Ref: yOIYg6Co8vGR')
     expect(ticketComponent.text()).to.contain('Booked By: Alex Toof')
 
-    expect(ticketComponent.text()).to.contain('01')
+    expect(ticketComponent.text()).to.contain('1')
   })
 })

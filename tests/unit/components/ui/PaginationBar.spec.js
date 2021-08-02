@@ -55,41 +55,41 @@ describe('Pagination Bar', () => {
 
     await page4Button.trigger('click')
 
-    expect(component.emitted('goto-page').length).to.eq(1)
-    expect(component.emitted('goto-page')[0][0]).to.eq(4)
+    expect(component.emitted('gotoPage').length).to.eq(1)
+    expect(component.emitted('gotoPage')[0][0]).to.eq(4)
 
     await page5Button.trigger('click')
 
-    expect(component.emitted('goto-page').length).to.eq(1) // Clicking current page should do nothing
+    expect(component.emitted('gotoPage').length).to.eq(1) // Clicking current page should do nothing
 
     await setProps(10, 5, null)
     const truncatedButton = component.find('button:nth-of-type(3)') // +1 due to backwards button
     await truncatedButton.trigger('click')
-    expect(component.emitted('goto-page').length).to.eq(1) // Clicking current page should do nothing
+    expect(component.emitted('gotoPage').length).to.eq(1) // Clicking current page should do nothing
   })
 
   it('sends previous page event', async () => {
     const previousButton = component.find('button:nth-of-type(1)')
 
     await previousButton.trigger('click')
-    expect(component.emitted('previous-page').length).to.eq(1)
+    expect(component.emitted('previousPage').length).to.eq(1)
 
     await setProps(null, 1, null)
 
     await previousButton.trigger('click')
-    expect(component.emitted('previous-page').length).to.eq(1) // Clicking back should do nothing if on first page
+    expect(component.emitted('previousPage').length).to.eq(1) // Clicking back should do nothing if on first page
   })
 
   it('sends next page event', async () => {
     const nextButton = component.find('button:last-of-type')
 
     await nextButton.trigger('click')
-    expect(component.emitted('next-page')).to.not.be.ok // We are on page 5/5, so shouldn't be able to go forward
+    expect(component.emitted('nextPage')).to.not.be.ok // We are on page 5/5, so shouldn't be able to go forward
 
     await setProps(null, 4, null)
 
     await nextButton.trigger('click')
-    expect(component.emitted('next-page').length).to.eq(1)
+    expect(component.emitted('nextPage').length).to.eq(1)
   })
 
   const setProps = async (

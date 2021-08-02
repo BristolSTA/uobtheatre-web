@@ -324,7 +324,7 @@ describe('AuthBox', function () {
         expect(swalToastStub.mock.calls).length(1)
 
         expect(routerPushStub.mock.calls).length(1)
-        expect(routerPushStub.mock.calls[0][0].name).to.eq('home')
+        expect(routerPushStub.mock.calls[0][0]).to.eq('/')
       })
     })
 
