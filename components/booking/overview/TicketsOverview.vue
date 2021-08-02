@@ -46,7 +46,7 @@ import lo from 'lodash'
 
 import Booking from '@/classes/Booking'
 
-import OverviewBox from './OverviewBox.vue'
+import OverviewBox from '../../ui/Card.vue'
 
 export default {
   name: 'TicketsOverview',

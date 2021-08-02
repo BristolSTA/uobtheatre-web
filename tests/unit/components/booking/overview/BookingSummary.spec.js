@@ -3,7 +3,7 @@ import { expect } from 'chai'
 
 import Booking from '@/classes/Booking'
 import BookingSummaryOverview from '@/components/booking/overview/BookingSummaryOverview.vue'
-import OverviewBox from '@/components/booking/overview/OverviewBox.vue'
+import OverviewBox from '@/components/ui/Card.vue'
 
 import FullBooking from '@/tests/unit/fixtures/instances/FullBooking'
 import { mountWithRouterMock } from '../../../helpers'

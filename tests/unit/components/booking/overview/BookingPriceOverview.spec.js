@@ -2,7 +2,7 @@ import { expect } from 'chai'
 
 import Booking from '@/classes/Booking'
 import BookingPriceOverview from '@/components/booking/overview/BookingPriceOverview.vue'
-import OverviewBox from '@/components/booking/overview/OverviewBox.vue'
+import OverviewBox from '@/components/ui/Card.vue'
 
 import FullBooking from '@/tests/unit/fixtures/instances/FullBooking'
 import { fixTextSpacing, mountWithRouterMock } from '../../../helpers'

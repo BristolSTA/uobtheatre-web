@@ -30,6 +30,8 @@
     "@nuxtjs/apollo": "^4.0.1-rc.5",
     "@nuxtjs/pwa": "^3.3.5",
     "@tailwindcss/forms": "^0.3.3",
+    "@tiptap/starter-kit": "^2.0.0-beta.89",
+    "@tiptap/vue-2": "^2.0.0-beta.42",
     "core-js": "^3.15.2",
     "humanize-duration": "^3.27.0",
     "js-cookie": "^2.2.1",
@@ -39,9 +41,9 @@
     "luxon": "^2.0.1",
     "nuxt": "^2.15.7",
     "qrcode.vue": "^1.7.0",
+    "sweetalert2": "^11.0.20",
     "vue-qrcode-reader": "^3.0.0",
-    "vue-tailwind": "^2.4.1",
-    "sweetalert2": "^11.0.20"
+    "vue-tailwind": "^2.4.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import OverviewBox from './OverviewBox.vue'
+import OverviewBox from '../../ui/Card.vue'
 
 export default {
   name: 'UserOverview',

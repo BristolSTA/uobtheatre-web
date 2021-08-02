@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 
 import Booking from '@/classes/Booking'
-import OverviewBox from '@/components/booking/overview/OverviewBox.vue'
+import OverviewBox from '@/components/ui/Card.vue'
 import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue'
 
 import FullBooking from '@/tests/unit/fixtures/instances/FullBooking'
