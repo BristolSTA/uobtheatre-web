@@ -29,47 +29,48 @@
             </div>
           </div>
           <div class="px-1 py-2 bg-sta-gray-dark sm:p-2">
-            <loading-container :loading="$apollo.queries.bookings.loading">
-              <paginated-table
-                :page-info="pageInfo"
-                :current-cursor="offset"
-                @previousPage="
-                  () => {
-                    offset -= bookings.length
-                  }
-                "
-                @nextPage="
-                  () => {
-                    offset += bookings.length
-                  }
-                "
-              >
-                <template #head>
-                  <th>Name</th>
-                  <th>Reference</th>
-                  <th>Checked In?<sort-icon /></th>
-                  <th>Price</th></template
-                ><template v-for="(booking, index) in bookings">
-                  <booking-row
-                    :key="`${index}-row`"
-                    :index="index"
-                    :booking="booking"
-                    :active="selected_booking_index == index"
-                    @select-booking="
-                      selected_booking_index =
-                        selected_booking_index != index ? index : null
-                    "
-                  />
-                  <booking-details-row
-                    v-if="selected_booking_index == index"
-                    :key="`${index}-details`"
-                    :index="index"
-                    :booking="booking"
-                    :highlight-ticket-id="scannedTicket"
-                  />
-                </template>
-              </paginated-table>
-            </loading-container>
+            <paginated-table
+              :page-info="pageInfo"
+              :current-cursor="offset"
+              :loading="$apollo.queries.bookings.loading"
+              :empty="!bookings.length"
+              empty-text="No matching bookings found"
+              @previousPage="
+                () => {
+                  offset -= bookings.length
+                }
+              "
+              @nextPage="
+                () => {
+                  offset += bookings.length
+                }
+              "
+            >
+              <template #head>
+                <th>Name</th>
+                <th>Reference</th>
+                <th>Checked In?<sort-icon /></th>
+                <th>Price</th></template
+              ><template v-for="(booking, index) in bookings">
+                <booking-row
+                  :key="`${index}-row`"
+                  :index="index"
+                  :booking="booking"
+                  :active="selected_booking_index == index"
+                  @select-booking="
+                    selected_booking_index =
+                      selected_booking_index != index ? index : null
+                  "
+                />
+                <booking-details-row
+                  v-if="selected_booking_index == index"
+                  :key="`${index}-details`"
+                  :index="index"
+                  :booking="booking"
+                  :highlight-ticket-id="scannedTicket"
+                />
+              </template>
+            </paginated-table>
           </div>
         </div>
       </div>
@@ -112,7 +113,6 @@ import BookingRow from '@/components/box-office/BookingRow.vue'
 import SortIcon from '@/components/ui/SortIcon.vue'
 import BoxOfficePerformanceBookings from '@/graphql/queries/box-office/BoxOfficePerformanceBookings.gql'
 import BookingDetailsRow from '@/components/box-office/BookingDetailsRow.vue'
-import LoadingContainer from '@/components/ui/LoadingContainer.vue'
 import TicketScanner from '@/components/ui/Inputs/TicketScanner.vue'
 import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue'
 
@@ -122,7 +122,6 @@ export default {
     BookingRow,
     SortIcon,
     BookingDetailsRow,
-    LoadingContainer,
     TicketScanner,
     PaginatedTable,
   },
