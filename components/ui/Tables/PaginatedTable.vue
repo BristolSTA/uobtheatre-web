@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <table class="w-full overflow-x-auto">
+  <div class="overflow-auto">
+    <table class="w-full">
       <thead>
         <slot name="head"></slot>
       </thead>
