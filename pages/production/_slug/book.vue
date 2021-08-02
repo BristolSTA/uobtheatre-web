@@ -129,7 +129,7 @@ export default {
 
       this.loadDataForStage()
       if (!this.currentStage.shouldBeUsed(this.production, this.booking)) {
-        return this.navigateToStage()
+        return this.navigateToStage(null, true)
       }
       if (!this.currentStage.eligable(this.production, this.booking)) {
         return this.gotoPreviousStage()
@@ -140,7 +140,7 @@ export default {
         getPreviousStage(this.currentStageIndex, this.production, this.booking)
       )
     },
-    navigateToStage(stage = null) {
+    navigateToStage(stage = null, replace = false) {
       if (!stage)
         stage = getNextStage(
           this.currentStageIndex,
@@ -148,7 +148,7 @@ export default {
           this.booking
         )
 
-      this.$router.push({
+      this.$router[replace ? 'replace' : 'push']({
         name: stage.stageInfo.routeName,
         hash: '#booking-view',
         params: {
