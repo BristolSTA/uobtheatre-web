@@ -21,7 +21,14 @@
             />
             <div class="flex-none">
               <button
-                class="p-2 transition-colors rounded focus:outline-none bg-sta-green hover:bg-sta-green-dark"
+                class="
+                  p-2
+                  transition-colors
+                  rounded
+                  focus:outline-none
+                  bg-sta-green
+                  hover:bg-sta-green-dark
+                "
                 @click="scanning = true"
               >
                 Scan Ticket
@@ -68,7 +75,14 @@
         <div class="text-center">
           <p>Find a booking via scanning</p>
           <button
-            class="p-2 transition-colors bg-gray-400 rounded focus:outline-none hover:bg-gray-500"
+            class="
+              p-2
+              transition-colors
+              bg-gray-400
+              rounded
+              focus:outline-none
+              hover:bg-gray-500
+            "
             @click="scanning = false"
           >
             Cancel
