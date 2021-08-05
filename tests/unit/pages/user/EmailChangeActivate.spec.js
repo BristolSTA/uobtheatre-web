@@ -111,7 +111,7 @@ describe('Email Change Activate', function () {
       await waitFor(() => replaceStub.mock.calls.length)
 
       expect(replaceStub.mock.calls).length(1)
-      expect(replaceStub.mock.calls[0][0].name).to.eq('user')
+      expect(replaceStub.mock.calls[0][0]).to.eq('/user')
     })
   })
 })

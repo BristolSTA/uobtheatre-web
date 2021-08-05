@@ -64,8 +64,9 @@ import { authService } from '@/services'
 import { getValidationErrors, swal, swalToast } from '@/utils'
 
 import AuthPageTemplate from '@/components/auth/AuthPageTemplate.vue'
+import LoadingIcon from '@/components/ui/LoadingIcon.vue'
 export default {
-  components: { AuthPageTemplate, TextInput, NonFieldError },
+  components: { AuthPageTemplate, TextInput, NonFieldError, LoadingIcon },
   middleware: ['not-authed'],
   data() {
     return {
