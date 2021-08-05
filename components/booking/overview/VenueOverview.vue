@@ -5,11 +5,7 @@
       Venue
     </template>
     <template #subtitle>
-      <font-awesome-icon
-        v-if="!venue"
-        class="animate-spin"
-        icon="circle-notch"
-      />
+      <loading-icon v-if="!venue" />
       <NuxtLink
         v-else
         :to="`/venue/${venue.slug}`"
@@ -20,17 +16,19 @@
       </NuxtLink>
     </template>
     <div v-if="venue">
-      <p v-if="venue.address.buildingName">
-        {{ venue.address.buildingName }}
-      </p>
-      <p>
-        <template v-if="venue.address.buildingNumber">
-          {{ venue.address.buildingNumber }}
-        </template>
-        {{ venue.address.street }}
-      </p>
-      <p>{{ venue.address.city }}</p>
-      <p>{{ venue.address.postcode }}</p>
+      <template v-if="venue.address">
+        <p v-if="venue.address.buildingName">
+          {{ venue.address.buildingName }}
+        </p>
+        <p>
+          <template v-if="venue.address.buildingNumber">
+            {{ venue.address.buildingNumber }}
+          </template>
+          {{ venue.address.street }}
+        </p>
+        <p>{{ venue.address.city }}</p>
+        <p>{{ venue.address.postcode }}</p>
+      </template>
       <div v-if="online" class="p-2 mt-2 rounded bg-sta-gray">
         <icon-list-item icon="info-circle">
           Online joining information will be sent via email
@@ -45,12 +43,13 @@ import gql from 'graphql-tag'
 
 import AddressFragments from '@/graphql/fragments/AddressFragment.gql'
 
+import LoadingIcon from '@/components/ui/LoadingIcon.vue'
 import IconListItem from '../../ui/IconListItem.vue'
 import OverviewBox from './OverviewBox.vue'
 
 export default {
   name: 'VenueOverview',
-  components: { OverviewBox, IconListItem },
+  components: { OverviewBox, IconListItem, LoadingIcon },
   props: {
     venueData: {
       requried: true,

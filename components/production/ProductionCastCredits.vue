@@ -39,9 +39,10 @@
           alt="show poster"
         />
       </div>
-      <div class="flex-grow order-3 mt-4 lg:mt-0 lg:order-2">
-        {{ production.description }}
-      </div>
+      <tip-tap-output
+        class="flex-grow order-3 mt-4 lg:mt-0 lg:order-2"
+        :html="production.description"
+      />
       <div
         class="
           flex flex-col flex-none
@@ -185,9 +186,10 @@ import lodash from 'lodash'
 
 import ClickableLink from '@/components/ui/ClickableLink.vue'
 import IconListItem from '@/components/ui/IconListItem.vue'
+import TipTapOutput from '../ui/TipTapOutput.vue'
 export default {
   name: 'ProductionCastAndCredits',
-  components: { ClickableLink, IconListItem },
+  components: { ClickableLink, IconListItem, TipTapOutput },
   props: {
     production: {
       required: true,

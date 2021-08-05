@@ -69,8 +69,8 @@ export default {
   data() {
     return {
       navItems: [
-        ['/', 'Privacy Policy'],
-        ['/', 'Terms & Conditions'],
+        ['/privacy', 'Privacy Policy'],
+        ['/terms', 'Terms & Conditions'],
         ['/', 'Contact Us'],
       ],
     }

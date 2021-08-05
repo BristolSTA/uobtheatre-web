@@ -75,6 +75,13 @@
           <template #content>
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
               <dropdown-item
+                v-if="$store.state.auth.user.canBoxoffice"
+                title="Box Office"
+                subtitle="Check in and sell tickets"
+                icon="ticket-alt"
+                route="/box-office"
+              />
+              <dropdown-item
                 title="Your Account"
                 subtitle="Edit your details"
                 icon="user-edit"

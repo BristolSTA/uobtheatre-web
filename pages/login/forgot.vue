@@ -17,7 +17,7 @@
           bg-sta-gray-dark bg-opacity-95
         "
       >
-        <font-awesome-icon class="animate-spin" icon="circle-notch" />
+        <loading-icon size-class="" />
       </div>
       <div class="p-6 text-white">
         <template v-if="!resetToken">

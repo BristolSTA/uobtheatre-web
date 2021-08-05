@@ -4,6 +4,10 @@ fragment BasicBookingDetails on BookingNode {
   status {
     description
   }
+  user {
+    firstName
+    lastName
+  }
   performance {
     id
     start

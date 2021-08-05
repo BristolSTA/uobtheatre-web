@@ -3,6 +3,7 @@
     <h1 class="py-4 text-h1">Whats On</h1>
     <infinite-scroll
       :apollo-query="require('@/graphql/queries/UpcomingProductions.gql')"
+      :apollo-variables="{ now: new Date() }"
       @newData="handleNewData"
     >
       <div

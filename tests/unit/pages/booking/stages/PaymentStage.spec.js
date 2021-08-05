@@ -11,24 +11,17 @@ import Payment from '@/tests/unit/fixtures/Payment'
 import FakeBooking from '@/tests/unit/fixtures/Booking'
 import GenericErrorsResponse from '@/tests/unit/fixtures/support/GenericErrorsResponse'
 import GenericError from '@/tests/unit/fixtures/support/GenericError'
+import CardPayment from '@/components/square/CardPayment.vue'
 import { generateMountOptions } from '../../../helpers'
 
 describe('Payment Stage', () => {
-  let paymentStageComponent, paymentFormFuncMock, routerPushMock
+  let paymentStageComponent, routerPushMock
 
   jest.spyOn(swal, 'fire').mockImplementation(() => {
     return Promise.resolve()
   })
 
   beforeEach(() => {
-    window.SqPaymentForm = jest.fn().mockImplementation(() => {
-      return (paymentFormFuncMock = {
-        build: jest.fn(),
-        requestCardNonce: jest.fn(),
-        destroy: jest.fn(),
-      })
-    })
-
     const booking = new Booking()
     booking.updateFromAPIData({
       id: 123,
@@ -62,36 +55,12 @@ describe('Payment Stage', () => {
             push: (routerPushMock = jest.fn()),
           },
         },
+        stubs: ['card-payment'],
       })
     )
   })
 
-  it('sets up payment form on load', () => {
-    expect(window.SqPaymentForm.mock.calls).length(1)
-    expect(paymentFormFuncMock.build.mock.calls).length(1)
-    expect(window.SqPaymentForm.mock.calls[0][0].applicationId).to.eq(
-      'square_app_id'
-    )
-    expect(window.SqPaymentForm.mock.calls[0][0].locationId).to.eq(
-      'square_loc_id'
-    )
-    expect(
-      window.SqPaymentForm.mock.calls[0][0].callbacks.cardNonceResponseReceived
-    ).to.eq(paymentStageComponent.vm.onNonceRecieved)
-    expect(
-      window.SqPaymentForm.mock.calls[0][0].callbacks.methodsSupported
-    ).to.eq(paymentStageComponent.vm.onMethodsSupported)
-    expect(
-      window.SqPaymentForm.mock.calls[0][0].callbacks.createPaymentRequest
-    ).to.eq(paymentStageComponent.vm.onCreatePaymentRequest)
-  })
-
-  it('destroys payment form on destroy', () => {
-    paymentStageComponent.destroy()
-    expect(paymentFormFuncMock.destroy.mock.calls).length(1)
-  })
-
-  it('handles methods supported callback', async () => {
+  it('handles enabling other methods', async () => {
     expect(
       paymentStageComponent.find('#sq-google-pay').attributes('style')
     ).to.contain('display: none')
@@ -99,24 +68,9 @@ describe('Payment Stage', () => {
       paymentStageComponent.find('#sq-apple-pay').attributes('style')
     ).to.contain('display: none')
 
-    paymentStageComponent.vm.onMethodsSupported({
-      googlePay: false,
-      applePay: false,
-    })
-    await paymentStageComponent.vm.$nextTick()
-
-    expect(
-      paymentStageComponent.find('#sq-google-pay').attributes('style')
-    ).to.contain('display: none')
-    expect(
-      paymentStageComponent.find('#sq-apple-pay').attributes('style')
-    ).to.contain('display: none')
-
-    paymentStageComponent.vm.onMethodsSupported({
-      googlePay: true,
-      applePay: false,
-    })
-    await paymentStageComponent.vm.$nextTick()
+    await paymentStageComponent
+      .findComponent(CardPayment)
+      .vm.$emit('enableGPay')
 
     expect(
       paymentStageComponent.find('#sq-google-pay').attributes('style')
@@ -125,8 +79,9 @@ describe('Payment Stage', () => {
       paymentStageComponent.find('#sq-apple-pay').attributes('style')
     ).to.contain('display: none')
 
-    paymentStageComponent.vm.onMethodsSupported({ applePay: true })
-    await paymentStageComponent.vm.$nextTick()
+    await paymentStageComponent
+      .findComponent(CardPayment)
+      .vm.$emit('enableApplePay')
 
     expect(
       paymentStageComponent.find('#sq-google-pay').attributes('style')
@@ -134,39 +89,27 @@ describe('Payment Stage', () => {
     expect(
       paymentStageComponent.find('#sq-apple-pay').attributes('style')
     ).not.to.contain('display: none')
-  })
-
-  it('requests card nonce on pay click', () => {
-    paymentStageComponent.find('button#sq-creditcard').trigger('click')
-    expect(paymentFormFuncMock.requestCardNonce.mock.calls).length(1)
   })
 
   it('handles card nonce recieved (with square errors)', async () => {
     let popupClose
-    paymentStageComponent.setData({
+    await paymentStageComponent.setData({
       progressPopup: {
         close: (popupClose = jest.fn()),
       },
     })
-    paymentStageComponent.vm.onNonceRecieved([
-      { message: 'An issue with the CVV' },
-      { message: 'An issue with the Expiry Date' },
-    ])
-    await paymentStageComponent.vm.$nextTick()
+    await paymentStageComponent
+      .findComponent(CardPayment)
+      .vm.$emit('nonceError')
     expect(popupClose.mock.calls).length(1)
-
-    expect(paymentStageComponent.text()).to.contain('An issue with the CVV')
-    expect(paymentStageComponent.text()).to.contain(
-      'An issue with the Expiry Date'
-    )
   })
 
   describe('with valid card / nonce input', () => {
     let popupClose
 
-    beforeEach(() => {
+    beforeEach(async () => {
       paymentStageComponent.vm.booking.id = 1
-      paymentStageComponent.setData({
+      await paymentStageComponent.setData({
         progressPopup: {
           close: (popupClose = jest.fn()),
         },
@@ -183,16 +126,20 @@ describe('Payment Stage', () => {
           })
         )
       )
-      await paymentStageComponent.vm.onNonceRecieved(null, 'cnon:card-nonce-ok')
+      await paymentStageComponent
+        .findComponent(CardPayment)
+        .vm.$emit('nonceRecieved', 'cnon:card-nonce-ok')
 
-      // Loading popup should close
-      expect(popupClose.mock.calls).length(1)
+      await paymentStageComponent.vm.$nextTick()
 
       // Redirects to booking page - instantly pushed due to mock above of swal.fire
       expect(routerPushMock.mock.calls).length(1)
       expect(routerPushMock.mock.calls[0][0]).to.eq(
         '/user/booking/yOIYg6Co8vGR'
       )
+
+      // Loading popup should close
+      expect(popupClose.mock.calls).length(1)
     })
 
     it('shows any mutation errors', async () => {

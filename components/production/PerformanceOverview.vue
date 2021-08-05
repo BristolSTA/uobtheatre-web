@@ -20,7 +20,7 @@
       <template v-if="performance.isOnline">Online</template>
     </div>
     <div>Starting at {{ performance.start | dateFormat('T') }}</div>
-    <div>{{ humanDuration }}</div>
+    <div>{{ humanDuration(performance.durationMins) }}</div>
     <div class="text-sm font-semibold">
       <p v-if="performanceDisabled">No Tickets Available</p>
       <p v-else>Tickets Available</p>
@@ -52,7 +52,8 @@
 </template>
 
 <script>
-import humanizeDuration from 'humanize-duration'
+import { humanDuration } from '@/utils'
+
 export default {
   props: {
     performance: {
@@ -61,9 +62,6 @@ export default {
     },
   },
   computed: {
-    humanDuration() {
-      return humanizeDuration(this.performance.durationMins * 60 * 1000)
-    },
     performanceDisabled() {
       return this.performance.disabled || this.performance.soldOut
     },
@@ -76,6 +74,7 @@ export default {
     onBook() {
       this.$emit('select')
     },
+    humanDuration,
   },
 }
 </script>

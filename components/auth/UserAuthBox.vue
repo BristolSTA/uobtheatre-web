@@ -42,7 +42,7 @@
         bg-sta-gray-dark bg-opacity-95
       "
     >
-      <font-awesome-icon class="animate-spin" icon="circle-notch" />
+      <loading-icon size-class="" />
     </div>
     <form
       v-if="login"
@@ -172,8 +172,18 @@
           class="w-5 h-5 border rounded-sm border-sta-grey focus:outline-none"
         />
         <span class="text-xs font-semibold text-white">
-          I have read and agree to the Terms of Use
-          <!-- TODO: Link to ToS -->
+          I have read and agree to the
+          <nuxt-link
+            to="/terms"
+            class="underline transition-colors hover:text-sta-orange"
+            >Terms of Service</nuxt-link
+          >
+          and
+          <nuxt-link
+            to="/privacy"
+            class="underline transition-colors hover:text-sta-orange"
+            >Privacy</nuxt-link
+          >
         </span>
         <error-helper :errors="signup_errors" field-name="acceptedTerms" />
       </label>
@@ -208,10 +218,17 @@ import NonFieldError from '@/components/ui/NonFieldError.vue'
 import TextInput from '@/components/ui/TextInput.vue'
 import { authService } from '@/services'
 import { getValidationErrors, swalToast } from '@/utils'
+import LoadingIcon from '../ui/LoadingIcon.vue'
 
 export default {
   name: 'UserAuthBox',
-  components: { ClickableLink, TextInput, ErrorHelper, NonFieldError },
+  components: {
+    ClickableLink,
+    TextInput,
+    ErrorHelper,
+    NonFieldError,
+    LoadingIcon,
+  },
   props: {
     login: {
       default: true,

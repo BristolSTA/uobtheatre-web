@@ -3,7 +3,10 @@ module.exports = {
     removeDeprecatedGapUtilities: true,
     // purgeLayersByDefault: true,
   },
-  purge: [],
+  purge: {
+    safelist: ['grid-cols-7'],
+    content: [],
+  },
   theme: {
     fontFamily: {
       body: ['Montserrat', 'sans-serif'],
@@ -45,7 +48,7 @@ module.exports = {
         40: '0.4',
       },
       fontSize: {
-        h1: '3rem',
+        h1: '2.5rem',
         h2: '2rem',
         h3: '1.5rem',
         h4: '1.25rem',
@@ -61,5 +64,5 @@ module.exports = {
       flexDirection: ['odd'],
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/forms')],
 }

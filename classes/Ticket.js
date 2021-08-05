@@ -1,6 +1,7 @@
 export default class {
   seatGroup = {}
   concessionType = {}
+  checkedIn = false
   id = null
 
   /**
@@ -22,7 +23,16 @@ export default class {
     )
     ticket.seatGroup = ticketAPIData.seatGroup
     ticket.concessionType = ticketAPIData.concessionType
+    if (ticketAPIData.checkedIn) ticket.checkedIn = ticketAPIData.checkedIn
     return ticket
+  }
+
+  static dataFromQRCode(rawQRCode) {
+    const result = JSON.parse(atob(rawQRCode))
+    return {
+      bookingReference: result[0],
+      ticketId: result[1],
+    }
   }
 
   /**
@@ -64,7 +74,7 @@ export default class {
    * @returns {string} Base 64 encoded string
    */
   generateQRCodeString(bookingReference) {
-    return btoa([bookingReference, this.id])
+    return btoa(JSON.stringify([bookingReference, this.id]))
   }
 
   /**

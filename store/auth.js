@@ -1,5 +1,6 @@
 import { authService } from '@/services'
 import gql from 'graphql-tag'
+import AuthUserDetailsFragment from '@/graphql/fragments/user/AuthUserDetailsFragment.gql'
 
 export const state = () => ({
   token: null,
@@ -22,11 +23,10 @@ export const actions = {
         query: gql`
           {
             me {
-              firstName
-              lastName
-              email
+              ...AuthUserDetails
             }
           }
+          ${AuthUserDetailsFragment}
         `,
       })
       userInfo = data.me

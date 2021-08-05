@@ -1,5 +1,5 @@
-query upcomingProductions($afterCursor: String) {
-  productions(first: 9, orderBy: "start", after: $afterCursor) {
+query upcomingProductions($now: DateTime, $afterCursor: String) {
+  productions(first: 9, orderBy: "start", after: $afterCursor, end_Gte: $now) {
     pageInfo {
       hasNextPage
       endCursor

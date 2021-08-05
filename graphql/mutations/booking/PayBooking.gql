@@ -1,0 +1,34 @@
+#import "../../fragments/booking/DetailedBookingDetails.gql"
+mutation payBooking(
+  $id: IdInputField!
+  $totalPence: Int!
+  $nonce: String
+  $provider: PaymentProvider
+) {
+  payBooking(
+    bookingId: $id
+    nonce: $nonce
+    price: $totalPence
+    paymentProvider: $provider
+  ) {
+    success
+    errors {
+      ... on NonFieldError {
+        message
+      }
+      ... on FieldError {
+        message
+        field
+      }
+    }
+    payment {
+      value
+      currency
+      cardBrand
+      last4
+    }
+    booking {
+      ...DetailedBookingDetails
+    }
+  }
+}

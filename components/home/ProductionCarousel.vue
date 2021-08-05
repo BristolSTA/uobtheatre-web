@@ -135,8 +135,6 @@
 </template>
 
 <script>
-import { displayStartEnd } from '@/utils'
-
 export default {
   name: 'ProductionCarousel',
   props: {
@@ -164,7 +162,6 @@ export default {
   data() {
     return {
       currentProduction: 0,
-      displayStartEnd,
       autoplayInterval: null,
     }
   },
