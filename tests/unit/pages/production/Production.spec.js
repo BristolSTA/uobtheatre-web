@@ -42,9 +42,8 @@ describe('Production', function () {
     castCreditsComponent = productionPageComponent.findComponent(
       ProductionCastCredits
     )
-    overviewComponent = productionPageComponent.findComponent(
-      ProductionOverview
-    )
+    overviewComponent =
+      productionPageComponent.findComponent(ProductionOverview)
     performancesComponent = productionPageComponent.findComponent(
       ProductionPerformances
     )

@@ -8,13 +8,9 @@ import {
   generateMountOptions,
   mountWithRouterMock,
   RouterLinkStub,
-  waitFor,
 } from '../../helpers'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 import User from '../../fixtures/User'
-import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection'
-import Booking from '../../fixtures/Booking'
-import Performance from '../../fixtures/Performance'
 
 describe('My Account', () => {
   let myAccountComponent

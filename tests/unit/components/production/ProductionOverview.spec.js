@@ -117,7 +117,7 @@ describe('Production Overview', function () {
 
   it('handles having no performances', async () => {
     await createWithPerformances([])
-    expect(castCreditsContainer.text()).not.to.contain('Medium')
+    expect(overviewContainer.text()).not.to.contain('Medium')
   })
 
   const createWithPerformances = (performances, productionOverrides) => {
