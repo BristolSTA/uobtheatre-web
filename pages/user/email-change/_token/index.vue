@@ -142,7 +142,7 @@ export default {
           icon: 'success',
           title: 'Email changed!',
         })
-        return this.$router.replace({ name: 'user' })
+        return this.$router.replace('/user')
       } catch (e) {
         this.errors = getValidationErrors(e)
       }
