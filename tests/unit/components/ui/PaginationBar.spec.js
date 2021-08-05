@@ -28,7 +28,7 @@ describe('Pagination Bar', () => {
     assertPagesInOrder([1, 2, 3, 4, 5])
 
     await setProps(1, 1, null)
-    assertPagesInOrder([1])
+    expect(component.html()).to.eq('')
 
     await setProps(2, 1, null)
     assertPagesInOrder([1, 2])
