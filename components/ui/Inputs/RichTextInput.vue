@@ -16,6 +16,7 @@
         :editor="editor"
         @click="$event.focus().toggleItalic().run()"
       />
+      <div class="w-6 bg-white"></div>
       <editor-button
         active-key="paragraph"
         icon="paragraph"
@@ -23,7 +24,6 @@
         :editor="editor"
         @click="$event.focus().setParagraph().run()"
       />
-      <div class="w-6 bg-white"></div>
       <editor-button
         :active-key="['heading', { level: 1 }]"
         title="Heading 1"
