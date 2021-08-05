@@ -21,12 +21,10 @@
           <form-label>
             Audience Warnings <required-star />
             <template #control>
-              <div>
-                TODO<br />
-
-                <input type="checkbox" /> Warning 1<br />
-                <input type="checkbox" /> Warning 2<br />
-                <input type="checkbox" /> Warning 3<br />
+              <div class="flex flex-wrap space-x-3">
+                <div v-for="(warning, index) in availableWarnings" :key="index">
+                  <input type="checkbox" /> {{ warning.warning }}
+                </div>
               </div>
             </template>
           </form-label>
@@ -87,6 +85,13 @@ export default {
   data() {
     return {
       production: FakeProduction({}, true),
+      availableWarnings: [
+        { id: 1, warning: 'Warning 1' },
+        { id: 2, warning: 'Warning 2' },
+        { id: 3, warning: 'Warning 3' },
+        { id: 4, warning: 'Warning 4' },
+        { id: 5, warning: 'Warning 5' },
+      ],
     }
   },
 }
