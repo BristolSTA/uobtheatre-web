@@ -13,7 +13,16 @@
         :route="box.route"
         :icon="box.icon"
         :name="box.name"
-        class="w-full mb-4 md:mr-4 bg-sta-green hover:bg-sta-orange md:w-1/3 lg:w-1/4 2xl:w-1/5"
+        class="
+          w-full
+          mb-4
+          md:mr-4
+          bg-sta-green
+          hover:bg-sta-orange
+          md:w-1/3
+          lg:w-1/4
+          2xl:w-1/5
+        "
       />
     </div>
   </div>

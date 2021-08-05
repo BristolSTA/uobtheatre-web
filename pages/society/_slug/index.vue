@@ -55,7 +55,14 @@
               </td>
               <td v-if="production.isBookable" class="px-4 text-right">
                 <NuxtLink
-                  class="px-3 py-1.5 my-1 text-sm text-center font-semibold btn btn-orange"
+                  class="
+                    px-3
+                    py-1.5
+                    my-1
+                    text-sm text-center
+                    font-semibold
+                    btn btn-orange
+                  "
                   :to="`/production/${production.slug}/book`"
                 >
                   Book Now

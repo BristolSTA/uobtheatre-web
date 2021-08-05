@@ -1,6 +1,14 @@
 <template>
   <div
-    class="p-2 px-4 border-2 lg:px-12 sm:p-4 sm:px-8 bg-sta-gray-dark border-sta-gray-light"
+    class="
+      p-2
+      px-4
+      border-2
+      lg:px-12
+      sm:p-4 sm:px-8
+      bg-sta-gray-dark
+      border-sta-gray-light
+    "
   >
     <div class="flex flex-wrap">
       <div class="flex justify-center w-full sm:block sm:w-1/2">
@@ -78,7 +86,15 @@
           <div class="flex items-center space-x-2 text-sta-rouge">
             <span class="relative flex w-3 h-3">
               <span
-                class="absolute inline-flex w-full h-full rounded-full bg-sta-rouge animate-ping"
+                class="
+                  absolute
+                  inline-flex
+                  w-full
+                  h-full
+                  rounded-full
+                  bg-sta-rouge
+                  animate-ping
+                "
               ></span>
               <span
                 class="relative inline-flex w-3 h-3 rounded-full bg-sta-rouge"

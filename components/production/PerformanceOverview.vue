@@ -28,7 +28,14 @@
     <div class="flex-grow"></div>
     <button
       v-if="performanceDisabled"
-      class="w-2/3 mt-4 font-semibold text-center btn btn-rouge btn-outline disabled"
+      class="
+        w-2/3
+        mt-4
+        font-semibold
+        text-center
+        btn btn-rouge btn-outline
+        disabled
+      "
       disabled
     >
       {{ disabledReason }}

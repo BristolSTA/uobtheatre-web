@@ -149,9 +149,8 @@ describe('Create Booking Page', () => {
     })
 
     it('reacts to booking navigation goto stage event', async () => {
-      const bookingNavigation = bookingComponent.findComponent(
-        BookingNavigation
-      )
+      const bookingNavigation =
+        bookingComponent.findComponent(BookingNavigation)
 
       await bookingNavigation.vm.$emit('goto-stage', stages[1])
 

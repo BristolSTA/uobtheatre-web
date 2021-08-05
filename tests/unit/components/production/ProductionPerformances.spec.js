@@ -49,9 +49,8 @@ describe('Production Performances', function () {
     })
 
     it('displays the correct number of performance overviews', () => {
-      const overviews = performancesContainer.findAllComponents(
-        PerformanceOverview
-      )
+      const overviews =
+        performancesContainer.findAllComponents(PerformanceOverview)
       const production = performancesContainer.vm.production
       expect(overviews.length).to.eq(2)
       expect(overviews.at(0).props('performance')).to.eq(

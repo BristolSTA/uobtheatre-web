@@ -19,7 +19,14 @@
     </div>
     <div class="flex flex-wrap items-center justify-center">
       <div
-        class="flex justify-center w-full p-4 lg:w-1/4 lg:order-last lg:ml-4 bg-sta-gray-dark"
+        class="
+          flex
+          justify-center
+          w-full
+          p-4
+          lg:w-1/4 lg:order-last lg:ml-4
+          bg-sta-gray-dark
+        "
       >
         <div>
           <h2 class="text-3xl font-semibold text-sta-orange">Venue Info:</h2>

@@ -180,8 +180,7 @@ export default {
                 swal
                   .fire({
                     title: 'Resume previous booking?',
-                    text:
-                      'You previously started a booking for this performance. Would you like to resume it?',
+                    text: 'You previously started a booking for this performance. Would you like to resume it?',
                     showCancelButton: true,
                     confirmButtonText: 'Resume',
                     cancelButtonText: 'No, start fresh',
