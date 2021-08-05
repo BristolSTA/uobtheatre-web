@@ -11,7 +11,13 @@
       />
     </div>
     <div
-      class="flex flex-col text-center md:space-x-6 md:flex-row justify-evenly md:text-left"
+      class="
+        flex flex-col
+        text-center
+        md:space-x-6 md:flex-row
+        justify-evenly
+        md:text-left
+      "
     >
       <div class="w-full text-center md:w-16">
         <font-awesome-icon
@@ -21,7 +27,11 @@
       </div>
       <div class="flex-grow">
         <div
-          class="flex flex-col justify-between md:mr-10 md:space-x-6 md:flex-row"
+          class="
+            flex flex-col
+            justify-between
+            md:mr-10 md:space-x-6 md:flex-row
+          "
         >
           <div v-if="errors">
             <strong>There was an issue with this ticket</strong>

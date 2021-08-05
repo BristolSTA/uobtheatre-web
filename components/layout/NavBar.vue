@@ -1,7 +1,13 @@
 <template>
   <div class="antialiased bg-sta-gray-dark">
     <div
-      class="flex flex-col max-w-screen-xl mx-auto lg:container md:items-center md:justify-between md:flex-row"
+      class="
+        flex flex-col
+        max-w-screen-xl
+        mx-auto
+        lg:container
+        md:items-center md:justify-between md:flex-row
+      "
     >
       <div class="flex flex-row items-center justify-between p-4 text-white">
         <NuxtLink
@@ -34,13 +40,32 @@
       </div>
       <nav
         :class="{ flex: open, hidden: !open }"
-        class="flex-col flex-grow p-4 pt-0 space-y-2 md:space-y-0 md:items-center md:pb-0 md:flex md:justify-end md:flex-row"
+        class="
+          flex-col flex-grow
+          p-4
+          pt-0
+          space-y-2
+          md:space-y-0
+          md:items-center
+          md:pb-0
+          md:flex
+          md:justify-end
+          md:flex-row
+        "
       >
         <NuxtLink
           v-for="(item, index) in navItems"
           :key="index"
           :to="item[0]"
-          class="block px-4 font-semibold tracking-wide text-white uppercase hover:text-sta-orange-dark"
+          class="
+            block
+            px-4
+            font-semibold
+            tracking-wide
+            text-white
+            uppercase
+            hover:text-sta-orange-dark
+          "
         >
           {{ item[1] }}
         </NuxtLink>

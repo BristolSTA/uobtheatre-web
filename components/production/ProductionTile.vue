@@ -7,7 +7,13 @@
         alt="show poster"
       />
       <h2
-        class="text-2xl font-semibold transition-colors text-sta-orange production-title"
+        class="
+          text-2xl
+          font-semibold
+          transition-colors
+          text-sta-orange
+          production-title
+        "
       >
         {{ production.name }}
       </h2>

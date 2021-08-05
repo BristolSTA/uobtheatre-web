@@ -21,7 +21,15 @@
           <div
             v-for="(performance, index) in performances"
             :key="index"
-            class="max-w-md p-3 text-center rounded cursor-pointer bg-sta-gray-light hover:bg-sta-gray-dark"
+            class="
+              max-w-md
+              p-3
+              text-center
+              rounded
+              cursor-pointer
+              bg-sta-gray-light
+              hover:bg-sta-gray-dark
+            "
             @click="selectedPerformance = performance"
           >
             <img

@@ -26,14 +26,28 @@
             <all-errors-display class="text-center" :errors="errors" />
             <div class="grid grid-cols-2 gap-2 text-center">
               <button
-                class="p-2 transition-colors rounded bg-sta-green hover:bg-sta-green-dark focus:outline-none"
+                class="
+                  p-2
+                  transition-colors
+                  rounded
+                  bg-sta-green
+                  hover:bg-sta-green-dark
+                  focus:outline-none
+                "
                 @click="selectedManualMode = 'CARD'"
               >
                 <font-awesome-icon icon="money-check-alt" />
                 Paid using Card
               </button>
               <button
-                class="p-2 transition-colors rounded bg-sta-green hover:bg-sta-green-dark focus:outline-none"
+                class="
+                  p-2
+                  transition-colors
+                  rounded
+                  bg-sta-green
+                  hover:bg-sta-green-dark
+                  focus:outline-none
+                "
                 @click="selectedManualMode = 'CASH'"
               >
                 <font-awesome-icon icon="money-bill" />
@@ -42,7 +56,13 @@
             </div>
             <div v-if="selectedManualMode" class="mt-4 text-center">
               <button
-                class="p-2 rounded animate-pulse bg-sta-orange hover:bg-sta-orange-dark"
+                class="
+                  p-2
+                  rounded
+                  animate-pulse
+                  bg-sta-orange
+                  hover:bg-sta-orange-dark
+                "
                 @click="pay(selectedManualMode)"
               >
                 <strong

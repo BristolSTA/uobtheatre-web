@@ -8,7 +8,14 @@
         <div class="flex-none order-2 md:pl-2">
           <button
             v-if="!editing"
-            class="p-2 transition-colors rounded bg-sta-green hover:bg-sta-green-dark focus:outline-none"
+            class="
+              p-2
+              transition-colors
+              rounded
+              bg-sta-green
+              hover:bg-sta-green-dark
+              focus:outline-none
+            "
             @click="startEditing"
           >
             Alter Check Ins
@@ -16,13 +23,27 @@
           <loading-icon v-else-if="saving" />
           <template v-else>
             <button
-              class="p-2 transition-colors rounded bg-sta-green hover:bg-sta-green-dark focus:outline-none"
+              class="
+                p-2
+                transition-colors
+                rounded
+                bg-sta-green
+                hover:bg-sta-green-dark
+                focus:outline-none
+              "
               @click="updateBookingCheckins"
             >
               Save
             </button>
             <button
-              class="p-2 transition-colors bg-gray-400 rounded roundedhover:bg-gray-500 focus:outline-none"
+              class="
+                p-2
+                transition-colors
+                bg-gray-400
+                rounded
+                roundedhover:bg-gray-500
+                focus:outline-none
+              "
               @click="cancelEdits"
             >
               Cancel
@@ -72,7 +93,15 @@
                   />
                   <button
                     v-if="editing && !saving"
-                    class="flex-none p-1 transition-colors rounded bg-sta-orange hover:bg-sta-orange-dark focus:outline-none"
+                    class="
+                      flex-none
+                      p-1
+                      transition-colors
+                      rounded
+                      bg-sta-orange
+                      hover:bg-sta-orange-dark
+                      focus:outline-none
+                    "
                     @click="editingData[ticket.id] = !editingData[ticket.id]"
                   >
                     {{ editingData[ticket.id] ? 'Un-Check In' : 'Check In' }}

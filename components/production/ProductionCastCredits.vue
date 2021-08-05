@@ -6,7 +6,14 @@
         <div
           v-for="(member, index) in sortedCast"
           :key="index"
-          class="flex items-center px-4 py-2 sm:justify-center production-cast-member"
+          class="
+            flex
+            items-center
+            px-4
+            py-2
+            sm:justify-center
+            production-cast-member
+          "
         >
           <div v-if="member.profilePicture" class="flex-none w-20 pr-4">
             <img
