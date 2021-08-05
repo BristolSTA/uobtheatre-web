@@ -1,5 +1,6 @@
 <template>
   <nav
+    v-if="canGoForward || canGoBackward"
     class="relative z-0 inline-flex -space-x-px shadow-sm"
     aria-label="Pagination"
   >
@@ -76,6 +77,10 @@
 <script>
 export default {
   props: {
+    pageInfo: {
+      type: Object,
+      default: null,
+    },
     hasNextPage: {
       default: undefined,
       type: Boolean,
@@ -89,6 +94,10 @@ export default {
       type: Number,
     },
     currentPage: {
+      default: null,
+      type: Number,
+    },
+    currentOffset: {
       default: null,
       type: Number,
     },
@@ -114,10 +123,14 @@ export default {
   },
   computed: {
     canGoBackward() {
-      return this.hasPreviousPage || this.currentPage > 1
+      return this.hasPreviousPage || this.currentPage > 1 || this.currentOffset
     },
     canGoForward() {
-      return this.hasNextPage || this.currentPage !== this.numberOfPages
+      return (
+        this.hasNextPage ||
+        this.currentPage !== this.numberOfPages ||
+        (this.pageInfo && this.pageInfo.hasNextPage)
+      )
     },
     pageDisplay() {
       if (!this.numberOfPages) return null

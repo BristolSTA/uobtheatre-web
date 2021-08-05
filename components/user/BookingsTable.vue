@@ -39,15 +39,6 @@
       </tbody>
     </table>
     <h4 v-else class="p-2 text-center text-h4">No Previous Bookings</h4>
-    <div v-if="canLoadMore" class="mt-4 text-center">
-      <button
-        class="btn btn-green"
-        @click="$emit('load-more')"
-        @keypress="$emit('load-more')"
-      >
-        Load More
-      </button>
-    </div>
   </div>
 </template>
 

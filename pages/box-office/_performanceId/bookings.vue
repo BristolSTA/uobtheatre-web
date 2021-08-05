@@ -21,7 +21,14 @@
             />
             <div class="flex-none">
               <button
-                class="p-2 transition-colors rounded focus:outline-none bg-sta-green hover:bg-sta-green-dark"
+                class="
+                  p-2
+                  transition-colors
+                  rounded
+                  focus:outline-none
+                  bg-sta-green
+                  hover:bg-sta-green-dark
+                "
                 @click="scanning = true"
               >
                 Scan Ticket
@@ -49,7 +56,9 @@
               <template #head>
                 <th>Name</th>
                 <th>Reference</th>
-                <th>Checked In?<sort-icon /></th>
+                <th>
+                  Checked In?<sort-icon @input="checkedInSort = $event" />
+                </th>
                 <th>Price</th></template
               ><template v-for="(booking, index) in bookings">
                 <booking-row
@@ -94,7 +103,14 @@
         />
         <div class="text-center">
           <button
-            class="p-2 transition-colors bg-gray-400 rounded focus:outline-none hover:bg-gray-500"
+            class="
+              p-2
+              transition-colors
+              bg-gray-400
+              rounded
+              focus:outline-none
+              hover:bg-gray-500
+            "
             @click="scanning = false"
           >
             Cancel
@@ -137,6 +153,7 @@ export default {
       pageInfo: {},
       offset: 0,
       searchQuery: null,
+      checkedInSort: null,
 
       selected_booking_index: null,
 
@@ -179,6 +196,10 @@ export default {
           id: this.$route.params.performanceId,
           search: this.searchQuery,
           offset: this.offset,
+          orderBy:
+            this.checkedInSort !== null
+              ? `${this.checkedInSort}checked_in`
+              : null,
         }
       },
       debounce: 100,

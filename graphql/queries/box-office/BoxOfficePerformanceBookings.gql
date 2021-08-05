@@ -1,8 +1,13 @@
 #import "../../fragments/booking/DetailedBookingDetails.gql"
-query boxOfficePerformanceBookings($id: ID!, $search: String, $offset: Int) {
+query boxOfficePerformanceBookings(
+  $id: ID!
+  $search: String
+  $offset: Int
+  $orderBy: String
+) {
   performance(id: $id) {
     id
-    bookings(search: $search, first: 10, offset: $offset) {
+    bookings(search: $search, first: 10, offset: $offset, orderBy: $orderBy) {
       pageInfo {
         startCursor
         endCursor
