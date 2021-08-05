@@ -1,6 +1,14 @@
 <template>
   <div
-    class="flex items-center justify-center min-h-full p-6 text-white bg-sta-gray"
+    class="
+      flex
+      items-center
+      justify-center
+      min-h-full
+      p-6
+      text-white
+      bg-sta-gray
+    "
   >
     <div class="relative text-center">
       <template v-if="!addedOk && loading">
@@ -134,7 +142,7 @@ export default {
           icon: 'success',
           title: 'Email changed!',
         })
-        return this.$router.replace({ name: 'user' })
+        return this.$router.replace('/user')
       } catch (e) {
         this.errors = getValidationErrors(e)
       }

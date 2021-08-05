@@ -27,7 +27,14 @@
             <div class="grid grid-cols-2 gap-2">
               <div class="text-center">
                 <button
-                  class="p-2 transition-colors rounded bg-sta-green hover:bg-sta-green-dark focus:outline-none"
+                  class="
+                    p-2
+                    transition-colors
+                    rounded
+                    bg-sta-green
+                    hover:bg-sta-green-dark
+                    focus:outline-none
+                  "
                   @click="payManualCard"
                 >
                   <font-awesome-icon icon="money-check-alt" />
@@ -40,7 +47,14 @@
               </div>
               <div class="text-center">
                 <button
-                  class="p-2 transition-colors rounded bg-sta-green hover:bg-sta-green-dark focus:outline-none"
+                  class="
+                    p-2
+                    transition-colors
+                    rounded
+                    bg-sta-green
+                    hover:bg-sta-green-dark
+                    focus:outline-none
+                  "
                   @click="payManualCash"
                 >
                   <font-awesome-icon icon="money-bill" />

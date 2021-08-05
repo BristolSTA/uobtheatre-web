@@ -106,9 +106,8 @@ describe('Seat Location Component', () => {
     expect(seatGroupComponent.findComponent({ ref: 'ticket-warning' }).exists())
       .to.be.false
 
-    const concessionTypeComponents = seatGroupComponent.findAllComponents(
-      ConcessionType
-    )
+    const concessionTypeComponents =
+      seatGroupComponent.findAllComponents(ConcessionType)
     expect(concessionTypeComponents.length).to.eq(2)
 
     expect(
@@ -134,9 +133,8 @@ describe('Seat Location Component', () => {
     await seatGroupComponent.setProps({
       expanded: true,
     })
-    const discountComponents = seatGroupComponent.findAllComponents(
-      GroupTicketButton
-    )
+    const discountComponents =
+      seatGroupComponent.findAllComponents(GroupTicketButton)
     expect(discountComponents.length).to.eq(1)
     expect(discountComponents.at(0).props('discount').name).to.eq(
       'Family Discount'

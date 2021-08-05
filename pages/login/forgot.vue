@@ -4,7 +4,18 @@
       <div
         v-if="loading"
         ref="loading-overlay"
-        class="absolute top-0 z-10 flex items-center justify-center w-full h-full text-3xl text-white bg-sta-gray-dark bg-opacity-95"
+        class="
+          absolute
+          top-0
+          z-10
+          flex
+          items-center
+          justify-center
+          w-full
+          h-full
+          text-3xl text-white
+          bg-sta-gray-dark bg-opacity-95
+        "
       >
         <loading-icon size-class="" />
       </div>
@@ -64,8 +75,9 @@ import { authService } from '@/services'
 import { getValidationErrors, swal, swalToast } from '@/utils'
 
 import AuthPageTemplate from '@/components/auth/AuthPageTemplate.vue'
+import LoadingIcon from '@/components/ui/LoadingIcon.vue'
 export default {
-  components: { AuthPageTemplate, TextInput, NonFieldError },
+  components: { AuthPageTemplate, TextInput, NonFieldError, LoadingIcon },
   middleware: ['not-authed'],
   data() {
     return {
@@ -95,8 +107,7 @@ export default {
         swal.fire({
           icon: 'info',
           title: 'Check your email',
-          text:
-            'A link to reset your password has been sent by email if we have an account with this email',
+          text: 'A link to reset your password has been sent by email if we have an account with this email',
         })
       } catch (e) {
         this.errors = getValidationErrors(e)
