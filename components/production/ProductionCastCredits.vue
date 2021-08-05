@@ -22,7 +22,15 @@
       class="flex flex-wrap p-4 lg:flex-nowrap lg:space-x-4"
     >
       <div
-        class="flex-none order-1 w-full mb-4 text-center sm:w-1/2 lg:w-auto lg:mb-0"
+        class="
+          flex-none
+          order-1
+          w-full
+          mb-4
+          text-center
+          sm:w-1/2
+          lg:w-auto lg:mb-0
+        "
       >
         <img
           ref="poster-image"
@@ -35,7 +43,16 @@
         {{ production.description }}
       </div>
       <div
-        class="flex flex-col flex-none order-2 w-full p-5 space-y-2 bg-sta-gray-dark sm:w-1/2 lg:w-1/3 lg:order-3"
+        class="
+          flex flex-col flex-none
+          order-2
+          w-full
+          p-5
+          space-y-2
+          bg-sta-gray-dark
+          sm:w-1/2
+          lg:w-1/3 lg:order-3
+        "
       >
         <h3 class="text-xl font-semibold uppercase">Show Information</h3>
         <p v-if="medium"><strong>Medium:</strong> {{ medium }}</p>
@@ -132,7 +149,16 @@
           <div
             v-for="(member, index) in sortedCast"
             :key="index"
-            class="flex items-center w-full px-2 sm:justify-center sm:w-1/3 md:w-1/4 xl:w-1/5 production-cast-member"
+            class="
+              flex
+              items-center
+              w-full
+              px-2
+              sm:justify-center sm:w-1/3
+              md:w-1/4
+              xl:w-1/5
+              production-cast-member
+            "
           >
             <div v-if="member.profilePicture" class="flex-none w-20">
               <img

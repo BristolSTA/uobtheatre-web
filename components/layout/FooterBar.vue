@@ -7,7 +7,14 @@
             <li
               v-for="(item, index) in navItems"
               :key="index"
-              class="flex mt-2 text-center text-white md:text-left hover:text-sta-orange md:block"
+              class="
+                flex
+                mt-2
+                text-center text-white
+                md:text-left
+                hover:text-sta-orange
+                md:block
+              "
             >
               <NuxtLink :to="item[0]">
                 {{ item[1] }}
@@ -39,7 +46,12 @@
         </div>
 
         <div
-          class="flex-1 mt-2 text-center text-white md:mt-0 md:ml-12 md:text-left"
+          class="
+            flex-1
+            mt-2
+            text-center text-white
+            md:mt-0 md:ml-12 md:text-left
+          "
         >
           <p class="mb-2 md:mb-4">
             &copy; Bristol Stage Technicians' Association

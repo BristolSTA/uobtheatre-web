@@ -47,7 +47,16 @@
       <div class="mt-4">
         <div
           ref="tickets"
-          class="flex items-center justify-between px-4 py-2 cursor-pointer hover:bg-opacity-80 text-h2"
+          class="
+            flex
+            items-center
+            justify-between
+            px-4
+            py-2
+            cursor-pointer
+            hover:bg-opacity-80
+            text-h2
+          "
           :class="[expanded ? 'bg-sta-orange' : 'bg-sta-green']"
           @click="ticketToggle"
           @keypress="ticketToggle"
@@ -57,7 +66,16 @@
         </div>
         <div
           v-if="expanded"
-          class="grid grid-cols-1 gap-4 px-4 py-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 bg-sta-gray-dark"
+          class="
+            grid grid-cols-1
+            gap-4
+            px-4
+            py-4
+            sm:grid-cols-2
+            xl:grid-cols-3
+            2xl:grid-cols-4
+            bg-sta-gray-dark
+          "
         >
           <ticket
             v-for="(ticket, index) in booking.tickets"

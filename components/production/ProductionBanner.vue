@@ -18,7 +18,14 @@
       />
     </div>
     <div
-      class="flex flex-col items-center w-full px-10 text-center text-white md:block md:text-left md:w-auto md:max-w-md"
+      class="
+        flex flex-col
+        items-center
+        w-full
+        px-10
+        text-center text-white
+        md:block md:text-left md:w-auto md:max-w-md
+      "
     >
       <span class="font-semibold">
         <span class="text-h2">{{ production.name }}</span>

@@ -36,7 +36,16 @@
     />
     <div v-if="booking.tickets.length" class="flex my-4">
       <div
-        class="px-4 pb-2 mx-auto text-center border-4 border-dashed rounded-md min-w-1/2 border-sta-gray"
+        class="
+          px-4
+          pb-2
+          mx-auto
+          text-center
+          border-4 border-dashed
+          rounded-md
+          min-w-1/2
+          border-sta-gray
+        "
       >
         <h2 class="text-h2">Selected Tickets</h2>
         <div class="overflow-auto">

@@ -47,7 +47,18 @@
         <ul class="flex items-center p-0 space-x-3 whitespace-nowrap">
           <li v-for="n in carouselLength" :key="n">
             <button
-              class="carousel-indicator cursor-pointer transition-colors duration-500 w-2.5 h-2.5 rounded-full focus:outline-none border-white border hover:bg-white"
+              class="
+                carousel-indicator
+                cursor-pointer
+                transition-colors
+                duration-500
+                w-2.5
+                h-2.5
+                rounded-full
+                focus:outline-none
+                border-white border
+                hover:bg-white
+              "
               :class="[
                 n - 1 == currentProduction ? 'bg-white' : 'bg-transparent',
               ]"
@@ -58,11 +69,30 @@
         </ul>
       </div>
       <div
-        class="absolute top-0 left-0 invisible w-32 h-full md:w-24 lg:w-32 md:visible"
+        class="
+          absolute
+          top-0
+          left-0
+          invisible
+          w-32
+          h-full
+          md:w-24
+          lg:w-32
+          md:visible
+        "
       >
         <button
           id="prevBtn"
-          class="w-full h-full text-4xl transition-colors duration-300 cursor-pointer focus:outline-none hover:bg-opacity-30 hover:bg-black"
+          class="
+            w-full
+            h-full
+            text-4xl
+            transition-colors
+            duration-300
+            cursor-pointer
+            focus:outline-none
+            hover:bg-opacity-30 hover:bg-black
+          "
           @click="goToPrev()"
           @keypress="goToPrev()"
         >
@@ -70,11 +100,30 @@
         </button>
       </div>
       <div
-        class="absolute top-0 right-0 invisible w-32 h-full md:w-24 lg:w-32 md:visible"
+        class="
+          absolute
+          top-0
+          right-0
+          invisible
+          w-32
+          h-full
+          md:w-24
+          lg:w-32
+          md:visible
+        "
       >
         <button
           id="nextBtn"
-          class="w-full h-full text-4xl transition-colors duration-300 cursor-pointer focus:outline-none hover:bg-opacity-30 hover:bg-black"
+          class="
+            w-full
+            h-full
+            text-4xl
+            transition-colors
+            duration-300
+            cursor-pointer
+            focus:outline-none
+            hover:bg-opacity-30 hover:bg-black
+          "
           @click="goToNext()"
           @keypress="goToNext()"
         >
