@@ -124,7 +124,7 @@ describe('Create Booking Page', () => {
           },
           apollo: {
             queryCallstack: [
-              ...bookingComponent.vm.$apollo.queryCallstack,
+              ...bookingComponent.vm.$apollo.mock.queryCallstack,
               GenericApolloResponse('me', {
                 bookings: GenericNodeConnection(),
               }),
@@ -149,8 +149,9 @@ describe('Create Booking Page', () => {
     })
 
     it('reacts to booking navigation goto stage event', async () => {
-      const bookingNavigation =
-        bookingComponent.findComponent(BookingNavigation)
+      const bookingNavigation = bookingComponent.findComponent(
+        BookingNavigation
+      )
 
       await bookingNavigation.vm.$emit('goto-stage', stages[1])
 
@@ -187,7 +188,7 @@ describe('Create Booking Page', () => {
 
             apollo: {
               queryCallstack: [
-                ...bookingComponent.vm.$apollo.queryCallstack,
+                ...bookingComponent.vm.$apollo.mock.queryCallstack,
                 GenericApolloResponse('me', {
                   bookings: GenericNodeConnection([Booking()]),
                 }),
@@ -252,7 +253,7 @@ describe('Create Booking Page', () => {
           },
           apollo: {
             queryCallstack: [
-              ...bookingComponent.vm.$apollo.queryCallstack,
+              ...bookingComponent.vm.$apollo.mock.queryCallstack,
               GenericApolloResponse('me', {
                 bookings: GenericNodeConnection(),
               }),

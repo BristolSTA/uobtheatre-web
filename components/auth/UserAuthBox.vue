@@ -41,6 +41,7 @@
       <non-field-error :errors="login_errors" />
       <span
         v-if="login_errors && login_errors.hasCode('not_verified')"
+        ref="resendEmail"
         class="text-sm underline cursor-pointer cursor-point hover:text-gray-200"
         @click="resendVerificationEmail"
       >
