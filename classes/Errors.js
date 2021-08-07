@@ -125,7 +125,10 @@ export default class {
 
   /**
    * Pushes an error to the stack
-   * TODO
+   * @param {object} errorObject An error dictionary
+   * @param {string} errorObject.message The error's message
+   * @param {string} [errorObject.field] The error's field
+   * @param {string} [errorObject.code] The error's code
    */
   push({ message, field, code }) {
     const error = {
