@@ -29,18 +29,7 @@
     <div
       v-if="loading"
       ref="loading-overlay"
-      class="
-        absolute
-        top-0
-        z-10
-        flex
-        items-center
-        justify-center
-        w-full
-        h-full
-        text-3xl text-white
-        bg-sta-gray-dark bg-opacity-95
-      "
+      class="absolute top-0 z-10 flex items-center justify-center w-full h-full text-3xl text-white bg-sta-gray-dark bg-opacity-95"
     >
       <loading-icon size-class="" />
     </div>
@@ -50,6 +39,13 @@
       @submit.prevent="attemptLogin"
     >
       <non-field-error :errors="login_errors" />
+      <span
+        v-if="login_errors && login_errors.hasCode('not_verified')"
+        class="text-sm underline cursor-pointer cursor-point hover:text-gray-200"
+        @click="resendVerificationEmail"
+      >
+        Resend Verification Email?
+      </span>
       <text-input
         v-model="email"
         name="Email"
@@ -77,14 +73,7 @@
       </label>
 
       <button
-        class="
-          w-full
-          mt-2
-          text-xl
-          font-semibold
-          text-center
-          btn btn-orange btn-outline
-        "
+        class="w-full mt-2 text-xl font-semibold text-center btn btn-orange btn-outline"
         type="submit"
       >
         Log In
@@ -188,13 +177,7 @@
         <error-helper :errors="signup_errors" field-name="acceptedTerms" />
       </label>
       <button
-        class="
-          w-full
-          text-xl
-          font-semibold
-          text-center
-          btn btn-orange btn-outline
-        "
+        class="w-full text-xl font-semibold text-center btn btn-orange btn-outline"
         :disabled="!accepted_terms"
       >
         Sign Up
@@ -217,7 +200,14 @@ import ErrorHelper from '@/components/ui/ErrorHelper.vue'
 import NonFieldError from '@/components/ui/NonFieldError.vue'
 import TextInput from '@/components/ui/TextInput.vue'
 import { authService } from '@/services'
-import { getValidationErrors, swalToast } from '@/utils'
+import {
+  catchOnly,
+  getValidationErrors,
+  swalToast,
+  successToast,
+} from '@/utils'
+import ValidationError from '@/errors/ValidationError'
+import UnverifiedLoginError from '@/errors/auth/UnverifiedLoginError'
 import LoadingIcon from '../ui/LoadingIcon.vue'
 
 export default {
@@ -272,7 +262,15 @@ export default {
 
         return this.$router.push('/')
       } catch (e) {
-        this.login_errors = getValidationErrors(e)
+        catchOnly([ValidationError, UnverifiedLoginError], e, () => {
+          this.login_errors = getValidationErrors(e)
+          if (e instanceof UnverifiedLoginError) {
+            this.login_errors.push({
+              message: 'Your account has not been verified yet.',
+              code: 'not_verified',
+            })
+          }
+        })
       }
 
       this.loading = false
@@ -302,6 +300,19 @@ export default {
         this.signup_errors = getValidationErrors(e)
       }
 
+      this.loading = false
+    },
+    async resendVerificationEmail() {
+      this.loading = true
+      this.login_errors = null
+      try {
+        await authService.resendVerificationEmail(this, this.email)
+        successToast.fire({
+          title: 'Verfication email sent!',
+        })
+      } catch (e) {
+        this.login_errors = getValidationErrors(e)
+      }
       this.loading = false
     },
     guessNameParts() {

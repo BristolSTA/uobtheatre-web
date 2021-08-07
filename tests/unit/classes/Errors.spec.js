@@ -20,6 +20,12 @@ describe('Errors', () => {
         field: 'myfield',
         __typename: 'FieldError',
       },
+      {
+        message: 'An issue with a code',
+        field: 'anotherfieldthesecond',
+        code: 'something_wrong',
+        __typename: 'FieldError',
+      },
     ])
   })
 
@@ -61,6 +67,11 @@ describe('Errors', () => {
     expect(errors.any()).to.be.false
   })
 
+  it('can report if it has a error by code', () => {
+    expect(errors.hasCode('something_wrong')).to.be.true
+    expect(errors.hasCode('something_wrong_again')).to.be.false
+  })
+
   it('can get a fields first error', () => {
     expect(errors.first('myfield')).to.include({
       message: 'An issue with a field',
@@ -88,12 +99,12 @@ describe('Errors', () => {
 
   it('can get field errors', () => {
     const fieldErrors = errors.fieldErrors
-    expect(fieldErrors).length(2)
+    expect(fieldErrors).length(3)
     expect(fieldErrors[0].message).to.eq('An issue with a field')
   })
 
   it('can get all errors', () => {
-    expect(errors.allErrors).length(3)
+    expect(errors.allErrors).length(4)
     expect(errors.allErrors).to.include.members(errors.nonFieldErrors)
     expect(errors.allErrors).to.include.members(errors.fieldErrors)
   })

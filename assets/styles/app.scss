@@ -80,3 +80,10 @@
     @apply font-semibold;
   }
 }
+
+// Fix issue with Sweetalert2 text colour
+.swal2-container {
+  .text-white {
+    color: white !important;
+  }
+}

@@ -39,6 +39,16 @@ export default class {
   }
 
   /**
+   * Determine if at least one error has the given code
+   *
+   * @param {string} code The code to search for
+   * @returns {boolean}
+   */
+  hasCode(code) {
+    return this.allErrors.some((error) => error.code === code)
+  }
+
+  /**
    * Determine if we have any errors.
    *
    * @returns {boolean} Whether there are any errors
@@ -111,6 +121,20 @@ export default class {
         return error.__typename === 'NonFieldError'
       }),
     }
+  }
+
+  /**
+   * Pushes an error to the stack
+   * TODO
+   */
+  push({ message, field, code }) {
+    const error = {
+      message,
+      code,
+      field,
+    }
+    if (this.field) this.field_errors.push(error)
+    else this.non_field_errors.push(error)
   }
 
   /**
