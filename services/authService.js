@@ -48,7 +48,7 @@ export default {
 
     const { data } = await provider.defaultClient.mutate({
       mutation: gql`
-        mutation ($refreshToken: String!) {
+        mutation($refreshToken: String!) {
           refreshToken(refreshToken: $refreshToken) {
             token
             refreshToken

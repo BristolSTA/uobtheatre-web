@@ -29,18 +29,7 @@
     <div
       v-if="loading"
       ref="loading-overlay"
-      class="
-        absolute
-        top-0
-        z-10
-        flex
-        items-center
-        justify-center
-        w-full
-        h-full
-        text-3xl text-white
-        bg-sta-gray-dark bg-opacity-95
-      "
+      class="absolute top-0 z-10 flex items-center justify-center w-full h-full text-3xl text-white bg-sta-gray-dark bg-opacity-95"
     >
       <loading-icon size-class="" />
     </div>
@@ -53,12 +42,7 @@
       <span
         v-if="login_errors && login_errors.hasCode('not_verified')"
         ref="resendEmail"
-        class="
-          text-sm
-          underline
-          cursor-pointer cursor-point
-          hover:text-gray-200
-        "
+        class="text-sm underline cursor-pointer cursor-point hover:text-gray-200"
         @click="resendVerificationEmail"
       >
         Resend Verification Email?
@@ -90,14 +74,7 @@
       </label>
 
       <button
-        class="
-          w-full
-          mt-2
-          text-xl
-          font-semibold
-          text-center
-          btn btn-orange btn-outline
-        "
+        class="w-full mt-2 text-xl font-semibold text-center btn btn-orange btn-outline"
         type="submit"
       >
         Log In
@@ -201,13 +178,7 @@
         <error-helper :errors="signup_errors" field-name="acceptedTerms" />
       </label>
       <button
-        class="
-          w-full
-          text-xl
-          font-semibold
-          text-center
-          btn btn-orange btn-outline
-        "
+        class="w-full text-xl font-semibold text-center btn btn-orange btn-outline"
         :disabled="!accepted_terms"
       >
         Sign Up
