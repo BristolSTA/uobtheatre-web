@@ -136,8 +136,8 @@ export default class {
       code,
       field,
     }
-    if (this.field) this.field_errors.push(error)
-    else this.non_field_errors.push(error)
+    if (error.field) this.errors.field_errors.push(error)
+    else this.errors.non_field_errors.push(error)
   }
 
   /**

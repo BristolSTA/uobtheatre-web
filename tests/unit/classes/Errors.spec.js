@@ -133,6 +133,26 @@ describe('Errors', () => {
     )
   })
 
+  it('can push an error', () => {
+    expect(errors.nonFieldErrors.length).to.eq(1)
+    expect(errors.fieldErrors.length).to.eq(3)
+
+    errors.push({
+      message: 'My Message',
+      code: 'my-code',
+    })
+    expect(errors.nonFieldErrors.length).to.eq(2)
+    expect(errors.nonFieldErrors[1].code).to.eq('my-code')
+
+    errors.push({
+      message: 'My Second Message',
+      code: 'my-second-code',
+      field: 'my-field',
+    })
+    expect(errors.fieldErrors.length).to.eq(4)
+    expect(errors.fieldErrors[3].code).to.eq('my-second-code')
+  })
+
   it('can clear all current errors', () => {
     errors.clear()
 
