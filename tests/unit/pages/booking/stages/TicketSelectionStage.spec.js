@@ -52,7 +52,7 @@ describe('Ticket Selection Stage', () => {
 
   it('reacts to request update event', async () => {
     expect(stageComponent.vm.booking.dirty).to.be.true
-    stageComponent.vm.$apollo.mutationCallstack.push(
+    stageComponent.vm.$apollo.mock.mutationCallstack.push(
       GenericApolloResponse(
         'createBooking',
         GenericMutationResponse({ booking: FullBooking({ tickets: [] }) })

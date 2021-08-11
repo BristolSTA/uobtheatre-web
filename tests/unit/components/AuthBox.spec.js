@@ -126,6 +126,34 @@ describe('AuthBox', function () {
       )
     })
 
+    it('offers option to resend verification email', async () => {
+      authBoxComponent.vm.$apollo = generateApolloMock({
+        mutationCallstack: [
+          GenericApolloResponse(
+            'login',
+            GenericErrorsResponse(
+              GenericError(undefined, undefined, undefined, 'not_verified')
+            )
+          ),
+          GenericApolloResponse(
+            'resendActivationEmail',
+            GenericMutationResponse()
+          ),
+        ],
+      })
+      authBoxComponent.setData({
+        email: 'nobody@example.org',
+        password: 'fakeness',
+      })
+      await authBoxComponent.find('form').trigger('submit')
+      await waitFor(() => authBoxComponent.vm.login_errors)
+      expect(authBoxComponent.findComponent({ ref: 'resendEmail' }).exists()).to
+        .be.true
+      expect(authBoxComponent.vm.$apollo.mock.handledMutations()).to.eq(1)
+      authBoxComponent.findComponent({ ref: 'resendEmail' }).trigger('click')
+      expect(authBoxComponent.vm.$apollo.mock.handledMutations()).to.eq(2)
+    })
+
     it('redirects to intended on successful login if has', async () => {
       let fakePush, storeDispatchFn
 

@@ -124,7 +124,7 @@ describe('Create Booking Page', () => {
           },
           apollo: {
             queryCallstack: [
-              ...bookingComponent.vm.$apollo.queryCallstack,
+              ...bookingComponent.vm.$apollo.mock.queryCallstack,
               GenericApolloResponse('me', {
                 bookings: GenericNodeConnection(),
               }),
@@ -187,7 +187,7 @@ describe('Create Booking Page', () => {
 
             apollo: {
               queryCallstack: [
-                ...bookingComponent.vm.$apollo.queryCallstack,
+                ...bookingComponent.vm.$apollo.mock.queryCallstack,
                 GenericApolloResponse('me', {
                   bookings: GenericNodeConnection([Booking()]),
                 }),
@@ -252,7 +252,7 @@ describe('Create Booking Page', () => {
           },
           apollo: {
             queryCallstack: [
-              ...bookingComponent.vm.$apollo.queryCallstack,
+              ...bookingComponent.vm.$apollo.mock.queryCallstack,
               GenericApolloResponse('me', {
                 bookings: GenericNodeConnection(),
               }),

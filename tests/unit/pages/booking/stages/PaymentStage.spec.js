@@ -117,7 +117,7 @@ describe('Payment Stage', () => {
     })
 
     it('pays for booking', async () => {
-      paymentStageComponent.vm.$apollo.mutationCallstack.push(
+      paymentStageComponent.vm.$apollo.mock.mutationCallstack.push(
         GenericApolloResponse(
           'payBooking',
           GenericMutationResponse({
@@ -143,7 +143,7 @@ describe('Payment Stage', () => {
     })
 
     it('shows any mutation errors', async () => {
-      paymentStageComponent.vm.$apollo.mutationCallstack.push(
+      paymentStageComponent.vm.$apollo.mock.mutationCallstack.push(
         GenericApolloResponse(
           'payBooking',
           GenericErrorsResponse(

@@ -50,6 +50,19 @@
       @submit.prevent="attemptLogin"
     >
       <non-field-error :errors="login_errors" />
+      <span
+        v-if="login_errors && login_errors.hasCode('not_verified')"
+        ref="resendEmail"
+        class="
+          text-sm
+          underline
+          cursor-pointer cursor-point
+          hover:text-gray-200
+        "
+        @click="resendVerificationEmail"
+      >
+        Resend Verification Email?
+      </span>
       <text-input
         v-model="email"
         name="Email"
@@ -217,7 +230,14 @@ import ErrorHelper from '@/components/ui/ErrorHelper.vue'
 import NonFieldError from '@/components/ui/NonFieldError.vue'
 import TextInput from '@/components/ui/TextInput.vue'
 import { authService } from '@/services'
-import { getValidationErrors, swalToast } from '@/utils'
+import {
+  catchOnly,
+  getValidationErrors,
+  swalToast,
+  successToast,
+} from '@/utils'
+import ValidationError from '@/errors/ValidationError'
+import UnverifiedLoginError from '@/errors/auth/UnverifiedLoginError'
 import LoadingIcon from '../ui/LoadingIcon.vue'
 
 export default {
@@ -272,7 +292,15 @@ export default {
 
         return this.$router.push('/')
       } catch (e) {
-        this.login_errors = getValidationErrors(e)
+        catchOnly([ValidationError, UnverifiedLoginError], e, () => {
+          this.login_errors = getValidationErrors(e)
+          if (e instanceof UnverifiedLoginError) {
+            this.login_errors.push({
+              message: 'Your account has not been verified yet.',
+              code: 'not_verified',
+            })
+          }
+        })
       }
 
       this.loading = false
@@ -302,6 +330,19 @@ export default {
         this.signup_errors = getValidationErrors(e)
       }
 
+      this.loading = false
+    },
+    async resendVerificationEmail() {
+      this.loading = true
+      this.login_errors = null
+      try {
+        await authService.resendVerificationEmail(this, this.email)
+        successToast.fire({
+          title: 'Verfication email sent!',
+        })
+      } catch (e) {
+        this.login_errors = getValidationErrors(e)
+      }
       this.loading = false
     },
     guessNameParts() {
