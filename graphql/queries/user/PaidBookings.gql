@@ -2,13 +2,14 @@
 query paidBookings(
   $afterCursor: String
   $active: Boolean
-  $orderBy: String = "createdAt"
+  $orderBy: String = "start"
   $offset: Int
   $max: Int = 10
 ) {
   me {
     bookings(
       status: "PAID"
+      first: $max
       orderBy: $orderBy
       active: $active
       offset: $offset
