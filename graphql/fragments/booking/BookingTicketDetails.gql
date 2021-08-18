@@ -1,0 +1,14 @@
+fragment BookingTicketDetails on BookingNode {
+  tickets {
+    id
+    seatGroup {
+      id
+      name
+    }
+    concessionType {
+      id
+      name
+    }
+    checkedIn
+  }
+}

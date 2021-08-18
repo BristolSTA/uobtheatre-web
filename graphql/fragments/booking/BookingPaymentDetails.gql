@@ -1,0 +1,20 @@
+fragment BookingPaymentDetails on BookingNode {
+  payments {
+    edges {
+      node {
+        createdAt
+        type {
+          value
+          description
+        }
+        provider {
+          value
+          description
+        }
+        value
+        cardBrand
+        last4
+      }
+    }
+  }
+}
