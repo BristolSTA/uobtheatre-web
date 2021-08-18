@@ -75,6 +75,13 @@
           <template #content>
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
               <dropdown-item
+                v-if="$store.state.auth.user.canAdmin || true"
+                title="Admin"
+                subtitle="Control productions and other tools"
+                icon="user-shield"
+                route="/administration"
+              />
+              <dropdown-item
                 v-if="$store.state.auth.user.canBoxoffice"
                 title="Box Office"
                 subtitle="Check in and sell tickets"
