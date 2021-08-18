@@ -30,7 +30,12 @@
           :page-info="activeBookings.pageInfo"
           :current-offset="activeBookingsOffset"
           @nextPage="activeBookingsOffset += activeBookings.edges.length"
-          @previousPage="activeBookingsOffset -= activeBookings.edges.length"
+          @previousPage="
+            activeBookingsOffset = Math.max(
+              activeBookingsOffset - activeBookings.edges.length,
+              0
+            )
+          "
         />
       </div>
     </div>
@@ -48,7 +53,12 @@
             :page-info="oldBookings.pageInfo"
             :current-offset="oldBookingsOffset"
             @nextPage="oldBookingsOffset += oldBookings.edges.length"
-            @previousPage="oldBookingsOffset -= oldBookings.edges.length"
+            @previousPage="
+              oldBookingsOffset = Math.max(
+                oldBookingsOffset - oldBookings.edges.length,
+                0
+              )
+            "
           />
         </div>
       </div>

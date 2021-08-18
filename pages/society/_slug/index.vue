@@ -17,101 +17,94 @@
       {{ society.name }}
     </h1>
 
-    <div class="mt-4 md:my-8 md:container md:flex md:space-x-6">
-      <div class="mx-4 md:mx-0 md:w-1/2">
-        <div v-if="society.logo.url" class="flex justify-center py-2">
-          <img
-            ref="society-logo"
-            :src="society.logo.url"
-            :alt="`${society.name} logo`"
-            class="w-32"
-          />
-        </div>
-        <div class="w-full m-2 text-center md:text-left">
-          <p>{{ society.description }}</p>
-          <!-- <br /> TODO: Implement society contacts
-            <p><strong>Website: </strong>www.{{ society.slug }}.com</p>
-            <p><strong>Contact: </strong>president@{{ society.slug }}.com</p> -->
-        </div>
+    <div
+      class="
+        flex-wrap
+        justify-around
+        mt-4
+        md:my-8 md:container md:flex md:space-x-6
+      "
+    >
+      <div
+        v-if="society.logo.url"
+        class="flex justify-center py-2 mx-4 md:mx-0"
+      >
+        <img
+          ref="society-logo"
+          :src="society.logo.url"
+          :alt="`${society.name} logo`"
+          class="w-32"
+        />
       </div>
 
       <div
         v-if="productions.length"
         ref="production-list"
-        class="w-full px-1 py-2 md:p-2 md:w-1/2 bg-sta-gray-dark"
+        class="flex-none px-1 md:w-1/2"
       >
-        <h2 class="flex justify-center mb-2 text-2xl">Productions</h2>
-        <table class="w-full table-auto">
-          <tbody>
-            <tr
-              v-for="(production, index) in productions"
-              :key="index"
-              class="odd:bg-sta-gray-light even:bg-sta-gray"
-            >
-              <td class="px-4 py-2 text-xl font-semibold hover:text-gray-300">
-                <NuxtLink :to="`/production/${production.slug}`">
-                  {{ production.name }}
-                </NuxtLink>
-              </td>
-              <td v-if="production.isBookable" class="px-4 text-right">
-                <NuxtLink
-                  class="
-                    px-3
-                    py-1.5
-                    my-1
-                    text-sm text-center
-                    font-semibold
-                    btn btn-orange
-                  "
-                  :to="`/production/${production.slug}/book`"
-                >
-                  Book Now
-                </NuxtLink>
-              </td>
-              <td v-else class="px-4 text-right">
-                {{ production.end | dateFormat('MMMM y') }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="py-2 md:p-2 bg-sta-gray-dark">
+          <h2 class="flex justify-center mb-2 text-2xl">
+            Upcoming Productions
+          </h2>
+          <table class="w-full table-auto">
+            <tbody>
+              <tr
+                v-for="(production, index) in productions"
+                :key="index"
+                class="odd:bg-sta-gray-light even:bg-sta-gray"
+              >
+                <td class="px-4 py-2 text-xl font-semibold hover:text-gray-300">
+                  <NuxtLink :to="`/production/${production.slug}`">
+                    {{ production.name }}
+                  </NuxtLink>
+                </td>
+                <td v-if="production.isBookable" class="px-4 text-right">
+                  <NuxtLink
+                    class="
+                      px-3
+                      py-1.5
+                      my-1
+                      text-sm text-center
+                      font-semibold
+                      btn btn-orange
+                    "
+                    :to="`/production/${production.slug}/book`"
+                  >
+                    Book Now
+                  </NuxtLink>
+                </td>
+                <td v-else class="px-4 text-right">
+                  {{ production.end | dateFormat('MMMM y') }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div
+        class="m-2 text-center md:text-left"
+        :class="{ 'w-full': productions.length }"
+      >
+        <p>{{ society.description }}</p>
+        <!-- <br /> TODO: Implement society contacts
+            <p><strong>Website: </strong>www.{{ society.slug }}.com</p>
+            <p><strong>Contact: </strong>president@{{ society.slug }}.com</p> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import gql from 'graphql-tag'
+import SocietyDetailQuery from '@/graphql/queries/SocietyDetail.gql'
 
 export default {
   async asyncData({ params, app, error }) {
     const { data } = await app.apolloProvider.defaultClient.query({
-      query: gql`
-        query society($slug: String!) {
-          society(slug: $slug) {
-            name
-            description
-            slug
-            logo {
-              url
-            }
-            banner {
-              url
-            }
-            productions {
-              edges {
-                node {
-                  name
-                  end
-                  isBookable
-                  slug
-                }
-              }
-            }
-          }
-        }
-      `,
+      query: SocietyDetailQuery,
       variables: {
         slug: params.slug,
+        now: new Date(),
       },
     })
 
