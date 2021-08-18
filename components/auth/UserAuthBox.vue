@@ -270,7 +270,7 @@ export default {
           return this.$router.push(this.$route.query.redirect)
         }
 
-        return this.$router.push('/')
+        return this.$router.replace('/')
       } catch (e) {
         this.login_errors = getValidationErrors(e)
       }

@@ -153,10 +153,11 @@ export default {
             remember
           )
           this.queueRefresh(standardContext)
-          standardContext.store.dispatch('auth/loadUserDetails', {
-            apollo: standardContext.app.apolloProvider.defaultClient,
-          })
-          return resolve(data.login)
+          standardContext.store
+            .dispatch('auth/loadUserDetails', {
+              apollo: standardContext.app.apolloProvider.defaultClient,
+            })
+            .then(() => resolve(data.login))
         })
     })
   },
