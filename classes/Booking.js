@@ -67,6 +67,9 @@ export default class Booking {
     if (bookingData.reference) {
       this.reference = bookingData.reference
     }
+    if (bookingData.user) {
+      this.user = bookingData.user
+    }
     if (bookingData.payments && bookingData.payments.edges.length) {
       this.payments = bookingData.payments.edges.map((edge) => edge.node)
     }

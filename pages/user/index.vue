@@ -8,7 +8,7 @@
     <hr class="border-t-2 border-sta-gray-dark" />
     <div class="container">
       <h2 id="myBookings" class="px-4 py-2 text-h2">My Bookings</h2>
-      <div v-if="!futureBookings.length" class="p-6 text-center">
+      <div v-if="!activeBookings.edges.length" class="p-6 text-center">
         <p class="p-2 text-h4">No Upcoming Bookings</p>
         <NuxtLink class="m-2 btn btn-orange" to="/productions">
           View What's On
@@ -16,12 +16,27 @@
       </div>
       <div v-else class="flex flex-wrap justify-center">
         <div
-          v-for="(booking, index) in futureBookings"
+          v-for="(booking, index) in activeBookings.edges.map(
+            (edge) => edge.node
+          )"
           :key="index"
           class="w-full p-2 performance md:w-1/2 xl:w-1/3"
         >
           <booking-summary-overview class="h-full" :booking="booking" />
         </div>
+      </div>
+      <div class="flex justify-center mb-10">
+        <pagination-bar
+          :page-info="activeBookings.pageInfo"
+          :current-offset="activeBookingsOffset"
+          @nextPage="activeBookingsOffset += activeBookings.edges.length"
+          @previousPage="
+            activeBookingsOffset = Math.max(
+              activeBookingsOffset - activeBookings.edges.length,
+              0
+            )
+          "
+        />
       </div>
     </div>
 
@@ -29,84 +44,85 @@
       <div class="w-full xl:w-3/4">
         <bookings-table
           ref="prev-bookings"
-          :bookings="pastBookings"
-          :can-load-more="!!bookingsEndCursor"
-          @load-more="loadMoreBookings"
+          :bookings="oldBookings.edges.map((edge) => edge.node)"
         >
           <template #title>Past Bookings</template>
         </bookings-table>
+        <div class="flex justify-center">
+          <pagination-bar
+            :page-info="oldBookings.pageInfo"
+            :current-offset="oldBookingsOffset"
+            @nextPage="oldBookingsOffset += oldBookings.edges.length"
+            @previousPage="
+              oldBookingsOffset = Math.max(
+                oldBookingsOffset - oldBookings.edges.length,
+                0
+              )
+            "
+          />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Booking from '@/classes/Booking'
 import BookingSummaryOverview from '@/components/booking/overview/BookingSummaryOverview.vue'
 import BookingsTable from '@/components/user/BookingsTable.vue'
 import UserDetails from '@/components/user/UserDetails.vue'
+import PaginationBar from '@/components/ui/PaginationBar.vue'
 
 export default {
   components: {
     BookingSummaryOverview,
     UserDetails,
     BookingsTable,
+    PaginationBar,
   },
   middleware: 'authed',
   async asyncData({ app }) {
     const { data } = await app.apolloProvider.defaultClient.query({
       query: require('@/graphql/queries/user/MyAccountDetails.gql'),
+      fetchPolicy: 'no-cache',
     })
 
     return {
       user: data.me,
-      bookings: data.me.bookings.edges.map((edge) =>
-        Booking.fromAPIData(edge.node)
-      ),
-      bookingsEndCursor: data.me.bookings.pageInfo.hasNextPage
-        ? data.me.bookings.pageInfo.endCursor
-        : null,
     }
   },
   data() {
     return {
-      bookings: [],
-      bookingsEndCursor: null,
-      loadingMore: false,
+      activeBookings: { edges: [] },
+      activeBookingsOffset: null,
+      oldBookings: { edges: [] },
+      oldBookingsOffset: null,
       user: null,
     }
   },
   head: {
     title: 'My Account',
   },
-  computed: {
-    pastBookings() {
-      return this.bookings.filter((booking) => !booking.isActive)
+  apollo: {
+    activeBookings: {
+      query: require('@/graphql/queries/user/PaidBookings.gql'),
+      variables() {
+        return {
+          active: true,
+          max: 3,
+          offset: this.activeBookingsOffset,
+        }
+      },
+      update: (data) => data.me.bookings,
     },
-    futureBookings() {
-      return this.bookings.filter((booking) => booking.isActive)
-    },
-  },
-  methods: {
-    async loadMoreBookings() {
-      if (this.loadingMore) return
-
-      this.loadingMore = true
-      const { data } = await this.$apollo.query({
-        query: require('@/graphql/queries/user/MorePaidBookings.gql'),
-        variables: {
-          afterCursor: this.bookingsEndCursor,
-        },
-      })
-
-      this.loadingMore = false
-      this.bookings.push(
-        ...data.me.bookings.edges.map((edge) => Booking.fromAPIData(edge.node))
-      )
-
-      this.bookingsEndCursor = null
-      if (data.me.bookings.pageInfo.hasNextPage)
-        this.bookingsEndCursor = data.me.bookings.pageInfo.endCursor
+    oldBookings: {
+      query: require('@/graphql/queries/user/PaidBookings.gql'),
+      variables() {
+        return {
+          active: false,
+          offset: this.oldBookingsOffset,
+        }
+      },
+      update: (data) => data.me.bookings,
     },
   },
 }

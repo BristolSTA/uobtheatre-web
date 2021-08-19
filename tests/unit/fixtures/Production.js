@@ -30,8 +30,8 @@ export default (overrides = {}, includePerformance = false) => {
       featuredImage: {
         url: 'http://pathto.example/featured-image.png',
       },
-      cast: [CrewMember()],
-      crew: [CastMember()],
+      cast: [CastMember()],
+      crew: [CrewMember()],
       productionTeam: [ProductionTeamMember()],
       society: Society(),
       warnings: [{ description: 'Strobe Lighting' }, { description: 'Nudity' }],

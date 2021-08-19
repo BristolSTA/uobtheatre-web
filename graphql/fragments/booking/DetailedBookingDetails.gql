@@ -1,4 +1,6 @@
 #import "./AllPriceBreakdown.gql"
+#import "./BookingTicketDetails.gql"
+#import "./BookingPaymentDetails.gql"
 fragment DetailedBookingDetails on BookingNode {
   id
   reference
@@ -12,36 +14,8 @@ fragment DetailedBookingDetails on BookingNode {
   priceBreakdown {
     ...AllPriceBreakdown
   }
-  tickets {
-    id
-    seatGroup {
-      id
-      name
-    }
-    concessionType {
-      id
-      name
-    }
-    checkedIn
-  }
-  payments {
-    edges {
-      node {
-        createdAt
-        type {
-          value
-          description
-        }
-        provider {
-          value
-          description
-        }
-        value
-        cardBrand
-        last4
-      }
-    }
-  }
+  ...BookingTicketDetails
+  ...BookingPaymentDetails
   performance {
     id
     production {

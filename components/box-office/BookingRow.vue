@@ -11,7 +11,11 @@
     @click="$emit('select-booking')"
     @keypress="$emit('select-booking')"
   >
-    <td class="p-2">James Jelgar</td>
+    <td class="p-2">
+      <template v-if="booking.user.firstName"
+        >{{ booking.user.firstName }} {{ booking.user.lastName }}</template
+      ><template v-else><i>Anonymous User</i></template>
+    </td>
     <td class="p-2 font-mono text-sm md:text-base">{{ booking.reference }}</td>
     <td class="p-2" style="width: 1%">
       <font-awesome-icon

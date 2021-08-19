@@ -195,7 +195,7 @@
           <nuxt-link
             to="/privacy"
             class="underline transition-colors hover:text-sta-orange"
-            >Privacy</nuxt-link
+            >Privacy Policy</nuxt-link
           >
         </span>
         <error-helper :errors="signup_errors" field-name="acceptedTerms" />
@@ -287,10 +287,10 @@ export default {
 
         // Redirect to intended if has
         if (this.$route.query.redirect) {
-          return this.$router.push(this.$route.query.redirect)
+          return this.$router.replace(this.$route.query.redirect)
         }
 
-        return this.$router.push('/')
+        return this.$router.replace('/')
       } catch (e) {
         catchOnly([ValidationError, UnverifiedLoginError], e, () => {
           this.login_errors = getValidationErrors(e)
@@ -325,7 +325,7 @@ export default {
           showConfirmButton: true,
           position: 'bottom-end',
         })
-        return this.$router.push({ name: 'home' })
+        return this.$router.push('/')
       } catch (e) {
         this.signup_errors = getValidationErrors(e)
       }

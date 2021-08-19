@@ -1,19 +1,7 @@
-#import "../../fragments/booking/BasicBookingDetails.gql"
 query myAccountDetails {
   me {
     firstName
     lastName
     email
-    bookings(first: 10, status: "PAID", orderBy: "createdAt") {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      edges {
-        node {
-          ...BasicBookingDetails
-        }
-      }
-    }
   }
 }

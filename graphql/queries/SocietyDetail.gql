@@ -1,0 +1,27 @@
+query society($slug: String!, $now: DateTime!) {
+  society(slug: $slug) {
+    name
+    description
+    slug
+    logo {
+      url
+    }
+    banner {
+      url
+    }
+    productions(orderBy: "start", end_Gte: $now, first: 4) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          name
+          end
+          isBookable
+          slug
+        }
+      }
+    }
+  }
+}

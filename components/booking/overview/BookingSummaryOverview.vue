@@ -35,7 +35,7 @@ export default {
   props: {
     booking: {
       required: true,
-      type: Booking,
+      type: [Booking, Object],
     },
   },
 }

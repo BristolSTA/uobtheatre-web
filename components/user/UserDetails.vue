@@ -81,6 +81,7 @@
           </tr>
         </table>
         <div v-if="editing" class="m-4 text-center">
+          <non-field-error class="pb-2" :errors="errors" />
           <button class="mr-2 btn btn-green">Save Details</button>
           <button
             class="btn btn-orange"
@@ -114,6 +115,7 @@ import ChangePassword from './ChangePassword.vue'
 import LoadingContainer from '../ui/LoadingContainer.vue'
 import gql from 'graphql-tag'
 import { swalToast, performMutation, getValidationErrors } from '@/utils'
+import NonFieldError from '../ui/NonFieldError.vue'
 export default {
   name: 'UserDetails',
   components: {
@@ -121,6 +123,7 @@ export default {
     ChangePassword,
     ChangeEmail,
     LoadingContainer,
+    NonFieldError,
   },
   props: {
     user: {
