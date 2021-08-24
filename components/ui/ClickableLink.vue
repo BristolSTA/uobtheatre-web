@@ -1,6 +1,6 @@
 <template>
   <a
-    class="cursor-pointer"
+    :class="{ 'cursor-pointer': !disabled }"
     @click="$emit('click')"
     @keypress="
       (e) => {
@@ -15,5 +15,11 @@
 <script>
 export default {
   name: 'ClickableLink',
+  props: {
+    disabled: {
+      default: false,
+      type: Boolean,
+    },
+  },
 }
 </script>

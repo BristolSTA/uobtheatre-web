@@ -8,13 +8,9 @@ import {
   generateMountOptions,
   mountWithRouterMock,
   RouterLinkStub,
-  waitFor,
 } from '../../helpers'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 import User from '../../fixtures/User'
-import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection'
-import Booking from '../../fixtures/Booking'
-import Performance from '../../fixtures/Performance'
 
 describe('My Account', () => {
   let myAccountComponent
@@ -59,91 +55,6 @@ describe('My Account', () => {
         "View What's On"
       )
       expect(myAccountComponent.text()).to.contain('No Upcoming Bookings')
-    })
-  })
-
-  describe('with future bookings', () => {
-    beforeEach(async () => {
-      myAccountComponent = await mountWithRouterMock(
-        MyAccount,
-        generateMountOptions(['apollo'], {
-          apollo: {
-            queryCallstack: [
-              GenericApolloResponse(
-                'me',
-                User({
-                  bookings: GenericNodeConnection([
-                    Booking({
-                      performance: Performance({
-                        end: '3000-05-17T10:00:00',
-                      }),
-                    }),
-                    Booking({
-                      performance: Performance({
-                        end: '3000-05-17T10:00:00',
-                      }),
-                    }),
-                  ]),
-                })
-              ),
-            ],
-          },
-        })
-      )
-    })
-    it('shows bookings', () => {
-      expect(
-        myAccountComponent.findAllComponents(BookingSummaryOverview)
-      ).length(2)
-    })
-  })
-
-  describe('with previous bookings', () => {
-    beforeEach(async () => {
-      myAccountComponent = await mountWithRouterMock(
-        MyAccount,
-        generateMountOptions(['apollo'], {
-          apollo: {
-            queryCallstack: [
-              GenericApolloResponse(
-                'me',
-                User({
-                  bookings: GenericNodeConnection(Array(10).fill(Booking()), {
-                    hasNextPage: true,
-                  }),
-                })
-              ),
-              GenericApolloResponse(
-                'me',
-                User({
-                  bookings: GenericNodeConnection(Array(2).fill(Booking())),
-                })
-              ),
-            ],
-          },
-        })
-      )
-      await myAccountComponent.vm.$nextTick()
-    })
-
-    it('shows first 10 previous bookings', () => {
-      expect(
-        myAccountComponent.findComponent(BookingsTable).props('bookings')
-      ).length(10)
-      expect(
-        myAccountComponent.findComponent(BookingsTable).props('canLoadMore')
-      ).to.be.true
-    })
-
-    it('can request next page', async () => {
-      myAccountComponent.findComponent(BookingsTable).vm.$emit('load-more')
-      await waitFor(() => !myAccountComponent.vm.loadingMore)
-      expect(
-        myAccountComponent.findComponent(BookingsTable).props('bookings')
-      ).length(12)
-      expect(
-        myAccountComponent.findComponent(BookingsTable).props('canLoadMore')
-      ).to.be.false
     })
   })
 })

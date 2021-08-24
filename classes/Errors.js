@@ -39,6 +39,16 @@ export default class {
   }
 
   /**
+   * Determine if at least one error has the given code
+   *
+   * @param {string} code The code to search for
+   * @returns {boolean}
+   */
+  hasCode(code) {
+    return this.allErrors.some((error) => error.code === code)
+  }
+
+  /**
    * Determine if we have any errors.
    *
    * @returns {boolean} Whether there are any errors
@@ -111,6 +121,23 @@ export default class {
         return error.__typename === 'NonFieldError'
       }),
     }
+  }
+
+  /**
+   * Pushes an error to the stack
+   * @param {object} errorObject An error dictionary
+   * @param {string} errorObject.message The error's message
+   * @param {string} [errorObject.field] The error's field
+   * @param {string} [errorObject.code] The error's code
+   */
+  push({ message, field, code }) {
+    const error = {
+      message,
+      code,
+      field,
+    }
+    if (error.field) this.errors.field_errors.push(error)
+    else this.errors.non_field_errors.push(error)
   }
 
   /**

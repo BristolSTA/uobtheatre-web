@@ -58,7 +58,11 @@
               <th class="pr-4">Ticket ID</th>
               <th class="text-center">Checked In?</th>
             </tr>
-            <tr v-for="(ticket, n) in sortedTicketList" :key="n">
+            <tr
+              v-for="(ticket, n) in sortedTicketList"
+              :key="n"
+              :class="{ 'bg-sta-orange-dark': highlightTicketId === ticket.id }"
+            >
               <td class="pr-4">
                 <template v-if="n == 0">{{ ticket.seatGroup.name }}</template>
                 <template
@@ -73,7 +77,7 @@
               <td class="pr-4 font-mono text-sm md:text-base">
                 {{ ticket.id }}
               </td>
-              <td class="pt-1 text-center">
+              <td class="py-1 text-center">
                 <div class="flex items-center justify-center space-x-2">
                   <font-awesome-icon
                     :icon="
@@ -131,6 +135,10 @@ export default {
     index: {
       required: true,
       type: Number,
+    },
+    highlightTicketId: {
+      default: null,
+      type: [String, Number],
     },
   },
   data() {

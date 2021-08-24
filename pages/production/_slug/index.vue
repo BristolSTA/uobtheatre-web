@@ -13,7 +13,41 @@
         @scroll-to-tickets="$refs.performances.$el.scrollIntoView()"
       />
       <hr class="border-t-2 border-sta-gray-dark" />
-      <production-cast-credits ref="cast-credits" :production="production" />
+      <div class="container my-6 text-white">
+        <ul class="text-xl uppercase">
+          <li
+            class="inline-block font-semibold"
+            :class="{
+              'text-sta-rouge ': overview & hasCastCrew,
+              'hover:text-sta-rouge': !overview,
+            }"
+          >
+            <clickable-link :disabled="!hasCastCrew" @click="overview = true">
+              Overview
+            </clickable-link>
+          </li>
+          <li
+            v-if="hasCastCrew"
+            class="inline-block ml-6 font-semibold hover:text-sta-rouge"
+            :class="{ 'text-sta-rouge': !overview }"
+          >
+            <clickable-link :disabled="!hasCastCrew" @click="overview = false">
+              Cast &amp; Credits
+            </clickable-link>
+          </li>
+        </ul>
+
+        <production-overview
+          v-if="overview"
+          ref="overview"
+          :production="production"
+        />
+        <production-cast-credits
+          v-else
+          ref="cast-credits"
+          :production="production"
+        />
+      </div>
       <hr class="border-t-2 border-sta-gray-dark" />
       <production-performances ref="performances" :production="production" />
     </template>
@@ -25,12 +59,16 @@ import ProductionCastCredits from '@/components/production/ProductionCastCredits
 import ProductionHeader from '@/components/production/ProductionHeader.vue'
 import ProductionPerformances from '@/components/production/ProductionPerformances.vue'
 import ProductionPageQuery from '@/graphql/queries/ProductionBySlug.gql'
+import ProductionOverview from '@/components/production/ProductionOverview.vue'
+import ClickableLink from '@/components/ui/ClickableLink.vue'
 
 export default {
   components: {
     ProductionHeader,
     ProductionCastCredits,
     ProductionPerformances,
+    ProductionOverview,
+    ClickableLink,
   },
   async asyncData({ params, error, app }) {
     // Execute query
@@ -51,6 +89,11 @@ export default {
       production,
     }
   },
+  data() {
+    return {
+      overview: true,
+    }
+  },
   head() {
     const productionName = this.production ? this.production.name : 'Loading...'
     return {
@@ -66,6 +109,13 @@ export default {
         { text: 'Whats On', route: '/productions' },
         { text: this.production.name },
       ]
+    },
+    hasCastCrew() {
+      return Boolean(
+        this.production.crew.length ||
+          this.production.cast.length ||
+          this.production.productionTeam.length
+      )
     },
   },
 }

@@ -20,6 +20,12 @@ describe('Errors', () => {
         field: 'myfield',
         __typename: 'FieldError',
       },
+      {
+        message: 'An issue with a code',
+        field: 'anotherfieldthesecond',
+        code: 'something_wrong',
+        __typename: 'FieldError',
+      },
     ])
   })
 
@@ -61,6 +67,11 @@ describe('Errors', () => {
     expect(errors.any()).to.be.false
   })
 
+  it('can report if it has a error by code', () => {
+    expect(errors.hasCode('something_wrong')).to.be.true
+    expect(errors.hasCode('something_wrong_again')).to.be.false
+  })
+
   it('can get a fields first error', () => {
     expect(errors.first('myfield')).to.include({
       message: 'An issue with a field',
@@ -88,12 +99,12 @@ describe('Errors', () => {
 
   it('can get field errors', () => {
     const fieldErrors = errors.fieldErrors
-    expect(fieldErrors).length(2)
+    expect(fieldErrors).length(3)
     expect(fieldErrors[0].message).to.eq('An issue with a field')
   })
 
   it('can get all errors', () => {
-    expect(errors.allErrors).length(3)
+    expect(errors.allErrors).length(4)
     expect(errors.allErrors).to.include.members(errors.nonFieldErrors)
     expect(errors.allErrors).to.include.members(errors.fieldErrors)
   })
@@ -120,6 +131,26 @@ describe('Errors', () => {
     expect(errors.first('amazingfield').message).to.eq(
       'A new error for an amazingfield'
     )
+  })
+
+  it('can push an error', () => {
+    expect(errors.nonFieldErrors.length).to.eq(1)
+    expect(errors.fieldErrors.length).to.eq(3)
+
+    errors.push({
+      message: 'My Message',
+      code: 'my-code',
+    })
+    expect(errors.nonFieldErrors.length).to.eq(2)
+    expect(errors.nonFieldErrors[1].code).to.eq('my-code')
+
+    errors.push({
+      message: 'My Second Message',
+      code: 'my-second-code',
+      field: 'my-field',
+    })
+    expect(errors.fieldErrors.length).to.eq(4)
+    expect(errors.fieldErrors[3].code).to.eq('my-second-code')
   })
 
   it('can clear all current errors', () => {

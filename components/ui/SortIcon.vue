@@ -1,8 +1,8 @@
 <template>
   <span class="text-xl">
     <button class="pl-2 focus:outline-none" @click="onSort">
-      <font-awesome-icon v-if="sortStatus == 1" icon="sort-up" />
-      <font-awesome-icon v-else-if="sortStatus == 2" icon="sort-down" />
+      <font-awesome-icon v-if="sortStatus == '-'" icon="sort-up" />
+      <font-awesome-icon v-else-if="sortStatus == ''" icon="sort-down" />
       <font-awesome-icon v-else icon="sort" />
     </button>
   </span>
@@ -12,28 +12,23 @@
 export default {
   data() {
     return {
-      sortStatus: 0,
+      sortStatus: null,
     }
   },
   methods: {
     incrementSort() {
-      if (this.sortStatus === 2) {
-        this.sortStatus = 0
+      if (this.sortStatus === '-') {
+        this.sortStatus = null
+      } else if (this.sortStatus === null) {
+        this.sortStatus = ''
       } else {
-        this.sortStatus += 1
+        this.sortStatus = '-'
       }
-    },
-    setSort(input) {
-      this.sortStatus = input
     },
     onSort() {
       this.incrementSort()
 
-      if (this.sortStatus === 1) {
-        this.$emit('sort-up')
-      } else if (this.sortStatus === 2) {
-        this.$emit('sort-down')
-      } else this.$emit('no-sort')
+      this.$emit('input', this.sortStatus)
     },
   },
 }

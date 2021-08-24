@@ -28,6 +28,7 @@ export const actions = {
           }
           ${AuthUserDetailsFragment}
         `,
+        fetchPolicy: 'no-cache',
       })
       userInfo = data.me
     }

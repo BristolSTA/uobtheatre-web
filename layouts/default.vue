@@ -2,7 +2,7 @@
   <div class="flex flex-col h-screen font-body">
     <nav-bar />
     <breadcrumbs v-if="crumbs" :crumbs="crumbs" />
-    <main class="flex-1 py-2 text-white bg-sta-gray">
+    <main class="flex-1 pb-2 text-white bg-sta-gray">
       <Nuxt ref="page" @hook:mounted="getCrumbs" />
     </main>
     <footer-bar />

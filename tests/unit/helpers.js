@@ -130,8 +130,12 @@ const generateApolloMock = function (options) {
   const mutationCallstack = options ? options.mutationCallstack : []
 
   return {
-    queryCallstack,
-    mutationCallstack,
+    mock: {
+      queryCallstack,
+      mutationCallstack,
+      handledQueries: () => queryCount,
+      handledMutations: () => mutationCount,
+    },
     query: jest.fn(() => {
       queryCount++
       if (queryCallstack[queryCount - 1])

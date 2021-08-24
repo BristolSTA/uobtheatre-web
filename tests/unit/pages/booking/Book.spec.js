@@ -18,7 +18,7 @@ import Performance from '../../fixtures/Performance'
 import Booking from '../../fixtures/Booking'
 
 describe('Create Booking Page', () => {
-  let bookingComponent, routerPushFake
+  let bookingComponent, routerPushFake, routerReplaceFake
   const fakeNuxtChild = {
     template: '<div />',
     stageInfo: stages[0].stageInfo,
@@ -107,7 +107,7 @@ describe('Create Booking Page', () => {
     )
   })
 
-  describe('with performannce id', () => {
+  describe('with performance id', () => {
     beforeEach(async () => {
       bookingComponent = await mountWithRouterMock(
         Book,
@@ -124,7 +124,7 @@ describe('Create Booking Page', () => {
           },
           apollo: {
             queryCallstack: [
-              ...bookingComponent.vm.$apollo.queryCallstack,
+              ...bookingComponent.vm.$apollo.mock.queryCallstack,
               GenericApolloResponse('me', {
                 bookings: GenericNodeConnection(),
               }),
@@ -187,7 +187,7 @@ describe('Create Booking Page', () => {
 
             apollo: {
               queryCallstack: [
-                ...bookingComponent.vm.$apollo.queryCallstack,
+                ...bookingComponent.vm.$apollo.mock.queryCallstack,
                 GenericApolloResponse('me', {
                   bookings: GenericNodeConnection([Booking()]),
                 }),
@@ -243,6 +243,7 @@ describe('Create Booking Page', () => {
           mocks: {
             $router: {
               push: (routerPushFake = jest.fn()),
+              replace: (routerReplaceFake = jest.fn()),
             },
             $route: {
               params: {
@@ -252,7 +253,7 @@ describe('Create Booking Page', () => {
           },
           apollo: {
             queryCallstack: [
-              ...bookingComponent.vm.$apollo.queryCallstack,
+              ...bookingComponent.vm.$apollo.mock.queryCallstack,
               GenericApolloResponse('me', {
                 bookings: GenericNodeConnection(),
               }),
@@ -280,8 +281,8 @@ describe('Create Booking Page', () => {
         .mockImplementation(() => false)
       await mount(stage)
 
-      expect(routerPushFake.mock.calls).length(1)
-      expect(routerPushFake.mock.calls[0][0].name).to.eq(
+      expect(routerReplaceFake.mock.calls).length(1)
+      expect(routerReplaceFake.mock.calls[0][0].name).to.eq(
         'production-slug-book-performanceId-tickets'
       )
       mock.mockReset()

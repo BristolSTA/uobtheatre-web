@@ -38,15 +38,13 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import lo from 'lodash'
 
 import Booking from '@/classes/Booking'
 import TicketMatrix from '@/classes/TicketsMatrix'
 import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue'
-import PriceBreakdownFragment from '@/graphql/fragments/booking/AllPriceBreakdown.gql'
-import DetailBookingFragment from '@/graphql/fragments/booking/DetailedBookingDetails.gql'
-import ErrorsPartial from '@/graphql/partials/ErrorsPartial'
+import CreateBooking from '@/graphql/mutations/booking/CreateBooking.gql'
+import UpdateBooking from '@/graphql/mutations/booking/UpdateBooking.gql'
 import { performMutation } from '@/utils'
 import TicketOptions from '@/components/booking/TicketOptions.vue'
 import SelectedTicketsTable from '@/components/booking/SelectedTicketsTable.vue'
@@ -80,18 +78,6 @@ export default {
   },
   methods: {
     async updateAPI() {
-      const queryBody = `
-        ${ErrorsPartial}
-        booking {
-          ...DetailedBookingDetails
-        }`
-
-      const variables = {
-        id: this.booking.id,
-        performanceID: this.booking.performance.id,
-        tickets: this.booking.toAPIData().tickets,
-      }
-
       let bookingResponse
       try {
         if (!this.booking.id) {
@@ -99,16 +85,11 @@ export default {
           const data = await performMutation(
             this.$apollo,
             {
-              mutation: gql`
-            mutation($performanceID: IdInputField!, $tickets: [CreateTicketInput]) {
-              createBooking(performanceId: $performanceID, tickets: $tickets) {
-                ${queryBody}
-              }
-            }
-            ${PriceBreakdownFragment}
-            ${DetailBookingFragment}
-          `,
-              variables,
+              mutation: CreateBooking,
+              variables: {
+                performanceId: this.booking.performance.id,
+                tickets: this.booking.toAPIData().tickets,
+              },
             },
             'createBooking'
           )
@@ -118,16 +99,11 @@ export default {
           const data = await performMutation(
             this.$apollo,
             {
-              mutation: gql`
-            mutation($id: IdInputField!, $tickets: [UpdateTicketInput]) {
-              updateBooking(bookingId: $id, tickets: $tickets) {
-                ${queryBody}
-              }
-            }
-            ${PriceBreakdownFragment}
-            ${DetailBookingFragment}
-          `,
-              variables,
+              mutation: UpdateBooking,
+              variables: {
+                id: this.booking.id,
+                tickets: this.booking.toAPIData().tickets,
+              },
             },
             'updateBooking'
           )

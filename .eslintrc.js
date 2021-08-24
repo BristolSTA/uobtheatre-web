@@ -14,7 +14,6 @@ module.exports = {
     'plugin:nuxt/recommended',
   ],
   plugins: [],
-  // add your custom rules here
   rules: {
     'import/no-named-as-default': 'off',
   },

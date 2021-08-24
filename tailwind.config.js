@@ -4,8 +4,7 @@ module.exports = {
     // purgeLayersByDefault: true,
   },
   purge: {
-    safelist: ['grid-cols-7'],
-    content: [],
+    content: ['node_modules/vue-tailwind/dist/*.js'],
   },
   theme: {
     fontFamily: {

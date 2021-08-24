@@ -4,7 +4,8 @@ import jwtDecode from 'jwt-decode'
 
 import Errors from '@/classes/Errors'
 import ErrorsPartial from '@/graphql/partials/ErrorsPartial'
-import { ValidationError } from '@/utils'
+import ValidationError from '@/errors/ValidationError'
+import UnverifiedLoginError from '@/errors/auth/UnverifiedLoginError'
 
 let refreshTimer
 
@@ -27,9 +28,9 @@ export default {
 
   logout(context, trigger = true) {
     clearTimeout(refreshTimer)
-    context.store.dispatch('auth/logout')
-    cookie.remove(context.$config.auth.refreshTokenKey)
-    cookie.remove(context.$config.auth.rememberKey)
+    context.store.dispatch('auth/logout') // Remove token
+    cookie.remove(context.$config.auth.refreshTokenKey) // Remove fresh token cookie
+    cookie.remove(context.$config.auth.rememberKey) // Remove remember cookie
     if (trigger) window.localStorage.setItem('logout', Date.now())
   },
 
@@ -124,6 +125,9 @@ export default {
                 ${ErrorsPartial}
                 token
                 refreshToken
+                user {
+                  verified
+                }
               }
             }
           `,
@@ -137,6 +141,8 @@ export default {
             return reject(
               new ValidationError(Errors.createFromAPI(data.login.errors))
             )
+
+          if (!data.login.user.verified) reject(new UnverifiedLoginError())
 
           const standardContext = {
             store: componentContext.$store,
@@ -153,10 +159,46 @@ export default {
             remember
           )
           this.queueRefresh(standardContext)
-          standardContext.store.dispatch('auth/loadUserDetails', {
-            apollo: standardContext.app.apolloProvider.defaultClient,
-          })
-          return resolve(data.login)
+          standardContext.store
+            .dispatch('auth/loadUserDetails', {
+              apollo: standardContext.app.apolloProvider.defaultClient,
+            })
+            .then(() => resolve(data.login))
+        })
+    })
+  },
+
+  /**
+   * Attempts to resend the user's verification email
+   *
+   * @param {object} componentContext Vue Component "this" Context
+   * @param {string} email User's Email
+   * @returns {Promise} API Response Promise
+   */
+  resendVerificationEmail(componentContext, email) {
+    return new Promise((resolve, reject) => {
+      componentContext.$apollo
+        .mutate({
+          mutation: gql`
+            mutation($email: String!) {
+              resendActivationEmail(email: $email) {
+                ${ErrorsPartial}
+              }
+            }
+          `,
+          variables: {
+            email,
+          },
+        })
+        .then(({ data }) => {
+          if (!data.resendActivationEmail.success)
+            return reject(
+              new ValidationError(
+                Errors.createFromAPI(data.resendActivationEmail.errors)
+              )
+            )
+
+          return resolve()
         })
     })
   },

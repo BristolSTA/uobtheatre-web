@@ -48,6 +48,7 @@ export default {
     'faRedo',
     'faImage',
     'faTrash',
+    'faMobileAlt',
   ],
   brands: ['faFacebook'],
 }

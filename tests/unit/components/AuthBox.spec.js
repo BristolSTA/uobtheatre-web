@@ -126,8 +126,36 @@ describe('AuthBox', function () {
       )
     })
 
+    it('offers option to resend verification email', async () => {
+      authBoxComponent.vm.$apollo = generateApolloMock({
+        mutationCallstack: [
+          GenericApolloResponse(
+            'login',
+            GenericErrorsResponse(
+              GenericError(undefined, undefined, undefined, 'not_verified')
+            )
+          ),
+          GenericApolloResponse(
+            'resendActivationEmail',
+            GenericMutationResponse()
+          ),
+        ],
+      })
+      authBoxComponent.setData({
+        email: 'nobody@example.org',
+        password: 'fakeness',
+      })
+      await authBoxComponent.find('form').trigger('submit')
+      await waitFor(() => authBoxComponent.vm.login_errors)
+      expect(authBoxComponent.findComponent({ ref: 'resendEmail' }).exists()).to
+        .be.true
+      expect(authBoxComponent.vm.$apollo.mock.handledMutations()).to.eq(1)
+      authBoxComponent.findComponent({ ref: 'resendEmail' }).trigger('click')
+      expect(authBoxComponent.vm.$apollo.mock.handledMutations()).to.eq(2)
+    })
+
     it('redirects to intended on successful login if has', async () => {
-      let fakePush, storeDispatchFn
+      let fakeReplace, storeDispatchFn
 
       authBoxComponent = await mountWithRouterMock(
         UserAuthBox,
@@ -139,10 +167,10 @@ describe('AuthBox', function () {
               },
             },
             $store: {
-              dispatch: (storeDispatchFn = jest.fn()),
+              dispatch: (storeDispatchFn = jest.fn(() => Promise.resolve())),
             },
             $router: {
-              push: (fakePush = jest.fn()),
+              replace: (fakeReplace = jest.fn()),
             },
           },
           apollo: {
@@ -166,7 +194,7 @@ describe('AuthBox', function () {
       )
 
       await authBoxComponent.vm.attemptLogin()
-      expect(fakePush.mock.calls[0][0]).to.eq('/some/path')
+      expect(fakeReplace.mock.calls[0][0]).to.eq('/some/path')
       expect(storeDispatchFn.mock.calls).length(2)
       expect(storeDispatchFn.mock.calls[0][0]).to.eq('auth/login')
       expect(storeDispatchFn.mock.calls[0][1]).to.eq(
@@ -177,7 +205,7 @@ describe('AuthBox', function () {
     })
 
     it('redirects to home on successful login if no intended', async () => {
-      let fakePush
+      let fakeReplace
       authBoxComponent = await mountWithRouterMock(
         UserAuthBox,
         generateMountOptions(['apollo', 'config'], {
@@ -192,10 +220,10 @@ describe('AuthBox', function () {
               onLogin: jest.fn(),
             },
             $store: {
-              dispatch: jest.fn(),
+              dispatch: jest.fn(() => Promise.resolve()),
             },
             $router: {
-              push: (fakePush = jest.fn()),
+              replace: (fakeReplace = jest.fn()),
             },
           },
           apollo: {
@@ -219,7 +247,7 @@ describe('AuthBox', function () {
       )
 
       await authBoxComponent.vm.attemptLogin()
-      expect(fakePush.mock.calls[0][0]).to.eq('/')
+      expect(fakeReplace.mock.calls[0][0]).to.eq('/')
     })
 
     it('has link to reset password', () => {
@@ -324,7 +352,7 @@ describe('AuthBox', function () {
         expect(swalToastStub.mock.calls).length(1)
 
         expect(routerPushStub.mock.calls).length(1)
-        expect(routerPushStub.mock.calls[0][0].name).to.eq('home')
+        expect(routerPushStub.mock.calls[0][0]).to.eq('/')
       })
     })
 

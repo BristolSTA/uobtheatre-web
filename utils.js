@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon'
+import ValidationError from '@/errors/ValidationError'
 import Swal from 'sweetalert2'
 import resolveConfig from 'tailwindcss/resolveConfig'
 import humanizeDuration from 'humanize-duration'
@@ -73,16 +74,21 @@ const errorHandler = (e) => {
   apiErrorToast.fire()
 }
 
-const ValidationError = class extends Error {
-  /**
-   *
-   * @param {Errors} errors An Errors class instance
-   */
-  constructor(errors) {
-    super('There were validation errors')
-    this.name = 'ValidationError'
-    this.errors = errors
+/**
+ * Catches only the given error(s). Otherwise, throws.
+ *
+ * @param {Array|Class} errors List or single error class
+ * @param {Error} caughtError The caught error
+ * @param {Function} callback The function to call if is a valid exception
+ */
+const catchOnly = (errors, caughtError, callback) => {
+  if (!Array.isArray(errors)) errors = [errors]
+
+  if (errors.some((errorClass) => caughtError instanceof errorClass)) {
+    return callback(caughtError)
   }
+
+  throw caughtError
 }
 
 const getValidationErrors = (error, throwExp = true) => {
@@ -156,6 +162,6 @@ export {
   swal,
   swalToast,
   tailwindConfig,
-  ValidationError,
+  catchOnly,
   getValidationErrors,
 }
