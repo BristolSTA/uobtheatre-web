@@ -1,14 +1,18 @@
-query adminProductionShow($slug: String!) {
+query adminProductionEdit($slug: String!) {
   production(slug: $slug) {
     id
     name
     subtitle
     society {
       name
+      logo {
+        url
+      }
     }
     slug
     start
     end
+    description
     performances(orderBy: "start") {
       edges {
         node {

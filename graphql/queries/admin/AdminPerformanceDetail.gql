@@ -1,29 +1,25 @@
-query adminProductionShow($slug: String!) {
-  production(slug: $slug) {
+query adminPerformanceDetail($productionSlug: String!, $performanceId: ID!) {
+  production(slug: $productionSlug) {
     id
-    name
-    subtitle
-    society {
-      name
-    }
     slug
-    start
-    end
-    performances(orderBy: "start") {
+    name
+    performances(id: $performanceId) {
       edges {
         node {
           id
           venue {
             name
           }
+          disabled
           doorsOpen
           start
+          end
+          durationMins
           soldOut
           isOnline
           isInperson
         }
       }
     }
-    isBookable
   }
 }

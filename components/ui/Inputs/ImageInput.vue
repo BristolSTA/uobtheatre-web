@@ -6,7 +6,17 @@
   >
     <div
       v-if="draggingOver"
-      class="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center bg-sta-gray-dark bg-opacity-80"
+      class="
+        absolute
+        top-0
+        bottom-0
+        left-0
+        right-0
+        flex
+        items-center
+        justify-center
+        bg-sta-gray-dark bg-opacity-80
+      "
       @dragleave.prevent="onDragLeave"
     >
       <strong>Release to swap</strong>
@@ -20,13 +30,25 @@
         <div class="mt-3 text-center">
           <error-helper v-if="error">{{ error }}</error-helper>
           <button
-            class="p-1 transition-colors rounded bg-sta-orange hover:bg-sta-orange-dark"
+            class="
+              p-1
+              transition-colors
+              rounded
+              bg-sta-orange
+              hover:bg-sta-orange-dark
+            "
             @click="file = null"
           >
             Remove
           </button>
           <button
-            class="p-1 transition-colors rounded bg-sta-orange hover:bg-sta-orange-dark"
+            class="
+              p-1
+              transition-colors
+              rounded
+              bg-sta-orange
+              hover:bg-sta-orange-dark
+            "
             @click="$refs.fileInput.click()"
           >
             Replace
@@ -38,7 +60,13 @@
         <p>
           Drag an image here or
           <button
-            class="p-1 transition-colors rounded bg-sta-orange hover:bg-sta-orange-dark"
+            class="
+              p-1
+              transition-colors
+              rounded
+              bg-sta-orange
+              hover:bg-sta-orange-dark
+            "
             @click="$refs.fileInput.click()"
           >
             Select

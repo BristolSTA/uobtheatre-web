@@ -24,6 +24,7 @@ export default {
     'faTimesCircle',
     'faCheckCircle',
     'faUserEdit',
+    'faEdit',
     'faClipboardList',
     'faCashRegister',
     'faUserCheck',
@@ -46,6 +47,7 @@ export default {
     'faUndo',
     'faRedo',
     'faImage',
+    'faTrash',
   ],
   brands: ['faFacebook'],
 }

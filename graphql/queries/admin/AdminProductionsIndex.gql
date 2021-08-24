@@ -6,6 +6,7 @@ query adminProductions($now: DateTime, $afterCursor: String) {
     }
     edges {
       node {
+        id
         name
         slug
         featuredImage {
