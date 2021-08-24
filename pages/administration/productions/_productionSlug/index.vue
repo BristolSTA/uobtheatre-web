@@ -12,71 +12,99 @@
       >
     </template>
     <div class="space-y-4">
-      <card title="Summary" class="max-w-2xl">
-        <table class="w-full table-auto">
-          <tr>
-            <th>Status</th>
-            <td>
-              <badge class="bg-sta-green">Published</badge>
-              <p class="text-sm">
-                This production is shown publically, and available for booking
-              </p>
-            </td>
-          </tr>
-          <tr>
-            <th>Ticket Sales</th>
-            <td>
-              150 tickets sold (of 350 cross-show capacity)
-              <progress-bar :percentage="75" />
-            </td>
-          </tr>
-          <tr>
-            <th>Sales Total</th>
-            <td>£1020.20</td>
-          </tr>
-        </table>
-      </card>
-      <card title="Performances">
-        <table class="w-full table-auto">
-          <thead>
+      <div class="flex flex-wrap justify-around space-y-4">
+        <card title="Summary" class="max-w-2xl">
+          <table class="w-full table-auto">
             <tr>
-              <th></th>
-              <th>Date</th>
-              <th>Doors Time</th>
-              <th>Venue</th>
-              <th>Sales</th>
-              <th></th>
+              <table-head-item>Status</table-head-item>
+              <table-row-item>
+                <production-status-badge :production="production" />
+                <p class="text-sm">{{ statusDescription }}</p>
+              </table-row-item>
             </tr>
-          </thead>
-          <tbody class="text-center border rounded-lg broder-sta-gray">
-            <tr
-              v-for="performance in production.performances.edges.map(
-                (edge) => edge.node
-              )"
+            <tr>
+              <table-head-item>Society</table-head-item>
+              <table-row-item>
+                <p class="text-sm">{{ production.society.name }}</p>
+              </table-row-item>
+            </tr>
+            <tr>
+              <table-head-item>Ticket Sales</table-head-item>
+              <table-row-item>
+                TODO tickets sold (of TODO cross-show capacity)
+                <progress-bar :percentage="75" />
+              </table-row-item>
+            </tr>
+            <tr>
+              <table-head-item>Sales Total</table-head-item>
+              <table-row-item>£1020.20 TODO</table-row-item>
+            </tr>
+          </table>
+        </card>
+        <div class="flex flex-col items-center px-6 space-y-5">
+          <menu-tile
+            icon="clipboard-list"
+            class="bg-sta-green hover:bg-sta-green-dark"
+            :to="`${production.slug}/bookings`"
+            >View Bookings</menu-tile
+          >
+        </div>
+      </div>
+      <card title="Performances">
+        <paginated-table
+          v-if="performancesData"
+          :items="performancesData.edges.map((edge) => edge.node)"
+          :loading="$apollo.queries.performancesData.loading"
+          :page-info="performancesData.pageInfo"
+          :offset.sync="performancesOffset"
+        >
+          <template #head>
+            <table-head-item></table-head-item>
+            <table-head-item>Date</table-head-item>
+            <table-head-item>Doors Time</table-head-item>
+            <table-head-item>Venue</table-head-item>
+            <table-head-item>Sales</table-head-item>
+            <table-head-item></table-head-item>
+          </template>
+          <template #default="slotProps">
+            <table-row
+              v-for="performance in slotProps.items"
               :key="performance.id"
-              class="even:bg-sta-gray-light odd:bg-sta-gray-dark"
             >
-              <td>
-                <badge class="text-sm bg-sta-green">Bookable</badge>
-              </td>
-              <td>{{ performance.start | dateFormat('EEEE dd MMMM y') }}</td>
-              <td>{{ performance.doorsOpen | dateFormat('HH:mm ZZZZ') }}</td>
-              <td>{{ performance.venue.name }}</td>
-              <td>
-                <p>208 of 380</p>
-                <progress-bar :height="2" :percentage="80" />
-              </td>
-              <td class="space-x-2">
+              <table-row-item>
+                <performance-status-badge :performance="performance" />
+              </table-row-item>
+              <table-row-item>{{
+                performance.start | dateFormat('EEEE dd MMMM y')
+              }}</table-row-item>
+              <table-row-item>{{
+                performance.doorsOpen | dateFormat('HH:mm ZZZZ')
+              }}</table-row-item>
+              <table-row-item>{{ performance.venue.name }}</table-row-item>
+              <table-row-item>
+                <p>
+                  {{ performance.ticketsBreakdown.totalTicketsSold }} of
+                  {{ performance.ticketsBreakdown.totalCapacity }}
+                </p>
+                <progress-bar
+                  :height="2"
+                  :percentage="
+                    (100 * performance.ticketsBreakdown.totalTicketsSold) /
+                    performance.ticketsBreakdown.totalCapacity
+                  "
+                />
+              </table-row-item>
+              <table-row-item class="space-x-2">
                 <sta-button
                   :small="true"
                   colour="green"
                   :to="`${production.slug}/performances/${performance.id}`"
                   >View</sta-button
                 >
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              </table-row-item>
+            </table-row>
+          </template>
+        </paginated-table>
       </card>
     </div>
   </admin-page>
@@ -84,13 +112,32 @@
 
 <script>
 import AdminProductionShowQuery from '@/graphql/queries/admin/AdminProductionShow.gql'
+import AdminPerformancesIndexQuery from '@/graphql/queries/admin/AdminPerformancesIndex.gql'
 import AdminPage from '@/components/admin/AdminPage.vue'
 import StaButton from '@/components/ui/StaButton.vue'
 import Card from '@/components/ui/Card.vue'
 import ProgressBar from '@/components/ui/ProgressBar.vue'
-import Badge from '@/components/ui/Badge.vue'
+import MenuTile from '@/components/ui/MenuTile.vue'
+import PerformanceStatusBadge from '@/components/performance/PerformanceStatusBadge.vue'
+import TableRowItem from '@/components/ui/Tables/TableRowItem.vue'
+import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue'
+import ProductionStatusBadge from '@/components/production/ProductionStatusBadge.vue'
+import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue'
+import TableRow from '@/components/ui/Tables/TableRow.vue'
 export default {
-  components: { AdminPage, StaButton, Card, ProgressBar, Badge },
+  components: {
+    AdminPage,
+    StaButton,
+    Card,
+    ProgressBar,
+    MenuTile,
+    PerformanceStatusBadge,
+    TableRowItem,
+    TableHeadItem,
+    ProductionStatusBadge,
+    PaginatedTable,
+    TableRow,
+  },
   async asyncData({ params, error, app }) {
     // Execute query
     const { data } = await app.apolloProvider.defaultClient.query({
@@ -113,13 +160,44 @@ export default {
   data() {
     return {
       production: null,
+
+      performancesData: null,
+      performancesOffset: 0,
     }
+  },
+  apollo: {
+    performancesData: {
+      query: AdminPerformancesIndexQuery,
+      variables() {
+        return {
+          productionSlug: this.production.slug,
+          offset: this.performancesOffset,
+        }
+      },
+      update: (data) => data.production.performances,
+    },
   },
   head() {
     const productionName = this.production ? this.production.name : 'Loading...'
     return {
       title: productionName,
     }
+  },
+  computed: {
+    statusDescription() {
+      if (this.production.status.description === 'Draft')
+        return 'This production is private, and not bookable'
+      if (this.production.status.description === 'Submitted')
+        return 'This production has been submitted for review'
+      if (this.production.status.description === 'Published')
+        return 'This production is being displayed publically'
+      if (this.production.status.description === 'Closed')
+        return 'This production has been closed, and it no longer accepting bookings'
+      if (this.production.status.description === 'Complete')
+        return 'This production has been completed, and income has been transfered to the society'
+
+      return null
+    },
   },
 }
 </script>

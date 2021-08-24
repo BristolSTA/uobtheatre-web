@@ -5,7 +5,7 @@
   >
     <div
       class="h-full rounded-full bg-sta-green"
-      :style="{ width: `${percentage}%` }"
+      :style="{ width: `${Math.min(100, percentage)}%` }"
     ></div>
   </div>
 </template>

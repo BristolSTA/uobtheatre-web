@@ -6,7 +6,7 @@
           <slot name="head"></slot>
         </thead>
         <tbody>
-          <slot></slot>
+          <slot :items="items"></slot>
 
           <tr v-if="empty && !loading">
             <td colspan="100%" class="py-3 text-center bg-sta-gray-light">
@@ -20,8 +20,8 @@
           v-if="hasNextPage || hasPreviousPage"
           :has-next-page="hasNextPage"
           :has-previous-page="hasPreviousPage"
-          @previousPage="$emit('previousPage')"
-          @nextPage="$emit('nextPage')"
+          @previousPage="previousPage"
+          @nextPage="nextPage"
         />
       </div>
     </loading-container>
@@ -38,21 +38,21 @@ export default {
       default: () => {},
       type: Object,
     },
+    items: {
+      required: true,
+      type: Array,
+    },
+    offset: {
+      required: true,
+      type: Number,
+    },
     emptyText: {
       default: 'No matching data found',
       type: String,
     },
-    empty: {
-      default: false,
-      type: Boolean,
-    },
     loading: {
       default: false,
       type: Boolean,
-    },
-    currentCursor: {
-      default: null,
-      type: [String, Number],
     },
   },
   computed: {
@@ -60,7 +60,20 @@ export default {
       return this.pageInfo.hasNextPage
     },
     hasPreviousPage() {
-      return this.pageInfo.hasPreviousPage || !!this.currentCursor
+      return this.pageInfo.hasPreviousPage || this.offset > 0
+    },
+    empty() {
+      return !this.items.length
+    },
+  },
+  methods: {
+    nextPage() {
+      this.$emit('nextPage')
+      this.$emit('update:offset', this.offset + this.items.length)
+    },
+    previousPage() {
+      this.$emit('previousPage')
+      this.$emit('update:offset', Math.max(0, this.offset - this.items.length))
     },
   },
 }

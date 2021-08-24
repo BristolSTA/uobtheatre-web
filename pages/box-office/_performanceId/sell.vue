@@ -56,7 +56,7 @@ export default {
   computed: {
     crumbs() {
       return [
-        { text: 'Box Office', route: '/box-office' },
+        { text: 'Box Office', path: '/box-office' },
         {
           text: `${
             this.performance.production.name
@@ -64,7 +64,7 @@ export default {
             this.performance.start,
             'ccc dd MMM T'
           )}`,
-          route: `/box-office/${this.performance.id}`,
+          path: `/box-office/${this.performance.id}`,
         },
         {
           text: 'Sell Tickets',

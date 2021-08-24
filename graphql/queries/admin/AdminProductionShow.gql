@@ -6,24 +6,12 @@ query adminProductionShow($slug: String!) {
     society {
       name
     }
+    status {
+      description
+    }
     slug
     start
     end
-    performances(orderBy: "start") {
-      edges {
-        node {
-          id
-          venue {
-            name
-          }
-          doorsOpen
-          start
-          soldOut
-          isOnline
-          isInperson
-        }
-      }
-    }
     isBookable
   }
 }

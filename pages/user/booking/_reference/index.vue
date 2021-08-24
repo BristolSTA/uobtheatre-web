@@ -144,7 +144,7 @@ export default {
     },
     crumbs() {
       return [
-        { text: 'My Account', route: '/user' },
+        { text: 'My Account', path: '/user' },
         { text: 'Booking Details' },
       ]
     },

@@ -114,10 +114,10 @@ export default {
     },
     crumbs() {
       return [
-        { text: 'Whats On', route: '/productions' },
+        { text: 'Whats On', path: '/productions' },
         {
           text: this.production.name,
-          route: `/production/${this.production.slug}`,
+          path: `/production/${this.production.slug}`,
         },
         { text: 'Book' },
       ]

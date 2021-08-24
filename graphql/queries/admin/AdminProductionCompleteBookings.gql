@@ -1,0 +1,43 @@
+#import "../../fragments/booking/BasicBookingDetails.gql"
+query adminProductionCompleteBookings(
+  $productionSlug: String!
+  $performanceId: ID
+  $search: String
+  $offset: Int
+  $orderBy: String
+) {
+  production(slug: $productionSlug) {
+    id
+    performances(id: $performanceId) {
+      edges {
+        node {
+          id
+          bookings(
+            search: $search
+            first: 10
+            offset: $offset
+            orderBy: $orderBy
+          ) {
+            pageInfo {
+              startCursor
+              endCursor
+              hasNextPage
+              hasPreviousPage
+            }
+            edges {
+              node {
+                ...BasicBookingDetails
+                createdAt
+                creator {
+                  id
+                  firstName
+                  lastName
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

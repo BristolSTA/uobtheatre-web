@@ -15,9 +15,6 @@ import NavBar from '@/components/layout/NavBar.vue'
 import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
 export default {
   components: { NavBar, FooterBar, Breadcrumbs },
-  data() {
-    return {}
-  },
   computed: {
     crumbs() {
       if (!this.$refs.page) return null

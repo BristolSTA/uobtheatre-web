@@ -5,6 +5,7 @@ fragment BasicBookingDetails on BookingNode {
     description
   }
   user {
+    id
     firstName
     lastName
   }
@@ -17,5 +18,8 @@ fragment BasicBookingDetails on BookingNode {
       name
       slug
     }
+  }
+  tickets {
+    id
   }
 }

@@ -10,9 +10,8 @@
       <menu-tile
         v-for="(box, index) in navItems"
         :key="index"
-        :route="box.route"
+        :to="box.route"
         :icon="box.icon"
-        :name="box.name"
         class="
           w-full
           mb-4
@@ -23,14 +22,15 @@
           lg:w-1/4
           2xl:w-1/5
         "
-      />
+        >{{ box.name }}</menu-tile
+      >
     </div>
   </div>
 </template>
 
 <script>
 import Overview from '@/components/box-office/Overview.vue'
-import MenuTile from '@/components/box-office/MenuTile.vue'
+import MenuTile from '@/components/ui/MenuTile.vue'
 
 export default {
   components: { Overview, MenuTile },
@@ -46,17 +46,17 @@ export default {
         {
           name: 'Check or Collect Tickets',
           icon: 'user-check',
-          route: `/box-office/${this.performance.id}/collect`,
+          path: `/box-office/${this.performance.id}/collect`,
         },
         {
           name: 'Sell Tickets',
           icon: 'cash-register',
-          route: `/box-office/${this.performance.id}/sell`,
+          path: `/box-office/${this.performance.id}/sell`,
         },
         {
           name: 'View Bookings',
           icon: 'clipboard-list',
-          route: `/box-office/${this.performance.id}/bookings`,
+          path: `/box-office/${this.performance.id}/bookings`,
         },
       ],
     }
@@ -69,7 +69,7 @@ export default {
   computed: {
     crumbs() {
       return [
-        { text: 'Box Office', route: '/box-office' },
+        { text: 'Box Office', path: '/box-office' },
         {
           text: `${
             this.performance.production.name

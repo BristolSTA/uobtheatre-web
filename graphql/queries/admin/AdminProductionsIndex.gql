@@ -1,8 +1,19 @@
-query adminProductions($now: DateTime, $afterCursor: String) {
-  productions(first: 9, orderBy: "start", after: $afterCursor, end_Gte: $now) {
+query adminProductions(
+  $endGte: DateTime
+  $offset: Int
+  $status: String
+  $startLte: DateTime
+) {
+  productions(
+    first: 10
+    orderBy: "start"
+    offset: $offset
+    start_Lte: $startLte
+    end_Gte: $endGte
+    status: $status
+  ) {
     pageInfo {
       hasNextPage
-      endCursor
     }
     edges {
       node {
@@ -20,6 +31,7 @@ query adminProductions($now: DateTime, $afterCursor: String) {
         }
         start
         end
+        isBookable
       }
     }
   }

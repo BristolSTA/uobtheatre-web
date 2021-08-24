@@ -1,0 +1,28 @@
+query adminPerformancesIndex($productionSlug: String!, $offset: Int) {
+  production(slug: $productionSlug) {
+    id
+    performances(first: 10, offset: $offset, orderBy: "start") {
+      pageInfo {
+        hasNextPage
+      }
+      edges {
+        node {
+          id
+          venue {
+            name
+          }
+          doorsOpen
+          start
+          disabled
+          soldOut
+          isOnline
+          isInperson
+          ticketsBreakdown {
+            totalCapacity
+            totalTicketsSold
+          }
+        }
+      }
+    }
+  }
+}

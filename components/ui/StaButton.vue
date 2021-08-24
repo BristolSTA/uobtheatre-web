@@ -1,6 +1,11 @@
 <template>
-  <component :is="asType" :to="to" class="rounded" :class="classes">
-    <font-awesome-icon :icon="icon" class="mr-2" />
+  <component
+    :is="asType"
+    :to="to"
+    class="inline-block rounded"
+    :class="classes"
+  >
+    <font-awesome-icon v-if="icon" :icon="icon" class="mr-2" />
     <slot></slot
   ></component>
 </template>
@@ -32,7 +37,7 @@ export default {
     },
     classes() {
       const arr = []
-      arr.push(!this.small ? 'p-3' : 'p-1 text-sm')
+      arr.push(!this.small ? 'p-2' : 'p-1 text-sm')
       if (this.colour)
         arr.push(
           Array.isArray(this.colour)

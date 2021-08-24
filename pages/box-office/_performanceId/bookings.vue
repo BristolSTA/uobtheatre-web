@@ -56,9 +56,7 @@
               <template #head>
                 <th>Name</th>
                 <th>Reference</th>
-                <th>
-                  Checked In?<sort-icon @input="checkedInSort = $event" />
-                </th>
+                <th>Checked In?<sort-icon v-model="checkedInSort" /></th>
                 <th>Price</th></template
               ><template v-for="(booking, index) in bookings">
                 <booking-row
@@ -164,7 +162,7 @@ export default {
   computed: {
     crumbs() {
       return [
-        { text: 'Box Office', route: '/box-office' },
+        { text: 'Box Office', path: '/box-office' },
         {
           text: `${
             this.performance.production.name
@@ -172,7 +170,7 @@ export default {
             this.performance.start,
             'ccc dd MMM T'
           )}`,
-          route: `/box-office/${this.performance.id}`,
+          path: `/box-office/${this.performance.id}`,
         },
         {
           text: 'All Bookings',

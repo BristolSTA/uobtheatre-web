@@ -112,12 +112,12 @@ export default {
     },
     inactiveButtonStyle: {
       default:
-        'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 focus:outline-none',
+        'bg-white text-gray-700 border border-gray-300 hover:bg-gray-200 focus:outline-none',
       type: String,
     },
     disabledButtonStyle: {
       default:
-        'cursor-default bg-opacity-70 text-gray-700 border border-gray-300',
+        'cursor-default bg-opacity-70 text-gray-300 border border-gray-300',
       type: String,
     },
   },

@@ -5,19 +5,24 @@
       :class="{ 'hidden md:visible': !showSidebar }"
       @close="showSidebar = false"
     />
-    <div class="flex-grow p-4" :class="{ 'hidden md:visible': showSidebar }">
-      <button class="md:hidden" @click="showSidebar = true">
-        <font-awesome-icon icon="caret-square-right" class="fa-2x" />
-      </button>
-      <nuxt-child />
+    <div class="flex-grow" :class="{ 'hidden md:visible': showSidebar }">
+      <breadcrumbs :use-auto="true" :wide="true" />
+      <div class="p-4">
+        <button class="md:hidden" @click="showSidebar = true">
+          <font-awesome-icon icon="caret-square-right" class="fa-2x" />
+        </button>
+        <nuxt-child />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import AdminSidebar from '@/components/admin/AdminSidebar.vue'
+import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
 export default {
-  components: { AdminSidebar },
+  components: { AdminSidebar, Breadcrumbs },
+  layout: 'admin',
   data() {
     return {
       showSidebar: false,

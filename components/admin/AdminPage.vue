@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex justify-between">
+    <div class="flex items-center justify-between">
       <h1 v-if="title" class="text-h1">{{ title }}</h1>
       <div v-if="$slots.toolbar" class="space-x-2">
         <slot name="toolbar"></slot>

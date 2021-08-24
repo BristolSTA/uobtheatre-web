@@ -40,6 +40,7 @@ export default {
     'faBold',
     'faParagraph',
     'faUnderline',
+    'faPlusCircle',
     'faItalic',
     'faListUl',
     'faListOl',
