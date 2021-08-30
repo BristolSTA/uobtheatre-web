@@ -1,6 +1,6 @@
 <template>
   <div class="p-4 text-white rounded-lg shadow bg-sta-gray-light">
-    <div class="flex flex-wrap">
+    <div class="flex flex-wrap items-center">
       <h2
         v-if="title || $slots.title"
         class="flex-grow mb-1 text-h3 sm:text-h2"

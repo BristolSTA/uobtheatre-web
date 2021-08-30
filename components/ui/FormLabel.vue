@@ -7,5 +7,24 @@
       </p>
     </label>
     <slot name="control"></slot>
+    <div><error-helper :errors="errors" :field-name="name" /></div>
   </div>
 </template>
+
+<script>
+import Errors from '@/classes/Errors'
+import ErrorHelper from './ErrorHelper.vue'
+export default {
+  components: { ErrorHelper },
+  props: {
+    errors: {
+      type: Errors,
+      default: null,
+    },
+    name: {
+      default: null,
+      type: String,
+    },
+  },
+}
+</script>

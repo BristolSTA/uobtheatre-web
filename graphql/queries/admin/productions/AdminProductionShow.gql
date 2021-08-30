@@ -8,6 +8,7 @@ query adminProductionShow($slug: String!) {
     }
     status {
       description
+      value
     }
     slug
     start

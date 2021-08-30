@@ -1,4 +1,4 @@
-#import "../../fragments/booking/BasicBookingDetails.gql"
+#import "../../../fragments/booking/BasicBookingDetails.gql"
 query adminProductionCompleteBookings(
   $productionSlug: String!
   $performanceId: ID

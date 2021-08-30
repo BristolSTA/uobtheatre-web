@@ -1,0 +1,23 @@
+#import "../../../fragments/booking/BookingWithProductionDetails.gql"
+query bookingDetails($bookingReference: String!) {
+  bookings(reference: $bookingReference) {
+    edges {
+      node {
+        ...BookingWithProductionDetails
+        createdAt
+        updatedAt
+        creator {
+          id
+          firstName
+          lastName
+        }
+        user {
+          id
+          firstName
+          lastName
+          email
+        }
+      }
+    }
+  }
+}

@@ -44,6 +44,7 @@ export default {
     'faItalic',
     'faListUl',
     'faListOl',
+    'faSave',
     'faQuoteRight',
     'faUndo',
     'faRedo',

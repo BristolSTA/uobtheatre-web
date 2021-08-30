@@ -1,29 +1,10 @@
 <template>
   <div v-if="booking.performance" class="text-white">
-    <div class="p-2 mb-2 md:text-center bg-sta-gray-light">
-      <p class="text-h3">Selected Performance:</p>
-      <p class="text-sta-orange">
-        {{ booking.performance.start | dateFormat('cccc d MMM') }}, Starting at
-        {{ booking.performance.start | dateFormat('T') }}
-      </p>
-    </div>
-    <div v-if="ticketMatrix" class="space-y-1">
-      <ticket-options
-        :ticket-matrix="ticketMatrix"
-        :booking="booking"
-        @request-update="updateAPI"
-      />
-    </div>
-    <all-errors-display
-      :errors="errors"
-      class="p-2 text-center bg-sta-gray-dark"
+    <tickets-editor
+      :tickets-matrix="ticketMatrix"
+      :booking="booking"
+      @change="updateApi"
     />
-    <div v-if="booking.tickets.length" class="flex my-4">
-      <selected-tickets-table
-        :ticket-matrix="ticketMatrix"
-        :booking="booking"
-      />
-    </div>
     <div v-if="booking.tickets.length" class="mt-2 text-center">
       <button
         class="font-semibold btn btn-orange"
@@ -42,20 +23,20 @@ import lo from 'lodash'
 
 import Booking from '@/classes/Booking'
 import TicketMatrix from '@/classes/TicketsMatrix'
-import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue'
 import CreateBooking from '@/graphql/mutations/booking/CreateBooking.gql'
 import UpdateBooking from '@/graphql/mutations/booking/UpdateBooking.gql'
 import { performMutation } from '@/utils'
-import TicketOptions from '@/components/booking/TicketOptions.vue'
-import SelectedTicketsTable from '@/components/booking/SelectedTicketsTable.vue'
 
 import BookingStage from '@/classes/BookingStage'
+import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue'
 export default {
   stageInfo: new BookingStage({
     name: 'Ticket Selection',
     routeName: 'production-slug-book-performanceId-tickets',
   }),
-  components: { TicketOptions, AllErrorsDisplay, SelectedTicketsTable },
+  components: {
+    TicketsEditor,
+  },
   props: {
     production: {
       required: true,

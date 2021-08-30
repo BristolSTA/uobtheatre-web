@@ -20,7 +20,7 @@
             <th class="p-2">Type</th>
             <th class="hidden w-24 p-2 sm:table-cell">Quantity</th>
             <th class="w-24 p-2 text-center sm:hidden">Qty</th>
-            <th class="w-24 p-2">Line Total</th>
+            <th v-if="showPrices" class="w-24 p-2">Line Total</th>
           </tr>
         </thead>
         <tbody>
@@ -34,12 +34,12 @@
             </td>
             <td class="p-2">{{ ticket.concessionType.name }}</td>
             <td class="p-2 text-center">{{ ticket.number }}</td>
-            <td class="p-2 font-mono text-right">
+            <td v-if="showPrices" class="p-2 font-mono text-right">
               £{{ (ticket.totalPrice / 100).toFixed(2) }}
             </td>
           </tr>
         </tbody>
-        <tfoot>
+        <tfoot v-if="showPrices">
           <tr v-if="booking.hasDiscounts && !booking.dirty">
             <td></td>
             <th class="p-2">Discounts</th>
@@ -82,6 +82,10 @@ export default {
     ticketMatrix: {
       type: TicketMatrix,
       default: null,
+    },
+    showPrices: {
+      default: true,
+      type: Boolean,
     },
   },
   data() {

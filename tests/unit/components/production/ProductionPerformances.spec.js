@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
 import { DateTime } from 'luxon'
 
-import PerformanceOverview from '@/components/production/PerformanceOverview.vue'
+import PerformanceOverview from '@/components/performance/PerformanceOverview.vue'
 import ProductionPerformances from '@/components/production/ProductionPerformances.vue'
 
 import { fixTextSpacing, generateMountOptions } from '../../helpers.js'

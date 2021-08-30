@@ -64,8 +64,7 @@
 </template>
 
 <script>
-import AdminProductionCompleteBookingsQuery from '@/graphql/queries/admin/AdminProductionCompleteBookings.gql'
-import gql from 'graphql-tag'
+import AdminProductionCompleteBookingsQuery from '@/graphql/queries/admin/productions/AdminProductionCompleteBookings.gql'
 import AdminPage from '@/components/admin/AdminPage.vue'
 import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue'
 import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue'
@@ -73,6 +72,7 @@ import TableRow from '@/components/ui/Tables/TableRow.vue'
 import TableRowItem from '@/components/ui/Tables/TableRowItem.vue'
 import Card from '@/components/ui/Card.vue'
 import SortIcon from '@/components/ui/SortIcon.vue'
+import AdminProductionLookupQuery from '@/graphql/queries/admin/productions/AdminProductionLookup.gql'
 export default {
   components: {
     AdminPage,
@@ -86,15 +86,7 @@ export default {
   async asyncData({ params, error, app }) {
     // Execute query
     const { data } = await app.apolloProvider.defaultClient.query({
-      query: gql`
-        query ($slug: String!) {
-          production(slug: $slug) {
-            id
-            name
-            slug
-          }
-        }
-      `,
+      query: AdminProductionLookupQuery,
       variables: {
         slug: params.productionSlug,
       },

@@ -117,7 +117,10 @@
     <card title="Ticket Options">
       <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div class="px-2 border rounded-lg border-sta-gray">
-          <h4 class="text-h4">Seat Groups</h4>
+          <div class="flex items-center justify-between pt-3">
+            <h4 class="text-h4">Seat Groups</h4>
+            <font-awesome-icon icon="plus-circle" />
+          </div>
           <div class="py-3 space-y-2">
             <seat-group
               v-for="seatGroup in availableSeatGroups"
@@ -128,7 +131,10 @@
           </div>
         </div>
         <div class="px-2 border rounded-lg border-sta-gray">
-          <h4 class="text-h4">Concessions</h4>
+          <div class="flex items-center justify-between pt-3">
+            <h4 class="text-h4">Concessions</h4>
+            <font-awesome-icon icon="plus-circle" />
+          </div>
           <div class="py-3 space-y-2">
             <concession-type
               v-for="(concessionType, index) in availableConcessionTypes"
@@ -206,14 +212,14 @@
 import RichTextInput from '@/components/ui/Inputs/RichTextInput.vue'
 import SeatGroupFake from '@/tests/unit/fixtures/SeatGroup.js'
 import ConcessionTypeFake from '@/tests/unit/fixtures/ConcessionType.js'
-import Card from '../ui/Card.vue'
-import RequiredStar from '../ui/Form/RequiredStar.vue'
-import FormLabel from '../ui/FormLabel.vue'
-import ImageInput from '../ui/Inputs/ImageInput.vue'
-import CurrencyInput from '../ui/Inputs/CurrencyInput.vue'
-import PercentageInput from '../ui/Inputs/PercentageInput.vue'
-import SeatGroup from './editor/SeatGroup.vue'
-import ConcessionType from './editor/ConcessionType.vue'
+import Card from '../../ui/Card.vue'
+import RequiredStar from '../../ui/Form/RequiredStar.vue'
+import FormLabel from '../../ui/FormLabel.vue'
+import ImageInput from '../../ui/Inputs/ImageInput.vue'
+import CurrencyInput from '../../ui/Inputs/CurrencyInput.vue'
+import PercentageInput from '../../ui/Inputs/PercentageInput.vue'
+import SeatGroup from './SeatGroup.vue'
+import ConcessionType from './ConcessionType.vue'
 
 export default {
   components: {
@@ -253,10 +259,6 @@ export default {
         ConcessionTypeFake({ id: 2, name: 'Child' }),
         ConcessionTypeFake({ id: 3, name: 'OAP' }),
       ],
-      sg1: 0,
-      sg2: 0,
-      studentPercentage: 0,
-      societyMemPercentage: 0,
     }
   },
 }

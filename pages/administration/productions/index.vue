@@ -23,11 +23,12 @@
     </div>
     <card class="mt-6">
       <paginated-table
-        v-if="productionsData"
-        :items="productionsData.edges.map((edge) => edge.node)"
+        :items="
+          productionsData ? productionsData.edges.map((edge) => edge.node) : []
+        "
         :loading="$apollo.queries.productionsData.loading"
         :offset.sync="productionsOffset"
-        :page-info="productionsData.pageInfo"
+        :page-info="productionsData ? productionsData.pageInfo : {}"
       >
         <template #head>
           <table-head-item>Status</table-head-item>
@@ -63,7 +64,7 @@
 
 <script>
 import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue'
-import AdminProductionsQuery from '@/graphql/queries/admin/AdminProductionsIndex.gql'
+import AdminProductionsQuery from '@/graphql/queries/admin/productions/AdminProductionsIndex.gql'
 import { displayStartEnd } from '@/utils'
 import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue'
 import TableRow from '@/components/ui/Tables/TableRow.vue'

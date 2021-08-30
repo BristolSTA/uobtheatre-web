@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import PerformanceOverview from '@/components/production/PerformanceOverview.vue'
+import PerformanceOverview from '@/components/performance/PerformanceOverview.vue'
 export default {
   name: 'ProductionPerformances',
   components: {

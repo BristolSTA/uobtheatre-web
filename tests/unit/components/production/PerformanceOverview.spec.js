@@ -1,7 +1,7 @@
 import { RouterLinkStub } from '@vue/test-utils'
 import { expect } from 'chai'
 
-import PerformanceOverview from '@/components/production/PerformanceOverview.vue'
+import PerformanceOverview from '@/components/performance/PerformanceOverview.vue'
 
 import { mountWithRouterMock, fixTextSpacing } from '../../helpers'
 import Performance from '../../fixtures/Performance'

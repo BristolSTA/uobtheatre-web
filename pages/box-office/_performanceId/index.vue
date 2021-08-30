@@ -10,7 +10,7 @@
       <menu-tile
         v-for="(box, index) in navItems"
         :key="index"
-        :to="box.route"
+        :to="box.path"
         :icon="box.icon"
         class="
           w-full

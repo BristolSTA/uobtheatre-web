@@ -1,3 +1,4 @@
+#import "../../../fragments/performance/PerformanceTicketOptionsFragment.gql"
 query adminPerformanceDetail($productionSlug: String!, $performanceId: ID!) {
   production(slug: $productionSlug) {
     id
@@ -18,6 +19,18 @@ query adminPerformanceDetail($productionSlug: String!, $performanceId: ID!) {
           soldOut
           isOnline
           isInperson
+
+          capacity
+          capacityRemaining
+
+          ticketOptions {
+            ...PerformanceTicketOptions
+            capacity
+          }
+          ticketsBreakdown {
+            totalCapacity
+            totalTicketsSold
+          }
         }
       }
     }

@@ -77,6 +77,10 @@
 <script>
 export default {
   props: {
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
     pageInfo: {
       type: Object,
       default: null,
@@ -123,13 +127,17 @@ export default {
   },
   computed: {
     canGoBackward() {
-      return this.hasPreviousPage || this.currentPage > 1 || this.currentOffset
+      return (
+        !this.disabled &&
+        (this.hasPreviousPage || this.currentPage > 1 || this.currentOffset)
+      )
     },
     canGoForward() {
       return (
-        this.hasNextPage ||
-        this.currentPage !== this.numberOfPages ||
-        (this.pageInfo && this.pageInfo.hasNextPage)
+        !this.disabled &&
+        (this.hasNextPage ||
+          this.currentPage !== this.numberOfPages ||
+          (this.pageInfo && this.pageInfo.hasNextPage))
       )
     },
     pageDisplay() {
@@ -159,11 +167,11 @@ export default {
   },
   methods: {
     previousPage() {
-      if (!this.canGoBackward) return
+      if (!this.canGoBackward && !this.disabled) return
       this.$emit('previousPage')
     },
     nextPage() {
-      if (!this.canGoForward) return
+      if (!this.canGoForward && !this.disabled) return
       this.$emit('nextPage')
     },
     gotoPage(page) {

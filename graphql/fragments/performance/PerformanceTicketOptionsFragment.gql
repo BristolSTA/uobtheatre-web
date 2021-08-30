@@ -1,0 +1,17 @@
+fragment PerformanceTicketOptions on PerformanceSeatGroupNode {
+  id
+  capacityRemaining
+  seatGroup {
+    id
+    name
+    description
+  }
+  concessionTypes {
+    concessionType {
+      id
+      name
+      description
+    }
+    price
+  }
+}

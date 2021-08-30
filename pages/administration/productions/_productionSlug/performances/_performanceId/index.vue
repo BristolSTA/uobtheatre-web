@@ -9,14 +9,14 @@
       <sta-button
         colour="green"
         icon="link"
-        :to="`/production/${production.slug}`"
+        :to="`/box-office/${performance.id}`"
         >Goto Box Office</sta-button
       >
       <sta-button colour="orange" icon="edit" :to="`${performance.id}/edit`"
         >Edit</sta-button
       >
     </template>
-    <div class="flex space-x-2">
+    <div class="flex space-x-4">
       <card title="Summary" class="max-w-2xl">
         <table class="w-full table-auto">
           <tr>
@@ -45,28 +45,97 @@
           </tr>
         </table>
       </card>
-      <card title="Sales">
+      <card title="Sales Overview">
         <table class="w-full table-auto">
           <tr>
             <table-head-item :text-left="false">Paid Bookings</table-head-item>
-            <table-row-item>100</table-row-item>
+            <table-row-item>100 TODO</table-row-item>
           </tr>
           <tr>
             <table-head-item :text-left="false">Ticket Sales</table-head-item>
             <table-row-item>
-              150 tickets sold (of 350 performance capacity)
-              <progress-bar :percentage="75" />
+              {{ performance.ticketsBreakdown.totalTicketsSold }} tickets sold
+              (of {{ performance.ticketsBreakdown.totalCapacity }} performance
+              capacity)
+              <progress-bar
+                :percentage="
+                  Math.min(
+                    100,
+                    (100 * performance.ticketsBreakdown.totalTicketsSold) /
+                      performance.ticketsBreakdown.totalCapacity
+                  )
+                "
+              />
             </table-row-item>
           </tr>
           <tr>
             <table-head-item :text-left="false"
               >Performance Sales Total</table-head-item
             >
-            <table-row-item>£10.20</table-row-item>
+            <table-row-item>£10.20 TODO</table-row-item>
           </tr>
         </table>
       </card>
     </div>
+    <card class="mt-4" title="Sales By Ticket">
+      <div class="flex flex-wrap space-x-6 justify-evenly">
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <table-head-item :text-left="false">Seat Group</table-head-item>
+                <table-head-item :text-left="false"
+                  >No. Tickets</table-head-item
+                >
+                <table-head-item :text-left="false"
+                  >Remaining Capacity</table-head-item
+                >
+              </tr>
+            </thead>
+            <tbody>
+              <table-row
+                v-for="(
+                  performanceSeatGroup, index
+                ) in ticketsMatrix.ticketOptions"
+                :key="index"
+                class="text-center"
+              >
+                <table-row-item>{{
+                  performanceSeatGroup.seatGroup.name
+                }}</table-row-item>
+                <table-row-item>{{
+                  performanceSeatGroup.capacity -
+                  performanceSeatGroup.capacityRemaining
+                }}</table-row-item>
+                <table-row-item>{{
+                  performanceSeatGroup.capacityRemaining
+                }}</table-row-item>
+              </table-row>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <table-head-item :text-left="false"
+                  >Concession Type</table-head-item
+                >
+                <table-head-item :text-left="false"
+                  >No. Tickets</table-head-item
+                >
+              </tr>
+            </thead>
+            <tbody>
+              <table-row class="text-center">
+                <table-row-item>TODO</table-row-item>
+                <table-row-item>TODO</table-row-item>
+              </table-row>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </card>
     <div class="mt-6">
       <h2 class="text-h2">Tools</h2>
       <div class="grid grid-cols-2 gap-6 md:grid-cols-5">
@@ -78,7 +147,7 @@
         >
         <menu-tile
           class="bg-sta-green hover:bg-sta-green-dark"
-          :to="`../bookings/create?performanceId=${performance.id}`"
+          :to="`../bookings/create/${performance.id}`"
           icon="plus-circle"
           >Create Comp Booking</menu-tile
         >
@@ -88,7 +157,7 @@
 </template>
 
 <script>
-import AdminPerformanceDetailQuery from '@/graphql/queries/admin/AdminPerformanceDetail.gql'
+import AdminPerformanceDetailQuery from '@/graphql/queries/admin/productions/AdminPerformanceDetail.gql'
 import Card from '@/components/ui/Card.vue'
 import AdminPage from '@/components/admin/AdminPage.vue'
 import StaButton from '@/components/ui/StaButton.vue'
@@ -97,6 +166,8 @@ import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue'
 import TableRowItem from '@/components/ui/Tables/TableRowItem.vue'
 import MenuTile from '@/components/ui/MenuTile.vue'
 import PerformanceStatusBadge from '@/components/performance/PerformanceStatusBadge.vue'
+import TicketsMatrix from '@/classes/TicketsMatrix'
+import TableRow from '@/components/ui/Tables/TableRow.vue'
 export default {
   components: {
     Card,
@@ -107,6 +178,7 @@ export default {
     TableRowItem,
     MenuTile,
     PerformanceStatusBadge,
+    TableRow,
   },
   async asyncData({ params, error, app }) {
     // Execute query
@@ -116,6 +188,7 @@ export default {
         productionSlug: params.productionSlug,
         performanceId: params.performanceId,
       },
+      fetchPolicy: 'no-cache',
     })
 
     const production = data.production
@@ -123,16 +196,23 @@ export default {
       return error({
         statusCode: 404,
       })
+    const performance = production.performances.edges[0].node
     return {
-      performance: production.performances.edges[0].node,
+      performance,
       production,
+      ticketsMatrix: new TicketsMatrix(performance),
     }
   },
   data() {
     return {
       production: null,
       performance: null,
+      ticketsMatrix: null,
     }
+  },
+  head() {
+    const title = `Performance of ${this.production.name}`
+    return { title }
   },
 }
 </script>

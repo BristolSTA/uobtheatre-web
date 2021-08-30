@@ -116,7 +116,7 @@ export default {
     if (!data.me.bookings.edges[0])
       return error({
         statusCode: 404,
-        message: 'This booking does not exists',
+        message: 'This booking does not exist',
       })
 
     return {

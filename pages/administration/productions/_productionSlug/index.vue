@@ -48,14 +48,30 @@
             :to="`${production.slug}/bookings`"
             >View Bookings</menu-tile
           >
+          <menu-tile
+            v-if="production.status.value === 'DRAFT'"
+            class="bg-sta-orange hover:bg-sta-orange-dark"
+            icon="user-check"
+            >Submit for Review TODO</menu-tile
+          >
         </div>
       </div>
       <card title="Performances">
+        <template #messageBox>
+          <nuxt-link
+            class="hover:text-gray-200"
+            :to="`${production.slug}/performances/create`"
+            ><font-awesome-icon icon="plus-circle" class="fa-2x"
+          /></nuxt-link>
+        </template>
         <paginated-table
-          v-if="performancesData"
-          :items="performancesData.edges.map((edge) => edge.node)"
+          :items="
+            performancesData
+              ? performancesData.edges.map((edge) => edge.node)
+              : []
+          "
           :loading="$apollo.queries.performancesData.loading"
-          :page-info="performancesData.pageInfo"
+          :page-info="performancesData ? performancesData.pageInfo : {}"
           :offset.sync="performancesOffset"
         >
           <template #head>
@@ -111,8 +127,8 @@
 </template>
 
 <script>
-import AdminProductionShowQuery from '@/graphql/queries/admin/AdminProductionShow.gql'
-import AdminPerformancesIndexQuery from '@/graphql/queries/admin/AdminPerformancesIndex.gql'
+import AdminProductionShowQuery from '@/graphql/queries/admin/productions/AdminProductionShow.gql'
+import AdminPerformancesIndexQuery from '@/graphql/queries/admin/productions/AdminPerformancesIndex.gql'
 import AdminPage from '@/components/admin/AdminPage.vue'
 import StaButton from '@/components/ui/StaButton.vue'
 import Card from '@/components/ui/Card.vue'

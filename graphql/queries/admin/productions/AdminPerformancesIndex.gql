@@ -1,7 +1,17 @@
-query adminPerformancesIndex($productionSlug: String!, $offset: Int) {
+query adminPerformancesIndex(
+  $productionSlug: String!
+  $offset: Int
+  $disabled: Boolean
+  $take: Int = 10
+) {
   production(slug: $productionSlug) {
     id
-    performances(first: 10, offset: $offset, orderBy: "start") {
+    performances(
+      first: $take
+      offset: $offset
+      orderBy: "start"
+      disabled: $disabled
+    ) {
       pageInfo {
         hasNextPage
       }

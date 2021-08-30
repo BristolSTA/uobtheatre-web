@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 
-import PerformanceOverview from '@/components/production/PerformanceOverview.vue'
+import PerformanceOverview from '@/components/performance/PerformanceOverview.vue'
 
 import PickPerformanceStage from '@/pages/production/_slug/book/index.vue'
 import Production from '@/tests/unit/fixtures/Production'

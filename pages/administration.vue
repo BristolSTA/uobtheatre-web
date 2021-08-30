@@ -23,6 +23,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
 export default {
   components: { AdminSidebar, Breadcrumbs },
   layout: 'admin',
+  middleware: 'authed',
   data() {
     return {
       showSidebar: false,

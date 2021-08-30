@@ -5,8 +5,8 @@
 </template>
 
 <script>
-import AdminProductionEditQuery from '@/graphql/queries/admin/AdminProductionEdit.gql'
-import ProductionEditor from '@/components/production/ProductionEditor.vue'
+import AdminProductionEditQuery from '@/graphql/queries/admin/productions/AdminProductionEdit.gql'
+import ProductionEditor from '@/components/production/editor/ProductionEditor.vue'
 import AdminPage from '@/components/admin/AdminPage.vue'
 export default {
   components: { ProductionEditor, AdminPage },
