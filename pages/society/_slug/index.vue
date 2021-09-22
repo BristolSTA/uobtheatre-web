@@ -18,7 +18,12 @@
     </h1>
 
     <div
-      class="flex-wrap justify-around mt-4  md:my-8 md:container md:flex md:space-x-6"
+      class="
+        flex-wrap
+        justify-around
+        mt-4
+        md:my-8 md:container md:flex md:space-x-6
+      "
     >
       <div
         v-if="society.logo.url"
