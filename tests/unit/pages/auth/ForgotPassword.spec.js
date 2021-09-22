@@ -2,7 +2,7 @@ import { expect } from 'chai'
 
 import { authService } from '@/services'
 import { swal, swalToast } from '@/utils'
-import ForgotPassword from '@/pages/login/forgot.vue'
+import ForgotPassword from '@/pages/login/forgot/index.vue'
 
 import {
   generateApolloMock,
