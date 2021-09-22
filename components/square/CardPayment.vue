@@ -22,6 +22,7 @@
     <button
       id="sq-creditcard"
       class="w-full btn btn-orange"
+      :disabled="!ready"
       @click.prevent="onPayClick"
       @keypress.prevent="onPayClick"
     >
@@ -47,6 +48,7 @@ export default {
       squareErrors: [],
       paymentForm: null,
       timer: null,
+      ready: false,
     }
   },
   destroyed() {
@@ -132,6 +134,10 @@ export default {
       return this.$emit('nonceRecieved', nonce)
     },
     onMethodsSupported(methods, unsupportedReason) {
+      // When we recieve supported methods callback, we can class square as ready for the user
+      this.$emit('ready')
+      this.ready = true
+
       if (methods.googlePay === true) {
         this.$emit('enableGPay')
       }
