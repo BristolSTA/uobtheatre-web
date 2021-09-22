@@ -2,9 +2,10 @@
   <div class="h-full text-white bg-sta-gray">
     <h1 class="container pt-2 text-left text-h1">{{ venue.name }}</h1>
     <div class="flex flex-wrap items-center justify-center mt-2 lg:mb-8">
-      <div class="w-full px-8 text-justify md:block md:w-auto md:max-w-md">
-        {{ venue.description }}
-      </div>
+      <tip-tap-output
+        class="w-full px-8 text-justify md:block md:w-auto md:max-w-md"
+        :html="venue.description"
+      />
       <div
         v-if="venue.image.url"
         class="w-full h-full max-w-xl lg:w-2/3 md:m-4"
@@ -84,10 +85,11 @@ import L from 'leaflet'
 
 import IconListItem from '@/components/ui/IconListItem.vue'
 import AddressFragment from '@/graphql/fragments/AddressFragment.gql'
+import TipTapOutput from '@/components/ui/TipTapOutput.vue'
 
 export default {
   name: 'VenuePage',
-  components: { IconListItem },
+  components: { IconListItem, TipTapOutput },
   async asyncData({ params, app, error }) {
     const { data } = await app.apolloProvider.defaultClient.query({
       query: gql`

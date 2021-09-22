@@ -18,12 +18,7 @@
     </h1>
 
     <div
-      class="
-        flex-wrap
-        justify-around
-        mt-4
-        md:my-8 md:container md:flex md:space-x-6
-      "
+      class="flex-wrap justify-around mt-4  md:my-8 md:container md:flex md:space-x-6"
     >
       <div
         v-if="society.logo.url"
@@ -86,7 +81,7 @@
         class="m-2 text-center md:text-left"
         :class="{ 'w-full': productions.length }"
       >
-        <p>{{ society.description }}</p>
+        <tip-tap-output :html="society.description" />
         <!-- <br /> TODO: Implement society contacts
             <p><strong>Website: </strong>www.{{ society.slug }}.com</p>
             <p><strong>Contact: </strong>president@{{ society.slug }}.com</p> -->
@@ -97,8 +92,10 @@
 
 <script>
 import SocietyDetailQuery from '@/graphql/queries/SocietyDetail.gql'
+import TipTapOutput from '@/components/ui/TipTapOutput.vue'
 
 export default {
+  components: { TipTapOutput },
   async asyncData({ params, app, error }) {
     const { data } = await app.apolloProvider.defaultClient.query({
       query: SocietyDetailQuery,
