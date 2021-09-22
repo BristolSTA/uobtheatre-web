@@ -49,7 +49,10 @@ describe('Card Payment', () => {
     expect(paymentFormFuncMock.destroy.mock.calls).length(1)
   })
 
-  it('requests card nonce on pay click', () => {
+  it('requests card nonce on pay click', async () => {
+    await component.setData({
+      ready: true,
+    })
     component.find('button#sq-creditcard').trigger('click')
     expect(paymentFormFuncMock.requestCardNonce.mock.calls).length(1)
   })
