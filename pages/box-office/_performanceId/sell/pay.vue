@@ -25,7 +25,38 @@
           <loading-container :loading="paying">
             <all-errors-display class="text-center" :errors="errors" />
             <div class="grid grid-cols-2 gap-2 text-center">
+              <template v-if="booking.totalPrice > 0">
+                <button
+                  class="
+                    p-2
+                    transition-colors
+                    rounded
+                    bg-sta-green
+                    hover:bg-sta-green-dark
+                    focus:outline-none
+                  "
+                  @click="selectedManualMode = 'CARD'"
+                >
+                  <font-awesome-icon icon="money-check-alt" />
+                  Paid using Card
+                </button>
+                <button
+                  class="
+                    p-2
+                    transition-colors
+                    rounded
+                    bg-sta-green
+                    hover:bg-sta-green-dark
+                    focus:outline-none
+                  "
+                  @click="selectedManualMode = 'CASH'"
+                >
+                  <font-awesome-icon icon="money-bill" />
+                  Paid with Cash
+                </button>
+              </template>
               <button
+                v-else
                 class="
                   p-2
                   transition-colors
@@ -34,24 +65,10 @@
                   hover:bg-sta-green-dark
                   focus:outline-none
                 "
-                @click="selectedManualMode = 'CARD'"
-              >
-                <font-awesome-icon icon="money-check-alt" />
-                Paid using Card
-              </button>
-              <button
-                class="
-                  p-2
-                  transition-colors
-                  rounded
-                  bg-sta-green
-                  hover:bg-sta-green-dark
-                  focus:outline-none
-                "
-                @click="selectedManualMode = 'CASH'"
+                @click="pay(null)"
               >
                 <font-awesome-icon icon="money-bill" />
-                Paid with Cash
+                Complete Booking
               </button>
             </div>
             <div v-if="selectedManualMode" class="mt-4 text-center">

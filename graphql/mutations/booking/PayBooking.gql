@@ -3,7 +3,7 @@ mutation payBooking(
   $id: IdInputField!
   $totalPence: Int!
   $nonce: String
-  $provider: PaymentProvider
+  $provider: PaymentMethod
 ) {
   payBooking(
     bookingId: $id

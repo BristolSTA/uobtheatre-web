@@ -19,44 +19,67 @@
       </p>
     </div>
     <all-errors-display class="text-center" :errors="errors" />
-    <div class="grid grid-cols-1 xl:grid-cols-2">
-      <div>
-        <h2 class="mb-2 text-center text-white text-h2">Pay with card</h2>
-        <card-payment
-          class="container"
-          :price="booking.totalPricePounds"
-          @enableGPay="enabledDigitalWallets.google = true"
-          @enableApplePay="enabledDigitalWallets.apple = true"
-          @paying="onPaying"
-          @nonceError="progressPopup.close()"
-          @nonceRecieved="onNonceRecieved"
-        />
-      </div>
-      <div
-        v-show="Object.values(enabledDigitalWallets).find((val) => !!val)"
-        class="text-center"
-      >
-        <h2 class="mb-2 text-white text-h2">Pay with a digital wallet</h2>
+    <template v-if="booking.totalPrice > 0">
+      <div class="grid grid-cols-1 xl:grid-cols-2">
         <div>
-          <button
-            v-show="enabledDigitalWallets.google"
-            id="sq-google-pay"
-            class="button-google-pay"
-          ></button>
+          <h2 class="mb-2 text-center text-white text-h2">Pay with card</h2>
+          <card-payment
+            class="container"
+            :price="booking.totalPricePounds"
+            @enableGPay="enabledDigitalWallets.google = true"
+            @enableApplePay="enabledDigitalWallets.apple = true"
+            @paying="onPaying"
+            @nonceError="progressPopup.close()"
+            @nonceRecieved="onNonceRecieved"
+          />
         </div>
-        <div>
-          <button
-            v-show="enabledDigitalWallets.apple"
-            id="sq-apple-pay"
-            class="apple-pay-button apple-pay-button-white"
-          ></button>
+        <div
+          v-show="Object.values(enabledDigitalWallets).find((val) => !!val)"
+          class="text-center"
+        >
+          <h2 class="mb-2 text-white text-h2">Pay with a digital wallet</h2>
+          <div>
+            <button
+              v-show="enabledDigitalWallets.google"
+              id="sq-google-pay"
+              class="button-google-pay"
+            ></button>
+          </div>
+          <div>
+            <button
+              v-show="enabledDigitalWallets.apple"
+              id="sq-apple-pay"
+              class="apple-pay-button apple-pay-button-white"
+            ></button>
+          </div>
         </div>
       </div>
-    </div>
-    <p class="mt-4 text-center text-sta-gray-lighter">
-      Your payment is handled securely by Square. We do not directly store or
-      process your card details.
-    </p>
+      <p class="mt-4 text-center text-sta-gray-lighter">
+        Your payment is handled securely by Square. We do not directly store or
+        process your card details.
+      </p>
+    </template>
+    <loading-container v-else :loading="loading">
+      <div class="space-y-6 text-center">
+        <p>
+          This total for this booking is £{{ booking.totalPrice }}, so no
+          payment is requried. Please click below to complete your booking.
+        </p>
+        <button
+          class="
+            p-2
+            transition-colors
+            rounded
+            bg-sta-green
+            hover:bg-sta-green-dark
+            focus:outline-none
+          "
+          @click="payFree"
+        >
+          Complete Booking
+        </button>
+      </div>
+    </loading-container>
   </div>
 </template>
 
@@ -69,13 +92,14 @@ import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue'
 import { getValidationErrors, performMutation, swal } from '@/utils'
 import BookingStage from '@/classes/BookingStage'
 import CardPayment from '@/components/square/CardPayment.vue'
+import LoadingContainer from '@/components/ui/LoadingContainer.vue'
 export default {
   stageInfo: new BookingStage({
     name: 'Payment',
     routeName: 'production-slug-book-performanceId-pay',
     eligable: (production, booking) => !booking.dirty,
   }),
-  components: { AllErrorsDisplay, CardPayment },
+  components: { AllErrorsDisplay, CardPayment, LoadingContainer },
   props: {
     booking: {
       required: true,
@@ -86,6 +110,7 @@ export default {
     return {
       paymentForm: null,
       errors: null,
+      loading: false,
       squareErrors: [],
       progressPopup: null,
       enabledDigitalWallets: {
@@ -102,6 +127,26 @@ export default {
           Swal.showLoading()
         },
       })
+    },
+    async payFree() {
+      this.loading = true
+      try {
+        const data = await performMutation(
+          this.$apollo,
+          {
+            mutation: require('@/graphql/mutations/booking/PayBooking.gql'),
+            variables: {
+              id: this.booking.id,
+              totalPence: this.booking.totalPrice,
+            },
+          },
+          'payBooking'
+        )
+        this.onBookingComplete(data.payBooking.booking.reference)
+      } catch (e) {
+        this.errors = getValidationErrors(e)
+        this.loading = false
+      }
     },
     async onNonceRecieved(nonce) {
       try {
@@ -140,26 +185,28 @@ export default {
           },
           'payBooking'
         )
-        swal
-          .fire({
-            icon: 'success',
-            title: 'Payment Confirmed!',
-            text: 'Taking you to your booking...',
-            timer: 2000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            allowEscapeKey: false,
-            allowOutsideClick: false,
-          })
-          .then(() => {
-            this.$router.push(
-              `/user/booking/${data.payBooking.booking.reference}`
-            )
-          })
+
+        this.onBookingComplete(data.payBooking.booking.reference)
       } catch (e) {
         this.errors = getValidationErrors(e)
       }
       this.progressPopup.close()
+    },
+    onBookingComplete(reference) {
+      swal
+        .fire({
+          icon: 'success',
+          title: 'Payment Confirmed!',
+          text: 'Taking you to your booking...',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+          allowEscapeKey: false,
+          allowOutsideClick: false,
+        })
+        .then(() => {
+          this.$router.push(`/user/booking/${reference}`)
+        })
     },
   },
 }
