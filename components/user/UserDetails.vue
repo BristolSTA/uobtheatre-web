@@ -173,6 +173,9 @@ export default {
           title: 'Details updated!',
           position: 'bottom-end',
         })
+        this.user.firstName = this.firstName
+        this.user.lastName = this.lastName
+        this.editing = false
       } catch (e) {
         this.errors = getValidationErrors(e)
       }
