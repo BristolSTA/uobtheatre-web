@@ -18,6 +18,7 @@ export default (overrides = {}) => {
       description: 'the performance description',
       extraInformation: null,
       disabled: false,
+      isBookable: true,
       seatGroups: null,
       capacity: 207,
       discounts: [Discount()],

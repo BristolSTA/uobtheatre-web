@@ -37,6 +37,7 @@ describe('Production Performances', function () {
           start: DateTime.fromISO('2020-11-30T18:00:00'),
           end: DateTime.fromISO('2020-11-30T20:00:00'),
           soldOut: true,
+          isBookable: false,
           disabled: false,
           isOnline: true,
           isInperson: false,
