@@ -1,14 +1,16 @@
 <template>
   <div class="h-full text-white bg-sta-gray">
-    <h1 class="container pt-2 text-left text-h1">{{ venue.name }}</h1>
-    <div class="flex flex-wrap items-center justify-center mt-2 lg:mb-8">
+    <h1 class="container py-6 text-left text-h1">{{ venue.name }}</h1>
+    <div
+      class="flex flex-wrap items-center justify-center mt-2 lg:px-8 lg:mb-8"
+    >
       <tip-tap-output
-        class="w-full px-8 text-justify md:block md:w-auto md:max-w-md"
+        class="w-full px-6 text-justify lg:px-2 lg:block lg:w-1/2"
         :html="venue.description"
       />
       <div
         v-if="venue.image.url"
-        class="w-full h-full max-w-xl lg:w-2/3 md:m-4"
+        class="w-full h-full max-w-2xl lg:w-2/3 md:m-4"
       >
         <img
           ref="image"

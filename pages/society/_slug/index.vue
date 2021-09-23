@@ -106,7 +106,6 @@ export default {
       query: SocietyDetailQuery,
       variables: {
         slug: params.slug,
-        now: new Date(),
       },
     })
 
