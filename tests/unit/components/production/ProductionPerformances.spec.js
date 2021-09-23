@@ -13,10 +13,27 @@ import Performance from '../../fixtures/Performance.js'
 describe('Production Performances', function () {
   let performancesContainer
   let fakeJestPush
+  beforeEach(() => {
+    jest.useFakeTimers()
+
+    Date.now = jest.fn(() => new Date(Date.UTC(2019, 1, 1)).valueOf())
+  })
+
+  afterEach(() => {
+    jest.useRealTimers()
+  })
 
   it('shows no performances available if none returned', () => {
     createWithPerformances([])
     expect(performancesContainer.text()).to.contain('No Upcoming Performances')
+  })
+
+  it('shows no performances available if none returned', () => {
+    Date.now = jest.fn(() => new Date(Date.UTC(2021, 1, 1)).valueOf())
+    createWithPerformances([])
+    expect(performancesContainer.text()).to.contain(
+      'You are currently viewing archive details of an event in the past.'
+    )
   })
 
   describe('With performances', () => {
