@@ -39,7 +39,9 @@
           </NuxtLink>
         </p>
       </span>
-      <template v-if="showDetailedInfo">
+      <template
+        v-if="showDetailedInfo && !!production.performances.edges.length"
+      >
         <p>
           <template v-if="hasInPersonPerformances">
             Live at
