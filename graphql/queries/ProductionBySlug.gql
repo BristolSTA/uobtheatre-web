@@ -38,6 +38,7 @@ query productionBySlug($slug: String!) {
             publiclyListed
           }
           doorsOpen
+          disabled
           start
           end
           soldOut
