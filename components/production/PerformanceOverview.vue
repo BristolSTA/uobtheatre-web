@@ -66,7 +66,7 @@ export default {
       return this.performance.disabled || this.performance.soldOut
     },
     disabledReason() {
-      if (!this.performance.seatGroups.edges.length) return 'Unavailable'
+      if (!this.performance.ticketsBreakdown.totalCapacity) return 'Unavailable'
       if (this.performance.soldOut) return 'SOLD OUT'
       return 'Unavailable'
     },
