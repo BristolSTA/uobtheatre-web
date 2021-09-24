@@ -9,6 +9,8 @@ query society($slug: String!) {
     banner {
       url
     }
+    website
+    contact
     productions(orderBy: "start", first: 4) {
       pageInfo {
         hasNextPage
