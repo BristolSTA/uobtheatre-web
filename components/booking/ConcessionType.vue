@@ -15,7 +15,7 @@
         </div>
         <div class="flex justify-center space-x-1">
           <button
-            class="w-8 h-8 p-0 btn btn-orange"
+            class="w-8 h-8 p-0 btn"
             :class="[!numTickets ? 'btn-gray-light' : 'btn-orange']"
             :disabled="!numTickets"
             @click="minusTicket"
@@ -44,8 +44,12 @@
           />
           <button
             class="w-8 h-8 p-0 btn"
-            :class="[maxAddAllowed < 1 ? 'btn-gray-light' : 'btn-orange']"
-            :disabled="maxAddAllowed < 1"
+            :class="[
+              maxAddAllowed < 1 || !canAddTickets
+                ? 'btn-gray-light'
+                : 'btn-orange',
+            ]"
+            :disabled="maxAddAllowed < 1 || !canAddTickets"
             @click="addTicket"
             @keypress="addTicket"
           >
@@ -72,6 +76,10 @@ export default {
     maxAddAllowed: {
       required: true,
       type: Number,
+    },
+    canAddTickets: {
+      default: true,
+      type: Boolean,
     },
   },
   computed: {

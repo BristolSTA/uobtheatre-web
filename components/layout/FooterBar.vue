@@ -28,7 +28,7 @@
           </a>
         </div>
         <div class="w-1/2 h-16 md:w-32 md:h-auto">
-          <a href="https://bristolsu.org" target="_blank">
+          <a href="https://bristolsu.org.uk" target="_blank">
             <img
               src="@/assets/images/bristol-su-logo.png"
               class="max-h-full mx-auto"

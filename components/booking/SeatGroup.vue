@@ -57,6 +57,7 @@
         :concession-type-edge="concessionTypeEdge"
         :current-tickets="currentLocationTickets"
         :max-add-allowed="groupCapacityRemaining"
+        :can-add-tickets="canAddTickets"
         @add-ticket="
           $emit(
             'add-ticket',
@@ -131,6 +132,10 @@ export default {
     },
     showCapacities: {
       default: false,
+      type: Boolean,
+    },
+    canAddTickets: {
+      default: true,
       type: Boolean,
     },
   },
