@@ -5,10 +5,14 @@
       justify-center
       px-4
       mx-12
+      transition-all
       cursor-pointer
       society-tile
       sm:px-0
       hover:text-sta-green
+      filter
+      drop-shadow-none
+      hover:drop-shadow-dark
     "
   >
     <NuxtLink :to="`/society/${society.slug}`" class="w-full">
@@ -22,7 +26,7 @@
           text-2xl
           font-semibold
           text-center
-          transition-color
+          transition-colors
           text-sta-orange
           society-title
         "

@@ -2,21 +2,16 @@
   <div class="min-h-full text-white bg-sta-gray">
     <div
       v-if="banner"
-      id="splashscreen"
+      class="bg-center bg-cover min-h-1/4 2xl:min-h-2/5"
       :style="{
         'background-image': banner,
       }"
-    >
-      <div class="flex items-center bg-black bg-opacity-40">
-        <h1 class="container px-4 text-h1 lg:w-2/3">
-          {{ society.name }}
-        </h1>
-      </div>
+    ></div>
+    <div>
+      <h1 class="container pt-8 text-left text-h1">
+        {{ society.name }}
+      </h1>
     </div>
-    <h1 v-else class="container py-8 text-left text-h1">
-      {{ society.name }}
-    </h1>
-
     <div
       class="
         flex-wrap
@@ -27,7 +22,14 @@
     >
       <div
         v-if="society.logo.url"
-        class="flex justify-center h-40 py-2 mx-4 md:py-0 md:h-60 md:mx-0"
+        class="
+          flex
+          justify-center
+          h-40
+          py-2
+          mx-4
+          md:py-0 md:h-60 md:w-60 md:mx-0
+        "
       >
         <img
           ref="society-logo"
