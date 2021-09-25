@@ -38,12 +38,16 @@ query productionBySlug($slug: String!) {
             publiclyListed
           }
           doorsOpen
+          isBookable
           start
           end
           soldOut
           durationMins
           isOnline
           isInperson
+          ticketsBreakdown {
+            totalCapacity
+          }
         }
       }
     }
