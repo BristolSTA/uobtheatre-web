@@ -34,7 +34,10 @@
                     bg-sta-green
                     hover:bg-sta-green-dark
                     focus:outline-none
+                    btn
+                    disabled
                   "
+                  :disabled="true"
                   @click="selectedManualMode = 'CARD'"
                 >
                   <font-awesome-icon icon="money-check-alt" />
@@ -70,6 +73,24 @@
                 <font-awesome-icon icon="money-bill" />
                 Complete Booking
               </button>
+            </div>
+            <div v-if="selectedManualMode == 'CASH'" class="my-2">
+              <div class="py-2 text-xl text-center">Change Calculator</div>
+              <div class="grid grid-cols-2 gap-2">
+                <div class="flex items-center w-full">
+                  <span class="mx-2 text-xl font-semibold">£</span>
+                  <input
+                    v-model.number="tendered"
+                    type="text"
+                    class="w-full p-1 text-gray-800 rounded outline-none"
+                    placeholder="Tendered"
+                  />
+                </div>
+                <div class="flex items-center justify-center px-4 text-lg">
+                  Change:
+                  <strong class="pl-2 text-xl">£{{ change(tendered) }}</strong>
+                </div>
+              </div>
             </div>
             <div v-if="selectedManualMode" class="mt-4 text-center">
               <button
@@ -128,6 +149,7 @@ export default {
       selectedManualMode: null,
       paying: false,
       errors: null,
+      tendered: null,
     }
   },
   computed: {
@@ -136,6 +158,10 @@ export default {
     },
   },
   methods: {
+    change(tendered) {
+      if (!tendered) return this.booking.totalPricePounds
+      return (this.booking.totalPricePounds - tendered).toFixed(2)
+    },
     async pay(method) {
       this.paying = true
 
