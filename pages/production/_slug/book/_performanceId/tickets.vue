@@ -11,6 +11,7 @@
       <ticket-options
         :ticket-matrix="ticketMatrix"
         :booking="booking"
+        :max-tickets="10"
         @request-update="updateAPI"
       />
     </div>
