@@ -68,17 +68,6 @@ describe('Society page', function () {
     ).to.equal('http://pathto.example/logo-image.png')
   })
 
-  it('shows society splashscreen', async () => {
-    await waitFor(() => societyPageComponent.vm.society)
-    const splashscreenContainer = societyPageComponent.find('#splashscreen')
-
-    expect(splashscreenContainer.text()).to.contain('STA')
-
-    expect(splashscreenContainer.attributes('style')).to.contain(
-      'background-image: url(http://pathto.example/society-banner.png)'
-    )
-  })
-
   describe('society production list', () => {
     let links
     let tableRows
