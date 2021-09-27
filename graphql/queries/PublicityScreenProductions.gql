@@ -1,0 +1,16 @@
+query PublicityScreenProductions($now: DateTime) {
+  productions(first: 5, orderBy: "start", end_Gte: $now, status: "PUBLISHED") {
+    edges {
+      node {
+        id
+        name
+        featuredImage {
+          url
+        }
+        coverImage {
+          url
+        }
+      }
+    }
+  }
+}
