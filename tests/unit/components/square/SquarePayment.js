@@ -45,6 +45,9 @@ describe('Card Payment', () => {
     expect(squarePaymentsMock.mock.calls[0][0]).to.eq('square_app_id')
     expect(squarePaymentsMock.mock.calls[0][0]).to.eq('square_loc_id')
 
+    // Check it tries to init card
+    expect(cardMock.mock.calls).length(1)
+
     // Check it tries to init gpay & applepay
     expect(gpayMock.mock.calls).length(1)
     expect(applePayMock.mock.calls).length(1)
