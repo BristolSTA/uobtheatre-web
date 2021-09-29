@@ -86,9 +86,12 @@
                     placeholder="Tendered"
                   />
                 </div>
-                <div class="flex items-center justify-center px-4 text-lg">
+                <div
+                  v-if="cashChange"
+                  class="flex items-center justify-center px-4 text-lg"
+                >
                   Change:
-                  <strong class="pl-2 text-xl">£{{ change(tendered) }}</strong>
+                  <strong class="pl-2 text-xl">£{{ cashChange }}</strong>
                 </div>
               </div>
             </div>
@@ -156,12 +159,13 @@ export default {
     canPay() {
       return /\S+@\S+\.\S+/.test(this.user.email)
     },
+    cashChange() {
+      if (!this.tendered || this.tendered < this.booking.totalPricePounds)
+        return ''
+      return (this.tendered - this.booking.totalPricePounds).toFixed(2)
+    },
   },
   methods: {
-    change(tendered) {
-      if (!tendered) return this.booking.totalPricePounds
-      return (this.booking.totalPricePounds - tendered).toFixed(2)
-    },
     async pay(method) {
       if (this.paying) return
       this.paying = true
