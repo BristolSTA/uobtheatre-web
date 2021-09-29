@@ -31,6 +31,18 @@
         Your payment is handled securely by Square. We do not directly store or
         process your card details.
       </p>
+      <p class="mt-4 text-center">
+        <strong>Please note:</strong> By paying / completing a booking you
+        confirm that you have read and agree to our
+        <a
+          href="/terms"
+          target="_blank"
+          class="transition-colors text-sta-orange hover:text-sta-orange-dark"
+          >booking terms of conditions.</a
+        >
+        As per these terms, all our tickets are, in most cases, non-refundable
+        and non-transferable.
+      </p>
     </template>
     <loading-container v-else :loading="loading">
       <div class="space-y-6 text-center">
