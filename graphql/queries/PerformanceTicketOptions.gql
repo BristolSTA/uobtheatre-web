@@ -1,7 +1,9 @@
 query performanceTicketOptions($id: ID!) {
   performance(id: $id) {
+    id
     capacityRemaining
     discounts {
+      id
       name
       seatGroup {
         id

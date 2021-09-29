@@ -137,6 +137,7 @@ export default {
   },
   methods: {
     async pay(method) {
+      if (this.paying) return
       this.paying = true
 
       try {
@@ -161,6 +162,7 @@ export default {
               id: this.booking.id,
               totalPence: this.booking.totalPrice,
               provider: method,
+              idempotencyKey: this.booking.idempotencyKey,
             },
           },
           'payBooking'
@@ -172,6 +174,7 @@ export default {
         )
       } catch (e) {
         this.errors = getValidationErrors(e)
+        this.booking.refreshIdempotencyKey()
       } finally {
         this.paying = false
       }

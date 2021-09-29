@@ -22,8 +22,8 @@ export default () => {
         script:
           process.env.NODE_ENV !== 'production' ||
           process.env.SQUARE_APP_ID.startsWith('sandbox')
-            ? 'https://js.squareupsandbox.com/v2/paymentform'
-            : 'https://js.squareup.com/v2/paymentform',
+            ? 'https://sandbox.web.squarecdn.com/v1/square.js'
+            : 'https://web.squarecdn.com/v1/square.js',
         application_id: process.env.SQUARE_APP_ID,
         location_id: process.env.SQUARE_LOC_ID,
       },

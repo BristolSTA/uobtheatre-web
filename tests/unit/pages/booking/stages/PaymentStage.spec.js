@@ -11,7 +11,7 @@ import Payment from '@/tests/unit/fixtures/Payment'
 import FakeBooking from '@/tests/unit/fixtures/Booking'
 import GenericErrorsResponse from '@/tests/unit/fixtures/support/GenericErrorsResponse'
 import GenericError from '@/tests/unit/fixtures/support/GenericError'
-import CardPayment from '@/components/square/CardPayment.vue'
+import CardPayment from '@/components/square/SquarePayment.vue'
 import { generateMountOptions } from '../../../helpers'
 
 describe('Payment Stage', () => {
@@ -60,47 +60,14 @@ describe('Payment Stage', () => {
     )
   })
 
-  it('handles enabling other methods', async () => {
-    expect(
-      paymentStageComponent.find('#sq-google-pay').attributes('style')
-    ).to.contain('display: none')
-    expect(
-      paymentStageComponent.find('#sq-apple-pay').attributes('style')
-    ).to.contain('display: none')
-
-    await paymentStageComponent
-      .findComponent(CardPayment)
-      .vm.$emit('enableGPay')
-
-    expect(
-      paymentStageComponent.find('#sq-google-pay').attributes('style')
-    ).not.to.contain('display: none')
-    expect(
-      paymentStageComponent.find('#sq-apple-pay').attributes('style')
-    ).to.contain('display: none')
-
-    await paymentStageComponent
-      .findComponent(CardPayment)
-      .vm.$emit('enableApplePay')
-
-    expect(
-      paymentStageComponent.find('#sq-google-pay').attributes('style')
-    ).not.to.contain('display: none')
-    expect(
-      paymentStageComponent.find('#sq-apple-pay').attributes('style')
-    ).not.to.contain('display: none')
-  })
-
-  it('handles card nonce recieved (with square errors)', async () => {
+  it('handles payment cancellation', async () => {
     let popupClose
     await paymentStageComponent.setData({
       progressPopup: {
         close: (popupClose = jest.fn()),
       },
     })
-    await paymentStageComponent
-      .findComponent(CardPayment)
-      .vm.$emit('nonceError')
+    await paymentStageComponent.findComponent(CardPayment).vm.$emit('cancelled')
     expect(popupClose.mock.calls).length(1)
   })
 

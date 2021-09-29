@@ -2,6 +2,7 @@
   <div class="min-h-full text-white bg-sta-gray">
     <div
       v-if="banner"
+      ref="banner"
       class="bg-center bg-cover min-h-1/4 2xl:min-h-2/5"
       :style="{
         'background-image': banner,
@@ -161,13 +162,3 @@ export default {
   },
 }
 </script>
-
-<style scoped lang="scss">
-#splashscreen {
-  background-size: cover;
-  background-position: center;
-  > div {
-    min-height: 30vh;
-  }
-}
-</style>

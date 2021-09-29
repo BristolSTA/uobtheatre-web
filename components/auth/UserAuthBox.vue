@@ -126,18 +126,6 @@
       @submit.prevent="attemptSignup"
     >
       <non-field-error :errors="signup_errors" />
-      <NuxtLink
-        v-if="signup_errors && signup_errors.hasCode('unique')"
-        to="/login/forgot"
-        class="
-          text-sm
-          underline
-          cursor-pointer cursor-point
-          hover:text-gray-200
-        "
-      >
-        Request password reset?
-      </NuxtLink>
       <text-input
         v-if="(!firstName || !lastName) && !signup_errors"
         v-model="fullName"
@@ -170,6 +158,19 @@
         :errors="signup_errors"
         required
       />
+      <NuxtLink
+        v-if="signup_errors && signup_errors.hasCode('unique')"
+        to="/login/forgot"
+        class="
+          text-sm text-center
+          underline
+          cursor-pointer cursor-point
+          hover:text-sta-orange-dark
+          text-sta-orange
+        "
+      >
+        Request password reset?
+      </NuxtLink>
       <text-input
         v-model="password"
         name="Password"

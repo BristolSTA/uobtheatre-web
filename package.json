@@ -40,6 +40,7 @@
     "nuxt": "^2.15.7",
     "qrcode.vue": "^1.7.0",
     "sweetalert2": "^11.0.20",
+    "uuid": "^8.3.2",
     "vue-qrcode-reader": "^3.0.0",
     "vue-tailwind": "^2.4.1"
   },

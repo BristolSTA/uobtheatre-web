@@ -20,40 +20,13 @@
     </div>
     <all-errors-display class="text-center" :errors="errors" />
     <template v-if="booking.totalPrice > 0">
-      <div class="grid grid-cols-1 xl:grid-cols-2">
-        <div>
-          <h2 class="mb-2 text-center text-white text-h2">Pay with card</h2>
-          <card-payment
-            class="container"
-            :price="booking.totalPricePounds"
-            @enableGPay="enabledDigitalWallets.google = true"
-            @enableApplePay="enabledDigitalWallets.apple = true"
-            @paying="onPaying"
-            @nonceError="progressPopup.close()"
-            @nonceRecieved="onNonceRecieved"
-          />
-        </div>
-        <div
-          v-show="Object.values(enabledDigitalWallets).find((val) => !!val)"
-          class="text-center"
-        >
-          <h2 class="mb-2 text-white text-h2">Pay with a digital wallet</h2>
-          <div>
-            <button
-              v-show="enabledDigitalWallets.google"
-              id="sq-google-pay"
-              class="button-google-pay"
-            ></button>
-          </div>
-          <div>
-            <button
-              v-show="enabledDigitalWallets.apple"
-              id="sq-apple-pay"
-              class="apple-pay-button apple-pay-button-white"
-            ></button>
-          </div>
-        </div>
-      </div>
+      <square-payment
+        class="container"
+        :price="booking.totalPricePounds"
+        @paying="onPaying()"
+        @cancelled="progressPopup.close()"
+        @nonceRecieved="onNonceRecieved"
+      />
       <p class="mt-4 text-center text-sta-gray-lighter">
         Your payment is handled securely by Square. We do not directly store or
         process your card details.
@@ -84,14 +57,13 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import Swal from 'sweetalert2'
 
 import Booking from '@/classes/Booking'
 import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue'
 import { getValidationErrors, performMutation, swal } from '@/utils'
 import BookingStage from '@/classes/BookingStage'
-import CardPayment from '@/components/square/CardPayment.vue'
+import SquarePayment from '@/components/square/SquarePayment.vue'
 import LoadingContainer from '@/components/ui/LoadingContainer.vue'
 export default {
   stageInfo: new BookingStage({
@@ -99,7 +71,7 @@ export default {
     routeName: 'production-slug-book-performanceId-pay',
     eligable: (production, booking) => !booking.dirty,
   }),
-  components: { AllErrorsDisplay, CardPayment, LoadingContainer },
+  components: { AllErrorsDisplay, SquarePayment, LoadingContainer },
   props: {
     booking: {
       required: true,
@@ -123,12 +95,16 @@ export default {
     onPaying() {
       this.progressPopup = swal.fire({
         title: 'Confirming your booking...',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        allowEnterKey: false,
         didOpen: () => {
           Swal.showLoading()
         },
       })
     },
     async payFree() {
+      if (this.loading) return
       this.loading = true
       try {
         const data = await performMutation(
@@ -138,6 +114,7 @@ export default {
             variables: {
               id: this.booking.id,
               totalPence: this.booking.totalPrice,
+              idempotencyKey: this.booking.idempotencyKey,
             },
           },
           'payBooking'
@@ -145,6 +122,7 @@ export default {
         this.onBookingComplete(data.payBooking.booking.reference)
       } catch (e) {
         this.errors = getValidationErrors(e)
+        this.booking.refreshIdempotencyKey()
         this.loading = false
       }
     },
@@ -153,34 +131,12 @@ export default {
         const data = await performMutation(
           this.$apollo,
           {
-            mutation: gql`
-            mutation(
-              $bookingID: IdInputField!
-              $nonce: String!
-              $totalPrice: Int!
-            ) {
-              payBooking(
-                bookingId: $bookingID
-                nonce: $nonce
-                price: $totalPrice
-              ) {
-                payment {
-                  value
-                  currency
-                  cardBrand
-                  last4
-                }
-                booking {
-                  reference
-                }
-                ${require('@/graphql/partials/ErrorsPartial').default}
-              }
-            }
-          `,
+            mutation: require('@/graphql/mutations/booking/PayBooking.gql'),
             variables: {
-              bookingID: this.booking.id,
+              id: this.booking.id,
               nonce,
-              totalPrice: this.booking.totalPrice,
+              totalPence: this.booking.totalPrice,
+              idempotencyKey: this.booking.idempotencyKey,
             },
           },
           'payBooking'
@@ -189,6 +145,7 @@ export default {
         this.onBookingComplete(data.payBooking.booking.reference)
       } catch (e) {
         this.errors = getValidationErrors(e)
+        this.booking.refreshIdempotencyKey()
       }
       this.progressPopup.close()
     },

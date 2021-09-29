@@ -4,12 +4,14 @@ mutation payBooking(
   $totalPence: Int!
   $nonce: String
   $provider: PaymentMethod
+  $idempotencyKey: String
 ) {
   payBooking(
     bookingId: $id
     nonce: $nonce
     price: $totalPence
     paymentProvider: $provider
+    idempotencyKey: $idempotencyKey
   ) {
     success
     errors {
