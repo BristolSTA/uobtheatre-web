@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <h1 class="text-h1">Your Productions</h1>
+  <admin-page title="Your Productions">
     <div class="flex items-end space-x-4">
       <div><t-input placeholder="Search by name" /></div>
       <div>
@@ -59,7 +58,7 @@
         </template>
       </paginated-table></card
     >
-  </div>
+  </admin-page>
 </template>
 
 <script>
@@ -71,6 +70,7 @@ import TableRow from '@/components/ui/Tables/TableRow.vue'
 import TableRowItem from '@/components/ui/Tables/TableRowItem.vue'
 import Card from '@/components/ui/Card.vue'
 import ProductionStatusBadge from '@/components/production/ProductionStatusBadge.vue'
+import AdminPage from '@/components/admin/AdminPage.vue'
 export default {
   components: {
     PaginatedTable,
@@ -79,6 +79,7 @@ export default {
     Card,
     TableRow,
     ProductionStatusBadge,
+    AdminPage,
   },
   data() {
     return {

@@ -7,9 +7,9 @@
         :to="`/production/${production.slug}`"
         >View Public Page</sta-button
       >
-      <sta-button colour="rouge" icon="edit" :to="`${production.slug}/edit`"
+      <!-- <sta-button colour="rouge" icon="edit" :to="`${production.slug}/edit`"
         >Edit</sta-button
-      >
+      > -->
     </template>
     <div class="space-y-4">
       <div class="flex flex-wrap justify-around space-y-4">

@@ -12,9 +12,12 @@
         :to="`/box-office/${performance.id}`"
         >Goto Box Office</sta-button
       >
-      <sta-button colour="orange" icon="edit" :to="`${performance.id}/edit`"
-        >Edit</sta-button
+      <sta-button colour="green" icon="file-export" @click="downloadBookings"
+        >Download Bookings</sta-button
       >
+      <!-- <sta-button colour="orange" icon="edit" :to="`${performance.id}/edit`"
+        >Edit</sta-button
+      > -->
     </template>
     <div class="flex space-x-4">
       <card title="Summary" class="max-w-2xl">
@@ -28,19 +31,19 @@
           <tr>
             <table-head-item :text-left="false">Doors Open</table-head-item>
             <table-row-item>
-              {{ performance.doorsOpen | dateFormat('dd MM y T ZZZZ') }}
+              {{ performance.doorsOpen | dateFormat("dd MM y T ZZZZ") }}
             </table-row-item>
           </tr>
           <tr>
             <table-head-item :text-left="false">Starts</table-head-item>
             <table-row-item>
-              {{ performance.start | dateFormat('dd MM y T ZZZZ') }}
+              {{ performance.start | dateFormat("dd MM y T ZZZZ") }}
             </table-row-item>
           </tr>
           <tr>
             <table-head-item :text-left="false">Ends</table-head-item>
             <table-row-item>
-              {{ performance.end | dateFormat('dd MM y T ZZZZ') }}
+              {{ performance.end | dateFormat("dd MM y T ZZZZ") }}
             </table-row-item>
           </tr>
         </table>
@@ -157,17 +160,18 @@
 </template>
 
 <script>
-import AdminPerformanceDetailQuery from '@/graphql/queries/admin/productions/AdminPerformanceDetail.gql'
-import Card from '@/components/ui/Card.vue'
-import AdminPage from '@/components/admin/AdminPage.vue'
-import StaButton from '@/components/ui/StaButton.vue'
-import ProgressBar from '@/components/ui/ProgressBar.vue'
-import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue'
-import TableRowItem from '@/components/ui/Tables/TableRowItem.vue'
-import MenuTile from '@/components/ui/MenuTile.vue'
-import PerformanceStatusBadge from '@/components/performance/PerformanceStatusBadge.vue'
-import TicketsMatrix from '@/classes/TicketsMatrix'
-import TableRow from '@/components/ui/Tables/TableRow.vue'
+import AdminPerformanceDetailQuery from "@/graphql/queries/admin/productions/AdminPerformanceDetail.gql";
+import Card from "@/components/ui/Card.vue";
+import AdminPage from "@/components/admin/AdminPage.vue";
+import StaButton from "@/components/ui/StaButton.vue";
+import ProgressBar from "@/components/ui/ProgressBar.vue";
+import TableHeadItem from "@/components/ui/Tables/TableHeadItem.vue";
+import TableRowItem from "@/components/ui/Tables/TableRowItem.vue";
+import MenuTile from "@/components/ui/MenuTile.vue";
+import PerformanceStatusBadge from "@/components/performance/PerformanceStatusBadge.vue";
+import TicketsMatrix from "@/classes/TicketsMatrix";
+import TableRow from "@/components/ui/Tables/TableRow.vue";
+import { performMutation } from "@/utils";
 export default {
   components: {
     Card,
@@ -188,31 +192,48 @@ export default {
         productionSlug: params.productionSlug,
         performanceId: params.performanceId,
       },
-      fetchPolicy: 'no-cache',
-    })
+      fetchPolicy: "no-cache",
+    });
 
-    const production = data.production
+    const production = data.production;
     if (!production || !production.performances.edges.length)
       return error({
         statusCode: 404,
-      })
-    const performance = production.performances.edges[0].node
+      });
+    const performance = production.performances.edges[0].node;
     return {
       performance,
       production,
       ticketsMatrix: new TicketsMatrix(performance),
-    }
+    };
   },
   data() {
     return {
       production: null,
       performance: null,
       ticketsMatrix: null,
-    }
+    };
   },
   head() {
-    const title = `Performance of ${this.production.name}`
-    return { title }
+    const title = `Performance of ${this.production.name}`;
+    return { title };
   },
-}
+  methods: {
+    async downloadBookings() {
+      const data = await performMutation(
+        this.$apollo,
+        {
+          mutation: require("@/graphql/mutations/admin/GenerateReport.gql"),
+          variables: {
+            name: "PerformanceBookings",
+            options: [{ name: "performanceId", value: this.performance.id }],
+          },
+        },
+        "generateBooking"
+      );
+
+      window.open(data.generateBooking.downloadUri);
+    },
+  },
+};
 </script>
