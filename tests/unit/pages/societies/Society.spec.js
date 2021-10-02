@@ -70,9 +70,9 @@ describe('Society page', function () {
 
   it('shows society splashscreen', async () => {
     await waitFor(() => societyPageComponent.vm.society)
-    const splashscreenContainer = societyPageComponent.find('#splashscreen')
-
-    expect(splashscreenContainer.text()).to.contain('STA')
+    const splashscreenContainer = societyPageComponent.findComponent({
+      ref: 'banner',
+    })
 
     expect(splashscreenContainer.attributes('style')).to.contain(
       'background-image: url(http://pathto.example/society-banner.png)'

@@ -1,9 +1,11 @@
 query productionBySlug($slug: String!) {
   production(slug: $slug) {
     name
+    id
     subtitle
     description
     society {
+      id
       name
       slug
       logo {
@@ -38,12 +40,16 @@ query productionBySlug($slug: String!) {
             publiclyListed
           }
           doorsOpen
+          isBookable
           start
           end
           soldOut
           durationMins
           isOnline
           isInperson
+          ticketsBreakdown {
+            totalCapacity
+          }
         }
       }
     }

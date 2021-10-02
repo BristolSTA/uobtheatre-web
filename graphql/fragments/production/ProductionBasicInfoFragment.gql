@@ -1,4 +1,5 @@
 fragment ProductionBasicInfo on ProductionNode {
+  id
   name
   subtitle
   description

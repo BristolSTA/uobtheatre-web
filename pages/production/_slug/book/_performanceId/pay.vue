@@ -19,63 +19,72 @@
       </p>
     </div>
     <all-errors-display class="text-center" :errors="errors" />
-    <div class="grid grid-cols-1 xl:grid-cols-2">
-      <div>
-        <h2 class="mb-2 text-center text-white text-h2">Pay with card</h2>
-        <card-payment
-          class="container"
+    <template v-if="booking.totalPrice > 0">
+      <div class="container">
+        <square-payment
           :price="booking.totalPricePounds"
-          @enableGPay="enabledDigitalWallets.google = true"
-          @enableApplePay="enabledDigitalWallets.apple = true"
-          @paying="onPaying"
-          @nonceError="progressPopup.close()"
+          @paying="onPaying()"
+          @cancelled="progressPopup.close()"
           @nonceRecieved="onNonceRecieved"
         />
       </div>
-      <div
-        v-show="Object.values(enabledDigitalWallets).find((val) => !!val)"
-        class="text-center"
-      >
-        <h2 class="mb-2 text-white text-h2">Pay with a digital wallet</h2>
-        <div>
-          <button
-            v-show="enabledDigitalWallets.google"
-            id="sq-google-pay"
-            class="button-google-pay"
-          ></button>
-        </div>
-        <div>
-          <button
-            v-show="enabledDigitalWallets.apple"
-            id="sq-apple-pay"
-            class="apple-pay-button apple-pay-button-white"
-          ></button>
-        </div>
+      <p class="mt-4 text-center text-sta-gray-lighter">
+        Your payment is handled securely by Square. We do not directly store or
+        process your card details.
+      </p>
+      <p class="mt-4 text-center">
+        <strong>Please note:</strong> By paying / completing a booking you
+        confirm that you have read and agree to our
+        <a
+          href="/terms"
+          target="_blank"
+          class="transition-colors text-sta-orange hover:text-sta-orange-dark"
+          >booking terms of conditions.</a
+        >
+        As per these terms, all our tickets are, in most cases, non-refundable
+        and non-transferable.
+      </p>
+    </template>
+    <loading-container v-else :loading="loading">
+      <div class="space-y-6 text-center">
+        <p>
+          This total for this booking is £{{ booking.totalPrice }}, so no
+          payment is requried. Please click below to complete your booking.
+        </p>
+        <button
+          class="
+            p-2
+            transition-colors
+            rounded
+            bg-sta-green
+            hover:bg-sta-green-dark
+            focus:outline-none
+          "
+          @click="payFree"
+        >
+          Complete Booking
+        </button>
       </div>
-    </div>
-    <p class="mt-4 text-center text-sta-gray-lighter">
-      Your payment is handled securely by Square. We do not directly store or
-      process your card details.
-    </p>
+    </loading-container>
   </div>
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import Swal from 'sweetalert2'
 
 import Booking from '@/classes/Booking'
 import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue'
 import { getValidationErrors, performMutation, swal } from '@/utils'
 import BookingStage from '@/classes/BookingStage'
-import CardPayment from '@/components/square/CardPayment.vue'
+import SquarePayment from '@/components/square/SquarePayment.vue'
+import LoadingContainer from '@/components/ui/LoadingContainer.vue'
 export default {
   stageInfo: new BookingStage({
     name: 'Payment',
     routeName: 'production-slug-book-performanceId-pay',
     eligable: (production, booking) => !booking.dirty,
   }),
-  components: { AllErrorsDisplay, CardPayment },
+  components: { AllErrorsDisplay, SquarePayment, LoadingContainer },
   props: {
     booking: {
       required: true,
@@ -86,6 +95,7 @@ export default {
     return {
       paymentForm: null,
       errors: null,
+      loading: false,
       squareErrors: [],
       progressPopup: null,
       enabledDigitalWallets: {
@@ -98,68 +108,75 @@ export default {
     onPaying() {
       this.progressPopup = swal.fire({
         title: 'Confirming your booking...',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        allowEnterKey: false,
         didOpen: () => {
           Swal.showLoading()
         },
       })
+    },
+    async payFree() {
+      if (this.loading) return
+      this.loading = true
+      try {
+        const data = await performMutation(
+          this.$apollo,
+          {
+            mutation: require('@/graphql/mutations/booking/PayBooking.gql'),
+            variables: {
+              id: this.booking.id,
+              totalPence: this.booking.totalPrice,
+              idempotencyKey: this.booking.idempotencyKey,
+            },
+          },
+          'payBooking'
+        )
+        this.onBookingComplete(data.payBooking.booking.reference)
+      } catch (e) {
+        this.errors = getValidationErrors(e)
+        this.booking.refreshIdempotencyKey()
+        this.loading = false
+      }
     },
     async onNonceRecieved(nonce) {
       try {
         const data = await performMutation(
           this.$apollo,
           {
-            mutation: gql`
-            mutation(
-              $bookingID: IdInputField!
-              $nonce: String!
-              $totalPrice: Int!
-            ) {
-              payBooking(
-                bookingId: $bookingID
-                nonce: $nonce
-                price: $totalPrice
-              ) {
-                payment {
-                  value
-                  currency
-                  cardBrand
-                  last4
-                }
-                booking {
-                  reference
-                }
-                ${require('@/graphql/partials/ErrorsPartial').default}
-              }
-            }
-          `,
+            mutation: require('@/graphql/mutations/booking/PayBooking.gql'),
             variables: {
-              bookingID: this.booking.id,
+              id: this.booking.id,
               nonce,
-              totalPrice: this.booking.totalPrice,
+              totalPence: this.booking.totalPrice,
+              idempotencyKey: this.booking.idempotencyKey,
             },
           },
           'payBooking'
         )
-        swal
-          .fire({
-            icon: 'success',
-            title: 'Payment Confirmed!',
-            text: 'Taking you to your booking...',
-            timer: 2000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-            allowEscapeKey: false,
-            allowOutsideClick: false,
-          })
-          .then(() => {
-            this.$router.push(
-              `/user/booking/${data.payBooking.booking.reference}`
-            )
-          })
+
+        this.onBookingComplete(data.payBooking.booking.reference)
       } catch (e) {
         this.errors = getValidationErrors(e)
+        this.booking.refreshIdempotencyKey()
       }
       this.progressPopup.close()
+    },
+    onBookingComplete(reference) {
+      swal
+        .fire({
+          icon: 'success',
+          title: 'Payment Confirmed!',
+          text: 'Taking you to your booking...',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+          allowEscapeKey: false,
+          allowOutsideClick: false,
+        })
+        .then(() => {
+          this.$router.push(`/user/booking/${reference}`)
+        })
     },
   },
 }

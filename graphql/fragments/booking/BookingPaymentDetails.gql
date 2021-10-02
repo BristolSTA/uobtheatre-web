@@ -2,6 +2,7 @@ fragment BookingPaymentDetails on BookingNode {
   payments {
     edges {
       node {
+        id
         createdAt
         type {
           value

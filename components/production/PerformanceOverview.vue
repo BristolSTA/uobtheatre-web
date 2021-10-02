@@ -1,7 +1,7 @@
 <template>
   <div
     class="flex flex-col p-3 text-white"
-    :class="[performanceDisabled ? 'bg-sta-gray-dark' : 'bg-sta-green']"
+    :class="[performance.isBookable ? 'bg-sta-green' : 'bg-sta-gray-dark']"
   >
     <h2 class="text-h2">
       {{ performance.start | dateFormat('cccc d MMM') }}
@@ -22,12 +22,12 @@
     <div>Starting at {{ performance.start | dateFormat('T') }}</div>
     <div>{{ humanDuration(performance.durationMins) }}</div>
     <div class="text-sm font-semibold">
-      <p v-if="performanceDisabled">No Tickets Available</p>
+      <p v-if="!performance.isBookable">No Tickets Available</p>
       <p v-else>Tickets Available</p>
     </div>
     <div class="flex-grow"></div>
     <button
-      v-if="performanceDisabled"
+      v-if="!performance.isBookable"
       class="
         w-2/3
         mt-4
@@ -62,10 +62,8 @@ export default {
     },
   },
   computed: {
-    performanceDisabled() {
-      return this.performance.disabled || this.performance.soldOut
-    },
     disabledReason() {
+      if (!this.performance.ticketsBreakdown.totalCapacity) return 'Unavailable'
       if (this.performance.soldOut) return 'SOLD OUT'
       return 'Unavailable'
     },

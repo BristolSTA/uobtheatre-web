@@ -55,6 +55,7 @@ describe('Pick Performance Stage', () => {
     await performanceOverviewComponent.setProps({
       performance: Object.assign({}, Performance(), {
         disabled: true,
+        isBookable: false,
         isOnline: false,
         isInperson: true,
       }),
@@ -80,6 +81,7 @@ describe('Pick Performance Stage', () => {
       performance: Object.assign({}, Performance(), {
         soldOut: true,
         disabled: false,
+        isBookable: false,
         isOnline: true,
         isInperson: false,
       }),

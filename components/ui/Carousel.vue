@@ -17,26 +17,28 @@
         v-for="index in [currentProduction]"
         :key="index"
         ref="carousel"
-        class="absolute top-0 bottom-0 left-0 right-0 bg-center bg-cover"
+        class="absolute top-0 bottom-0 left-0 right-0 bg-center"
+        :class="[vheight == 100 ? 'bg-no-repeat bg-contain' : 'bg-cover']"
         :style="{
-          'background-image': bannerBackgorund(bannerProductions[index]),
+          'background-image': bannerBackgorund(carouselProductions[index]),
         }"
       >
         <div
+          v-if="productionInfo"
           class="flex items-center bg-black bg-opacity-40"
           :style="{ height: vheight + 'vh' }"
         >
           <NuxtLink
             class="container px-4 md:pl-12 lg:pl-4 lg:w-2/3"
-            :to="`/production/${bannerProductions[index].slug}`"
+            :to="`/production/${carouselProductions[index].slug}`"
           >
             <div class="text-2xl">
-              {{ bannerProductions[index].society.name }}
+              {{ carouselProductions[index].society.name }}
             </div>
-            <div class="text-h1">{{ bannerProductions[index].name }}</div>
+            <div class="text-h1">{{ carouselProductions[index].name }}</div>
             <div class="text-2xl">
-              {{ bannerProductions[index].start | dateFormat('d MMMM') }} -
-              {{ bannerProductions[index].end | dateFormat('d MMMM y') }}
+              {{ carouselProductions[index].start | dateFormat('d MMMM') }} -
+              {{ carouselProductions[index].end | dateFormat('d MMMM y') }}
             </div>
           </NuxtLink>
         </div>
@@ -69,6 +71,7 @@
         </ul>
       </div>
       <div
+        v-if="navArrows"
         class="
           absolute
           top-0
@@ -100,6 +103,7 @@
         </button>
       </div>
       <div
+        v-if="navArrows"
         class="
           absolute
           top-0
@@ -136,11 +140,18 @@
 
 <script>
 export default {
-  name: 'ProductionCarousel',
   props: {
-    bannerProductions: {
+    carouselProductions: {
       required: true,
       type: Array,
+    },
+    productionInfo: {
+      default: true,
+      type: Boolean,
+    },
+    navArrows: {
+      default: true,
+      type: Boolean,
     },
     vheight: {
       default: 50,
@@ -167,7 +178,7 @@ export default {
   },
   computed: {
     carouselLength() {
-      return this.bannerProductions.length
+      return this.carouselProductions.length
     },
   },
   mounted() {
@@ -177,8 +188,8 @@ export default {
     this.disableAutoPlay()
   },
   methods: {
-    bannerBackgorund(bannerProduction) {
-      return `url("${bannerProduction.coverImage.url}")`
+    bannerBackgorund(carouselProduction) {
+      return `url("${carouselProduction.coverImage.url}")`
     },
     goTo(currentProduction) {
       this.currentProduction = currentProduction

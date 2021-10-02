@@ -3,13 +3,15 @@ mutation payBooking(
   $id: IdInputField!
   $totalPence: Int!
   $nonce: String
-  $provider: PaymentProvider
+  $provider: PaymentMethod
+  $idempotencyKey: String
 ) {
   payBooking(
     bookingId: $id
     nonce: $nonce
     price: $totalPence
     paymentProvider: $provider
+    idempotencyKey: $idempotencyKey
   ) {
     success
     errors {

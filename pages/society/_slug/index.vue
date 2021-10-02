@@ -2,21 +2,17 @@
   <div class="min-h-full text-white bg-sta-gray">
     <div
       v-if="banner"
-      id="splashscreen"
+      ref="banner"
+      class="bg-center bg-cover min-h-25vh 2xl:min-h-40vh"
       :style="{
         'background-image': banner,
       }"
-    >
-      <div class="flex items-center bg-black bg-opacity-40">
-        <h1 class="container px-4 text-h1 lg:w-2/3">
-          {{ society.name }}
-        </h1>
-      </div>
+    ></div>
+    <div>
+      <h1 class="container pt-8 text-left text-h1">
+        {{ society.name }}
+      </h1>
     </div>
-    <h1 v-else class="container py-8 text-left text-h1">
-      {{ society.name }}
-    </h1>
-
     <div
       class="
         flex-wrap
@@ -27,13 +23,19 @@
     >
       <div
         v-if="society.logo.url"
-        class="flex justify-center py-2 mx-4 md:mx-0"
+        class="
+          flex
+          justify-center
+          h-40
+          py-2
+          mx-4
+          md:py-0 md:h-60 md:w-60 md:mx-0
+        "
       >
         <img
           ref="society-logo"
           :src="society.logo.url"
           :alt="`${society.name} logo`"
-          class="w-32"
         />
       </div>
 
@@ -42,10 +44,8 @@
         ref="production-list"
         class="flex-none px-1 md:w-1/2"
       >
-        <div class="py-2 md:p-2 bg-sta-gray-dark">
-          <h2 class="flex justify-center mb-2 text-2xl">
-            Upcoming Productions
-          </h2>
+        <div class="p-2 bg-sta-gray-dark">
+          <h2 class="flex justify-center mb-2 text-2xl">Productions</h2>
           <table class="w-full table-auto">
             <tbody>
               <tr
@@ -53,7 +53,7 @@
                 :key="index"
                 class="odd:bg-sta-gray-light even:bg-sta-gray"
               >
-                <td class="px-4 py-2 text-xl font-semibold hover:text-gray-300">
+                <td class="py-2 pl-4 text-xl font-semibold hover:text-gray-300">
                   <NuxtLink :to="`/production/${production.slug}`">
                     {{ production.name }}
                   </NuxtLink>
@@ -81,15 +81,33 @@
           </table>
         </div>
       </div>
-
       <div
-        class="m-2 text-center md:text-left"
-        :class="{ 'w-full': productions.length }"
+        class="px-2 m-2 text-center md:text-left"
+        :class="[productions.length ? 'pt-4' : 'md:w-2/3']"
       >
-        <p>{{ society.description }}</p>
-        <!-- <br /> TODO: Implement society contacts
-            <p><strong>Website: </strong>www.{{ society.slug }}.com</p>
-            <p><strong>Contact: </strong>president@{{ society.slug }}.com</p> -->
+        <tip-tap-output :html="society.description" />
+        <div v-if="society.website">
+          <strong>Website: </strong>
+          <a
+            :href="encodeURIComponent(society.website)"
+            target="_blank"
+            title="Opens in a new tab"
+            class="text-sta-orange hover:text-sta-orange-dark"
+          >
+            {{ society.website }}
+          </a>
+        </div>
+        <div v-if="society.website">
+          <strong>Contact: </strong>
+          <a
+            :href="`mailto:${society.contact}`"
+            target="_blank"
+            title="Opens in a new tab"
+            class="text-sta-orange hover:text-sta-orange-dark"
+          >
+            {{ society.contact }}
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -97,14 +115,15 @@
 
 <script>
 import SocietyDetailQuery from '@/graphql/queries/SocietyDetail.gql'
+import TipTapOutput from '@/components/ui/TipTapOutput.vue'
 
 export default {
+  components: { TipTapOutput },
   async asyncData({ params, app, error }) {
     const { data } = await app.apolloProvider.defaultClient.query({
       query: SocietyDetailQuery,
       variables: {
         slug: params.slug,
-        now: new Date(),
       },
     })
 
@@ -136,18 +155,10 @@ export default {
         : null
     },
     productions() {
-      return this.society.productions.edges.map((edge) => edge.node)
+      return this.society.productions.edges
+        .map((edge) => edge.node)
+        .filter((production) => production.end)
     },
   },
 }
 </script>
-
-<style scoped lang="scss">
-#splashscreen {
-  background-size: cover;
-  background-position: center;
-  > div {
-    min-height: 30vh;
-  }
-}
-</style>

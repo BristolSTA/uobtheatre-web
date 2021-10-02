@@ -208,7 +208,8 @@ export default {
           Booking.fromAPIData(edge.node)
         ),
       result(result) {
-        this.pageInfo = result.data.performance.bookings.pageInfo
+        if (result.data)
+          this.pageInfo = result.data.performance.bookings.pageInfo
       },
       fetchPolicy: 'no-cache',
       notifyOnNetworkStatusChange: true,

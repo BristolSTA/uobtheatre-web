@@ -25,7 +25,41 @@
           <loading-container :loading="paying">
             <all-errors-display class="text-center" :errors="errors" />
             <div class="grid grid-cols-2 gap-2 text-center">
+              <template v-if="booking.totalPrice > 0">
+                <button
+                  class="
+                    p-2
+                    transition-colors
+                    rounded
+                    bg-sta-green
+                    hover:bg-sta-green-dark
+                    focus:outline-none
+                    btn
+                    disabled
+                  "
+                  :disabled="true"
+                  @click="selectedManualMode = 'CARD'"
+                >
+                  <font-awesome-icon icon="money-check-alt" />
+                  Paid using Card
+                </button>
+                <button
+                  class="
+                    p-2
+                    transition-colors
+                    rounded
+                    bg-sta-green
+                    hover:bg-sta-green-dark
+                    focus:outline-none
+                  "
+                  @click="selectedManualMode = 'CASH'"
+                >
+                  <font-awesome-icon icon="money-bill" />
+                  Paid with Cash
+                </button>
+              </template>
               <button
+                v-else
                 class="
                   p-2
                   transition-colors
@@ -34,25 +68,32 @@
                   hover:bg-sta-green-dark
                   focus:outline-none
                 "
-                @click="selectedManualMode = 'CARD'"
-              >
-                <font-awesome-icon icon="money-check-alt" />
-                Paid using Card
-              </button>
-              <button
-                class="
-                  p-2
-                  transition-colors
-                  rounded
-                  bg-sta-green
-                  hover:bg-sta-green-dark
-                  focus:outline-none
-                "
-                @click="selectedManualMode = 'CASH'"
+                @click="pay(null)"
               >
                 <font-awesome-icon icon="money-bill" />
-                Paid with Cash
+                Complete Booking
               </button>
+            </div>
+            <div v-if="selectedManualMode == 'CASH'" class="my-2">
+              <div class="py-2 text-xl text-center">Change Calculator</div>
+              <div class="grid grid-cols-2 gap-2">
+                <div class="flex items-center w-full">
+                  <span class="mx-2 text-xl font-semibold">£</span>
+                  <input
+                    v-model.number="tendered"
+                    type="text"
+                    class="w-full p-1 text-gray-800 rounded outline-none"
+                    placeholder="Tendered"
+                  />
+                </div>
+                <div
+                  v-if="cashChange"
+                  class="flex items-center justify-center px-4 text-lg"
+                >
+                  Change:
+                  <strong class="pl-2 text-xl">£{{ cashChange }}</strong>
+                </div>
+              </div>
             </div>
             <div v-if="selectedManualMode" class="mt-4 text-center">
               <button
@@ -111,15 +152,22 @@ export default {
       selectedManualMode: null,
       paying: false,
       errors: null,
+      tendered: null,
     }
   },
   computed: {
     canPay() {
       return /\S+@\S+\.\S+/.test(this.user.email)
     },
+    cashChange() {
+      if (!this.tendered || this.tendered < this.booking.totalPricePounds)
+        return ''
+      return (this.tendered - this.booking.totalPricePounds).toFixed(2)
+    },
   },
   methods: {
     async pay(method) {
+      if (this.paying) return
       this.paying = true
 
       try {
@@ -144,6 +192,7 @@ export default {
               id: this.booking.id,
               totalPence: this.booking.totalPrice,
               provider: method,
+              idempotencyKey: this.booking.idempotencyKey,
             },
           },
           'payBooking'
@@ -155,6 +204,7 @@ export default {
         )
       } catch (e) {
         this.errors = getValidationErrors(e)
+        this.booking.refreshIdempotencyKey()
       } finally {
         this.paying = false
       }

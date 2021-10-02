@@ -1,4 +1,5 @@
 import lo from 'lodash'
+import { v4 as uuidv4 } from 'uuid'
 import { DateTime } from 'luxon'
 
 import Ticket from './Ticket'
@@ -20,10 +21,13 @@ export default class Booking {
   dirty = true
   /** @member {object} */
   raw
+  /** @member {string} */
+  idempotencyKey
 
   constructor() {
     this.tickets = []
     this.payments = []
+    this.refreshIdempotencyKey()
   }
 
   /**
@@ -367,5 +371,9 @@ export default class Booking {
   get status() {
     if (!this.raw.status) return ''
     return this.raw.status
+  }
+
+  refreshIdempotencyKey() {
+    this.idempotencyKey = uuidv4()
   }
 }
