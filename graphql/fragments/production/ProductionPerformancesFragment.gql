@@ -16,6 +16,7 @@ fragment ProductionPerformances on ProductionNode {
         soldOut
         isInperson
         isOnline
+        isBookable
       }
     }
   }

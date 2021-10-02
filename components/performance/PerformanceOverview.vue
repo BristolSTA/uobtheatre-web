@@ -71,7 +71,6 @@ export default {
   },
   computed: {
     disabledReason() {
-      if (!this.performance.ticketsBreakdown.totalCapacity) return 'Unavailable'
       if (this.performance.soldOut) return 'SOLD OUT'
       return 'Unavailable'
     },
