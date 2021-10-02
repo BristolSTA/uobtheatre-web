@@ -14,11 +14,23 @@
       </h1>
     </div>
     <div
-      class="flex-wrap justify-around mt-4  md:my-8 md:container md:flex md:space-x-6"
+      class="
+        flex-wrap
+        justify-around
+        mt-4
+        md:my-8 md:container md:flex md:space-x-6
+      "
     >
       <div
         v-if="society.logo.url"
-        class="flex justify-center h-40 py-2 mx-4  md:py-0 md:h-60 md:w-60 md:mx-0"
+        class="
+          flex
+          justify-center
+          h-40
+          py-2
+          mx-4
+          md:py-0 md:h-60 md:w-60 md:mx-0
+        "
       >
         <img
           ref="society-logo"
