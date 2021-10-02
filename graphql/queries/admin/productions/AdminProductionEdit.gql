@@ -19,6 +19,7 @@ query adminProductionEdit($slug: String!) {
         node {
           id
           venue {
+            id
             name
           }
           doorsOpen

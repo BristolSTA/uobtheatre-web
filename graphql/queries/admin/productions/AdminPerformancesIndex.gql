@@ -19,6 +19,7 @@ query adminPerformancesIndex(
         node {
           id
           venue {
+            id
             name
           }
           doorsOpen
