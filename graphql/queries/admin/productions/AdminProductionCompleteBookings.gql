@@ -5,7 +5,7 @@ query adminProductionCompleteBookings(
   $search: String
   $offset: Int
   $orderBy: String
-  $status: String = "PAID"
+  $status: String
 ) {
   production(slug: $productionSlug) {
     id
