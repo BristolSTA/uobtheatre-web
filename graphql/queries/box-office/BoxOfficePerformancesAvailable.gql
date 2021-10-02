@@ -19,8 +19,9 @@ query boxOfficePerformances($date: Date) {
           ...ProductionBasicInfo
         }
         venue {
+          id
           name
-        } 
+        }
       }
     }
   }

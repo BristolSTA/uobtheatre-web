@@ -9,6 +9,7 @@ query adminPerformanceDetail($productionSlug: String!, $performanceId: ID!) {
         node {
           id
           venue {
+            id
             name
           }
           disabled

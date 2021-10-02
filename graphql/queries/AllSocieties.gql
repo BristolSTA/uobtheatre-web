@@ -6,8 +6,8 @@ query allSocieties($afterCursor: String) {
     }
     edges {
       node {
-        name
         id
+        name
         slug
         logo {
           url

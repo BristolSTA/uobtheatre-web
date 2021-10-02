@@ -41,10 +41,10 @@
 </template>
 
 <script>
-import PerformanceOverview from "@/components/performance/PerformanceOverview.vue";
-import { DateTime } from "luxon";
+import PerformanceOverview from '@/components/performance/PerformanceOverview.vue'
+import { DateTime } from 'luxon'
 export default {
-  name: "ProductionPerformances",
+  name: 'ProductionPerformances',
   components: {
     PerformanceOverview,
   },
@@ -56,8 +56,8 @@ export default {
   },
   computed: {
     prodInPast() {
-      return DateTime.now() > DateTime.fromISO(this.production.end);
+      return DateTime.now() > DateTime.fromISO(this.production.end)
     },
   },
-};
+}
 </script>

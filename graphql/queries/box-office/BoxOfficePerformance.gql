@@ -4,6 +4,7 @@ query boxOfficePerformance($id: ID!) {
     id
     capacityRemaining
     venue {
+      id
       name
       slug
     }

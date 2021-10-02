@@ -4,6 +4,7 @@ fragment ProductionPerformances on ProductionNode {
       node {
         id
         venue {
+          id
           name
           slug
         }

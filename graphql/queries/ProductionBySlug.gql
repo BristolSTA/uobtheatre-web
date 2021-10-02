@@ -36,6 +36,7 @@ query productionBySlug($slug: String!) {
         node {
           id
           venue {
+            id
             name
             slug
             publiclyListed
