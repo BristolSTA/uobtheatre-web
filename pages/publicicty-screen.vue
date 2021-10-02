@@ -5,14 +5,22 @@
       <div class="text-2xl">The Home of Bristol Student Performing Arts</div>
     </div>
   </div>
-  <publicity-carousel v-else :publicity-images="publicityImages" />
+  <carousel
+    v-else
+    :carousel-productions="publicityImages"
+    :vheight="100"
+    :nav-arrows="false"
+    :production-info="false"
+    :pause-on-hover="false"
+    :autoplay-speed="10000"
+  />
 </template>
 
 <script>
-import PublicityCarousel from '@/components/layout/PublicityCarousel.vue'
+import Carousel from '@/components/ui/Carousel.vue'
 
 export default {
-  components: { PublicityCarousel },
+  components: { Carousel },
   layout: 'publicityscreen',
   data() {
     return {

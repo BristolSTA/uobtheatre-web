@@ -56,8 +56,8 @@ module.exports = {
         '1/2': '50%',
       },
       minHeight: {
-        '1/4': '25vh',
-        '2/5': '40vh',
+        '25vh': '25vh',
+        '40vh': '40vh',
       },
       dropShadow: {
         dark: '0 2px 4px rgba(0, 0, 0, 0.35)',

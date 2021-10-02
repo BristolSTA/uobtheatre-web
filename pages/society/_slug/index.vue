@@ -3,7 +3,7 @@
     <div
       v-if="banner"
       ref="banner"
-      class="bg-center bg-cover min-h-1/4 2xl:min-h-2/5"
+      class="bg-center bg-cover min-h-25vh 2xl:min-h-40vh"
       :style="{
         'background-image': banner,
       }"
@@ -14,23 +14,11 @@
       </h1>
     </div>
     <div
-      class="
-        flex-wrap
-        justify-around
-        mt-4
-        md:my-8 md:container md:flex md:space-x-6
-      "
+      class="flex-wrap justify-around mt-4  md:my-8 md:container md:flex md:space-x-6"
     >
       <div
         v-if="society.logo.url"
-        class="
-          flex
-          justify-center
-          h-40
-          py-2
-          mx-4
-          md:py-0 md:h-60 md:w-60 md:mx-0
-        "
+        class="flex justify-center h-40 py-2 mx-4  md:py-0 md:h-60 md:w-60 md:mx-0"
       >
         <img
           ref="society-logo"

@@ -1,7 +1,7 @@
 import { RouterLinkStub } from '@vue/test-utils'
 import { expect } from 'chai'
 
-import ProductionCarousel from '@/components/home/ProductionCarousel.vue'
+import Carousel from '@/components/ui/Carousel.vue'
 import Home from '@/pages/index.vue'
 
 import {
@@ -44,15 +44,13 @@ describe('Home', function () {
       expect(fixTextSpacing(homepageComponent.text())).to.contain(
         'Welcome to UOB Theatre The Home of Bristol Student Performing Arts'
       )
-      expect(homepageComponent.findComponent(ProductionCarousel).exists()).to.be
-        .false
+      expect(homepageComponent.findComponent(Carousel).exists()).to.be.false
     })
 
     it('shows carousel component with correct data', async () => {
       await seedProductions()
 
-      expect(homepageComponent.findComponent(ProductionCarousel).exists()).to.be
-        .true
+      expect(homepageComponent.findComponent(Carousel).exists()).to.be.true
       expect(homepageComponent.vm.bannerProductions.length).equals(3)
     })
   })
