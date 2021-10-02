@@ -20,7 +20,7 @@
 
 <script>
 import TicketsMatrix from '@/classes/TicketsMatrix'
-import FullProductionAndTicketOptions from '@/graphql/queries/FullProductionAndTicketOptions.gql'
+import FullPerformanceAndTicketOptions from '@/graphql/queries/FullPerformanceAndTicketOptions.gql'
 import Booking from '@/classes/Booking'
 import Overview from '@/components/box-office/Overview.vue'
 export default {
@@ -28,7 +28,7 @@ export default {
   middleware: 'authed',
   async asyncData({ params, app, error }) {
     const { data } = await app.apolloProvider.defaultClient.query({
-      query: FullProductionAndTicketOptions,
+      query: FullPerformanceAndTicketOptions,
       variables: {
         id: params.performanceId,
       },
@@ -56,7 +56,7 @@ export default {
   computed: {
     crumbs() {
       return [
-        { text: 'Box Office', route: '/box-office' },
+        { text: 'Box Office', path: '/box-office' },
         {
           text: `${
             this.performance.production.name
@@ -64,7 +64,7 @@ export default {
             this.performance.start,
             'ccc dd MMM T'
           )}`,
-          route: `/box-office/${this.performance.id}`,
+          path: `/box-office/${this.performance.id}`,
         },
         {
           text: 'Sell Tickets',

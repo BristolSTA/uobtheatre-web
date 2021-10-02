@@ -1,0 +1,47 @@
+#import "../../../fragments/performance/PerformanceTicketOptionsFragment.gql"
+query adminPerformanceDetail($productionSlug: String!, $performanceId: ID!) {
+  production(slug: $productionSlug) {
+    id
+    slug
+    name
+    performances(id: $performanceId) {
+      edges {
+        node {
+          id
+          venue {
+            id
+            name
+          }
+          disabled
+          doorsOpen
+          start
+          end
+          durationMins
+          soldOut
+          isOnline
+          isInperson
+          isBookable
+          capacity
+          capacityRemaining
+
+          ticketOptions {
+            ...PerformanceTicketOptions
+            capacity
+          }
+          ticketsBreakdown {
+            totalCapacity
+            totalTicketsSold
+          }
+          salesBreakdown {
+            totalSales
+            totalCardSales
+            providerPaymentValue
+            appPaymentValue
+            societyTransferValue
+            societyRevenue
+          }
+        }
+      }
+    }
+  }
+}

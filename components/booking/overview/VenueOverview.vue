@@ -45,7 +45,7 @@ import AddressFragments from '@/graphql/fragments/AddressFragment.gql'
 
 import LoadingIcon from '@/components/ui/LoadingIcon.vue'
 import IconListItem from '../../ui/IconListItem.vue'
-import OverviewBox from './OverviewBox.vue'
+import OverviewBox from '../../ui/Card.vue'
 
 export default {
   name: 'VenueOverview',

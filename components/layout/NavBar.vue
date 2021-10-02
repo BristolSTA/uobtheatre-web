@@ -75,7 +75,14 @@
           <template #content>
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
               <dropdown-item
-                v-if="$store.state.auth.user.canBoxoffice"
+                v-if="$auth().hasPermission('admin_open')"
+                title="Admin"
+                subtitle="Control productions and other tools"
+                icon="user-shield"
+                route="/administration"
+              />
+              <dropdown-item
+                v-if="$auth().hasPermission('boxoffice_open')"
                 title="Box Office"
                 subtitle="Check in and sell tickets"
                 icon="ticket-alt"

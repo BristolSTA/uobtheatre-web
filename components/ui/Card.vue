@@ -1,8 +1,11 @@
-<template functional>
+<template>
   <div class="p-4 text-white rounded-lg shadow bg-sta-gray-light">
-    <div class="flex flex-wrap">
-      <h2 class="flex-grow mb-1 text-h3 sm:text-h2">
-        <slot name="title"></slot>
+    <div class="flex flex-wrap items-center">
+      <h2
+        v-if="title || $slots.title"
+        class="flex-grow mb-1 text-h3 sm:text-h2"
+      >
+        <slot name="title">{{ title }}</slot>
       </h2>
       <div v-if="$slots.messageBox" class="pb-1 pr-1 sm:pr-4 sm:pb-0">
         <slot name="messageBox"></slot>
@@ -19,6 +22,11 @@
 
 <script>
 export default {
-  name: 'OverviewBox',
+  props: {
+    title: {
+      default: null,
+      type: String,
+    },
+  },
 }
 </script>

@@ -4,6 +4,7 @@ fragment ProductionPerformances on ProductionNode {
       node {
         id
         venue {
+          id
           name
           slug
         }
@@ -15,6 +16,7 @@ fragment ProductionPerformances on ProductionNode {
         soldOut
         isInperson
         isOnline
+        isBookable
       }
     }
   }

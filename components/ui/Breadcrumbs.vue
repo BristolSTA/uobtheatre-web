@@ -1,19 +1,28 @@
 <template>
-  <div class="bg-sta-gray-light">
-    <div class="container">
+  <div v-if="(crumbs && crumbs.length) || useAuto" class="bg-sta-gray-light">
+    <div :class="[wide ? 'px-4' : 'container']">
       <div class="flex py-1 font-semibold align-middle text-sta-gray-lightest">
         <div
-          v-for="(crumb, index) in crumbs"
+          v-for="(crumb, index) in crumbsToUse"
           :key="index"
           class="flex pr-2 text-sm"
         >
-          <NuxtLink v-if="crumb.route" :to="crumb.route">
+          <NuxtLink
+            v-if="crumb.path && crumb.path !== $route.fullPath"
+            :to="crumb.path"
+          >
             <span class="text-sta-orange-light hover:text-white">{{
-              crumb.text
+              crumb.text ? crumb.text : crumb.title
             }}</span>
-            <font-awesome-icon class="ml-2" icon="chevron-right" />
+            <font-awesome-icon
+              v-if="index !== crumbsToUse.length - 1"
+              class="ml-2"
+              icon="chevron-right"
+            />
           </NuxtLink>
-          <template v-else> {{ crumb.text }}</template>
+          <template v-else>
+            {{ crumb.text ? crumb.text : crumb.title }}</template
+          >
         </div>
       </div>
     </div>
@@ -21,12 +30,45 @@
 </template>
 
 <script>
+import { startCase } from 'lodash'
 export default {
   name: 'Breadcrumbs',
   props: {
     crumbs: {
-      required: true,
+      default: null,
       type: Array,
+    },
+    wide: {
+      default: false,
+      type: Boolean,
+    },
+    useAuto: {
+      default: false,
+      type: Boolean,
+    },
+  },
+  computed: {
+    crumbsToUse() {
+      return this.crumbs || (this.useAuto ? this.routeCrumbs : [])
+    },
+    routeCrumbs() {
+      const fullPath = this.$route.fullPath
+      const params = fullPath.startsWith('/')
+        ? fullPath.substring(1).split('/')
+        : fullPath.split('/')
+      const crumbs = []
+      let path = ''
+      params.forEach((param, index) => {
+        path = `${path}/${param}`
+        const match = this.$router.match(path)
+        if (match.name !== null && !param.endsWith('=')) {
+          crumbs.push({
+            title: startCase(param.replace(/-/g, ' ').toLowerCase()),
+            ...match,
+          })
+        }
+      })
+      return crumbs
     },
   },
 }

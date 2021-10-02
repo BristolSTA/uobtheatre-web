@@ -15,29 +15,3 @@ export default {
   },
 }
 </script>
-<style lang="scss">
-.tiptap-output {
-  h1 {
-    @apply text-xl font-semibold;
-  }
-
-  h2 {
-    @apply text-lg font-semibold;
-  }
-
-  p {
-    @apply mb-4;
-  }
-
-  a {
-    @apply text-sta-orange transition-colors;
-    &:hover {
-      @apply text-sta-orange-dark;
-    }
-  }
-
-  img {
-    @apply max-w-full;
-  }
-}
-</style>

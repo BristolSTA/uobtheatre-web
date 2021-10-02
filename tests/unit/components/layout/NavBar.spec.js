@@ -28,7 +28,10 @@ describe('NavBar', function () {
           },
         },
         $auth: () => {
-          return { logout: (logoutFn = jest.fn()) }
+          return {
+            logout: (logoutFn = jest.fn()),
+            hasPermission: jest.fn(() => true),
+          }
         },
       },
     })

@@ -11,17 +11,17 @@ describe('Breadcrumbs', () => {
   beforeEach(async () => {
     breadcrumsComponent = await mountWithRouterMock(Breadcrumbs, {
       stubs: { 'font-awesome-icon': true },
+      mocks: {
+        $route: {
+          fullPath: '/productions/legally-ginger/book',
+        },
+      },
       propsData: {
         crumbs: [
-          { text: 'Whats On', route: { name: 'productions' } },
+          { text: 'Whats On', path: '/productions' },
           {
             text: 'Legally Ginger',
-            route: {
-              name: 'production',
-              params: {
-                productionSlug: 'legally-ginger',
-              },
-            },
+            path: '/productions/legally-ginger',
           },
           { text: 'Book' },
         ],
@@ -45,15 +45,9 @@ describe('Breadcrumbs', () => {
     ).to.equal(2)
     expect(
       breadcrumsComponent.findAllComponents(RouterLinkStub).at(0).props('to')
-        .name
-    ).to.equal('productions')
+    ).to.equal('/productions')
     expect(
       breadcrumsComponent.findAllComponents(RouterLinkStub).at(1).props('to')
-        .name
-    ).to.equal('production')
-    expect(
-      breadcrumsComponent.findAllComponents(RouterLinkStub).at(1).props('to')
-        .params.productionSlug
-    ).to.equal('legally-ginger')
+    ).to.equal('/productions/legally-ginger')
   })
 })

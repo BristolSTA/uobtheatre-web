@@ -1,5 +1,6 @@
 query productionBySlug($slug: String!) {
   production(slug: $slug) {
+    id
     name
     id
     subtitle
@@ -30,11 +31,12 @@ query productionBySlug($slug: String!) {
     warnings {
       description
     }
-    performances(orderBy: "start") {
+    performances(orderBy: "start", disabled: false) {
       edges {
         node {
           id
           venue {
+            id
             name
             slug
             publiclyListed

@@ -1,27 +1,16 @@
 <template>
   <div>
     <div class="p-2 my-2 text-white bg-sta-gray-dark">
-      <div class="space-y-1">
-        <p class="font-semibold text-center">
-          {{ ticketMatrix.performanceCapacityRemaining }} tickets available
-        </p>
-        <ticket-options
-          :ticket-matrix="ticketMatrix"
-          :booking="booking"
-          :show-capacities="true"
-          @request-update="updateAPI"
-        />
-      </div>
-      <all-errors-display
+      <p class="font-semibold text-center">
+        {{ ticketMatrix.performanceCapacityRemaining }} tickets available
+      </p>
+      <tickets-editor
+        :booking="booking"
+        :tickets-matrix="ticketMatrix"
+        :show-capacities="true"
         :errors="errors"
-        class="p-2 text-center bg-sta-gray-dark"
+        @change="updateAPI"
       />
-      <div v-if="booking.tickets.length" class="flex my-4">
-        <selected-tickets-table
-          :ticket-matrix="ticketMatrix"
-          :booking="booking"
-        />
-      </div>
       <div v-if="booking.tickets.length" class="mt-2 text-center">
         <button
           class="font-semibold btn btn-orange"
@@ -39,19 +28,15 @@
 <script>
 import lo from 'lodash'
 import Booking from '@/classes/Booking'
-import TicketOptions from '@/components/booking/TicketOptions.vue'
-import SelectedTicketsTable from '@/components/booking/SelectedTicketsTable.vue'
-import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue'
 import CreateBooking from '@/graphql/mutations/booking/CreateBooking.gql'
 import UpdateBooking from '@/graphql/mutations/booking/UpdateBooking.gql'
 import { performMutation } from '@/utils'
 import TicketsMatrix from '@/classes/TicketsMatrix'
+import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue'
 
 export default {
   components: {
-    TicketOptions,
-    SelectedTicketsTable,
-    AllErrorsDisplay,
+    TicketsEditor,
   },
   props: {
     booking: {
@@ -78,10 +63,10 @@ export default {
   computed: {
     crumbs() {
       return [
-        { text: 'Box Office', route: '/box-office' },
+        { text: 'Box Office', path: '/box-office' },
         {
           text: `${this.performance.production.name} on day X`,
-          route: `/box-office/${this.performance.id}`,
+          path: `/box-office/${this.performance.id}`,
         },
         {
           text: 'Sell Tickets',

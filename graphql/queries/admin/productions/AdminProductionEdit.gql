@@ -1,0 +1,35 @@
+query adminProductionEdit($slug: String!) {
+  production(slug: $slug) {
+    id
+    name
+    subtitle
+    society {
+      id
+      name
+      logo {
+        url
+      }
+    }
+    slug
+    start
+    end
+    description
+    performances(orderBy: "start") {
+      edges {
+        node {
+          id
+          venue {
+            id
+            name
+          }
+          doorsOpen
+          start
+          soldOut
+          isOnline
+          isInperson
+        }
+      }
+    }
+    isBookable
+  }
+}

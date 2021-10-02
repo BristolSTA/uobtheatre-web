@@ -20,7 +20,9 @@
       <template v-if="performance.isOnline">Online</template>
     </div>
     <div>Starting at {{ performance.start | dateFormat('T') }}</div>
-    <div>{{ humanDuration(performance.durationMins) }}</div>
+    <div v-if="performance.durationMins">
+      {{ humanDuration(performance.durationMins) }}
+    </div>
     <div class="text-sm font-semibold">
       <p v-if="!performance.isBookable">No Tickets Available</p>
       <p v-else>Tickets Available</p>
@@ -40,14 +42,16 @@
     >
       {{ disabledReason }}
     </button>
-    <button
+    <component
+      :is="actionPath ? 'nuxt-link' : 'button'"
       v-else
       class="w-2/3 mt-4 font-semibold text-center btn btn-orange"
-      @click="onBook"
-      @keypress="onBook"
+      :to="actionPath"
+      @click="onAction"
+      @keypress="onAction"
     >
       <slot name="select-button">Book</slot>
-    </button>
+    </component>
   </div>
 </template>
 
@@ -60,16 +64,19 @@ export default {
       required: true,
       type: Object,
     },
+    actionPath: {
+      default: null,
+      type: String,
+    },
   },
   computed: {
     disabledReason() {
-      if (!this.performance.ticketsBreakdown.totalCapacity) return 'Unavailable'
       if (this.performance.soldOut) return 'SOLD OUT'
       return 'Unavailable'
     },
   },
   methods: {
-    onBook() {
+    onAction() {
       this.$emit('select')
     },
     humanDuration,

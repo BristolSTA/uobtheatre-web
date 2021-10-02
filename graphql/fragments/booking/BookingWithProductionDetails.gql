@@ -27,6 +27,7 @@ fragment BookingWithProductionDetails on BookingNode {
       slug
       subtitle
       society {
+        id
         name
         slug
         logo {
@@ -42,6 +43,7 @@ fragment BookingWithProductionDetails on BookingNode {
     doorsOpen
     durationMins
     venue {
+      id
       slug
     }
   }

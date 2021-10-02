@@ -83,7 +83,7 @@ export default {
     if (!production)
       return error({
         statusCode: 404,
-        message: 'This production does not exists',
+        message: 'This production does not exist',
       })
     return {
       production,
@@ -106,7 +106,7 @@ export default {
     },
     crumbs() {
       return [
-        { text: 'Whats On', route: '/productions' },
+        { text: 'Whats On', path: '/productions' },
         { text: this.production.name },
       ]
     },

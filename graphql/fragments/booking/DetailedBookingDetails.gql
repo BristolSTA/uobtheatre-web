@@ -27,6 +27,7 @@ fragment DetailedBookingDetails on BookingNode {
     end
     doorsOpen
     venue {
+      id
       slug
     }
     durationMins

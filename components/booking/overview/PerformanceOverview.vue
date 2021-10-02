@@ -29,7 +29,7 @@
 import IconListItem from '@/components/ui/IconListItem.vue'
 
 import { humanDuration } from '@/utils'
-import OverviewBox from './OverviewBox.vue'
+import OverviewBox from '../../ui/Card.vue'
 
 export default {
   name: 'PerformanceOverviewBox',

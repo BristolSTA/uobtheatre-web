@@ -19,6 +19,7 @@ query society($slug: String!) {
       }
       edges {
         node {
+          id
           name
           end
           isBookable

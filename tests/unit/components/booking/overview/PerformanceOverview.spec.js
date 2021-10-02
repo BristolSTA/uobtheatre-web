@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
 
-import OverviewBox from '@/components/booking/overview/OverviewBox.vue'
+import OverviewBox from '@/components/ui/Card.vue'
 import PerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue'
 
 import Performance from '@/tests/unit/fixtures/Performance'

@@ -1,0 +1,29 @@
+query adminProductionShow($slug: String!) {
+  production(slug: $slug) {
+    id
+    name
+    subtitle
+    society {
+      id
+      name
+    }
+    status {
+      description
+      value
+    }
+    slug
+    start
+    end
+    isBookable
+    salesBreakdown {
+      totalSales
+      totalCardSales
+      providerPaymentValue
+      appPaymentValue
+      societyTransferValue
+      societyRevenue
+    }
+    totalCapacity
+    totalTicketsSold
+  }
+}

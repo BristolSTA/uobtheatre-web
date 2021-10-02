@@ -1,0 +1,39 @@
+query adminProductions(
+  $endGte: DateTime
+  $offset: Int
+  $status: String
+  $startLte: DateTime
+) {
+  productions(
+    first: 10
+    orderBy: "start"
+    offset: $offset
+    start_Lte: $startLte
+    end_Gte: $endGte
+    status: $status
+  ) {
+    pageInfo {
+      hasNextPage
+    }
+    edges {
+      node {
+        id
+        name
+        slug
+        featuredImage {
+          url
+        }
+        status {
+          description
+        }
+        society {
+          id
+          name
+        }
+        start
+        end
+        isBookable
+      }
+    }
+  }
+}

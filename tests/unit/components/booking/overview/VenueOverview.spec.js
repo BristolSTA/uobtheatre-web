@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { RouterLinkStub } from '@vue/test-utils'
 import { expect } from 'chai'
 
-import OverviewBox from '@/components/booking/overview/OverviewBox.vue'
+import OverviewBox from '@/components/ui/Card.vue'
 import VenueOverview from '@/components/booking/overview/VenueOverview.vue'
 
 import Venue from '@/tests/unit/fixtures/Venue'

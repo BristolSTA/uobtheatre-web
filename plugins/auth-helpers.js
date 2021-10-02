@@ -5,6 +5,9 @@ export default (context, inject) => {
     return {
       isLoggedIn: () => authService.isLoggedIn(context),
       logout: () => authService.logout(context),
+      hasPermission: (permission) => {
+        return context.store.state.auth.user.permissions.includes(permission)
+      },
     }
   })
 }

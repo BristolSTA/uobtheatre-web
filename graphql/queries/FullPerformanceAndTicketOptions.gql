@@ -1,5 +1,6 @@
 #import "../fragments/production/ProductionBasicInfoFragment.gql"
 #import "../fragments/production/ProductionPerformancesFragment.gql"
+#import "../fragments/performance/PerformanceTicketOptionsFragment.gql"
 query performanceTicketOptions($id: ID!) {
   performance(id: $id) {
     id
@@ -39,21 +40,7 @@ query performanceTicketOptions($id: ID!) {
       }
     }
     ticketOptions {
-      id
-      capacityRemaining
-      seatGroup {
-        id
-        name
-        description
-      }
-      concessionTypes {
-        concessionType {
-          id
-          name
-          description
-        }
-        price
-      }
+      ...PerformanceTicketOptions
     }
   }
 }

@@ -1,0 +1,10 @@
+#import "../../../fragments/booking/DetailedBookingDetails.gql"
+query bookingLookup($reference: String!) {
+    bookings(reference: $reference) {
+      edges {
+        node {
+          ...DetailedBookingDetails
+        }
+      }
+    }
+}
