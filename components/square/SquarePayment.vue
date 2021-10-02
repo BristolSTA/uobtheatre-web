@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <loading-container :loading="!ready">
     <div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
       <div>
         <h2 class="mb-2 text-center text-white text-h2">Pay with card</h2>
@@ -38,11 +38,14 @@
         </li>
       </ul>
     </div>
-  </div>
+  </loading-container>
 </template>
 
 <script>
+import LoadingContainer from '@/components/ui/LoadingContainer.vue'
+
 export default {
+  components: { LoadingContainer },
   props: {
     useWallets: {
       default: true,

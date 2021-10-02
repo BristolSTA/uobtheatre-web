@@ -20,13 +20,14 @@
     </div>
     <all-errors-display class="text-center" :errors="errors" />
     <template v-if="booking.totalPrice > 0">
-      <square-payment
-        class="container"
-        :price="booking.totalPricePounds"
-        @paying="onPaying()"
-        @cancelled="progressPopup.close()"
-        @nonceRecieved="onNonceRecieved"
-      />
+      <div class="container">
+        <square-payment
+          :price="booking.totalPricePounds"
+          @paying="onPaying()"
+          @cancelled="progressPopup.close()"
+          @nonceRecieved="onNonceRecieved"
+        />
+      </div>
       <p class="mt-4 text-center text-sta-gray-lighter">
         Your payment is handled securely by Square. We do not directly store or
         process your card details.
