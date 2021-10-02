@@ -14,5 +14,15 @@ query adminProductionShow($slug: String!) {
     start
     end
     isBookable
+    salesBreakdown {
+      totalSales
+      totalCardSales
+      providerPaymentValue
+      appPaymentValue
+      societyTransferValue
+      societyRevenue
+    }
+    totalCapacity
+    totalTicketsSold
   }
 }

@@ -121,7 +121,7 @@ export default {
   },
   apollo: {
     bookings: {
-      query: AdminProductionCompleteBookingsQuery, // TODO: This query requires changing once API is ready
+      query: AdminProductionCompleteBookingsQuery,
       variables() {
         return {
           productionSlug: this.production.slug,

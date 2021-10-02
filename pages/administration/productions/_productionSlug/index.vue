@@ -31,13 +31,31 @@
             <tr>
               <table-head-item>Ticket Sales</table-head-item>
               <table-row-item>
-                TODO tickets sold (of TODO cross-show capacity)
-                <progress-bar :percentage="75" />
+                {{ production.totalTicketsSold }} tickets sold (of
+                {{ production.totalCapacity }} cross-show capacity)
+                <progress-bar
+                  :percentage="
+                    (100 * production.totalTicketsSold) /
+                    production.totalCapacity
+                  "
+                />
               </table-row-item>
             </tr>
             <tr>
               <table-head-item>Sales Total</table-head-item>
-              <table-row-item>£1020.20 TODO</table-row-item>
+              <table-row-item
+                >£{{
+                  (production.salesBreakdown.totalSales / 100).toFixed(2)
+                }}</table-row-item
+              >
+            </tr>
+            <tr>
+              <table-head-item>Total Society Revenue</table-head-item>
+              <table-row-item
+                >£{{
+                  (production.salesBreakdown.societyRevenue / 100).toFixed(2)
+                }}</table-row-item
+              >
             </tr>
           </table>
         </card>
@@ -48,12 +66,12 @@
             :to="`${production.slug}/bookings`"
             >View Bookings</menu-tile
           >
-          <menu-tile
+          <!-- <menu-tile
             v-if="production.status.value === 'DRAFT'"
             class="bg-sta-orange hover:bg-sta-orange-dark"
             icon="user-check"
             >Submit for Review TODO</menu-tile
-          >
+          > -->
         </div>
       </div>
       <card title="Performances">

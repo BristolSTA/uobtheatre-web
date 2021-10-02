@@ -31,29 +31,29 @@
           <tr>
             <table-head-item :text-left="false">Doors Open</table-head-item>
             <table-row-item>
-              {{ performance.doorsOpen | dateFormat("dd MM y T ZZZZ") }}
+              {{ performance.doorsOpen | dateFormat('dd MM y T ZZZZ') }}
             </table-row-item>
           </tr>
           <tr>
             <table-head-item :text-left="false">Starts</table-head-item>
             <table-row-item>
-              {{ performance.start | dateFormat("dd MM y T ZZZZ") }}
+              {{ performance.start | dateFormat('dd MM y T ZZZZ') }}
             </table-row-item>
           </tr>
           <tr>
             <table-head-item :text-left="false">Ends</table-head-item>
             <table-row-item>
-              {{ performance.end | dateFormat("dd MM y T ZZZZ") }}
+              {{ performance.end | dateFormat('dd MM y T ZZZZ') }}
             </table-row-item>
           </tr>
         </table>
       </card>
       <card title="Sales Overview">
         <table class="w-full table-auto">
-          <tr>
+          <!-- <tr>
             <table-head-item :text-left="false">Paid Bookings</table-head-item>
             <table-row-item>100 TODO</table-row-item>
-          </tr>
+          </tr> -->
           <tr>
             <table-head-item :text-left="false">Ticket Sales</table-head-item>
             <table-row-item>
@@ -75,7 +75,21 @@
             <table-head-item :text-left="false"
               >Performance Sales Total</table-head-item
             >
-            <table-row-item>£10.20 TODO</table-row-item>
+            <table-row-item
+              >£{{
+                (performance.salesBreakdown.totalSales / 100).toFixed(2)
+              }}</table-row-item
+            >
+          </tr>
+          <tr>
+            <table-head-item :text-left="false"
+              >Performance Society Revenue</table-head-item
+            >
+            <table-row-item
+              >£{{
+                (performance.salesBreakdown.societyRevenue / 100).toFixed(2)
+              }}</table-row-item
+            >
           </tr>
         </table>
       </card>
@@ -117,7 +131,7 @@
             </tbody>
           </table>
         </div>
-        <div>
+        <!-- <div>
           <table>
             <thead>
               <tr>
@@ -136,7 +150,7 @@
               </table-row>
             </tbody>
           </table>
-        </div>
+        </div> -->
       </div>
     </card>
     <div class="mt-6">
@@ -160,18 +174,18 @@
 </template>
 
 <script>
-import AdminPerformanceDetailQuery from "@/graphql/queries/admin/productions/AdminPerformanceDetail.gql";
-import Card from "@/components/ui/Card.vue";
-import AdminPage from "@/components/admin/AdminPage.vue";
-import StaButton from "@/components/ui/StaButton.vue";
-import ProgressBar from "@/components/ui/ProgressBar.vue";
-import TableHeadItem from "@/components/ui/Tables/TableHeadItem.vue";
-import TableRowItem from "@/components/ui/Tables/TableRowItem.vue";
-import MenuTile from "@/components/ui/MenuTile.vue";
-import PerformanceStatusBadge from "@/components/performance/PerformanceStatusBadge.vue";
-import TicketsMatrix from "@/classes/TicketsMatrix";
-import TableRow from "@/components/ui/Tables/TableRow.vue";
-import { performMutation } from "@/utils";
+import AdminPerformanceDetailQuery from '@/graphql/queries/admin/productions/AdminPerformanceDetail.gql'
+import Card from '@/components/ui/Card.vue'
+import AdminPage from '@/components/admin/AdminPage.vue'
+import StaButton from '@/components/ui/StaButton.vue'
+import ProgressBar from '@/components/ui/ProgressBar.vue'
+import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue'
+import TableRowItem from '@/components/ui/Tables/TableRowItem.vue'
+import MenuTile from '@/components/ui/MenuTile.vue'
+import PerformanceStatusBadge from '@/components/performance/PerformanceStatusBadge.vue'
+import TicketsMatrix from '@/classes/TicketsMatrix'
+import TableRow from '@/components/ui/Tables/TableRow.vue'
+import { performMutation } from '@/utils'
 export default {
   components: {
     Card,
@@ -192,48 +206,48 @@ export default {
         productionSlug: params.productionSlug,
         performanceId: params.performanceId,
       },
-      fetchPolicy: "no-cache",
-    });
+      fetchPolicy: 'no-cache',
+    })
 
-    const production = data.production;
+    const production = data.production
     if (!production || !production.performances.edges.length)
       return error({
         statusCode: 404,
-      });
-    const performance = production.performances.edges[0].node;
+      })
+    const performance = production.performances.edges[0].node
     return {
       performance,
       production,
       ticketsMatrix: new TicketsMatrix(performance),
-    };
+    }
   },
   data() {
     return {
       production: null,
       performance: null,
       ticketsMatrix: null,
-    };
+    }
   },
   head() {
-    const title = `Performance of ${this.production.name}`;
-    return { title };
+    const title = `Performance of ${this.production.name}`
+    return { title }
   },
   methods: {
     async downloadBookings() {
       const data = await performMutation(
         this.$apollo,
         {
-          mutation: require("@/graphql/mutations/admin/GenerateReport.gql"),
+          mutation: require('@/graphql/mutations/admin/GenerateReport.gql'),
           variables: {
-            name: "PerformanceBookings",
-            options: [{ name: "performanceId", value: this.performance.id }],
+            name: 'PerformanceBookings',
+            options: [{ name: 'id', value: this.performance.id }],
           },
         },
-        "generateBooking"
-      );
+        'generateReport'
+      )
 
-      window.open(data.generateBooking.downloadUri);
+      window.open(data.generateReport.downloadUri)
     },
   },
-};
+}
 </script>

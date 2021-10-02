@@ -21,6 +21,7 @@ export default {
     status() {
       if (this.performance.disabled) return 'Disabled'
       if (this.performance.soldOut) return 'Sold out'
+      if (!this.performance.isBookable) return 'Unavailable'
       return 'Bookable'
     },
   },

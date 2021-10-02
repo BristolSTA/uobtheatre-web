@@ -26,6 +26,7 @@ query adminPerformancesIndex(
           disabled
           soldOut
           isOnline
+          isBookable
           isInperson
           ticketsBreakdown {
             totalCapacity

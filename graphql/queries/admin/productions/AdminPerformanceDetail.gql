@@ -31,6 +31,14 @@ query adminPerformanceDetail($productionSlug: String!, $performanceId: ID!) {
             totalCapacity
             totalTicketsSold
           }
+          salesBreakdown {
+            totalSales
+            totalCardSales
+            providerPaymentValue
+            appPaymentValue
+            societyTransferValue
+            societyRevenue
+          }
         }
       }
     }

@@ -21,7 +21,10 @@
                 v-model="start"
                 :timepicker="true"
                 user-format="Y-m-d H:i:S"
+                date-format="Y-m-dTH:i:S"
                 class="text-black"
+                :required="true"
+                :initial-time="'00:00:00'"
               />
             </template>
           </form-label>
@@ -33,12 +36,20 @@
                 :timepicker="true"
                 class="text-black"
                 user-format="Y-m-d H:i:S"
+                date-format="Y-m-dTH:i:S"
+                :required="true"
+                :initial-time="'00:00:00'"
               />
             </template>
           </form-label>
         </template>
 
-        <template v-if="currentReportObject">
+        <template
+          v-if="
+            currentReportObject &&
+            (!currentReportObject.requires_times || (start && end))
+          "
+        >
           <button
             class="p-2 transition-colors bg-sta-green hover:bg-sta-green-dark"
             @click="generateReport"
@@ -72,6 +83,9 @@ export default {
         { text: 'Outstanding Payments', value: 'OutstandingPayments' },
       ],
     }
+  },
+  head: {
+    title: 'Finance Reports',
   },
   computed: {
     currentReportObject() {

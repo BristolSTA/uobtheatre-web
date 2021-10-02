@@ -17,6 +17,7 @@ query adminProductionCompleteBookings(
             first: 10
             offset: $offset
             orderBy: $orderBy
+            status: "PAID"
           ) {
             pageInfo {
               startCursor
