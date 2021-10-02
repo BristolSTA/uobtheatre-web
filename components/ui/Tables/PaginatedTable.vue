@@ -39,7 +39,7 @@ export default {
       type: Object,
     },
     items: {
-      required: true,
+      default: () => [],
       type: Array,
     },
     offset: {
