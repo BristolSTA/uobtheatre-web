@@ -5,6 +5,7 @@ query adminProductionCompleteBookings(
   $search: String
   $offset: Int
   $orderBy: String
+  $status: String = "PAID"
 ) {
   production(slug: $productionSlug) {
     id
@@ -17,7 +18,7 @@ query adminProductionCompleteBookings(
             first: 10
             offset: $offset
             orderBy: $orderBy
-            status: "PAID"
+            status: $status
           ) {
             pageInfo {
               startCursor

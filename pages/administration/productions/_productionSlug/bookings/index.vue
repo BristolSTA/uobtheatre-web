@@ -4,12 +4,19 @@
       <div><t-input v-model="bookingsSearch" placeholder="Search" /></div>
       <div>
         <label>Status</label
-        ><t-select :options="['All', 'In Progress', 'Paid', 'Refunded']" />
+        ><t-select
+          v-model="bookingsStatus"
+          :options="[
+            { text: 'All', value: null },
+            { text: 'In Progress', value: 'IN_PROGRESS' },
+            { text: 'Paid', value: 'PAID' },
+          ]"
+        />
       </div>
-      <div>
+      <!-- <div>
         <label>Date</label>
         <t-datepicker :clearable="false" class="text-black" />
-      </div>
+      </div> -->
     </div>
     <card class="mt-4">
       <paginated-table
@@ -109,6 +116,7 @@ export default {
       bookingsOffset: 0,
       bookingsSearch: null,
       bookingsOrderBy: null,
+      bookingsStatus: null,
 
       production: null,
     }
@@ -129,8 +137,10 @@ export default {
           offset: this.bookingsOffset,
           search: this.bookingsSearch,
           orderBy: this.bookingsOrderBy,
+          status: this.bookingsStatus,
         }
       },
+      fetchPolicy: 'no-cache',
       update(data) {
         const performances = data.production.performances.edges
         if (!performances.length) return []
