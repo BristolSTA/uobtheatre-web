@@ -3,7 +3,7 @@
     <tickets-editor
       :tickets-matrix="ticketMatrix"
       :booking="booking"
-      @change="updateApi"
+      @change="updateAPI"
     />
     <div v-if="booking.tickets.length" class="mt-2 text-center">
       <button
