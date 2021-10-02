@@ -21,7 +21,7 @@ import Carousel from '@/components/ui/Carousel.vue'
 
 export default {
   components: { Carousel },
-  layout: 'publicityscreen',
+  layout: 'publicityScreen',
   data() {
     return {
       upcomingProductions: [],
