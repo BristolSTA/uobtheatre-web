@@ -4,6 +4,7 @@ query adminProductionShow($slug: String!) {
     name
     subtitle
     society {
+      id
       name
     }
     status {

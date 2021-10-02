@@ -4,6 +4,7 @@ fragment ProductionBasicInfo on ProductionNode {
   subtitle
   description
   society {
+    id
     name
     slug
     logo {

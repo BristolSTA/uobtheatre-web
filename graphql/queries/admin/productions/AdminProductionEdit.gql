@@ -4,6 +4,7 @@ query adminProductionEdit($slug: String!) {
     name
     subtitle
     society {
+      id
       name
       logo {
         url
