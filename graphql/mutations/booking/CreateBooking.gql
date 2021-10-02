@@ -3,11 +3,13 @@ mutation createBooking(
   $performanceId: IdInputField!
   $tickets: [CreateTicketInput]
   $targetUserEmail: String
+  $adminDiscountPercentage: Float
 ) {
   createBooking(
     performanceId: $performanceId
     targetUserEmail: $targetUserEmail
     tickets: $tickets
+    adminDiscountPercentage: $adminDiscountPercentage
   ) {
     success
     booking {

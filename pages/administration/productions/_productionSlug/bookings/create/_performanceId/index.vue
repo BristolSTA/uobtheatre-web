@@ -101,22 +101,20 @@ export default {
       this.loading = true
       try {
         // Make the booking
-        if (!this.booking.id) {
-          const data = await performMutation(
-            this.$apollo,
-            {
-              mutation: CreateBookingMutation,
-              variables: {
-                adminDiscountPercentage: 1,
-                performanceId: this.performance.id,
-                targetUserEmail: this.bookingEmail,
-                tickets: this.booking.toAPIData().tickets,
-              },
+        const data = await performMutation(
+          this.$apollo,
+          {
+            mutation: CreateBookingMutation,
+            variables: {
+              adminDiscountPercentage: 1,
+              performanceId: this.performance.id,
+              targetUserEmail: this.bookingEmail,
+              tickets: this.booking.toAPIData().tickets,
             },
-            'createBooking'
-          )
-          this.booking.updateFromAPIData(data.createBooking.booking)
-        }
+          },
+          'createBooking'
+        )
+        this.booking.updateFromAPIData(data.createBooking.booking)
 
         // Pay the booking
         await performMutation(
