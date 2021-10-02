@@ -55,12 +55,20 @@ module.exports = {
       minWidth: {
         '1/2': '50%',
       },
+      minHeight: {
+        '25vh': '25vh',
+        '40vh': '40vh',
+      },
+      dropShadow: {
+        dark: '0 2px 4px rgba(0, 0, 0, 0.35)',
+      },
     },
   },
   variants: {
     extend: {
       backgroundColor: ['checked', 'odd', 'even'],
       flexDirection: ['odd'],
+      dropShadow: ['hover'],
     },
   },
   plugins: [require('@tailwindcss/forms')],

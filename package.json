@@ -45,6 +45,7 @@
     "sweetalert2": "^11.0.20",
     "v-money": "^0.8.1",
     "vue-currency-input": "^2.0.2",
+    "uuid": "^8.3.2",
     "vue-qrcode-reader": "^3.0.0",
     "vue-tailwind": "^2.4.1"
   },

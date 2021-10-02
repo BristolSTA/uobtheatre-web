@@ -1,5 +1,16 @@
 <template>
-  <div class="px-4 cursor-pointer production-tile sm:px-0 hover:text-sta-green">
+  <div
+    class="
+      px-4
+      transition-all
+      cursor-pointer
+      production-tile
+      sm:px-0
+      filter
+      drop-shadow-none
+      hover:drop-shadow-dark
+    "
+  >
     <NuxtLink :to="`/production/${production.slug}`">
       <img
         class="max-w-full"

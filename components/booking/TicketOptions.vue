@@ -1,5 +1,8 @@
 <template>
   <div class="space-y-1">
+    <p v-if="maxTickets" class="text-center">
+      You can book a maximum of {{ maxTickets }} tickets per booking
+    </p>
     <seat-group
       v-for="(ticketOption, index) in ticketMatrix.ticketOptions"
       :key="index"
@@ -14,6 +17,9 @@
       :current-tickets="booking.tickets"
       :discounts="ticketMatrix.discounts"
       :show-capacities="showCapacities"
+      :can-add-tickets="
+        maxTickets !== null ? booking.tickets.length < maxTickets : true
+      "
       @select-location="
         selected_location_index =
           selected_location_index != index ? index : null
@@ -47,6 +53,10 @@ export default {
     showCapacities: {
       default: false,
       type: Boolean,
+    },
+    maxTickets: {
+      default: null,
+      type: Number,
     },
   },
   data() {

@@ -39,7 +39,9 @@
           </NuxtLink>
         </p>
       </span>
-      <template v-if="showDetailedInfo">
+      <template
+        v-if="showDetailedInfo && !!production.performances.edges.length"
+      >
         <p>
           <template v-if="hasInPersonPerformances">
             Live at
@@ -69,7 +71,10 @@
         <icon-list-item v-if="duration" icon="clock">
           {{ duration }}
         </icon-list-item>
-        <icon-list-item v-if="production.minSeatPrice" icon="ticket-alt">
+        <icon-list-item
+          v-if="production.minSeatPrice && production.isBookable"
+          icon="ticket-alt"
+        >
           Tickets available from
           <span class="font-semibold">
             £{{ (production.minSeatPrice / 100).toFixed(2) }}

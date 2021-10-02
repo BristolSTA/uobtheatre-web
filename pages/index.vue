@@ -13,7 +13,7 @@
           </div>
         </div>
       </div>
-      <production-carousel v-else :banner-productions="bannerProductions" />
+      <carousel v-else :carousel-productions="bannerProductions" />
     </div>
 
     <div ref="whatson" class="container mt-4 text-white">
@@ -88,11 +88,11 @@
 <script>
 import lo from 'lodash'
 
-import ProductionCarousel from '@/components/home/ProductionCarousel.vue'
+import Carousel from '@/components/ui/Carousel.vue'
 import { displayStartEnd } from '@/utils'
 
 export default {
-  components: { ProductionCarousel },
+  components: { Carousel },
   data() {
     return {
       upcomingProductions: [],

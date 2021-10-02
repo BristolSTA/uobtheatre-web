@@ -1,6 +1,7 @@
-query society($slug: String!, $now: DateTime!) {
+query society($slug: String!) {
   society(slug: $slug) {
     name
+    id
     description
     slug
     logo {
@@ -9,7 +10,9 @@ query society($slug: String!, $now: DateTime!) {
     banner {
       url
     }
-    productions(orderBy: "start", end_Gte: $now, first: 4) {
+    website
+    contact
+    productions(orderBy: "start", first: 4) {
       pageInfo {
         hasNextPage
         endCursor

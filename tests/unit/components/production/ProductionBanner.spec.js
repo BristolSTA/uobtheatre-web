@@ -220,7 +220,9 @@ describe('ProductionBanner', function () {
     await createWithPerformances([{}], {
       isBookable: false,
     })
-
+    expect(fixTextSpacing(headerContainer.text())).not.to.contain(
+      'Tickets available from £1.20'
+    )
     expect(headerContainer.find('button').exists()).to.be.false
   })
 

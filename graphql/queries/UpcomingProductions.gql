@@ -13,6 +13,7 @@ query upcomingProductions($now: DateTime, $afterCursor: String) {
     edges {
       node {
         name
+        id
         slug
         featuredImage {
           url

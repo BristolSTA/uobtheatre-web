@@ -9,9 +9,13 @@
               :key="index"
               class="flex mt-2 text-center text-white md:text-left md:block"
             >
-              <NuxtLink :to="item[0]">
+              <component
+                :is="item[0].startsWith('/') ? 'NuxtLink' : 'a'"
+                :to="item[0]"
+                :href="item[0]"
+              >
                 <span class="hover:text-sta-orange">{{ item[1] }}</span>
-              </NuxtLink>
+              </component>
             </li>
           </ul>
         </nav>
@@ -28,12 +32,12 @@
           </a>
         </div>
         <div class="w-1/2 h-16 md:w-32 md:h-auto">
-          <a href="https://bristolsu.org" target="_blank">
+          <a href="https://bristolsu.org.uk" target="_blank">
             <img
               src="@/assets/images/bristol-su-logo.png"
               class="max-h-full mx-auto"
               style="max-width: 100px"
-              alt="Bristol SU Baloon Logo"
+              alt="Bristol SU Balloon Logo"
             />
           </a>
         </div>
@@ -64,7 +68,10 @@ export default {
       navItems: [
         ['/privacy', 'Privacy Policy'],
         ['/terms', 'Terms & Conditions'],
-        ['/', 'Contact Us'],
+        [
+          'mailto:support@uobtheatre.com?subject=Request For Support',
+          'Contact Us',
+        ],
       ],
     }
   },
