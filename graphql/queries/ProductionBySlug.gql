@@ -1,9 +1,11 @@
 query productionBySlug($slug: String!) {
   production(slug: $slug) {
     name
+    id
     subtitle
     description
     society {
+      id
       name
       slug
       logo {

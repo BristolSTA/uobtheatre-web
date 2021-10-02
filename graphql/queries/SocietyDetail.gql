@@ -1,6 +1,7 @@
 query society($slug: String!) {
   society(slug: $slug) {
     name
+    id
     description
     slug
     logo {
