@@ -1,4 +1,5 @@
 fragment AddressFields on AddressNode {
+  id
   buildingNumber
   buildingName
   street
