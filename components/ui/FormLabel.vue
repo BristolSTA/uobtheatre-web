@@ -7,7 +7,7 @@
       </p>
     </label>
     <slot name="control"></slot>
-    <div><error-helper :errors="errors" :field-name="name" /></div>
+    <div><error-helper v-if="name" :errors="errors" :field-name="name" /></div>
   </div>
 </template>
 

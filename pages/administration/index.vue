@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="text-h1">Dashboard</h1>
-    <div class="flex justify-around space-x-3">
+    <!-- <div class="flex justify-around space-x-3">
       <div class="h-24 p-4 rounded bg-sta-orange">
         <span class="text-4xl font-semibold">3</span>
         <p>productions live</p>
@@ -14,7 +14,7 @@
         <span class="text-4xl font-semibold">40,000</span>
         <p>users</p>
       </div>
-    </div>
+    </div> -->
     <div class="p-2 my-4 bg-sta-gray-dark">
       <p>Welcome to the UOB Theatre Administration Panel.</p>
       <p>
@@ -23,15 +23,23 @@
       </p>
       <p>
         If something doesn't look right, or you need help, please open a ticket
-        on our service desk.
+        on our service desk or ask a member of the STA.
       </p>
     </div>
     <div>
       <h3 class="text-h3">Quick Links</h3>
-      <div class="flex flex-wrap space-x-3 space-y-2">
-        <div class="p-2 bg-sta-green">Your Live Productions</div>
-        <div class="p-2 bg-sta-green">Ticket & Booking Lookup</div>
-        <div class="p-2 bg-sta-green">Finance Reporting</div>
+      <div class="flex flex-wrap space-x-3 space-y-2 md:space-y-0">
+        <nuxt-link to="productions"
+          ><div class="p-2 bg-sta-green">Your Live Productions</div></nuxt-link
+        >
+        <nuxt-link to="tools/ticket-lookup"
+          ><div class="p-2 bg-sta-green">
+            Ticket & Booking Lookup
+          </div></nuxt-link
+        >
+        <nuxt-link to="finance-reports"
+          ><div class="p-2 bg-sta-green">Finance Reporting</div></nuxt-link
+        >
       </div>
     </div>
   </div>

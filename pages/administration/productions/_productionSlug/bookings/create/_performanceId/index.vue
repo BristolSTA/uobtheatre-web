@@ -107,6 +107,7 @@ export default {
             {
               mutation: CreateBookingMutation,
               variables: {
+                adminDiscountPercentage: 1,
                 performanceId: this.performance.id,
                 targetUserEmail: this.bookingEmail,
                 tickets: this.booking.toAPIData().tickets,
@@ -118,7 +119,6 @@ export default {
         }
 
         // Pay the booking
-        // TODO: Requires the admin discount to be available to set on a booking via API. For now, we will say it was paid with cash
         await performMutation(
           this.$apollo,
           {
@@ -126,7 +126,6 @@ export default {
             variables: {
               id: this.booking.id,
               totalPence: this.booking.totalPrice,
-              provider: 'CASH',
             },
           },
           'payBooking'

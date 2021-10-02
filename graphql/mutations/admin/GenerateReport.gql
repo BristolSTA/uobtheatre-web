@@ -1,0 +1,17 @@
+mutation generateReport($name: String!, $start: DateTime, $end: DateTime, $options: [ReportOption]) {
+    generateReport(name: $name, startTime: $start, endTime: $end, options: $options){
+        success
+        donwloadUri
+        errors {
+            ... on NonFieldErrors{
+                message
+                code
+            }
+            ... on FieldError{
+                message
+                code
+                field
+            }
+        }
+    }
+}
