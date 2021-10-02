@@ -28,6 +28,8 @@ export default {
           now: new Date(),
         }
       },
+      // refresh every 2 hours
+      pollInterval: 7200000,
     },
   },
   computed: {
