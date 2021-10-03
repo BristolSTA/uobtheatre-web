@@ -52,7 +52,7 @@ export default {
       return this.crumbs || (this.useAuto ? this.routeCrumbs : [])
     },
     routeCrumbs() {
-      const fullPath = this.$route.fullPath
+      const fullPath = this.$route.fullPath.split('?')[0]
       const params = fullPath.startsWith('/')
         ? fullPath.substring(1).split('/')
         : fullPath.split('/')
