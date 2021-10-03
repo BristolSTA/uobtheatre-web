@@ -23,6 +23,7 @@
         :page-info="bookingsPageInfo"
         :offset.sync="bookingsOffset"
         :items="bookings"
+        :max-per-page="10"
         :loading="$apollo.queries.bookings.loading"
         empty-text="No matching bookings found"
       >
