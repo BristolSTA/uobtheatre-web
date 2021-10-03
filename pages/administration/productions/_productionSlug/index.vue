@@ -60,12 +60,12 @@
           </table>
         </card>
         <div class="flex flex-col items-center px-6 space-y-5">
-          <menu-tile
+          <!-- <menu-tile
             icon="clipboard-list"
             class="bg-sta-green hover:bg-sta-green-dark"
             :to="`${production.slug}/bookings`"
             >View Bookings</menu-tile
-          >
+          > -->
           <!-- <menu-tile
             v-if="production.status.value === 'DRAFT'"
             class="bg-sta-orange hover:bg-sta-orange-dark"
@@ -152,7 +152,6 @@ import AdminPage from '@/components/admin/AdminPage.vue'
 import StaButton from '@/components/ui/StaButton.vue'
 import Card from '@/components/ui/Card.vue'
 import ProgressBar from '@/components/ui/ProgressBar.vue'
-import MenuTile from '@/components/ui/MenuTile.vue'
 import PerformanceStatusBadge from '@/components/performance/PerformanceStatusBadge.vue'
 import TableRowItem from '@/components/ui/Tables/TableRowItem.vue'
 import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue'
@@ -165,7 +164,6 @@ export default {
     StaButton,
     Card,
     ProgressBar,
-    MenuTile,
     PerformanceStatusBadge,
     TableRowItem,
     TableHeadItem,
