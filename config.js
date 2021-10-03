@@ -27,6 +27,12 @@ export default () => {
         application_id: process.env.SQUARE_APP_ID,
         location_id: process.env.SQUARE_LOC_ID,
       },
+      googleAnalytics: {
+        id: process.env.GA_ID,
+      },
+      sentry: {
+        dsn: process.env.SENTRY_DSN,
+      },
     },
   }
 }

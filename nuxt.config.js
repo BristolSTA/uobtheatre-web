@@ -74,6 +74,7 @@ export default {
     '~/plugins/vue-tailwind.js',
     '~/plugins/initial-auth.js',
     '~/plugins/auth-helpers.js',
+    '~/plugins/gtag.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -100,6 +101,8 @@ export default {
     '@nuxtjs/pwa',
 
     '@nuxtjs/apollo',
+
+    '@nuxtjs/sentry',
   ],
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
@@ -153,5 +156,16 @@ export default {
   // FontAwesome Configuration
   fontawesome: {
     icons: FaIconSet,
+  },
+
+  // Sentry
+  sentry: {
+    dsn: config().services.sentry.id, // Enter your project's DSN here
+    // Additional Module Options go here
+    // https://sentry.nuxtjs.org/sentry/options
+    config: {
+      // Add native Sentry config here
+      // https://docs.sentry.io/platforms/javascript/guides/vue/configuration/options/
+    },
   },
 }
