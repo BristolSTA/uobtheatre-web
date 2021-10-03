@@ -2,36 +2,168 @@
   <div class="container mx-auto text-page">
     <h1 class="my-4 text-h1">Privacy Policy</h1>
     <p>
-      This Policy applies as an agreement between you, the User of this Web Site
-      and University of Bristol Students' Union Ltd. (Stage Technicians'
-      Association) the owner and provider of this Web Site. This Policy applies
-      to our use of any and all Data collected by us in relation to your use of
-      the Web Site and any Services or Systems therein.
+      It is our policy to respect your privacy regarding any information we may
+      collect during your use of this website. Accordingly, we have developed
+      this privacy policy to help you to understand how we collect, use,
+      communicate, disclose and otherwise make use of personal information when
+      using our Services. This policy sets out how we will process any personal
+      data we collect from you, or which you provide to us, in the course of
+      using our website or other services ("Services").
     </p>
     <h2>1. Information Stored and Processed</h2>
     <p>
-      The Web Site collects personal information given as part of the
-      registration process. This is kept to the minimum needed to administer the
-      service and comprises name and email address only. In addition to this
-      certain information is stored in your personal record pertaining to your
-      use of the Web Site, comprising a purchase history and ticket booking
-      details. No payment information is stored or processed by this Web Site;
-      it is handled by secure payment processor WorldPay.
+      When you use our Services we may automatically collect data from you, or
+      you might voluntarily provide us with data. The below sections describe
+      data we collect, along with its purpose (our legitimate interest).
     </p>
-    <h2>2. Removal of information held about you</h2>
+    <div v-for="section in collectedData" :key="section.title" class="mb-6">
+      <h3 class="text-xl">{{ section.title }}</h3>
+      <table class="w-full">
+        <thead>
+          <table-head-item :text-left="false">Purpose</table-head-item>
+          <table-head-item :text-left="false">Legal Basis</table-head-item>
+          <table-head-item :text-left="false">Collected Data</table-head-item>
+        </thead>
+        <tbody>
+          <table-row v-for="(row, index) in section.items" :key="index">
+            <table-row-item>{{ row.purpose }}</table-row-item>
+            <table-row-item>{{ row.basis }}</table-row-item>
+            <table-row-item>
+              <ul class="list-disc list-inside">
+                <li v-for="(item, itemIndex) in row.data" :key="itemIndex">
+                  {{ item }}
+                </li>
+              </ul>
+            </table-row-item>
+          </table-row>
+        </tbody>
+      </table>
+    </div>
     <p>
-      Your personal record will be entirely deleted on request, using the Cancel
-      Account feature, which is only available if you have no booked tickets for
-      forthcoming productions.
+      Online and in-person card or digital payments are processed by Squareup
+      International Ltd. ("Square"). When paying online, all payments (including
+      both credit/debit card, Google Pay or Apple Pay) are processed directly by
+      Square. The input forms for these payment methods are hosted by Square,
+      and as such card details are never collected or stored by us. For details
+      on Square's privacy policy and terms, please visit
+      <a
+        href="https://squareup.com/gb/en/legal/general/ua"
+        class="text-sta-orange hover:text-sta-orange"
+        >https://squareup.com/gb/en/legal/general/ua</a
+      >.
     </p>
-    <h2>3. Use of Data for direct marketing</h2>
+    <h2>2. What we do with your data</h2>
     <p>
-      The Data is used only by University of Bristol Students' Union and only
-      for informing you about new Productions listed on the Web Site provided
-      you consent to this at Signup. The Data is not used for any other
-      marketing purpose and never distributed to any third party.
+      We use your data for a variety of reasons, including those highlighted
+      above. However, your data will always only be used for the purposes of
+      providing our Services, and will never be sold or distributed to 3rd
+      parties.
     </p>
-    <h2>4. Links to Other Web Sites</h2>
+    <p>The main reasons we process your data are:</p>
+    <ul class="list-disc list-inside">
+      <li>To provide you with a personalised service;</li>
+      <li>
+        To improve out Services, and understand the behaviours of our users;
+      </li>
+      <li>To be able to deliver our Services effectively;</li>
+      <li>To comply with legal obligations;</li>
+      <li>
+        For our legitimate business interests, which may include but not be
+        limited to, provide information on our shows and services and analyse
+        the use of our websites and services to continually improve your
+        customer experience and our business; and
+      </li>
+      <li>
+        You have provided consent for us to collect and process your personal
+        information
+      </li>
+    </ul>
+    <h2>3. When we collect data</h2>
+    <p>
+      Generally, we collect your information when you decide to interact with
+      us. This could include purchasing tickets online, in person at a box
+      office, or when you sign up or send us an email. We also look at how our
+      Services are used, so that we can offer the best possible experience.
+    </p>
+    <p>The main ways we collect information are:</p>
+    <ul class="list-disc list-inside">
+      <li>When you register or login to our Services;</li>
+      <li>
+        When you create, edit or pay for a booking, product or service online or
+        in-person;
+      </li>
+      <li>
+        When you contact us by any means, including email or contact form;
+      </li>
+      <li>When you fill in any forms;</li>
+      <li>When you visit our Services (e.g. via Cookies).</li>
+    </ul>
+    <h2>4. Use of Data for direct marketing</h2>
+    <p>
+      The Data is used only by us and only for critical or mandatory
+      notifications, such as purchase receipts or booking confirmation. We won't
+      send unsolicited marketing emails unless you have explicity opted in to
+      that service.
+    </p>
+    <h2>5. How we store your data</h2>
+    <p>
+      We keep your personal information for as long as we require for the
+      purposes for which it was collected (see above). Once the relevant purpose
+      has been satisfied we will securely delete or anonymise your personal
+      information unless we are required to retain a copy of such information
+      under applicable law.
+    </p>
+    <p>
+      All personal information that you provide is stored on our secure servers
+      or those of our suppliers which may be situated outside of the European
+      Economic Area (“EEA”). Your information may also be processed one of our
+      suppliers for the purposes set out in this Privacy Policy. Where we
+      transfer personal information outside of the EEA we will ensure that
+      adequate contractual safeguards are in place (e.g. the European
+      Commission’s standard data protection clauses or “model clauses”), to
+      ensure the security of your personal information is maintained when it is
+      processed by the third party.
+    </p>
+    <p>
+      At all times we seek to take the necessary precautions to safeguard your
+      data. This includes encrypting data sent from us to you and vice versa
+      through methods such as Secure Socket Layer (SSL) end-to-end encryption,
+      as well as encrypting any sensitive information.
+    </p>
+    <h2>6. Third Parties</h2>
+    <p>
+      Our Services may make use of multiple third parties to collect, store or
+      process information on our behalf. These parties are listed below.
+    </p>
+    <ul class="ml-4 list-disc">
+      <li>
+        <h3 class="text-lg">Google</h3>
+        <p>
+          Collect and provide aggregated data on site performance, user
+          profiles, behaviour and other analytical data
+        </p>
+        <a
+          href="https://policies.google.com/privacy"
+          target="_blank"
+          class="transition-colors text-sta-orange hover:text-sta-orange-dark"
+          >Privacy Policy</a
+        >
+      </li>
+      <li>
+        <h3 class="text-lg">Squareup International</h3>
+        <p>
+          Collect payment information and create payment charges for non-cash
+          payment methods.
+        </p>
+        <a
+          href="https://squareup.com/gb/en/legal/general/ua"
+          target="_blank"
+          class="transition-colors text-sta-orange hover:text-sta-orange-dark"
+          >Privacy Policy</a
+        >
+      </li>
+    </ul>
+    <h2>7. Links to Other Web Sites</h2>
     <p>
       Our website may contain links to other websites of interest. However, once
       you have used these links to leave our site, you should note that we do
@@ -41,19 +173,95 @@
       privacy statement. You should exercise caution and look at the privacy
       statement applicable to the website in question.
     </p>
-    <h2>5. Security</h2>
+    <h2>8. Your rights over your personal data</h2>
+    <p>Under various legislation, including UK GDPR, you have the right to:</p>
+    <ul class="list-disc list-inside">
+      <li>A copy of your personal information which we hold about you;</li>
+      <li>
+        Request that we correct any personal information that is inaccurate or
+        out of date;
+      </li>
+      <li>
+        Withdraw your consent to processing at any time if we have relied on
+        your consent to process your personal information;
+      </li>
+      <li>
+        Request, under certain circumstances, that your personal information is
+        removed from our systems where it is no longer necessary for us to hold
+        your personal information;
+      </li>
+      <li>
+        Request in certain circumstances that we transmit your personal
+        information that we hold elsewhere
+      </li>
+      <li>
+        Object to us processing your personal information. In this instance, we
+        will stop processing your personal information if we are relying on it
+        for our own or someone else’s legitimate interests, processing it for
+        direct marketing or processing it for research (unless such processing
+        is necessary for the performance of a task carried out in the public
+        interest); and
+      </li>
+      <li>
+        Restrict the processing of your personal information, if you contest the
+        accuracy of the personal information that we hold about you. This means
+        we must stop any processing activities until we have verified the
+        accuracy of the personal information, or we no longer need your personal
+        information.
+      </li>
+    </ul>
     <p>
-      We are committed to ensuring that your information is secure. In order to
-      prevent unauthorised access or disclosure, we have put in place suitable
-      physical, electronic and managerial procedures to safeguard and secure the
-      information we collect online.
+      Please make any requests under this policy to support@uobtheatre.com.
+      Please note that you will be asked to prove your identity.
     </p>
   </div>
 </template>
 
 <script>
-/* eslint-disable vue/no-v-html */
-export default {}
+import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue'
+import TableRow from '@/components/ui/Tables/TableRow.vue'
+import TableRowItem from '@/components/ui/Tables/TableRowItem.vue'
+export default {
+  components: { TableRowItem, TableRow, TableHeadItem },
+  data() {
+    return {
+      collectedData: [
+        {
+          title: 'Account Details',
+          items: [
+            {
+              purpose:
+                'Provision of a personalised experience, and to identify you across the site',
+              basis: 'Legitimate interests',
+              data: ['Full Name'],
+            },
+            {
+              purpose: 'Password reset functionality',
+              basis: 'Legitimate interests',
+              data: ['Email Address'],
+            },
+          ],
+        },
+        {
+          title: 'Tickets and Bookings',
+          items: [
+            {
+              purpose: 'Provision of payment receipt, and booking confirmation',
+              basis: 'Legitimate interests',
+              data: ['Email Address'],
+            },
+            {
+              purpose:
+                'Operational statistics to indicate the number of remaining tickets to be checked in or collected',
+              basis: 'Legitimate interests',
+              data: ['Ticket Check In State'],
+            },
+          ],
+        },
+      ],
+    }
+  },
+}
 </script>
 
 <style lang="scss">
