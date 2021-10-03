@@ -25,7 +25,7 @@ import Booking from '@/classes/Booking'
 import TicketMatrix from '@/classes/TicketsMatrix'
 import CreateBooking from '@/graphql/mutations/booking/CreateBooking.gql'
 import UpdateBooking from '@/graphql/mutations/booking/UpdateBooking.gql'
-import { performMutation } from '@/utils'
+import { getValidationErrors, performMutation } from '@/utils'
 
 import BookingStage from '@/classes/BookingStage'
 import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue'
@@ -90,8 +90,8 @@ export default {
           )
           bookingResponse = data.updateBooking.booking
         }
-      } catch ({ errors }) {
-        this.errors = errors
+      } catch (e) {
+        this.errors = getValidationErrors(e)
         return
       }
 
