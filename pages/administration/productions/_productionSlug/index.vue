@@ -88,6 +88,7 @@
               ? performancesData.edges.map((edge) => edge.node)
               : []
           "
+          :max-per-page="10"
           :loading="$apollo.queries.performancesData.loading"
           :page-info="performancesData ? performancesData.pageInfo : {}"
           :offset.sync="performancesOffset"

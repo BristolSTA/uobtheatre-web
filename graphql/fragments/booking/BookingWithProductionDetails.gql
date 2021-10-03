@@ -50,6 +50,7 @@ fragment BookingWithProductionDetails on BookingNode {
   payments {
     edges {
       node {
+        id
         createdAt
         type {
           value

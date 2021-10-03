@@ -39,11 +39,15 @@ export default {
       type: Object,
     },
     items: {
-      default: () => [],
+      required: true,
       type: Array,
     },
     offset: {
       required: true,
+      type: Number,
+    },
+    maxPerPage: {
+      default: null,
       type: Number,
     },
     emptyText: {
@@ -73,7 +77,10 @@ export default {
     },
     previousPage() {
       this.$emit('previousPage')
-      this.$emit('update:offset', Math.max(0, this.offset - this.items.length))
+      this.$emit(
+        'update:offset',
+        Math.max(0, this.offset - (this.maxPerPage ?? this.items.length))
+      )
     },
   },
 }

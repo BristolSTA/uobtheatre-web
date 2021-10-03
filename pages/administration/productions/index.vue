@@ -25,6 +25,7 @@
         :items="
           productionsData ? productionsData.edges.map((edge) => edge.node) : []
         "
+        :max-per-page="10"
         :loading="$apollo.queries.productionsData.loading"
         :offset.sync="productionsOffset"
         :page-info="productionsData ? productionsData.pageInfo : {}"

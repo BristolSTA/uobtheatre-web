@@ -38,20 +38,12 @@
           <div class="px-1 py-2 bg-sta-gray-dark sm:p-2">
             <paginated-table
               :page-info="pageInfo"
-              :current-cursor="offset"
+              :offset.sync="offset"
+              :items="bookings"
+              :max-per-page="10"
               :loading="$apollo.queries.bookings.loading"
               :empty="!bookings.length"
               empty-text="No matching bookings found"
-              @previousPage="
-                () => {
-                  offset -= bookings.length
-                }
-              "
-              @nextPage="
-                () => {
-                  offset += bookings.length
-                }
-              "
             >
               <template #head>
                 <th>Name</th>
