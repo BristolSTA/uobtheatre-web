@@ -1,6 +1,7 @@
 import { createApolloClient } from 'vue-cli-plugin-apollo/graphql-client'
 import VueApollo from 'vue-apollo'
 import authService from '@/services/authService'
+import * as Sentry from '@sentry/browser'
 
 // Config
 const defaultOptions = {
@@ -52,6 +53,7 @@ export function createProvider(clientOptions = {}, vueApolloOptions = {}) {
         'background: red; color: white; padding: 2px 4px; border-radius: 3px; font-weight: bold;',
         error.message
       )
+      Sentry.captureException(error)
     },
   })
 

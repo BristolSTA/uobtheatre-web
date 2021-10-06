@@ -1,4 +1,5 @@
 @import './tiptap';
+@import './_swal';
 
 @function str-replace($string, $search, $replace: '') {
   $index: str-index($string, $search);
@@ -80,12 +81,5 @@
   .text-h3,
   .text-h4 {
     @apply font-semibold;
-  }
-}
-
-// Fix issue with Sweetalert2 text colour
-.swal2-container {
-  .text-white {
-    color: white !important;
   }
 }

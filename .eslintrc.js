@@ -13,7 +13,6 @@ module.exports = {
     'plugin:prettier/recommended',
     'plugin:nuxt/recommended',
   ],
-  plugins: [],
   rules: {
     'import/no-named-as-default': 'off',
   },

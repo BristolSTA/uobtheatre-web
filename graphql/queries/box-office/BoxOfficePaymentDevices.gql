@@ -1,0 +1,9 @@
+query boxOfficePaymentDevices {
+    paymentDevices(paymentProvider: SQUARE_POS, paired: true) {
+        id
+        name
+        code
+        deviceId
+        locationId
+    }
+}

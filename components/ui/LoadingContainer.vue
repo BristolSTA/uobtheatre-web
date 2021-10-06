@@ -7,16 +7,17 @@
       class="
         top-0
         z-10
-        flex
+        flex flex-col
         items-center
         justify-center
         w-full
         h-full
         py-6
-        text-3xl text-white
+        text-white
       "
     >
-      <loading-icon :size-class="loaderIconSize" />
+      <loading-icon :size-class="loaderIconSize" class="text-3xl" />
+      <slot name="overlay"></slot>
     </div>
     <slot v-if="showContent"></slot>
   </div>

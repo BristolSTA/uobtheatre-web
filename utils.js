@@ -3,6 +3,7 @@ import ValidationError from '@/errors/ValidationError'
 import Swal from 'sweetalert2'
 import resolveConfig from 'tailwindcss/resolveConfig'
 import humanizeDuration from 'humanize-duration'
+import * as Sentry from '@sentry/browser'
 
 import Errors from '@/classes/Errors'
 
@@ -68,10 +69,16 @@ const humanDuration = (durationMins) => {
 const tailwindConfig = resolveConfig(require('./tailwind.config'))
 
 const errorHandler = (e) => {
-  // TODO: Implement sentry here (and probably also in the apollo error handler)
   // eslint-disable-next-line no-console
   console.error(e)
   apiErrorToast.fire()
+  Sentry.captureException(e)
+}
+
+const silentErrorHandler = (e) => {
+  // eslint-disable-next-line no-console
+  console.error(e)
+  Sentry.captureException(e)
 }
 
 /**
@@ -127,6 +134,7 @@ const swal = Swal.mixin({
     title: 'text-white',
     content: 'text-white',
     htmlContainer: 'text-white',
+    input: 'bg-white',
   },
   confirmButtonColor: tailwindConfig.theme.colors['sta-orange'].DEFAULT,
   denyButtonColor: tailwindConfig.theme.colors['sta-rouge'].DEFAULT,
@@ -157,6 +165,7 @@ export {
   humanDuration,
   duration,
   errorHandler,
+  silentErrorHandler,
   joinWithAnd,
   performMutation,
   swal,
