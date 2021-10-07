@@ -30,7 +30,7 @@ export const actions = {
   },
   async retrieveAvailableTerminalDevices(context) {
     if (!context.state.locationId) return []
-    const data = await this.app.apolloProvider.defaultClient.query({
+    const { data } = await this.app.apolloProvider.defaultClient.query({
       query: require('@/graphql/queries/box-office/BoxOfficePaymentDevices.gql'),
     })
     return data.paymentDevices.filter(
