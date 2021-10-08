@@ -31,12 +31,12 @@
     <button
       v-if="!performance.isBookable"
       class="
-        w-2/3
-        mt-4
-        font-semibold
-        text-center
         btn btn-rouge btn-outline
         disabled
+        mt-4
+        w-2/3
+        text-center
+        font-semibold
       "
       disabled
     >
@@ -45,7 +45,7 @@
     <component
       :is="actionPath ? 'nuxt-link' : 'button'"
       v-else
-      class="w-2/3 mt-4 font-semibold text-center btn btn-orange"
+      class="btn btn-orange mt-4 w-2/3 text-center font-semibold"
       :to="actionPath"
       @click="onAction"
       @keypress="onAction"

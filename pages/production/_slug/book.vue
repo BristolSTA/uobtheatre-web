@@ -7,16 +7,16 @@
         :show-buy-tickets-button="false"
         :show-detailed-info="false"
       />
-      <div class="flex flex-wrap mb-2 md:space-x-2 md:flex-nowrap">
+      <div class="flex flex-wrap mb-2 md:flex-nowrap md:space-x-2">
         <booking-navigation
-          class="hidden md:flex md:w-1/4 md:flex-none"
+          class="hidden md:flex md:flex-none md:w-1/4"
           :current-stage-index="currentStageIndex"
           :production="production"
           :booking="booking"
           @goto-stage="navigateToStage"
         />
-        <div v-if="currentStage" class="w-full mb-1 text-center md:hidden">
-          <h1 class="text-h1 text-sta-green">{{ currentStage.name }}</h1>
+        <div v-if="currentStage" class="mb-1 w-full text-center md:hidden">
+          <h1 class="text-sta-green text-h1">{{ currentStage.name }}</h1>
           <clickable-link
             v-if="currentStageIndex > 0"
             class="text-white"
@@ -27,7 +27,7 @@
         </div>
         <div
           id="booking-view"
-          class="flex-grow max-w-full p-1 pb-4 sm:p-3 bg-sta-gray-dark"
+          class="flex-grow p-1 pb-4 max-w-full bg-sta-gray-dark sm:p-3"
         >
           <NuxtChild
             ref="stageComponent"

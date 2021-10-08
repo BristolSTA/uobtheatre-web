@@ -1,7 +1,7 @@
 <template>
   <div v-if="(crumbs && crumbs.length) || useAuto" class="bg-sta-gray-light">
     <div :class="[wide ? 'px-4' : 'container']">
-      <div class="flex py-1 font-semibold align-middle text-sta-gray-lightest">
+      <div class="flex align-middle py-1 text-sta-gray-lightest font-semibold">
         <div
           v-for="(crumb, index) in crumbsToUse"
           :key="index"

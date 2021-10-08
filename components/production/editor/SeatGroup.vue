@@ -1,9 +1,9 @@
 <template>
-  <div class="flex items-center p-3 rounded-lg bg-sta-gray-dark">
+  <div class="flex items-center p-3 bg-sta-gray-dark rounded-lg">
     <p class="font-semibold">{{ value.name }}</p>
     <font-awesome-icon
       v-if="removable"
-      class="ml-auto transition-colors cursor-pointer hover:text-sta-rouge"
+      class="ml-auto hover:text-sta-rouge cursor-pointer transition-colors"
       icon="trash"
       @click="$emit('remove')"
     />

@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="errors && errors.hasNonFieldErrors()"
-    class="text-sm font-semibold text-sta-rouge"
+    class="text-sta-rouge text-sm font-semibold"
   >
     <p>Error: {{ errors.nonFieldErrors[0].message }}</p>
   </div>

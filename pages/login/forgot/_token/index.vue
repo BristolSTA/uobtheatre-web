@@ -2,13 +2,13 @@
   <auth-page-template>
     <div
       class="
-        relative
-        max-w-xs
-        p-6
-        text-center text-white
-        shadow-2xl
-        bg-sta-gray
         w-100
+        relative
+        p-6
+        max-w-xs
+        text-center text-white
+        bg-sta-gray
+        shadow-2xl
       "
     >
       <h1 class="text-h3">Reset your password</h1>
@@ -36,7 +36,7 @@
           required
         />
         <div>
-          <button class="mr-2 btn btn-green">Reset</button>
+          <button class="btn btn-green mr-2">Reset</button>
         </div>
       </form>
     </div>

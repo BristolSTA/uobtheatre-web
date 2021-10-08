@@ -1,6 +1,6 @@
 <template>
   <button
-    class="p-2 transition-colors bg-white rounded-none"
+    class="p-2 bg-white rounded-none transition-colors"
     :class="[
       isActive
         ? 'text-sta-orange'

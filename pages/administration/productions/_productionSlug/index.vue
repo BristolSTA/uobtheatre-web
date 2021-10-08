@@ -14,7 +14,7 @@
     <div class="space-y-4">
       <div class="flex flex-wrap justify-around space-y-4">
         <card title="Summary" class="max-w-2xl">
-          <table class="w-full table-auto">
+          <table class="table-auto w-full">
             <tr>
               <table-head-item>Status</table-head-item>
               <table-row-item>

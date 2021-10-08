@@ -1,11 +1,11 @@
 <template>
-  <div class="flex flex-col items-center min-h-full justify-evenly">
-    <div class="p-6 pt-3 mb-2 text-white bg-sta-rouge">
+  <div class="flex flex-col items-center justify-evenly min-h-full">
+    <div class="mb-2 p-6 pt-3 text-white bg-sta-rouge">
       <h2 class="text-h3 sm:text-h2">
         Please note the following warnings for this production:
       </h2>
 
-      <ul class="list-disc list-inside">
+      <ul class="list-inside list-disc">
         <li v-for="(warning, index) in production.warnings" :key="index">
           {{ warning.description }}
         </li>

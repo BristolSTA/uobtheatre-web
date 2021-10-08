@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed top-0 bottom-0 left-0 right-0 md:static">
+  <div class="fixed bottom-0 left-0 right-0 top-0 md:static">
     <camera-scanner
       :on="!cameraOff"
       class="bg-gray-800"
@@ -7,7 +7,7 @@
       @scanned="onScan"
       @close="$emit('close')"
     />
-    <div class="absolute bottom-0 left-0 right-0 pt-1 mt-4 md:relative">
+    <div class="absolute bottom-0 left-0 right-0 mt-4 pt-1 md:relative">
       <check-in-notification
         v-if="checkedInData.success !== undefined"
         :errors="checkedInData.errors"

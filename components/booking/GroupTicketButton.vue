@@ -1,8 +1,8 @@
 <template>
-  <div class="px-4 py-2 text-center text-white rounded-sm bg-sta-green">
+  <div class="px-4 py-2 text-center text-white bg-sta-green rounded-sm">
     <span class="font-semibold">{{ discount.name }}:</span>
     <div class="flex justify-center text-sm">
-      <table class="text-left table-auto">
+      <table class="table-auto text-left">
         <tr v-for="(requirement, index) in discount.requirements" :key="index">
           <td class="pr-2">{{ requirement.concessionType.name }}</td>
           <td>x {{ requirement.number }}</td>
@@ -11,15 +11,14 @@
     </div>
     <button
       class="
-        font-semibold
-        text-sm
-        btn
-        w-full
+        btn btn-orange
         mt-1
         px-2.5
         py-1
+        w-full
+        text-sm
+        font-semibold
         rounded-sm
-        btn-orange
       "
       @click="addTickets"
       @keypress="addTickets"

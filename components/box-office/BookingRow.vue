@@ -1,6 +1,6 @@
 <template>
   <tr
-    class="text-center text-white cursor-pointer hover:bg-opacity-80"
+    class="text-center text-white hover:bg-opacity-80 cursor-pointer"
     :class="[
       active
         ? 'bg-sta-orange'

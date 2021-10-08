@@ -1,5 +1,5 @@
 <template functional>
-  <div class="h-screen bg-sta-gray auth-background">
+  <div class="auth-background h-screen bg-sta-gray">
     <div class="flex items-center justify-center h-full">
       <slot></slot>
     </div>

@@ -9,7 +9,7 @@
       <font-awesome-icon v-if="icon" :icon="icon" />
       <span class="pl-2"><slot></slot></span>
     </div>
-    <div v-if="$slots.description" class="pb-1 pr-1 sm:pr-4 sm:pb-0">
+    <div v-if="$slots.description" class="pb-1 pr-1 sm:pb-0 sm:pr-4">
       <slot name="description"></slot>
     </div>
   </component>

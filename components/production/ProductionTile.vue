@@ -1,14 +1,14 @@
 <template>
   <div
     class="
-      px-4
-      transition-all
-      cursor-pointer
       production-tile
-      sm:px-0
-      filter
-      drop-shadow-none
+      px-4
+      cursor-pointer
+      transition-all
       hover:drop-shadow-dark
+      drop-shadow-none
+      filter
+      sm:px-0
     "
   >
     <NuxtLink :to="`/production/${production.slug}`">
@@ -19,11 +19,10 @@
       />
       <h2
         class="
-          text-2xl
+          production-title
+          text-sta-orange text-2xl
           font-semibold
           transition-colors
-          text-sta-orange
-          production-title
         "
       >
         {{ production.name }}

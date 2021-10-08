@@ -4,7 +4,7 @@
     <p
       v-if="endCursor || loading"
       ref="bottom-loader"
-      class="pb-4 text-4xl text-center"
+      class="pb-4 text-center text-4xl"
     >
       <loading-icon size-class="" />
     </p>

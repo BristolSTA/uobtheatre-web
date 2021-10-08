@@ -2,10 +2,10 @@
   <div
     class="flex flex-wrap items-center justify-center space-x-0 md:space-x-10"
   >
-    <div class="relative inline-block w-full max-w-xl m-8 md:w-2/3">
+    <div class="relative inline-block m-8 w-full max-w-xl md:w-2/3">
       <img
         ref="featured-image"
-        class="w-full p-4 sm:p-8"
+        class="p-4 w-full sm:p-8"
         :src="production.featuredImage.url"
         :alt="`${production.name} feature image`"
       />
@@ -21,15 +21,15 @@
       class="
         flex flex-col
         items-center
-        w-full
         px-10
+        w-full
         text-center text-white
-        md:block md:text-left md:w-auto md:max-w-md
+        md:block md:w-auto md:max-w-md md:text-left
       "
     >
       <span class="font-semibold">
         <span class="text-h2">{{ production.name }}</span>
-        <p class="mb-1 -mt-2 text-sta-gray-lighter">
+        <p class="-mt-2 mb-1 text-sta-gray-lighter">
           by
           <NuxtLink
             class="hover:text-gray-500"
@@ -83,7 +83,7 @@
       </template>
       <button
         v-if="showBuyTicketsButton && production.isBookable"
-        class="w-full mt-4 font-semibold btn btn-green"
+        class="btn btn-green mt-4 w-full font-semibold"
         @click="$emit('on-buy-tickets-click')"
         @keypress="$emit('on-buy-tickets-click')"
       >

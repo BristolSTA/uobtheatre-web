@@ -47,7 +47,7 @@
             <table-row-item>
               <nuxt-link
                 :to="`productions/${production.slug}`"
-                class="font-semibold text-sta-orange hover:text-sta-orange-dark"
+                class="text-sta-orange hover:text-sta-orange-dark font-semibold"
                 >{{ production.name }}</nuxt-link
               >
             </table-row-item>

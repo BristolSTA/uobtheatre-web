@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto text-page">
+  <div class="text-page container mx-auto">
     <h1 class="my-4 text-h1">Terms and Conditions</h1>
     <h2>1. Definitions</h2>
     <p>

@@ -2,20 +2,22 @@
   <div class="relative">
     <button
       class="
+        focus:shadow-outline
         flex flex-row
         items-center
-        w-full
+        mt-2
         px-4
         py-2
-        mt-2
+        w-full
+        text-left
+        hover:text-gray-900
+        text-white
         font-semibold
-        text-left text-white
-        bg-transparent
+        hover:bg-gray-200
+        bg-sta-gray-light bg-transparent
         rounded-lg
-        bg-sta-gray-light
-        md:w-auto md:inline md:mt-0 md:ml-4
-        hover:text-gray-900 hover:bg-gray-200
-        focus:outline-none focus:shadow-outline
+        focus:outline-none
+        md:inline md:ml-4 md:mt-0 md:w-auto
       "
       @click.stop="open = !open"
       @keypress.stop="open = !open"
@@ -27,13 +29,13 @@
         :class="{ 'rotate-180': open, 'rotate-0': !open }"
         class="
           inline
+          ml-1
+          mt-1
           w-4
           h-4
-          mt-1
-          ml-1
+          transform
           transition-transform
           duration-200
-          transform
           md:-mt-1
         "
       >
@@ -48,12 +50,12 @@
       <div
         v-show="open"
         class="
-          right-0
           z-10
-          w-full
+          right-0
           mt-2
+          w-full
           origin-top-right
-          md:absolute md:max-w-screen-sm md:w-screen
+          md:absolute md:w-screen md:max-w-screen-sm
         "
         @click.stop
       >

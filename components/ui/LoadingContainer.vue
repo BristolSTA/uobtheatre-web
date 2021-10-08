@@ -5,15 +5,15 @@
       ref="loading-overlay"
       :class="{ 'absolute bg-sta-gray-dark bg-opacity-95': showContent }"
       class="
-        top-0
         z-10
+        top-0
         flex
         items-center
         justify-center
+        py-6
         w-full
         h-full
-        py-6
-        text-3xl text-white
+        text-white text-3xl
       "
     >
       <loading-icon :size-class="loaderIconSize" />

@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center justify-center w-full h-full bg-sta-gray">
-    <div class="w-full px-10 text-white sm:px-0 sm:w-1/2 xl:w-1/3">
+    <div class="px-10 w-full text-white sm:px-0 sm:w-1/2 xl:w-1/3">
       <div class="text-left">
         <slot>
           <h1 class="text-h1">
@@ -14,7 +14,7 @@
       <div v-if="buttonTo" class="mt-4">
         <NuxtLink
           :to="buttonTo"
-          class="font-semibold btn btn-outline btn-orange font"
+          class="btn btn-outline btn-orange font font-semibold"
         >
           {{ buttonText }}
         </NuxtLink>

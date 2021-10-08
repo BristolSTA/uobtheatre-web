@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto text-page">
+  <div class="text-page container mx-auto">
     <h1 class="my-4 text-h1">Privacy Policy</h1>
     <p>
       It is our policy to respect your privacy regarding any information we may
@@ -29,7 +29,7 @@
             <table-row-item>{{ row.purpose }}</table-row-item>
             <table-row-item>{{ row.basis }}</table-row-item>
             <table-row-item>
-              <ul class="list-disc list-inside">
+              <ul class="list-inside list-disc">
                 <li v-for="(item, itemIndex) in row.data" :key="itemIndex">
                   {{ item }}
                 </li>
@@ -60,7 +60,7 @@
       parties.
     </p>
     <p>The main reasons we process your data are:</p>
-    <ul class="list-disc list-inside">
+    <ul class="list-inside list-disc">
       <li>To provide you with a personalised service;</li>
       <li>
         To improve out Services, and understand the behaviours of our users;
@@ -86,7 +86,7 @@
       Services are used, so that we can offer the best possible experience.
     </p>
     <p>The main ways we collect information are:</p>
-    <ul class="list-disc list-inside">
+    <ul class="list-inside list-disc">
       <li>When you register or login to our Services;</li>
       <li>
         When you create, edit or pay for a booking, product or service online or
@@ -145,7 +145,7 @@
         <a
           href="https://policies.google.com/privacy"
           target="_blank"
-          class="transition-colors text-sta-orange hover:text-sta-orange-dark"
+          class="text-sta-orange hover:text-sta-orange-dark transition-colors"
           >Privacy Policy</a
         >
       </li>
@@ -158,7 +158,7 @@
         <a
           href="https://squareup.com/gb/en/legal/general/ua"
           target="_blank"
-          class="transition-colors text-sta-orange hover:text-sta-orange-dark"
+          class="text-sta-orange hover:text-sta-orange-dark transition-colors"
           >Privacy Policy</a
         >
       </li>
@@ -175,7 +175,7 @@
     </p>
     <h2>8. Your rights over your personal data</h2>
     <p>Under various legislation, including UK GDPR, you have the right to:</p>
-    <ul class="list-disc list-inside">
+    <ul class="list-inside list-disc">
       <li>A copy of your personal information which we hold about you;</li>
       <li>
         Request that we correct any personal information that is inaccurate or

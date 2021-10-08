@@ -13,14 +13,13 @@
         :to="box.path"
         :icon="box.icon"
         class="
-          w-full
           mb-4
-          md:mr-4
+          2xl:w-1/5
+          w-full
           bg-sta-green
           hover:bg-sta-orange
-          md:w-1/3
+          md:mr-4 md:w-1/3
           lg:w-1/4
-          2xl:w-1/5
         "
         >{{ box.name }}</menu-tile
       >

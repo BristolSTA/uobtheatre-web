@@ -1,18 +1,18 @@
 <template>
   <div
     class="
+      society-tile
       flex
       justify-center
-      px-4
       mx-12
-      transition-all
-      cursor-pointer
-      society-tile
-      sm:px-0
+      px-4
       hover:text-sta-green
-      filter
-      drop-shadow-none
+      cursor-pointer
+      transition-all
       hover:drop-shadow-dark
+      drop-shadow-none
+      filter
+      sm:px-0
     "
   >
     <NuxtLink :to="`/society/${society.slug}`" class="w-full">
@@ -22,13 +22,11 @@
 
       <h2
         class="
-          w-full
-          text-2xl
-          font-semibold
-          text-center
-          transition-colors
-          text-sta-orange
           society-title
+          w-full
+          text-center text-sta-orange text-2xl
+          font-semibold
+          transition-colors
         "
       >
         {{ society.name }}

@@ -17,7 +17,7 @@
         v-for="index in [currentProduction]"
         :key="index"
         ref="carousel"
-        class="absolute top-0 bottom-0 left-0 right-0 bg-center"
+        class="absolute bottom-0 left-0 right-0 top-0 bg-center"
         :class="[vheight == 100 ? 'bg-no-repeat bg-contain' : 'bg-cover']"
         :style="{
           'background-image': bannerBackgorund(carouselProductions[index]),
@@ -45,21 +45,21 @@
       </div>
     </transition-group>
     <template v-if="carouselLength > 1">
-      <div class="absolute flex justify-center w-full bottom-2">
-        <ul class="flex items-center p-0 space-x-3 whitespace-nowrap">
+      <div class="absolute bottom-2 flex justify-center w-full">
+        <ul class="flex items-center p-0 whitespace-nowrap space-x-3">
           <li v-for="n in carouselLength" :key="n">
             <button
               class="
                 carousel-indicator
+                w-2.5
+                h-2.5
+                hover:bg-white
+                border border-white
+                rounded-full
+                focus:outline-none
                 cursor-pointer
                 transition-colors
                 duration-500
-                w-2.5
-                h-2.5
-                rounded-full
-                focus:outline-none
-                border-white border
-                hover:bg-white
               "
               :class="[
                 n - 1 == currentProduction ? 'bg-white' : 'bg-transparent',
@@ -74,14 +74,13 @@
         v-if="navArrows"
         class="
           absolute
-          top-0
           left-0
-          invisible
+          top-0
           w-32
           h-full
-          md:w-24
+          invisible
+          md:w-24 md:visible
           lg:w-32
-          md:visible
         "
       >
         <button
@@ -90,11 +89,11 @@
             w-full
             h-full
             text-4xl
+            hover:bg-black hover:bg-opacity-30
+            focus:outline-none
+            cursor-pointer
             transition-colors
             duration-300
-            cursor-pointer
-            focus:outline-none
-            hover:bg-opacity-30 hover:bg-black
           "
           @click="goToPrev()"
           @keypress="goToPrev()"
@@ -106,14 +105,13 @@
         v-if="navArrows"
         class="
           absolute
-          top-0
           right-0
-          invisible
+          top-0
           w-32
           h-full
-          md:w-24
+          invisible
+          md:w-24 md:visible
           lg:w-32
-          md:visible
         "
       >
         <button
@@ -122,11 +120,11 @@
             w-full
             h-full
             text-4xl
+            hover:bg-black hover:bg-opacity-30
+            focus:outline-none
+            cursor-pointer
             transition-colors
             duration-300
-            cursor-pointer
-            focus:outline-none
-            hover:bg-opacity-30 hover:bg-black
           "
           @click="goToNext()"
           @keypress="goToNext()"

@@ -3,7 +3,7 @@
     <div
       v-if="banner"
       ref="banner"
-      class="bg-center bg-cover min-h-25vh 2xl:min-h-40vh"
+      class="min-h-25vh 2xl:min-h-40vh bg-cover bg-center"
       :style="{
         'background-image': banner,
       }"
@@ -18,7 +18,7 @@
         flex-wrap
         justify-around
         mt-4
-        md:my-8 md:container md:flex md:space-x-6
+        md:container md:flex md:my-8 md:space-x-6
       "
     >
       <div
@@ -26,10 +26,10 @@
         class="
           flex
           justify-center
-          h-40
-          py-2
           mx-4
-          md:py-0 md:h-60 md:w-60 md:mx-0
+          py-2
+          h-40
+          md:mx-0 md:py-0 md:w-60 md:h-60
         "
       >
         <img
@@ -46,14 +46,14 @@
       >
         <div class="p-2 bg-sta-gray-dark">
           <h2 class="flex justify-center mb-2 text-2xl">Productions</h2>
-          <table class="w-full table-auto">
+          <table class="table-auto w-full">
             <tbody>
               <tr
                 v-for="(production, index) in productions"
                 :key="index"
-                class="odd:bg-sta-gray-light even:bg-sta-gray"
+                class="even:bg-sta-gray odd:bg-sta-gray-light"
               >
-                <td class="py-2 pl-4 text-xl font-semibold hover:text-gray-300">
+                <td class="pl-4 py-2 hover:text-gray-300 text-xl font-semibold">
                   <NuxtLink :to="`/production/${production.slug}`">
                     {{ production.name }}
                   </NuxtLink>
@@ -61,12 +61,12 @@
                 <td v-if="production.isBookable" class="px-4 text-right">
                   <NuxtLink
                     class="
+                      btn btn-orange
+                      my-1
                       px-3
                       py-1.5
-                      my-1
-                      text-sm text-center
+                      text-center text-sm
                       font-semibold
-                      btn btn-orange
                     "
                     :to="`/production/${production.slug}/book`"
                   >
@@ -82,7 +82,7 @@
         </div>
       </div>
       <div
-        class="px-2 m-2 text-center md:text-left"
+        class="m-2 px-2 text-center md:text-left"
         :class="[productions.length ? 'pt-4' : 'md:w-2/3']"
       >
         <tip-tap-output :html="society.description" />

@@ -4,8 +4,8 @@
       flex
       items-center
       justify-center
-      min-h-full
       p-6
+      min-h-full
       text-white
       bg-sta-gray
     "
@@ -18,7 +18,7 @@
         </div>
       </template>
       <template v-else>
-        <font-awesome-icon class="text-h1 text-sta-rouge" icon="times-circle" />
+        <font-awesome-icon class="text-sta-rouge text-h1" icon="times-circle" />
         <h1 class="text-h3">There was an error verifying this email</h1>
         <p>This activation has either expired or doesn't exist!</p>
       </template>

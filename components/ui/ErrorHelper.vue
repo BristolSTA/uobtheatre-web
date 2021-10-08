@@ -1,7 +1,7 @@
 <template>
   <span
     v-if="errors && errors.has(fieldName)"
-    class="text-xs font-semibold text-sta-rouge"
+    class="text-sta-rouge text-xs font-semibold"
   >
     {{ errors.first(fieldName).message }}
   </span>

@@ -4,8 +4,8 @@
       flex
       items-center
       justify-center
-      min-h-full
       p-6
+      min-h-full
       text-white
       bg-sta-gray
     "
@@ -36,12 +36,12 @@
               required
               class="mt-4"
             />
-            <button class="mt-4 btn btn-green">Complete Change</button>
+            <button class="btn btn-green mt-4">Complete Change</button>
           </form>
         </loading-container>
       </template>
       <template v-else>
-        <font-awesome-icon class="text-h1 text-sta-rouge" icon="times-circle" />
+        <font-awesome-icon class="text-sta-rouge text-h1" icon="times-circle" />
         <h1 class="text-h3">There was an error activating this email</h1>
         <p>This activation has either expired or doesn't exist!</p>
       </template>

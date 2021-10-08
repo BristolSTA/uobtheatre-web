@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-full mb-10 text-white bg-sta-gray">
+  <div class="mb-10 min-h-full text-white bg-sta-gray">
     <div class="container">
       <h1 class="pt-2 text-left text-h1">My Details</h1>
       <user-details v-if="user" class="pb-4" :user="user" />
@@ -10,7 +10,7 @@
       <h2 id="myBookings" class="px-4 py-2 text-h2">My Bookings</h2>
       <div v-if="!activeBookings.edges.length" class="p-6 text-center">
         <p class="p-2 text-h4">No Upcoming Bookings</p>
-        <NuxtLink class="m-2 btn btn-orange" to="/productions">
+        <NuxtLink class="btn btn-orange m-2" to="/productions">
           View What's On
         </NuxtLink>
       </div>
@@ -20,7 +20,7 @@
             (edge) => edge.node
           )"
           :key="index"
-          class="w-full p-2 performance md:w-1/2 xl:w-1/3"
+          class="performance p-2 w-full md:w-1/2 xl:w-1/3"
         >
           <booking-summary-overview class="h-full" :booking="booking" />
         </div>

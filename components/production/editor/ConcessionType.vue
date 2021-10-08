@@ -1,5 +1,5 @@
 <template>
-  <div class="p-3 rounded-lg bg-sta-gray-dark">
+  <div class="p-3 bg-sta-gray-dark rounded-lg">
     <div class="flex items-center">
       <p
         class="font-semibold"
@@ -13,13 +13,13 @@
       <div class="ml-auto space-x-4">
         <font-awesome-icon
           v-if="editable"
-          class="transition-colors cursor-pointer hover:text-sta-orange"
+          class="hover:text-sta-orange cursor-pointer transition-colors"
           icon="edit"
           @click="editing = !editing"
         />
         <font-awesome-icon
           v-if="removable"
-          class="transition-colors cursor-pointer hover:text-sta-rouge"
+          class="hover:text-sta-rouge cursor-pointer transition-colors"
           icon="trash"
           @click="$emit('remove')"
         />

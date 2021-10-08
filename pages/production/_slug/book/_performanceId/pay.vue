@@ -2,7 +2,7 @@
   <div>
     <div
       v-if="booking.performance && booking.performance.production"
-      class="p-2 mb-2 md:text-center bg-sta-gray-light"
+      class="mb-2 p-2 bg-sta-gray-light md:text-center"
     >
       <p class="text-white text-h3">
         {{ booking.performance.production.name }}
@@ -38,7 +38,7 @@
         <a
           href="/terms"
           target="_blank"
-          class="transition-colors text-sta-orange hover:text-sta-orange-dark"
+          class="text-sta-orange hover:text-sta-orange-dark transition-colors"
           >booking terms of conditions.</a
         >
         As per these terms, all our tickets are, in most cases, non-refundable
@@ -46,7 +46,7 @@
       </p>
     </template>
     <loading-container v-else :loading="loading">
-      <div class="space-y-6 text-center">
+      <div class="text-center space-y-6">
         <p>
           This total for this booking is £{{ booking.totalPrice }}, so no
           payment is requried. Please click below to complete your booking.
@@ -54,11 +54,11 @@
         <button
           class="
             p-2
-            transition-colors
-            rounded
             bg-sta-green
             hover:bg-sta-green-dark
+            rounded
             focus:outline-none
+            transition-colors
           "
           @click="payFree"
         >

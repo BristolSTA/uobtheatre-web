@@ -3,26 +3,25 @@
     class="relative p-2"
     :class="[errors ? 'bg-sta-orange' : 'bg-sta-green']"
   >
-    <div class="absolute top-0 right-0 m-6 md:m-0 md:mr-2">
+    <div class="absolute right-0 top-0 m-6 md:m-0 md:mr-2">
       <font-awesome-icon
         icon="times"
-        class="cursor-pointer fa-2x"
+        class="fa-2x cursor-pointer"
         @click="$emit('close')"
       />
     </div>
     <div
       class="
         flex flex-col
-        text-center
-        md:space-x-6 md:flex-row
         justify-evenly
-        md:text-left
+        text-center
+        md:flex-row md:text-left md:space-x-6
       "
     >
       <div class="w-full text-center md:w-16">
         <font-awesome-icon
           :icon="errors ? 'exclamation' : 'check'"
-          class="my-auto fa-4x"
+          class="fa-4x my-auto"
         />
       </div>
       <div class="flex-grow">
@@ -30,7 +29,7 @@
           class="
             flex flex-col
             justify-between
-            md:mr-10 md:space-x-6 md:flex-row
+            md:flex-row md:mr-10 md:space-x-6
           "
         >
           <div v-if="errors">
@@ -89,13 +88,13 @@
                   :key="index"
                   class="text-sm border"
                 >
-                  <td class="px-1 pb-1 whitespace-nowrap">
+                  <td class="pb-1 px-1 whitespace-nowrap">
                     {{ ticketGroup.number }} x
                   </td>
-                  <td class="px-1 pb-1">
+                  <td class="pb-1 px-1">
                     {{ ticketGroup.concessionType.name }},
                   </td>
-                  <td class="px-1 pb-1">{{ ticketGroup.seatGroup.name }}</td>
+                  <td class="pb-1 px-1">{{ ticketGroup.seatGroup.name }}</td>
                 </tr>
               </table>
             </div>

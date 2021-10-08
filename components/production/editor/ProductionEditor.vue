@@ -51,9 +51,9 @@
           items-center
           justify-center
           p-4
-          space-x-8
-          rounded-lg
           bg-sta-gray-dark
+          rounded-lg
+          space-x-8
         "
       >
         <img :src="production.society.logo.url" style="max-width: 100px" />
@@ -62,7 +62,7 @@
     </card>
     <card title="Images">
       <div class="space-y-4">
-        <div class="flex flex-wrap md:flex-nowrap md:space-x-4 justify-evenly">
+        <div class="flex flex-wrap justify-evenly md:flex-nowrap md:space-x-4">
           <form-label>
             Feature Image <required-star />
             <template #helper>
@@ -115,8 +115,8 @@
       </div>
     </card>
     <card title="Ticket Options">
-      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div class="px-2 border rounded-lg border-sta-gray">
+      <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
+        <div class="px-2 border border-sta-gray rounded-lg">
           <div class="flex items-center justify-between pt-3">
             <h4 class="text-h4">Seat Groups</h4>
             <font-awesome-icon icon="plus-circle" />
@@ -130,7 +130,7 @@
             />
           </div>
         </div>
-        <div class="px-2 border rounded-lg border-sta-gray">
+        <div class="px-2 border border-sta-gray rounded-lg">
           <div class="flex items-center justify-between pt-3">
             <h4 class="text-h4">Concessions</h4>
             <font-awesome-icon icon="plus-circle" />
@@ -177,7 +177,7 @@
           <tr
             v-for="seatGroup in availableSeatGroups"
             :key="seatGroup.id"
-            class="even:bg-sta-gray-dark odd:bg-sta-gray"
+            class="odd:bg-sta-gray even:bg-sta-gray-dark"
           >
             <th class="p-2">
               <span class="text-sta-orange">{{ seatGroup.name }}</span>

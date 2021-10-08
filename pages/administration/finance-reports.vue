@@ -51,7 +51,7 @@
           "
         >
           <button
-            class="p-2 transition-colors bg-sta-green hover:bg-sta-green-dark"
+            class="p-2 bg-sta-green hover:bg-sta-green-dark transition-colors"
             @click="generateReport"
           >
             Generate Report

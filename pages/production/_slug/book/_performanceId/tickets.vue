@@ -7,7 +7,7 @@
     />
     <div v-if="booking.tickets.length" class="mt-2 text-center">
       <button
-        class="font-semibold btn btn-orange"
+        class="btn btn-orange font-semibold"
         :disabled="booking.dirty"
         @click="$emit('next-stage')"
         @keypress="$emit('next-stage')"

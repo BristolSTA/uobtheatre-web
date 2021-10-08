@@ -1,12 +1,12 @@
 <template>
   <label :for="inputId">
-    <span v-if="showLabel" class="text-xs font-semibold text-white">{{
+    <span v-if="showLabel" class="text-white text-xs font-semibold">{{
       name
     }}</span>
     <input
       :id="inputId"
       ref="input"
-      class="w-full p-1 text-black rounded-sm focus:outline-none"
+      class="p-1 w-full text-black rounded-sm focus:outline-none"
       v-bind="$attrs"
       :class="inputClass"
       :name="inputId"

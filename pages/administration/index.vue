@@ -15,7 +15,7 @@
         <p>users</p>
       </div>
     </div> -->
-    <div class="p-2 my-4 bg-sta-gray-dark">
+    <div class="my-4 p-2 bg-sta-gray-dark">
       <p>Welcome to the UOB Theatre Administration Panel.</p>
       <p>
         Here you will find all the productions and societies you have access to,

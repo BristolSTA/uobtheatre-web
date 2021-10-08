@@ -21,7 +21,7 @@
     </template>
     <div class="flex space-x-4">
       <card title="Summary" class="max-w-2xl">
-        <table class="w-full table-auto">
+        <table class="table-auto w-full">
           <tr>
             <table-head-item :text-left="false">Status</table-head-item>
             <table-row-item>
@@ -49,7 +49,7 @@
         </table>
       </card>
       <card title="Sales Overview">
-        <table class="w-full table-auto">
+        <table class="table-auto w-full">
           <!-- <tr>
             <table-head-item :text-left="false">Paid Bookings</table-head-item>
             <table-row-item>100 TODO</table-row-item>
@@ -95,7 +95,7 @@
       </card>
     </div>
     <card class="mt-4" title="Sales By Ticket">
-      <div class="flex flex-wrap space-x-6 justify-evenly">
+      <div class="flex flex-wrap justify-evenly space-x-6">
         <div>
           <table>
             <thead>
@@ -155,7 +155,7 @@
     </card>
     <div class="mt-6">
       <h2 class="text-h2">Tools</h2>
-      <div class="grid grid-cols-2 gap-6 md:grid-cols-5">
+      <div class="grid gap-6 grid-cols-2 md:grid-cols-5">
         <menu-tile
           class="bg-sta-green hover:bg-sta-green-dark"
           icon="clipboard-list"

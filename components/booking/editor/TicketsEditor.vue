@@ -1,6 +1,6 @@
 <template>
   <div v-if="booking.performance" class="text-white">
-    <div class="p-2 mb-2 md:text-center bg-sta-gray-light">
+    <div class="mb-2 p-2 bg-sta-gray-light md:text-center">
       <p class="text-h3">Selected Performance:</p>
       <p class="text-sta-orange">
         {{ booking.performance.start | dateFormat('cccc d MMM') }}, Starting at

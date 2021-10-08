@@ -2,7 +2,7 @@
   <div class="min-h-full bg-sta-gray">
     <div
       v-if="!production"
-      class="justify-center py-20 text-xl font-semibold text-center text-white"
+      class="justify-center py-20 text-center text-white text-xl font-semibold"
     >
       Loading Production...
     </div>
@@ -28,7 +28,7 @@
           </li>
           <li
             v-if="hasCastCrew"
-            class="inline-block ml-6 font-semibold hover:text-sta-rouge"
+            class="inline-block ml-6 hover:text-sta-rouge font-semibold"
             :class="{ 'text-sta-rouge': !overview }"
           >
             <clickable-link :disabled="!hasCastCrew" @click="overview = false">

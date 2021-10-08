@@ -1,7 +1,7 @@
 <template>
   <nav
     v-if="canGoForward || canGoBackward"
-    class="relative z-0 inline-flex -space-x-px shadow-sm"
+    class="relative z-0 inline-flex shadow-sm -space-x-px"
     aria-label="Pagination"
   >
     <button

@@ -1,10 +1,10 @@
 <template>
   <div
-    class="w-full rounded-full bg-sta-gray-lightest"
+    class="w-full bg-sta-gray-lightest rounded-full"
     :class="[`h-${height}`]"
   >
     <div
-      class="h-full rounded-full bg-sta-green"
+      class="h-full bg-sta-green rounded-full"
       :style="{ width: `${Math.min(100, percentage)}%` }"
     ></div>
   </div>

@@ -1,19 +1,19 @@
 <template>
   <auth-page-template>
-    <div class="relative shadow-2xl bg-sta-gray w-100">
+    <div class="w-100 relative bg-sta-gray shadow-2xl">
       <div
         v-if="loading"
         ref="loading-overlay"
         class="
           absolute
-          top-0
           z-10
+          top-0
           flex
           items-center
           justify-center
           w-full
           h-full
-          text-3xl text-white
+          text-white text-3xl
           bg-sta-gray-dark bg-opacity-95
         "
       >

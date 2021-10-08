@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h4 class="font-semibold uppercase text-sta-green">
+    <h4 class="text-sta-green font-semibold uppercase">
       {{ name }}
     </h4>
     <slot></slot>
