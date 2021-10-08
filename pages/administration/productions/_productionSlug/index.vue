@@ -75,13 +75,13 @@
         </div>
       </div>
       <card title="Performances">
-        <template #messageBox>
+        <!-- <template #messageBox>
           <nuxt-link
             class="hover:text-gray-200"
             :to="`${production.slug}/performances/create`"
             ><font-awesome-icon icon="plus-circle" class="fa-2x"
           /></nuxt-link>
-        </template>
+        </template> -->
         <paginated-table
           :items="
             performancesData
