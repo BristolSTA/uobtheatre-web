@@ -13,6 +13,10 @@ import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection'
 import Society from '../../fixtures/Society'
 
+jest.mock('@/utils.js', () => ({
+  ...jest.requireActual('@/utils.js'),
+  isInViewport: jest.fn(() => false),
+}))
 describe('All Societies', () => {
   let allSocietiesComponent
   beforeEach(async () => {

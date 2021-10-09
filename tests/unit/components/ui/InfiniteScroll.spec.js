@@ -5,6 +5,10 @@ import InfiniteScroll from '@/components/ui/InfiniteScroll'
 
 import { waitFor } from '../../helpers'
 
+jest.mock('@/utils.js', () => ({
+  ...jest.requireActual('@/utils.js'),
+  isInViewport: jest.fn(() => false),
+}))
 describe('Infinite Scroll', () => {
   let infiniteScrollComponent, apolloQueryMock, promiseResolve
   const fakeQuery = {
