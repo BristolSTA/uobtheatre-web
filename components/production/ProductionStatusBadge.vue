@@ -22,7 +22,12 @@ export default {
       return 'bg-gray-500'
     },
     status() {
-      if (!this.production.isBookable) return 'Not Bookable'
+      if (
+        !this.production.isBookable &&
+        (!this.production.status.value ||
+          this.production.status.value === 'PUBLISHED')
+      )
+        return 'Not Bookable'
       return this.production.status.description
     },
   },

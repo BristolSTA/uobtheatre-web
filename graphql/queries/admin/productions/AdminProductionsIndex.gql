@@ -25,6 +25,7 @@ query adminProductions(
         }
         status {
           description
+          value
         }
         society {
           id
