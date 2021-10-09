@@ -1,17 +1,14 @@
 <template>
   <div>
     <slot></slot>
-    <p
-      v-if="endCursor || loading"
-      ref="bottom-loader"
-      class="pb-4 text-center text-4xl"
-    >
+    <p v-if="hasMore" ref="bottom-loader" class="pb-4 text-center text-4xl">
       <loading-icon size-class="" />
     </p>
   </div>
 </template>
 
 <script>
+import { isInViewport } from '@/utils'
 import LoadingIcon from './LoadingIcon.vue'
 export default {
   components: { LoadingIcon },
@@ -37,6 +34,11 @@ export default {
       endCursor: null,
     }
   },
+  computed: {
+    hasMore() {
+      return this.endCursor || this.loading
+    },
+  },
   watch: {
     loading(newValue) {
       this.$emit('loadingChange', newValue)
@@ -56,11 +58,11 @@ export default {
       const defaultVariables = {}
       defaultVariables[this.apolloAfterCursorVariableKey] = this.endCursor
 
+      const variables = Object.assign(defaultVariables, this.apolloVariables)
       const result = await this.$apollo.query({
         query: this.apolloQuery,
-        variables: Object.assign(defaultVariables, this.apolloVariables),
+        variables,
       })
-
       this.loading = false
 
       // Find root query
@@ -82,6 +84,11 @@ export default {
 
       // Emit with the new data
       this.$emit('newData', result.data[root])
+
+      // Check if loader on screen
+      if (this.hasMore && isInViewport(this.$refs['bottom-loader'])) {
+        this.runQuery()
+      }
     },
     handleScroll() {
       if (this.loading) return

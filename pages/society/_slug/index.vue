@@ -89,7 +89,7 @@
         <div v-if="society.website">
           <strong>Website: </strong>
           <a
-            :href="encodeURIComponent(society.website)"
+            :href="society.website"
             target="_blank"
             title="Opens in a new tab"
             class="text-sta-orange hover:text-sta-orange-dark"
