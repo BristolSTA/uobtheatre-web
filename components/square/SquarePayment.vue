@@ -1,6 +1,6 @@
 <template>
   <loading-container :loading="!ready">
-    <div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
+    <div class="grid gap-4 grid-cols-1 xl:grid-cols-2">
       <div>
         <h2 class="mb-2 text-center text-white text-h2">Pay with card</h2>
         <form id="payment-form">
@@ -10,7 +10,7 @@
             <button
               id="card-button"
               type="button"
-              class="w-full btn btn-orange"
+              class="btn btn-orange w-full"
               :disabled="!ready"
               @click.prevent="payCard"
               @keypress.prevent="payCard"
@@ -29,10 +29,10 @@
 
     <div
       v-if="squareErrors.length"
-      class="p-2 mt-4 text-center text-white border-2 border-sta-rouge"
+      class="mt-4 p-2 text-center text-white border-2 border-sta-rouge"
     >
       Whoops! There was an error with your payment:
-      <ul class="list-disc list-inside">
+      <ul class="list-inside list-disc">
         <li v-for="(item, index) in squareErrors" :key="index">
           {{ item }}
         </li>
