@@ -142,7 +142,8 @@ export default {
               new ValidationError(Errors.createFromAPI(data.login.errors))
             )
 
-          if (!data.login.user.verified) reject(new UnverifiedLoginError())
+          if (!data.login.user.verified)
+            return reject(new UnverifiedLoginError())
 
           const standardContext = {
             store: componentContext.$store,
