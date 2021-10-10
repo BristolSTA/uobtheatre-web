@@ -1,5 +1,5 @@
 <template>
-  <sidebar @close="$emit('close')"
+  <sidebar class="flex-none" @close="$emit('close')"
     ><sidebar-item icon="home" href="/administration" :is-root="true"
       >Dashboard</sidebar-item
     >

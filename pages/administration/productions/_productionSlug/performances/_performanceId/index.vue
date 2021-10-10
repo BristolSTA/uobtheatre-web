@@ -12,9 +12,6 @@
         :to="`/box-office/${performance.id}`"
         >Goto Box Office</sta-button
       >
-      <sta-button colour="green" icon="file-export" @click="downloadBookings"
-        >Download Bookings</sta-button
-      >
       <!-- <sta-button colour="orange" icon="edit" :to="`${performance.id}/edit`"
         >Edit</sta-button
       > -->
@@ -57,19 +54,18 @@
           <tr>
             <table-head-item :text-left="false">Ticket Sales</table-head-item>
             <table-row-item>
-              {{ performance.ticketsBreakdown.totalTicketsSold }} tickets
-              sold<br />
+              {{ performance.ticketsBreakdown.totalTicketsSold }} tickets sold |
+              {{
+                (
+                  (100 * performance.ticketsBreakdown.totalTicketsSold) /
+                  performance.ticketsBreakdown.totalCapacity
+                ).toFixed(0)
+              }}%<br />
               <small
                 >(of
                 {{ performance.ticketsBreakdown.totalCapacity }} performance
-                capacity -
-                {{
-                  (
-                    (100 * performance.ticketsBreakdown.totalTicketsSold) /
-                    performance.ticketsBreakdown.totalCapacity
-                  ).toFixed(0)
-                }}%)</small
-              >
+                capacity)
+              </small>
               <progress-bar
                 :percentage="
                   Math.min(
@@ -186,6 +182,12 @@
           :to="`../bookings/create/${performance.id}`"
           icon="plus-circle"
           >Create Comp Booking</menu-tile
+        >
+        <menu-tile
+          class="bg-sta-green hover:bg-sta-green-dark"
+          icon="file-export"
+          @click="downloadBookings"
+          >Download Bookings</menu-tile
         >
       </div>
     </div>

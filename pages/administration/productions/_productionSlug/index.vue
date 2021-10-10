@@ -119,14 +119,13 @@
               <table-row-item>
                 <p>
                   {{ performance.ticketsBreakdown.totalTicketsSold }} of
-                  {{ performance.ticketsBreakdown.totalCapacity }}
+                  {{ performance.ticketsBreakdown.totalCapacity }} ({{
+                    salesPercentage(performance)
+                  }}%)
                 </p>
                 <progress-bar
                   :height="2"
-                  :percentage="
-                    (100 * performance.ticketsBreakdown.totalTicketsSold) /
-                    performance.ticketsBreakdown.totalCapacity
-                  "
+                  :percentage="parseInt(salesPercentage(performance))"
                 />
               </table-row-item>
               <table-row-item class="space-x-2">
@@ -230,6 +229,14 @@ export default {
         return 'This production has been completed, and income has been transfered to the society'
 
       return null
+    },
+  },
+  methods: {
+    salesPercentage(performance) {
+      return (
+        (100 * performance.ticketsBreakdown.totalTicketsSold) /
+        performance.ticketsBreakdown.totalCapacity
+      ).toFixed(0)
     },
   },
 }
