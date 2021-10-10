@@ -19,7 +19,7 @@
         >Edit</sta-button
       > -->
     </template>
-    <div class="flex space-x-4">
+    <div class="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
       <card title="Summary" class="max-w-2xl">
         <table class="table-auto w-full">
           <tr>
@@ -57,9 +57,19 @@
           <tr>
             <table-head-item :text-left="false">Ticket Sales</table-head-item>
             <table-row-item>
-              {{ performance.ticketsBreakdown.totalTicketsSold }} tickets sold
-              (of {{ performance.ticketsBreakdown.totalCapacity }} performance
-              capacity)
+              {{ performance.ticketsBreakdown.totalTicketsSold }} tickets
+              sold<br />
+              <small
+                >(of
+                {{ performance.ticketsBreakdown.totalCapacity }} performance
+                capacity -
+                {{
+                  (
+                    (100 * performance.ticketsBreakdown.totalTicketsSold) /
+                    performance.ticketsBreakdown.totalCapacity
+                  ).toFixed(0)
+                }}%)</small
+              >
               <progress-bar
                 :percentage="
                   Math.min(
@@ -155,7 +165,16 @@
     </card>
     <div class="mt-6">
       <h2 class="text-h2">Tools</h2>
-      <div class="grid gap-6 grid-cols-2 md:grid-cols-5">
+      <div
+        class="
+          grid
+          gap-6
+          grid-cols-1
+          sm:grid-cols-2
+          md:grid-cols-3
+          lg:grid-cols-5
+        "
+      >
         <menu-tile
           class="bg-sta-green hover:bg-sta-green-dark"
           icon="clipboard-list"

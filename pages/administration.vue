@@ -5,7 +5,10 @@
       :class="{ 'hidden md:visible': !showSidebar }"
       @close="showSidebar = false"
     />
-    <div class="flex-grow" :class="{ 'hidden md:visible': showSidebar }">
+    <div
+      class="flex-grow max-w-full"
+      :class="{ 'hidden md:visible': showSidebar }"
+    >
       <breadcrumbs :use-auto="true" :wide="true" />
       <div class="p-4">
         <button class="md:hidden" @click="showSidebar = true">

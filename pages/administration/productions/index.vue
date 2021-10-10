@@ -1,6 +1,6 @@
 <template>
   <admin-page title="Your Productions">
-    <div class="flex items-end space-x-4">
+    <div class="flex flex-wrap items-end md:flex-nowrap md:space-x-4">
       <div><t-input placeholder="Search by name" /></div>
       <div>
         <label>Status</label
