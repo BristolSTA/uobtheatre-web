@@ -143,7 +143,6 @@ export default {
         this.square.applepay = await this.square.payments.applePay(
           this.square.request
         )
-        this.square.applepay.attach('#sq-applepay-button')
       } catch (e) {
         // eslint-disable-next-line no-console
         if (e.name !== 'PaymentMethodUnsupportedError') console.error(e)
@@ -185,3 +184,14 @@ export default {
   },
 }
 </script>
+
+<style>
+#sq-applepay-button {
+  height: 48px;
+  width: 100%;
+  display: inline-block;
+  -webkit-appearance: -apple-pay-button;
+  -apple-pay-button-type: plain;
+  -apple-pay-button-style: black;
+}
+</style>
