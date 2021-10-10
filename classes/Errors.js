@@ -118,7 +118,7 @@ export default class {
         return error.__typename === 'FieldError'
       }),
       non_field_errors: errors.filter((error) => {
-        return error.__typename === 'NonFieldError'
+        return error.__typename === 'NonFieldError' || !error.__typename
       }),
     }
   }

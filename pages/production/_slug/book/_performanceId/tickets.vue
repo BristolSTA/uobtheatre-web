@@ -1,8 +1,10 @@
 <template>
-  <div v-if="booking.performance" class="text-white">
+  <div v-if="booking.performance && ticketMatrix" class="text-white">
     <tickets-editor
       :tickets-matrix="ticketMatrix"
       :booking="booking"
+      :max-tickets="10"
+      :errors="errors"
       @change="updateAPI"
     />
     <div v-if="booking.tickets.length" class="mt-2 text-center">

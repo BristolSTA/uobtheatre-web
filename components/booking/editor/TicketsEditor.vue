@@ -12,6 +12,7 @@
         :ticket-matrix="ticketsMatrix"
         :booking="booking"
         :show-capacities="showCapacities"
+        :max-tickets="maxTickets"
         @request-update="$emit('change')"
       />
     </div>
@@ -58,6 +59,10 @@ export default {
     showPrices: {
       default: true,
       type: Boolean,
+    },
+    maxTickets: {
+      default: null,
+      type: Number,
     },
   },
 }
