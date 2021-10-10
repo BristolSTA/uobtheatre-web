@@ -80,7 +80,7 @@ describe('AuthBox', function () {
       const rememberMeCheck = authBoxComponent.find('input#remember_me')
 
       // Email Input
-      expect(emailInput.attributes('autocomplete')).to.eq('email')
+      expect(emailInput.attributes('autocomplete')).to.eq('email username')
       expect(emailInput.attributes('type')).to.eq('email')
       expect(emailInput.attributes.value).to.be.undefined
       expect(authBoxComponent.vm.email).to.eq(null)
@@ -170,7 +170,7 @@ describe('AuthBox', function () {
               dispatch: (storeDispatchFn = jest.fn(() => Promise.resolve())),
             },
             $router: {
-              replace: (fakeReplace = jest.fn()),
+              replace: (fakeReplace = jest.fn(() => Promise.resolve())),
             },
           },
           apollo: {
