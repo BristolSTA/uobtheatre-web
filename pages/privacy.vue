@@ -116,8 +116,8 @@
     <p>
       All personal information that you provide is stored on our secure servers
       or those of our suppliers which may be situated outside of the European
-      Economic Area (“EEA”). Your information may also be processed one of our
-      suppliers for the purposes set out in this Privacy Policy. Where we
+      Economic Area (“EEA”). Your information may also be processed by one of
+      our suppliers for the purposes set out in this Privacy Policy. Where we
       transfer personal information outside of the EEA we will ensure that
       adequate contractual safeguards are in place (e.g. the European
       Commission’s standard data protection clauses or “model clauses”), to

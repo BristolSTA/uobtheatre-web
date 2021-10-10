@@ -76,7 +76,7 @@
               </td>
             </tr>
             <tr>
-              <td class="font-semibold">Avaliable to Sell</td>
+              <td class="font-semibold">Available to Sell</td>
               <td class="pl-2 w-1/5 text-sta-orange font-mono">
                 {{ ticketBreakdown.totalTicketsAvailable }}
               </td>
