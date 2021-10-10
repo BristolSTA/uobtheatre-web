@@ -68,7 +68,7 @@
         v-model="email"
         name="Email"
         type="email"
-        autocomplete="email"
+        autocomplete="email username"
         required
         :errors="login_errors"
       />
@@ -251,6 +251,7 @@ import {
 } from '@/utils'
 import ValidationError from '@/errors/ValidationError'
 import UnverifiedLoginError from '@/errors/auth/UnverifiedLoginError'
+import Errors from '@/classes/Errors'
 import LoadingIcon from '../ui/LoadingIcon.vue'
 
 export default {
@@ -300,7 +301,9 @@ export default {
 
         // Redirect to intended if has
         if (this.$route.query.redirect) {
-          return this.$router.replace(this.$route.query.redirect)
+          return this.$router.replace(this.$route.query.redirect).catch((e) => {
+            if (!e.message.includes('Redirected when going from')) throw e
+          })
         }
 
         return this.$router.replace('/')
@@ -321,6 +324,18 @@ export default {
     async attemptSignup() {
       this.loading = true
       this.signup_errors = null
+
+      if (!this.lastName || this.lastName === '') {
+        this.signup_errors = new Errors()
+        this.signup_errors.record([
+          {
+            message: 'Please provider a last name',
+            field: 'lastName',
+            __typename: 'FieldError',
+          },
+        ])
+        return (this.loading = false)
+      }
 
       try {
         await authService.register(this, {
