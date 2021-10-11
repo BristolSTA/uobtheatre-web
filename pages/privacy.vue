@@ -261,6 +261,9 @@ export default {
       ],
     }
   },
+  head: {
+    title: `Privacy Policy`,
+  },
 }
 </script>
 

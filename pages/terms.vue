@@ -13,9 +13,7 @@
       "You" means you or anybody who in Our reasonable opinion is acting with
       your authority or permission.
     </p>
-    <p>
-      "Terms" refers to these terms and conditions, that are further setforth.
-    </p>
+    <p>"Terms" refers to these terms and conditions.</p>
 
     <h2>2. Contract and Incorporation</h2>
     <p>
@@ -24,8 +22,7 @@
       use of the Web Site and any Services or Systems therein.
     </p>
     <p>
-      Use of this Web Site is subject to agreement with the following terms and
-      conditions.
+      Use of this Web Site is subject to agreement with the following Terms.
     </p>
     <h2>3. Purchase of Tickets</h2>
     <p>
@@ -89,7 +86,11 @@
 
 <script>
 /* eslint-disable vue/no-v-html */
-export default {}
+export default {
+  head: {
+    title: `Terms and Conditions`,
+  },
+}
 </script>
 
 <style lang="scss">
