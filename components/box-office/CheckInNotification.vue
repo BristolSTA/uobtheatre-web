@@ -49,54 +49,82 @@
               Location: <strong>{{ ticket.seatGroup.name }}</strong>
             </p>
           </div>
-          <div
-            class="px-2 py-1"
-            :class="[errors ? 'bg-sta-orange-dark' : 'bg-sta-green-dark']"
-          >
-            <div class="flex justify-between space-x-2 md:mb-2">
-              <h3 class="text-lg font-semibold">Booking Information</h3>
-              <nuxt-link
-                :to="`bookings?q=${scanData.bookingReference}&qTicket=${scanData.ticketId}`"
-                class="block px-2 py-1 transition-colors"
-                :class="[
-                  errors
-                    ? 'bg-sta-green hover:bg-sta-green-dark'
-                    : 'bg-sta-orange hover:bg-sta-orange-dark',
-                ]"
-              >
-                View Booking
-              </nuxt-link>
-            </div>
-            <div class="hidden space-x-8 md:flex">
-              <div>
-                <p>Reference: {{ scanData.bookingReference }}</p>
-                <p v-if="booking && booking.user">
-                  User: {{ booking.user.firstName }} {{ booking.user.lastName }}
-                </p>
-                <p v-if="booking && booking.tickets">
-                  <strong
-                    >{{ booking.tickets.length }} tickets ({{
-                      bookingInstance.numberCheckedIn
-                    }}
-                    checked in)</strong
+          <div class="flex flex-col gap-3 lg:flex-row">
+            <button
+              v-if="
+                !errors &&
+                booking &&
+                booking.tickets.length &&
+                booking.tickets.some((ticket) => !ticket.checkedIn)
+              "
+              class="
+                block
+                px-2
+                py-1
+                bg-sta-orange
+                hover:bg-sta-orange-dark
+                transition-colors
+              "
+              @click="$emit('checkInAll')"
+            >
+              Check in all tickets in booking
+            </button>
+            <div
+              class="px-2 py-1"
+              :class="[errors ? 'bg-sta-orange-dark' : 'bg-sta-green-dark']"
+            >
+              <div class="flex justify-between space-x-2 md:mb-2">
+                <h3 class="text-lg font-semibold">
+                  Booking Information
+                  <template v-if="booking"
+                    >({{ booking.tickets.length }} tickets)</template
                   >
-                </p>
-              </div>
-              <table v-if="booking && booking.priceBreakdown">
-                <tr
-                  v-for="(ticketGroup, index) in booking.priceBreakdown.tickets"
-                  :key="index"
-                  class="text-sm border"
+                </h3>
+                <nuxt-link
+                  :to="`bookings?q=${scanData.bookingReference}&qTicket=${scanData.ticketId}`"
+                  class="block px-2 py-1 transition-colors"
+                  :class="[
+                    errors
+                      ? 'bg-sta-green hover:bg-sta-green-dark'
+                      : 'bg-sta-orange hover:bg-sta-orange-dark',
+                  ]"
                 >
-                  <td class="pb-1 px-1 whitespace-nowrap">
-                    {{ ticketGroup.number }} x
-                  </td>
-                  <td class="pb-1 px-1">
-                    {{ ticketGroup.concessionType.name }},
-                  </td>
-                  <td class="pb-1 px-1">{{ ticketGroup.seatGroup.name }}</td>
-                </tr>
-              </table>
+                  View Booking
+                </nuxt-link>
+              </div>
+              <div class="hidden space-x-8 md:flex">
+                <div>
+                  <p>Reference: {{ scanData.bookingReference }}</p>
+                  <p v-if="booking && booking.user">
+                    User: {{ booking.user.firstName }}
+                    {{ booking.user.lastName }}
+                  </p>
+                  <p v-if="booking && booking.tickets">
+                    <strong
+                      >{{ booking.tickets.length }} tickets ({{
+                        bookingInstance.numberCheckedIn
+                      }}
+                      checked in)</strong
+                    >
+                  </p>
+                </div>
+                <table v-if="booking && booking.priceBreakdown">
+                  <tr
+                    v-for="(ticketGroup, index) in booking.priceBreakdown
+                      .tickets"
+                    :key="index"
+                    class="text-sm border"
+                  >
+                    <td class="pb-1 px-1 whitespace-nowrap">
+                      {{ ticketGroup.number }} x
+                    </td>
+                    <td class="pb-1 px-1">
+                      {{ ticketGroup.concessionType.name }},
+                    </td>
+                    <td class="pb-1 px-1">{{ ticketGroup.seatGroup.name }}</td>
+                  </tr>
+                </table>
+              </div>
             </div>
           </div>
         </div>

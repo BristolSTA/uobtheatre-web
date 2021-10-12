@@ -8,6 +8,7 @@ fragment DetailedBookingDetails on BookingNode {
     description
   }
   user {
+    id
     firstName
     lastName
   }

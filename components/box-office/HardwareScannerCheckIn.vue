@@ -13,12 +13,14 @@
       :ticket="checkedInData.ticket"
       :scan-data="checkedInData.scanData"
       @close="closeNotificaton"
+      @checkInAll="checkInAll"
     />
   </div>
 </template>
 
 <script>
 import CheckInScan from '@/graphql/mutations/box-office/CheckInTickets.gql'
+import { successToast } from '@/utils'
 import CheckInNotification from './CheckInNotification.vue'
 import HardwareScanner from './HardwareScanner.vue'
 
@@ -71,6 +73,31 @@ export default {
           (ticket) => ticket.id === ticketId
         )
       this.checkedInData.errors = data.checkInBooking.errors
+    },
+    async checkInAll() {
+      const ticketIdsToCheckin = this.checkedInData.booking.tickets
+        .filter((ticket) => !ticket.checkedIn)
+        .map((ticket) => {
+          return {
+            ticketId: ticket.id,
+          }
+        })
+      if (ticketIdsToCheckin.length) {
+        const { data } = await this.$apollo.mutate({
+          mutation: CheckInScan,
+          variables: {
+            reference: this.checkedInData.booking.reference,
+            performanceId: this.performanceId,
+            tickets: ticketIdsToCheckin,
+          },
+        })
+
+        this.checkedInData.booking = data.checkInBooking.booking
+      }
+
+      successToast.fire({
+        title: 'All Booking Tickets Checked In',
+      })
     },
     closeNotificaton() {
       this.checkedInData = checkedInDataState()
