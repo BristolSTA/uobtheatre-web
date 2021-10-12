@@ -111,7 +111,8 @@ export default {
       skip() {
         return !this.dateToSearch || this.dateToSeach === ''
       },
-      fetchPolicy: 'no-cache',
+      fetchPolicy: 'cache-and-network',
+
       update: (data) => data.performances.edges.map((edge) => edge.node),
     },
   },

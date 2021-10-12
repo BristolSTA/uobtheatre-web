@@ -201,8 +201,7 @@ export default {
         if (result.data)
           this.pageInfo = result.data.performance.bookings.pageInfo
       },
-      fetchPolicy: 'no-cache',
-      notifyOnNetworkStatusChange: true,
+      fetchPolicy: 'cache-and-network',
     },
   },
 }
