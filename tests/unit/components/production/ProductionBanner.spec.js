@@ -64,7 +64,7 @@ describe('ProductionBanner', function () {
     expect(headerContainer.text()).to.contain('14 Nov - 18 Nov 2020')
     expect(headerContainer.text()).to.contain('1 hour, 42 minutes')
     expect(fixTextSpacing(headerContainer.text())).to.contain(
-      'Tickets available from £1.20'
+      'Tickets from £1.20'
     )
 
     // correct feature image
@@ -221,7 +221,7 @@ describe('ProductionBanner', function () {
       isBookable: false,
     })
     expect(fixTextSpacing(headerContainer.text())).not.to.contain(
-      'Tickets available from £1.20'
+      'Tickets from £1.20'
     )
     expect(headerContainer.find('button').exists()).to.be.false
   })
@@ -238,9 +238,7 @@ describe('ProductionBanner', function () {
     expect(fixTextSpacing(headerContainer.text())).to.contain('by STA')
     expect(headerContainer.text()).to.not.contain('14 Nov - 18 Nov 2020')
     expect(headerContainer.text()).to.not.contain('1 hour, 42 minutes')
-    expect(headerContainer.text()).to.not.contain(
-      'Tickets available from £1.20'
-    )
+    expect(headerContainer.text()).to.not.contain('Tickets from £1.20')
   })
 
   const createWithPerformances = (
