@@ -13,6 +13,7 @@
   </div>
 </template>
 
+<script>
 import LoadingIcon from './LoadingIcon.vue'
 export default {
   components: { LoadingIcon },

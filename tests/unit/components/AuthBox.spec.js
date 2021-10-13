@@ -24,7 +24,17 @@ describe('AuthBox', function () {
   let authBoxComponent
 
   it('can switch between login and signup', async () => {
-    authBoxComponent = await mountWithRouterMock(UserAuthBox)
+    authBoxComponent = await mountWithRouterMock(UserAuthBox, {
+      mocks: {
+        $store: {
+          state: {
+            'box-office': {
+              locationId: null,
+            },
+          },
+        },
+      },
+    })
     const buttons = authBoxComponent.findAll('div[role=navigation] button')
     expect(authBoxComponent.emitted('go-login')).to.be.undefined
     expect(authBoxComponent.emitted('go-signup')).to.be.undefined
@@ -49,7 +59,17 @@ describe('AuthBox', function () {
   })
 
   it('loading screen overlays correctly', async () => {
-    authBoxComponent = await mountWithRouterMock(UserAuthBox)
+    authBoxComponent = await mountWithRouterMock(UserAuthBox, {
+      mocks: {
+        $store: {
+          state: {
+            'box-office': {
+              locationId: null,
+            },
+          },
+        },
+      },
+    })
     expect(authBoxComponent.findComponent({ ref: 'loading-overlay' }).exists())
       .to.be.false
 
@@ -65,7 +85,17 @@ describe('AuthBox', function () {
     beforeEach(async () => {
       authBoxComponent = await mountWithRouterMock(
         UserAuthBox,
-        generateMountOptions(['apollo'])
+        generateMountOptions(['apollo'], {
+          mocks: {
+            $store: {
+              state: {
+                'box-office': {
+                  locationId: null,
+                },
+              },
+            },
+          },
+        })
       )
     })
 
@@ -168,6 +198,11 @@ describe('AuthBox', function () {
             },
             $store: {
               dispatch: (storeDispatchFn = jest.fn(() => Promise.resolve())),
+              state: {
+                'box-office': {
+                  locationId: null,
+                },
+              },
             },
             $router: {
               replace: (fakeReplace = jest.fn(() => Promise.resolve())),
@@ -221,6 +256,11 @@ describe('AuthBox', function () {
             },
             $store: {
               dispatch: jest.fn(() => Promise.resolve()),
+              state: {
+                'box-office': {
+                  locationId: null,
+                },
+              },
             },
             $router: {
               replace: (fakeReplace = jest.fn()),
@@ -273,6 +313,13 @@ describe('AuthBox', function () {
           mocks: {
             $router: {
               push: (routerPushStub = jest.fn()),
+            },
+            $store: {
+              state: {
+                'box-office': {
+                  locationId: null,
+                },
+              },
             },
           },
         })
