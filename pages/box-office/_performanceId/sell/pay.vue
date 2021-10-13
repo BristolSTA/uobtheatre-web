@@ -5,36 +5,36 @@
       <booking-price-overview :booking="booking" />
     </div>
     <div class="grid gap-2 my-4 md:grid-cols-2">
-      <div class="p-3 rounded bg-sta-gray-dark">
+      <div class="p-3 bg-sta-gray-dark rounded">
         <h2 class="text-center text-h2">Details</h2>
         <text-input v-model="user.email" name="Email" type="email" required />
       </div>
-      <div class="p-3 rounded bg-sta-gray-dark">
+      <div class="p-3 bg-sta-gray-dark rounded">
         <h2 class="text-center text-h2">Payment</h2>
         <div v-if="!canPay" class="text-center">
-          <h3 class="text-h3 text-sta-rouge">Complete User Details First</h3>
+          <h3 class="text-sta-rouge text-h3">Complete User Details First</h3>
           <p>
             We collect the booker's details to send them their receipt and to
             help process refunds. We never send unsolicited emails.
           </p>
         </div>
         <template v-else>
-          <h3 class="text-center text-h3 text-sta-orange">
+          <h3 class="text-center text-sta-orange text-h3">
             £{{ booking.totalPricePounds }} due
           </h3>
           <loading-container :loading="paying">
             <all-errors-display class="text-center" :errors="errors" />
-            <div class="grid grid-cols-2 gap-2 text-center">
+            <div class="grid gap-2 grid-cols-2 text-center">
               <template v-if="booking.totalPrice > 0">
                 <button
                   v-if="enabledMethods.squarePOS && availableTerminals.length"
                   class="
                     p-2
-                    transition-colors
-                    rounded
                     bg-sta-green
                     hover:bg-sta-green-dark
+                    rounded
                     focus:outline-none
+                    transition-colors
                   "
                   @click="terminalDevice ? pay('SQUARE_POS') : selectTerminal()"
                 >
@@ -45,14 +45,14 @@
                 <button
                   v-else-if="enabledMethods.manualCard"
                   class="
-                    p-2
-                    transition-colors
-                    rounded
-                    bg-sta-green
-                    hover:bg-sta-green-dark
-                    focus:outline-none
                     btn
                     disabled
+                    p-2
+                    bg-sta-green
+                    hover:bg-sta-green-dark
+                    rounded
+                    focus:outline-none
+                    transition-colors
                   "
                   @click="paymentMode = 'CARD'"
                 >
@@ -63,11 +63,11 @@
                   v-if="enabledMethods.cash"
                   class="
                     p-2
-                    transition-colors
-                    rounded
                     bg-sta-green
                     hover:bg-sta-green-dark
+                    rounded
                     focus:outline-none
+                    transition-colors
                   "
                   @click="paymentMode = 'CASH'"
                 >
@@ -79,11 +79,11 @@
                 v-else
                 class="
                   p-2
-                  transition-colors
-                  rounded
                   bg-sta-green
                   hover:bg-sta-green-dark
+                  rounded
                   focus:outline-none
+                  transition-colors
                 "
                 @click="pay(null)"
               >
@@ -92,14 +92,14 @@
               </button>
             </div>
             <div v-if="paymentMode == 'CASH'" class="my-2">
-              <div class="py-2 text-xl text-center">Change Calculator</div>
-              <div class="grid grid-cols-2 gap-2">
+              <div class="py-2 text-center text-xl">Change Calculator</div>
+              <div class="grid gap-2 grid-cols-2">
                 <div class="flex items-center w-full">
                   <span class="mx-2 text-xl font-semibold">£</span>
                   <input
                     v-model.number="tendered"
                     type="text"
-                    class="w-full p-1 text-gray-800 rounded outline-none"
+                    class="p-1 w-full text-gray-800 rounded outline-none"
                     placeholder="Tendered"
                   />
                 </div>
@@ -116,10 +116,10 @@
               <button
                 class="
                   p-2
-                  rounded
-                  animate-pulse
                   bg-sta-orange
                   hover:bg-sta-orange-dark
+                  rounded
+                  animate-pulse
                 "
                 @click="pay(paymentMode)"
               >
@@ -132,12 +132,12 @@
               <div>
                 <button
                   class="
-                    p-2
                     mt-4
-                    transition-colors
-                    rounded
+                    p-2
                     bg-sta-rouge
                     hover:bg-sta-rouge-dark
+                    rounded
+                    transition-colors
                   "
                   @click="cancelSquarePOSPayment"
                 >
@@ -195,6 +195,7 @@ export default {
       },
 
       paymentMode: null,
+      paymentId: null,
       paying: false,
       tendered: null,
       refreshedBooking: null,
@@ -265,6 +266,25 @@ export default {
     cancelSquarePOSPayment() {
       this.paying = false
       this.paymentMode = null
+
+      if (this.paymentId) {
+        try {
+          performMutation(
+            this.$apollo,
+            {
+              mutation: require('@/graphql/mutations/booking/CancelPayment.gql'),
+              variables: {
+                paymentId: this.paymentId,
+              },
+            },
+            'cancelPayment'
+          )
+        } catch (e) {
+          this.errors = getValidationErrors(e)
+        }
+      }
+      this.booking.refreshIdempotencyKey()
+      this.paymentId = null
     },
     async selectTerminal() {
       const terminalOptions = Object.fromEntries(
@@ -314,6 +334,8 @@ export default {
           },
           'payBooking'
         )
+
+        this.paymentId = data.payBooking.payment.id
 
         if (method === 'SQUARE_POS') {
           return

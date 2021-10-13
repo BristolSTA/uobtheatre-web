@@ -1,8 +1,8 @@
 <template>
-  <div class="relative shadow-2xl bg-sta-gray w-80">
+  <div class="relative w-80 bg-sta-gray shadow-2xl">
     <div role="navigation" class="flex items-center space-x-1">
       <button
-        class="w-1/2 py-3 font-semibold rounded-none focus:outline-none"
+        class="py-3 w-1/2 font-semibold rounded-none focus:outline-none"
         :class="[
           login
             ? 'bg-sta-orange'
@@ -14,7 +14,7 @@
         Login
       </button>
       <button
-        class="w-1/2 py-3 font-semibold rounded-none focus:outline-none"
+        class="py-3 w-1/2 font-semibold rounded-none focus:outline-none"
         :class="[
           login
             ? 'bg-gray-200 hover:bg-gray-400 text-gray-700'
@@ -31,14 +31,14 @@
       ref="loading-overlay"
       class="
         absolute
-        top-0
         z-10
+        top-0
         flex
         items-center
         justify-center
         w-full
         h-full
-        text-3xl text-white
+        text-white text-3xl
         bg-sta-gray-dark bg-opacity-95
       "
     >
@@ -54,10 +54,11 @@
         v-if="login_errors && login_errors.hasCode('not_verified')"
         ref="resendEmail"
         class="
-          text-sm
-          underline
-          cursor-pointer cursor-point
+          cursor-point
           hover:text-gray-200
+          underline
+          text-sm
+          cursor-pointer
         "
         @click="resendVerificationEmail"
       >
@@ -81,22 +82,22 @@
       />
       <label for="remember_me" class="flex items-center space-x-2">
         <input
+          v-if="!$store.state['box-office'].locationId"
           id="remember_me"
           v-model="remember_me"
           type="checkbox"
-          class="w-5 h-5 border rounded-sm border-sta-grey focus:outline-none"
+          class="border-sta-grey w-5 h-5 border rounded-sm focus:outline-none"
         />
-        <span class="text-xs font-semibold text-white">Remember me?</span>
+        <span class="text-white text-xs font-semibold">Remember me?</span>
       </label>
 
       <button
         class="
-          w-full
-          mt-2
-          text-xl
-          font-semibold
-          text-center
           btn btn-orange btn-outline
+          mt-2
+          w-full
+          text-center text-xl
+          font-semibold
         "
         type="submit"
       >
@@ -162,11 +163,12 @@
         v-if="signup_errors && signup_errors.hasCode('unique')"
         to="/login/forgot"
         class="
-          text-sm text-center
-          underline
-          cursor-pointer cursor-point
+          cursor-point
+          text-center text-sta-orange
           hover:text-sta-orange-dark
-          text-sta-orange
+          underline
+          text-sm
+          cursor-pointer
         "
       >
         Request password reset?
@@ -195,19 +197,19 @@
           v-model="accepted_terms"
           type="checkbox"
           required
-          class="w-5 h-5 border rounded-sm border-sta-grey focus:outline-none"
+          class="border-sta-grey w-5 h-5 border rounded-sm focus:outline-none"
         />
-        <span class="text-xs font-semibold text-white">
+        <span class="text-white text-xs font-semibold">
           I have read and agree to the
           <nuxt-link
             to="/terms"
-            class="underline transition-colors hover:text-sta-orange"
+            class="hover:text-sta-orange underline transition-colors"
             >Terms of Service</nuxt-link
           >
           and
           <nuxt-link
             to="/privacy"
-            class="underline transition-colors hover:text-sta-orange"
+            class="hover:text-sta-orange underline transition-colors"
             >Privacy Policy</nuxt-link
           >
         </span>
@@ -215,11 +217,10 @@
       </label>
       <button
         class="
-          w-full
-          text-xl
-          font-semibold
-          text-center
           btn btn-orange btn-outline
+          w-full
+          text-center text-xl
+          font-semibold
         "
         :disabled="!accepted_terms"
       >

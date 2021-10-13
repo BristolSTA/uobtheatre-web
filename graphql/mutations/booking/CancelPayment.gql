@@ -1,0 +1,14 @@
+mutation cancelPayment($paymentId: IdInputField!) {
+  cancelPayment(paymentId: $paymentId) {
+    success
+    errors {
+      ... on NonFieldError {
+        message
+      }
+      ... on FieldError {
+        message
+        field
+      }
+    }
+  }
+}
