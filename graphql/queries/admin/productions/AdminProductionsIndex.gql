@@ -6,7 +6,7 @@ query adminProductions(
 ) {
   productions(
     first: 10
-    orderBy: "start"
+    orderBy: "-start"
     offset: $offset
     start_Lte: $startLte
     end_Gte: $endGte

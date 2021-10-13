@@ -75,10 +75,11 @@
           v-if="production.minSeatPrice && production.isBookable"
           icon="ticket-alt"
         >
-          Tickets available from
+          Tickets from
           <span class="font-semibold">
             £{{ (production.minSeatPrice / 100).toFixed(2) }}
           </span>
+          (excluding concessions)
         </icon-list-item>
       </template>
       <button
