@@ -10,7 +10,7 @@
       <slot name="overlay"></slot>
     </div>
     <slot v-if="showContent"></slot>
-  </div> py-6
+  </div>
 </template>
 
 import LoadingIcon from './LoadingIcon.vue'
