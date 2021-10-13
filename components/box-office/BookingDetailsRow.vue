@@ -10,11 +10,11 @@
             v-if="!editing"
             class="
               p-2
-              transition-colors
-              rounded
               bg-sta-green
               hover:bg-sta-green-dark
+              rounded
               focus:outline-none
+              transition-colors
             "
             @click="startEditing"
           >
@@ -25,11 +25,11 @@
             <button
               class="
                 p-2
-                transition-colors
-                rounded
                 bg-sta-green
                 hover:bg-sta-green-dark
+                rounded
                 focus:outline-none
+                transition-colors
               "
               @click="updateBookingCheckins"
             >
@@ -38,11 +38,11 @@
             <button
               class="
                 p-2
-                transition-colors
                 bg-gray-400
-                rounded
                 roundedhover:bg-gray-500
+                rounded
                 focus:outline-none
+                transition-colors
               "
               @click="cancelEdits"
             >
@@ -96,11 +96,11 @@
                     class="
                       flex-none
                       p-1
-                      transition-colors
-                      rounded
                       bg-sta-orange
                       hover:bg-sta-orange-dark
+                      rounded
                       focus:outline-none
+                      transition-colors
                     "
                     @click="editingData[ticket.id] = !editingData[ticket.id]"
                   >

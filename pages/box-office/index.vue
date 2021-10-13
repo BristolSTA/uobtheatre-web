@@ -1,5 +1,5 @@
 <template>
-  <div class="container flex flex-col items-center justify-center h-full px-1">
+  <div class="container flex flex-col items-center justify-center px-1 h-full">
     <loading-container
       :loading="$apollo.queries.performances.loading"
       :hide-content-when-loading="true"
@@ -9,7 +9,7 @@
         <select
           v-if="performances.length > 4"
           v-model="selectedPerformance"
-          class="w-full p-2 text-gray-700"
+          class="p-2 w-full text-gray-700"
         >
           <option selected disabled>Select one...</option>
           <option v-for="(performance, index) in performances" :key="index">
@@ -17,18 +17,18 @@
             {{ performance.start | dateFormat('cccc dd MMMM T') }}
           </option>
         </select>
-        <div class="grid grid-cols-2 gap-2 mt-2 md:grid-cols-4">
+        <div class="grid gap-2 grid-cols-2 mt-2 md:grid-cols-4">
           <div
             v-for="(performance, index) in performances"
             :key="index"
             class="
-              max-w-md
               p-3
+              max-w-md
               text-center
+              hover:bg-sta-gray-dark
+              bg-sta-gray-light
               rounded
               cursor-pointer
-              bg-sta-gray-light
-              hover:bg-sta-gray-dark
             "
             @click="selectedPerformance = performance"
           >
@@ -36,7 +36,7 @@
               :src="performance.production.featuredImage.url"
               class="w-full"
             />
-            <h3 class="text-xl font-semibold text-sta-orange">
+            <h3 class="text-sta-orange text-xl font-semibold">
               {{ performance.production.name }}
             </h3>
             <h4 class="text-sta-green">
@@ -111,7 +111,8 @@ export default {
       skip() {
         return !this.dateToSearch || this.dateToSeach === ''
       },
-      fetchPolicy: 'no-cache',
+      fetchPolicy: 'cache-and-network',
+
       update: (data) => data.performances.edges.map((edge) => edge.node),
     },
   },

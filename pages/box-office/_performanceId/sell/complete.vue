@@ -2,13 +2,13 @@
   <div v-if="booking.reference">
     <h2 class="text-h2">Booking Complete!</h2>
     <h3 class="text-gray-500 text-h3">Reference {{ booking.reference }}</h3>
-    <div class="grid grid-cols-1 gap-4 mb-6 md:grid-cols-2">
+    <div class="grid gap-4 grid-cols-1 mb-6 md:grid-cols-2">
       <tickets-overview :booking="booking" />
       <payment-overview :booking="booking" />
     </div>
 
     <button
-      class="font-semibold btn btn-orange"
+      class="btn btn-orange font-semibold"
       @click="goToMenu()"
       @keypress="goToMenu()"
     >

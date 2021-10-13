@@ -1,6 +1,6 @@
 <template>
   <production-banner
-    class="pt-6 pb-12"
+    class="pb-12 pt-6"
     :production="production"
     @on-buy-tickets-click="$emit('scroll-to-tickets')"
   />

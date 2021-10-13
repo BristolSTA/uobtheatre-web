@@ -18,7 +18,7 @@
     />
     <loading-container v-else :loading="loading" class="text-center">
       <form @submit.prevent="attemptUserUpdate">
-        <table class="m-4 mx-auto text-left align-text-top">
+        <table class="align-text-top m-4 mx-auto text-left">
           <tr>
             <th class="pb-2 pr-6 text-sta-orange" style="min-width: 8rem">
               First Name
@@ -57,7 +57,7 @@
               <p v-if="!editing" class="break-all">{{ user.email }}</p>
               <button
                 v-else
-                class="px-2 py-1 btn btn-orange btn-outline"
+                class="btn btn-orange btn-outline px-2 py-1"
                 @click="editingEmail = true"
                 @keypress="editingEmail = true"
               >
@@ -71,7 +71,7 @@
               <template v-if="!editing">************</template>
               <button
                 v-else
-                class="px-2 py-1 btn btn-orange btn-outline"
+                class="btn btn-orange btn-outline px-2 py-1"
                 @click="editingPassword = true"
                 @keypress="editingPassword = true"
               >
@@ -82,7 +82,7 @@
         </table>
         <div v-if="editing" class="m-4 text-center">
           <non-field-error class="pb-2" :errors="errors" />
-          <button class="mr-2 btn btn-green">Save Details</button>
+          <button class="btn btn-green mr-2">Save Details</button>
           <button
             class="btn btn-orange"
             @click.prevent="editToggle"

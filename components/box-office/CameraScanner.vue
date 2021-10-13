@@ -7,7 +7,7 @@
     @decode="onDecode"
   >
     <button
-      class="absolute top-0 left-0 p-2 m-4 rounded bg-sta-orange md:hidden"
+      class="absolute left-0 top-0 m-4 p-2 bg-sta-orange rounded md:hidden"
       @click="$emit('close')"
     >
       Close
@@ -23,7 +23,7 @@
         <loading-icon size-class="fa-3x" />
         <strong>Loading Scanner...</strong>
       </template>
-      <p v-else class="px-1 font-semibold text-center text-sta-rouge-dark">
+      <p v-else class="px-1 text-center text-sta-rouge-dark font-semibold">
         Unable to start scanner: {{ error }}
       </p>
     </div>

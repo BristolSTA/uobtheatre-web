@@ -12,16 +12,13 @@
         :to="`/box-office/${performance.id}`"
         >Goto Box Office</sta-button
       >
-      <sta-button colour="green" icon="file-export" @click="downloadBookings"
-        >Download Bookings</sta-button
-      >
       <!-- <sta-button colour="orange" icon="edit" :to="`${performance.id}/edit`"
         >Edit</sta-button
       > -->
     </template>
-    <div class="flex space-x-4">
+    <div class="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
       <card title="Summary" class="max-w-2xl">
-        <table class="w-full table-auto">
+        <table class="table-auto w-full">
           <tr>
             <table-head-item :text-left="false">Status</table-head-item>
             <table-row-item>
@@ -49,7 +46,7 @@
         </table>
       </card>
       <card title="Sales Overview">
-        <table class="w-full table-auto">
+        <table class="table-auto w-full">
           <!-- <tr>
             <table-head-item :text-left="false">Paid Bookings</table-head-item>
             <table-row-item>100 TODO</table-row-item>
@@ -57,9 +54,18 @@
           <tr>
             <table-head-item :text-left="false">Ticket Sales</table-head-item>
             <table-row-item>
-              {{ performance.ticketsBreakdown.totalTicketsSold }} tickets sold
-              (of {{ performance.ticketsBreakdown.totalCapacity }} performance
-              capacity)
+              {{ performance.ticketsBreakdown.totalTicketsSold }} tickets sold |
+              {{
+                (
+                  (100 * performance.ticketsBreakdown.totalTicketsSold) /
+                  performance.ticketsBreakdown.totalCapacity
+                ).toFixed(0)
+              }}%<br />
+              <small
+                >(of
+                {{ performance.ticketsBreakdown.totalCapacity }} performance
+                capacity)
+              </small>
               <progress-bar
                 :percentage="
                   Math.min(
@@ -95,7 +101,7 @@
       </card>
     </div>
     <card class="mt-4" title="Sales By Ticket">
-      <div class="flex flex-wrap space-x-6 justify-evenly">
+      <div class="flex flex-wrap justify-evenly space-x-6">
         <div>
           <table>
             <thead>
@@ -155,7 +161,16 @@
     </card>
     <div class="mt-6">
       <h2 class="text-h2">Tools</h2>
-      <div class="grid grid-cols-2 gap-6 md:grid-cols-5">
+      <div
+        class="
+          grid
+          gap-6
+          grid-cols-1
+          sm:grid-cols-2
+          md:grid-cols-3
+          lg:grid-cols-5
+        "
+      >
         <menu-tile
           class="bg-sta-green hover:bg-sta-green-dark"
           icon="clipboard-list"
@@ -167,6 +182,12 @@
           :to="`../bookings/create/${performance.id}`"
           icon="plus-circle"
           >Create Comp Booking</menu-tile
+        >
+        <menu-tile
+          class="bg-sta-green hover:bg-sta-green-dark"
+          icon="file-export"
+          @click="downloadBookings"
+          >Download Bookings</menu-tile
         >
       </div>
     </div>

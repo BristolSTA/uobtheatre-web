@@ -19,6 +19,7 @@ query adminProductionCompleteBookings(
             offset: $offset
             orderBy: $orderBy
             status: $status
+            expired: false
           ) {
             pageInfo {
               startCursor

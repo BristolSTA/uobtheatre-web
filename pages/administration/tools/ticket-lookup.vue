@@ -8,7 +8,7 @@
       Booking Reference: {{ scannedData.bookingReference }} | Ticket ID:
       {{ scannedData.ticketId }}
       <div
-        class="flex flex-wrap space-x-4 space-y-2 lg:space-y-0 lg:flex-nowrap"
+        class="flex flex-wrap space-x-4 space-y-2 lg:flex-nowrap lg:space-y-0"
       >
         <card v-if="ticketDetails" title="Ticket">
           <table>
@@ -61,12 +61,12 @@
                 ><nuxt-link
                   class="
                     inline-block
-                    p-2
                     m-2
                     ml-0
-                    transition-colors
+                    p-2
                     bg-sta-green
                     hover:bg-sta-green-dark
+                    transition-colors
                   "
                   :to="`/administration/productions/${bookingInfo.performance.production.slug}/bookings/${bookingInfo.reference}`"
                   >View Booking</nuxt-link

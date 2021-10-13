@@ -1,6 +1,6 @@
 <template>
   <admin-page title="Your Productions">
-    <div class="flex items-end space-x-4">
+    <div class="flex flex-wrap gap-3 items-end md:flex-nowrap">
       <div><t-input placeholder="Search by name" /></div>
       <div>
         <label>Status</label
@@ -47,7 +47,7 @@
             <table-row-item>
               <nuxt-link
                 :to="`productions/${production.slug}`"
-                class="font-semibold text-sta-orange hover:text-sta-orange-dark"
+                class="text-sta-orange hover:text-sta-orange-dark font-semibold"
                 >{{ production.name }}</nuxt-link
               >
             </table-row-item>

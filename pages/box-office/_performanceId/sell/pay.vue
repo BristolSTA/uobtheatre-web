@@ -29,6 +29,8 @@
                 <button
                   v-if="enabledMethods.squarePOS && availableTerminals.length"
                   class="
+                    btn
+                    disabled
                     p-2
                     bg-sta-green
                     hover:bg-sta-green-dark

@@ -14,7 +14,7 @@
         <td class="px-2 font-mono">£{{ cost.cost }}</td>
       </tr>
     </table>
-    <div class="p-1 px-2 text-center rounded bg-sta-gray">
+    <div class="p-1 px-2 text-center bg-sta-gray rounded">
       <h3 ref="total" class="text-h3">
         Order Total:
         <span class="px-4 text-sta-orange">

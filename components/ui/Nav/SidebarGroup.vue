@@ -2,12 +2,11 @@
   <div>
     <h3
       class="
-        text-sm
+        text-sta-gray-light text-sm
         font-bold
         tracking-wide
-        uppercase
         select-none
-        text-sta-gray-light
+        uppercase
       "
     >
       {{ name }}

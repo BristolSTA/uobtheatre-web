@@ -2,7 +2,7 @@
   <component
     :is="asType"
     :to="to"
-    class="inline-block transition-colors rounded"
+    class="inline-block rounded transition-colors"
     :class="classes"
     :disabled="disabled"
     @click="$emit('click')"

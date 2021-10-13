@@ -1,5 +1,5 @@
 <template>
-  <sidebar @close="$emit('close')"
+  <sidebar class="flex-none" @close="$emit('close')"
     ><sidebar-item icon="home" href="/administration" :is-root="true"
       >Dashboard</sidebar-item
     >
@@ -21,5 +21,10 @@ import Sidebar from '../ui/Nav/Sidebar.vue'
 import SidebarItem from '../ui/Nav/SidebarItem.vue'
 export default {
   components: { Sidebar, SidebarItem },
+  watch: {
+    $route() {
+      this.$emit('close')
+    },
+  },
 }
 </script>

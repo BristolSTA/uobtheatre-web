@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="p-2 my-2 text-white bg-sta-gray-dark">
-      <p class="font-semibold text-center">
+    <div class="my-2 p-2 text-white bg-sta-gray-dark">
+      <p class="text-center font-semibold">
         {{ ticketMatrix.performanceCapacityRemaining }} tickets available
       </p>
       <tickets-editor
@@ -13,7 +13,7 @@
       />
       <div v-if="booking.tickets.length" class="mt-2 text-center">
         <button
-          class="font-semibold btn btn-orange"
+          class="btn btn-orange font-semibold"
           :disabled="booking.dirty"
           @click="$emit('next-stage')"
           @keypress="$emit('next-stage')"

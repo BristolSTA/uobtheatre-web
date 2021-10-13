@@ -19,7 +19,7 @@
       <p class="pr-1">1x {{ ticket.concessionType.name }}</p>
       <p class="pl-1 text-right">{{ ticket.seatGroup.name }}</p>
     </div>
-    <div class="flex items-center justify-center flex-grow w-full py-2">
+    <div class="flex flex-grow items-center justify-center py-2 w-full">
       <qrcode-vue
         :value="ticket.generateQRCodeString(booking.reference)"
         level="L"
@@ -32,7 +32,7 @@
     <div class="flex justify-between w-full">
       <p>Booked By: {{ fullName }}</p>
     </div>
-    <p class="font-mono text-sm italic text-right text-gray-400">
+    <p class="text-right text-gray-400 font-mono text-sm italic">
       {{ ticket.id }}
     </p>
   </div>

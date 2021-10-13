@@ -1,21 +1,21 @@
 <template>
   <div class="flex flex-wrap justify-center">
-    <div v-if="production.cast.length" class="w-full p-4 text-center">
-      <h1 class="underline uppercase crew-section-header">Cast</h1>
+    <div v-if="production.cast.length" class="p-4 w-full text-center">
+      <h1 class="crew-section-header underline uppercase">Cast</h1>
       <div class="flex flex-wrap justify-center">
         <div
           v-for="(member, index) in sortedCast"
           :key="index"
           class="
+            production-cast-member
             flex
             items-center
             px-4
             py-2
             sm:justify-center
-            production-cast-member
           "
         >
-          <div v-if="member.profilePicture" class="flex-none w-20 pr-4">
+          <div v-if="member.profilePicture" class="flex-none pr-4 w-20">
             <img
               class="rounded-full"
               :src="member.profilePicture.url"
@@ -35,7 +35,7 @@
       v-if="production.productionTeam.length"
       class="cast-credit-section lg:w-1/2"
     >
-      <h1 class="underline crew-section-header">Production Team</h1>
+      <h1 class="crew-section-header underline">Production Team</h1>
       <div class="flex flex-wrap justify-center space-x-10">
         <role-group
           v-for="(group, index) in productionTeamGrouped"
@@ -49,7 +49,7 @@
       </div>
     </div>
     <div v-if="production.crew.length" class="cast-credit-section lg:w-1/2">
-      <h1 class="underline uppercase crew-section-header">Crew</h1>
+      <h1 class="crew-section-header underline uppercase">Crew</h1>
       <div class="flex flex-wrap justify-center space-x-10">
         <role-group
           v-for="(group, index) in crewGrouped"

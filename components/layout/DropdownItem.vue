@@ -1,16 +1,18 @@
 <template>
   <NuxtLink
     class="
+      row
+      focus:shadow-outline
       flex
       items-start
       p-2
-      bg-transparent
-      rounded-lg
-      row
       hover:text-gray-900
       focus:text-gray-900
       hover:bg-gray-200
-      focus:bg-gray-200 focus:outline-none focus:shadow-outline
+      focus:bg-gray-200
+      bg-transparent
+      rounded-lg
+      focus:outline-none
     "
     :to="route"
   >
@@ -23,8 +25,8 @@
         w-12
         h-12
         text-white
-        rounded-lg
         bg-sta-green
+        rounded-lg
       "
     >
       <font-awesome-icon :icon="icon" class="w-1/2" />

@@ -7,7 +7,14 @@ query boxOfficePerformanceBookings(
 ) {
   performance(id: $id) {
     id
-    bookings(search: $search, first: 10, offset: $offset, orderBy: $orderBy) {
+    bookings(
+      search: $search
+      first: 10
+      offset: $offset
+      orderBy: $orderBy
+      status: "PAID"
+      expired: false
+    ) {
       pageInfo {
         startCursor
         endCursor

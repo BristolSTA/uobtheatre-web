@@ -4,26 +4,15 @@
       v-if="loading"
       ref="loading-overlay"
       :class="{ 'absolute bg-sta-gray-dark bg-opacity-95': showContent }"
-      class="
-        top-0
-        z-10
-        flex flex-col
-        items-center
-        justify-center
-        w-full
-        h-full
-        py-6
-        text-white
-      "
+      class="top-0 z-10 flex flex-col items-center justify-center w-full h-full py-6 text-white "
     >
       <loading-icon :size-class="loaderIconSize" class="text-3xl" />
       <slot name="overlay"></slot>
     </div>
     <slot v-if="showContent"></slot>
-  </div>
+  </div> py-6
 </template>
 
-<script>
 import LoadingIcon from './LoadingIcon.vue'
 export default {
   components: { LoadingIcon },

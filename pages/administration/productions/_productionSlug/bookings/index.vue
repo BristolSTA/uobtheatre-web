@@ -141,7 +141,7 @@ export default {
           status: this.bookingsStatus,
         }
       },
-      fetchPolicy: 'no-cache',
+      fetchPolicy: 'cache-and-network',
       update(data) {
         const performances = data.production.performances.edges
         if (!performances.length) return []

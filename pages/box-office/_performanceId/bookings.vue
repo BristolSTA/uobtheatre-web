@@ -11,23 +11,23 @@
       <h2 class="mb-2 text-center text-h2">Performance Bookings</h2>
 
       <div v-if="!scanning" class="flex justify-center mb-4">
-        <div class="w-full px-2 lg:max-w-4xl">
+        <div class="px-2 w-full lg:max-w-4xl">
           <div class="flex justify-between space-x-2">
             <input
               v-model="searchQuery"
               type="text"
-              class="p-2 mb-2 text-gray-800 rounded outline-none w-44 md:w-64"
+              class="mb-2 p-2 w-44 text-gray-800 rounded outline-none md:w-64"
               placeholder="Search"
             />
             <div class="flex-none">
               <button
                 class="
                   p-2
-                  transition-colors
-                  rounded
-                  focus:outline-none
                   bg-sta-green
                   hover:bg-sta-green-dark
+                  rounded
+                  focus:outline-none
+                  transition-colors
                 "
                 @click="scanning = true"
               >
@@ -78,7 +78,7 @@
         <p class="mb-6 text-center">
           <nuxt-link
             to="collect"
-            class="underline transition-colors hover:text-gray-300"
+            class="hover:text-gray-300 underline transition-colors"
             >Looking to check in tickets?</nuxt-link
           >
         </p>
@@ -95,11 +95,11 @@
           <button
             class="
               p-2
-              transition-colors
               bg-gray-400
+              hover:bg-gray-500
               rounded
               focus:outline-none
-              hover:bg-gray-500
+              transition-colors
             "
             @click="scanning = false"
           >
@@ -201,8 +201,7 @@ export default {
         if (result.data)
           this.pageInfo = result.data.performance.bookings.pageInfo
       },
-      fetchPolicy: 'no-cache',
-      notifyOnNetworkStatusChange: true,
+      fetchPolicy: 'cache-and-network',
     },
   },
 }

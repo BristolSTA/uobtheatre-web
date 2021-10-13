@@ -14,7 +14,7 @@
     <div class="space-y-4">
       <div class="flex flex-wrap justify-around space-y-4">
         <card title="Summary" class="max-w-2xl">
-          <table class="w-full table-auto">
+          <table class="table-auto w-full">
             <tr>
               <table-head-item>Status</table-head-item>
               <table-row-item>
@@ -75,13 +75,13 @@
         </div>
       </div>
       <card title="Performances">
-        <template #messageBox>
+        <!-- <template #messageBox>
           <nuxt-link
             class="hover:text-gray-200"
             :to="`${production.slug}/performances/create`"
             ><font-awesome-icon icon="plus-circle" class="fa-2x"
           /></nuxt-link>
-        </template>
+        </template> -->
         <paginated-table
           :items="
             performancesData
@@ -119,14 +119,13 @@
               <table-row-item>
                 <p>
                   {{ performance.ticketsBreakdown.totalTicketsSold }} of
-                  {{ performance.ticketsBreakdown.totalCapacity }}
+                  {{ performance.ticketsBreakdown.totalCapacity }} ({{
+                    salesPercentage(performance)
+                  }}%)
                 </p>
                 <progress-bar
                   :height="2"
-                  :percentage="
-                    (100 * performance.ticketsBreakdown.totalTicketsSold) /
-                    performance.ticketsBreakdown.totalCapacity
-                  "
+                  :percentage="parseInt(salesPercentage(performance))"
                 />
               </table-row-item>
               <table-row-item class="space-x-2">
@@ -230,6 +229,14 @@ export default {
         return 'This production has been completed, and income has been transfered to the society'
 
       return null
+    },
+  },
+  methods: {
+    salesPercentage(performance) {
+      return (
+        (100 * performance.ticketsBreakdown.totalTicketsSold) /
+        performance.ticketsBreakdown.totalCapacity
+      ).toFixed(0)
     },
   },
 }

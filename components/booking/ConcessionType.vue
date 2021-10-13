@@ -1,7 +1,7 @@
 <template>
   <div class="text-white">
     <div class="flex items-center p-2">
-      <div class="w-3/4 pl-2">
+      <div class="pl-2 w-3/4">
         <p class="font-semibold">
           {{ concessionTypeEdge.concessionType.name }}
         </p>
@@ -10,12 +10,12 @@
         </p>
       </div>
       <div class="flex-col w-1/2 space-y-1 sm:w-1/4">
-        <div class="flex justify-center font-semibold font">
+        <div class="font flex justify-center font-semibold">
           £{{ (concessionTypeEdge.price / 100).toFixed(2) }}
         </div>
         <div class="flex justify-center space-x-1">
           <button
-            class="w-8 h-8 p-0 btn"
+            class="btn p-0 w-8 h-8"
             :class="[!numTickets ? 'btn-gray-light' : 'btn-orange']"
             :disabled="!numTickets"
             @click="minusTicket"
@@ -43,7 +43,7 @@
             "
           />
           <button
-            class="w-8 h-8 p-0 btn"
+            class="btn p-0 w-8 h-8"
             :class="[
               maxAddAllowed < 1 || !canAddTickets
                 ? 'btn-gray-light'

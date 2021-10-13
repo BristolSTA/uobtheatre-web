@@ -34,7 +34,7 @@
         required
       />
       <div>
-        <button class="mr-2 btn btn-green">Update</button>
+        <button class="btn btn-green mr-2">Update</button>
         <button
           class="btn btn-orange"
           @click.prevent="$emit('cancel')"

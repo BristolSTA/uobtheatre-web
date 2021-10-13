@@ -5,7 +5,7 @@
       Tickets
     </template>
     <template #messageBox>
-      <table class="flex ml-auto table-auto">
+      <table class="flex table-auto ml-auto">
         <tr>
           <th class="pr-4">
             <font-awesome-icon
@@ -20,13 +20,13 @@
         </tr>
       </table>
     </template>
-    <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+    <div class="grid gap-2 grid-cols-1 sm:grid-cols-2">
       <div
         v-for="(groupedConcessions, index) in seatGroupedTickets"
         :key="index"
-        class="p-2 px-4 rounded bg-sta-gray"
+        class="p-2 px-4 bg-sta-gray rounded"
       >
-        <span class="font-semibold text-sta-orange">
+        <span class="text-sta-orange font-semibold">
           {{ groupedConcessions[0].seatGroup.name }}
         </span>
         <div

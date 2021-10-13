@@ -21,11 +21,11 @@
       <div
         v-for="(production, index) in upcomingProductionsToShow"
         :key="production.id"
-        class="flex flex-wrap items-center py-4 production-feature"
+        class="production-feature flex flex-wrap items-center py-4"
         :class="{ 'flex-row-reverse': index % 2 == 1 }"
       >
         <div
-          class="w-full p-2 text-center md:w-1/2 md:px-6"
+          class="p-2 w-full text-center md:px-6 md:w-1/2"
           :class="[index % 2 == 0 ? 'md:text-right' : 'md:text-left']"
         >
           <NuxtLink :to="`/production/${production.slug}`">
@@ -38,16 +38,16 @@
           </NuxtLink>
         </div>
         <div
-          class="w-full p-2 text-center md:w-1/2 md:px-6"
+          class="p-2 w-full text-center md:px-6 md:w-1/2"
           :class="[index % 2 == 0 ? 'md:text-left' : 'md:text-right']"
         >
           <NuxtLink :to="`/production/${production.slug}`">
-            <h2 class="font-semibold text-h2 hover:text-gray-300">
+            <h2 class="hover:text-gray-300 text-h2 font-semibold">
               {{ production.name }}
             </h2>
           </NuxtLink>
           <span v-if="production.subtitle">{{ production.subtitle }}</span>
-          <p class="font-semibold text-sta-orange">
+          <p class="text-sta-orange font-semibold">
             {{ displayStartEnd(production.start, production.end, 'd MMMM') }}
           </p>
           <p class="m-2">
@@ -55,7 +55,7 @@
           </p>
           <NuxtLink
             :to="`/production/${production.slug}`"
-            class="mt-6 btn btn-rouge"
+            class="btn btn-rouge mt-6"
           >
             More Information & Book
           </NuxtLink>

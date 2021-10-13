@@ -13,7 +13,7 @@
       </div>
       <div
         v-if="!production.performances.edges.length"
-        class="my-20 text-xl text-center"
+        class="my-20 text-center text-xl"
       >
         No Upcoming Performances
       </div>
@@ -23,7 +23,7 @@
             (edge) => edge.node
           )"
           :key="performance.id"
-          class="w-full p-2 performance md:w-1/2 lg:w-1/3 2xl:w-1/4"
+          class="performance p-2 2xl:w-1/4 w-full md:w-1/2 lg:w-1/3"
         >
           <performance-overview
             :performance="performance"

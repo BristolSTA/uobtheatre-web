@@ -12,7 +12,7 @@ query society($slug: String!) {
     }
     website
     contact
-    productions(orderBy: "start", first: 4) {
+    productions(orderBy: "-start", first: 4) {
       pageInfo {
         hasNextPage
         endCursor

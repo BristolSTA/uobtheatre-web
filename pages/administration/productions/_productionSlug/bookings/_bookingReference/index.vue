@@ -1,6 +1,6 @@
 <template>
   <admin-page title="View Booking">
-    <h2 class="text-h2 text-sta-orange">Reference - {{ booking.reference }}</h2>
+    <h2 class="text-sta-orange text-h2">Reference - {{ booking.reference }}</h2>
     <production-banner
       class="pb-2 md:pb-8"
       :production="production"
@@ -15,7 +15,7 @@
         </table-row>
       </table>
     </card>
-    <div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
+    <div class="grid gap-4 grid-cols-1 lg:grid-cols-3">
       <performance-overview
         class="lg:col-span-2"
         :production="production"

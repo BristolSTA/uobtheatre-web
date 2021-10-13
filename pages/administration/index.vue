@@ -15,7 +15,7 @@
         <p>users</p>
       </div>
     </div> -->
-    <div class="p-2 my-4 bg-sta-gray-dark">
+    <div class="my-4 p-2 bg-sta-gray-dark">
       <p>Welcome to the UOB Theatre Administration Panel.</p>
       <p>
         Here you will find all the productions and societies you have access to,
@@ -28,7 +28,7 @@
     </div>
     <div>
       <h3 class="text-h3">Quick Links</h3>
-      <div class="flex flex-wrap space-x-3 space-y-2 md:space-y-0">
+      <div class="flex flex-wrap gap-3">
         <nuxt-link to="/administration/productions"
           ><div class="p-2 bg-sta-green">Your Live Productions</div></nuxt-link
         >

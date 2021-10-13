@@ -6,7 +6,7 @@
         :apollo-query="require('@/graphql/queries/AllSocieties.gql')"
         @newData="handleNewData"
       >
-        <div class="grid grid-cols-1 gap-4 mb-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="grid gap-4 grid-cols-1 mb-4 sm:grid-cols-2 lg:grid-cols-3">
           <society-tile
             v-for="(society, index) in societies"
             :key="index"

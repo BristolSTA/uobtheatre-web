@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 text-white rounded-lg shadow bg-sta-gray-light">
+  <div class="p-4 text-white bg-sta-gray-light rounded-lg shadow">
     <div class="flex flex-wrap items-center">
       <h2
         v-if="title || $slots.title"
@@ -7,11 +7,11 @@
       >
         <slot name="title">{{ title }}</slot>
       </h2>
-      <div v-if="$slots.messageBox" class="pb-1 pr-1 sm:pr-4 sm:pb-0">
+      <div v-if="$slots.messageBox" class="pb-1 pr-1 sm:pb-0 sm:pr-4">
         <slot name="messageBox"></slot>
       </div>
     </div>
-    <div v-if="$slots.subtitle" class="font-semibold text-sta-orange">
+    <div v-if="$slots.subtitle" class="text-sta-orange font-semibold">
       <slot name="subtitle"></slot>
     </div>
     <div>

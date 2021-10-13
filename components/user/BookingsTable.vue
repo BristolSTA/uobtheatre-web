@@ -1,19 +1,19 @@
 <template>
-  <div class="px-1 py-2 my-2 md:p-2 bg-sta-gray-dark">
+  <div class="my-2 px-1 py-2 bg-sta-gray-dark md:p-2">
     <h2 class="flex justify-center mb-2 text-2xl">
       <slot name="title"></slot>
     </h2>
-    <table v-if="bookings.length" class="w-full table-auto">
+    <table v-if="bookings.length" class="table-auto w-full">
       <tbody>
         <tr
           v-for="(booking, index) in bookings"
           :key="index"
-          class="odd:bg-sta-gray-light even:bg-sta-gray"
+          class="even:bg-sta-gray odd:bg-sta-gray-light"
         >
           <td class="px-2 sm:px-4">
             <div>
               <NuxtLink
-                class="text-xl font-semibold hover:text-gray-300"
+                class="hover:text-gray-300 text-xl font-semibold"
                 :to="`/production/${booking.performance.production.slug}`"
               >
                 {{ booking.performance.production.name }}
@@ -29,7 +29,7 @@
               Ref: <span class="font-mono">{{ booking.reference }}</span>
             </p>
             <NuxtLink
-              class="px-2 py-1 text-sm sm:mr-2 btn btn-green btn-outline"
+              class="btn btn-green btn-outline px-2 py-1 text-sm sm:mr-2"
               :to="`/user/booking/${booking.reference}`"
             >
               View Booking

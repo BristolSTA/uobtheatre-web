@@ -29,7 +29,7 @@
         <p>{{ venue.address.city }}</p>
         <p>{{ venue.address.postcode }}</p>
       </template>
-      <div v-if="online" class="p-2 mt-2 rounded bg-sta-gray">
+      <div v-if="online" class="mt-2 p-2 bg-sta-gray rounded">
         <icon-list-item icon="info-circle">
           Online joining information will be sent via email
         </icon-list-item>

@@ -4,11 +4,11 @@
       class="
         flex-none
         order-1
-        w-full
         mb-4
+        w-full
         text-center
         sm:w-1/2
-        lg:w-auto lg:mb-0
+        lg:mb-0 lg:w-auto
       "
     >
       <img
@@ -19,19 +19,19 @@
       />
     </div>
     <tip-tap-output
-      class="flex-grow order-3 mt-4 lg:mt-0 lg:order-2"
+      class="flex-grow order-3 mt-4 lg:order-2 lg:mt-0"
       :html="production.description"
     />
     <div
       class="
-        flex flex-col flex-none
+        flex flex-none flex-col
         order-2
-        w-full
         p-5
-        space-y-2
+        w-full
         bg-sta-gray-dark
+        space-y-2
         sm:w-1/2
-        lg:w-1/3 lg:order-3
+        lg:order-3 lg:w-1/3
       "
     >
       <h3 class="text-xl font-semibold uppercase">Show Information</h3>
@@ -45,7 +45,7 @@
         class="p-3 bg-sta-rouge"
       >
         <span class="text-xl font-semibold uppercase">Audience Warnings</span>
-        <ul class="list-disc list-inside">
+        <ul class="list-inside list-disc">
           <li v-for="(warning, index) in production.warnings" :key="index">
             {{ warning.description }}
           </li>
@@ -54,7 +54,7 @@
       <p>
         A production by
         <NuxtLink
-          class="font-semibold hover:text-gray-300"
+          class="hover:text-gray-300 font-semibold"
           :to="`/society/${production.society.slug}`"
         >
           {{ production.society.name }}
@@ -64,7 +64,7 @@
         v-if="production.facebookEvent"
         ref="facebook-link"
         :href="production.facebookEvent"
-        class="font-semibold uppercase text-sta-green"
+        class="text-sta-green font-semibold uppercase"
         target="_blank"
       >
         <icon-list-item :icon="['fab', 'facebook']">

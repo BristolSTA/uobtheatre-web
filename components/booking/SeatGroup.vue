@@ -2,7 +2,7 @@
   <div class="text-white">
     <div
       ref="header"
-      class="flex py-2 pl-4 hover:bg-opacity-80"
+      class="flex pl-4 py-2 hover:bg-opacity-80"
       :class="[
         expanded
           ? 'bg-sta-orange'
@@ -23,7 +23,7 @@
         </h3>
         <h3
           v-if="!available"
-          class="inline-block ml-4 uppercase text-h3 text-sta-rouge"
+          class="inline-block ml-4 text-sta-rouge text-h3 uppercase"
         >
           Sold Out
         </h3>
@@ -41,7 +41,7 @@
     <div v-if="expanded" class="pb-2 bg-sta-gray">
       <div
         v-if="groupCapacityRemaining < 10"
-        class="px-2 pt-2 text-center text-sta-rouge"
+        class="pt-2 px-2 text-center text-sta-rouge"
       >
         <template v-if="groupCapacityRemaining != 0">
           Hurry! Only {{ groupCapacityRemaining }} ticket{{
@@ -82,7 +82,7 @@
           )
         "
       />
-      <div v-if="discounts.length" class="flex justify-center w-full mt-2 mb-4">
+      <div v-if="discounts.length" class="flex justify-center mb-4 mt-2 w-full">
         <group-ticket-button
           v-for="(discount, index) in discounts.filter(
             (discount) =>

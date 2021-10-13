@@ -2,19 +2,19 @@
   <div class="h-full text-white bg-sta-gray">
     <h1 class="container py-6 text-left text-h1">{{ venue.name }}</h1>
     <div
-      class="flex flex-wrap items-center justify-center mt-2 lg:px-8 lg:mb-8"
+      class="flex flex-wrap items-center justify-center mt-2 lg:mb-8 lg:px-8"
     >
       <tip-tap-output
-        class="w-full px-6 text-justify lg:px-2 lg:block lg:w-1/2"
+        class="px-6 w-full text-justify lg:block lg:px-2 lg:w-1/2"
         :html="venue.description"
       />
       <div
         v-if="venue.image.url"
-        class="w-full h-full max-w-2xl lg:w-2/3 md:m-4"
+        class="w-full max-w-2xl h-full md:m-4 lg:w-2/3"
       >
         <img
           ref="image"
-          class="w-full p-3 md:p-0"
+          class="p-3 w-full md:p-0"
           :src="venue.image.url"
           :alt="`${venue.name} image`"
         />
@@ -25,22 +25,22 @@
         class="
           flex
           justify-center
-          w-full
           p-4
-          lg:w-1/4 lg:order-last lg:ml-4
+          w-full
           bg-sta-gray-dark
+          lg:order-last lg:ml-4 lg:w-1/4
         "
       >
         <div>
-          <h2 class="text-3xl font-semibold text-sta-orange">Venue Info:</h2>
+          <h2 class="text-sta-orange text-3xl font-semibold">Venue Info:</h2>
           <table class="table-auto">
             <tbody>
               <tr>
-                <th class="pb-2 pr-2 align-top">Capacity:</th>
+                <th class="align-top pb-2 pr-2">Capacity:</th>
                 <td class="align-top">Max {{ venue.internalCapacity }}</td>
               </tr>
               <tr>
-                <th class="pr-2 align-top">Address:</th>
+                <th class="align-top pr-2">Address:</th>
                 <td class="align-top">
                   <div v-if="venue.address" ref="address">
                     <p v-if="venue.address.buildingName">
@@ -60,7 +60,7 @@
               </tr>
             </tbody>
           </table>
-          <div class="text-sm font-semibold text-sta-orange">
+          <div class="text-sta-orange text-sm font-semibold">
             <a target="_blank" :href="googleMapsLink">
               <icon-list-item icon="map-marked-alt">
                 Open in Google Maps
@@ -73,7 +73,7 @@
         v-if="
           venue.address && venue.address.latitude && venue.address.longitude
         "
-        class="flex justify-center w-full lg:w-3/5 h-96 lg:mb-4"
+        class="flex justify-center w-full h-96 lg:mb-4 lg:w-3/5"
       >
         <div ref="venue-map" class="w-full"></div>
       </div>

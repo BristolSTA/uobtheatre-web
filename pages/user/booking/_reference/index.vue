@@ -1,8 +1,8 @@
 <template>
-  <div class="min-h-full mb-10 text-white bg-sta-gray">
+  <div class="mb-10 min-h-full text-white bg-sta-gray">
     <div v-if="booking.performance" class="container">
       <h1 class="pt-2 text-h1">Your Booking</h1>
-      <h2 class="text-h2 text-sta-orange">
+      <h2 class="text-sta-orange text-h2">
         Reference - {{ booking.reference }}
       </h2>
       <production-banner
@@ -14,7 +14,7 @@
       <div class="w-full text-center lg:hidden">
         <button
           id="ticket-jump"
-          class="p-2 py-1 m-1 btn"
+          class="btn m-1 p-2 py-1"
           @click="jumpToTickets"
           @keypress="jumpToTickets"
         >
@@ -22,7 +22,7 @@
         </button>
       </div>
 
-      <div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
+      <div class="grid gap-4 grid-cols-1 lg:grid-cols-3">
         <performance-overview
           class="lg:col-span-2"
           :production="production"
@@ -48,9 +48,9 @@
             justify-between
             px-4
             py-2
-            cursor-pointer
-            hover:bg-opacity-80
             text-h2
+            hover:bg-opacity-80
+            cursor-pointer
           "
           :class="[expanded ? 'bg-sta-orange' : 'bg-sta-green']"
           @click="ticketToggle"
@@ -62,14 +62,15 @@
         <div
           v-if="expanded"
           class="
-            grid grid-cols-1
+            grid
             gap-4
+            grid-cols-1
+            2xl:grid-cols-4
             px-4
             py-4
+            bg-sta-gray-dark
             sm:grid-cols-2
             xl:grid-cols-3
-            2xl:grid-cols-4
-            bg-sta-gray-dark
           "
         >
           <ticket

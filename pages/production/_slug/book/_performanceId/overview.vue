@@ -5,7 +5,7 @@
         :production="booking.performance.production"
         :performance="booking.performance"
       />
-      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 justify-evenly">
+      <div class="grid gap-4 grid-cols-1 justify-evenly md:grid-cols-2">
         <venue-overview
           :venue-data="booking.performance.venue.slug"
           :online="booking.performance.isOnline"
@@ -18,7 +18,7 @@
     </div>
     <div class="mt-4 text-center">
       <button
-        class="font-semibold btn btn-orange"
+        class="btn btn-orange font-semibold"
         @click="$emit('next-stage')"
         @keypress="$emit('next-stage')"
       >

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative p-2 rounded bg-sta-gray-dark"
+    class="relative p-2 bg-sta-gray-dark rounded"
     @drop.prevent="onDrop"
     @dragover.prevent="onDragOver"
   >
@@ -8,10 +8,10 @@
       v-if="draggingOver"
       class="
         absolute
-        top-0
         bottom-0
         left-0
         right-0
+        top-0
         flex
         items-center
         justify-center
@@ -25,17 +25,17 @@
       <div v-if="file">
         <img
           :src="fileDataUrl"
-          class="pointer-events-none select-none max-h-52"
+          class="max-h-52 pointer-events-none select-none"
         />
         <div class="mt-3 text-center">
           <error-helper v-if="error">{{ error }}</error-helper>
           <button
             class="
               p-1
-              transition-colors
-              rounded
               bg-sta-orange
               hover:bg-sta-orange-dark
+              rounded
+              transition-colors
             "
             @click="file = null"
           >
@@ -44,10 +44,10 @@
           <button
             class="
               p-1
-              transition-colors
-              rounded
               bg-sta-orange
               hover:bg-sta-orange-dark
+              rounded
+              transition-colors
             "
             @click="$refs.fileInput.click()"
           >
@@ -62,10 +62,10 @@
           <button
             class="
               p-1
-              transition-colors
-              rounded
               bg-sta-orange
               hover:bg-sta-orange-dark
+              rounded
+              transition-colors
             "
             @click="$refs.fileInput.click()"
           >

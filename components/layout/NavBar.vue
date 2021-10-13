@@ -3,10 +3,10 @@
     <div
       class="
         flex flex-col
-        max-w-screen-xl
         mx-auto
+        max-w-screen-xl
+        md:flex-row md:items-center md:justify-between
         lg:container
-        md:items-center md:justify-between md:flex-row
       "
     >
       <div class="flex flex-row items-center justify-between p-4 text-white">
@@ -18,7 +18,7 @@
         </NuxtLink>
         <button
           role="toggle"
-          class="rounded-lg md:hidden focus:outline-none focus:shadow-outline"
+          class="focus:shadow-outline rounded-lg focus:outline-none md:hidden"
           @click="open = !open"
           @keypress="open = !open"
         >
@@ -45,12 +45,12 @@
           p-4
           pt-0
           space-y-2
-          md:space-y-0
-          md:items-center
-          md:pb-0
           md:flex
-          md:justify-end
           md:flex-row
+          md:items-center
+          md:justify-end
+          md:pb-0
+          md:space-y-0
         "
       >
         <NuxtLink
@@ -60,11 +60,11 @@
           class="
             block
             px-4
+            hover:text-sta-orange-dark
+            text-white
             font-semibold
             tracking-wide
-            text-white
             uppercase
-            hover:text-sta-orange-dark
           "
         >
           {{ item[1] }}
@@ -73,7 +73,7 @@
           Hi, {{ $store.state.auth.user.firstName }}
           <span role="img">👋</span>
           <template #content>
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
               <dropdown-item
                 v-if="$auth().hasPermission('admin_open')"
                 title="Admin"
@@ -103,7 +103,7 @@
             </div>
             <div class="flex md:justify-end">
               <clickable-link
-                class="mt-4 rounded-md auth-button btn btn-orange"
+                class="auth-button btn btn-orange mt-4 rounded-md"
                 @click="onLogout"
               >
                 Log Out
@@ -114,7 +114,7 @@
         <dropdown-nav-item v-else>
           Hello. Sign in
           <template #content>
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
               <dropdown-item
                 title="Login"
                 subtitle="With an exisiting account"

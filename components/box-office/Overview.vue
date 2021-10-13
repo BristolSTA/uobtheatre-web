@@ -3,18 +3,17 @@
     class="
       p-2
       px-4
-      border-2
-      lg:px-12
-      sm:p-4 sm:px-8
       bg-sta-gray-dark
-      border-sta-gray-light
+      border-2 border-sta-gray-light
+      sm:p-4 sm:px-8
+      lg:px-12
     "
   >
     <div class="flex flex-wrap">
       <div class="flex justify-center w-full sm:block sm:w-1/2">
         <div>
           <p class="text-h2">{{ production.name }}</p>
-          <p class="mb-1 -mt-2 font-semibold text-sta-gray-lighter">
+          <p class="-mt-2 mb-1 text-sta-gray-lighter font-semibold">
             by {{ production.society.name }}
           </p>
           <p class="text-sta-orange">
@@ -23,7 +22,7 @@
         </div>
       </div>
       <div class="w-full sm:w-1/2">
-        <clock class="py-2 text-5xl text-center md:text-6xl" />
+        <clock class="py-2 text-center text-5xl md:text-6xl" />
       </div>
       <div v-if="detailed" class="hidden w-full sm:block sm:w-1/2">
         <div>
@@ -40,7 +39,7 @@
             v-if="production.warnings.length"
             class="flex justify-center sm:block"
           >
-            <div class="px-3 py-2 m-2 w-max bg-sta-rouge">
+            <div class="m-2 px-3 py-2 w-max bg-sta-rouge">
               <p class="font-semibold">Warnings:</p>
               <div v-for="(warning, index) in production.warnings" :key="index">
                 <p class="px-2">- {{ warning.description }}</p>
@@ -50,40 +49,40 @@
         </div>
       </div>
       <div v-if="detailed" class="flex justify-center w-full sm:w-1/2">
-        <div class="max-w-sm p-4 mx-4 lg:px-10 bg-sta-gray-light">
-          <table class="w-full table-fixed">
+        <div class="mx-4 p-4 max-w-sm bg-sta-gray-light lg:px-10">
+          <table class="table-fixed w-full">
             <tr>
               <td class="font-semibold">Total Tickets</td>
-              <td class="w-1/5 pl-2 font-mono text-sta-orange">
+              <td class="pl-2 w-1/5 text-sta-orange font-mono">
                 {{ ticketBreakdown.totalCapacity }}
               </td>
             </tr>
             <tr>
               <td class="font-semibold">Total Sold</td>
-              <td class="w-1/5 pl-2 font-mono text-sta-orange">
+              <td class="pl-2 w-1/5 text-sta-orange font-mono">
                 {{ ticketBreakdown.totalTicketsSold }}
               </td>
             </tr>
             <tr>
               <td class="pl-6 font-semibold">Collected</td>
-              <td class="w-1/5 pl-2 font-mono text-sta-orange">
+              <td class="pl-2 w-1/5 text-sta-orange font-mono">
                 {{ ticketBreakdown.totalTicketsCheckedIn }}
               </td>
             </tr>
             <tr>
               <td class="pl-6 font-semibold">To be Collected</td>
-              <td class="w-1/5 pl-2 font-mono text-sta-orange">
+              <td class="pl-2 w-1/5 text-sta-orange font-mono">
                 {{ ticketBreakdown.totalTicketsToCheckIn }}
               </td>
             </tr>
             <tr>
-              <td class="font-semibold">Avaliable to Sell</td>
-              <td class="w-1/5 pl-2 font-mono text-sta-orange">
+              <td class="font-semibold">Available to Sell</td>
+              <td class="pl-2 w-1/5 text-sta-orange font-mono">
                 {{ ticketBreakdown.totalTicketsAvailable }}
               </td>
             </tr>
           </table>
-          <div class="flex items-center space-x-2 text-sta-rouge">
+          <div class="flex items-center text-sta-rouge space-x-2">
             <span class="relative flex w-3 h-3">
               <span
                 class="
@@ -91,13 +90,13 @@
                   inline-flex
                   w-full
                   h-full
-                  rounded-full
                   bg-sta-rouge
+                  rounded-full
                   animate-ping
                 "
               ></span>
               <span
-                class="relative inline-flex w-3 h-3 rounded-full bg-sta-rouge"
+                class="relative inline-flex w-3 h-3 bg-sta-rouge rounded-full"
               ></span>
             </span>
             <p>Live</p>

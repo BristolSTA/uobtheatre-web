@@ -1,7 +1,7 @@
 <template>
   <auth-page-template>
     <div
-      class="relative p-6 text-center text-white shadow-2xl bg-sta-gray w-100"
+      class="w-100 relative p-6 text-center text-white bg-sta-gray shadow-2xl"
     >
       <template v-if="!error">
         <h1 class="text-h3">Activating your account...</h1>
@@ -10,7 +10,7 @@
         </div>
       </template>
       <template v-else>
-        <font-awesome-icon class="text-h1 text-sta-rouge" icon="times-circle" />
+        <font-awesome-icon class="text-sta-rouge text-h1" icon="times-circle" />
         <h1 class="text-h3">There was an error activating your account</h1>
         <p>This activation has either expired or doesn't exist!</p>
       </template>
