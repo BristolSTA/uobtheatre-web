@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="booking.reference">
     <h2 class="text-h2">Booking Complete!</h2>
     <h3 class="text-gray-500 text-h3">Reference {{ booking.reference }}</h3>
     <div class="grid gap-4 grid-cols-1 mb-6 md:grid-cols-2">
@@ -32,7 +32,7 @@ export default {
     },
   },
   async mounted() {
-    if (!this.booking) return this.$router.push('/')
+    if (!this.booking.reference) return this.$router.push('../')
     try {
       await performMutation(
         this.$apollo,

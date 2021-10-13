@@ -5,6 +5,7 @@ fragment DetailedBookingDetails on BookingNode {
   id
   reference
   status {
+    value
     description
   }
   user {
