@@ -4,6 +4,8 @@ query boxOfficePerformanceBookings(
   $search: String
   $offset: Int
   $orderBy: String
+  $discount: Float
+  $checkedIn: Boolean
 ) {
   performance(id: $id) {
     id
@@ -14,6 +16,8 @@ query boxOfficePerformanceBookings(
       orderBy: $orderBy
       status: "PAID"
       expired: false
+      adminDiscountPercentage: $discount
+      checkedIn: $checkedIn
     ) {
       pageInfo {
         startCursor

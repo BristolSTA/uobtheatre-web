@@ -5,7 +5,7 @@
     :to="to"
     @click="go"
   >
-    <div class="text-h2">
+    <div :class="textSize">
       <font-awesome-icon v-if="icon" :icon="icon" />
       <span class="pl-2"><slot></slot></span>
     </div>
@@ -24,6 +24,10 @@ export default {
     },
     icon: {
       default: null,
+      type: String,
+    },
+    textSize: {
+      default: 'text-h2',
       type: String,
     },
   },

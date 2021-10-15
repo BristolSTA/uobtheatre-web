@@ -57,7 +57,7 @@ export default {
     },
   },
   mounted() {
-    this.$refs.input.focus()
+    this.focus()
   },
   methods: {
     handleScan($event) {
@@ -76,6 +76,9 @@ export default {
         this.invalidCode = true
         if (!isAllowedSilentException) throw e
       }
+    },
+    focus() {
+      this.$refs.input.focus()
     },
   },
 }

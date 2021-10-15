@@ -1,28 +1,31 @@
 <template>
   <div class="min-h-full bg-sta-gray">
     <div class="sm:container">
-      <div class="sm:py-6">
+      <div class="sm:pt-6">
         <overview
           :production="performance.production"
           :performance="performance"
           :detailed="false"
         />
+
+        <box-office-navigation :performance="performance" :compact="true" />
       </div>
       <h2 class="mb-2 text-center text-h2">Performance Bookings</h2>
 
       <div v-if="!scanning" class="flex justify-center mb-4">
         <div class="px-2 w-full lg:max-w-4xl">
-          <div class="flex justify-between space-x-2">
-            <input
-              v-model="searchQuery"
-              type="text"
-              class="mb-2 p-2 w-44 text-gray-800 rounded outline-none md:w-64"
-              placeholder="Search"
-            />
-            <div class="flex-none">
+          <div class="flex items-center justify-between pb-2">
+            <div class="space-x-2">
+              <input
+                v-model="searchQuery"
+                type="text"
+                class="mb-2 p-2 w-44 text-gray-800 rounded outline-none md:w-64"
+                placeholder="Search"
+              />
               <button
                 class="
                   p-2
+                  text-sm
                   bg-sta-green
                   hover:bg-sta-green-dark
                   rounded
@@ -31,8 +34,20 @@
                 "
                 @click="scanning = true"
               >
-                Scan Ticket
+                <font-awesome-icon icon="search" /> Ticket Scan Search
               </button>
+            </div>
+
+            <div>
+              <label>Filter</label
+              ><t-select
+                v-model="bookingFilter"
+                :options="[
+                  { value: null, text: 'All' },
+                  { value: 'COMPS', text: 'Comps Only' },
+                  { value: 'NOCHECKIN', text: 'Not Checked In' },
+                ]"
+              />
             </div>
           </div>
           <div class="px-1 py-2 bg-sta-gray-dark sm:p-2">
@@ -73,15 +88,17 @@
           </div>
         </div>
       </div>
-      <div v-else>
-        <h3 class="text-center text-h3">Find a booking</h3>
-        <p class="mb-6 text-center">
-          <nuxt-link
-            to="collect"
-            class="hover:text-gray-300 underline transition-colors"
-            >Looking to check in tickets?</nuxt-link
-          >
-        </p>
+      <div v-else class="flex flex-col">
+        <div class="mb-6 mx-auto p-2 bg-sta-rouge">
+          <h3 class="text-center text-h3">Find a booking</h3>
+          <p class="text-center">
+            <nuxt-link
+              to="collect"
+              class="hover:text-gray-300 underline transition-colors"
+              >Looking to check in tickets instead?</nuxt-link
+            >
+          </p>
+        </div>
         <ticket-scanner
           @scanned="
             ({ bookingReference, ticketId }) => {
@@ -121,6 +138,7 @@ import BoxOfficePerformanceBookings from '@/graphql/queries/box-office/BoxOffice
 import BookingDetailsRow from '@/components/box-office/BookingDetailsRow.vue'
 import TicketScanner from '@/components/ui/Inputs/TicketScanner.vue'
 import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue'
+import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue'
 
 export default {
   components: {
@@ -130,6 +148,7 @@ export default {
     BookingDetailsRow,
     TicketScanner,
     PaginatedTable,
+    BoxOfficeNavigation,
   },
   props: {
     performance: {
@@ -144,6 +163,7 @@ export default {
       offset: 0,
       searchQuery: null,
       checkedInSort: null,
+      bookingFilter: null,
 
       selected_booking_index: null,
 
@@ -190,6 +210,8 @@ export default {
             this.checkedInSort !== null
               ? `${this.checkedInSort}checked_in`
               : null,
+          checkedIn: this.bookingFilter === 'NOCHECKIN' ? false : null,
+          discount: this.bookingFilter === 'COMPS' ? 1 : null,
         }
       },
       debounce: 100,
@@ -200,6 +222,8 @@ export default {
       result(result) {
         if (result.data)
           this.pageInfo = result.data.performance.bookings.pageInfo
+
+        this.selected_booking_index = this.bookings.length === 1 ? 0 : null
       },
       fetchPolicy: 'cache-and-network',
     },
