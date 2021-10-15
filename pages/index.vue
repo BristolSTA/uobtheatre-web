@@ -13,7 +13,25 @@
           </div>
         </div>
       </div>
-      <carousel v-else :carousel-productions="bannerProductions" />
+      <carousel v-else :carousel-items="bannerProductions">
+        <template #default="slotProps">
+          <div class="flex items-center h-full bg-black bg-opacity-40">
+            <NuxtLink
+              class="container px-4 md:pl-12 lg:pl-4 lg:w-2/3"
+              :to="`/production/${slotProps.carouselItem.text.slug}`"
+            >
+              <div class="text-2xl">
+                {{ slotProps.carouselItem.text.society.name }}
+              </div>
+              <div class="text-h1">{{ slotProps.carouselItem.text.name }}</div>
+              <div class="text-2xl">
+                {{ slotProps.carouselItem.text.start | dateFormat('d MMMM') }} -
+                {{ slotProps.carouselItem.text.end | dateFormat('d MMMM y') }}
+              </div>
+            </NuxtLink>
+          </div>
+        </template>
+      </carousel>
     </div>
 
     <div ref="whatson" class="container mt-4 text-white">
@@ -21,11 +39,11 @@
       <div
         v-for="(production, index) in upcomingProductionsToShow"
         :key="production.id"
-        class="production-feature flex flex-wrap items-center py-4"
+        class="flex flex-wrap items-center py-4 production-feature"
         :class="{ 'flex-row-reverse': index % 2 == 1 }"
       >
         <div
-          class="p-2 w-full text-center md:px-6 md:w-1/2"
+          class="w-full p-2 text-center md:px-6 md:w-1/2"
           :class="[index % 2 == 0 ? 'md:text-right' : 'md:text-left']"
         >
           <NuxtLink :to="`/production/${production.slug}`">
@@ -38,16 +56,16 @@
           </NuxtLink>
         </div>
         <div
-          class="p-2 w-full text-center md:px-6 md:w-1/2"
+          class="w-full p-2 text-center md:px-6 md:w-1/2"
           :class="[index % 2 == 0 ? 'md:text-left' : 'md:text-right']"
         >
           <NuxtLink :to="`/production/${production.slug}`">
-            <h2 class="hover:text-gray-300 text-h2 font-semibold">
+            <h2 class="font-semibold hover:text-gray-300 text-h2">
               {{ production.name }}
             </h2>
           </NuxtLink>
           <span v-if="production.subtitle">{{ production.subtitle }}</span>
-          <p class="text-sta-orange font-semibold">
+          <p class="font-semibold text-sta-orange">
             {{ displayStartEnd(production.start, production.end, 'd MMMM') }}
           </p>
           <p class="m-2">
@@ -55,7 +73,7 @@
           </p>
           <NuxtLink
             :to="`/production/${production.slug}`"
-            class="btn btn-rouge mt-6"
+            class="mt-6 btn btn-rouge"
           >
             More Information & Book
           </NuxtLink>
@@ -119,9 +137,23 @@ export default {
   },
   computed: {
     bannerProductions() {
-      return this.upcomingProductionsToShow.filter((production) => {
-        return !!production.coverImage
-      })
+      return this.upcomingProductionsToShow
+        .filter((production) => {
+          return !!production.coverImage
+        })
+        .map((production) => {
+          return {
+            id: production.id,
+            displayImage: production.coverImage,
+            text: {
+              slug: production.slug,
+              name: production.name,
+              start: production.start,
+              end: production.end,
+              society: production.society,
+            },
+          }
+        })
     },
     upcomingProductionsToShow() {
       return lo.take(this.upcomingProductions, 4)

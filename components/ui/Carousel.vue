@@ -14,39 +14,21 @@
       name="slide"
     >
       <div
-        v-for="index in [currentProduction]"
+        v-for="index in [currentItem]"
         :key="index"
         ref="carousel"
-        class="absolute bottom-0 left-0 right-0 top-0 bg-center"
+        class="absolute top-0 bottom-0 left-0 right-0 bg-center"
         :class="[vheight == 100 ? 'bg-no-repeat bg-contain' : 'bg-cover']"
         :style="{
-          'background-image': bannerBackgorund(carouselProductions[index]),
+          'background-image': bannerBackgorund(carouselItems[index]),
         }"
       >
-        <div
-          v-if="productionInfo"
-          class="flex items-center bg-black bg-opacity-40"
-          :style="{ height: vheight + 'vh' }"
-        >
-          <NuxtLink
-            class="container px-4 md:pl-12 lg:pl-4 lg:w-2/3"
-            :to="`/production/${carouselProductions[index].slug}`"
-          >
-            <div class="text-2xl">
-              {{ carouselProductions[index].society.name }}
-            </div>
-            <div class="text-h1">{{ carouselProductions[index].name }}</div>
-            <div class="text-2xl">
-              {{ carouselProductions[index].start | dateFormat('d MMMM') }} -
-              {{ carouselProductions[index].end | dateFormat('d MMMM y') }}
-            </div>
-          </NuxtLink>
-        </div>
+        <slot :carouselItem="carouselItems[index]"></slot>
       </div>
     </transition-group>
     <template v-if="carouselLength > 1">
-      <div class="absolute bottom-2 flex justify-center w-full">
-        <ul class="flex items-center p-0 whitespace-nowrap space-x-3">
+      <div class="absolute flex justify-center w-full bottom-2">
+        <ul class="flex items-center p-0 space-x-3 whitespace-nowrap">
           <li v-for="n in carouselLength" :key="n">
             <button
               class="
@@ -61,9 +43,7 @@
                 transition-colors
                 duration-500
               "
-              :class="[
-                n - 1 == currentProduction ? 'bg-white' : 'bg-transparent',
-              ]"
+              :class="[n - 1 == currentItem ? 'bg-white' : 'bg-transparent']"
               @click="goTo(n - 1), enableAutoPlay()"
               @keypress="goTo(n - 1)"
             ></button>
@@ -74,11 +54,11 @@
         v-if="navArrows"
         class="
           absolute
-          left-0
           top-0
+          left-0
+          invisible
           w-32
           h-full
-          invisible
           md:w-24 md:visible
           lg:w-32
         "
@@ -89,11 +69,11 @@
             w-full
             h-full
             text-4xl
-            hover:bg-black hover:bg-opacity-30
-            focus:outline-none
-            cursor-pointer
             transition-colors
             duration-300
+            cursor-pointer
+            hover:bg-black hover:bg-opacity-30
+            focus:outline-none
           "
           @click="goToPrev()"
           @keypress="goToPrev()"
@@ -105,11 +85,11 @@
         v-if="navArrows"
         class="
           absolute
-          right-0
           top-0
+          right-0
+          invisible
           w-32
           h-full
-          invisible
           md:w-24 md:visible
           lg:w-32
         "
@@ -120,11 +100,11 @@
             w-full
             h-full
             text-4xl
-            hover:bg-black hover:bg-opacity-30
-            focus:outline-none
-            cursor-pointer
             transition-colors
             duration-300
+            cursor-pointer
+            hover:bg-black hover:bg-opacity-30
+            focus:outline-none
           "
           @click="goToNext()"
           @keypress="goToNext()"
@@ -139,13 +119,9 @@
 <script>
 export default {
   props: {
-    carouselProductions: {
+    carouselItems: {
       required: true,
       type: Array,
-    },
-    productionInfo: {
-      default: true,
-      type: Boolean,
     },
     navArrows: {
       default: true,
@@ -170,13 +146,13 @@ export default {
   },
   data() {
     return {
-      currentProduction: 0,
+      currentItem: 0,
       autoplayInterval: null,
     }
   },
   computed: {
     carouselLength() {
-      return this.carouselProductions.length
+      return this.carouselItems.length
     },
   },
   mounted() {
@@ -186,21 +162,21 @@ export default {
     this.disableAutoPlay()
   },
   methods: {
-    bannerBackgorund(carouselProduction) {
-      return `url("${carouselProduction.coverImage.url}")`
+    bannerBackgorund(carouselItem) {
+      return `url("${carouselItem.displayImage.url}")`
     },
-    goTo(currentProduction) {
-      this.currentProduction = currentProduction
+    goTo(currentItem) {
+      this.currentItem = currentItem
     },
     goToPrev() {
-      if (this.currentProduction === 0) {
+      if (this.currentItem === 0) {
         this.goTo(this.carouselLength - 1)
-      } else this.goTo(this.currentProduction - 1)
+      } else this.goTo(this.currentItem - 1)
     },
     goToNext() {
-      if (this.currentProduction === this.carouselLength - 1) {
+      if (this.currentItem === this.carouselLength - 1) {
         this.goTo(0)
-      } else this.goTo(this.currentProduction + 1)
+      } else this.goTo(this.currentItem + 1)
     },
     disableAutoPlay() {
       clearInterval(this.autoplayInterval)
