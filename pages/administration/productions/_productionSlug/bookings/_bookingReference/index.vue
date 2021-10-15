@@ -113,7 +113,7 @@ export default {
           'Owned By',
           `${this.rawBooking.user.firstName} ${this.rawBooking.user.lastName} (Email: ${this.rawBooking.user.email})`,
         ],
-        ['Admin Discount', 0],
+        ['Admin Discount', this.rawBooking.adminDiscountPercentage],
       ]
     },
   },

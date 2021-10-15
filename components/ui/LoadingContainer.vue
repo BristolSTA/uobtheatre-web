@@ -5,18 +5,19 @@
       ref="loading-overlay"
       :class="{ 'absolute bg-sta-gray-dark bg-opacity-95': showContent }"
       class="
-        z-10
         top-0
-        flex
+        z-10
+        flex flex-col
         items-center
         justify-center
-        py-6
         w-full
         h-full
-        text-white text-3xl
+        py-6
+        text-white
       "
     >
-      <loading-icon :size-class="loaderIconSize" />
+      <loading-icon :size-class="loaderIconSize" class="text-3xl" />
+      <slot name="overlay"></slot>
     </div>
     <slot v-if="showContent"></slot>
   </div>

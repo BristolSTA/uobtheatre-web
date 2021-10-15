@@ -11,6 +11,7 @@ query bookingDetails($bookingReference: String!) {
           firstName
           lastName
         }
+        adminDiscountPercentage
         user {
           id
           firstName

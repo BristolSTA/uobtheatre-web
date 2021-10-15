@@ -5,12 +5,14 @@ mutation payBooking(
   $nonce: String
   $provider: PaymentMethod
   $idempotencyKey: String
+  $deviceId: String
 ) {
   payBooking(
     bookingId: $id
     nonce: $nonce
     price: $totalPence
     paymentProvider: $provider
+    deviceId: $deviceId
     idempotencyKey: $idempotencyKey
   ) {
     success
@@ -24,6 +26,7 @@ mutation payBooking(
       }
     }
     payment {
+      id
       value
       currency
       cardBrand

@@ -17,6 +17,13 @@ describe('Login', function () {
         $router: {
           replace: (fakeReplace = jest.fn()),
         },
+        $store: {
+          state: {
+            'box-office': {
+              locationId: null,
+            },
+          },
+        },
       },
     })
     authBoxComponent = loginComponent.findComponent(AuthBox)
