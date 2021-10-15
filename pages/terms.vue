@@ -36,7 +36,7 @@
       reserved, unless otherwise stated at the time of booking.
     </p>
     <p>
-      Tickets purchased online are subject to a booking fee(s). Check the total
+      Tickets purchased may be subject to a booking fee(s). Check the total
       amount before proceeding with payment. Some shows also include a Theatre
       Improvement Levy which provides a valuable source of funding to theatre
       maintenance and improvements at Bristol SU.

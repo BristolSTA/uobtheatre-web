@@ -1,5 +1,6 @@
 <template>
   <div>
+    <box-office-navigation :performance="booking.performance" />
     <h2 class="text-h2">Booking Complete!</h2>
     <h3 class="text-gray-500 text-h3">Reference {{ booking.reference }}</h3>
     <div class="grid gap-4 grid-cols-1 mb-6 md:grid-cols-2">
@@ -23,8 +24,9 @@ import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue'
 import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue'
 import CheckInTickets from '@/graphql/mutations/box-office/CheckInTickets.gql'
 import { performMutation, errorToast, successToast } from '@/utils'
+import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue'
 export default {
-  components: { TicketsOverview, PaymentOverview },
+  components: { TicketsOverview, PaymentOverview, BoxOfficeNavigation },
   props: {
     booking: {
       required: true,

@@ -6,6 +6,8 @@
         :performance="performance"
         :detailed="false"
       />
+
+      <box-office-navigation :performance="performance" :compact="true" />
     </div>
 
     <ticket-scanner :check-in-mode="true" :performance-id="performance.id" />
@@ -15,9 +17,10 @@
 <script>
 import Overview from '@/components/box-office/Overview.vue'
 import TicketScanner from '@/components/ui/Inputs/TicketScanner.vue'
+import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue'
 
 export default {
-  components: { Overview, TicketScanner },
+  components: { Overview, TicketScanner, BoxOfficeNavigation },
   props: {
     performance: {
       required: true,

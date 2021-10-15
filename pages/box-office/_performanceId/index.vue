@@ -6,60 +6,23 @@
         :performance="performance"
       />
     </div>
-    <div class="flex flex-wrap justify-center">
-      <menu-tile
-        v-for="(box, index) in navItems"
-        :key="index"
-        :to="box.path"
-        :icon="box.icon"
-        class="
-          mb-4
-          2xl:w-1/5
-          w-full
-          bg-sta-green
-          hover:bg-sta-orange
-          md:mr-4 md:w-1/3
-          lg:w-1/4
-        "
-        >{{ box.name }}</menu-tile
-      >
-    </div>
+    <box-office-navigation :performance="performance" :show-home="false" />
   </div>
 </template>
 
 <script>
 import Overview from '@/components/box-office/Overview.vue'
-import MenuTile from '@/components/ui/MenuTile.vue'
+import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue'
 
 export default {
-  components: { Overview, MenuTile },
+  components: { Overview, BoxOfficeNavigation },
   props: {
     performance: {
       required: true,
       type: Object,
     },
   },
-  data() {
-    return {
-      navItems: [
-        {
-          name: 'Check or Collect Tickets',
-          icon: 'user-check',
-          path: `/box-office/${this.performance.id}/collect`,
-        },
-        {
-          name: 'Sell Tickets',
-          icon: 'cash-register',
-          path: `/box-office/${this.performance.id}/sell`,
-        },
-        {
-          name: 'View Bookings',
-          icon: 'clipboard-list',
-          path: `/box-office/${this.performance.id}/bookings`,
-        },
-      ],
-    }
-  },
+
   head() {
     return {
       title: `${this.performance.production.name} Box Office`,

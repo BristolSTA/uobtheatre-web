@@ -2,7 +2,7 @@
   <admin-page :title="production.name">
     <template #toolbar>
       <sta-button
-        colour="orange"
+        colour="green"
         icon="link"
         :to="`/production/${production.slug}`"
         >View Public Page</sta-button
@@ -24,15 +24,18 @@
             </tr>
             <tr>
               <table-head-item>Society</table-head-item>
-              <table-row-item>
-                <p class="text-sm">{{ production.society.name }}</p>
-              </table-row-item>
+              <table-row-item> {{ production.society.name }} </table-row-item>
             </tr>
             <tr>
               <table-head-item>Ticket Sales</table-head-item>
               <table-row-item>
-                {{ production.totalTicketsSold }} tickets sold (of
-                {{ production.totalCapacity }} cross-show capacity)
+                {{ production.totalTicketsSold }} of
+                {{ production.totalCapacity }} ({{
+                  Math.floor(
+                    (100 * production.totalTicketsSold) /
+                      production.totalCapacity
+                  )
+                }}%)
                 <progress-bar
                   :percentage="
                     (100 * production.totalTicketsSold) /
@@ -233,10 +236,10 @@ export default {
   },
   methods: {
     salesPercentage(performance) {
-      return (
+      return Math.floor(
         (100 * performance.ticketsBreakdown.totalTicketsSold) /
-        performance.ticketsBreakdown.totalCapacity
-      ).toFixed(0)
+          performance.ticketsBreakdown.totalCapacity
+      )
     },
   },
 }

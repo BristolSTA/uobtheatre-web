@@ -1,6 +1,7 @@
 <template>
   <div>
     <hardware-scanner
+      ref="scanInput"
       v-model="scannedCode"
       @scanned="checkTicket"
       @invalidCode="$emit('invalidCode')"
@@ -98,6 +99,8 @@ export default {
       successToast.fire({
         title: 'All Booking Tickets Checked In',
       })
+
+      this.$refs.scanInput.focus()
     },
     closeNotificaton() {
       this.checkedInData = checkedInDataState()

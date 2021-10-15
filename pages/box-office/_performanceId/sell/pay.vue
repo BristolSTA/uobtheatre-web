@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h2 class="text-h3">Reference: {{ booking.reference }}</h2>
     <div class="grid gap-2 md:grid-cols-2">
       <tickets-overview :booking="booking" />
       <booking-price-overview :booking="booking" />
