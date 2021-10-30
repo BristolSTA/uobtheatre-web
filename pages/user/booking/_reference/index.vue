@@ -76,10 +76,10 @@
           <ticket
             v-for="(ticket, index) in booking.tickets"
             :key="index"
-            :booking="booking"
+            :performance="booking.performance"
+            :reference="booking.reference"
             :ticket="ticket"
             :user="$store.state.auth.user"
-            :index="index + 1"
           />
         </div>
       </div>

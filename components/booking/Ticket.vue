@@ -1,35 +1,38 @@
 <template>
   <div class="flex flex-col p-4 pt-2 text-black bg-white rounded-xl">
     <h1 class="text-h2">
-      {{ booking.performance.production.name }}
+      {{ performance.production.name }}
     </h1>
     <p>
-      {{ booking.performance.start | dateFormat('EEEE d MMMM kkkk') }}
+      {{ performance.start | dateFormat('EEEE d MMMM kkkk') }}
     </p>
     <p>
       <span class="pr-2">
-        Doors: {{ booking.performance.doorsOpen | dateFormat('t') }}
+        Doors: {{ performance.doorsOpen | dateFormat('t') }}
       </span>
       |
       <span class="pl-2">
-        Start: {{ booking.performance.start | dateFormat('t') }}
+        Start: {{ performance.start | dateFormat('t') }}
       </span>
     </p>
-    <div class="flex justify-between w-full font-semibold">
+    <div
+      v-if="ticket.concessionType.name && ticket.seatGroup.name"
+      class="flex justify-between w-full font-semibold"
+    >
       <p class="pr-1">1x {{ ticket.concessionType.name }}</p>
       <p class="pl-1 text-right">{{ ticket.seatGroup.name }}</p>
     </div>
     <div class="flex flex-grow items-center justify-center py-2 w-full">
       <qrcode-vue
-        :value="ticket.generateQRCodeString(booking.reference)"
+        :value="ticket.generateQRCodeString(reference)"
         level="L"
         size="240"
       />
     </div>
     <p>
-      Booking Ref: <span class="font-mono">{{ booking.reference }}</span>
+      Booking Ref: <span class="font-mono">{{ reference }}</span>
     </p>
-    <div class="flex justify-between w-full">
+    <div v-if="fullName" class="flex justify-between w-full">
       <p>Booked By: {{ fullName }}</p>
     </div>
     <p class="text-right text-gray-400 font-mono text-sm italic">
@@ -42,7 +45,6 @@
 import lo from 'lodash'
 import QrcodeVue from 'qrcode.vue'
 
-import Booking from '@/classes/Booking'
 import Ticket from '@/classes/Ticket'
 
 export default {
@@ -51,26 +53,28 @@ export default {
     QrcodeVue,
   },
   props: {
-    booking: {
+    performance: {
       required: true,
-      type: Booking,
+      type: Object,
+    },
+    reference: {
+      required: true,
+      type: String,
     },
     ticket: {
       required: true,
       type: Ticket,
     },
     user: {
-      required: true,
+      default: null,
       type: Object,
-    },
-    index: {
-      required: true,
-      type: Number,
     },
   },
   computed: {
     fullName() {
-      return lo.join([this.user.firstName, this.user.lastName], ' ')
+      return this.user
+        ? lo.join([this.user.firstName, this.user.lastName], ' ')
+        : null
     },
   },
 }

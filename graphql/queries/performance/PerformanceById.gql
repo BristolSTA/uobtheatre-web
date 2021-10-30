@@ -1,0 +1,12 @@
+#import "../../fragments/production/ProductionBasicInfoFragment.gql"
+query performanceById($id: ID!) {
+  performance(id: $id) {
+    id
+    doorsOpen
+    start
+    end
+    production {
+      ...ProductionBasicInfo
+    }
+  }
+}

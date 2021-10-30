@@ -15,8 +15,9 @@ describe('Ticket component', function () {
     booking.updateFromAPIData(BookingFixture())
     ticketComponent = mount(Ticket, {
       propsData: {
-        booking,
+        performance: booking.performance,
         ticket: booking.tickets[0],
+        reference: booking.reference,
         user: {
           firstName: 'Alex',
           lastName: 'Toof',
@@ -32,7 +33,7 @@ describe('Ticket component', function () {
 
     expect(
       ticketComponent.vm.ticket.generateQRCodeString(
-        ticketComponent.vm.booking.reference
+        ticketComponent.vm.reference
       )
     ).to.eq('WyJ5T0lZZzZDbzh2R1IiLDFd')
   })
