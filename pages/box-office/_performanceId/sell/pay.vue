@@ -1,6 +1,21 @@
 <template>
   <div v-if="booking.tickets.length">
     <h2 class="text-h3">Reference: {{ booking.reference }}</h2>
+    <button
+      class="
+        btn
+        p-2
+        bg-sta-green
+        hover:bg-sta-green-dark
+        rounded
+        transition-colors
+        mb-2
+      "
+      @click="$router.go(-1)"
+    >
+      <font-awesome-icon icon="chevron-left" />
+      Edit Booking
+    </button>
     <div class="grid gap-2 md:grid-cols-2">
       <tickets-overview :booking="booking" />
       <booking-price-overview :booking="booking" />

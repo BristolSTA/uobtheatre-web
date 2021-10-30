@@ -19,7 +19,7 @@
       </template>
       <template v-if="performance.isOnline">Online</template>
     </div>
-    <div>Starting at {{ performance.start | dateFormat('T') }}</div>
+    <div>Doors open at {{ performance.doorsOpen | dateFormat('T') }}</div>
     <div v-if="performance.durationMins">
       {{ humanDuration(performance.durationMins) }}
     </div>
