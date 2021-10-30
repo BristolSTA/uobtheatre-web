@@ -37,6 +37,7 @@ export default {
     'faCheck',
     'faTimes',
     'faExclamation',
+    'faExclamationTriangle',
     'faBold',
     'faParagraph',
     'faUnderline',

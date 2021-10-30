@@ -1,11 +1,23 @@
 <template>
   <div v-if="booking.performance" class="text-white">
-    <div class="mb-2 p-2 bg-sta-gray-light md:text-center">
-      <p class="text-h3">Selected Performance:</p>
-      <p class="text-sta-orange">
-        {{ booking.performance.start | dateFormat('cccc d MMM') }}, Starting at
-        {{ booking.performance.start | dateFormat('T') }}
-      </p>
+    <div class="mb-2">
+      <div class="p-2 bg-sta-gray-light md:text-center">
+        <p class="text-h3">Selected Performance:</p>
+        <p class="text-sta-orange">
+          {{ booking.performance.start | dateFormat('cccc d MMM') }}, Starting
+          at
+          {{ booking.performance.start | dateFormat('T') }}
+        </p>
+      </div>
+      <div v-if="performanceMinsAway < 15" class="bg-sta-rouge p-2 text-center">
+        <h3 class="text-lg font-semibold">
+          <font-awesome-icon icon="exclamation-triangle" /> Caution!
+        </h3>
+        <p v-if="performanceStarted">This performance has already started!</p>
+        <p v-else>
+          This performance starts in {{ performanceMinsAway }} minutes!
+        </p>
+      </div>
     </div>
     <div v-if="ticketsMatrix" class="space-y-1">
       <ticket-options
@@ -63,6 +75,15 @@ export default {
     maxTickets: {
       default: null,
       type: Number,
+    },
+  },
+  computed: {
+    performanceMinsAway() {
+      const timeDiff = new Date(this.booking.performance.start) - Date.now()
+      return Math.round(timeDiff / (1000 * 60))
+    },
+    performanceStarted() {
+      return this.performanceMinsAway < 0
     },
   },
 }
