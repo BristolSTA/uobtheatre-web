@@ -45,11 +45,11 @@ import Ticket from '@/components/booking/Ticket.vue'
 export default {
   components: { Ticket },
   async asyncData({ app, params, error, query, redirect }) {
-    if (!query.ticketID || !query.performanceId) return redirect('./')
+    if (!query.ticketID || !query.performanceID) return redirect('./')
     const { data } = await app.apolloProvider.defaultClient.query({
       query: require('@/graphql/queries/performance/PerformanceById.gql'),
       variables: {
-        id: query.performanceId,
+        id: query.performanceID,
       },
     })
 
