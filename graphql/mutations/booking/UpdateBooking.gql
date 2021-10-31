@@ -10,6 +10,7 @@ mutation updateBooking($id: IdInputField!, $tickets: [UpdateTicketInput]) {
         description
       }
       user {
+        id
         firstName
         lastName
       }

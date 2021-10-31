@@ -30,7 +30,9 @@ describe('Pick Performance Stage', () => {
       'Anson Theatre and Online'
     )
     expect(performanceOverviewComponent.find('a').text()).to.eq('Anson Theatre')
-    expect(performanceOverviewComponent.text()).to.contain('Starting at 16:00')
+    expect(performanceOverviewComponent.text()).to.contain(
+      'Doors open at 15:00'
+    )
     expect(performanceOverviewComponent.text()).to.contain('2 hours')
     expect(performanceOverviewComponent.text()).to.contain('Tickets Available')
     expect(performanceOverviewComponent.find('button').text()).to.eq('Book')

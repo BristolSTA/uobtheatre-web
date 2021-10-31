@@ -41,6 +41,7 @@ describe('Production Performances', function () {
       createWithPerformances([
         // An available in-person & online performance
         {
+          doorsOpen: DateTime.fromISO('2020-11-28T15:00:00'),
           start: DateTime.fromISO('2020-11-28T16:00:00'),
           end: DateTime.fromISO('2020-11-28T18:00:00'),
           soldOut: false,
@@ -51,6 +52,7 @@ describe('Production Performances', function () {
         // A sold out performance
         {
           id: 2,
+          doorsOpen: DateTime.fromISO('2020-11-28T17:00:00'),
           start: DateTime.fromISO('2020-11-30T18:00:00'),
           end: DateTime.fromISO('2020-11-30T20:00:00'),
           soldOut: true,
@@ -86,7 +88,7 @@ describe('Production Performances', function () {
       expect(performance.find('div.bg-sta-green').exists()).to.be.false
       expect(performance.find('div.bg-sta-gray-dark').exists()).to.be.true
       expect(fixTextSpacing(performance.text())).to.contain('Online')
-      expect(performance.text()).to.contain('Starting at 18:00')
+      expect(performance.text()).to.contain('Doors open at 17:00')
       expect(performance.text()).to.contain('No Tickets Available')
       expect(performance.find('button').text()).to.eq('SOLD OUT')
     })
