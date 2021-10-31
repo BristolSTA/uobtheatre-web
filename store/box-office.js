@@ -5,6 +5,7 @@ const locationCookieKey = 'uobtheatre-boxoffice-location'
 export const state = () => ({
   locationId: null,
   terminalDevice: null,
+  inProgressBookingID: null,
 })
 
 export const mutations = {
@@ -13,6 +14,9 @@ export const mutations = {
   },
   SET_TERMINAL_DEVICE(state, device) {
     state.terminalDevice = device
+  },
+  SET_IN_PROGRESS_BOOKING_ID(state, id) {
+    state.inProgressBookingID = id
   },
 }
 

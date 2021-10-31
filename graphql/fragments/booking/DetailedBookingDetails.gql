@@ -4,6 +4,8 @@
 fragment DetailedBookingDetails on BookingNode {
   id
   reference
+  expired
+  expiresAt
   status {
     value
     description

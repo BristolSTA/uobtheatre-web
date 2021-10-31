@@ -1,11 +1,11 @@
 <template>
-  <div class="flex flex-wrap justify-center m-4">
+  <div class="flex flex-wrap justify-center m-4 gap-4">
     <menu-tile
       v-for="(box, index) in completeNavItems"
       :key="index"
       :to="box.path"
       :icon="box.icon"
-      class="bg-sta-green hover:bg-sta-orange md:mr-4"
+      class="bg-sta-green hover:bg-sta-orange"
       :text-size="compact ? 'text-sm' : undefined"
       :class="[compact ? '' : 'w-full md:w-1/3 lg:w-1/4 2xl:w-1/5']"
       >{{ box.name }}</menu-tile

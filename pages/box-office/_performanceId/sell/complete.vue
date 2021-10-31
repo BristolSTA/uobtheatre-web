@@ -36,6 +36,7 @@ export default {
   },
   async mounted() {
     if (!this.booking.reference) return this.$router.push('../')
+
     try {
       await performMutation(
         this.$apollo,
@@ -62,6 +63,10 @@ export default {
         title: 'Unable to check in tickets automatically',
       })
     }
+  },
+  beforeDestroy() {
+    // Remove stored booking ID
+    this.$store.commit('box-office/SET_IN_PROGRESS_BOOKING_ID', null)
   },
   methods: {
     goToMenu() {

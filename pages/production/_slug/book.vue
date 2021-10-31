@@ -8,23 +8,38 @@
         :show-detailed-info="false"
       />
       <div class="flex flex-wrap mb-2 md:flex-nowrap md:space-x-2">
-        <booking-navigation
-          class="hidden md:flex md:flex-none md:w-1/4"
-          :current-stage-index="currentStageIndex"
-          :production="production"
-          :booking="booking"
-          @goto-stage="navigateToStage"
-        />
-        <div v-if="currentStage" class="mb-1 w-full text-center md:hidden">
-          <h1 class="text-sta-green text-h1">{{ currentStage.name }}</h1>
-          <clickable-link
-            v-if="currentStageIndex > 0"
-            class="text-white"
-            @click="gotoPreviousStage"
+        <div class="md:flex-none md:w-1/4 flex-col">
+          <booking-navigation
+            class="hidden md:flex"
+            :current-stage-index="currentStageIndex"
+            :production="production"
+            :booking="booking"
+            @goto-stage="navigateToStage"
+          />
+          <div v-if="currentStage" class="mb-1 w-full text-center md:hidden">
+            <h1 class="text-sta-green text-h1">{{ currentStage.name }}</h1>
+            <clickable-link
+              v-if="currentStageIndex > 0"
+              class="text-white"
+              @click="gotoPreviousStage"
+            >
+              <font-awesome-icon icon="chevron-left" />Back
+            </clickable-link>
+          </div>
+          <div
+            v-if="booking.raw && booking.raw.expiresAt"
+            class="p-2 bg-sta-green-dark my-2 rounded text-center shadow-inner"
           >
-            <font-awesome-icon icon="chevron-left" />Back
-          </clickable-link>
+            You have
+            <strong
+              ><time-remaining-countdown
+                :expires-at="booking.raw.expiresAt"
+                @finished="bookingExpired"
+            /></strong>
+            to complete this booking
+          </div>
         </div>
+
         <div
           id="booking-view"
           class="flex-grow p-1 pb-4 max-w-full bg-sta-gray-dark sm:p-3"
@@ -55,6 +70,7 @@ import { swal } from '@/utils'
 import ProductionBasicInfoFragment from '@/graphql/fragments/production/ProductionBasicInfoFragment.gql'
 import ProductionPerformancesFragment from '@/graphql/fragments/production/ProductionPerformancesFragment.gql'
 import gql from 'graphql-tag'
+import TimeRemainingCountdown from '@/components/ui/Formatters/TimeRemainingCountdown.vue'
 import {
   getNextStage,
   getPreviousStage,
@@ -65,6 +81,7 @@ export default {
     BookingNavigation,
     ProductionBanner,
     ClickableLink,
+    TimeRemainingCountdown,
   },
   middleware: 'authed',
   async asyncData({ params, app, error }) {
@@ -124,6 +141,22 @@ export default {
     },
   },
   methods: {
+    bookingExpired() {
+      this.booking = new Booking()
+      this.loadDataForStage()
+      swal
+        .fire({
+          title: 'Booking Expired',
+          text: "Sorry! Your booking has expired. We do this to ensure that tickets aren't reserved for too long.",
+          confirmButtonText: 'Create a new booking',
+          cancelButtonText: 'Return to home',
+          showCancelButton: true,
+          showConfirmButton: true,
+        })
+        .then(({ isConfirmed, isDismissed }) => {
+          if (isDismissed) return this.$router.push('/')
+        })
+    },
     onChildMount() {
       this.currentStage = this.$refs.stageComponent.$options.stageInfo
 

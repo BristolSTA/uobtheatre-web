@@ -112,6 +112,12 @@ export default {
         return
       }
 
+      // Update booking ID in store
+      this.$store.commit(
+        'box-office/SET_IN_PROGRESS_BOOKING_ID',
+        bookingResponse.id
+      )
+
       // Check for changes since API called.
       if (this.booking.tickets.length === bookingResponse.tickets.length) {
         return this.booking.updateFromAPIData(bookingResponse)
