@@ -53,6 +53,25 @@ describe('Home', function () {
       expect(homepageComponent.findComponent(Carousel).exists()).to.be.true
       expect(homepageComponent.vm.bannerProductions.length).equals(3)
     })
+
+    it('carousel displays correct data', async () => {
+      await seedProductions()
+
+      const carousel = homepageComponent.findComponent(Carousel)
+      const slide = carousel.findComponent({ ref: 'carousel' })
+      expect(slide.text()).to.contain('STA')
+      expect(slide.text()).to.contain('Legally Ginger')
+      expect(fixTextSpacing(slide.text())).to.contain(
+        '14 November - 18 November 2020'
+      )
+
+      expect(slide.attributes('style')).to.contain(
+        'background-image: url(http://pathto.example/cover-image.png)'
+      )
+      expect(
+        homepageComponent.findAllComponents(RouterLinkStub).at(0).props('to')
+      ).to.equal('/production/legally-ginger')
+    })
   })
 
   describe("What's On", () => {
