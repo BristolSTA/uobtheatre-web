@@ -52,7 +52,7 @@
         <template v-else>No more tickets available at this location</template>
       </div>
       <concession-type
-        v-for="(concessionTypeEdge, index) in ticketOption.concessionTypes"
+        v-for="(concessionTypeEdge, index) in orderedConcessionTypes"
         :key="index"
         :concession-type-edge="concessionTypeEdge"
         :current-tickets="currentLocationTickets"
@@ -105,6 +105,7 @@
 <script>
 import ConcessionType from '@/components/booking/ConcessionType.vue'
 import GroupTicketButton from '@/components/booking/GroupTicketButton.vue'
+import lo from 'lodash'
 
 export default {
   name: 'SeatLocation',
@@ -140,6 +141,9 @@ export default {
     },
   },
   computed: {
+    orderedConcessionTypes() {
+      return lo.sortBy(this.ticketOption.concessionTypes, 'price').reverse()
+    },
     available() {
       return (
         this.groupCapacityRemaining !== 0 ||
