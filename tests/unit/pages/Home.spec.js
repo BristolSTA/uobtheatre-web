@@ -107,7 +107,7 @@ describe('Home', function () {
       // Has correct dates
       expect(
         fixTextSpacing(whatsOnProductions.at(0).find('div:last-of-type').text())
-      ).to.contain('13 November - 14 November 2020')
+      ).to.contain('13 November 2020')
       // Link to production
       expect(whatsOnProductions.at(0).find('a').exists()).to.be.true
       expect(
@@ -136,7 +136,7 @@ describe('Home', function () {
               Production({
                 coverImage: null,
                 start: '2020-11-13',
-                end: '2020-11-14',
+                end: '2020-11-13',
               }),
               // Seed a production that can be featured
               Production({ id: 2, start: '2020-11-14', end: '2020-11-18' }),
