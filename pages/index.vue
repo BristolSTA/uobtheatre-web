@@ -68,7 +68,7 @@
           <p class="font-semibold text-sta-orange">
             {{ displayStartEnd(production.start, production.end, 'd MMMM') }}
           </p>
-          <p class="m-2">
+          <p>
             {{ production.description | truncate(230) }}
           </p>
           <NuxtLink

@@ -7,6 +7,7 @@ query adminProductions(
   productions(
     first: 10
     orderBy: "-start"
+    userHasPermission: "view_production"
     offset: $offset
     start_Lte: $startLte
     end_Gte: $endGte
