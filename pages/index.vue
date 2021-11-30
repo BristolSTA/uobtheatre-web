@@ -25,8 +25,13 @@
               </div>
               <div class="text-h1">{{ slotProps.carouselItem.text.name }}</div>
               <div class="text-2xl">
-                {{ slotProps.carouselItem.text.start | dateFormat('d MMMM') }} -
-                {{ slotProps.carouselItem.text.end | dateFormat('d MMMM y') }}
+                {{
+                  displayStartEnd(
+                    slotProps.carouselItem.text.start,
+                    slotProps.carouselItem.text.end,
+                    'd MMMM'
+                  )
+                }}
               </div>
             </NuxtLink>
           </div>
