@@ -7,9 +7,13 @@
         :to="`/production/${production.slug}`"
         >View Public Page</sta-button
       >
-      <!-- <sta-button colour="rouge" icon="edit" :to="`${production.slug}/edit`"
+      <sta-button
+        v-if="canEdit"
+        colour="orange"
+        icon="edit"
+        :to="`${production.slug}/edit`"
         >Edit</sta-button
-      > -->
+      >
     </template>
     <div class="space-y-4">
       <div class="flex flex-wrap justify-around space-y-4">
@@ -26,7 +30,7 @@
               <table-head-item>Society</table-head-item>
               <table-row-item> {{ production.society.name }} </table-row-item>
             </tr>
-            <tr>
+            <tr v-if="production.totalCapacity && production.salesBreakdown">
               <table-head-item>Ticket Sales</table-head-item>
               <table-row-item>
                 {{ production.totalTicketsSold }} of
@@ -44,7 +48,7 @@
                 />
               </table-row-item>
             </tr>
-            <tr>
+            <tr v-if="production.salesBreakdown">
               <table-head-item>Sales Total</table-head-item>
               <table-row-item
                 >£{{
@@ -52,7 +56,7 @@
                 }}</table-row-item
               >
             </tr>
-            <tr>
+            <tr v-if="production.salesBreakdown">
               <table-head-item>Total Society Revenue</table-head-item>
               <table-row-item
                 >£{{
@@ -62,29 +66,26 @@
             </tr>
           </table>
         </card>
-        <div class="flex flex-col items-center px-6 space-y-5">
-          <!-- <menu-tile
-            icon="clipboard-list"
-            class="bg-sta-green hover:bg-sta-green-dark"
-            :to="`${production.slug}/bookings`"
-            >View Bookings</menu-tile
-          > -->
-          <!-- <menu-tile
-            v-if="production.status.value === 'DRAFT'"
-            class="bg-sta-orange hover:bg-sta-orange-dark"
-            icon="user-check"
-            >Submit for Review TODO</menu-tile
-          > -->
-        </div>
+        <card v-if="actions.length" title="Actions" class="max-w-2xl">
+          <sta-button
+            v-for="(action, index) in actions"
+            :key="index"
+            class="bg-sta-orange hover:bg-sta-orange-dark mt-3"
+            :class="action.class"
+            :icon="action.icon"
+            @click="action.action()"
+            >{{ action.text }}</sta-button
+          >
+        </card>
       </div>
       <card title="Performances">
-        <!-- <template #messageBox>
+        <template v-if="canEdit" #messageBox>
           <nuxt-link
             class="hover:text-gray-200"
             :to="`${production.slug}/performances/create`"
             ><font-awesome-icon icon="plus-circle" class="fa-2x"
           /></nuxt-link>
-        </template> -->
+        </template>
         <paginated-table
           :items="
             performancesData
@@ -160,6 +161,12 @@ import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue'
 import ProductionStatusBadge from '@/components/production/ProductionStatusBadge.vue'
 import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue'
 import TableRow from '@/components/ui/Tables/TableRow.vue'
+import {
+  getValidationErrors,
+  performMutation,
+  successToast,
+  swal,
+} from '@/utils'
 export default {
   components: {
     AdminPage,
@@ -233,6 +240,51 @@ export default {
 
       return null
     },
+    canEdit() {
+      return this.production.permissions.includes('edit_production_objects')
+    },
+    actions() {
+      const list = []
+      if (this.canEdit) {
+        if (this.production.status.value === 'DRAFT') {
+          list.push({
+            icon: 'user-check',
+            action: () => this.setStatus('PENDING'),
+            text: 'Submit for Review',
+          })
+        }
+        if (
+          this.production.status.value === 'PENDING' &&
+          this.production.permissions.includes('approve_production')
+        ) {
+          list.push({
+            icon: 'check',
+            action: () => this.setStatus('APPROVED'),
+            text: 'Approve',
+          })
+        }
+        if (this.production.status.value === 'APPROVED') {
+          list.push({
+            icon: 'globe',
+            class: 'animate-pulse animate',
+            action: () => this.setStatus('PUBLISHED'),
+            text: 'Make Live',
+          })
+        }
+        if (
+          this.production.status.value === 'PUBLISHED' &&
+          new Date(this.production.end) < new Date()
+        ) {
+          list.push({
+            icon: 'times-circle',
+            action: () => this.setStatus('CLOSED'),
+            text: 'Close Production',
+          })
+        }
+      }
+
+      return list
+    },
   },
   methods: {
     salesPercentage(performance) {
@@ -240,6 +292,39 @@ export default {
         (100 * performance.ticketsBreakdown.totalTicketsSold) /
           performance.ticketsBreakdown.totalCapacity
       )
+    },
+    async setStatus(status) {
+      const { isConfirmed } = await swal.fire({
+        title: 'Are you sure?',
+        text: `Are you sure you want to change the status to '${status}'`,
+        showCancelButton: true,
+        showConfirmButton: true,
+      })
+      if (!isConfirmed) return
+
+      try {
+        await performMutation(
+          this.$apollo,
+          {
+            mutation: require('@/graphql/mutations/admin/production/SetProductionStatus.gql'),
+            variables: {
+              id: this.production.id,
+              status,
+            },
+          },
+          'setProductionStatus'
+        )
+      } catch (e) {
+        const errors = getValidationErrors(e)
+        swal.fire({
+          title: 'There was an issue',
+          html: errors.allErrors
+            .map((error) => `<p>${error.message}</p>`)
+            .join(''),
+        })
+      }
+      successToast.fire({ title: 'Status updated' })
+      this.production.status = status
     },
   },
 }

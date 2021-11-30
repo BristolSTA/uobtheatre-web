@@ -85,6 +85,7 @@
 </template>
 
 <script>
+import { swal } from '@/utils'
 import ErrorHelper from '../ErrorHelper.vue'
 export default {
   components: { ErrorHelper },
@@ -92,6 +93,24 @@ export default {
     value: {
       default: null,
       type: [String],
+    },
+    maxFileSizeMb: {
+      default: 2,
+      type: Number,
+    },
+    requiredRatio: {
+      default: null,
+      type: Number,
+    },
+    minWidth: {
+      default: null,
+      type: Number,
+    },
+
+    ratioFlexability: {
+      // How flexiable we can be on accepting perfect ratio
+      default: 0.05,
+      type: Number,
     },
   },
   data() {
@@ -104,17 +123,66 @@ export default {
     }
   },
   watch: {
-    file(newFile) {
-      this.$emit('changed', newFile)
+    file(newFile, oldFile) {
+      this.$emit('change', newFile)
+
       if (!newFile) return (this.fileDataUrl = null)
+      if (!(newFile instanceof Blob)) return (this.fileDataUrl = newFile)
       const fr = new FileReader()
       fr.onload = () => {
         this.fileDataUrl = fr.result
+
+        this.validateFile(newFile, fr.result).then((result) => {
+          if (!result) this.file = oldFile
+        })
       }
       fr.readAsDataURL(newFile)
     },
   },
   methods: {
+    validateFile(file, fileReaderResult) {
+      return new Promise((resolve, reject) => {
+        if (file.size / 1000000 > this.maxFileSizeMb) {
+          swal.fire({
+            title: 'Sorry, this image is too large',
+            text: `Please ensure your file is under ${this.maxFileSizeMb}MB`,
+          })
+          return resolve(false)
+        }
+
+        const image = new Image()
+        image.onload = () => {
+          if (this.requiredRatio) {
+            const ratio = image.width / image.height
+            const maxAllowableRatio =
+              this.requiredRatio * (1 + this.ratioFlexability)
+            const minAllowableRatio =
+              this.requiredRatio * (1 - this.ratioFlexability)
+
+            if ((ratio > maxAllowableRatio) | (ratio < minAllowableRatio)) {
+              swal.fire({
+                title: "Sorry, this image doesn't have the correct ratio",
+                text: `Please ensure your image has a ratio of at ${this.requiredRatio}:1`,
+              })
+              return resolve(false)
+            }
+          }
+          if (this.minWidth) {
+            if (image.width < this.minWidth) {
+              swal.fire({
+                title: "Sorry, this image doesn't have the correct width",
+                text: `Please ensure your image has width of atleast ${this.minWidth}px`,
+              })
+              return resolve(false)
+            }
+          }
+
+          // console.log(image)
+          resolve(true)
+        }
+        image.src = fileReaderResult
+      })
+    },
     onDrop(event) {
       this.draggingOver = false
 

@@ -1,0 +1,10 @@
+query warnings {
+  warnings {
+    edges {
+      node {
+        id
+        description
+      }
+    }
+  }
+}

@@ -149,12 +149,21 @@ const errorToast = swalToast.mixin({
 })
 const successToast = swalToast.mixin({
   icon: 'success',
+  timer: 8000,
+  timerProgressBar: true,
 })
 const apiErrorToast = errorToast.mixin({
   icon: 'error',
   title: 'There was a server error while executing your request',
   timerProgressBar: true,
   timer: 4000,
+})
+const loadingSwal = swal.mixin({
+  didOpen: () => {
+    Swal.showLoading()
+  },
+  allowOutsideClick: false,
+  allowEscapeKey: false,
 })
 
 const isInViewport = function (elem) {
@@ -180,6 +189,7 @@ export {
   silentErrorHandler,
   joinWithAnd,
   performMutation,
+  loadingSwal,
   swal,
   swalToast,
   tailwindConfig,

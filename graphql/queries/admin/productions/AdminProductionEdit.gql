@@ -11,9 +11,25 @@ query adminProductionEdit($slug: String!) {
       }
     }
     slug
-    start
-    end
     description
+    warnings {
+      id
+      description
+    }
+    coverImage {
+      id
+      url
+    }
+    featuredImage {
+      id
+      url
+    }
+    posterImage {
+      id
+      url
+    }
+    ageRating
+    facebookEvent
     performances(orderBy: "start") {
       edges {
         node {

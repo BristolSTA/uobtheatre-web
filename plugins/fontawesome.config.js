@@ -43,6 +43,7 @@ export default {
     'faUnderline',
     'faPlusCircle',
     'faItalic',
+    'faGlobe',
     'faListUl',
     'faListOl',
     'faSave',

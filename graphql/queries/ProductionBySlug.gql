@@ -14,12 +14,15 @@ query productionBySlug($slug: String!) {
       }
     }
     posterImage {
+      id
       url
     }
     featuredImage {
+      id
       url
     }
     coverImage {
+      id
       url
     }
     ageRating
@@ -29,6 +32,7 @@ query productionBySlug($slug: String!) {
     end
     minSeatPrice
     warnings {
+      id
       description
     }
     performances(orderBy: "start", disabled: false) {

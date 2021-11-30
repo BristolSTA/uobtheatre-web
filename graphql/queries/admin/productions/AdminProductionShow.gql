@@ -25,5 +25,6 @@ query adminProductionShow($slug: String!) {
     }
     totalCapacity
     totalTicketsSold
+    permissions
   }
 }

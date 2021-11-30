@@ -53,7 +53,11 @@
             </table-row-item>
             <table-row-item>{{ production.society.name }}</table-row-item>
             <table-row-item>
-              {{ displayStartEnd(production.start, production.end, 'd MMMM') }}
+              {{
+                production.start && production.end
+                  ? displayStartEnd(production.start, production.end, 'd MMMM')
+                  : ''
+              }}
             </table-row-item>
           </table-row>
         </template>
