@@ -106,7 +106,7 @@
     <card title="Images">
       <div class="space-y-4">
         <div class="flex flex-wrap justify-evenly md:flex-nowrap md:space-x-4">
-          <form-label>
+          <form-label :errors="errors" name="featuredImage">
             Feature Image <required-star />
             <template #helper>
               The main image used to promote your production across the site. It
@@ -122,7 +122,7 @@
               />
             </template>
           </form-label>
-          <form-label>
+          <form-label :errors="errors" name="posterImage">
             Poster Image <required-star />
             <template #helper>
               A poster image for your production, portrait in standard "A" paper
@@ -138,7 +138,7 @@
             </template>
           </form-label>
         </div>
-        <form-label>
+        <form-label :errors="errors" name="coverImage">
           Cover Image
           <template #helper>
             A cover image used on the homepage carousel. Should have a ratio of
@@ -242,7 +242,7 @@ export default {
       update: (data) => data.warnings.edges.map((edge) => edge.node),
     },
     availableSocieties: {
-      query: require('@/graphql/queries/AllSocieties.gql'),
+      query: require('@/graphql/queries/admin/societies/AdminSocietiesIndex.gql'),
       update: (data) => data.societies.edges.map((edge) => edge.node),
     },
   },

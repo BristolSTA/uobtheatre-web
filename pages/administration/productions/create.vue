@@ -47,6 +47,7 @@ export default {
   },
   methods: {
     async create() {
+      this.errors = null
       loadingSwal.fire()
       try {
         const data = await performMutation(

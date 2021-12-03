@@ -12,9 +12,9 @@
         :to="`/box-office/${performance.id}`"
         >Goto Box Office</sta-button
       >
-      <!-- <sta-button colour="orange" icon="edit" :to="`${performance.id}/edit`"
+      <sta-button colour="orange" icon="edit" :to="`${performance.id}/edit`"
         >Edit</sta-button
-      > -->
+      >
     </template>
     <div class="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
       <card title="Summary" class="max-w-2xl">
@@ -23,6 +23,12 @@
             <table-head-item :text-left="false">Status</table-head-item>
             <table-row-item>
               <performance-status-badge :performance="performance" />
+            </table-row-item>
+          </tr>
+          <tr>
+            <table-head-item :text-left="false">Venue</table-head-item>
+            <table-row-item>
+              {{ performance.venue.name }}
             </table-row-item>
           </tr>
           <tr>
@@ -45,7 +51,10 @@
           </tr>
         </table>
       </card>
-      <card title="Sales Overview">
+      <card
+        v-if="performance.ticketsBreakdown.totalCapacity"
+        title="Sales Overview"
+      >
         <table class="table-auto w-full">
           <!-- <tr>
             <table-head-item :text-left="false">Paid Bookings</table-head-item>
@@ -77,7 +86,7 @@
               />
             </table-row-item>
           </tr>
-          <tr>
+          <tr v-if="performance.salesBreakdown">
             <table-head-item :text-left="false"
               >Performance Sales Total</table-head-item
             >
@@ -100,7 +109,11 @@
         </table>
       </card>
     </div>
-    <card class="mt-4" title="Sales By Ticket">
+    <card
+      v-if="ticketsMatrix.ticketOptions.length"
+      class="mt-4"
+      title="Sales By Ticket"
+    >
       <div class="flex flex-wrap justify-evenly space-x-6">
         <div>
           <table>

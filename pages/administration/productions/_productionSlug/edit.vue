@@ -65,6 +65,7 @@ export default {
   },
   methods: {
     async save() {
+      this.errors = null
       loadingSwal.fire()
       try {
         await performMutation(
@@ -77,19 +78,18 @@ export default {
           },
           'production'
         )
+        const { data } = await this.$apollo.query({
+          query: AdminProductionEditQuery,
+          variables: {
+            slug: this.production.slug,
+          },
+        })
+        this.production = data.production
+        successToast.fire({ title: 'Production Updated' })
       } catch (e) {
         this.errors = getValidationErrors(e)
-        return
+        Swal.close()
       }
-      const { data } = await this.$apollo.query({
-        query: AdminProductionEditQuery,
-        variables: {
-          slug: this.production.slug,
-        },
-      })
-      this.production = data.production
-      Swal.close()
-      successToast.fire({ title: 'Production Updated' })
     },
   },
 }

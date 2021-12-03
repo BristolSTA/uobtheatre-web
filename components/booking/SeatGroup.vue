@@ -82,16 +82,26 @@
           )
         "
       />
-      <div v-if="discounts.length" class="flex justify-center mb-4 mt-2 w-full">
+      <div
+        v-if="discounts.edges.length"
+        class="flex justify-center mb-4 mt-2 w-full"
+      >
         <group-ticket-button
-          v-for="(discount, index) in discounts.filter(
-            (discount) =>
-              (!discount.seatGroup ||
-                discount.seatGroup.id == ticketOption.seatGroup.id) &&
-              discount.requirements
-                .map((req) => req.number)
-                .reduce((a, b) => a + b, 0) <= groupCapacityRemaining
-          )"
+          v-for="(discount, index) in discounts.edges
+            .map((edge) => edge.node)
+            .filter(
+              (discount) =>
+                discount.requirements.length > 1 ||
+                discount.requirements[0].number > 1
+            )
+            .filter(
+              (discount) =>
+                (!discount.seatGroup ||
+                  discount.seatGroup.id == ticketOption.seatGroup.id) &&
+                discount.requirements
+                  .map((req) => req.number)
+                  .reduce((a, b) => a + b, 0) <= groupCapacityRemaining
+            )"
           :key="index"
           :discount="discount"
           class="inline-block mx-1"
@@ -129,7 +139,7 @@ export default {
     },
     discounts: {
       required: true,
-      type: Array,
+      type: Object,
     },
     showCapacities: {
       default: false,

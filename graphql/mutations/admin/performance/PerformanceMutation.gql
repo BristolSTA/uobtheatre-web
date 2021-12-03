@@ -1,0 +1,17 @@
+mutation performanceMutation($input: PerformanceMutationInput!) {
+  performance(input: $input) {
+    success
+    performance {
+      id
+    }
+    errors {
+      ... on NonFieldError {
+        message
+      }
+      ... on FieldError {
+        message
+        field
+      }
+    }
+  }
+}

@@ -11,7 +11,9 @@ let refreshTimer
 
 export default {
   currentAuthToken(context) {
-    return context.store.state.auth.token
+    return (
+      context.store?.state?.auth?.token || context.$store?.state?.auth?.token
+    )
   },
 
   isRemembering(context) {

@@ -8,9 +8,11 @@ query upcomingProductions($now: DateTime) {
         subtitle
         description
         featuredImage {
+          id
           url
         }
         coverImage {
+          id
           url
         }
         society {

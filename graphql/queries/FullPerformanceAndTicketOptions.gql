@@ -25,17 +25,21 @@ query performanceTicketOptions($id: ID!) {
     }
     capacityRemaining
     discounts {
-      id
-      name
-      seatGroup {
-        id
-        name
-      }
-      requirements {
-        number
-        concessionType {
+      edges {
+        node {
           id
           name
+          seatGroup {
+            id
+            name
+          }
+          requirements {
+            number
+            concessionType {
+              id
+              name
+            }
+          }
         }
       }
     }

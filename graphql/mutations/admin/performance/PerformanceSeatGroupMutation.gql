@@ -1,0 +1,14 @@
+mutation performanceSeatGroup($input: PerformanceSeatGroupMutationInput!) {
+  performanceSeatGroup(input: $input) {
+    success
+    errors {
+      ... on NonFieldError {
+        message
+      }
+      ... on FieldError {
+        message
+        field
+      }
+    }
+  }
+}

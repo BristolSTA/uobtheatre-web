@@ -35,6 +35,7 @@ fragment BookingWithProductionDetails on BookingNode {
         }
       }
       featuredImage {
+        id
         url
       }
     }

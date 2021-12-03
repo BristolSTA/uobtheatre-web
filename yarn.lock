@@ -17558,9 +17558,9 @@ vue-style-loader@^4.1.0, vue-style-loader@^4.1.3:
     loader-utils "^1.0.2"
 
 vue-tailwind@^2.4.1:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/vue-tailwind/-/vue-tailwind-2.4.1.tgz#09a441fb3615f61aaa4a2bfde88aa3d1b3e1b619"
-  integrity sha512-u/IWW15kjNO+8gICNONHeNrXunrOmwPhcmdmv9aAiod+asSVRFpAstcItcM/fk4dWAyHvUv0jrOPqXullIEu1Q==
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/vue-tailwind/-/vue-tailwind-2.5.0.tgz#a6904aad053109db8cf934e18ea311e16772674a"
+  integrity sha512-Yl6VFCbFlQojBQwFty4VR4k/usb9v+YHGDaKLDhMu8VJdbN3ESeA6hy4Q7/mFhGiKnisjLa/M+ODo4EBhdBuTw==
   dependencies:
     body-scroll-lock "^3.1.5"
     lodash.clonedeep "^4.5.0"

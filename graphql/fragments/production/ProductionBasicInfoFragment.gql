@@ -12,6 +12,7 @@ fragment ProductionBasicInfo on ProductionNode {
     }
   }
   featuredImage {
+    id
     url
   }
   ageRating

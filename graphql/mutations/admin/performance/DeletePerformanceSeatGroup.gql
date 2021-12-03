@@ -1,0 +1,14 @@
+mutation deletePerformanceSeatGroup($id: IdInputField!) {
+  deletePerformanceSeatGroup(id: $id) {
+    success
+    errors {
+      ... on NonFieldError {
+        message
+      }
+      ... on FieldError {
+        message
+        field
+      }
+    }
+  }
+}

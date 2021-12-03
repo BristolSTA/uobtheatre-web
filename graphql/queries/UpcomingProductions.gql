@@ -16,6 +16,7 @@ query upcomingProductions($now: DateTime, $afterCursor: String) {
         id
         slug
         featuredImage {
+          id
           url
         }
         start

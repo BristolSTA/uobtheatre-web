@@ -66,17 +66,19 @@
             </tr>
           </table>
         </card>
-        <card v-if="actions.length" title="Actions" class="max-w-2xl">
-          <sta-button
-            v-for="(action, index) in actions"
-            :key="index"
-            class="bg-sta-orange hover:bg-sta-orange-dark mt-3"
-            :class="action.class"
-            :icon="action.icon"
-            @click="action.action()"
-            >{{ action.text }}</sta-button
-          >
-        </card>
+        <div>
+          <card v-if="actions.length" title="Actions" class="max-w-2xl">
+            <sta-button
+              v-for="(action, index) in actions"
+              :key="index"
+              class="bg-sta-orange hover:bg-sta-orange-dark mt-3"
+              :class="action.class"
+              :icon="action.icon"
+              @click="action.action()"
+              >{{ action.text }}</sta-button
+            >
+          </card>
+        </div>
       </div>
       <card title="Performances">
         <template v-if="canEdit" #messageBox>
@@ -121,16 +123,18 @@
               }}</table-row-item>
               <table-row-item>{{ performance.venue.name }}</table-row-item>
               <table-row-item>
-                <p>
-                  {{ performance.ticketsBreakdown.totalTicketsSold }} of
-                  {{ performance.ticketsBreakdown.totalCapacity }} ({{
-                    salesPercentage(performance)
-                  }}%)
-                </p>
-                <progress-bar
-                  :height="2"
-                  :percentage="parseInt(salesPercentage(performance))"
-                />
+                <template v-if="performance.ticketsBreakdown.totalCapacity">
+                  <p>
+                    {{ performance.ticketsBreakdown.totalTicketsSold }} of
+                    {{ performance.ticketsBreakdown.totalCapacity }} ({{
+                      salesPercentage(performance)
+                    }}%)
+                  </p>
+                  <progress-bar
+                    :height="2"
+                    :percentage="parseInt(salesPercentage(performance))"
+                  />
+                </template>
               </table-row-item>
               <table-row-item class="space-x-2">
                 <sta-button
@@ -241,7 +245,7 @@ export default {
       return null
     },
     canEdit() {
-      return this.production.permissions.includes('edit_production_objects')
+      return this.production.permissions.includes('edit_production')
     },
     actions() {
       const list = []
@@ -322,6 +326,7 @@ export default {
             .map((error) => `<p>${error.message}</p>`)
             .join(''),
         })
+        return
       }
       successToast.fire({ title: 'Status updated' })
       this.production.status = status

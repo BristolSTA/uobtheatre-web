@@ -1,0 +1,14 @@
+query {
+  venues {
+    edges {
+      node {
+        id
+        name
+        image {
+          url
+        }
+        slug
+      }
+    }
+  }
+}

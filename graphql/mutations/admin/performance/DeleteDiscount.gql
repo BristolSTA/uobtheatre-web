@@ -1,0 +1,14 @@
+mutation deleteDiscount($id: IdInputField!) {
+  deleteDiscount(id: $id) {
+    success
+    errors {
+      ... on NonFieldError {
+        message
+      }
+      ... on FieldError {
+        message
+        field
+      }
+    }
+  }
+}
