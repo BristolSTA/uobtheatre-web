@@ -142,8 +142,9 @@ export default {
   },
   methods: {
     bookingExpired() {
-      this.booking = new Booking()
+      const production = this.production
       this.loadDataForStage()
+      this.booking = new Booking()
       swal
         .fire({
           title: 'Booking Expired',
@@ -155,6 +156,7 @@ export default {
         })
         .then(({ isConfirmed, isDismissed }) => {
           if (isDismissed) return this.$router.push('/')
+          return this.$router.push(`/production/${production.slug}/book`)
         })
     },
     onChildMount() {
