@@ -29,6 +29,7 @@ export default {
       this.hours = getZeroPad(now.getHours())
       this.minutes = getZeroPad(now.getMinutes())
       this.seconds = getZeroPad(now.getSeconds())
+      this.$emit('time', now)
     },
   },
 }

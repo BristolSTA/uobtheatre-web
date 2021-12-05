@@ -9,8 +9,15 @@
       lg:px-12
     "
   >
+    <div
+      v-if="status.bannerText"
+      class="text-center p-2 mb-1"
+      :class="status.bannerClass"
+    >
+      {{ status.bannerText }}
+    </div>
     <div class="flex flex-wrap">
-      <div class="flex justify-center w-full sm:block sm:w-1/2">
+      <div class="flex justify-center w-full sm:block sm:w-auto">
         <div>
           <p class="text-h2">{{ production.name }}</p>
           <p class="-mt-2 mb-1 text-sta-gray-lighter font-semibold">
@@ -20,86 +27,105 @@
             {{ performance.start | dateFormat('cccc d MMM y') }}
           </p>
         </div>
-      </div>
-      <div class="w-full sm:w-1/2">
-        <clock class="py-2 text-center text-5xl md:text-6xl" />
-      </div>
-      <div v-if="detailed" class="hidden w-full sm:block sm:w-1/2">
-        <div>
-          <p class="text-sta-green">
-            Doors Open: {{ performance.doorsOpen | dateFormat('t') }}
-          </p>
-          <p class="text-sta-rouge">
-            Performance Starts: {{ performance.start | dateFormat('t') }}
-          </p>
-          <icon-list-item icon="clock">
-            {{ humanDuration(performance.durationMins) }}
-          </icon-list-item>
-          <div
-            v-if="production.warnings.length"
-            class="flex justify-center sm:block"
-          >
-            <div class="m-2 px-3 py-2 w-max bg-sta-rouge">
-              <p class="font-semibold">Warnings:</p>
-              <div v-for="(warning, index) in production.warnings" :key="index">
-                <p class="px-2">- {{ warning.description }}</p>
+        <div v-if="detailed" class="hidden sm:block">
+          <div>
+            <p class="text-sta-green">
+              Doors Open: {{ performance.doorsOpen | dateFormat('t') }}
+            </p>
+            <p class="text-sta-rouge">
+              Performance Starts: {{ performance.start | dateFormat('t') }}
+            </p>
+            <icon-list-item icon="clock">
+              {{ humanDuration(performance.durationMins) }}
+            </icon-list-item>
+            <div
+              v-if="production.warnings.length"
+              class="flex justify-center sm:block"
+            >
+              <div class="m-2 px-3 py-2 w-max bg-sta-rouge">
+                <p class="font-semibold">Warnings:</p>
+                <div
+                  v-for="(warning, index) in production.warnings"
+                  :key="index"
+                >
+                  <p class="px-2">- {{ warning.description }}</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div v-if="detailed" class="flex justify-center w-full sm:w-1/2">
-        <div class="mx-4 p-4 max-w-sm bg-sta-gray-light lg:px-10">
-          <table class="table-fixed w-full">
-            <tr>
-              <td class="font-semibold">Total Tickets</td>
-              <td class="pl-2 w-1/5 text-sta-orange font-mono">
-                {{ ticketBreakdown.totalCapacity }}
-              </td>
-            </tr>
-            <tr>
-              <td class="font-semibold">Total Sold</td>
-              <td class="pl-2 w-1/5 text-sta-orange font-mono">
-                {{ ticketBreakdown.totalTicketsSold }}
-              </td>
-            </tr>
-            <tr>
-              <td class="pl-6 font-semibold">Collected</td>
-              <td class="pl-2 w-1/5 text-sta-orange font-mono">
-                {{ ticketBreakdown.totalTicketsCheckedIn }}
-              </td>
-            </tr>
-            <tr>
-              <td class="pl-6 font-semibold">To be Collected</td>
-              <td class="pl-2 w-1/5 text-sta-orange font-mono">
-                {{ ticketBreakdown.totalTicketsToCheckIn }}
-              </td>
-            </tr>
-            <tr>
-              <td class="font-semibold">Available to Sell</td>
-              <td class="pl-2 w-1/5 text-sta-orange font-mono">
-                {{ ticketBreakdown.totalTicketsAvailable }}
-              </td>
-            </tr>
-          </table>
-          <div class="flex items-center text-sta-rouge space-x-2">
-            <span class="relative flex w-3 h-3">
-              <span
-                class="
-                  absolute
-                  inline-flex
-                  w-full
-                  h-full
-                  bg-sta-rouge
-                  rounded-full
-                  animate-ping
-                "
-              ></span>
-              <span
-                class="relative inline-flex w-3 h-3 bg-sta-rouge rounded-full"
-              ></span>
-            </span>
-            <p>Live</p>
+      <div
+        class="
+          flex
+          justify-center
+          xl:justify-around
+          flex-col
+          xl:flex-row
+          flex-auto
+        "
+      >
+        <div class="text-center">
+          <clock
+            class="py-2 text-5xl md:text-6xl"
+            :class="status.clockClass"
+            @time="currentTime = $event"
+          />
+        </div>
+
+        <div v-if="detailed" class="flex justify-center">
+          <div class="p-4 max-w-sm bg-sta-gray-light lg:px-10">
+            <table class="table-fixed w-full">
+              <tr>
+                <td class="font-semibold">Total Tickets</td>
+                <td class="pl-2 w-1/5 text-sta-orange font-mono">
+                  {{ ticketBreakdown.totalCapacity }}
+                </td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Total Sold</td>
+                <td class="pl-2 w-1/5 text-sta-orange font-mono">
+                  {{ ticketBreakdown.totalTicketsSold }}
+                </td>
+              </tr>
+              <tr>
+                <td class="pl-6 font-semibold">Collected</td>
+                <td class="pl-2 w-1/5 text-sta-orange font-mono">
+                  {{ ticketBreakdown.totalTicketsCheckedIn }}
+                </td>
+              </tr>
+              <tr>
+                <td class="pl-6 font-semibold">To be Collected</td>
+                <td class="pl-2 w-1/5 text-sta-orange font-mono">
+                  {{ ticketBreakdown.totalTicketsToCheckIn }}
+                </td>
+              </tr>
+              <tr>
+                <td class="font-semibold">Available to Sell</td>
+                <td class="pl-2 w-1/5 text-sta-orange font-mono">
+                  {{ ticketBreakdown.totalTicketsAvailable }}
+                </td>
+              </tr>
+            </table>
+            <div class="flex items-center text-sta-rouge space-x-2">
+              <span class="relative flex w-3 h-3">
+                <span
+                  class="
+                    absolute
+                    inline-flex
+                    w-full
+                    h-full
+                    bg-sta-rouge
+                    rounded-full
+                    animate-ping
+                  "
+                ></span>
+                <span
+                  class="relative inline-flex w-3 h-3 bg-sta-rouge rounded-full"
+                ></span>
+              </span>
+              <p>Live</p>
+            </div>
           </div>
         </div>
       </div>
@@ -135,7 +161,81 @@ export default {
   data() {
     return {
       ticketBreakdown: {},
+      currentTime: new Date(),
     }
+  },
+  computed: {
+    performanceDoorsDiffMinutes() {
+      return (Date.parse(this.performance.doorsOpen) - this.currentTime) / 60000
+    },
+    performanceStartDiffMinutes() {
+      return (Date.parse(this.performance.start) - this.currentTime) / 60000
+    },
+    performanceEndDiffMinutes() {
+      return (Date.parse(this.performance.end) - this.currentTime) / 60000
+    },
+    status() {
+      // Performance end is in the past
+      if (this.performanceEndDiffMinutes <= 0)
+        return {
+          clockClass: null,
+          bannerClass: 'bg-sta-rouge',
+          bannerText:
+            'This performance is in the past. Are you sure you are viewing the right performance?',
+        }
+
+      // Performance has started
+      if (this.performanceStartDiffMinutes <= 0)
+        return {
+          clockClass: 'text-sta-rouge',
+          bannerClass: 'bg-sta-rouge',
+          bannerText: 'This performance should now have started',
+        }
+
+      // Performance is starting within 5 minutes
+      if (this.performanceStartDiffMinutes <= 5)
+        return {
+          clockClass: 'text-sta-orange animate-pulse',
+          bannerClass: 'bg-sta-orange',
+          bannerText: `This performance is due to start in ${humanDuration(
+            this.performanceStartDiffMinutes
+          )}`,
+        }
+
+      // Performance doors are open
+      if (this.performanceDoorsDiffMinutes < 0)
+        return {
+          clockClass: 'text-sta-green',
+          bannerClass: 'bg-sta-green',
+          bannerText: `The doors should now be open (wait for clearance from your stage team)`,
+        }
+
+      // Performance doors are opening within 5 minutes
+      if (this.performanceDoorsDiffMinutes <= 5)
+        return {
+          clockClass: 'animate-pulse',
+          bannerClass: 'bg-sta-orange',
+          bannerText: `Doors should be opening in ${humanDuration(
+            this.performanceDoorsDiffMinutes
+          )} (wait for clearance from your stage team)`,
+        }
+
+      // Performance is within 3 hours
+      if (this.performanceDoorsDiffMinutes >= 3 * 60) {
+        return {
+          bannerClass: 'bg-sta-rouge',
+          bannerText: `This performance is over 3 hours away. Are you sure you have the right performance selected?`,
+        }
+      }
+
+      // Within 3 hours of start
+      return {
+        bannerText: `Doors opening in ${humanDuration(
+          this.performanceDoorsDiffMinutes
+        )}`,
+        bannerClass: 'border',
+      }
+    },
   },
   methods: {
     humanDuration,

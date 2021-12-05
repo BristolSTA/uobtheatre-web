@@ -59,8 +59,9 @@ const displayStartEnd = (start, end, format) => {
  * @param {number} durationMins number of minuites
  * @returns {string} Formatted readable duration string
  */
-const humanDuration = (durationMins) => {
-  return humanizeDuration(durationMins * 60 * 1000)
+const humanDuration = (durationMins, options) => {
+  const mergedOptions = Object.assign({ round: true, largest: 1 }, options)
+  return humanizeDuration(durationMins * 60 * 1000, mergedOptions)
 }
 
 /**
