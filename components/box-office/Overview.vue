@@ -236,21 +236,6 @@ export default {
         bannerClass: 'border',
       }
     },
-    clockClass() {
-      if (this.performanceEndDiffMinutes <= 0) return ''
-      if (this.performanceStartDiffMinutes <= 0) {
-        // Performance has started
-        return 'text-sta-rouge animate-pulse'
-      }
-      if (this.performanceStartDiffMinutes <= 5)
-        return 'text-sta-orange animate-pulse'
-      if (
-        this.performanceDoorsDiffMinutes <= 5 &&
-        this.performanceDoorsDiffMinutes > 0
-      )
-        return 'animate-pulse'
-      return 'text-sta-green'
-    },
   },
   methods: {
     humanDuration,
