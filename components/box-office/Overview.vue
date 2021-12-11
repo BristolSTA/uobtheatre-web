@@ -17,7 +17,7 @@
       {{ status.bannerText }}
     </div>
     <div class="flex flex-wrap">
-      <div class="flex justify-center w-full sm:block sm:w-auto">
+      <div class="flex justify-center w-full md:block md:w-auto">
         <div>
           <p class="text-h2">{{ production.name }}</p>
           <p class="-mt-2 mb-1 text-sta-gray-lighter font-semibold">
@@ -27,7 +27,7 @@
             {{ performance.start | dateFormat('cccc d MMM y') }}
           </p>
         </div>
-        <div v-if="detailed" class="hidden sm:block">
+        <div v-if="detailed" class="hidden md:block">
           <div>
             <p class="text-sta-green">
               Doors Open: {{ performance.doorsOpen | dateFormat('t') }}
@@ -38,11 +38,8 @@
             <icon-list-item icon="clock">
               {{ humanDuration(performance.durationMins) }}
             </icon-list-item>
-            <div
-              v-if="production.warnings.length"
-              class="flex justify-center sm:block"
-            >
-              <div class="m-2 px-3 py-2 w-max bg-sta-rouge">
+            <div v-if="production.warnings.length" class="flex justify-center">
+              <div class="m-2 px-3 py-2 w-full bg-sta-rouge">
                 <p class="font-semibold">Warnings:</p>
                 <div
                   v-for="(warning, index) in production.warnings"
@@ -55,26 +52,17 @@
           </div>
         </div>
       </div>
-      <div
-        class="
-          flex
-          justify-center
-          xl:justify-around
-          flex-col
-          xl:flex-row
-          flex-auto
-        "
-      >
-        <div class="text-center">
+      <div class="flex justify-center flex-col xl:flex-row flex-auto">
+        <div class="flex-grow text-center xl:pt-2">
           <clock
-            class="py-2 text-5xl md:text-6xl"
+            class="py-2 text-5xl md:text-6xl xl:text-7xl"
             :class="status.clockClass"
             @time="currentTime = $event"
           />
         </div>
 
-        <div v-if="detailed" class="flex justify-center">
-          <div class="p-4 max-w-sm bg-sta-gray-light lg:px-10">
+        <div v-if="detailed" class="flex flex-grow-0 justify-center">
+          <div class="p-4 max-w-sm bg-sta-gray-light lg:px-10 xl:my-4">
             <table class="table-fixed w-full">
               <tr>
                 <td class="font-semibold">Total Tickets</td>
