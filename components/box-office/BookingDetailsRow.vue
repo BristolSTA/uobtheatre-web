@@ -50,7 +50,66 @@
             </button>
           </template>
         </div>
-        <div class="flex-grow order-1 overflow-x-auto">
+        <!-- Mobile -->
+        <div class="sm:hidden">
+          <div v-for="(seatGroup, i) in seatGroupList" :key="i">
+            <div class="mt-4 mb-2">
+              <strong>Seat Group: </strong>{{ seatGroup.name }}
+            </div>
+            <table class="w-full text-sm sm:text-base">
+              <tr class="text-left border-b">
+                <th class="pr-3">Type</th>
+                <th class="pr-3">Ticket ID</th>
+                <th class="text-center">Checked In?</th>
+              </tr>
+              <tr
+                v-for="(ticket, n) in sortedTicketList"
+                :key="n"
+                :class="{
+                  'bg-sta-orange-dark': highlightTicketId === ticket.id,
+                }"
+              >
+                <td class="pr-3">{{ ticket.concessionType.name }}</td>
+                <td class="font-mono md:text-base text-xs sm:text-sm">
+                  {{ ticket.id }}
+                </td>
+                <td class="py-1 text-center">
+                  <div class="flex items-center justify-center space-x-2">
+                    <font-awesome-icon
+                      :icon="
+                        (editing ? editingData[ticket.id] : ticket.checkedIn)
+                          ? 'check-circle'
+                          : 'times-circle'
+                      "
+                      :class="[
+                        (editing ? editingData[ticket.id] : ticket.checkedIn)
+                          ? 'text-sta-green'
+                          : 'text-sta-rouge',
+                      ]"
+                    />
+                    <button
+                      v-if="editing && !saving"
+                      class="
+                        flex-none
+                        p-1
+                        bg-sta-orange
+                        hover:bg-sta-orange-dark
+                        rounded
+                        focus:outline-none
+                        transition-colors
+                      "
+                      @click="editingData[ticket.id] = !editingData[ticket.id]"
+                    >
+                      {{ editingData[ticket.id] ? 'Un-Check In' : 'Check In' }}
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <!-- Not Mobile -->
+        <div class="hidden sm:flex flex-grow order-1 overflow-x-auto">
           <table class="w-full">
             <tr class="text-left border-b">
               <th class="pr-4">Seat Group</th>
@@ -155,8 +214,21 @@ export default {
         (ticket) => ticket.concessionType.id,
       ])
     },
+    seatGroupList() {
+      return lo
+        .uniqBy(this.booking.tickets, (ticket) => ticket.seatGroup.id)
+        .map((ticket) => ticket.seatGroup)
+    },
   },
   methods: {
+    ticketsInSeatGroup(seatGroup) {
+      return lo.sortBy(
+        this.booking.tickets.filter(
+          (ticket) => ticket.seatGroup.id === seatGroup.id
+        ),
+        (ticket) => ticket.concessionType.id
+      )
+    },
     startEditing() {
       this.editingData = lo.fromPairs(
         this.booking.tickets.map((ticket) => [ticket.id, ticket.checkedIn])
