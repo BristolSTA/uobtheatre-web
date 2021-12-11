@@ -10,6 +10,51 @@
             @input="$emit('update:name', $event)"
           />
         </form-label>
+        <p v-if="computedSlug">
+          <template v-if="!changingSlug">
+            Your production will be at
+            {{
+              $router.resolve({ path: `/productions/${computedSlug}` }).route
+                .fullPath
+            }}
+            <sta-button
+              class="
+                text-sm
+                bg-sta-orange
+                hover:bg-sta-orange-dark
+                transition-colors
+              "
+              @click="
+                () => {
+                  changingSlug = true
+                  manualSlug = computedSlug
+                }
+              "
+              >Change</sta-button
+            >
+          </template>
+          <template v-else>
+            <form-label>
+              Slug
+              <t-input
+                :value="manualSlug"
+                @input="manualSlug = kebabCase($event)"
+              />
+            </form-label>
+            <sta-button
+              class="bg-sta-green hover:bg-sta-green-dark transition-colors"
+              @click="
+                () => {
+                  $emit('update:slug', manualSlug)
+                  changingSlug = false
+                }
+              "
+              >Done</sta-button
+            >
+          </template>
+          <br />
+          <error-helper :errors="errors" field-name="slug" />
+        </p>
         <form-label :errors="errors" name="subtitle">
           Subtitle
           <t-input
@@ -165,7 +210,9 @@ import Errors from '@/classes/Errors'
 import imageUpload from '@/services/imageUploadService'
 import { v4 as uuid } from 'uuid'
 import map from 'lodash/map'
+import kebabCase from 'lodash/kebabCase'
 import ErrorHelper from '@/components/ui/ErrorHelper.vue'
+import StaButton from '@/components/ui/StaButton.vue'
 import ImageInput from '../../ui/Inputs/ImageInput.vue'
 import FormLabel from '../../ui/FormLabel.vue'
 import RequiredStar from '../../ui/Form/RequiredStar.vue'
@@ -179,6 +226,7 @@ export default {
     RequiredStar,
     RichTextInput,
     ErrorHelper,
+    StaButton,
   },
   props: {
     id: {
@@ -229,11 +277,19 @@ export default {
       default: null,
       type: Object,
     },
+    slug: {
+      default: null,
+      type: String,
+    },
   },
   data() {
     return {
       availableWarnings: [],
       availableSocieties: [],
+
+      slugManuallyEdited: false,
+      changingSlug: false,
+      manualSlug: null,
     }
   },
   apollo: {
@@ -246,7 +302,13 @@ export default {
       update: (data) => data.societies.edges.map((edge) => edge.node),
     },
   },
+  computed: {
+    computedSlug() {
+      return this.slug || kebabCase(this.name)
+    },
+  },
   methods: {
+    kebabCase,
     updateWarnings(warning, include) {
       return this.$emit(
         'update:warnings',
@@ -284,6 +346,7 @@ export default {
       const returnObject = {
         id: this.id,
         name: this.name,
+        slug: this.slug,
         subtitle: this.subtitle,
         description: this.description,
         ageRating: this.ageRating,

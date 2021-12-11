@@ -140,7 +140,7 @@
                 <sta-button
                   :small="true"
                   colour="green"
-                  :to="`${production.slug}/performances/${performance.id}`"
+                  :to="`/administration/productions/${production.slug}/performances/${performance.id}`"
                   >View</sta-button
                 >
               </table-row-item>
@@ -171,6 +171,7 @@ import {
   successToast,
   swal,
 } from '@/utils'
+
 export default {
   components: {
     AdminPage,
@@ -191,6 +192,7 @@ export default {
       variables: {
         slug: params.productionSlug,
       },
+      fetchPolicy: 'no-cache',
     })
 
     const production = data.production
@@ -221,6 +223,7 @@ export default {
         }
       },
       update: (data) => data.production.performances,
+      fetchPolicy: 'cache-and-network',
     },
   },
   head() {
@@ -328,8 +331,8 @@ export default {
         })
         return
       }
+      await this.$nuxt.refresh()
       successToast.fire({ title: 'Status updated' })
-      this.production.status = status
     },
   },
 }

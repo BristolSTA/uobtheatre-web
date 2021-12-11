@@ -85,6 +85,7 @@ export default {
           },
         })
         this.production = data.production
+        this.$router.replace(`../${this.production.slug}`)
         successToast.fire({ title: 'Production Updated' })
       } catch (e) {
         this.errors = getValidationErrors(e)

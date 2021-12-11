@@ -1,10 +1,11 @@
 query adminPerformancesIndex(
-  $productionSlug: String!
+  $productionId: IdInputField
+  $productionSlug: String
   $offset: Int
   $disabled: Boolean
   $take: Int = 10
 ) {
-  production(slug: $productionSlug) {
+  production(id: $productionId, slug: $productionSlug) {
     id
     performances(
       first: $take

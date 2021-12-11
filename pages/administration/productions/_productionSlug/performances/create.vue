@@ -1,9 +1,10 @@
 <template>
-  <admin-page title="Edit Performance">
+  <admin-page title="Create a performance">
     <template #toolbar>
-      <sta-button colour="green" icon="save" @click="save">Save</sta-button>
+      <sta-button colour="green" icon="save" @click="create">Create</sta-button>
       <sta-button colour="orange" to="../../">Cancel</sta-button>
     </template>
+    <non-field-error :errors="errors" />
     <performance-editor
       ref="editor"
       :performance="performance"
@@ -15,72 +16,79 @@
 </template>
 
 <script>
-import AdminPerformanceDetailQuery from '@/graphql/queries/admin/productions/AdminPerformanceDetail.gql'
-import PerformanceEditor from '@/components/performance/editor/PerformanceEditor.vue'
 import AdminPage from '@/components/admin/AdminPage.vue'
+import PerformanceEditor from '@/components/performance/editor/PerformanceEditor.vue'
 import StaButton from '@/components/ui/StaButton.vue'
 import {
+  errorToast,
   getValidationErrors,
   loadingSwal,
   performMutation,
   successToast,
 } from '@/utils'
 import Swal from 'sweetalert2'
+import NonFieldError from '@/components/ui/NonFieldError.vue'
 export default {
-  components: { PerformanceEditor, AdminPage, StaButton },
+  components: { AdminPage, PerformanceEditor, StaButton, NonFieldError },
   async asyncData({ params, error, app }) {
     // Execute query
     const { data } = await app.apolloProvider.defaultClient.query({
-      query: AdminPerformanceDetailQuery,
+      query: require('@/graphql/queries/admin/productions/AdminProductionLookup.gql'),
       variables: {
-        productionSlug: params.productionSlug,
-        performanceId: params.performanceId,
+        slug: params.productionSlug,
       },
-      fetchPolicy: 'no-cache',
     })
 
     const production = data.production
-    if (!production || !production.performances.edges.length)
+    if (!production)
       return error({
         statusCode: 404,
+        message: 'This production does not exist',
       })
     return {
-      performance: production.performances.edges[0].node,
       production,
     }
   },
   data() {
     return {
-      performance: null,
+      performance: {},
       production: null,
       errors: null,
     }
   },
+  mounted() {
+    this.performance = { discounts: {}, ...this.$refs.editor.getInputData() }
+  },
   methods: {
-    async save() {
+    async create() {
       this.errors = null
       loadingSwal.fire()
       try {
-        await this.$refs.editor.saveRelated()
-        await performMutation(
+        const data = await performMutation(
           this.$apollo,
           {
             mutation: require('@/graphql/mutations/admin/performance/PerformanceMutation.gql'),
             variables: {
-              input: await this.$refs.editor.getInputData(),
+              input: {
+                ...this.$refs.editor.getInputData(),
+                production: this.production.id,
+              },
             },
           },
           'performance'
         )
-        const { data } = await this.$apollo.query({
-          query: AdminPerformanceDetailQuery,
-          variables: {
-            productionSlug: this.$route.params.productionSlug,
-            performanceId: this.performance.id,
-          },
-        })
-        this.performance = data.production.performances.edges[0].node
-        successToast.fire({ title: 'Performance Updated' })
+
+        this.performance.id = data.performance.performance.id
+
+        if (!(await this.$refs.editor.saveRelated())) {
+          errorToast.fire({
+            title:
+              'Performance created, but there was an issue creating the related objects',
+          })
+          return this.$router.push(`${this.performance.id}/edit`)
+        }
+        successToast.fire({ title: 'Performance Created' })
+        return this.$router.push('../')
       } catch (e) {
         this.errors = getValidationErrors(e)
         Swal.close()

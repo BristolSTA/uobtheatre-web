@@ -1,5 +1,12 @@
 <template>
   <admin-page title="Your Productions">
+    <template #toolbar>
+      <sta-button
+        class="bg-sta-green hover:bg-sta-green-dark transition-colors"
+        to="productions/create"
+        >Start New Draft</sta-button
+      >
+    </template>
     <div class="flex flex-wrap gap-3 items-end md:flex-nowrap">
       <div><t-input placeholder="Search by name" /></div>
       <div>
@@ -76,6 +83,7 @@ import TableRowItem from '@/components/ui/Tables/TableRowItem.vue'
 import Card from '@/components/ui/Card.vue'
 import ProductionStatusBadge from '@/components/production/ProductionStatusBadge.vue'
 import AdminPage from '@/components/admin/AdminPage.vue'
+import StaButton from '@/components/ui/StaButton.vue'
 export default {
   components: {
     PaginatedTable,
@@ -85,6 +93,7 @@ export default {
     TableRow,
     ProductionStatusBadge,
     AdminPage,
+    StaButton,
   },
   data() {
     return {

@@ -1,10 +1,17 @@
 <template>
-  <t-input ref="inputRef" :value="formattedValue" />
+  <t-input
+    ref="inputRef"
+    type="number"
+    min="0"
+    max="100"
+    max-length="3"
+    :value="value"
+    @input="onInput"
+    @blur="onBlur"
+  />
 </template>
 
 <script>
-import useCurrencyInput from 'vue-currency-input'
-
 export default {
   props: {
     value: {
@@ -16,20 +23,16 @@ export default {
       type: Object,
     },
   },
-  setup(props) {
-    const { formattedValue, inputRef } = useCurrencyInput(
-      Object.assign(
-        {
-          currency: 'GBP',
-          precision: 0,
-          currencyDisplay: 'hidden',
-          valueRange: { min: 0, max: 100 },
-        },
-        props.options
-      )
-    )
-
-    return { inputRef, formattedValue }
+  methods: {
+    onInput(event) {
+      this.$emit('input', event)
+    },
+    onBlur(event) {
+      let newVal = this.value
+      if (newVal > 100) newVal = 100
+      if (newVal < 0) newVal = 0
+      this.$emit('input', newVal)
+    },
   },
 }
 </script>

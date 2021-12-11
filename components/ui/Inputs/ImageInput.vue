@@ -177,7 +177,6 @@ export default {
             }
           }
 
-          // console.log(image)
           resolve(true)
         }
         image.src = fileReaderResult
