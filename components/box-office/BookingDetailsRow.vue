@@ -74,35 +74,14 @@
                   {{ ticket.id }}
                 </td>
                 <td class="py-1 text-center">
-                  <div class="flex items-center justify-center space-x-2">
-                    <font-awesome-icon
-                      :icon="
-                        (editing ? editingData[ticket.id] : ticket.checkedIn)
-                          ? 'check-circle'
-                          : 'times-circle'
-                      "
-                      :class="[
-                        (editing ? editingData[ticket.id] : ticket.checkedIn)
-                          ? 'text-sta-green'
-                          : 'text-sta-rouge',
-                      ]"
-                    />
-                    <button
-                      v-if="editing && !saving"
-                      class="
-                        flex-none
-                        p-1
-                        bg-sta-orange
-                        hover:bg-sta-orange-dark
-                        rounded
-                        focus:outline-none
-                        transition-colors
-                      "
-                      @click="editingData[ticket.id] = !editingData[ticket.id]"
-                    >
-                      {{ editingData[ticket.id] ? 'Un-Check In' : 'Check In' }}
-                    </button>
-                  </div>
+                  <ticket-check-in-btn
+                    :editing="editing"
+                    :ticket="ticket"
+                    :editing-data="editingData"
+                    @btn-press="
+                      editingData[ticket.id] = !editingData[ticket.id]
+                    "
+                  />
                 </td>
               </tr>
             </table>
@@ -137,35 +116,12 @@
                 {{ ticket.id }}
               </td>
               <td class="py-1 text-center">
-                <div class="flex items-center justify-center space-x-2">
-                  <font-awesome-icon
-                    :icon="
-                      (editing ? editingData[ticket.id] : ticket.checkedIn)
-                        ? 'check-circle'
-                        : 'times-circle'
-                    "
-                    :class="[
-                      (editing ? editingData[ticket.id] : ticket.checkedIn)
-                        ? 'text-sta-green'
-                        : 'text-sta-rouge',
-                    ]"
-                  />
-                  <button
-                    v-if="editing && !saving"
-                    class="
-                      flex-none
-                      p-1
-                      bg-sta-orange
-                      hover:bg-sta-orange-dark
-                      rounded
-                      focus:outline-none
-                      transition-colors
-                    "
-                    @click="editingData[ticket.id] = !editingData[ticket.id]"
-                  >
-                    {{ editingData[ticket.id] ? 'Un-Check In' : 'Check In' }}
-                  </button>
-                </div>
+                <ticket-check-in-btn
+                  :editing="editing"
+                  :ticket="ticket"
+                  :editing-data="editingData"
+                  @btn-press="editingData[ticket.id] = !editingData[ticket.id]"
+                />
               </td>
             </tr>
           </table>
@@ -183,9 +139,10 @@ import CheckInMutation from '@/graphql/mutations/box-office/CheckInTickets.gql'
 import UnCheckInMutation from '@/graphql/mutations/box-office/UnCheckInTickets.gql'
 import BoxOfficePerformanceBooking from '@/graphql/queries/box-office/BoxOfficePerformanceBooking.gql'
 import LoadingIcon from '../ui/LoadingIcon.vue'
+import TicketCheckInBtn from './TicketCheckInBtn.vue'
 
 export default {
-  components: { LoadingIcon },
+  components: { LoadingIcon, TicketCheckInBtn },
   props: {
     booking: {
       required: true,
