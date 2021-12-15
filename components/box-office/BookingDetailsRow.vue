@@ -5,7 +5,7 @@
   >
     <td colspan="100%" class="p-4">
       <div class="md:flex">
-        <div class="flex-none order-2 md:pl-2">
+        <div class="flex-none order-2 md:pl-2 pb-2 sm:b-0">
           <button
             v-if="!editing"
             class="
@@ -50,80 +50,78 @@
             </button>
           </template>
         </div>
-        <!-- Mobile -->
-        <div class="sm:hidden">
-          <div v-for="(seatGroup, i) in seatGroupList" :key="i">
-            <div class="mt-4 mb-2">
-              <strong>Seat Group: </strong>{{ seatGroup.name }}
-            </div>
-            <table class="w-full text-sm sm:text-base">
-              <tr class="text-left border-b">
-                <th class="pr-3">Type</th>
-                <th class="pr-3">Ticket ID</th>
-                <th class="text-center">Checked In?</th>
+
+        <div class="flex flex-grow order-1 overflow-x-auto">
+          <table class="w-full text-sm sm:text-base">
+            <tr class="text-left border-b">
+              <th class="hidden sm:table-cell pr-4">Seat Group</th>
+              <th class="pr-3 sm:pr-4">Type</th>
+              <th class="pr-3 sm:pr-4">Ticket ID</th>
+              <th class="text-center">Checked In?</th>
+            </tr>
+            <template v-for="(seatGroup, i) in seatGroupList">
+              <tr :key="i" class="sm:hidden">
+                <td colspan="3" class="py-2">
+                  <div class="flex justify-center">
+                    <strong class="pr-2">Seat Group:</strong>
+                    {{ seatGroup.name }}
+                  </div>
+                </td>
               </tr>
               <tr
                 v-for="(ticket, n) in sortedTicketList"
-                :key="n"
+                :key="i.toString() + n.toString()"
                 :class="{
                   'bg-sta-orange-dark': highlightTicketId === ticket.id,
                 }"
               >
-                <td class="pr-3">{{ ticket.concessionType.name }}</td>
-                <td class="font-mono md:text-base text-xs sm:text-sm">
+                <td class="hidden sm:table-cell pr-4">
+                  <template v-if="n == 0">{{ ticket.seatGroup.name }}</template>
+                  <template
+                    v-else-if="
+                      sortedTicketList[n - 1].seatGroup.name !=
+                      ticket.seatGroup.name
+                    "
+                    >{{ ticket.seatGroup.name }}</template
+                  >
+                </td>
+                <td class="pr-3 sm:">{{ ticket.concessionType.name }}</td>
+                <td class="pr-3 sm: font-mono md:text-base text-xs sm:text-sm">
                   {{ ticket.id }}
                 </td>
                 <td class="py-1 text-center">
-                  <ticket-check-in-btn
-                    :editing="editing"
-                    :ticket="ticket"
-                    :editing-data="editingData"
-                    @btn-press="
-                      editingData[ticket.id] = !editingData[ticket.id]
-                    "
-                  />
+                  <div class="flex items-center justify-center space-x-2">
+                    <font-awesome-icon
+                      :icon="
+                        (editing ? editingData[ticket.id] : ticket.checkedIn)
+                          ? 'check-circle'
+                          : 'times-circle'
+                      "
+                      :class="[
+                        (editing ? editingData[ticket.id] : ticket.checkedIn)
+                          ? 'text-sta-green'
+                          : 'text-sta-rouge',
+                      ]"
+                    />
+                    <button
+                      v-if="editing && !saving"
+                      class="
+                        flex-none
+                        p-1
+                        bg-sta-orange
+                        hover:bg-sta-orange-dark
+                        rounded
+                        focus:outline-none
+                        transition-colors
+                      "
+                      @click="editingData[ticket.id] = !editingData[ticket.id]"
+                    >
+                      {{ editingData[ticket.id] ? 'Un-Check In' : 'Check In' }}
+                    </button>
+                  </div>
                 </td>
               </tr>
-            </table>
-          </div>
-        </div>
-        <!-- Not Mobile -->
-        <div class="hidden sm:flex flex-grow order-1 overflow-x-auto">
-          <table class="w-full">
-            <tr class="text-left border-b">
-              <th class="pr-4">Seat Group</th>
-              <th class="pr-4">Type</th>
-              <th class="pr-4">Ticket ID</th>
-              <th class="text-center">Checked In?</th>
-            </tr>
-            <tr
-              v-for="(ticket, n) in sortedTicketList"
-              :key="n"
-              :class="{ 'bg-sta-orange-dark': highlightTicketId === ticket.id }"
-            >
-              <td class="pr-4">
-                <template v-if="n == 0">{{ ticket.seatGroup.name }}</template>
-                <template
-                  v-else-if="
-                    sortedTicketList[n - 1].seatGroup.name !=
-                    ticket.seatGroup.name
-                  "
-                  >{{ ticket.seatGroup.name }}</template
-                >
-              </td>
-              <td class="pr-4">{{ ticket.concessionType.name }}</td>
-              <td class="pr-4 font-mono text-sm md:text-base">
-                {{ ticket.id }}
-              </td>
-              <td class="py-1 text-center">
-                <ticket-check-in-btn
-                  :editing="editing"
-                  :ticket="ticket"
-                  :editing-data="editingData"
-                  @btn-press="editingData[ticket.id] = !editingData[ticket.id]"
-                />
-              </td>
-            </tr>
+            </template>
           </table>
         </div>
       </div>
@@ -139,10 +137,9 @@ import CheckInMutation from '@/graphql/mutations/box-office/CheckInTickets.gql'
 import UnCheckInMutation from '@/graphql/mutations/box-office/UnCheckInTickets.gql'
 import BoxOfficePerformanceBooking from '@/graphql/queries/box-office/BoxOfficePerformanceBooking.gql'
 import LoadingIcon from '../ui/LoadingIcon.vue'
-import TicketCheckInBtn from './TicketCheckInBtn.vue'
 
 export default {
-  components: { LoadingIcon, TicketCheckInBtn },
+  components: { LoadingIcon },
   props: {
     booking: {
       required: true,

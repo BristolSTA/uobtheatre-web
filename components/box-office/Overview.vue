@@ -60,59 +60,67 @@
             @time="currentTime = $event"
           />
         </div>
-
-        <div v-if="detailed" class="flex flex-grow-0 justify-center">
-          <div class="p-4 max-w-sm bg-sta-gray-light lg:px-10 xl:my-4">
-            <table class="table-fixed w-full">
-              <tr>
-                <td class="font-semibold">Total Tickets</td>
-                <td class="pl-2 w-1/5 text-sta-orange font-mono">
-                  {{ ticketBreakdown.totalCapacity }}
-                </td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Total Sold</td>
-                <td class="pl-2 w-1/5 text-sta-orange font-mono">
-                  {{ ticketBreakdown.totalTicketsSold }}
-                </td>
-              </tr>
-              <tr>
-                <td class="pl-6 font-semibold">Collected</td>
-                <td class="pl-2 w-1/5 text-sta-orange font-mono">
-                  {{ ticketBreakdown.totalTicketsCheckedIn }}
-                </td>
-              </tr>
-              <tr>
-                <td class="pl-6 font-semibold">To be Collected</td>
-                <td class="pl-2 w-1/5 text-sta-orange font-mono">
-                  {{ ticketBreakdown.totalTicketsToCheckIn }}
-                </td>
-              </tr>
-              <tr>
-                <td class="font-semibold">Available to Sell</td>
-                <td class="pl-2 w-1/5 text-sta-orange font-mono">
-                  {{ ticketBreakdown.totalTicketsAvailable }}
-                </td>
-              </tr>
-            </table>
-            <div class="flex items-center text-sta-rouge space-x-2">
-              <span class="relative flex w-3 h-3">
-                <span
-                  class="
-                    absolute
-                    inline-flex
-                    w-full
-                    h-full
-                    bg-sta-rouge
-                    rounded-full
-                    animate-ping
-                  "
-                ></span>
-                <span
-                  class="relative inline-flex w-3 h-3 bg-sta-rouge rounded-full"
-                ></span>
-              </span>
-              <p>Live</p>
+        <div>
+          <div v-if="detailed" class="flex flex-grow-0 justify-center">
+            <div class="p-4 max-w-sm bg-sta-gray-light lg:px-10 xl:my-4">
+              <table class="table-fixed w-full">
+                <tr>
+                  <td class="font-semibold">Total Tickets</td>
+                  <td class="pl-2 w-1/5 text-sta-orange font-mono">
+                    {{ ticketBreakdown.totalCapacity }}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="font-semibold">Total Sold</td>
+                  <td class="pl-2 w-1/5 text-sta-orange font-mono">
+                    {{ ticketBreakdown.totalTicketsSold }}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="pl-6 font-semibold">Collected</td>
+                  <td class="pl-2 w-1/5 text-sta-orange font-mono">
+                    {{ ticketBreakdown.totalTicketsCheckedIn }}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="pl-6 font-semibold">To be Collected</td>
+                  <td class="pl-2 w-1/5 text-sta-orange font-mono">
+                    {{ ticketBreakdown.totalTicketsToCheckIn }}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="font-semibold">Available to Sell</td>
+                  <td class="pl-2 w-1/5 text-sta-orange font-mono">
+                    {{ ticketBreakdown.totalTicketsAvailable }}
+                  </td>
+                </tr>
+              </table>
+              <div class="flex items-center text-sta-rouge space-x-2">
+                <span class="relative flex w-3 h-3">
+                  <span
+                    class="
+                      absolute
+                      inline-flex
+                      w-full
+                      h-full
+                      bg-sta-rouge
+                      rounded-full
+                      animate-ping
+                    "
+                  ></span>
+                  <span
+                    class="
+                      relative
+                      inline-flex
+                      w-3
+                      h-3
+                      bg-sta-rouge
+                      rounded-full
+                    "
+                  ></span>
+                </span>
+                <p>Live</p>
+              </div>
             </div>
           </div>
         </div>
