@@ -62,14 +62,16 @@
             <template v-for="(seatGroup, i) in seatGroupList">
               <tr :key="i" class="sm:hidden">
                 <td colspan="3" class="py-2">
-                  <div class="flex justify-center">
-                    <strong class="pr-2">Seat Group:</strong>
-                    {{ seatGroup.name }}
-                  </div>
+                  <u>
+                    <div class="text-center">
+                      <strong>Seat Group: </strong>
+                      {{ seatGroup.name }}
+                    </div>
+                  </u>
                 </td>
               </tr>
               <tr
-                v-for="(ticket, n) in sortedTicketList"
+                v-for="(ticket, n) in sortedTicketArray[i]"
                 :key="i.toString() + n.toString()"
                 :class="{
                   'bg-sta-orange-dark': highlightTicketId === ticket.id,
@@ -79,7 +81,7 @@
                   <template v-if="n == 0">{{ ticket.seatGroup.name }}</template>
                   <template
                     v-else-if="
-                      sortedTicketList[n - 1].seatGroup.name !=
+                      sortedTicketArray[i][n - 1].seatGroup.name !=
                       ticket.seatGroup.name
                     "
                     >{{ ticket.seatGroup.name }}</template
@@ -162,27 +164,18 @@ export default {
     }
   },
   computed: {
-    sortedTicketList() {
-      return lo.sortBy(this.booking.tickets, [
-        (ticket) => ticket.seatGroup.id,
-        (ticket) => ticket.concessionType.id,
-      ])
-    },
     seatGroupList() {
       return lo
         .uniqBy(this.booking.tickets, (ticket) => ticket.seatGroup.id)
         .map((ticket) => ticket.seatGroup)
     },
-  },
-  methods: {
-    ticketsInSeatGroup(seatGroup) {
-      return lo.sortBy(
-        this.booking.tickets.filter(
-          (ticket) => ticket.seatGroup.id === seatGroup.id
-        ),
-        (ticket) => ticket.concessionType.id
+    sortedTicketArray() {
+      return Object.values(
+        lo.groupBy(this.booking.tickets, (ticket) => ticket.seatGroup.id)
       )
     },
+  },
+  methods: {
     startEditing() {
       this.editingData = lo.fromPairs(
         this.booking.tickets.map((ticket) => [ticket.id, ticket.checkedIn])
