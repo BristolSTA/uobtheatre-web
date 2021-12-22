@@ -252,6 +252,15 @@ export default {
     },
     actions() {
       const list = []
+      list.push({
+        icon: 'list-ul',
+        action: () =>
+          this.$router.push(
+            `/administration/productions/${this.production.slug}/permissions`
+          ),
+        text: 'Edit Permissions',
+      })
+
       if (this.canEdit) {
         if (this.production.status.value === 'DRAFT') {
           list.push({
