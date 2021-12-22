@@ -11,6 +11,7 @@ query adminProductionPermissions($slug: String!) {
         id
         firstName
         lastName
+        email
       }
       assignedPermissions
     }

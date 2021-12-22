@@ -1,6 +1,6 @@
 <template>
   <div>
-    <safe-table>
+    <safe-table v-if="assignedUsers.length">
       <thead>
         <table-row>
           <table-head-item>User</table-head-item>
@@ -48,7 +48,7 @@
       <form-label>
         User Email Address <required-star />
         <template #control>
-          <input v-model="newUser.email" type="email" />
+          <input v-model="newUser.email" type="email" class="text-black" />
         </template>
         <template #helper>
           This user must have an account on this site
@@ -144,10 +144,10 @@ export default {
       }
     },
     addNewUser() {
-      alert('TODO')
+      this.$emit('add', this.newUser)
     },
     removeUser(user) {
-      alert('TODO')
+      this.$emit('remove', user)
     },
   },
 }

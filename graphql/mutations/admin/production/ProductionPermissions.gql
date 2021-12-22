@@ -1,0 +1,22 @@
+mutation productionPermissions(
+  $productionId: IdInputField!
+  $permissions: [String]!
+  $userEmail: String!
+) {
+  productionPermissions(
+    id: $productionId
+    permissions: $permissions
+    userEmail: $userEmail
+  ) {
+    success
+    errors {
+      ... on NonFieldError {
+        message
+      }
+      ... on FieldError {
+        message
+        field
+      }
+    }
+  }
+}
