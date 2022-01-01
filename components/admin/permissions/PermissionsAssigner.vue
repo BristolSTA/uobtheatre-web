@@ -1,20 +1,28 @@
 <template>
   <div>
-    <safe-table v-if="assignedUsers.length">
+    <safe-table
+      v-if="assignedUsers.length"
+      table-class="border border-sta-gray-light border-collapse"
+    >
       <thead>
         <table-row>
-          <table-head-item>User</table-head-item>
+          <table-head-item :text-left="false">User</table-head-item>
           <table-head-item
             v-for="(permission, index) in assignablePermissions"
             :key="index"
+            :text-left="false"
           >
-            {{ permission.description }}
+            <small>{{ permission.description }}</small>
           </table-head-item>
         </table-row>
       </thead>
       <tbody>
-        <table-row v-for="(assignedUser, index) in assignedUsers" :key="index">
-          <table-row-item class="text-center">
+        <table-row
+          v-for="(assignedUser, index) in assignedUsers"
+          :key="index"
+          class="text-center"
+        >
+          <table-row-item>
             {{ assignedUser.user.firstName }} {{ assignedUser.user.lastName
             }}<br />
             <sta-button
@@ -32,6 +40,7 @@
           <table-row-item
             v-for="(permission, apIndex) in assignablePermissions"
             :key="apIndex"
+            class="border border-sta-gray-light"
           >
             <boolean-input
               :checked="
@@ -54,22 +63,24 @@
           This user must have an account on this site
         </template>
       </form-label>
-      <safe-table>
+      <safe-table class="my-4" table-class="border border-sta-gray-light">
         <thead>
-          <table-row :striped="false">
+          <table-row :striped="false" class="bg-sta-gray-light text-center">
             <table-head-item
               v-for="(permission, index) in userAssignablePermissions"
               :key="index"
+              :text-left="false"
             >
-              {{ permission.description }}
+              <small>{{ permission.description }}</small>
             </table-head-item>
           </table-row>
         </thead>
         <tbody>
-          <table-row :striped="false">
+          <table-row :striped="false" class="text-center">
             <table-row-item
               v-for="(assignablePermission, index) in userAssignablePermissions"
               :key="index"
+              class="border border-sta-gray-light"
             >
               <input
                 v-model="newUser.permissions"
@@ -82,6 +93,7 @@
       </safe-table>
       <sta-button
         class="bg-sta-green hover:bg-sta-green-dark transition-colors"
+        :disabled="!newUser.email"
         @click="addNewUser"
         >Add New</sta-button
       >
