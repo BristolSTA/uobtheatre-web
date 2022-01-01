@@ -10,6 +10,7 @@ query allSocieties($afterCursor: String) {
         name
         slug
         logo {
+          id
           url
         }
       }

@@ -8,6 +8,7 @@ fragment ProductionBasicInfo on ProductionNode {
     name
     slug
     logo {
+      id
       url
     }
   }

@@ -148,8 +148,6 @@
             >
               {{ discount.requirements[0].concessionType.name }}
               <form-label>
-                Discount Percentage
-                {{ discount.percentage }}
                 <percentage-input
                   :key="discount.id"
                   :value="discount.percentage * 100"
@@ -349,6 +347,7 @@ export default {
           productionId: this.production.id,
         }
       },
+      fetchPolicy: 'cache-and-network',
     },
   },
   computed: {

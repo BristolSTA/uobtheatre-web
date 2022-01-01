@@ -68,15 +68,17 @@
         </card>
         <div>
           <card v-if="actions.length" title="Actions" class="max-w-2xl">
-            <sta-button
-              v-for="(action, index) in actions"
-              :key="index"
-              class="bg-sta-orange hover:bg-sta-orange-dark mt-3"
-              :class="action.class"
-              :icon="action.icon"
-              @click="action.action()"
-              >{{ action.text }}</sta-button
-            >
+            <div class="flex gap-2">
+              <sta-button
+                v-for="(action, index) in actions"
+                :key="index"
+                class="bg-sta-orange hover:bg-sta-orange-dark mt-3"
+                :class="action.class"
+                :icon="action.icon"
+                @click="action.action()"
+                >{{ action.text }}</sta-button
+              >
+            </div>
           </card>
         </div>
       </div>
@@ -289,7 +291,8 @@ export default {
         }
         if (
           this.production.status.value === 'PUBLISHED' &&
-          new Date(this.production.end) < new Date()
+          new Date(this.production.end) < new Date() &&
+          this.production.permissions.includes('force_change_production')
         ) {
           list.push({
             icon: 'times-circle',

@@ -10,6 +10,7 @@ query productionBySlug($slug: String!) {
       name
       slug
       logo {
+        id
         url
       }
     }
