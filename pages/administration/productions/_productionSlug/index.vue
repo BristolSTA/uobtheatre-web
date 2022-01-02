@@ -84,11 +84,20 @@
       </div>
       <card title="Performances">
         <template v-if="canEdit" #messageBox>
-          <nuxt-link
-            class="hover:text-gray-200"
-            :to="`${production.slug}/performances/create`"
-            ><font-awesome-icon icon="plus-circle" class="fa-2x"
-          /></nuxt-link>
+          <div class="flex items-center">
+            <div
+              v-if="performancesData ? !performancesData.edges.length : false"
+              class="text-sta-rouge pr-2"
+            >
+              Click to add performance
+            </div>
+            <nuxt-link
+              class="hover:text-gray-400"
+              :to="`${production.slug}/performances/create`"
+            >
+              <font-awesome-icon icon="plus-circle" class="fa-2x" />
+            </nuxt-link>
+          </div>
         </template>
         <paginated-table
           :items="

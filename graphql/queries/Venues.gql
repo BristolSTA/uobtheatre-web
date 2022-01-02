@@ -1,4 +1,4 @@
-query {
+query venues {
   venues {
     edges {
       node {

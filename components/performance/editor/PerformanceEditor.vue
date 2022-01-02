@@ -32,7 +32,7 @@
           venue
         </p>
         <form-label name="doorsOpen" :errors="errors">
-          Doors Open <required-star />
+          <u>Doors Open</u> <required-star />
           <t-datepicker
             :value="doorsOpen"
             user-format="Y-m-d H:i"
@@ -43,7 +43,7 @@
           />
         </form-label>
         <form-label name="start" :errors="errors">
-          Performance Starts <required-star />
+          <u>Performance Starts</u> <required-star />
           <t-datepicker
             :value="start"
             user-format="Y-m-d H:i"
@@ -54,7 +54,7 @@
           />
         </form-label>
         <form-label name="end" :errors="errors">
-          Performance Ends <required-star />
+          <u>Performance Ends</u> <required-star />
           <t-datepicker
             :value="end"
             user-format="Y-m-d H:i"
@@ -82,7 +82,7 @@
             <font-awesome-icon
               v-if="remainingSeatGroups.length"
               icon="plus-circle"
-              class="cursor-pointer"
+              class="cursor-pointer text-lg hover:text-gray-300"
               @click="addSeatGroup()"
             />
           </div>
@@ -101,7 +101,7 @@
             <h4 class="text-h4">Concessions</h4>
             <font-awesome-icon
               icon="plus-circle"
-              class="cursor-pointer"
+              class="cursor-pointer text-lg hover:text-gray-300"
               @click="addNewConcession()"
             />
           </div>
@@ -140,7 +140,19 @@
         </div>
         <table class="w-full">
           <tr>
-            <th></th>
+            <th class="font-normal relative text-xs lg:text-sm">
+              <div
+                class="absolute diagonalCross p-2 pt-4 top-0 min-h-full w-full"
+              />
+              <div
+                class="absolute top-4 xl:top-5 right-2 w-20 lg:w-40 text-right"
+              >
+                Percentage Discount
+              </div>
+              <div class="absolute left-2 bottom-2 w-20 lg:w-40 text-left">
+                Seat Group Price
+              </div>
+            </th>
             <th
               v-for="discount in singleDiscounts"
               :key="discount.id"
@@ -639,6 +651,7 @@ export default {
     async addSeatGroup(sg = null, price = 0) {
       if (!sg) {
         const { value } = await swal.fire({
+          text: 'Select seat group:',
           input: 'select',
           inputOptions: Object.fromEntries(
             this.remainingSeatGroups.map((seatGroup) => [
@@ -694,3 +707,15 @@ export default {
   },
 }
 </script>
+
+<style scoped lang="scss">
+.diagonalCross {
+  background: linear-gradient(
+      to top right,
+      #fff0 calc(50% - 1px),
+      #fff,
+      #fff0 calc(50% + 1px)
+    )
+    content-box;
+}
+</style>

@@ -3,7 +3,7 @@
     <card title="Basic Details">
       <div class="space-y-4">
         <form-label :errors="errors" name="name">
-          Name <required-star />
+          <u>Name</u> <required-star />
           <t-input
             :value="name"
             placeholder="e.g. My Show"
@@ -34,36 +34,46 @@
             >
           </template>
           <template v-else>
-            <form-label>
-              Slug
-              <t-input
-                :value="manualSlug"
-                @input="manualSlug = kebabCase($event)"
-              />
-            </form-label>
-            <sta-button
-              class="bg-sta-green hover:bg-sta-green-dark transition-colors"
-              @click="
-                () => {
-                  $emit('update:slug', manualSlug)
-                  changingSlug = false
-                }
-              "
-              >Done</sta-button
-            >
+            <div class="flex">
+              <form-label class="flex-grow">
+                <u>Slug</u>
+                <t-input
+                  :value="manualSlug"
+                  @input="manualSlug = kebabCase($event)"
+                />
+              </form-label>
+              <sta-button
+                class="
+                  bg-sta-green
+                  hover:bg-sta-green-dark
+                  transition-colors
+                  lg:mx-8
+                  mx-4
+                  mt-6
+                "
+                @click="
+                  () => {
+                    $emit('update:slug', manualSlug)
+                    changingSlug = false
+                  }
+                "
+              >
+                Done
+              </sta-button>
+            </div>
           </template>
           <br />
           <error-helper :errors="errors" field-name="slug" />
         </p>
         <form-label :errors="errors" name="subtitle">
-          Subtitle
+          <u>Subtitle</u>
           <t-input
             :value="subtitle"
             @input="$emit('update:subtitle', $event)"
           />
         </form-label>
         <form-label :errors="errors" name="description">
-          Description <required-star />
+          <u>Description</u> <required-star />
           <template #control>
             <rich-text-input
               :value="description"
@@ -72,9 +82,18 @@
           </template>
         </form-label>
         <form-label :errors="errors" name="warnings">
-          Audience Warnings
+          <u>Audience Warnings</u>
           <template #control>
-            <div class="flex flex-wrap space-x-3">
+            <div
+              class="
+                grid
+                gap-1
+                grid-flow-row
+                2xl:grid-cols-4
+                lg:grid-cols-3
+                grid-cols-2
+              "
+            >
               <div v-for="(warning, index) in availableWarnings" :key="index">
                 <input
                   type="checkbox"
@@ -90,23 +109,29 @@
             </div>
           </template>
         </form-label>
-        <form-label :errors="errors" name="facebookEvent">
-          Facebook Event Link
-          <t-input
-            :value="facebookEvent"
-            @input="$emit('update:facebookEvent', $event)"
-          />
-        </form-label>
-        <form-label :errors="errors" name="ageRating">
-          Age Rating
-          <t-input
-            :value="ageRating"
-            type="number"
-            min="4"
-            max="18"
-            @input="$emit('update:ageRating', $event)"
-          />
-        </form-label>
+        <div class="flex items-end">
+          <form-label
+            class="lg:w-1/4 w-1/5 mr-4"
+            :errors="errors"
+            name="ageRating"
+          >
+            <u>Age Rating</u>
+            <t-input
+              :value="ageRating"
+              type="number"
+              min="4"
+              max="18"
+              @input="$emit('update:ageRating', $event)"
+            />
+          </form-label>
+          <form-label class="flex-grow" :errors="errors" name="facebookEvent">
+            <u>Facebook Event Link</u>
+            <t-input
+              :value="facebookEvent"
+              @input="$emit('update:facebookEvent', $event)"
+            />
+          </form-label>
+        </div>
       </div>
     </card>
     <card title="Society">
@@ -152,7 +177,7 @@
       <div class="space-y-4">
         <div class="flex flex-wrap justify-evenly md:flex-nowrap md:space-x-4">
           <form-label :errors="errors" name="featuredImage">
-            Feature Image <required-star />
+            <u>Feature Image</u> <required-star />
             <template #helper>
               The main image used to promote your production across the site. It
               should have a ratio of roughly 16:9
@@ -168,7 +193,7 @@
             </template>
           </form-label>
           <form-label :errors="errors" name="posterImage">
-            Poster Image <required-star />
+            <u>Poster Image</u> <required-star />
             <template #helper>
               A poster image for your production, portrait in standard "A" paper
               ratio (1/√2).
@@ -184,7 +209,7 @@
           </form-label>
         </div>
         <form-label :errors="errors" name="coverImage">
-          Cover Image
+          <u>Cover Image</u>
           <template #helper>
             A cover image used on the homepage carousel. Should have a ratio of
             roughly 3:1, with at least 1200px width dimension
