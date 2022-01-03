@@ -1,19 +1,19 @@
 <template>
-  <div>
-    <t-input
-      ref="inputRef"
-      type="number"
-      min="0"
-      max="100"
-      max-length="3"
-      :value="value"
-      @input="onInput"
-      @blur="onBlur"
-      @keypress.stop="
+  <t-input
+    ref="inputRef"
+    type="number"
+    min="0"
+    max="100"
+    max-length="3"
+    :value="value"
+    @input="onInput"
+    @blur="onBlur"
+    @keypress.stop="
+      () => {
         if (!/^[0-9.]$/i.test($event.key)) $event.preventDefault()
-      "
-    />
-  </div>
+      }
+    "
+  />
 </template>
 
 <script>
