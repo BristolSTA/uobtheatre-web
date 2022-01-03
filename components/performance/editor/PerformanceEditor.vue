@@ -33,39 +33,42 @@
         </p>
         <form-label name="doorsOpen" :errors="errors" :required="true">
           Doors Open
-          <template #control
-            ><t-datepicker
+          <template #control>
+            <t-datepicker
               :value="doorsOpen"
               user-format="Y-m-d H:i"
               date-format="Z"
               :timepicker="true"
               class="text-black"
               @change="$emit('update:doorsOpen', $event)"
-          /></template>
+            />
+          </template>
         </form-label>
         <form-label name="start" :errors="errors" :required="true">
           Performance Starts
-          <template #control
-            ><t-datepicker
+          <template #control>
+            <t-datepicker
               :value="start"
               user-format="Y-m-d H:i"
               date-format="Z"
               :timepicker="true"
               class="text-black"
               @change="$emit('update:start', $event)"
-          /></template>
+            />
+          </template>
         </form-label>
-        <form-label name="end" :errors="errors">
-          Performance Ends <required-star />
-          <template #control
-            ><t-datepicker
+        <form-label name="end" :errors="errors" :required="true">
+          Performance Ends
+          <template #control>
+            <t-datepicker
               :value="end"
               user-format="Y-m-d H:i"
               date-format="Z"
               :timepicker="true"
               class="text-black"
               @change="$emit('update:end', $event)"
-          /></template>
+            />
+          </template>
         </form-label>
       </div>
     </card>
@@ -75,8 +78,9 @@
         <sta-button
           class="bg-sta-orange hover:bg-sta-orange-dark transition-colors"
           @click="loadTicketOptions"
-          >Load From Exisiting Performance</sta-button
         >
+          Load From Exisiting Performance
+        </sta-button>
       </template>
       <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
         <div class="px-2 border border-sta-gray rounded-lg">
@@ -102,7 +106,7 @@
               v-if="
                 venue && selectedSeatGroupCapacities > venue.internalCapacity
               "
-              class="bg-sta-orange p-2"
+              class="bg-sta-orange p-2 text-sm"
             >
               <strong>NB:</strong> Venue capacity will limit this performance's
               capacity automatically to {{ venue.internalCapacity }}
@@ -154,8 +158,8 @@
         <table class="w-full">
           <tr>
             <th
-              class="font-normal relative text-xs lg:text-sm"
-              style="max-width: 100px; word-break: break-word"
+              class="font-normal relative text-xs xl:text-sm"
+              style="max-width: 200px"
             >
               <div
                 class="
@@ -168,12 +172,10 @@
                   w-full
                 "
               />
-              <div
-                class="absolute top-4 xl:top-5 right-2 w-20 lg:w-40 text-right"
-              >
+              <div class="absolute top-3 right-2 w-20 xl:w-40 text-right">
                 Percentage Discount
               </div>
-              <div class="absolute left-2 bottom-2 w-20 lg:w-40 text-left">
+              <div class="absolute left-2 bottom-2 w-20 xl:w-40 text-left">
                 Seat Group Price
               </div>
             </th>
@@ -184,12 +186,13 @@
             >
               <form-label label-class="">
                 {{ discount.requirements[0].concessionType.name }}
-                <template #control
-                  ><percentage-input
+                <template #control>
+                  <percentage-input
                     :key="discount.id"
                     :value="discount.percentage * 100"
                     @blur="discount.percentage = $event / 100"
-                /></template>
+                  />
+                </template>
               </form-label>
             </th>
           </tr>
@@ -198,7 +201,7 @@
             :key="performanceSeatGroup.id"
             class="odd:bg-sta-gray even:bg-sta-gray-dark"
           >
-            <th class="p-2" style="max-width: 100px; word-break: break-word">
+            <th class="p-2 break-words" style="max-width: 200px">
               <form-label label-class="text-sta-orange">
                 {{ performanceSeatGroup.seatGroup.name }}
                 <template #control>
@@ -207,7 +210,8 @@
                     :value="performanceSeatGroup.price / 100"
                     placeholder="Base Price"
                     @input="performanceSeatGroup.price = $event * 100"
-                /></template>
+                  />
+                </template>
               </form-label>
             </th>
             <td v-for="discount in singleDiscounts" :key="discount.id">
@@ -228,24 +232,24 @@
       <div class="space-y-4">
         <form-label name="disabled" :errors="errors">
           Disabled
-          <template #control
-            ><div>
+          <template #control>
+            <div>
               <t-toggle
                 :checked="disabled"
                 @change="$emit('update:disabled', $event)"
               />
-
-              <br /><small
-                >Disabled performances will not show, and will not be available
-                for booking</small
-              >
-            </div></template
-          >
+              <br />
+              <small>
+                Disabled performances will not show, and will not be available
+                for booking
+              </small>
+            </div>
+          </template>
         </form-label>
         <form-label name="capacity" :errors="errors">
           Performance Capacity
-          <template #control
-            ><t-input
+          <template #control>
+            <t-input
               :value="capacity"
               type="number"
               min="1"
@@ -253,19 +257,21 @@
               @keypress.stop="
                 if (!/^[0-9]$/i.test($event.key)) $event.preventDefault()
               "
-          /></template>
+            />
+          </template>
           <template #helper
             >Optionally, add the capacity of the performance. If not given, the
-            capacity from the seat groups assigned will be used.</template
-          >
+            capacity from the seat groups assigned will be used.
+          </template>
         </form-label>
         <form-label name="description" :errors="errors">
           Description
-          <template #control
-            ><t-textarea
+          <template #control>
+            <t-textarea
               :value="description"
               @input="$emit('update:description', $event)"
-          /></template>
+            />
+          </template>
         </form-label>
       </div>
     </card>
@@ -278,7 +284,6 @@ import Errors from '@/classes/Errors'
 import { getValidationErrors, performMutation, swal } from '@/utils'
 import StaButton from '@/components/ui/StaButton.vue'
 import Card from '../../ui/Card.vue'
-import RequiredStar from '../../ui/Form/RequiredStar.vue'
 import FormLabel from '../../ui/FormLabel.vue'
 import CurrencyInput from '../../ui/Inputs/CurrencyInput.vue'
 import PercentageInput from '../../ui/Inputs/PercentageInput.vue'
@@ -289,7 +294,6 @@ export default {
   components: {
     FormLabel,
     Card,
-    RequiredStar,
     SeatGroup,
     ConcessionType,
     CurrencyInput,

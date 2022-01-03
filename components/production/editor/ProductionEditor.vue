@@ -4,12 +4,13 @@
       <div class="space-y-4">
         <form-label :errors="errors" name="name" :required="true">
           Name
-          <template #control
-            ><t-input
+          <template #control>
+            <t-input
               :value="name"
               placeholder="e.g. My Show"
               @input="$emit('update:name', $event)"
-          /></template>
+            />
+          </template>
         </form-label>
         <p v-if="computedSlug">
           <template v-if="!changingSlug">
