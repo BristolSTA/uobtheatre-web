@@ -94,6 +94,7 @@
               v-for="(performanceSeatGroup, index) in performanceSeatGroups"
               :key="performanceSeatGroup.id"
               :value="performanceSeatGroup.seatGroup"
+              :capacity-override="performanceSeatGroup.capacity"
               :removable="true"
               @remove="performanceSeatGroups.splice(index, 1)"
             />
