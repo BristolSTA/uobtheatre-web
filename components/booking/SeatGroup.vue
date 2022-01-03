@@ -82,13 +82,9 @@
           )
         "
       />
-      <div
-        v-if="discounts.edges.length"
-        class="flex justify-center mb-4 mt-2 w-full"
-      >
+      <div v-if="discounts.length" class="flex justify-center mb-4 mt-2 w-full">
         <group-ticket-button
-          v-for="(discount, index) in discounts.edges
-            .map((edge) => edge.node)
+          v-for="(discount, index) in discounts
             .filter(
               (discount) =>
                 discount.requirements.length > 1 ||
@@ -118,7 +114,7 @@ import GroupTicketButton from '@/components/booking/GroupTicketButton.vue'
 import lo from 'lodash'
 
 export default {
-  name: 'SeatLocation',
+  name: 'SeatGroup',
   components: { ConcessionType, GroupTicketButton },
   props: {
     expanded: {
@@ -139,7 +135,7 @@ export default {
     },
     discounts: {
       required: true,
-      type: Object,
+      type: Array,
     },
     showCapacities: {
       default: false,

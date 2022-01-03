@@ -21,7 +21,7 @@ export default (overrides = {}) => {
       isBookable: true,
       seatGroups: null,
       capacity: 207,
-      discounts: [Discount()],
+      discounts: { edges: [{ node: Discount() }] },
       bookings: GenericNodeConnection(),
       capacityRemaining: 69,
       ticketOptions: [PerformanceSeatGroup()],

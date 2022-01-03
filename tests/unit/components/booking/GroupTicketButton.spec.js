@@ -19,8 +19,8 @@ describe('Group Ticket Button', () => {
       price: 800,
       pricePounds: '8.00',
     })
-
-    performance.discounts[0].requirements.push({
+    const discount = performance.discounts.edges[0].node
+    discount.requirements.push({
       id: 1,
       number: 2,
       discount: null,
@@ -29,7 +29,7 @@ describe('Group Ticket Button', () => {
 
     buttonComponent = mount(GroupTicketButton, {
       propsData: {
-        discount: performance.discounts[0],
+        discount,
       },
     })
   })

@@ -15,7 +15,7 @@
         ticketMatrix.ticketOptions.length == 1
       "
       :current-tickets="booking.tickets"
-      :discounts="ticketMatrix.discounts"
+      :discounts="ticketMatrix.discounts.edges.map((edge) => edge.node)"
       :show-capacities="showCapacities"
       :can-add-tickets="
         maxTickets !== null ? booking.tickets.length < maxTickets : true
