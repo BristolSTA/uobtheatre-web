@@ -2,13 +2,14 @@
   <div class="space-y-2">
     <card title="Basic Details">
       <div class="space-y-4">
-        <form-label :errors="errors" name="name">
-          <u>Name</u> <required-star />
-          <t-input
-            :value="name"
-            placeholder="e.g. My Show"
-            @input="$emit('update:name', $event)"
-          />
+        <form-label :errors="errors" name="name" :required="true">
+          Name
+          <template #control
+            ><t-input
+              :value="name"
+              placeholder="e.g. My Show"
+              @input="$emit('update:name', $event)"
+          /></template>
         </form-label>
         <p v-if="computedSlug">
           <template v-if="!changingSlug">
@@ -36,7 +37,7 @@
           <template v-else>
             <div class="flex">
               <form-label class="flex-grow">
-                <u>Slug</u>
+                Slug
                 <t-input
                   :value="manualSlug"
                   @input="manualSlug = kebabCase($event)"
@@ -66,14 +67,14 @@
           <error-helper :errors="errors" field-name="slug" />
         </p>
         <form-label :errors="errors" name="subtitle">
-          <u>Subtitle</u>
+          Subtitle
           <t-input
             :value="subtitle"
             @input="$emit('update:subtitle', $event)"
           />
         </form-label>
-        <form-label :errors="errors" name="description">
-          <u>Description</u> <required-star />
+        <form-label :errors="errors" name="description" :required="true">
+          Description
           <template #control>
             <rich-text-input
               :value="description"
@@ -82,7 +83,7 @@
           </template>
         </form-label>
         <form-label :errors="errors" name="warnings">
-          <u>Audience Warnings</u>
+          Audience Warnings
           <template #control>
             <div
               class="
@@ -115,7 +116,7 @@
             :errors="errors"
             name="ageRating"
           >
-            <u>Age Rating</u>
+            Age Rating
             <t-input
               :value="ageRating"
               type="number"
@@ -128,7 +129,7 @@
             />
           </form-label>
           <form-label class="flex-grow" :errors="errors" name="facebookEvent">
-            <u>Facebook Event Link</u>
+            Facebook Event Link
             <t-input
               :value="facebookEvent"
               @input="$emit('update:facebookEvent', $event)"
@@ -180,7 +181,7 @@
       <div class="space-y-4">
         <div class="flex flex-wrap justify-evenly md:flex-nowrap md:space-x-4">
           <form-label :errors="errors" name="featuredImage">
-            <u>Feature Image</u> <required-star />
+            Feature Image
             <template #helper>
               The main image used to promote your production across the site. It
               should have a ratio of roughly 16:9
@@ -196,7 +197,7 @@
             </template>
           </form-label>
           <form-label :errors="errors" name="posterImage">
-            <u>Poster Image</u> <required-star />
+            Poster Image
             <template #helper>
               A poster image for your production, portrait in standard "A" paper
               ratio (1/√2).
@@ -212,7 +213,7 @@
           </form-label>
         </div>
         <form-label :errors="errors" name="coverImage">
-          <u>Cover Image</u>
+          Cover Image
           <template #helper>
             A cover image used on the homepage carousel. Should have a ratio of
             roughly 3:1, with at least 1200px width dimension
@@ -243,7 +244,6 @@ import ErrorHelper from '@/components/ui/ErrorHelper.vue'
 import StaButton from '@/components/ui/StaButton.vue'
 import ImageInput from '../../ui/Inputs/ImageInput.vue'
 import FormLabel from '../../ui/FormLabel.vue'
-import RequiredStar from '../../ui/Form/RequiredStar.vue'
 import Card from '../../ui/Card.vue'
 
 export default {
@@ -251,7 +251,6 @@ export default {
     FormLabel,
     ImageInput,
     Card,
-    RequiredStar,
     RichTextInput,
     ErrorHelper,
     StaButton,

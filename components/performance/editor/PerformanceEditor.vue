@@ -31,38 +31,41 @@
           <strong>Note:</strong> All times should be in the time local to the
           venue
         </p>
-        <form-label name="doorsOpen" :errors="errors">
-          <u>Doors Open</u> <required-star />
-          <t-datepicker
-            :value="doorsOpen"
-            user-format="Y-m-d H:i"
-            date-format="Z"
-            :timepicker="true"
-            class="text-black"
-            @change="$emit('update:doorsOpen', $event)"
-          />
+        <form-label name="doorsOpen" :errors="errors" :required="true">
+          Doors Open
+          <template #control
+            ><t-datepicker
+              :value="doorsOpen"
+              user-format="Y-m-d H:i"
+              date-format="Z"
+              :timepicker="true"
+              class="text-black"
+              @change="$emit('update:doorsOpen', $event)"
+          /></template>
         </form-label>
-        <form-label name="start" :errors="errors">
-          <u>Performance Starts</u> <required-star />
-          <t-datepicker
-            :value="start"
-            user-format="Y-m-d H:i"
-            date-format="Z"
-            :timepicker="true"
-            class="text-black"
-            @change="$emit('update:start', $event)"
-          />
+        <form-label name="start" :errors="errors" :required="true">
+          Performance Starts
+          <template #control
+            ><t-datepicker
+              :value="start"
+              user-format="Y-m-d H:i"
+              date-format="Z"
+              :timepicker="true"
+              class="text-black"
+              @change="$emit('update:start', $event)"
+          /></template>
         </form-label>
         <form-label name="end" :errors="errors">
-          <u>Performance Ends</u> <required-star />
-          <t-datepicker
-            :value="end"
-            user-format="Y-m-d H:i"
-            date-format="Z"
-            :timepicker="true"
-            class="text-black"
-            @change="$emit('update:end', $event)"
-          />
+          Performance Ends <required-star />
+          <template #control
+            ><t-datepicker
+              :value="end"
+              user-format="Y-m-d H:i"
+              date-format="Z"
+              :timepicker="true"
+              class="text-black"
+              @change="$emit('update:end', $event)"
+          /></template>
         </form-label>
       </div>
     </card>
@@ -94,6 +97,15 @@
               :removable="true"
               @remove="performanceSeatGroups.splice(index, 1)"
             />
+            <div
+              v-if="
+                venue && selectedSeatGroupCapacities > venue.internalCapacity
+              "
+              class="bg-sta-orange p-2"
+            >
+              <strong>NB:</strong> Venue capacity will limit this performance's
+              capacity automatically to {{ venue.internalCapacity }}
+            </div>
           </div>
         </div>
         <div class="px-2 border border-sta-gray rounded-lg">
@@ -140,9 +152,20 @@
         </div>
         <table class="w-full">
           <tr>
-            <th class="font-normal relative text-xs lg:text-sm">
+            <th
+              class="font-normal relative text-xs lg:text-sm"
+              style="max-width: 100px; word-break: break-word"
+            >
               <div
-                class="absolute diagonalCross p-2 pt-4 top-0 min-h-full w-full"
+                class="
+                  absolute
+                  cell-right-to-left-diagonal
+                  p-2
+                  pt-4
+                  top-0
+                  min-h-full
+                  w-full
+                "
               />
               <div
                 class="absolute top-4 xl:top-5 right-2 w-20 lg:w-40 text-right"
@@ -158,13 +181,14 @@
               :key="discount.id"
               class="pb-2"
             >
-              {{ discount.requirements[0].concessionType.name }}
-              <form-label>
-                <percentage-input
-                  :key="discount.id"
-                  :value="discount.percentage * 100"
-                  @blur="discount.percentage = $event / 100"
-                />
+              <form-label label-class="">
+                {{ discount.requirements[0].concessionType.name }}
+                <template #control
+                  ><percentage-input
+                    :key="discount.id"
+                    :value="discount.percentage * 100"
+                    @blur="discount.percentage = $event / 100"
+                /></template>
               </form-label>
             </th>
           </tr>
@@ -173,17 +197,16 @@
             :key="performanceSeatGroup.id"
             class="odd:bg-sta-gray even:bg-sta-gray-dark"
           >
-            <th class="p-2">
-              <span class="text-sta-orange">{{
-                performanceSeatGroup.seatGroup.name
-              }}</span>
-              <form-label>
-                <currency-input
-                  :key="performanceSeatGroup.id"
-                  :value="performanceSeatGroup.price / 100"
-                  placeholder="Base Price"
-                  @input="performanceSeatGroup.price = $event * 100"
-                />
+            <th class="p-2" style="max-width: 100px; word-break: break-word">
+              <form-label label-class="text-sta-orange">
+                {{ performanceSeatGroup.seatGroup.name }}
+                <template #control>
+                  <currency-input
+                    :key="performanceSeatGroup.id"
+                    :value="performanceSeatGroup.price / 100"
+                    placeholder="Base Price"
+                    @input="performanceSeatGroup.price = $event * 100"
+                /></template>
               </form-label>
             </th>
             <td v-for="discount in singleDiscounts" :key="discount.id">
@@ -203,7 +226,7 @@
     <card title="Other Details">
       <div class="space-y-4">
         <form-label name="disabled" :errors="errors">
-          Disabled<br />
+          Disabled
           <template #control
             ><div>
               <t-toggle
@@ -220,15 +243,16 @@
         </form-label>
         <form-label name="capacity" :errors="errors">
           Performance Capacity
-          <t-input
-            :value="capacity"
-            type="number"
-            min="1"
-            @input="$emit('update:capacity', $event)"
-            @keypress.stop="
-              if (!/^[0-9]$/i.test($event.key)) $event.preventDefault()
-            "
-          />
+          <template #control
+            ><t-input
+              :value="capacity"
+              type="number"
+              min="1"
+              @input="$emit('update:capacity', $event)"
+              @keypress.stop="
+                if (!/^[0-9]$/i.test($event.key)) $event.preventDefault()
+              "
+          /></template>
           <template #helper
             >Optionally, add the capacity of the performance. If not given, the
             capacity from the seat groups assigned will be used.</template
@@ -236,10 +260,11 @@
         </form-label>
         <form-label name="description" :errors="errors">
           Description
-          <t-textarea
-            :value="description"
-            @input="$emit('update:description', $event)"
-          />
+          <template #control
+            ><t-textarea
+              :value="description"
+              @input="$emit('update:description', $event)"
+          /></template>
         </form-label>
       </div>
     </card>
@@ -396,6 +421,12 @@ export default {
           ),
       ].sort(
         (discount1, discount2) => discount1.percentage - discount2.percentage
+      )
+    },
+    selectedSeatGroupCapacities() {
+      return this.performanceSeatGroups.reduce(
+        (sum, option) => sum + option.capacity,
+        0
       )
     },
   },
@@ -678,6 +709,7 @@ export default {
       this.performanceSeatGroups.push({
         seatGroup: sg,
         price,
+        capacity: sg.capacity,
       })
     },
     async addNewConcession(name = null, description = null, percentage = 0) {
@@ -714,15 +746,3 @@ export default {
   },
 }
 </script>
-
-<style scoped lang="scss">
-.diagonalCross {
-  background: linear-gradient(
-      to top right,
-      #fff0 calc(50% - 1px),
-      #fff,
-      #fff0 calc(50% + 1px)
-    )
-    content-box;
-}
-</style>

@@ -11,6 +11,7 @@
           <tr v-if="empty && !loading">
             <td colspan="100%" class="py-3 text-center bg-sta-gray-light">
               <h3 class="text-h3">{{ emptyText }}</h3>
+              <slot name="empty"></slot>
             </td>
           </tr>
         </tbody>

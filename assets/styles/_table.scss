@@ -1,0 +1,9 @@
+.cell-right-to-left-diagonal {
+  background: linear-gradient(
+      to top right,
+      #fff0 calc(50% - 1px),
+      #fff,
+      #fff0 calc(50% + 1px)
+    )
+    content-box;
+}

@@ -12,6 +12,7 @@ query adminPerformanceDetail($productionSlug: String!, $performanceId: ID!) {
             id
             name
             slug
+            internalCapacity
           }
           disabled
           doorsOpen

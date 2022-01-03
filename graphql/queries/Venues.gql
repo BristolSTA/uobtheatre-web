@@ -4,6 +4,7 @@ query venues {
       node {
         id
         name
+        internalCapacity
         image {
           url
         }

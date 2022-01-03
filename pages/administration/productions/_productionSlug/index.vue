@@ -85,12 +85,6 @@
       <card title="Performances">
         <template v-if="canEdit" #messageBox>
           <div class="flex items-center">
-            <div
-              v-if="performancesData ? !performancesData.edges.length : false"
-              class="text-sta-rouge pr-2"
-            >
-              Click to add performance
-            </div>
             <nuxt-link
               class="hover:text-gray-400"
               :to="`${production.slug}/performances/create`"
@@ -105,6 +99,7 @@
               ? performancesData.edges.map((edge) => edge.node)
               : []
           "
+          empty-text="This production currently has no performances"
           :max-per-page="10"
           :loading="$apollo.queries.performancesData.loading"
           :page-info="performancesData ? performancesData.pageInfo : {}"
@@ -156,6 +151,16 @@
                 >
               </table-row-item>
             </table-row>
+          </template>
+          <template #empty>
+            <div class="flex items-center justify-center">
+              <nuxt-link
+                class="bg-sta-green py-1 px-2 rounded-full"
+                :to="`${production.slug}/performances/create`"
+              >
+                Add a performance?
+              </nuxt-link>
+            </div>
           </template>
         </paginated-table>
       </card>

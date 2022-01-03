@@ -54,8 +54,8 @@
       </tbody>
     </safe-table>
     <div class="mt-4 p-2 bg-sta-gray-dark rounded">
-      <form-label>
-        User Email Address <required-star />
+      <form-label :required="true">
+        User Email Address
         <template #control>
           <input v-model="newUser.email" type="email" class="text-black" />
         </template>
@@ -109,7 +109,6 @@ import TableRowItem from '@/components/ui/Tables/TableRowItem.vue'
 import TableRow from '@/components/ui/Tables/TableRow.vue'
 import StaButton from '@/components/ui/StaButton.vue'
 import FormLabel from '@/components/ui/FormLabel.vue'
-import RequiredStar from '@/components/ui/Form/RequiredStar.vue'
 export default {
   components: {
     SafeTable,
@@ -119,7 +118,6 @@ export default {
     TableRow,
     StaButton,
     FormLabel,
-    RequiredStar,
   },
   props: {
     assignablePermissions: {

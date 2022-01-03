@@ -26,8 +26,8 @@
       </div>
     </div>
     <div v-if="editable && editing">
-      <form-label>
-        Name <required-star />
+      <form-label :required="true">
+        Name
         <template #control>
           <t-input
             :value="name"
@@ -52,10 +52,9 @@
 
 <script>
 import FormLabel from '@/components/ui/FormLabel.vue'
-import RequiredStar from '@/components/ui/Form/RequiredStar.vue'
 
 export default {
-  components: { FormLabel, RequiredStar },
+  components: { FormLabel },
   props: {
     name: {
       required: true,
