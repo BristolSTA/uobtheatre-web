@@ -9,7 +9,7 @@
       ref="editor"
       :performance="performance"
       :production="production"
-      :errors="errors"
+      :errors.sync="errors"
       v-bind.sync="performance"
     />
   </admin-page>

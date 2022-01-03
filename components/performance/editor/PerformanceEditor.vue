@@ -473,133 +473,133 @@ export default {
         (performanceSeatGroup) => performanceSeatGroup.id
       )
 
-      try {
-        // Delete deleted seat groups
-        currentSeatGroupIds
-          .filter((currentId) => !editedSeatGroupIds.includes(currentId))
-          .forEach((currentId) => {
-            mutations.push(
-              performMutation(
-                this.$apollo,
-                {
-                  mutation: require('@/graphql/mutations/admin/performance/DeletePerformanceSeatGroup.gql'),
-                  variables: {
-                    id: currentId,
-                  },
-                },
-                'deletePerformanceSeatGroup'
-              )
-            )
-          })
-
-        // Update or add edited ones
-        this.performanceSeatGroups.forEach((performanceSeatGroup) => {
-          const input = {
-            seatGroup: performanceSeatGroup.seatGroup.id,
-            performance: this.performance.id,
-            price: performanceSeatGroup.price,
-          }
-          if (performanceSeatGroup.id) input.id = performanceSeatGroup.id
+      // Delete deleted seat groups
+      currentSeatGroupIds
+        .filter((currentId) => !editedSeatGroupIds.includes(currentId))
+        .forEach((currentId) => {
           mutations.push(
             performMutation(
               this.$apollo,
               {
-                mutation: require('@/graphql/mutations/admin/performance/PerformanceSeatGroupMutation.gql'),
+                mutation: require('@/graphql/mutations/admin/performance/DeletePerformanceSeatGroup.gql'),
                 variables: {
-                  input,
+                  id: currentId,
                 },
               },
-              'performanceSeatGroup'
+              'deletePerformanceSeatGroup'
             )
           )
         })
 
-        // Delete old discounts
-        this.deletedDiscounts
-          .filter((discount) => discount.id)
+      // Update or add edited ones
+      this.performanceSeatGroups.forEach((performanceSeatGroup) => {
+        const input = {
+          seatGroup: performanceSeatGroup.seatGroup.id,
+          performance: this.performance.id,
+          price: performanceSeatGroup.price,
+        }
+        if (performanceSeatGroup.id) input.id = performanceSeatGroup.id
+        mutations.push(
+          performMutation(
+            this.$apollo,
+            {
+              mutation: require('@/graphql/mutations/admin/performance/PerformanceSeatGroupMutation.gql'),
+              variables: {
+                input,
+              },
+            },
+            'performanceSeatGroup'
+          )
+        )
+      })
+
+      // Delete old discounts
+      this.deletedDiscounts
+        .filter((discount) => discount.id)
+        .forEach((discount) => {
+          // Check if we want to delete the mutation, or if we can just remove the performances
+          if (discount.performances.length > 1) {
+            return mutations.push(
+              performMutation(
+                this.$apollo,
+                {
+                  mutation: require('@/graphql/mutations/admin/performance/DiscountMutation.gql'),
+                  variables: {
+                    input: {
+                      id: discount.id,
+                      performances: discount.performances.edges
+                        .map((edge) => edge.node.id)
+                        .filter((id) => id !== this.performance.id),
+                    },
+                  },
+                },
+                'discount'
+              )
+            )
+          }
+
+          // Otherwise, try the delete
+          mutations.push(
+            performMutation(
+              this.$apollo,
+              {
+                mutation: require('@/graphql/mutations/admin/performance/DeleteDiscount.gql'),
+                variables: { id: discount.id },
+              },
+              'deleteDiscount'
+            )
+          )
+        })
+
+      // Create or update concession types
+
+      if (this.discounts?.edges) {
+        this.discounts.edges
+          .map((edge) => edge.node)
           .forEach((discount) => {
-            // Check if we want to delete the mutation, or if we can just remove the performances
-            if (discount.performances.length > 1) {
-              return mutations.push(
+            mutations.push(
+              new Promise((resolve, reject) => {
+                // Create or update the discount
+                const input = {
+                  percentage: discount.percentage,
+                  performances: discount.performances.edges.map(
+                    (edge) => edge.node.id
+                  ),
+                }
+                if (discount.id) input.id = discount.id
                 performMutation(
                   this.$apollo,
                   {
                     mutation: require('@/graphql/mutations/admin/performance/DiscountMutation.gql'),
                     variables: {
-                      input: {
-                        id: discount.id,
-                        performances: discount.performances.edges
-                          .map((edge) => edge.node.id)
-                          .filter((id) => id !== this.performance.id),
-                      },
+                      input,
                     },
                   },
                   'discount'
-                )
-              )
-            }
+                ).then((data) => {
+                  discount.id = data.discount.discount.id
+                  // Create or update the discount requirement & concession
+                  discount.requirements.forEach((requirement) => {
+                    // Step #1: Concession Type
+                    let input = {
+                      name: requirement.concessionType.name,
+                      description: requirement.concessionType.description,
+                    }
 
-            // Otherwise, try the delete
-            mutations.push(
-              performMutation(
-                this.$apollo,
-                {
-                  mutation: require('@/graphql/mutations/admin/performance/DeleteDiscount.gql'),
-                  variables: { id: discount.id },
-                },
-                'deleteDiscount'
-              )
-            )
-          })
+                    if (requirement.concessionType.id)
+                      input.id = requirement.concessionType.id
 
-        // Create or update concession types
-
-        if (this.discounts?.edges) {
-          this.discounts.edges
-            .map((edge) => edge.node)
-            .forEach((discount) => {
-              mutations.push(
-                new Promise((resolve) => {
-                  // Create or update the discount
-                  const input = {
-                    percentage: discount.percentage,
-                    performances: discount.performances.edges.map(
-                      (edge) => edge.node.id
-                    ),
-                  }
-                  if (discount.id) input.id = discount.id
-                  performMutation(
-                    this.$apollo,
-                    {
-                      mutation: require('@/graphql/mutations/admin/performance/DiscountMutation.gql'),
-                      variables: {
-                        input,
-                      },
-                    },
-                    'discount'
-                  ).then((data) => {
-                    discount.id = data.discount.discount.id
-                    // Create or update the discount requirement & concession
-                    discount.requirements.forEach((requirement) => {
-                      // Step #1: Concession Type
-                      let input = {
-                        name: requirement.concessionType.name,
-                        description: requirement.concessionType.description,
-                      }
-
-                      if (requirement.concessionType.id)
-                        input.id = requirement.concessionType.id
-
-                      performMutation(
-                        this.$apollo,
-                        {
-                          mutation: require('@/graphql/mutations/admin/performance/ConcessionTypeMutation.gql'),
-                          variables: {
-                            input,
-                          },
+                    performMutation(
+                      this.$apollo,
+                      {
+                        mutation: require('@/graphql/mutations/admin/performance/ConcessionTypeMutation.gql'),
+                        variables: {
+                          input,
                         },
-                        'concessionType'
-                      ).then((data) => {
+                      },
+                      'concessionType'
+                    )
+                      .then((data) => {
                         requirement.concessionType.id =
                           data.concessionType.concessionType.id
 
@@ -620,15 +620,19 @@ export default {
                             },
                           },
                           'discountRequirement'
-                        ).then(resolve())
+                        )
+                          .then(resolve())
+                          .catch((e) => reject(e))
                       })
-                    })
+                      .catch((e) => reject(e))
                   })
                 })
-              )
-            })
-        }
+              })
+            )
+          })
+      }
 
+      try {
         await Promise.all(mutations)
         return true
       } catch (e) {

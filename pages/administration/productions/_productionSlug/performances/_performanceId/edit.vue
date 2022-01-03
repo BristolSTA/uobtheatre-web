@@ -4,11 +4,12 @@
       <sta-button colour="green" icon="save" @click="save">Save</sta-button>
       <sta-button colour="orange" to="../../">Cancel</sta-button>
     </template>
+    <non-field-error :errors="errors" />
     <performance-editor
       ref="editor"
       :performance="performance"
       :production="production"
-      :errors="errors"
+      :errors.sync="errors"
       v-bind.sync="performance"
     />
   </admin-page>
@@ -20,14 +21,16 @@ import PerformanceEditor from '@/components/performance/editor/PerformanceEditor
 import AdminPage from '@/components/admin/AdminPage.vue'
 import StaButton from '@/components/ui/StaButton.vue'
 import {
+  errorToast,
   getValidationErrors,
   loadingSwal,
   performMutation,
   successToast,
 } from '@/utils'
 import Swal from 'sweetalert2'
+import NonFieldError from '@/components/ui/NonFieldError.vue'
 export default {
-  components: { PerformanceEditor, AdminPage, StaButton },
+  components: { PerformanceEditor, AdminPage, StaButton, NonFieldError },
   async asyncData({ params, error, app }) {
     // Execute query
     const { data } = await app.apolloProvider.defaultClient.query({
@@ -61,7 +64,7 @@ export default {
       this.errors = null
       loadingSwal.fire()
       try {
-        await this.$refs.editor.saveRelated()
+        const saveResult = await this.$refs.editor.saveRelated()
         await performMutation(
           this.$apollo,
           {
@@ -80,7 +83,13 @@ export default {
           },
         })
         this.performance = data.production.performances.edges[0].node
-        successToast.fire({ title: 'Performance Updated' })
+        if (saveResult) {
+          successToast.fire({ title: 'Performance Updated' })
+          return this.$router.push(
+            `/administration/productions/${this.production.slug}`
+          )
+        }
+        errorToast.fire({ title: 'Performance saved but with errors' })
       } catch (e) {
         this.errors = getValidationErrors(e)
         Swal.close()
