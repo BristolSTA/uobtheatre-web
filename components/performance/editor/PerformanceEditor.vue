@@ -225,6 +225,9 @@
             type="number"
             min="1"
             @input="$emit('update:capacity', $event)"
+            @keypress.stop="
+              if (!/^[0-9]$/i.test($event.key)) $event.preventDefault()
+            "
           />
           <template #helper
             >Optionally, add the capacity of the performance. If not given, the

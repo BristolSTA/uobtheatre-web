@@ -122,6 +122,9 @@
               min="4"
               max="18"
               @input="$emit('update:ageRating', $event)"
+              @keypress.stop="
+                if (!/^[0-9]$/i.test($event.key)) $event.preventDefault()
+              "
             />
           </form-label>
           <form-label class="flex-grow" :errors="errors" name="facebookEvent">
