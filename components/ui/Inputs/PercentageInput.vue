@@ -33,10 +33,11 @@ export default {
       this.$emit('input', event)
     },
     onBlur(event) {
-      let newVal = this.value
+      let newVal = event.target.value
       if (newVal > 100) newVal = 100
       if (newVal < 0) newVal = 0
       this.$emit('input', newVal)
+      this.$emit('blur', newVal)
     },
   },
 }

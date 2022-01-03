@@ -163,7 +163,7 @@
                 <percentage-input
                   :key="discount.id"
                   :value="discount.percentage * 100"
-                  @input="discount.percentage = $event / 100"
+                  @blur="discount.percentage = $event / 100"
                 />
               </form-label>
             </th>
