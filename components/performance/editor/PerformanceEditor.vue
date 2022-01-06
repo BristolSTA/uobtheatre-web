@@ -225,7 +225,9 @@
           </template>
           <template #helper
             >Optionally, add the capacity of the performance. If not given, the
-            capacity from the seat groups assigned will be used.
+            capacity from the seat groups assigned will be used. You can reserve
+            comp seats later - this should be representitive of the total number
+            of seats actually phsyically allowed.
           </template>
         </form-label>
         <form-label name="description" :errors="errors">
