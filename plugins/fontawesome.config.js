@@ -33,6 +33,7 @@ export default {
     'faSearch',
     'faSort',
     'faSortUp',
+    'faSync',
     'faSortDown',
     'faCheck',
     'faTimes',

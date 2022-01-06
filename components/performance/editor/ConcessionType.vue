@@ -46,6 +46,7 @@
           />
         </template>
       </form-label>
+      <slot name="editor-footer"></slot>
     </div>
   </div>
 </template>

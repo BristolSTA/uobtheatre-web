@@ -71,158 +71,124 @@
     </card>
 
     <card title="Ticket Options">
-      <template v-if="similarPerformances.length" #messageBox>
+      <template
+        v-if="similarPerformances.length && showTicketsEditor"
+        #messageBox
+      >
         <sta-button
           class="bg-sta-orange hover:bg-sta-orange-dark transition-colors"
           @click="loadTicketOptions"
           >Load From Exisiting Performance</sta-button
         >
       </template>
-      <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
-        <div class="px-2 border border-sta-gray rounded-lg">
-          <div class="flex items-center justify-between pt-3">
-            <h4 class="text-h4">Seat Groups</h4>
-            <font-awesome-icon
-              v-if="remainingSeatGroups.length"
-              icon="plus-circle"
-              class="cursor-pointer text-lg hover:text-gray-300"
-              @click="addSeatGroup()"
-            />
+      <template v-if="!showTicketsEditor">
+        <p class="text-center">
+          Would you like to load ticket options from an exisiting performance?
+        </p>
+        <div class="flex justify-center gap-4 max-w-xl mx-auto mt-2">
+          <sta-button
+            class="bg-sta-orange hover:bg-sta-orange-dark transition-colors"
+            @click="loadTicketOptions"
+            >Load from exisiting</sta-button
+          >
+          <sta-button
+            class="bg-sta-gray hover:bg-sta-gray-dark transition-colors"
+            @click="ignoredExisitingPerformances = true"
+            >Start from scratch</sta-button
+          >
+        </div>
+      </template>
+      <template v-else
+        ><div class="grid gap-4 grid-cols-1 md:grid-cols-2">
+          <div class="px-2 border border-sta-gray rounded-lg">
+            <div class="flex items-center justify-between pt-3">
+              <h4 class="text-h4">Seat Groups</h4>
+              <font-awesome-icon
+                v-if="remainingSeatGroups.length"
+                icon="plus-circle"
+                class="cursor-pointer text-lg hover:text-gray-300"
+                @click="addSeatGroup()"
+              />
+            </div>
+            <div class="py-3 space-y-2">
+              <seat-group
+                v-for="(performanceSeatGroup, index) in performanceSeatGroups"
+                :key="performanceSeatGroup.id"
+                :value="performanceSeatGroup.seatGroup"
+                :capacity-override="performanceSeatGroup.capacity"
+                :removable="true"
+                @remove="performanceSeatGroups.splice(index, 1)"
+              />
+              <alert
+                v-if="
+                  venue && selectedSeatGroupCapacities > venue.internalCapacity
+                "
+                level="warning"
+                ><strong>NB:</strong> Venue capacity will limit this
+                performance's capacity automatically to
+                {{ venue.internalCapacity }}</alert
+              >
+            </div>
           </div>
-          <div class="py-3 space-y-2">
-            <seat-group
-              v-for="(performanceSeatGroup, index) in performanceSeatGroups"
-              :key="performanceSeatGroup.id"
-              :value="performanceSeatGroup.seatGroup"
-              :capacity-override="performanceSeatGroup.capacity"
-              :removable="true"
-              @remove="performanceSeatGroups.splice(index, 1)"
-            />
-            <div
-              v-if="
-                venue && selectedSeatGroupCapacities > venue.internalCapacity
-              "
-              class="bg-sta-orange p-2"
-            >
-              <strong>NB:</strong> Venue capacity will limit this performance's
-              capacity automatically to {{ venue.internalCapacity }}
+          <div class="px-2 border border-sta-gray rounded-lg">
+            <div class="flex items-center justify-between pt-3">
+              <h4 class="text-h4">Concessions</h4>
+              <font-awesome-icon
+                icon="plus-circle"
+                class="cursor-pointer text-lg hover:text-gray-300"
+                @click="addNewConcession()"
+              />
+            </div>
+            <div class="py-3 space-y-2">
+              <concession-type
+                v-for="discount in singleDiscounts"
+                :key="discount.id"
+                v-bind.sync="discount.requirements[0].concessionType"
+                :removable="true"
+                :editable="true"
+                @remove="deleteConcession(discount)"
+                ><template
+                  v-if="discount.performances.edges.length > 1"
+                  #editor-footer
+                >
+                  <alert
+                    >Synced with
+                    {{ discount.performances.edges.length - 1 }} other
+                    performances.
+                  </alert>
+                </template></concession-type
+              >
             </div>
           </div>
         </div>
-        <div class="px-2 border border-sta-gray rounded-lg">
-          <div class="flex items-center justify-between pt-3">
-            <h4 class="text-h4">Concessions</h4>
-            <font-awesome-icon
-              icon="plus-circle"
-              class="cursor-pointer text-lg hover:text-gray-300"
-              @click="addNewConcession()"
-            />
-          </div>
-          <div class="py-3 space-y-2">
-            <concession-type
-              v-for="discount in singleDiscounts"
-              :key="discount.id"
-              v-bind.sync="discount.requirements[0].concessionType"
-              :removable="true"
-              :editable="true"
-              @remove="deleteConcession(discount)"
-            />
-          </div>
-        </div>
-      </div>
 
-      <h4 class="mt-6 text-h4">Ticket Pricing</h4>
-      <div
-        v-if="!performanceSeatGroups.length"
-        class="p-4 text-white bg-sta-rouge"
-      >
-        Please add at least one seat group
-      </div>
-      <div
-        v-else-if="!singleDiscounts.length"
-        class="p-4 text-white bg-sta-rouge"
-      >
-        Please add at least one concession type
-      </div>
-      <div v-else class="max-w-full overflow-x-auto">
+        <h4 class="mt-6 text-h4">Ticket Pricing</h4>
         <div
-          v-if="!singleDiscounts.some((discount) => discount.percentage == 0)"
+          v-if="!performanceSeatGroups.length"
           class="p-4 text-white bg-sta-rouge"
         >
-          You need at least one concession type with 0% discount.
+          Please add at least one seat group
         </div>
-        <table class="w-full">
-          <tr>
-            <th
-              class="font-normal relative text-xs lg:text-sm"
-              style="max-width: 100px; word-break: break-word"
-            >
-              <div
-                class="
-                  absolute
-                  cell-right-to-left-diagonal
-                  p-2
-                  pt-4
-                  top-0
-                  min-h-full
-                  w-full
-                "
-              />
-              <div
-                class="absolute top-4 xl:top-5 right-2 w-20 lg:w-40 text-right"
-              >
-                Percentage Discount
-              </div>
-              <div class="absolute left-2 bottom-2 w-20 lg:w-40 text-left">
-                Seat Group Price
-              </div>
-            </th>
-            <th
-              v-for="discount in singleDiscounts"
-              :key="discount.id"
-              class="pb-2"
-            >
-              <form-label label-class="">
-                {{ discount.requirements[0].concessionType.name }}
-                <template #control
-                  ><percentage-input
-                    :key="discount.id"
-                    :value="discount.percentage * 100"
-                    @blur="discount.percentage = $event / 100"
-                /></template>
-              </form-label>
-            </th>
-          </tr>
-          <tr
-            v-for="performanceSeatGroup in performanceSeatGroups"
-            :key="performanceSeatGroup.id"
-            class="odd:bg-sta-gray even:bg-sta-gray-dark"
+        <div
+          v-else-if="!singleDiscounts.length"
+          class="p-4 text-white bg-sta-rouge"
+        >
+          Please add at least one concession type
+        </div>
+        <div v-else class="max-w-full overflow-x-auto">
+          <div
+            v-if="!singleDiscounts.some((discount) => discount.percentage == 0)"
+            class="p-4 text-white bg-sta-rouge"
           >
-            <th class="p-2" style="max-width: 100px; word-break: break-word">
-              <form-label label-class="text-sta-orange">
-                {{ performanceSeatGroup.seatGroup.name }}
-                <template #control>
-                  <currency-input
-                    :key="performanceSeatGroup.id"
-                    :value="performanceSeatGroup.price / 100"
-                    placeholder="Base Price"
-                    @input="performanceSeatGroup.price = $event * 100"
-                /></template>
-              </form-label>
-            </th>
-            <td v-for="discount in singleDiscounts" :key="discount.id">
-              <div v-if="discount.percentage != null" class="text-center">
-                £{{
-                  (
-                    (performanceSeatGroup.price / 100) *
-                    (1 - discount.percentage)
-                  ).toFixed(2)
-                }}
-              </div>
-            </td>
-          </tr>
-        </table>
-      </div>
+            You need at least one concession type with 0% discount.
+          </div>
+          <price-matrix
+            :single-discounts="singleDiscounts"
+            :performance-seat-groups="performanceSeatGroups"
+            :editing="true"
+          />
+        </div>
+      </template>
     </card>
     <card title="Other Details">
       <div class="space-y-4">
@@ -277,13 +243,13 @@ import ErrorHelper from '@/components/ui/ErrorHelper.vue'
 import Errors from '@/classes/Errors'
 import { getValidationErrors, performMutation, swal } from '@/utils'
 import StaButton from '@/components/ui/StaButton.vue'
+import Alert from '@/components/ui/Alert.vue'
 import Card from '../../ui/Card.vue'
 import RequiredStar from '../../ui/Form/RequiredStar.vue'
 import FormLabel from '../../ui/FormLabel.vue'
-import CurrencyInput from '../../ui/Inputs/CurrencyInput.vue'
-import PercentageInput from '../../ui/Inputs/PercentageInput.vue'
 import SeatGroup from './SeatGroup.vue'
 import ConcessionType from './ConcessionType.vue'
+import PriceMatrix from './PriceMatrix.vue'
 
 export default {
   components: {
@@ -292,10 +258,10 @@ export default {
     RequiredStar,
     SeatGroup,
     ConcessionType,
-    CurrencyInput,
-    PercentageInput,
     ErrorHelper,
     StaButton,
+    Alert,
+    PriceMatrix,
   },
   props: {
     performance: {
@@ -353,6 +319,7 @@ export default {
   },
   data() {
     return {
+      ignoredExisitingPerformances: false,
       availableSeatGroups: [],
       availableVenues: [],
       otherPerformances: [],
@@ -428,6 +395,14 @@ export default {
       return this.performanceSeatGroups.reduce(
         (sum, option) => sum + option.capacity,
         0
+      )
+    },
+    showTicketsEditor() {
+      return (
+        this.performanceSeatGroups.length ||
+        this.singleDiscounts.length ||
+        this.ignoredExisitingPerformances ||
+        !this.similarPerformances.length
       )
     },
   },

@@ -9,13 +9,9 @@
       lg:px-12
     "
   >
-    <div
-      v-if="status.bannerText"
-      class="text-center p-2 mb-1"
-      :class="status.bannerClass"
-    >
-      {{ status.bannerText }}
-    </div>
+    <alert :level="status.bannerLevel" :class="status.bannerClass">{{
+      status.bannerText
+    }}</alert>
     <div class="flex flex-wrap">
       <div class="flex justify-center w-full md:block md:w-auto">
         <div>
@@ -133,12 +129,14 @@
 import IconListItem from '@/components/ui/IconListItem.vue'
 import { humanDuration } from '@/utils'
 import Clock from '@/components/ui/Clock.vue'
+import Alert from '../ui/Alert.vue'
 
 export default {
   name: 'Overview',
   components: {
     IconListItem,
     Clock,
+    Alert,
   },
   props: {
     production: {
@@ -175,7 +173,7 @@ export default {
       if (this.performanceEndDiffMinutes <= 0)
         return {
           clockClass: null,
-          bannerClass: 'bg-sta-rouge',
+          bannerLevel: 'danger',
           bannerText:
             'This performance is in the past. Are you sure you are viewing the right performance?',
         }
@@ -184,7 +182,7 @@ export default {
       if (this.performanceStartDiffMinutes <= 0)
         return {
           clockClass: 'text-sta-rouge',
-          bannerClass: 'bg-sta-rouge',
+          bannerLevel: 'danger',
           bannerText: 'This performance should now have started',
         }
 
@@ -192,7 +190,7 @@ export default {
       if (this.performanceStartDiffMinutes <= 5)
         return {
           clockClass: 'text-sta-orange animate-pulse',
-          bannerClass: 'bg-sta-orange',
+          bannerLevel: 'warning',
           bannerText: `This performance is due to start in ${humanDuration(
             this.performanceStartDiffMinutes
           )}`,
@@ -202,7 +200,7 @@ export default {
       if (this.performanceDoorsDiffMinutes < 0)
         return {
           clockClass: 'text-sta-green',
-          bannerClass: 'bg-sta-green',
+          bannerLevel: 'success',
           bannerText: `The doors should now be open (wait for clearance from your stage team)`,
         }
 
@@ -210,7 +208,7 @@ export default {
       if (this.performanceDoorsDiffMinutes <= 5)
         return {
           clockClass: 'animate-pulse',
-          bannerClass: 'bg-sta-orange',
+          bannerLevel: 'warning',
           bannerText: `Doors should be opening in ${humanDuration(
             this.performanceDoorsDiffMinutes
           )} (wait for clearance from your stage team)`,
@@ -219,7 +217,7 @@ export default {
       // Performance is within 3 hours
       if (this.performanceDoorsDiffMinutes >= 3 * 60) {
         return {
-          bannerClass: 'bg-sta-rouge',
+          bannerLevel: 'danger',
           bannerText: `This performance is over 3 hours away. Are you sure you have the right performance selected?`,
         }
       }
@@ -229,6 +227,7 @@ export default {
         bannerText: `Doors opening in ${humanDuration(
           this.performanceDoorsDiffMinutes
         )}`,
+        bannerLevel: '',
         bannerClass: 'border',
       }
     },
