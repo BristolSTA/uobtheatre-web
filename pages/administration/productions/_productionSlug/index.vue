@@ -86,7 +86,7 @@
         <template v-if="canEdit" #messageBox>
           <div class="flex items-center">
             <nuxt-link
-              class="hover:text-gray-400"
+              class="hover:text-gray-300"
               :to="`${production.slug}/performances/create`"
             >
               <font-awesome-icon icon="plus-circle" class="fa-2x" />
@@ -155,7 +155,13 @@
           <template #empty>
             <div class="flex items-center justify-center">
               <nuxt-link
-                class="bg-sta-green py-1 px-2 rounded-full"
+                class="
+                  bg-sta-green
+                  py-1
+                  px-2
+                  rounded-full
+                  hover:bg-sta-green-dark
+                "
                 :to="`${production.slug}/performances/create`"
               >
                 Add a performance?

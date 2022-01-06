@@ -33,39 +33,42 @@
         </p>
         <form-label name="doorsOpen" :errors="errors" :required="true">
           Doors Open
-          <template #control
-            ><t-datepicker
+          <template #control>
+            <t-datepicker
               :value="doorsOpen"
               user-format="Y-m-d H:i"
               date-format="Z"
               :timepicker="true"
               class="text-black"
               @change="$emit('update:doorsOpen', $event)"
-          /></template>
+            />
+          </template>
         </form-label>
         <form-label name="start" :errors="errors" :required="true">
           Performance Starts
-          <template #control
-            ><t-datepicker
+          <template #control>
+            <t-datepicker
               :value="start"
               user-format="Y-m-d H:i"
               date-format="Z"
               :timepicker="true"
               class="text-black"
               @change="$emit('update:start', $event)"
-          /></template>
+            />
+          </template>
         </form-label>
-        <form-label name="end" :errors="errors">
-          Performance Ends <required-star />
-          <template #control
-            ><t-datepicker
+        <form-label name="end" :errors="errors" :required="true">
+          Performance Ends
+          <template #control>
+            <t-datepicker
               :value="end"
               user-format="Y-m-d H:i"
               date-format="Z"
               :timepicker="true"
               class="text-black"
               @change="$emit('update:end', $event)"
-          /></template>
+            />
+          </template>
         </form-label>
       </div>
     </card>
@@ -78,8 +81,9 @@
         <sta-button
           class="bg-sta-orange hover:bg-sta-orange-dark transition-colors"
           @click="loadTicketOptions"
-          >Load From Exisiting Performance</sta-button
         >
+          Load From Exisiting Performance
+        </sta-button>
       </template>
       <template v-if="!showTicketsEditor">
         <p class="text-center">
@@ -123,6 +127,7 @@
                 v-if="
                   venue && selectedSeatGroupCapacities > venue.internalCapacity
                 "
+                class="text-sm"
                 level="warning"
                 ><strong>NB:</strong> Venue capacity will limit this
                 performance's capacity automatically to
@@ -194,24 +199,21 @@
       <div class="space-y-4">
         <form-label name="disabled" :errors="errors">
           Disabled
-          <template #control
-            ><div>
-              <t-toggle
-                :checked="disabled"
-                @change="$emit('update:disabled', $event)"
-              />
-
-              <br /><small
-                >Disabled performances will not show, and will not be available
-                for booking</small
-              >
-            </div></template
+          <template #control>
+            <t-toggle
+              :checked="disabled"
+              @change="$emit('update:disabled', $event)"
+            />
+          </template>
+          <template #helper
+            >Disabled performances will not show, and will not be available for
+            booking</template
           >
         </form-label>
         <form-label name="capacity" :errors="errors">
           Performance Capacity
-          <template #control
-            ><t-input
+          <template #control>
+            <t-input
               :value="capacity"
               type="number"
               min="1"
@@ -219,19 +221,21 @@
               @keypress.stop="
                 if (!/^[0-9]$/i.test($event.key)) $event.preventDefault()
               "
-          /></template>
+            />
+          </template>
           <template #helper
             >Optionally, add the capacity of the performance. If not given, the
-            capacity from the seat groups assigned will be used.</template
-          >
+            capacity from the seat groups assigned will be used.
+          </template>
         </form-label>
         <form-label name="description" :errors="errors">
           Description
-          <template #control
-            ><t-textarea
+          <template #control>
+            <t-textarea
               :value="description"
               @input="$emit('update:description', $event)"
-          /></template>
+            />
+          </template>
         </form-label>
       </div>
     </card>
@@ -245,7 +249,6 @@ import { getValidationErrors, performMutation, swal } from '@/utils'
 import StaButton from '@/components/ui/StaButton.vue'
 import Alert from '@/components/ui/Alert.vue'
 import Card from '../../ui/Card.vue'
-import RequiredStar from '../../ui/Form/RequiredStar.vue'
 import FormLabel from '../../ui/FormLabel.vue'
 import SeatGroup from './SeatGroup.vue'
 import ConcessionType from './ConcessionType.vue'
@@ -255,7 +258,6 @@ export default {
   components: {
     FormLabel,
     Card,
-    RequiredStar,
     SeatGroup,
     ConcessionType,
     ErrorHelper,

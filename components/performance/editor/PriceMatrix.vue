@@ -2,7 +2,10 @@
   <div>
     <table class="w-full">
       <tr>
-        <th class="font-normal relative text-xs lg:text-sm py-4">
+        <th
+          class="font-normal relative text-xs xl:text-sm"
+          style="max-width: 200px"
+        >
           <div
             class="
               absolute
@@ -14,10 +17,10 @@
               w-full
             "
           />
-          <div class="absolute top-4 xl:top-5 right-2 w-20 lg:w-40 text-right">
+          <div class="absolute top-3 right-2 w-20 xl:w-40 text-right">
             Percentage Discount
           </div>
-          <div class="absolute left-2 bottom-2 w-20 lg:w-40 text-left">
+          <div class="absolute left-2 bottom-2 w-20 xl:w-40 text-left">
             Seat Group Price
           </div>
         </th>
@@ -53,7 +56,7 @@
         :key="performanceSeatGroup.id"
         class="odd:bg-sta-gray even:bg-sta-gray-dark"
       >
-        <th class="p-2">
+        <th class="p-2 break-words" style="max-width: 200px">
           <form-label label-class="text-sta-orange">
             {{ performanceSeatGroup.seatGroup.name }}
             <template #control>
