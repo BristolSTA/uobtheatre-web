@@ -162,7 +162,7 @@ export default {
             if ((ratio > maxAllowableRatio) | (ratio < minAllowableRatio)) {
               swal.fire({
                 title: "Sorry, this image doesn't have the correct ratio",
-                text: `Please ensure your image has a ratio of at ${this.requiredRatio}:1`,
+                text: `Please ensure your image has a ratio of ${this.requiredRatio}:1`,
               })
               return resolve(false)
             }

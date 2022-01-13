@@ -300,6 +300,11 @@ export default {
             action: () => this.setStatus('APPROVED'),
             text: 'Approve',
           })
+          list.push({
+            icon: 'exclamation',
+            action: () => this.setStatus('DRAFT'),
+            text: 'Reject',
+          })
         }
         if (this.production.status.value === 'APPROVED') {
           list.push({
@@ -333,12 +338,23 @@ export default {
       )
     },
     async setStatus(status) {
-      const { isConfirmed } = await swal.fire({
+      const swalArgs = {
         title: 'Are you sure?',
         text: `Are you sure you want to change the status to '${status}'`,
         showCancelButton: true,
         showConfirmButton: true,
-      })
+      }
+      if (status === 'DRAFT' && this.production.status.value === 'PENDING') {
+        swalArgs.input = 'text'
+        swalArgs.inputLabel = 'Reason'
+        swalArgs.inputValidator = (value) => {
+          if (!value) {
+            return 'You need to write something!'
+          }
+        }
+      }
+
+      const { isConfirmed, value } = await swal.fire(swalArgs)
       if (!isConfirmed) return
 
       try {
@@ -348,6 +364,7 @@ export default {
             mutation: require('@/graphql/mutations/admin/production/SetProductionStatus.gql'),
             variables: {
               id: this.production.id,
+              message: value,
               status,
             },
           },
