@@ -11,6 +11,8 @@ export default () => {
     api: {
       graphql_endpoint:
         (process.env.API_BASE || 'http://localhost:9000') + '/graphql/',
+      upload_endpoint:
+        (process.env.API_BASE || 'http://localhost:9000') + '/upload/',
     },
     auth: {
       cookie: 'uobtheatre-auth',

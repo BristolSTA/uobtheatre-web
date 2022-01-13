@@ -1,10 +1,12 @@
 fragment PerformanceTicketOptions on PerformanceSeatGroupNode {
   id
   capacityRemaining
+  price
   seatGroup {
     id
     name
     description
+    capacity
   }
   concessionTypes {
     concessionType {

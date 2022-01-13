@@ -1,0 +1,19 @@
+query adminProductionPermissions($slug: String!) {
+  production(slug: $slug) {
+    id
+    assignablePermissions {
+      name
+      description
+      userCanAssign
+    }
+    assignedUsers {
+      user {
+        id
+        firstName
+        lastName
+        email
+      }
+      assignedPermissions
+    }
+  }
+}

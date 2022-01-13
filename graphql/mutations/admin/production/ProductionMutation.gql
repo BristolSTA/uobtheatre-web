@@ -1,0 +1,18 @@
+mutation productionMutation($input: ProductionMutationInput!) {
+  production(input: $input) {
+    success
+    production {
+      id
+      slug
+    }
+    errors {
+      ... on NonFieldError {
+        message
+      }
+      ... on FieldError {
+        message
+        field
+      }
+    }
+  }
+}

@@ -7,13 +7,30 @@ query adminProductionEdit($slug: String!) {
       id
       name
       logo {
+        id
         url
       }
     }
     slug
-    start
-    end
     description
+    warnings {
+      id
+      description
+    }
+    coverImage {
+      id
+      url
+    }
+    featuredImage {
+      id
+      url
+    }
+    posterImage {
+      id
+      url
+    }
+    ageRating
+    facebookEvent
     performances(orderBy: "start") {
       edges {
         node {

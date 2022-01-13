@@ -15,6 +15,10 @@ export default {
       default: null,
       type: Object,
     },
+    allowNegative: {
+      default: false,
+      type: Boolean,
+    },
   },
   setup(props) {
     const { formattedValue, inputRef } = useCurrencyInput(
@@ -22,6 +26,9 @@ export default {
         {
           currency: 'GBP',
           precision: 2,
+          valueRange: {
+            min: props.allowNegative ? undefined : 0,
+          },
         },
         props.options
       )

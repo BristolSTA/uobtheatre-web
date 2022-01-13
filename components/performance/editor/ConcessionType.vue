@@ -26,7 +26,7 @@
       </div>
     </div>
     <div v-if="editable && editing">
-      <form-label>
+      <form-label :required="true">
         Name
         <template #control>
           <t-input
@@ -46,6 +46,7 @@
           />
         </template>
       </form-label>
+      <slot name="editor-footer"></slot>
     </div>
   </div>
 </template>
@@ -61,7 +62,7 @@ export default {
       type: String,
     },
     description: {
-      required: true,
+      default: null,
       type: String,
     },
     editable: {

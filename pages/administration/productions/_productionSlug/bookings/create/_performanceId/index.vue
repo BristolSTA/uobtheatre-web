@@ -8,8 +8,8 @@
         :show-prices="false"
         :errors="errors"
       />
-      <form-label class="py-4">
-        User Email <required-star />
+      <form-label class="py-4" :required="true">
+        User Email
         <t-input
           v-model="bookingEmail"
           :disabled="!!booking.id"
@@ -44,7 +44,6 @@ import Card from '@/components/ui/Card.vue'
 import FormLabel from '@/components/ui/FormLabel.vue'
 import StaButton from '@/components/ui/StaButton.vue'
 import { getValidationErrors, performMutation, successToast } from '@/utils'
-import RequiredStar from '@/components/ui/Form/RequiredStar.vue'
 import LoadingContainer from '@/components/ui/LoadingContainer.vue'
 export default {
   components: {
@@ -52,7 +51,6 @@ export default {
     Card,
     FormLabel,
     StaButton,
-    RequiredStar,
     LoadingContainer,
   },
   async asyncData({ params, app, error }) {

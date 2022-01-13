@@ -1,0 +1,26 @@
+#import "../../../fragments/AddressFragment.gql"
+query adminVenueDetailed($slug: String!) {
+  venue(slug: $slug) {
+    id
+    name
+    slug
+    description
+    address {
+      ...AddressFields
+    }
+    image {
+      url
+    }
+    internalCapacity
+    seatGroups {
+      edges {
+        node {
+          id
+          name
+          description
+          capacity
+        }
+      }
+    }
+  }
+}

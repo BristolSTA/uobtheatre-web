@@ -31,10 +31,12 @@ fragment BookingWithProductionDetails on BookingNode {
         name
         slug
         logo {
+          id
           url
         }
       }
       featuredImage {
+        id
         url
       }
     }

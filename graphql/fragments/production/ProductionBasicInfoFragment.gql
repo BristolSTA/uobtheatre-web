@@ -8,10 +8,12 @@ fragment ProductionBasicInfo on ProductionNode {
     name
     slug
     logo {
+      id
       url
     }
   }
   featuredImage {
+    id
     url
   }
   ageRating

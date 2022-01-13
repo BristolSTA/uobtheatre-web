@@ -1,0 +1,16 @@
+mutation discountRequirementMutation(
+  $input: DiscountRequirementMutationInput!
+) {
+  discountRequirement(input: $input) {
+    success
+    errors {
+      ... on NonFieldError {
+        message
+      }
+      ... on FieldError {
+        message
+        field
+      }
+    }
+  }
+}

@@ -26,7 +26,9 @@ describe('Seat Location Component', () => {
       pricePounds: '8.00',
     })
 
-    performance.discounts[0].requirements.push({
+    discounts = performance.discounts.edges.map((edge) => edge.node)
+
+    discounts[0].requirements.push({
       id: 1,
       number: 2,
       discount: null,
@@ -39,7 +41,7 @@ describe('Seat Location Component', () => {
         ticketOption: (ticketOption = performance.ticketOptions[0]),
         groupCapacityRemaining: 100,
         currentTickets: [],
-        discounts: (discounts = performance.discounts),
+        discounts,
       },
     })
   })

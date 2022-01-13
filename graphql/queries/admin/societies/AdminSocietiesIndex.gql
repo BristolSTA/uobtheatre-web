@@ -1,0 +1,16 @@
+query adminSocietiesIndex {
+  societies {
+    edges {
+      node {
+        id
+        name
+        slug
+        logo {
+          id
+          url
+        }
+        permissions
+      }
+    }
+  }
+}

@@ -84,14 +84,20 @@
       />
       <div v-if="discounts.length" class="flex justify-center mb-4 mt-2 w-full">
         <group-ticket-button
-          v-for="(discount, index) in discounts.filter(
-            (discount) =>
-              (!discount.seatGroup ||
-                discount.seatGroup.id == ticketOption.seatGroup.id) &&
-              discount.requirements
-                .map((req) => req.number)
-                .reduce((a, b) => a + b, 0) <= groupCapacityRemaining
-          )"
+          v-for="(discount, index) in discounts
+            .filter(
+              (discount) =>
+                discount.requirements.length > 1 ||
+                discount.requirements[0].number > 1
+            )
+            .filter(
+              (discount) =>
+                (!discount.seatGroup ||
+                  discount.seatGroup.id == ticketOption.seatGroup.id) &&
+                discount.requirements
+                  .map((req) => req.number)
+                  .reduce((a, b) => a + b, 0) <= groupCapacityRemaining
+            )"
           :key="index"
           :discount="discount"
           class="inline-block mx-1"
@@ -108,7 +114,7 @@ import GroupTicketButton from '@/components/booking/GroupTicketButton.vue'
 import lo from 'lodash'
 
 export default {
-  name: 'SeatLocation',
+  name: 'SeatGroup',
   components: { ConcessionType, GroupTicketButton },
   props: {
     expanded: {

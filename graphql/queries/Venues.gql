@@ -1,0 +1,15 @@
+query venues {
+  venues {
+    edges {
+      node {
+        id
+        name
+        internalCapacity
+        image {
+          url
+        }
+        slug
+      }
+    }
+  }
+}

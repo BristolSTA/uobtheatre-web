@@ -1,5 +1,6 @@
 @import './tiptap';
 @import './_swal';
+@import './_table';
 
 @function str-replace($string, $search, $replace: '') {
   $index: str-index($string, $search);

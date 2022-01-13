@@ -5,9 +5,11 @@ query society($slug: String!) {
     description
     slug
     logo {
+      id
       url
     }
     banner {
+      id
       url
     }
     website

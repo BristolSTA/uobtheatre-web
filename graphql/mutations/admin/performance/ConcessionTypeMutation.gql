@@ -1,0 +1,17 @@
+mutation concessionTypeMutation($input: ConcessionTypeMutationInput!) {
+  concessionType(input: $input) {
+    success
+    concessionType {
+      id
+    }
+    errors {
+      ... on NonFieldError {
+        message
+      }
+      ... on FieldError {
+        message
+        field
+      }
+    }
+  }
+}

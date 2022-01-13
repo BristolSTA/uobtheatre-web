@@ -11,6 +11,8 @@ query adminPerformanceDetail($productionSlug: String!, $performanceId: ID!) {
           venue {
             id
             name
+            slug
+            internalCapacity
           }
           disabled
           doorsOpen
@@ -39,6 +41,36 @@ query adminPerformanceDetail($productionSlug: String!, $performanceId: ID!) {
             appPaymentValue
             societyTransferValue
             societyRevenue
+          }
+
+          discounts {
+            edges {
+              node {
+                id
+                percentage
+                performances {
+                  edges {
+                    node {
+                      id
+                    }
+                  }
+                }
+                seatGroup {
+                  id
+                  name
+                  description
+                }
+                requirements {
+                  id
+                  number
+                  concessionType {
+                    id
+                    name
+                    description
+                  }
+                }
+              }
+            }
           }
         }
       }
