@@ -31,11 +31,12 @@
             class="p-2 bg-sta-green-dark my-2 rounded text-center shadow-inner"
           >
             You have
-            <strong
-              ><time-remaining-countdown
+            <strong>
+              <time-remaining-countdown
                 :expires-at="booking.raw.expiresAt"
                 @finished="bookingExpired"
-            /></strong>
+              />
+            </strong>
             to complete this booking
           </div>
         </div>

@@ -30,10 +30,11 @@
             <badge
               v-if="discount.performances.edges.length > 1"
               class="bg-blue-400"
-              ><font-awesome-icon icon="sync"
-            /></badge>
-            <template #control
-              ><percentage-input
+            >
+              <font-awesome-icon icon="sync" />
+            </badge>
+            <template #control>
+              <percentage-input
                 v-if="editing"
                 :key="discount.id"
                 :value="discount.percentage * 100"
@@ -46,8 +47,8 @@
               />
               <div v-else class="font-bold">
                 {{ discount.percentage * 100 }}%
-              </div></template
-            >
+              </div>
+            </template>
           </form-label>
         </th>
       </tr>
@@ -77,8 +78,8 @@
               </div>
               <div v-else class="font-bold">
                 £{{ performanceSeatGroup.price / 100 }}
-              </div></template
-            >
+              </div>
+            </template>
           </form-label>
         </th>
         <td v-for="discount in singleDiscounts" :key="discount.id">

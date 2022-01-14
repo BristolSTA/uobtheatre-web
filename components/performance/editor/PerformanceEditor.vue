@@ -123,16 +123,20 @@
                 :removable="true"
                 @remove="performanceSeatGroups.splice(index, 1)"
               />
+              <alert v-if="!venue" class="text-sm" level="warning">
+                You must select a venue before adding seat groups
+              </alert>
               <alert
                 v-if="
                   venue && selectedSeatGroupCapacities > venue.internalCapacity
                 "
                 class="text-sm"
                 level="warning"
-                ><strong>NB:</strong> Venue capacity will limit this
-                performance's capacity automatically to
-                {{ venue.internalCapacity }}</alert
               >
+                <strong>NB:</strong> Venue capacity will limit this
+                performance's capacity automatically to
+                {{ venue.internalCapacity }}
+              </alert>
             </div>
           </div>
           <div class="px-2 border border-sta-gray rounded-lg">
@@ -152,7 +156,8 @@
                 :removable="true"
                 :editable="true"
                 @remove="deleteConcession(discount)"
-                ><template
+              >
+                <template
                   v-if="discount.performances.edges.length > 1"
                   #editor-footer
                 >
@@ -161,8 +166,8 @@
                     {{ discount.performances.edges.length - 1 }} other
                     performances.
                   </alert>
-                </template></concession-type
-              >
+                </template>
+              </concession-type>
             </div>
           </div>
         </div>
@@ -205,10 +210,10 @@
               @change="$emit('update:disabled', $event)"
             />
           </template>
-          <template #helper
-            >Disabled performances will not show, and will not be available for
-            booking</template
-          >
+          <template #helper>
+            Disabled performances will not show, and will not be available for
+            booking
+          </template>
         </form-label>
         <form-label name="capacity" :errors="errors">
           Performance Capacity
@@ -223,8 +228,8 @@
               "
             />
           </template>
-          <template #helper
-            >Optionally, add the capacity of the performance. If not given, the
+          <template #helper>
+            Optionally, add the capacity of the performance. If not given, the
             capacity from the seat groups assigned will be used. You can reserve
             comp seats later - this should be representitive of the total number
             of seats actually phsyically allowed.
