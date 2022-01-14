@@ -49,7 +49,7 @@ fragment BookingWithProductionDetails on BookingNode {
       slug
     }
   }
-  payments {
+  transactions {
     edges {
       node {
         id

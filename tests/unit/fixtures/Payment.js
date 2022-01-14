@@ -9,7 +9,7 @@ export default (overrides = {}) => {
       },
       providerPaymentId: '1234',
       provider: {
-        paymentProvider: 'SQUARE_ONLINE',
+        value: 'SQUARE_ONLINE',
       },
       value: '1265',
       currency: 'GBP',

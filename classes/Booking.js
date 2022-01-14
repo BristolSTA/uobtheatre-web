@@ -26,7 +26,7 @@ export default class Booking {
 
   constructor() {
     this.tickets = []
-    this.payments = []
+    this.transactions = []
     this.refreshIdempotencyKey()
   }
 
@@ -74,8 +74,10 @@ export default class Booking {
     if (bookingData.user) {
       this.user = bookingData.user
     }
-    if (bookingData.payments && bookingData.payments.edges.length) {
-      this.payments = bookingData.payments.edges.map((edge) => edge.node)
+    if (bookingData.transactions && bookingData.transactions.edges.length) {
+      this.transactions = bookingData.transactions.edges.map(
+        (edge) => edge.node
+      )
     }
     this.id = bookingData.id
     this.dirty = false
