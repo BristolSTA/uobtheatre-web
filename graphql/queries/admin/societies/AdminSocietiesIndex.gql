@@ -1,5 +1,5 @@
 query adminSocietiesIndex {
-  societies {
+  societies(userHasPermission: "add_production") {
     edges {
       node {
         id
