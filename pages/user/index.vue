@@ -104,7 +104,7 @@ export default {
   },
   apollo: {
     activeBookings: {
-      query: require('@/graphql/queries/user/PaidBookings.gql'),
+      query: require('@/graphql/queries/user/CompleteBookings.gql'),
       variables() {
         return {
           active: true,
@@ -115,7 +115,7 @@ export default {
       update: (data) => data.me.bookings,
     },
     oldBookings: {
-      query: require('@/graphql/queries/user/PaidBookings.gql'),
+      query: require('@/graphql/queries/user/CompleteBookings.gql'),
       variables() {
         return {
           active: false,

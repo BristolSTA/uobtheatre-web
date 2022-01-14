@@ -1,5 +1,5 @@
 #import "../../fragments/booking/BasicBookingDetails.gql"
-query paidBookings(
+query completeBookings(
   $afterCursor: String
   $active: Boolean
   $orderBy: String = "start"
@@ -8,7 +8,7 @@ query paidBookings(
 ) {
   me {
     bookings(
-      status: "PAID"
+      statusIn: ["PAID", "CANCELLED"]
       first: $max
       orderBy: $orderBy
       active: $active

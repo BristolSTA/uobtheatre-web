@@ -4,6 +4,7 @@ fragment BookingWithProductionDetails on BookingNode {
   reference
   status {
     description
+    value
   }
   priceBreakdown {
     ...AllPriceBreakdown

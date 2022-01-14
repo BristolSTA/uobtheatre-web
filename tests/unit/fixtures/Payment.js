@@ -5,7 +5,7 @@ export default (overrides = {}) => {
       updatedAt: '2020-05-08T14:00:00.000',
       id: 1,
       type: {
-        paymentType: 'PURCHASE',
+        paymentType: 'PAYMENT',
       },
       providerPaymentId: '1234',
       provider: {
