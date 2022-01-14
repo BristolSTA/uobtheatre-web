@@ -7,7 +7,7 @@
     <template #subtitle>
       <p class="text-h4">
         {{ booking.status.description }}
-        <template v-if="mainPayment && booking.status == 'PAID'">
+        <template v-if="mainPayment && booking.status.value == 'PAID'">
           using
           <template v-if="mainPayment.cardBrand && mainPayment.last4"
             >{{ mainPayment.cardBrand.replace('_', ' ') }} ending
