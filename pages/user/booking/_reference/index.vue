@@ -42,7 +42,7 @@
         <tickets-overview class="lg:col-span-2" :booking="booking" />
       </div>
 
-      <div v-if="booking.status == 'PAID'" class="mt-4">
+      <div v-if="booking.status.value == 'PAID'" class="mt-4">
         <div
           ref="tickets"
           class="
