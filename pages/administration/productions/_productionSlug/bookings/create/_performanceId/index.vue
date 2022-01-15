@@ -10,12 +10,13 @@
       />
       <form-label class="py-4" :required="true">
         User Email
-        <t-input
-          v-model="bookingEmail"
-          :disabled="!!booking.id"
-          type="text"
-          placeholder="joe.bloggs@example.org"
-        />
+        <template #control>
+          <t-input
+            v-model="bookingEmail"
+            :disabled="!!booking.id"
+            type="text"
+            placeholder="joe.bloggs@example.org"
+        /></template>
       </form-label>
       <sta-button
         colour="orange"

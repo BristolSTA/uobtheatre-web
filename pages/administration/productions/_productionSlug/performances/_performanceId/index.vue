@@ -88,21 +88,11 @@
           </tr>
           <tr v-if="performance.salesBreakdown">
             <table-head-item :text-left="false"
-              >Performance Sales Total</table-head-item
+              >Performance Net Society Revenue</table-head-item
             >
             <table-row-item
               >£{{
-                (performance.salesBreakdown.totalSales / 100).toFixed(2)
-              }}</table-row-item
-            >
-          </tr>
-          <tr>
-            <table-head-item :text-left="false"
-              >Performance Society Revenue</table-head-item
-            >
-            <table-row-item
-              >£{{
-                (performance.salesBreakdown.societyRevenue / 100).toFixed(2)
+                (performance.salesBreakdown.netIncome / 100).toFixed(2)
               }}</table-row-item
             >
           </tr>
