@@ -19,7 +19,7 @@ export default (overrides = {}) => {
       },
       tickets: [Ticket()],
       priceBreakdown: PriceBreakdown(),
-      payments: GenericNodeConnection([Payment()]),
+      transactions: GenericNodeConnection([Payment()]),
     },
     overrides
   )
