@@ -270,7 +270,7 @@ export default {
       return null
     },
     canEdit() {
-      return this.production.permissions.includes('edit_production')
+      return this.production.permissions.includes('change_production')
     },
     actions() {
       const list = []
