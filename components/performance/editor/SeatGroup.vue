@@ -1,15 +1,18 @@
 <template>
   <div class="flex items-center p-3 bg-sta-gray-dark rounded-lg">
     <p class="font-semibold">
-      {{ value.name }}<br /><small
-        >Max Capacity:
+      {{ value.name }}
+      <br />
+      <small>
+        Max Capacity:
         {{ capacityOverride ? capacityOverride : value.capacity }}
         <strike
           v-if="capacityOverride && capacityOverride !== value.capacity"
           class="text-sta-gray-lighter"
-          >{{ value.capacity }}</strike
-        ></small
-      >
+        >
+          {{ value.capacity }}
+        </strike>
+      </small>
     </p>
     <font-awesome-icon
       v-if="removable"

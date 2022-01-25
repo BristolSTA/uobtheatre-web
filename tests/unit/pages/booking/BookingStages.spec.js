@@ -26,15 +26,77 @@ describe('Booking Stages', () => {
     expect(
       getStageIndex(getNextStage(null, { warnings: ['strobe lighting'] }))
     ).to.eq(1)
-    // with warnings
+
+    // with warnings and no perf_description
     expect(
-      getStageIndex(getNextStage(0, { warnings: ['strobe lighting'] }))
+      getStageIndex(
+        getNextStage(
+          0,
+          { warnings: ['strobe lighting'] },
+          { performance: { description: 'perf_description' } }
+        )
+      )
     ).to.eq(1)
     expect(
-      getStageIndex(getNextStage(1, { warnings: ['strobe lighting'] }))
+      getStageIndex(
+        getNextStage(
+          1,
+          { warnings: ['strobe lighting'] },
+          { performance: { description: 'perf_description' } }
+        )
+      )
     ).to.eq(2)
-    // no warnings
-    expect(getStageIndex(getNextStage(0, { warnings: [] }))).to.eq(2)
+
+    // with warnings and perf_description
+    expect(
+      getStageIndex(
+        getNextStage(
+          0,
+          { warnings: ['strobe lighting'] },
+          { performance: { description: 'perf_description' } }
+        )
+      )
+    ).to.eq(1)
+    expect(
+      getStageIndex(
+        getNextStage(
+          1,
+          { warnings: ['strobe lighting'] },
+          { performance: { description: 'perf_description' } }
+        )
+      )
+    ).to.eq(2)
+
+    // perf description, and no warnings
+    expect(
+      getStageIndex(
+        getNextStage(
+          0,
+          { warnings: [] },
+          { performance: { description: 'perf_description' } }
+        )
+      )
+    ).to.eq(1)
+    expect(
+      getStageIndex(
+        getNextStage(
+          1,
+          { warnings: [] },
+          { performance: { description: 'perf_description' } }
+        )
+      )
+    ).to.eq(2)
+
+    // no warnings and no perf description
+    expect(
+      getStageIndex(
+        getNextStage(
+          0,
+          { warnings: [] },
+          { performance: { description: null } }
+        )
+      )
+    ).to.eq(2)
 
     expect(getStageIndex(getNextStage(2, {}))).to.eq(3)
     expect(getStageIndex(getNextStage(3, {}))).to.eq(4)
@@ -43,12 +105,40 @@ describe('Booking Stages', () => {
   it('can get the previous stage', () => {
     expect(
       getStageIndex(
-        getPreviousStage(stages[1], { warnings: ['strobe lighting'] }, {})
+        getPreviousStage(
+          stages[1],
+          { warnings: ['strobe lighting'] },
+          { performance: { description: 'perf_description' } }
+        )
       )
     ).to.eq(0)
     expect(
-      getStageIndex(getPreviousStage(1, { warnings: ['strobe lighting'] }, {}))
+      getStageIndex(
+        getPreviousStage(
+          1,
+          { warnings: ['strobe lighting'] },
+          { performance: { description: 'perf_description' } }
+        )
+      )
     ).to.eq(0)
-    expect(getStageIndex(getPreviousStage(2, { warnings: [] }, {}))).to.eq(0)
+
+    expect(
+      getStageIndex(
+        getPreviousStage(
+          2,
+          { warnings: [] },
+          { performance: { description: null } }
+        )
+      )
+    ).to.eq(0)
+    expect(
+      getStageIndex(
+        getPreviousStage(
+          2,
+          { warnings: [] },
+          { performance: { description: 'perf_description' } }
+        )
+      )
+    ).to.eq(1)
   })
 })

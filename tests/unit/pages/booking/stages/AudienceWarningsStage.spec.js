@@ -3,25 +3,62 @@ import { expect } from 'chai'
 
 import AudienceWarningsStage from '@/pages/production/_slug/book/_performanceId/warnings.vue'
 import Production from '@/tests/unit/fixtures/Production'
+import Booking from '@/tests/unit/fixtures/Booking'
 
 describe('Audience Warnings Stage', () => {
-  let stageComponent
+  let warningComponent
 
-  beforeAll(() => {
-    stageComponent = mount(AudienceWarningsStage, {
-      propsData: {
-        production: Production(),
-      },
+  describe('with warnings, and no performance description', () => {
+    beforeAll(() => {
+      warningComponent = mount(AudienceWarningsStage, {
+        propsData: {
+          production: Production(),
+          booking: Booking({ performance: { descrption: null } }),
+        },
+      })
+    })
+
+    it('doesnt display any production description', () => {
+      expect(warningComponent.text()).to.not.contain('Performance Information')
+      expect(warningComponent.text()).to.not.contain(
+        'the performance description'
+      )
+    })
+
+    it('displays the warnings', () => {
+      expect(warningComponent.text()).to.contain('Strobe Lighting')
+      expect(warningComponent.text()).to.contain('Nudity')
+    })
+
+    it('emits event on understood', () => {
+      warningComponent.find('button').trigger('click')
+      expect(warningComponent.emitted('next-stage').length).to.eq(1)
     })
   })
 
-  it('displays the warnings', () => {
-    expect(stageComponent.text()).to.contain('Strobe Lighting')
-    expect(stageComponent.text()).to.contain('Nudity')
-  })
+  describe('with performance description and no warnings', () => {
+    beforeAll(() => {
+      warningComponent = mount(AudienceWarningsStage, {
+        propsData: {
+          production: Production({ warnings: [] }),
+          booking: Booking(),
+        },
+      })
+    })
 
-  it('emits event on understood', () => {
-    stageComponent.find('button').trigger('click')
-    expect(stageComponent.emitted('next-stage').length).to.eq(1)
+    it('displays the production description', () => {
+      expect(warningComponent.text()).to.contain('Performance Information')
+      expect(warningComponent.text()).to.contain('the performance description')
+    })
+
+    it('doesnt display any warnings', () => {
+      expect(warningComponent.text()).to.not.contain('Strobe Lighting')
+      expect(warningComponent.text()).to.not.contain('Nudity')
+    })
+
+    it('emits event on understood', () => {
+      warningComponent.find('button').trigger('click')
+      expect(warningComponent.emitted('next-stage').length).to.eq(1)
+    })
   })
 })

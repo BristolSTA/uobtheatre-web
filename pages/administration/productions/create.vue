@@ -4,6 +4,7 @@
       <sta-button colour="green" @click="create">Create Draft</sta-button>
       <sta-button colour="orange" @click="$router.go(-1)">Cancel</sta-button>
     </template>
+    <non-field-error :errors="errors" />
     <production-editor
       ref="editor"
       :production="production"
@@ -30,11 +31,13 @@ import {
   successToast,
 } from '@/utils'
 import Swal from 'sweetalert2'
+import NonFieldError from '@/components/ui/NonFieldError.vue'
 export default {
   components: {
     ProductionEditor,
     AdminPage,
     StaButton,
+    NonFieldError,
   },
   data() {
     return {

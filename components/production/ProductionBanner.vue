@@ -79,7 +79,8 @@
           <span class="font-semibold">
             £{{ (production.minSeatPrice / 100).toFixed(2) }}
           </span>
-          <br /><small>(excluding concessions)</small>
+          <br />
+          <small>(excluding concessions and fees)</small>
         </icon-list-item>
       </template>
       <button

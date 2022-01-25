@@ -23,8 +23,8 @@
           class="text-center"
         >
           <table-row-item>
-            {{ assignedUser.user.firstName }} {{ assignedUser.user.lastName
-            }}<br />
+            {{ assignedUser.user.firstName }} {{ assignedUser.user.lastName }}
+            <br />
             <sta-button
               :small="true"
               class="
@@ -34,8 +34,9 @@
                 mt-2
               "
               @click="removeUser(assignedUser)"
-              >Remove</sta-button
             >
+              Remove
+            </sta-button>
           </table-row-item>
           <table-row-item
             v-for="(permission, apIndex) in assignablePermissions"
@@ -95,8 +96,9 @@
         class="bg-sta-green hover:bg-sta-green-dark transition-colors"
         :disabled="!newUser.email"
         @click="addNewUser"
-        >Add New</sta-button
       >
+        Add New
+      </sta-button>
     </div>
   </div>
 </template>
