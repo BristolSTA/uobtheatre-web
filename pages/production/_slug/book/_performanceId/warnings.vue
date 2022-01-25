@@ -1,5 +1,15 @@
 <template>
   <div class="flex flex-col items-center justify-evenly min-h-full">
+    <card
+      v-if="booking.performance.description"
+      ref="perf-description"
+      class="w-full mb-2"
+    >
+      <template #subtitle>
+        <span class="text-xl">Performance Information</span>
+      </template>
+      {{ booking.performance.description }}
+    </card>
     <div class="mb-2 p-6 pt-3 text-white bg-sta-rouge">
       <h2 class="text-h3 sm:text-h2">
         Please note the following warnings for this production:
@@ -25,16 +35,27 @@
 
 <script>
 import BookingStage from '@/classes/BookingStage'
+import Booking from '@/classes/Booking'
+import Card from '@/components/ui/Card.vue'
+
 export default {
   stageInfo: new BookingStage({
     name: 'Auidence Warnings',
     routeName: 'production-slug-book-performanceId-warnings',
-    shouldBeUsed: (production) => production.warnings.length > 0,
+    shouldBeUsed: (production, booking) =>
+      production.warnings.length > 0 || booking.performance.description,
   }),
+  components: {
+    Card,
+  },
   props: {
     production: {
       required: true,
       type: Object,
+    },
+    booking: {
+      required: true,
+      type: Booking,
     },
   },
   methods: {

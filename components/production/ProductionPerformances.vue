@@ -17,7 +17,7 @@
       >
         No Upcoming Performances
       </div>
-      <div v-else class="flex flex-wrap justify-center lg:flex-nowrap">
+      <div v-else class="flex flex-wrap justify-center">
         <div
           v-for="performance in production.performances.edges.map(
             (edge) => edge.node
