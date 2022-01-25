@@ -1,8 +1,12 @@
 <template>
   <div class="flex flex-col items-center justify-evenly min-h-full">
-    <card v-if="booking.performance.description" class="w-full mb-2">
+    <card
+      v-if="booking.performance.description"
+      ref="perf-description"
+      class="w-full mb-2"
+    >
       <template #subtitle>
-        <span class="text-xl"> Performance Information</span>
+        <span class="text-xl">Performance Information</span>
       </template>
       {{ booking.performance.description }}
     </card>
