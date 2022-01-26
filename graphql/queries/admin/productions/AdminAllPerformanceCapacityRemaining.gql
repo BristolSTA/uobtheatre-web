@@ -1,0 +1,50 @@
+query adminAllPerformanceCapacityRemaining(
+  $productionId: IdInputField
+  $productionSlug: String
+  $offset: Int
+  $disabled: Boolean
+  $take: Int = 10
+) {
+  production(id: $productionId, slug: $productionSlug) {
+    id
+    performances(
+      first: $take
+      offset: $offset
+      orderBy: "start"
+      disabled: $disabled
+    ) {
+      pageInfo {
+        hasNextPage
+      }
+      edges {
+        node {
+          id
+          venue {
+            id
+            name
+          }
+          capacityRemaining
+          doorsOpen
+          start
+          disabled
+          soldOut
+          isOnline
+          isBookable
+          isInperson
+          ticketsBreakdown {
+            totalCapacity
+            totalTicketsSold
+          }
+          ticketOptions {
+            seatGroup {
+              id
+              capacity
+              name
+            }
+            capacityRemaining
+          }
+        }
+      }
+    }
+  }
+}

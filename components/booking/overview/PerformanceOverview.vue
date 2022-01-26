@@ -1,8 +1,11 @@
 <template>
-  <overview-box>
+  <card>
     <template #title>
       <font-awesome-icon icon="theater-masks" class="mr-2" />
       Performance
+    </template>
+    <template #messageBox>
+      <slot></slot>
     </template>
     <template #subtitle>
       <p class="text-h3">
@@ -26,7 +29,7 @@
         >
       </icon-list-item>
     </div>
-  </overview-box>
+  </card>
 </template>
 
 <script>
@@ -34,11 +37,11 @@ import IconListItem from '@/components/ui/IconListItem.vue'
 
 import { humanDuration, humanDayTime } from '@/utils'
 import { DateTime } from 'luxon'
-import OverviewBox from '../../ui/Card.vue'
+import Card from '../../ui/Card.vue'
 
 export default {
   name: 'PerformanceOverviewBox',
-  components: { OverviewBox, IconListItem },
+  components: { Card, IconListItem },
   props: {
     production: {
       required: true,
