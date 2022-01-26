@@ -8,7 +8,7 @@ This repository is the frontend for uobtheatre.com, the Shows and Events platfor
 
 Here is what we recommend you have installed and use to develop:
 
-- [Visual Studio Code](https://code.visualstudio.com/) - A code editor
+- [Visual Studio Code](https://code.visualstudio.com/) - An awesome code editor
 - [Docker](https://www.docker.com/get-started) - Develop without cluttering your PC
 
 > Side note: If you use our devcontainer setup, you will need to authenticate with the GitHub container registry so we can get uobtheatre-api! Follow the steps [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-to-the-container-registry)
