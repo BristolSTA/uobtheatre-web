@@ -1,5 +1,5 @@
 fragment BookingPaymentDetails on BookingNode {
-  payments {
+  transactions {
     edges {
       node {
         id

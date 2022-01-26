@@ -49,18 +49,10 @@
               </table-row-item>
             </tr>
             <tr v-if="production.salesBreakdown">
-              <table-head-item>Sales Total</table-head-item>
+              <table-head-item>Net Society Revenue</table-head-item>
               <table-row-item
                 >£{{
-                  (production.salesBreakdown.totalSales / 100).toFixed(2)
-                }}</table-row-item
-              >
-            </tr>
-            <tr v-if="production.salesBreakdown">
-              <table-head-item>Total Society Revenue</table-head-item>
-              <table-row-item
-                >£{{
-                  (production.salesBreakdown.societyRevenue / 100).toFixed(2)
+                  (production.salesBreakdown.netIncome / 100).toFixed(2)
                 }}</table-row-item
               >
             </tr>

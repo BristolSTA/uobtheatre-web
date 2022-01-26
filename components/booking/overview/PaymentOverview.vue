@@ -7,7 +7,7 @@
     <template #subtitle>
       <p class="text-h4">
         {{ booking.status.description }}
-        <template v-if="mainPayment">
+        <template v-if="mainPayment && booking.status.value == 'PAID'">
           using
           <template v-if="mainPayment.cardBrand && mainPayment.last4"
             >{{ mainPayment.cardBrand.replace('_', ' ') }} ending
@@ -19,9 +19,9 @@
         </template>
       </p>
     </template>
-    <table v-if="booking.payments.length" class="my-2">
+    <table v-if="booking.transactions.length" class="my-2">
       <tr>
-        <td class="pr-2">Price Paid</td>
+        <td class="pr-2">Total Paid</td>
         <td class="">:</td>
         <td class="px-2">£{{ pricePaidPounds }}</td>
       </tr>
@@ -54,22 +54,24 @@ export default {
   },
   computed: {
     mainPayment() {
-      return this.booking.payments[0]
+      return this.booking.transactions[0]
     },
     pricePaidPounds() {
       return (
-        this.booking.payments
+        this.booking.transactions
           .map((payment) => payment.value)
           .reduce((value1, value2) => value1 + value2, 0) / 100
       ).toFixed(2)
     },
     datePaid() {
-      const newestDate = this.booking.payments.reduce((payment1, payment2) => {
-        if (!payment1) return new Date(payment2.createdAt)
-        const date1 = new Date(payment1.createdAt)
-        const date2 = new Date(payment2.createdAt)
-        return date1 < date2 ? date2 : date1
-      }, null)
+      const newestDate = new Date(
+        this.booking.transactions.reduce((payment1, payment2) => {
+          if (!payment1) return payment2
+          const date1 = new Date(payment1.createdAt)
+          const date2 = new Date(payment2.createdAt)
+          return date1 < date2 ? payment2 : payment1
+        }, null).createdAt
+      )
 
       return newestDate ? DateTime.fromJSDate(newestDate) : null
     },

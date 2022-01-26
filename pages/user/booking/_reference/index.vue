@@ -1,6 +1,9 @@
 <template>
   <div class="mb-10 min-h-full text-white bg-sta-gray">
     <div v-if="booking.performance" class="container">
+      <alert v-if="booking.status.value == 'CANCELLED'" level="danger"
+        >This booking has been cancelled, and is no longer valid</alert
+      >
       <h1 class="pt-2 text-h1">Your Booking</h1>
       <h2 class="text-sta-orange text-h2">
         Reference - {{ booking.reference }}
@@ -39,7 +42,7 @@
         <tickets-overview class="lg:col-span-2" :booking="booking" />
       </div>
 
-      <div class="mt-4">
+      <div v-if="booking.status.value == 'PAID'" class="mt-4">
         <div
           ref="tickets"
           class="
@@ -95,6 +98,7 @@ import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue'
 import VenueOverview from '@/components/booking/overview/VenueOverview.vue'
 import Ticket from '@/components/booking/Ticket.vue'
 import ProductionBanner from '@/components/production/ProductionBanner.vue'
+import Alert from '@/components/ui/Alert.vue'
 
 export default {
   components: {
@@ -104,11 +108,12 @@ export default {
     ProductionBanner,
     PaymentOverview,
     Ticket,
+    Alert,
   },
   middleware: 'authed',
   async asyncData({ app, params, error }) {
     const { data } = await app.apolloProvider.defaultClient.query({
-      query: require('@/graphql/queries/UserPaidBooking.gql'),
+      query: require('@/graphql/queries/UserCompletedBooking.gql'),
       variables: {
         bookingRef: params.reference,
       },

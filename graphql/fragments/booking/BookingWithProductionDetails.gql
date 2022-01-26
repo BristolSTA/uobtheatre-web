@@ -4,6 +4,7 @@ fragment BookingWithProductionDetails on BookingNode {
   reference
   status {
     description
+    value
   }
   priceBreakdown {
     ...AllPriceBreakdown
@@ -49,7 +50,7 @@ fragment BookingWithProductionDetails on BookingNode {
       slug
     }
   }
-  payments {
+  transactions {
     edges {
       node {
         id

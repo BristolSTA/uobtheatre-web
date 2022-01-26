@@ -39,7 +39,7 @@ describe('Payment Overview', function () {
     const costRows = paymentOverviewComponent.findAll('tr')
 
     expect(costRows.length).to.eq(2)
-    expect(fixTextSpacing(costRows.at(0).text())).to.eq('Price Paid : £12.65')
+    expect(fixTextSpacing(costRows.at(0).text())).to.eq('Total Paid : £12.65')
     expect(fixTextSpacing(costRows.at(1).text())).to.eq('On : Fri 8 May 2020')
   })
 })

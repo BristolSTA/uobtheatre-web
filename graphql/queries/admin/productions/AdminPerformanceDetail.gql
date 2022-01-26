@@ -36,6 +36,7 @@ query adminPerformanceDetail($productionSlug: String!, $performanceId: ID!) {
             totalTicketsSold
           }
           salesBreakdown {
+            netIncome
             totalSales
             totalCardSales
             providerPaymentValue
