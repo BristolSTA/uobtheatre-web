@@ -8,7 +8,7 @@
         >View Public Page</sta-button
       >
       <sta-button
-        v-if="canEdit"
+        v-if="hasEditAbilityNow"
         colour="orange"
         icon="edit"
         :to="`${production.slug}/edit`"
@@ -75,7 +75,7 @@
         </div>
       </div>
       <card title="Performances">
-        <template v-if="canEdit" #messageBox>
+        <template v-if="hasEditAbilityNow" #messageBox>
           <div class="flex items-center">
             <nuxt-link
               class="hover:text-gray-300"
@@ -261,24 +261,30 @@ export default {
 
       return null
     },
-    canEdit() {
+    hasEditAbilityNow() {
+      return this.production.permissions.includes('edit_production')
+    },
+    hasEditPermissions() {
       return (
         this.production.permissions.includes('change_production') ||
-        this.production.permissions.includes('edit_production')
+        this.hasEditAbilityNow
       )
     },
     actions() {
       const list = []
-      list.push({
-        icon: 'list-ul',
-        action: () =>
-          this.$router.push(
-            `/administration/productions/${this.production.slug}/permissions`
-          ),
-        text: 'Edit Permissions',
-      })
 
-      if (this.canEdit) {
+      if (this.hasEditPermissions) {
+        // If the current user has permissions to edit/change
+        list.push({
+          icon: 'list-ul',
+          action: () =>
+            this.$router.push(
+              `/administration/productions/${this.production.slug}/permissions`
+            ),
+          text: 'Edit Permissions',
+        })
+
+        // Add action button based on status
         if (this.production.status.value === 'DRAFT') {
           list.push({
             icon: 'user-check',

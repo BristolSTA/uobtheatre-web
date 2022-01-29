@@ -4,6 +4,7 @@ query adminPerformanceDetail($productionSlug: String!, $performanceId: ID!) {
     id
     slug
     name
+    permissions
     performances(id: $performanceId) {
       edges {
         node {
