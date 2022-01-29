@@ -490,7 +490,8 @@ export default {
         await this.addNewConcession(
           requirement.concessionType.name,
           requirement.concessionType.description,
-          edge.node.percentage
+          edge.node.percentage,
+          requirement.concessionType.id
         )
       }
     },
@@ -697,7 +698,12 @@ export default {
         capacity: sg.capacity,
       })
     },
-    async addNewConcession(name = null, description = null, percentage = 0) {
+    async addNewConcession(
+      name = null,
+      description = null,
+      percentage = 0,
+      id = null
+    ) {
       const currentNum = this.discounts?.edges ? this.discounts.edges.length : 0
       await this.$emit('update:discounts', {
         edges: [
@@ -710,6 +716,7 @@ export default {
                 {
                   number: 1,
                   concessionType: {
+                    id,
                     name: name || `New Concession Type ${currentNum + 1}`,
                     description,
                   },
