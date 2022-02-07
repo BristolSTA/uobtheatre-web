@@ -1,5 +1,8 @@
 <template>
-  <div class="flex flex-col items-center justify-evenly min-h-full">
+  <div
+    v-if="booking.performance"
+    class="flex flex-col items-center justify-evenly min-h-full"
+  >
     <card
       v-if="booking.performance.description"
       ref="perf-description"
