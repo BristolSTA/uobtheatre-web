@@ -40,6 +40,7 @@
               date-format="Z"
               :timepicker="true"
               class="text-black"
+              initial-time="00:00:00"
               @change="$emit('update:doorsOpen', $event)"
             />
           </template>
@@ -53,6 +54,7 @@
               date-format="Z"
               :timepicker="true"
               class="text-black"
+              initial-time="00:00:00"
               @change="$emit('update:start', $event)"
             />
           </template>
@@ -66,6 +68,7 @@
               date-format="Z"
               :timepicker="true"
               class="text-black"
+              initial-time="00:00:00"
               @change="$emit('update:end', $event)"
             />
           </template>

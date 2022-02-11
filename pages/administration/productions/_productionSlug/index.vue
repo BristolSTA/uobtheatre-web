@@ -250,8 +250,8 @@ export default {
     statusDescription() {
       if (this.production.status.description === 'Draft')
         return 'This production is private, and not bookable'
-      if (this.production.status.description === 'Submitted')
-        return 'This production has been submitted for review'
+      if (this.production.status.description === 'Pending')
+        return 'This production has been submitted for review. You will recieve an email once this has been completed'
       if (this.production.status.description === 'Published')
         return 'This production is being displayed publically'
       if (this.production.status.description === 'Closed')
