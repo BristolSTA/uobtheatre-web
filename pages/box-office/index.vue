@@ -113,7 +113,12 @@ export default {
       },
       fetchPolicy: 'cache-and-network',
 
-      update: (data) => data.performances.edges.map((edge) => edge.node),
+      update: (data) =>
+        data.performances.edges
+          .map((edge) => edge.node)
+          .filter(
+            (performance) => performance.production.status.value === 'PUBLISHED'
+          ),
     },
   },
   computed: {
