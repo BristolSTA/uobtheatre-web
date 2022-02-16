@@ -26,6 +26,7 @@
 <script>
 import { groupBy } from 'lodash'
 import { DateTime } from 'luxon'
+import { humanDayTime } from '@/utils'
 import PerformanceOverview from '@/components/performance/PerformanceOverview.vue'
 export default {
   components: { PerformanceOverview },
@@ -38,10 +39,7 @@ export default {
   computed: {
     groupedPerformances() {
       return groupBy(this.performances, (performance) => {
-        const time = DateTime.fromISO(performance.start)
-        if (time.hour < 12) return 'Morning'
-        if (time.hour < 17) return 'Afternoon'
-        return 'Evening'
+        return humanDayTime(DateTime.fromISO(performance.start))
       })
     },
   },
