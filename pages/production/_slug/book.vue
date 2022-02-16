@@ -197,7 +197,7 @@ export default {
     },
     loadDataForStage() {
       if (this.$route.params.performanceId) {
-        // Check if user already has a draft booking for this performnace if not already
+        // Check if user already has a draft booking for this performance if not already
         if (this.previousBooking === null) {
           this.$apollo
             .query({

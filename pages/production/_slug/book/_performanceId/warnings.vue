@@ -45,8 +45,9 @@ export default {
   stageInfo: new BookingStage({
     name: 'Auidence Warnings',
     routeName: 'production-slug-book-performanceId-warnings',
-    shouldBeUsed: (production, booking) =>
-      production.warnings.length > 0 || booking.performance.description,
+    shouldBeUsed: (production, booking) => {
+      return production.warnings.length > 0 || booking?.performance?.description
+    },
   }),
   components: {
     Card,

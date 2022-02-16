@@ -66,10 +66,7 @@ export default {
       square: {
         payments: null,
         request: null,
-
-        card: null,
-        gpay: null,
-        applepay: null,
+        methods: null,
       },
     }
   },
@@ -102,6 +99,8 @@ export default {
         this.$config.services.square.location_id
       )
 
+      this.square.methods = {}
+
       // Init the payment request
       this.square.request = this.square.payments.paymentRequest({
         countryCode: 'GB',
@@ -113,7 +112,7 @@ export default {
       })
 
       // Init card payment
-      this.square.card = await this.square.payments.card({
+      this.square.methods.card = await this.square.payments.card({
         style: {
           '.message-icon': {
             color: 'white',
@@ -123,14 +122,14 @@ export default {
           },
         },
       })
-      await this.square.card.attach('#card-container')
+      await this.square.methods.card.attach('#card-container')
 
       try {
         // Init GPay
-        this.square.gpay = await this.square.payments.googlePay(
+        this.square.methods.gpay = await this.square.payments.googlePay(
           this.square.request
         )
-        this.square.gpay.attach('#sq-gpay-button', {
+        this.square.methods.gpay.attach('#sq-gpay-button', {
           buttonColor: 'white',
         })
       } catch (e) {
@@ -140,7 +139,7 @@ export default {
 
       try {
         // Init ApplePay
-        this.square.applepay = await this.square.payments.applePay(
+        this.square.methods.applepay = await this.square.payments.applePay(
           this.square.request
         )
       } catch (e) {
@@ -173,13 +172,13 @@ export default {
       }
     },
     payCard() {
-      return this.pay(this.square.card)
+      return this.pay(this.square.methods.card)
     },
     payGPay() {
-      return this.pay(this.square.gpay)
+      return this.pay(this.square.methods.gpay)
     },
     payApplePay() {
-      return this.pay(this.square.applepay)
+      return this.pay(this.square.methods.applepay)
     },
   },
 }
