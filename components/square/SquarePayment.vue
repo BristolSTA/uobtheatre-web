@@ -43,6 +43,7 @@
 
 <script>
 import LoadingContainer from '@/components/ui/LoadingContainer.vue'
+import { silentErrorHandler } from '@/utils'
 
 export default {
   components: { LoadingContainer },
@@ -169,6 +170,7 @@ export default {
       } catch (e) {
         this.paying = false
         this.squareErrors = ['There was an issue processing your payment']
+        silentErrorHandler(e)
         this.$emit('nonceError', this.squareErrors)
       }
     },
