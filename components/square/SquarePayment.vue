@@ -157,14 +157,27 @@ export default {
       this.$emit('ready')
       this.ready = true
     },
-    async pay(provider) {
+    async verifyBuyer(token) {
+      const details = {
+        amount: this.price,
+        billingContact: {},
+        currencyCode: 'GBP',
+        intent: 'CHARGE',
+      }
+      const results = await this.square.payments.verifyBuyer(token, details)
+      return results.token
+    },
+    async pay(provider, verify = false) {
       this.paying = true
       this.squareErrors = []
 
       try {
         const result = await provider.tokenize()
         if (result.status === 'OK') {
-          return this.$emit('nonceRecieved', result.token)
+          const paymentData = { nonce: result.token }
+          if (verify)
+            paymentData.verifyToken = await this.verifyBuyer(result.token)
+          return this.$emit('nonceRecieved', paymentData)
         }
 
         this.paying = false
@@ -174,13 +187,15 @@ export default {
         }
       } catch (e) {
         this.paying = false
-        this.squareErrors = ['There was an issue processing your payment']
+        this.squareErrors = [
+          'An unexpected error was encountered whilst trying to process your payment. No charge has been made.',
+        ]
         silentErrorHandler(e)
         this.$emit('nonceError', this.squareErrors)
       }
     },
     payCard() {
-      return this.pay(this.square.methods.card)
+      return this.pay(this.square.methods.card, true)
     },
     payGPay() {
       return this.pay(this.square.methods.gpay)

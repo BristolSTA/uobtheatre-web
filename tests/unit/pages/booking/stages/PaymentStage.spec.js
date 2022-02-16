@@ -95,7 +95,7 @@ describe('Payment Stage', () => {
       )
       await paymentStageComponent
         .findComponent(CardPayment)
-        .vm.$emit('nonceRecieved', 'cnon:card-nonce-ok')
+        .vm.$emit('nonceRecieved', { nonce: 'cnon:card-nonce-ok' })
 
       await paymentStageComponent.vm.$nextTick()
 
@@ -121,7 +121,9 @@ describe('Payment Stage', () => {
         )
       )
       paymentStageComponent.vm.booking.priceBreakdown.totalPrice = 1000
-      await paymentStageComponent.vm.onNonceRecieved(null, 'cnon:card-nonce-ok')
+      await paymentStageComponent.vm.onNonceRecieved(null, {
+        nonce: 'cnon:card-nonce-ok',
+      })
       expect(paymentStageComponent.text()).to.contain(
         'There was a price difference between the booking and the requested price'
       )
