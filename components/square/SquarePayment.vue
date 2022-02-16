@@ -22,8 +22,14 @@
       </div>
       <div class="text-center">
         <h2 class="mb-2 text-white text-h2">Pay with a digital wallet</h2>
-        <div id="sq-gpay-button" @click="payGPay"></div>
-        <div id="sq-applepay-button" @click="payApplePay"></div>
+        <div
+          id="sq-gpay-button"
+          @click="square.methods.gpay ? payGPay() : null"
+        ></div>
+        <div
+          id="sq-applepay-button"
+          @click="square.methods.applepay ? payApplePay() : null"
+        ></div>
       </div>
     </div>
 
@@ -135,7 +141,7 @@ export default {
         })
       } catch (e) {
         // eslint-disable-next-line no-console
-        if (e.name !== 'PaymentMethodUnsupportedError') console.error(e)
+        if (e.name !== 'PaymentMethodUnsupportedError') silentErrorHandler(e)
       }
 
       try {
@@ -145,7 +151,7 @@ export default {
         )
       } catch (e) {
         // eslint-disable-next-line no-console
-        if (e.name !== 'PaymentMethodUnsupportedError') console.error(e)
+        if (e.name !== 'PaymentMethodUnsupportedError') silentErrorHandler(e)
       }
 
       this.$emit('ready')
