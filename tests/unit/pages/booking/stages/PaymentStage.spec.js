@@ -121,7 +121,7 @@ describe('Payment Stage', () => {
         )
       )
       paymentStageComponent.vm.booking.priceBreakdown.totalPrice = 1000
-      await paymentStageComponent.vm.onNonceRecieved(null, {
+      await paymentStageComponent.vm.onNonceRecieved({
         nonce: 'cnon:card-nonce-ok',
       })
       expect(paymentStageComponent.text()).to.contain(
