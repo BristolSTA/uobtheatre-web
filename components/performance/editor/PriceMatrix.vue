@@ -77,7 +77,7 @@
                 </div>
               </div>
               <div v-else class="font-bold">
-                £{{ performanceSeatGroup.price / 100 }}
+                £{{ (performanceSeatGroup.price / 100).toFixed(2) }}
               </div>
             </template>
           </form-label>
@@ -89,7 +89,7 @@
         </td>
       </tr>
     </table>
-    <div class="m-2 p-2 bg-sta-gray-dark">
+    <div v-if="editing" class="m-2 p-2 bg-sta-gray-dark">
       Note:
       <badge class="bg-blue-400"><font-awesome-icon icon="sync" /></badge>
       Denotates a setting that is synced or shared across multiple performances.
@@ -103,6 +103,7 @@ import FormLabel from '@/components/ui/FormLabel.vue'
 import Badge from '@/components/ui/Badge.vue'
 import CurrencyInput from '@/components/ui/Inputs/CurrencyInput.vue'
 import PercentageInput from '@/components/ui/Inputs/PercentageInput.vue'
+import { singleDiscounts as singleDiscountsFn } from '@/utils/performance'
 export default {
   components: { FormLabel, Badge, CurrencyInput, PercentageInput },
   props: {
@@ -114,9 +115,14 @@ export default {
       type: Array,
       required: true,
     },
-    singleDiscounts: {
+    discounts: {
       required: true,
       type: Array,
+    },
+  },
+  computed: {
+    singleDiscounts() {
+      return singleDiscountsFn(this.discounts)
     },
   },
   methods: {
