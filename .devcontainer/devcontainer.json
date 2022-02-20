@@ -13,7 +13,8 @@
     "esbenp.prettier-vscode",
     "christian-kohler.path-intellisense",
     "apollographql.vscode-apollo",
-    "gruntfuggly.todo-tree"
+    "gruntfuggly.todo-tree",
+    "eamodio.gitlens"
   ],
   "initializeCommand": "cp -n .devcontainer/.env.example .devcontainer/.env && docker-compose -f .devcontainer/docker-compose.yml pull uobtheatre-api",
   // Use 'forwardPorts' to make a list of ports inside the container available locally.

@@ -64,6 +64,12 @@ const humanDuration = (durationMins, options) => {
   return humanizeDuration(durationMins * 60 * 1000, mergedOptions)
 }
 
+const humanDayTime = (date) => {
+  if (date.hour < 12) return 'Morning'
+  if (date.hour < 17) return 'Afternoon'
+  return 'Evening'
+}
+
 /**
  * Merged Tailwind Config Object
  */
@@ -193,6 +199,7 @@ export {
   loadingSwal,
   swal,
   swalToast,
+  humanDayTime,
   tailwindConfig,
   catchOnly,
   getValidationErrors,

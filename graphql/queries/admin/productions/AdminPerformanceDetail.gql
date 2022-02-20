@@ -30,6 +30,7 @@ query adminPerformanceDetail($productionSlug: String!, $performanceId: ID!) {
           ticketOptions {
             ...PerformanceTicketOptions
             capacity
+            numberTicketsSold
           }
           ticketsBreakdown {
             totalCapacity
