@@ -99,48 +99,44 @@
         </table>
       </card>
     </div>
-    <card
-      v-if="ticketsMatrix.ticketOptions.length"
-      class="mt-4"
-      title="Sales By Ticket"
-    >
-      <div class="flex flex-wrap justify-evenly space-x-6">
-        <div>
-          <table>
-            <thead>
-              <tr>
-                <table-head-item :text-left="false">Seat Group</table-head-item>
-                <table-head-item :text-left="false"
-                  >No. Tickets</table-head-item
+    <div v-if="ticketsMatrix.ticketOptions.length" class="gap-4">
+      <card class="mt-4" title="Sales By Ticket">
+        <div class="flex flex-wrap justify-evenly space-x-6">
+          <div>
+            <table>
+              <thead>
+                <tr>
+                  <table-head-item :text-left="false"
+                    >Seat Group</table-head-item
+                  >
+                  <table-head-item :text-left="false">Sold</table-head-item>
+                  <table-head-item :text-left="false"
+                    >Remaining Capacity</table-head-item
+                  >
+                </tr>
+              </thead>
+              <tbody>
+                <table-row
+                  v-for="(
+                    performanceSeatGroup, index
+                  ) in ticketsMatrix.ticketOptions"
+                  :key="index"
+                  class="text-center"
                 >
-                <table-head-item :text-left="false"
-                  >Remaining Capacity</table-head-item
-                >
-              </tr>
-            </thead>
-            <tbody>
-              <table-row
-                v-for="(
-                  performanceSeatGroup, index
-                ) in ticketsMatrix.ticketOptions"
-                :key="index"
-                class="text-center"
-              >
-                <table-row-item>{{
-                  performanceSeatGroup.seatGroup.name
-                }}</table-row-item>
-                <table-row-item>{{
-                  performanceSeatGroup.capacity -
-                  performanceSeatGroup.capacityRemaining
-                }}</table-row-item>
-                <table-row-item>{{
-                  performanceSeatGroup.capacityRemaining
-                }}</table-row-item>
-              </table-row>
-            </tbody>
-          </table>
-        </div>
-        <!-- <div>
+                  <table-row-item>{{
+                    performanceSeatGroup.seatGroup.name
+                  }}</table-row-item>
+                  <table-row-item>{{
+                    performanceSeatGroup.numberTicketsSold
+                  }}</table-row-item>
+                  <table-row-item>{{
+                    performanceSeatGroup.capacityRemaining
+                  }}</table-row-item>
+                </table-row>
+              </tbody>
+            </table>
+          </div>
+          <!-- <div>
           <table>
             <thead>
               <tr>
@@ -160,8 +156,15 @@
             </tbody>
           </table>
         </div> -->
-      </div>
-    </card>
+        </div>
+      </card>
+      <card class="mt-4" title="Ticket Pricing">
+        <price-matrix
+          :discounts="performance.discounts.edges"
+          :performance-seat-groups="performance.ticketOptions"
+        />
+      </card>
+    </div>
     <div class="mt-6">
       <h2 class="text-h2">Tools</h2>
       <div
@@ -210,6 +213,7 @@ import PerformanceStatusBadge from '@/components/performance/PerformanceStatusBa
 import TicketsMatrix from '@/classes/TicketsMatrix'
 import TableRow from '@/components/ui/Tables/TableRow.vue'
 import { performMutation } from '@/utils'
+import PriceMatrix from '@/components/performance/editor/PriceMatrix.vue'
 export default {
   components: {
     Card,
@@ -221,6 +225,7 @@ export default {
     MenuTile,
     PerformanceStatusBadge,
     TableRow,
+    PriceMatrix,
   },
   async asyncData({ params, error, app }) {
     // Execute query

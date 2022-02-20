@@ -196,7 +196,7 @@
             You need at least one concession type with 0% discount.
           </div>
           <price-matrix
-            :single-discounts="singleDiscounts"
+            :discounts="performance.discounts.edges"
             :performance-seat-groups="performanceSeatGroups"
             :editing="true"
           />
@@ -258,6 +258,7 @@ import Errors from '@/classes/Errors'
 import { getValidationErrors, performMutation, swal } from '@/utils'
 import StaButton from '@/components/ui/StaButton.vue'
 import Alert from '@/components/ui/Alert.vue'
+import { singleDiscounts as singleDiscountsFn } from '@/utils/performance'
 import Card from '../../ui/Card.vue'
 import FormLabel from '../../ui/FormLabel.vue'
 import SeatGroup from './SeatGroup.vue'
@@ -391,17 +392,7 @@ export default {
       )
     },
     singleDiscounts() {
-      return [
-        ...(this.discounts?.edges || [])
-          .map((edge) => edge.node)
-          .filter(
-            (discount) =>
-              discount.requirements.length === 1 &&
-              discount.requirements[0].number === 1
-          ),
-      ].sort(
-        (discount1, discount2) => discount1.percentage - discount2.percentage
-      )
+      return singleDiscountsFn(this.discounts?.edges || [])
     },
     selectedSeatGroupCapacities() {
       return this.performanceSeatGroups.reduce(
@@ -472,10 +463,17 @@ export default {
         },
         fetchPolicy: 'no-cache',
       })
+
+      // Delete exisiting performance seat groups
       const performance = data.production.performances.edges[0].node
       this.performanceSeatGroups = []
-      await this.$emit('update:discounts', {})
 
+      // Delete exisiting discounts / concessions
+      for (const discount of this.singleDiscounts) {
+        await this.deleteConcession(discount)
+      }
+
+      // For the chosen performancem add seat groups ...
       performance.ticketOptions.forEach((performanceSeatGroup) => {
         this.addSeatGroup(
           performanceSeatGroup.seatGroup,
@@ -483,6 +481,7 @@ export default {
         )
       })
 
+      // And concession types...
       for (const edge of performance.discounts.edges) {
         if (
           edge.node.requirements.length > 1 ||
@@ -723,9 +722,9 @@ export default {
         ],
       })
     },
-    deleteConcession(discount) {
+    async deleteConcession(discount) {
       // Remove from array
-      this.$emit('update:discounts', {
+      await this.$emit('update:discounts', {
         edges: this.discounts.edges.filter((edge) => edge.node !== discount),
       })
 
