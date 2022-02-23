@@ -69,7 +69,7 @@
         >
           {{ item[1] }}
         </NuxtLink>
-        <dropdown-nav-item v-if="$store.state.auth.user">
+        <dropdown-nav-item v-if="$store.state.auth.user" ref="user-dropdown">
           Hi, {{ $store.state.auth.user.firstName }}
           <span role="img">👋</span>
           <template #content>
@@ -80,6 +80,7 @@
                 subtitle="Control productions and other tools"
                 icon="user-shield"
                 route="/administration"
+                @click="closeUserMenu"
               />
               <dropdown-item
                 v-if="$auth().hasPermission('boxoffice_open')"
@@ -87,18 +88,21 @@
                 subtitle="Check in and sell tickets"
                 icon="ticket-alt"
                 route="/box-office"
+                @click="closeUserMenu"
               />
               <dropdown-item
                 title="Your Account"
                 subtitle="Edit your details"
                 icon="user-edit"
                 route="/user"
+                @click="closeUserMenu"
               />
               <dropdown-item
                 title="Your Bookings"
                 subtitle="View bookings and tickets"
                 icon="theater-masks"
                 :route="{ path: '/user', hash: '#myBookings' }"
+                @click="closeUserMenu"
               />
             </div>
             <div class="flex md:justify-end">
@@ -120,12 +124,14 @@
                 subtitle="With an exisiting account"
                 icon="sign-in-alt"
                 route="/login"
+                @click="closeUserMenu"
               />
               <dropdown-item
                 title="Register"
                 subtitle="Create a new account"
                 icon="user-edit"
                 route="/signup"
+                @click="closeUserMenu"
               />
             </div>
           </template>
@@ -167,6 +173,9 @@ export default {
     onLogout() {
       this.$auth().logout()
       this.$router.push('/')
+    },
+    closeUserMenu() {
+      this.$refs['user-dropdown'].hideMenu()
     },
   },
 }
