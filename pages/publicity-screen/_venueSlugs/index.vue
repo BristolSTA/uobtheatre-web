@@ -40,31 +40,20 @@
 
 <script>
 import Carousel from '@/components/ui/Carousel.vue'
+import VenueUpcomingProductionsQuery from '@/graphql/queries/venue/VenueUpcomingProductions.gql'
 
 export default {
   components: { Carousel },
   layout: 'publicityScreen',
   data() {
     return {
-      upcomingProductions: [],
+      productions: [],
+      timer: null,
     }
-  },
-  apollo: {
-    upcomingProductions: {
-      query: require('@/graphql/queries/PublicityScreenProductions.gql'),
-      update: (data) => data.productions.edges.map((edge) => edge.node),
-      variables() {
-        return {
-          now: new Date(),
-        }
-      },
-      // refresh every 2 hours
-      pollInterval: 7200000,
-    },
   },
   computed: {
     publicityImages() {
-      return this.upcomingProductions
+      return this.productions
         .map((prod) => {
           if (prod.coverImage) {
             return {
@@ -89,6 +78,55 @@ export default {
           return !!prod.id
         })
     },
+  },
+  mounted() {
+    this.fetchData()
+    this.timer = setInterval(this.fetchData, 7200000)
+  },
+  destroyed() {
+    clearInterval(this.timer)
+  },
+  methods: {
+    async fetchData() {
+      const slugs = this.$route.params.venueSlugs.split(',')
+      const queries = []
+
+      for (const slug of slugs) {
+        queries.push(
+          this.$apollo.query({
+            query: VenueUpcomingProductionsQuery,
+            variables: {
+              slug,
+              now: new Date(),
+            },
+            fetchPolicy: 'no-cache',
+          })
+        )
+      }
+
+      const queryData = await Promise.all(queries)
+      this.productions = []
+      queryData.forEach((queryResult) => {
+        if (queryResult.data.venue) {
+          this.productions.push(
+            ...queryResult.data.venue.productions.edges.map((edge) => edge.node)
+          )
+        }
+      })
+    },
+  },
+  apollo: {
+    // upcomingProductions: {
+    //   query: require('@/graphql/queries/PublicityScreenProductions.gql'),
+    //   update: (data) => data.productions.edges.map((edge) => edge.node),
+    //   variables() {
+    //     return {
+    //       now: new Date(),
+    //     }
+    //   },
+    //   // refresh every 2 hours
+    //   pollInterval: 7200000,
+    // },
   },
 }
 </script>

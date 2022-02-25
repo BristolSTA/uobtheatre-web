@@ -1,0 +1,20 @@
+query venueUpcomingProductions($slug: String!, $now: DateTime!) {
+  venue(slug: $slug) {
+    productions(orderBy: "start", end_Gte: $now, status: "PUBLISHED") {
+      edges {
+        node {
+          id
+          name
+          featuredImage {
+            id
+            url
+          }
+          coverImage {
+            id
+            url
+          }
+        }
+      }
+    }
+  }
+}
