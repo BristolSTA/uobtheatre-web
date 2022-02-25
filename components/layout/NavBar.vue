@@ -175,7 +175,7 @@ export default {
       this.$router.push('/')
     },
     closeUserMenu() {
-      this.$refs['user-dropdown'].hideMenu()
+      if (this.$refs['user-dropdown']) this.$refs['user-dropdown'].hideMenu()
     },
   },
 }
