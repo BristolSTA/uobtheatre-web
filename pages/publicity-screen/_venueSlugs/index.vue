@@ -1,92 +1,136 @@
 <template>
-  <div v-if="!publicityImages.length" class="flex items-center h-screen">
-    <div class="container px-4 text-white lg:w-2/3">
-      <div class="text-4xl text-h1">Welcome to {{ $appName }}</div>
-      <div class="text-2xl">
-        Check out <a class="text-sta-orange" href="/">www.uobtheatre.com</a> for
-        all upcoming productions
+  <div class="h-full">
+    <!-- If no productions at this venue upcoming / bookable -->
+    <div
+      v-if="!marketableProductions.length"
+      class="flex items-center h-screen justify-center"
+    >
+      <div class="px-4 text-white text-center space-y-10">
+        <div class="text-6xl font-bold">
+          Welcome to {{ venues.map((venue) => venue.name).join(' & ') }}
+        </div>
+        <div class="text-2xl">
+          Check out
+          <a class="text-sta-orange" href="/">uobtheatre.com</a> for all of our
+          upcoming productions
+        </div>
+      </div>
+    </div>
+    <!-- with upcoming productions -->
+    <div v-else class="flex flex-col p-4 h-full">
+      <div class="flex h-2/3">
+        <img
+          :src="currentDisplayedProduction.featuredImage.url"
+          class="h-full w-auto"
+        />
+        <div
+          class="flex flex-col flex-grow items-center justify-evenly text-4xl"
+        >
+          <h2 class="text-5xl font-bold text-sta-orange">
+            {{ currentDisplayedProduction.name }}
+          </h2>
+          <icon-list-item icon="clock">
+            {{
+              displayStartEnd(
+                currentDisplayedProduction.start,
+                currentDisplayedProduction.end,
+                'd MMM'
+              )
+            }}</icon-list-item
+          >
+          <icon-list-item icon="map-marker">
+            {{
+              venues.find((venue) =>
+                venue.productions.edges.find(
+                  (edge) => edge.node.id == currentDisplayedProduction.id
+                )
+              ).name
+            }}</icon-list-item
+          >
+        </div>
+      </div>
+      <div class="flex flex-grow items-center justify-between gap-x-20">
+        <span class="text-5xl text-center">
+          Book now at
+          <span class="text-sta-orange">{{
+            currentDisplayedProductionUrl
+          }}</span>
+        </span>
+        <qrcode-vue
+          :value="currentDisplayedProductionUrl"
+          render-as="svg"
+          level="L"
+          background="transparent"
+          foreground="white"
+          class="h-full w-auto qrcode-responsive-height"
+        />
       </div>
     </div>
   </div>
-  <carousel
-    v-else
-    :carousel-items="publicityImages"
-    :vheight="100"
-    :nav-arrows="false"
-    :pause-on-hover="false"
-    :autoplay-speed="10000"
-  >
-    <template #default="slotProps">
-      <div
-        v-if="!!slotProps.carouselItem.text"
-        class="flex items-center h-full bg-black bg-opacity-40"
-      >
-        <div class="container px-4 md:pl-12 lg:pl-4 lg:w-2/3">
-          <div v-if="slotProps.carouselItem.text.society" class="text-2xl">
-            {{ slotProps.carouselItem.text.society.name }}
-          </div>
-          <div v-if="slotProps.carouselItem.text.name" class="text-h1">
-            {{ slotProps.carouselItem.text.name }}
-          </div>
-          <div v-if="slotProps.carouselItem.text.start" class="text-2xl">
-            {{ slotProps.carouselItem.text.start | dateFormat('d MMMM') }} -
-            {{ slotProps.carouselItem.text.end | dateFormat('d MMMM y') }}
-          </div>
-        </div>
-      </div>
-    </template>
-  </carousel>
 </template>
 
 <script>
-import Carousel from '@/components/ui/Carousel.vue'
 import VenueUpcomingProductionsQuery from '@/graphql/queries/venue/VenueUpcomingProductions.gql'
+import { DateTime } from 'luxon'
+import QrcodeVue from 'qrcode.vue'
+import { displayStartEnd } from '@/utils'
+import IconListItem from '@/components/ui/IconListItem.vue'
 
 export default {
-  components: { Carousel },
+  components: { QrcodeVue, IconListItem },
   layout: 'publicityScreen',
   data() {
     return {
       productions: [],
-      timer: null,
+      venues: [],
+      dataFetchTimer: null,
+
+      currentProductionIndex: 0,
+      slideTimer: null,
     }
   },
   computed: {
-    publicityImages() {
-      return this.productions
-        .map((prod) => {
-          if (prod.coverImage) {
-            return {
-              id: prod.id,
-              displayImage: prod.coverImage,
-              text: { name: prod.name },
-            }
-          } else if (prod.featuredImage) {
-            return {
-              id: prod.id,
-              displayImage: prod.featuredImage,
-              text: null,
-            }
-          } else {
-            return {
-              id: null,
-              text: null,
-            }
-          }
-        })
-        .filter((prod) => {
-          return !!prod.id
-        })
+    marketableProductions() {
+      return this.productions.filter((production) => production.isBookable)
+    },
+    currentDisplayedProduction() {
+      return this.marketableProductions
+        ? this.marketableProductions[this.currentProductionIndex]
+        : null
+    },
+    currentDisplayedProductionUrl() {
+      return this.currentDisplayedProduction
+        ? window.location.origin +
+            this.$router.resolve({
+              path: `/productions/${this.currentDisplayedProduction.slug}`,
+            }).href
+        : ''
+    },
+    productionsOnNow() {
+      return this.productions.filter(
+        (production) => production.performances.edges.length
+      )
     },
   },
   mounted() {
     this.fetchData()
-    this.timer = setInterval(this.fetchData, 7200000)
+    this.dataFetchTimer = setInterval(this.fetchData, 7200000)
+    this.slideTimer = setInterval(() => {
+      if (
+        this.currentProductionIndex + 1 >=
+        this.marketableProductions.length
+      ) {
+        return (this.currentProductionIndex = 0)
+      }
+      this.currentProductionIndex += 1
+    }, 1000 * 10)
   },
   destroyed() {
-    clearInterval(this.timer)
+    clearInterval(this.dataFetchTimer)
+    clearInterval(this.slideTimer)
   },
   methods: {
+    displayStartEnd,
     async fetchData() {
       const slugs = this.$route.params.venueSlugs.split(',')
       const queries = []
@@ -98,6 +142,7 @@ export default {
             variables: {
               slug,
               now: new Date(),
+              nowDate: DateTime.now().toISODate(),
             },
             fetchPolicy: 'no-cache',
           })
@@ -106,8 +151,11 @@ export default {
 
       const queryData = await Promise.all(queries)
       this.productions = []
+      this.venues = []
+      this.currentProductionIndex = 0
       queryData.forEach((queryResult) => {
         if (queryResult.data.venue) {
+          this.venues.push(queryResult.data.venue)
           this.productions.push(
             ...queryResult.data.venue.productions.edges.map((edge) => edge.node)
           )
@@ -115,18 +163,12 @@ export default {
       })
     },
   },
-  apollo: {
-    // upcomingProductions: {
-    //   query: require('@/graphql/queries/PublicityScreenProductions.gql'),
-    //   update: (data) => data.productions.edges.map((edge) => edge.node),
-    //   variables() {
-    //     return {
-    //       now: new Date(),
-    //     }
-    //   },
-    //   // refresh every 2 hours
-    //   pollInterval: 7200000,
-    // },
-  },
 }
 </script>
+
+<style lang="scss">
+.qrcode-responsive-height > svg {
+  width: auto !important;
+  height: 100% !important;
+}
+</style>

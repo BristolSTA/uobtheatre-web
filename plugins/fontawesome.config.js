@@ -9,6 +9,7 @@ export default {
     'faChevronUp',
     'faCircleNotch',
     'faClock',
+    'faMapMarker',
     'faUsers',
     'faPeopleArrows',
     'faUserShield',

@@ -1,6 +1,6 @@
 <template>
   <div class="flex">
-    <div class="mr-1 w-6 text-center">
+    <div class="text-center" style="width: 1.5em; margin-right: 1em">
       <font-awesome-icon :icon="icon" />
     </div>
     <div>

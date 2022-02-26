@@ -1,10 +1,19 @@
-query venueUpcomingProductions($slug: String!, $now: DateTime!) {
+query venueUpcomingProductions(
+  $slug: String!
+  $now: DateTime!
+  $nowDate: Date
+) {
   venue(slug: $slug) {
+    name
     productions(orderBy: "start", end_Gte: $now, status: "PUBLISHED") {
       edges {
         node {
           id
+          slug
           name
+          start
+          end
+          isBookable
           featuredImage {
             id
             url
@@ -12,6 +21,16 @@ query venueUpcomingProductions($slug: String!, $now: DateTime!) {
           coverImage {
             id
             url
+          }
+          performances(runOn: $nowDate) {
+            edges {
+              node {
+                id
+                doorsOpen
+                start
+                end
+              }
+            }
           }
         }
       }
