@@ -12,6 +12,7 @@ export default {
     'faMapMarker',
     'faUsers',
     'faPeopleArrows',
+    'faLongArrowAltRight',
     'faUserShield',
     'faInfoCircle',
     'faLink',

@@ -16,9 +16,12 @@
         </div>
       </div>
     </div>
+    <template v-else-if="productionsOnNow.length">
+      <have-tickets-ready-screen />
+    </template>
     <!-- with upcoming productions -->
     <div v-else class="flex flex-col p-4 h-full">
-      <div class="flex h-2/3">
+      <div class="flex h-2/3 gap-x-4">
         <img
           :src="currentDisplayedProduction.featuredImage.url"
           class="h-full w-auto"
@@ -62,7 +65,7 @@
           level="L"
           background="transparent"
           foreground="white"
-          class="h-full w-auto qrcode-responsive-height"
+          class="qrcode-responsive-height"
         />
       </div>
     </div>
@@ -75,9 +78,10 @@ import { DateTime } from 'luxon'
 import QrcodeVue from 'qrcode.vue'
 import { displayStartEnd } from '@/utils'
 import IconListItem from '@/components/ui/IconListItem.vue'
+import HaveTicketsReadyScreen from '@/components/publicity-screens/HaveTicketsReadyScreen.vue'
 
 export default {
-  components: { QrcodeVue, IconListItem },
+  components: { QrcodeVue, IconListItem, HaveTicketsReadyScreen },
   layout: 'publicityScreen',
   data() {
     return {
@@ -87,9 +91,14 @@ export default {
 
       currentProductionIndex: 0,
       slideTimer: null,
+
+      onNowIndex: 0,
     }
   },
   computed: {
+    onNowImages() {
+      return []
+    },
     marketableProductions() {
       return this.productions.filter((production) => production.isBookable)
     },
@@ -120,9 +129,16 @@ export default {
         this.currentProductionIndex + 1 >=
         this.marketableProductions.length
       ) {
-        return (this.currentProductionIndex = 0)
+        this.currentProductionIndex = 0
+      } else {
+        this.currentProductionIndex += 1
       }
-      this.currentProductionIndex += 1
+
+      if (this.onNowIndex + 1 >= this.onNowImages.length) {
+        this.onNowIndex = 0
+      } else {
+        this.onNowIndex += 1
+      }
     }, 1000 * 10)
   },
   destroyed() {
@@ -165,10 +181,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss">
-.qrcode-responsive-height > svg {
-  width: auto !important;
-  height: 100% !important;
-}
-</style>
