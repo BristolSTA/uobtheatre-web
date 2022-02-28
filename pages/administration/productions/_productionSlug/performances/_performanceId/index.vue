@@ -12,7 +12,11 @@
         :to="`/box-office/${performance.id}`"
         >Goto Box Office</sta-button
       >
-      <sta-button colour="orange" icon="edit" :to="`${performance.id}/edit`"
+      <sta-button
+        v-if="production.permissions.includes('edit_production')"
+        colour="orange"
+        icon="edit"
+        :to="`${performance.id}/edit`"
         >Edit</sta-button
       >
     </template>
