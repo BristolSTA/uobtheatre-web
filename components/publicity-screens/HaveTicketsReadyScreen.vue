@@ -1,8 +1,8 @@
 <template>
-  <div class="flex flex-col h-full justify-around items-center">
-    <div class="text-center">
-      <h1 class="text-6xl font-bold">Have your eTicket ready</h1>
-      <h2 class="text-5xl">(showing the QR code)</h2>
+  <div class="flex flex-col h-full justify-evenly items-center">
+    <div class="text-center space-y-10">
+      <h1 class="text-rxl font-bold text-center">Have your eTicket ready</h1>
+      <h2 class="text-rlg text-center">(showing the QR code)</h2>
     </div>
     <div class="flex gap-x-10">
       <span class="text-8xl"

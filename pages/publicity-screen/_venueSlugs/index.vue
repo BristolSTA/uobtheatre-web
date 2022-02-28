@@ -17,7 +17,7 @@
       </div>
     </div>
     <template v-else-if="productionsOnNow.length">
-      <have-tickets-ready-screen />
+      <component :is="currentScreen" />
     </template>
     <!-- with upcoming productions -->
     <div v-else class="flex flex-col p-4 h-full">
@@ -65,7 +65,7 @@
           level="L"
           background="transparent"
           foreground="white"
-          class="qrcode-responsive-height"
+          class="qrcode-responsive-height h-full"
         />
       </div>
     </div>
@@ -79,9 +79,15 @@ import QrcodeVue from 'qrcode.vue'
 import { displayStartEnd } from '@/utils'
 import IconListItem from '@/components/ui/IconListItem.vue'
 import HaveTicketsReadyScreen from '@/components/publicity-screens/HaveTicketsReadyScreen.vue'
+import SoldOutScreen from '@/components/publicity-screens/SoldOutScreen.vue'
 
 export default {
-  components: { QrcodeVue, IconListItem, HaveTicketsReadyScreen },
+  components: {
+    QrcodeVue,
+    IconListItem,
+    HaveTicketsReadyScreen,
+    SoldOutScreen,
+  },
   layout: 'publicityScreen',
   data() {
     return {
@@ -93,12 +99,10 @@ export default {
       slideTimer: null,
 
       onNowIndex: 0,
+      paused: false,
     }
   },
   computed: {
-    onNowImages() {
-      return []
-    },
     marketableProductions() {
       return this.productions.filter((production) => production.isBookable)
     },
@@ -120,11 +124,20 @@ export default {
         (production) => production.performances.edges.length
       )
     },
+    currentScreen() {
+      return this.productionsOnNow.length
+        ? this.screensForPerformance(
+            this.productionsOnNow[0].performances.edges[0].node
+          )[this.onNowIndex]
+        : null
+    },
   },
   mounted() {
     this.fetchData()
     this.dataFetchTimer = setInterval(this.fetchData, 7200000)
     this.slideTimer = setInterval(() => {
+      if (this.paused) return
+
       if (
         this.currentProductionIndex + 1 >=
         this.marketableProductions.length
@@ -134,7 +147,13 @@ export default {
         this.currentProductionIndex += 1
       }
 
-      if (this.onNowIndex + 1 >= this.onNowImages.length) {
+      if (
+        !this.productionsOnNow.length ||
+        this.onNowIndex + 1 >=
+          this.screensForPerformance(
+            this.productionsOnNow[0].performances.edges[0].node
+          ).length
+      ) {
         this.onNowIndex = 0
       } else {
         this.onNowIndex += 1
@@ -147,6 +166,10 @@ export default {
   },
   methods: {
     displayStartEnd,
+    screensForPerformance() {
+      const screens = [HaveTicketsReadyScreen, SoldOutScreen]
+      return screens
+    },
     async fetchData() {
       const slugs = this.$route.params.venueSlugs.split(',')
       const queries = []

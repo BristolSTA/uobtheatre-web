@@ -28,6 +28,7 @@ query venueUpcomingProductions(
                 id
                 doorsOpen
                 start
+                soldOut
                 end
               }
             }
