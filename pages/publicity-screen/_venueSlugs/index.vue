@@ -129,7 +129,7 @@ export default {
       return this.currentDisplayedProduction
         ? window.location.origin +
             this.$router.resolve({
-              path: `/productions/${this.currentDisplayedProduction.slug}`,
+              path: `/production/${this.currentDisplayedProduction.slug}`,
             }).href
         : ''
     },
