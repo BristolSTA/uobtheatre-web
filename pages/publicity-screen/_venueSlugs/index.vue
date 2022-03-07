@@ -4,8 +4,10 @@
     <template v-if="productionsOnNow.length">
       <component
         :is="currentScreen"
-        :production="productionsOnNow[0]"
-        :performance="productionsOnNow[0].performances.edges[0].node"
+        :production="productionsOnNow[onNowProductionIndex]"
+        :performance="
+          productionsOnNow[onNowProductionIndex].performances.edges[0].node
+        "
       />
     </template>
 
@@ -134,6 +136,9 @@ export default {
     productionsOnNow() {
       if (!this.now) return []
       return this.productions.filter((production) => {
+        if (!production.performances.edges.length) {
+          return false
+        }
         const doorsOpenTime = DateTime.fromISO(
           production.performances.edges[0].node.doorsOpen
         )
