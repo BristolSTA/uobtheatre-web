@@ -4,12 +4,13 @@
       v-for="(performanceGroup, time) in groupedPerformances"
       :key="time"
       ref="performance-group"
-      class="mb-4"
     >
       <h2 class="mb-2 text-white text-2xl font-semibold">
         {{ time }}
       </h2>
-      <div class="grid gap-2 grid-cols-2 lg:gap-4 xl:grid-cols-3">
+      <div
+        class="grid gap-2 grid-cols-1 sm:grid-cols-2 lg:gap-4 xl:grid-cols-3"
+      >
         <performance-overview
           v-for="(performance, index) in performanceGroup"
           :key="index"

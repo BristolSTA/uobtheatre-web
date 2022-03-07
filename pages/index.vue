@@ -78,7 +78,7 @@
           </p>
           <NuxtLink
             :to="`/production/${production.slug}`"
-            class="mt-6 btn btn-rouge"
+            class="mt-6 btn btn-green"
           >
             More Information & Book
           </NuxtLink>
