@@ -8,7 +8,7 @@
         :show-detailed-info="false"
       />
       <div class="flex flex-wrap mb-2 md:flex-nowrap md:space-x-2">
-        <div class="md:flex-none md:w-1/4 flex-col">
+        <div class="md:flex-none md:w-1/4 w-full flex-col">
           <booking-navigation
             class="hidden md:flex"
             :current-stage-index="currentStageIndex"
@@ -16,15 +16,23 @@
             :booking="booking"
             @goto-stage="navigateToStage"
           />
-          <div v-if="currentStage" class="mb-1 w-full text-center md:hidden">
-            <h1 class="text-sta-green text-h1">{{ currentStage.name }}</h1>
+          <div
+            v-if="currentStage"
+            class="mb-1 text-center md:hidden flex items-center"
+          >
             <clickable-link
               v-if="currentStageIndex > 0"
-              class="text-white"
+              class="text-white flex-1"
               @click="gotoPreviousStage"
             >
-              <font-awesome-icon icon="chevron-left" />Back
+              <font-awesome-icon icon="chevron-left" class="fa-2x" />
             </clickable-link>
+            <h1
+              class="text-sta-green text-h2 sm:text-h1 justify-center flex-auto"
+            >
+              {{ currentStage.name }}
+            </h1>
+            <div class="flex-1"></div>
           </div>
           <div
             v-if="booking.raw && booking.raw.expiresAt"
@@ -43,7 +51,7 @@
 
         <div
           id="booking-view"
-          class="flex-grow p-1 pb-4 max-w-full bg-sta-gray-dark sm:p-3"
+          class="flex-grow sm:pb-4 max-w-full bg-sta-gray-dark sm:p-3"
         >
           <NuxtChild
             ref="stageComponent"

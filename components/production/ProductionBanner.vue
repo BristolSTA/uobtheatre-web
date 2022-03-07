@@ -32,7 +32,7 @@
         <p class="-mt-2 mb-1 text-sta-gray-lighter">
           by
           <NuxtLink
-            class="hover:text-gray-500"
+            class="hover:text-gray-500 text-gray-400"
             :to="`/society/${production.society.slug}`"
           >
             {{ production.society.name }}
@@ -50,7 +50,7 @@
                 <template v-if="index > 0">and</template>
                 <NuxtLink
                   v-if="venue.publiclyListed"
-                  class="hover:text-gray-300"
+                  class="hover:text-gray-300 font-semibold"
                   :to="`/venue/${venue.slug}`"
                 >
                   {{ venue.name }}

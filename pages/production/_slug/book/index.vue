@@ -1,6 +1,7 @@
 <template>
   <time-grouped-performance-selector
     :performances="availablePerformances"
+    class="m-3"
     @select-performance="$emit('select-performance', $event)"
   />
 </template>

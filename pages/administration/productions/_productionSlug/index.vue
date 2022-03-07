@@ -8,7 +8,7 @@
         >View Public Page</sta-button
       >
       <sta-button
-        v-if="canEdit"
+        v-if="canEditRightNow"
         colour="orange"
         icon="edit"
         :to="`${production.slug}/edit`"
@@ -264,8 +264,11 @@ export default {
     canEdit() {
       return (
         this.production.permissions.includes('change_production') ||
-        this.production.permissions.includes('edit_production')
+        this.canEditRightNow
       )
+    },
+    canEditRightNow() {
+      return this.production.permissions.includes('edit_production')
     },
     actions() {
       const list = []
