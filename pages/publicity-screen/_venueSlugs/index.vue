@@ -1,26 +1,19 @@
 <template>
   <div class="h-full">
     <!-- If no productions at this venue upcoming / bookable -->
-    <div
-      v-if="!marketableProductions.length"
-      class="flex items-center h-screen justify-center"
-    >
-      <div class="px-4 text-white text-center space-y-10">
-        <div class="text-6xl font-bold">
-          Welcome to {{ venues.map((venue) => venue.name).join(' & ') }}
-        </div>
-        <div class="text-2xl">
-          Check out
-          <a class="text-sta-orange" href="/">uobtheatre.com</a> for all of our
-          upcoming productions
-        </div>
-      </div>
-    </div>
-    <template v-else-if="productionsOnNow.length">
-      <component :is="currentScreen" />
+    <template v-if="productionsOnNow.length">
+      <component
+        :is="currentScreen"
+        :production="productionsOnNow[0]"
+        :performance="productionsOnNow[0].performances.edges[0].node"
+      />
     </template>
+
     <!-- with upcoming productions -->
-    <div v-else class="flex flex-col p-4 h-full">
+    <div
+      v-else-if="marketableProductions.length"
+      class="flex flex-col p-4 h-full"
+    >
       <div class="flex h-2/3 gap-x-4">
         <img
           :src="currentDisplayedProduction.featuredImage.url"
@@ -69,6 +62,19 @@
         />
       </div>
     </div>
+
+    <div v-else class="flex items-center h-screen justify-center">
+      <div class="px-4 text-white text-center space-y-10">
+        <div class="text-6xl font-bold">
+          Welcome to {{ venues.map((venue) => venue.name).join(' & ') }}
+        </div>
+        <div class="text-2xl">
+          Check out
+          <a class="text-sta-orange" href="/">uobtheatre.com</a> for all of our
+          upcoming productions
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -80,6 +86,8 @@ import { displayStartEnd } from '@/utils'
 import IconListItem from '@/components/ui/IconListItem.vue'
 import HaveTicketsReadyScreen from '@/components/publicity-screens/HaveTicketsReadyScreen.vue'
 import SoldOutScreen from '@/components/publicity-screens/SoldOutScreen.vue'
+import WelcomeScreen from '@/components/publicity-screens/WelcomeScreen.vue'
+import PleaseWaitScreen from '@/components/publicity-screens/PleaseWaitScreen.vue'
 
 export default {
   components: {
@@ -91,6 +99,9 @@ export default {
   layout: 'publicityScreen',
   data() {
     return {
+      now: null,
+      nowTimer: null,
+
       productions: [],
       venues: [],
       dataFetchTimer: null,
@@ -98,7 +109,8 @@ export default {
       currentProductionIndex: 0,
       slideTimer: null,
 
-      onNowIndex: 0,
+      onNowScreenIndex: 0,
+      onNowProductionIndex: 0,
       paused: false,
     }
   },
@@ -120,24 +132,37 @@ export default {
         : ''
     },
     productionsOnNow() {
-      return this.productions.filter(
-        (production) => production.performances.edges.length
-      )
+      if (!this.now) return []
+      return this.productions.filter((production) => {
+        const doorsOpenTime = DateTime.fromISO(
+          production.performances.edges[0].node.doorsOpen
+        )
+        return (
+          production.performances.edges.length &&
+          doorsOpenTime.minus({ hours: 1 }) <= this.now
+        )
+      })
     },
     currentScreen() {
       return this.productionsOnNow.length
         ? this.screensForPerformance(
-            this.productionsOnNow[0].performances.edges[0].node
-          )[this.onNowIndex]
+            this.productionsOnNow[this.onNowProductionIndex].performances
+              .edges[0].node
+          )[this.onNowScreenIndex]
         : null
     },
   },
   mounted() {
     this.fetchData()
+
+    this.nowTimer = setInterval(() => {
+      this.now = DateTime.now()
+    }, 5000)
     this.dataFetchTimer = setInterval(this.fetchData, 7200000)
     this.slideTimer = setInterval(() => {
       if (this.paused) return
 
+      // General promotion
       if (
         this.currentProductionIndex + 1 >=
         this.marketableProductions.length
@@ -147,27 +172,49 @@ export default {
         this.currentProductionIndex += 1
       }
 
-      if (
+      // Active productions
+      const reset =
         !this.productionsOnNow.length ||
-        this.onNowIndex + 1 >=
+        this.onNowScreenIndex + 1 >=
           this.screensForPerformance(
-            this.productionsOnNow[0].performances.edges[0].node
+            this.productionsOnNow[this.onNowProductionIndex].performances
+              .edges[0].node
           ).length
-      ) {
-        this.onNowIndex = 0
+
+      if (!this.productionsOnNow.length || reset) {
+        this.onNowScreenIndex = 0
+        if (
+          reset &&
+          this.onNowProductionIndex + 1 > this.productionsOnNow.length
+        ) {
+          this.onNowProductionIndex += 1
+        } else {
+          this.onNowProductionIndex = 0
+        }
       } else {
-        this.onNowIndex += 1
+        this.onNowScreenIndex += 1
       }
     }, 1000 * 10)
   },
   destroyed() {
+    clearInterval(this.nowTimer)
     clearInterval(this.dataFetchTimer)
     clearInterval(this.slideTimer)
   },
   methods: {
     displayStartEnd,
-    screensForPerformance() {
-      const screens = [HaveTicketsReadyScreen, SoldOutScreen]
+    screensForPerformance(performance) {
+      const screens = []
+      if (this.now < DateTime.fromISO(performance.doorsOpen)) {
+        screens.push(PleaseWaitScreen)
+      } else if (this.now < DateTime.fromISO(performance.start)) {
+        screens.push(WelcomeScreen, HaveTicketsReadyScreen)
+
+        if (performance.soldOut) {
+          screens.push(SoldOutScreen)
+        }
+      }
+
       return screens
     },
     async fetchData() {

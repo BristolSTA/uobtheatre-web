@@ -56,6 +56,7 @@ module.exports = {
         h4: '1.25rem',
         rxl: '8vw',
         rlg: '5vw',
+        rmd: '3vw',
       },
       minWidth: {
         '1/2': '50%',

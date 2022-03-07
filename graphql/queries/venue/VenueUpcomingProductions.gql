@@ -4,6 +4,7 @@ query venueUpcomingProductions(
   $nowDate: Date
 ) {
   venue(slug: $slug) {
+    id
     name
     productions(orderBy: "start", end_Gte: $now, status: "PUBLISHED") {
       edges {
@@ -30,6 +31,25 @@ query venueUpcomingProductions(
                 start
                 soldOut
                 end
+                venue {
+                  id
+                  name
+                }
+                production {
+                  id
+                  name
+                  featuredImage {
+                    url
+                  }
+                  alternativePerformances: performances(disabled: false) {
+                    edges {
+                      node {
+                        id
+                        doorsOpen
+                      }
+                    }
+                  }
+                }
               }
             }
           }
