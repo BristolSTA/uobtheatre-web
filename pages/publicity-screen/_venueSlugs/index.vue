@@ -14,17 +14,19 @@
     <!-- with upcoming productions -->
     <div
       v-else-if="marketableProductions.length"
-      class="flex flex-col p-4 h-full"
+      class="flex flex-col p-4 gap-2 h-full overflow-hidden"
     >
-      <div class="flex h-2/3 gap-x-4">
-        <img
-          :src="currentDisplayedProduction.featuredImage.url"
-          class="h-full w-auto"
-        />
+      <div class="flex h-2/3 gap-4">
+        <div class="flex items-center justify-center">
+          <img
+            :src="currentDisplayedProduction.featuredImage.url"
+            class="w-auto max-h-full"
+          />
+        </div>
         <div
-          class="flex flex-col flex-grow items-center justify-evenly text-4xl"
+          class="flex flex-col flex-grow items-center justify-evenly text-rsm"
         >
-          <h2 class="text-5xl font-bold text-sta-orange">
+          <h2 class="text-rmd font-bold text-sta-orange text-center">
             {{ currentDisplayedProduction.name }}
           </h2>
           <icon-list-item icon="clock">
@@ -48,7 +50,7 @@
         </div>
       </div>
       <div class="flex flex-grow items-center justify-between gap-x-20">
-        <span class="text-5xl text-center">
+        <span class="text-rmd text-center">
           Book now at
           <span class="text-sta-orange">{{
             currentDisplayedProductionUrl
@@ -67,7 +69,7 @@
 
     <div v-else class="flex items-center h-screen justify-center">
       <div class="px-4 text-white text-center space-y-10">
-        <div class="text-6xl font-bold">
+        <div class="text-rxl font-bold">
           Welcome to {{ venues.map((venue) => venue.name).join(' & ') }}
         </div>
         <div class="text-2xl">
@@ -127,7 +129,7 @@ export default {
     },
     currentDisplayedProductionUrl() {
       return this.currentDisplayedProduction
-        ? window.location.origin +
+        ? window.location.host +
             this.$router.resolve({
               path: `/production/${this.currentDisplayedProduction.slug}`,
             }).href
@@ -144,7 +146,7 @@ export default {
         )
         return (
           production.performances.edges.length &&
-          doorsOpenTime.minus({ hours: 1 }) <= this.now
+          doorsOpenTime.minus({ minutes: 20 }) <= this.now
         )
       })
     },
