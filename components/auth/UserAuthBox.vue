@@ -80,11 +80,7 @@
         required
         :errors="login_errors"
       />
-      <label
-        v-if="!$store.state['box-office'].locationId"
-        for="remember_me"
-        class="flex items-center space-x-2"
-      >
+      <label for="remember_me" class="flex items-center space-x-2">
         <input
           id="remember_me"
           v-model="remember_me"
