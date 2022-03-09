@@ -192,7 +192,7 @@ export default {
         this.onNowScreenIndex = 0
         if (
           reset &&
-          this.onNowProductionIndex + 1 > this.productionsOnNow.length
+          this.onNowProductionIndex + 1 < this.productionsOnNow.length
         ) {
           this.onNowProductionIndex += 1
         } else {
