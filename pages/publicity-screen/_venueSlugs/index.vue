@@ -164,8 +164,8 @@ export default {
     },
   },
   watch: {
-    productionsOnNow(newVal) {
-      if (newVal.length === 0) {
+    productionsOnNow(newVal, oldVal) {
+      if (newVal.length === 0 && oldVal.length !== 0) {
         this.fetchData()
       }
     },
