@@ -144,9 +144,13 @@ export default {
         const doorsOpenTime = DateTime.fromISO(
           production.performances.edges[0].node.doorsOpen
         )
+        const startTime = DateTime.fromISO(
+          production.performances.edges[0].node.start
+        )
         return (
           production.performances.edges.length &&
-          doorsOpenTime.minus({ minutes: 20 }) <= this.now
+          doorsOpenTime.minus({ minutes: 20 }) <= this.now &&
+          startTime > this.now
         )
       })
     },
@@ -157,6 +161,13 @@ export default {
               .edges[0].node
           )[this.onNowScreenIndex]
         : null
+    },
+  },
+  watch: {
+    productionsOnNow(newVal) {
+      if (newVal.length === 0) {
+        this.fetchData()
+      }
     },
   },
   mounted() {
