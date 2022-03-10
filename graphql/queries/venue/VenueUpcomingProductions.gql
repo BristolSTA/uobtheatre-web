@@ -41,14 +41,6 @@ query venueUpcomingProductions(
                   featuredImage {
                     url
                   }
-                  alternativePerformances: performances(disabled: false) {
-                    edges {
-                      node {
-                        id
-                        doorsOpen
-                      }
-                    }
-                  }
                 }
               }
             }
