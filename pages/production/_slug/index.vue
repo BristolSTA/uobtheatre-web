@@ -98,6 +98,24 @@ export default {
     const productionName = this.production ? this.production.name : 'Loading...'
     return {
       title: `${productionName}`,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.$options.filters.truncate(
+            this.production.description,
+            100
+          ),
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content: this.$options.filters.truncate(
+            this.production.description,
+            100
+          ),
+        },
+      ],
     }
   },
   computed: {
