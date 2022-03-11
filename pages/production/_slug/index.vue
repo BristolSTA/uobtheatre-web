@@ -96,9 +96,9 @@ export default {
   },
   head() {
     const productionName = this.production ? this.production.name : 'Loading...'
-    return {
-      title: `${productionName}`,
-      meta: [
+    const meta = []
+    if (this.production) {
+      meta.push(
         {
           hid: 'description',
           name: 'description',
@@ -114,8 +114,12 @@ export default {
             this.production.description,
             100
           ),
-        },
-      ],
+        }
+      )
+    }
+    return {
+      title: `${productionName}`,
+      meta,
     }
   },
   computed: {
