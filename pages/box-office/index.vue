@@ -85,20 +85,31 @@ export default {
     return {
       selectedPerformance: null,
       performances: [],
-      selectedDate: DateTime.now().toISODate(),
-      datePickerDate: DateTime.now().toISODate(),
-      dateOptions: [
-        { value: DateTime.now().toISODate(), text: 'Today' },
-        {
-          value: DateTime.now().plus({ days: 1 }).toISODate(),
-          text: 'Tomorrow',
-        },
-        { value: null, text: 'Custom' },
-      ],
+      selectedDate: null,
+      datePickerDate: null,
+      dateOptions: [],
+      optionsTimer: null,
     }
   },
   head: {
     title: 'Box Office Select',
+  },
+  computed: {
+    dateToSearch() {
+      return this.selectedDate !== '' ? this.selectedDate : this.datePickerDate
+    },
+  },
+  watch: {
+    selectedPerformance(performance) {
+      this.$router.push(`/box-office/${performance.id}`)
+    },
+  },
+  mounted() {
+    this.updateDateOptions()
+    this.optionsTimer = setInterval(this.updateDateOptions, 60 * 60 * 1000)
+  },
+  destroyed() {
+    clearInterval(this.optionsTimer)
   },
   apollo: {
     performances: {
@@ -121,14 +132,18 @@ export default {
           ),
     },
   },
-  computed: {
-    dateToSearch() {
-      return this.selectedDate !== '' ? this.selectedDate : this.datePickerDate
-    },
-  },
-  watch: {
-    selectedPerformance(performance) {
-      this.$router.push(`/box-office/${performance.id}`)
+  methods: {
+    updateDateOptions() {
+      this.selectedDate = DateTime.now().toISODate()
+      this.datePickerDate = DateTime.now().toISODate()
+      this.dateOptions = [
+        { value: DateTime.now().toISODate(), text: 'Today' },
+        {
+          value: DateTime.now().plus({ days: 1 }).toISODate(),
+          text: 'Tomorrow',
+        },
+        { value: null, text: 'Custom' },
+      ]
     },
   },
 }
