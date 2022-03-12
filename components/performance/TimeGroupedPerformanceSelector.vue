@@ -5,11 +5,19 @@
       :key="time"
       ref="performance-group"
     >
-      <h2 class="mb-2 text-white text-2xl font-semibold">
+      <h2 class="mt-4 mb-2 text-white text-2xl font-semibold">
         {{ time }}
       </h2>
       <div
-        class="grid gap-2 grid-cols-1 sm:grid-cols-2 lg:gap-4 xl:grid-cols-3"
+        class="
+          grid
+          gap-2
+          grid-cols-1
+          sm:grid-cols-2
+          lg:gap-4
+          xl:grid-cols-3
+          2xl:grid-cols-4
+        "
       >
         <performance-overview
           v-for="(performance, index) in performanceGroup"

@@ -17,36 +17,29 @@
       >
         No Upcoming Performances
       </div>
-      <div v-else class="flex flex-wrap justify-center">
-        <div
-          v-for="performance in production.performances.edges.map(
-            (edge) => edge.node
-          )"
-          :key="performance.id"
-          class="performance p-2 2xl:w-1/4 w-full md:w-1/2 lg:w-1/3"
-        >
-          <performance-overview
-            :performance="performance"
-            class="h-full"
-            @select="
+      <div v-else class="flex justify-center">
+        <time-grouped-performance-selector
+          :performances="production.performances.edges.map((edge) => edge.node)"
+          @select-performance="
+            (performance) =>
               $router.push(
                 `/production/${production.slug}/book/${performance.id}`
               )
-            "
-          />
-        </div>
+          "
+        />
       </div>
     </template>
   </div>
 </template>
 
 <script>
-import PerformanceOverview from '@/components/performance/PerformanceOverview.vue'
+import TimeGroupedPerformanceSelector from '@/components/performance/TimeGroupedPerformanceSelector.vue'
+
 import { DateTime } from 'luxon'
 export default {
   name: 'ProductionPerformances',
   components: {
-    PerformanceOverview,
+    TimeGroupedPerformanceSelector,
   },
   props: {
     production: {
@@ -59,5 +52,8 @@ export default {
       return DateTime.now() > DateTime.fromISO(this.production.end)
     },
   },
+  // methods: {
+  //   updateLink()
+  // },
 }
 </script>
