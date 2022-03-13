@@ -22,6 +22,7 @@
         <performance-overview
           v-for="(performance, index) in performanceGroup"
           :key="index"
+          class="performance"
           :performance="performance"
           @select="$emit('select-performance', performance)"
         >
