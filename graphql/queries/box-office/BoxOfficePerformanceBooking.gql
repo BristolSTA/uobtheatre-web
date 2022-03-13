@@ -5,6 +5,7 @@ query boxOfficePerformanceBooking($performanceId: ID!, $bookingId: ID!) {
     bookings(id: $bookingId) {
       edges {
         node {
+          totalSales
           ...DetailedBookingDetails
         }
       }

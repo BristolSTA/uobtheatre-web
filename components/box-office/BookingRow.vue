@@ -23,9 +23,7 @@
         :class="[booking.allCheckedIn ? 'text-sta-green' : 'text-sta-rouge']"
       />
     </td>
-    <td class="p-2 font-mono">
-      £{{ (booking.priceBreakdown.totalPrice / 100).toFixed(2) }}
-    </td>
+    <td class="p-2 font-mono">£{{ (booking.totalSales / 100).toFixed(2) }}</td>
   </tr>
 </template>
 
