@@ -52,8 +52,5 @@ export default {
       return DateTime.now() > DateTime.fromISO(this.production.end)
     },
   },
-  // methods: {
-  //   updateLink()
-  // },
 }
 </script>
