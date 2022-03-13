@@ -23,6 +23,8 @@ query adminPerformancesIndex(
             id
             name
           }
+          minSeatPrice
+          durationMins
           doorsOpen
           start
           disabled

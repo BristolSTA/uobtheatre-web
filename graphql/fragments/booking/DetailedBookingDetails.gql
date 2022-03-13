@@ -15,6 +15,7 @@ fragment DetailedBookingDetails on BookingNode {
     firstName
     lastName
   }
+  totalSales
   priceBreakdown {
     ...AllPriceBreakdown
   }

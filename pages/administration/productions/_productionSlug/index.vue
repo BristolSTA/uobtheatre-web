@@ -112,13 +112,21 @@
             >
               <table-row-item>
                 <performance-status-badge :performance="performance" />
+                <badge
+                  v-if="performance.minSeatPrice === 0"
+                  class="text-white bg-sta-rouge"
+                  >Free</badge
+                >
               </table-row-item>
               <table-row-item>{{
                 performance.start | dateFormat('EEEE dd MMMM y')
               }}</table-row-item>
-              <table-row-item>{{
-                performance.doorsOpen | dateFormat('HH:mm ZZZZ')
-              }}</table-row-item>
+              <table-row-item>
+                {{ performance.doorsOpen | dateFormat('HH:mm ZZZZ') }}
+                <span class="text-sm">
+                  ({{ humanDuration(performance.durationMins) }})
+                </span>
+              </table-row-item>
               <table-row-item>{{ performance.venue.name }}</table-row-item>
               <table-row-item>
                 <template v-if="performance.ticketsBreakdown.totalCapacity">
@@ -179,11 +187,13 @@ import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue'
 import ProductionStatusBadge from '@/components/production/ProductionStatusBadge.vue'
 import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue'
 import TableRow from '@/components/ui/Tables/TableRow.vue'
+import Badge from '@/components/ui/Badge.vue'
 import {
   getValidationErrors,
   performMutation,
   successToast,
   swal,
+  humanDuration,
 } from '@/utils'
 
 export default {
@@ -198,6 +208,7 @@ export default {
     ProductionStatusBadge,
     PaginatedTable,
     TableRow,
+    Badge,
   },
   async asyncData({ params, error, app }) {
     // Execute query
@@ -335,6 +346,7 @@ export default {
           performance.ticketsBreakdown.totalCapacity
       )
     },
+    humanDuration,
     async setStatus(status) {
       const swalArgs = {
         title: 'Are you sure?',
