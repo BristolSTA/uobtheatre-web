@@ -115,6 +115,10 @@ export default {
       background_color: '#2B303A',
       theme_color: '#4B8F8C',
     },
+    icon: {
+      source: 'static/icon.png',
+      filename: 'icon.png',
+    },
   },
 
   // Loading Bar
