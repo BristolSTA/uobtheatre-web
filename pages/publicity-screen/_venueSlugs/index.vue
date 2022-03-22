@@ -39,13 +39,7 @@
             }}</icon-list-item
           >
           <icon-list-item icon="map-marker">
-            {{
-              venues.find((venue) =>
-                venue.productions.edges.find(
-                  (edge) => edge.node.id == currentDisplayedProduction.id
-                )
-              ).name
-            }}</icon-list-item
+            {{ currentDisplayedProduction.venues.join(', ') }}</icon-list-item
           >
         </div>
       </div>
@@ -83,7 +77,8 @@
 </template>
 
 <script>
-import VenueUpcomingProductionsQuery from '@/graphql/queries/venue/VenueUpcomingProductions.gql'
+import VenueUpcomingProductionsQuery from '@/graphql/queries/publicity-screen/VenueUpcomingProductions.gql'
+import UpcomingProductionsQuery from '@/graphql/queries/publicity-screen/AllUpcomingProductions.gql'
 import { DateTime } from 'luxon'
 import QrcodeVue from 'qrcode.vue'
 import { displayStartEnd } from '@/utils'
@@ -138,7 +133,7 @@ export default {
     productionsOnNow() {
       if (!this.now) return []
       return this.productions.filter((production) => {
-        if (!production.performances.edges.length) {
+        if (!production?.performances?.edges?.length) {
           return false
         }
         const doorsOpenTime = DateTime.fromISO(
@@ -237,6 +232,7 @@ export default {
     },
     async fetchData() {
       const slugs = this.$route.params.venueSlugs.split(',')
+      const showAllUpcoming = this.$route.query.onlyTheseVenues ?? true
       const queries = []
 
       for (const slug of slugs) {
@@ -265,6 +261,23 @@ export default {
           )
         }
       })
+
+      if (showAllUpcoming) {
+        const { data } = await this.$apollo.query({
+          query: UpcomingProductionsQuery,
+          variables: { now: new Date() },
+        })
+        data.productions.edges.forEach((edge) => {
+          if (
+            this.productions
+              .map((production) => production.id)
+              .includes(edge.node.id)
+          ) {
+            return
+          }
+          this.productions.push(edge.node)
+        })
+      }
     },
   },
 }

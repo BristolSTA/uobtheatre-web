@@ -1,0 +1,46 @@
+fragment ProductionsDetailsFragment on ProductionNodeConnection {
+  edges {
+    node {
+      id
+      slug
+      name
+      start
+      end
+      isBookable
+      featuredImage {
+        id
+        url
+      }
+      coverImage {
+        id
+        url
+      }
+      uniqueVenues {
+        id
+        name
+      }
+      performances(runOn: $nowDate) {
+        edges {
+          node {
+            id
+            doorsOpen
+            start
+            soldOut
+            end
+            venue {
+              id
+              name
+            }
+            production {
+              id
+              name
+              featuredImage {
+                url
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
