@@ -57,7 +57,9 @@
           }}</span>
         </span>
         <qrcode-vue
-          :value="currentDisplayedProductionUrl"
+          :value="
+            currentDisplayedProductionUrl + '?utm_medium=publicity-screen'
+          "
           render-as="svg"
           level="L"
           background="transparent"
