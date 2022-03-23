@@ -264,6 +264,7 @@ export default {
     onSelectPerformance(performance) {
       this.booking.performance = performance
       this.booking.tickets = []
+      this.ticketMatrix = null
       this.navigateToStage()
     },
   },
