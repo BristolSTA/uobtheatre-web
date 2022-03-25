@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-wrap p-4 lg:flex-nowrap gap-4">
+  <div class="flex flex-wrap p-4 lg:flex-nowrap gap-4 justify-evenly">
     <div
-      class="flex-none order-1 w-full text-center sm:w-1/2 lg:mb-0 lg:w-auto"
+      class="flex-none order-1 w-full text-center sm:w-auto lg:mb-0 lg:w-auto"
     >
       <img
         ref="poster-image"
@@ -14,7 +14,7 @@
       class="flex-grow order-3 mt-4 lg:order-2 lg:mt-0 break-words min-w-0"
       :html="production.description"
     />
-    <div class="sm:w-1/2 lg:order-3 lg:w-1/3 w-full flex-none">
+    <div class="sm:w-auto lg:order-3 lg:w-1/3 w-full flex-none">
       <div class="flex flex-col order-2 p-5 bg-sta-gray-dark space-y-2">
         <h3 class="text-xl font-semibold uppercase">Show Information</h3>
         <p v-if="medium"><strong>Medium:</strong> {{ medium }}</p>
