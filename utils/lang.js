@@ -1,6 +1,6 @@
 export function oneLiner(text) {
   return text
-    .replaceAll(/(<([^>]+)>)/gi, '')
-    .replaceAll(/([!.?])([A-Z])/g, '$1 $2')
-    .replaceAll(/(\.|([^.]))\r?\n/g, '$2. ')
+    .replace(/(<([^>]+)>)/gi, '')
+    .replace(/([!.?])([A-Z])/g, '$1 $2')
+    .replace(/(\.|([^.]))\r?\n/g, '$2. ')
 }
