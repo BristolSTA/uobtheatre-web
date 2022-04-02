@@ -10,7 +10,7 @@ query allUpcomingProductions($now: DateTime!) {
       id
       url
     }
-    uniqueVenues {
+    venues {
       id
       name
     }
