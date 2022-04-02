@@ -100,19 +100,14 @@ export default {
     const productionName = this.production ? this.production.name : 'Loading...'
     const meta = []
     if (this.production) {
-      console.log(
-        this.$options.filters.truncate(
-          oneLiner(this.production.description),
-          100
-        )
+      const description = oneLiner(
+        this.$options.filters.truncate(this.production.description, 100)
       )
       meta.push(
         {
           hid: 'description',
           name: 'description',
-          content: oneLiner(
-            this.$options.filters.truncate(this.production.description, 100)
-          ),
+          content: description,
         },
         {
           hid: 'og:title',
@@ -122,9 +117,7 @@ export default {
         {
           hid: 'og:description',
           name: 'og:description',
-          content: oneLiner(
-            this.$options.filters.truncate(this.production.description, 100)
-          ),
+          content: description,
         },
         {
           hid: 'og:image',
