@@ -22,9 +22,14 @@ const prod3 = Production({
   ]),
 })
 
-jest.useFakeTimers('modern')
 describe('Publicity Screen', function () {
   let pageComponent
+  beforeEach(() => {
+    jest.useFakeTimers('modern')
+  })
+  afterEach(() => {
+    jest.useRealTimers()
+  })
 
   async function makeComponent(callstack, onlyTheseVenues = false) {
     pageComponent = await mountWithRouterMock(

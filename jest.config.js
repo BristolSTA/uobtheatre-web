@@ -11,6 +11,7 @@ module.exports = {
     '\\.(gql|graphql)$': 'jest-transform-graphql',
   },
   timers: 'modern',
+  testEnvironment: 'jsdom',
   collectCoverageFrom: [
     '<rootDir>/components/**/*.vue',
     '<rootDir>/pages/**/*.vue',

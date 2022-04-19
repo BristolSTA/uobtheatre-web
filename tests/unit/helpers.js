@@ -29,12 +29,12 @@ const waitForDOM = function (wrapper, selector) {
  */
 const waitFor = function (callback) {
   return new Promise((resolve) => {
-    const timer = setInterval(() => {
+    while (true) {
       if (callback()) {
-        clearInterval(timer)
         resolve()
+        break
       }
-    }, 2)
+    }
   })
 }
 
