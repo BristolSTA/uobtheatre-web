@@ -5,7 +5,7 @@ import NonFieldError from '@/components/ui/NonFieldError.vue'
 import ChangePassword from '@/components/user/ChangePassword.vue'
 import { swalToast } from '@/utils'
 
-import { generateMountOptions, waitFor } from '../../helpers'
+import { generateMountOptions } from '../../helpers'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse'
 import GenericError from '../../fixtures/support/GenericError'
@@ -30,7 +30,6 @@ describe('Change Password', () => {
     inputs.at(2).setValue('newPassword')
     await component.find('form').trigger('submit')
 
-    await waitFor(() => stub.mock.calls.length)
     await component.vm.$nextTick()
     expect(stub.mock.calls).length(1)
 
@@ -59,7 +58,7 @@ describe('Change Password', () => {
     inputs.at(2).setValue('newPasswordDoesntMatch')
     await component.find('form').trigger('submit')
 
-    await waitFor(() => component.vm.errors)
+    await component.vm.$nextTick()
 
     expect(component.text()).to.contain('Passwords dont match')
   })

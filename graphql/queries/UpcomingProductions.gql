@@ -12,8 +12,8 @@ query upcomingProductions($now: DateTime, $afterCursor: String) {
     }
     edges {
       node {
-        name
         id
+        name
         slug
         featuredImage {
           id
@@ -21,6 +21,7 @@ query upcomingProductions($now: DateTime, $afterCursor: String) {
         }
         start
         end
+        isBookable
       }
     }
   }

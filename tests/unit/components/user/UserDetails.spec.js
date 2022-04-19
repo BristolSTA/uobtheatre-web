@@ -7,7 +7,7 @@ import ChangePassword from '@/components/user/ChangePassword.vue'
 import UserDetails from '@/components/user/UserDetails.vue'
 import { swalToast } from '@/utils'
 
-import { generateMountOptions, waitFor } from '../../helpers'
+import { generateMountOptions } from '../../helpers'
 import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 
@@ -69,7 +69,8 @@ describe('User Details', () => {
 
       userDetailsComponent.find('form').trigger('submit')
 
-      await waitFor(() => swalToastStub.mock.calls.length)
+      await userDetailsComponent.vm.$nextTick()
+      await userDetailsComponent.vm.$nextTick()
 
       expect(swalToastStub.mock.calls).length(1)
     })

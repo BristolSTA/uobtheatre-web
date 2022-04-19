@@ -3,8 +3,6 @@ import { expect } from 'chai'
 
 import InfiniteScroll from '@/components/ui/InfiniteScroll'
 
-import { waitFor } from '../../helpers'
-
 jest.mock('@/utils.js', () => ({
   ...jest.requireActual('@/utils.js'),
   isInViewport: jest.fn(() => false),
@@ -174,7 +172,7 @@ describe('Infinite Scroll', () => {
 
     result.data.queryName.pageInfo.hasNextPage = false
     promiseResolve(result)
-    await waitFor(() => !infiniteScrollComponent.vm.loading)
+    await infiniteScrollComponent.vm.$nextTick()
     await infiniteScrollComponent.vm.$nextTick()
 
     expect(infiniteScrollComponent.emitted('loadingChange').length).to.eq(4)

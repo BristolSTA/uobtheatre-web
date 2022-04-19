@@ -3,42 +3,6 @@ import { expect } from 'chai'
 import config from '@/config'
 
 /**
- * Waits for a certain DOM element to be present
- *
- * @param {any} wrapper Vue Wrapper
- * @param {string} selector CSS Selector
- * @returns {Promise} Resolves once DOM element found
- */
-const waitForDOM = function (wrapper, selector) {
-  return new Promise((resolve) => {
-    const timer = setInterval(() => {
-      const userEl = wrapper.findAll(selector)
-      if (userEl.length > 0) {
-        clearInterval(timer)
-        resolve()
-      }
-    }, 100)
-  })
-}
-
-/**
- * Waits for a given callback function to return true
- *
- * @param {Function} callback Callable function to check every cycle. Passes when it returns truthy
- * @returns {Promise} Resolves once DOM element found
- */
-const waitFor = function (callback) {
-  return new Promise((resolve) => {
-    const timer = setInterval(() => {
-      if (callback()) {
-        clearInterval(timer)
-        resolve()
-      }
-    }, 2)
-  })
-}
-
-/**
  * Fixes test "contains" issues caused by content being spread over new lines.
  * Removes double-spacing / new lining in a given string.
  *
@@ -168,6 +132,4 @@ export {
   generateApolloMock,
   mountWithRouterMock,
   RouterLinkStub,
-  waitFor,
-  waitForDOM,
 }

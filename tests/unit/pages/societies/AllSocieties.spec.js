@@ -4,11 +4,7 @@ import SocietyTile from '@/components/society/SocietyTile'
 import InfiniteScroll from '@/components/ui/InfiniteScroll'
 import AllSocieties from '@/pages/societies'
 
-import {
-  generateMountOptions,
-  mountWithRouterMock,
-  waitFor,
-} from '../../helpers'
+import { generateMountOptions, mountWithRouterMock } from '../../helpers'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection'
 import Society from '../../fixtures/Society'
@@ -39,9 +35,7 @@ describe('All Societies', () => {
 
   describe('with no societies', () => {
     it('displays no societies notice', async () => {
-      await waitFor(
-        () => !allSocietiesComponent.findComponent(InfiniteScroll).vm.loading
-      )
+      await allSocietiesComponent.findComponent(InfiniteScroll).vm.$nextTick()
       expect(allSocietiesComponent.text()).to.contain(
         'There are currently no societies'
       )
@@ -68,9 +62,7 @@ describe('All Societies', () => {
     })
 
     it('fetches first 9 societies and displays loader', async () => {
-      await waitFor(
-        () => !allSocietiesComponent.findComponent(InfiniteScroll).vm.loading
-      )
+      await allSocietiesComponent.findComponent(InfiniteScroll).vm.$nextTick()
       expect(allSocietiesComponent.findAllComponents(SocietyTile)).length(9)
       expect(
         allSocietiesComponent.findComponent(SocietyTile).props('society').name
@@ -103,9 +95,7 @@ describe('All Societies', () => {
     })
 
     it('fetches all the societies and doesnt display loader', async () => {
-      await waitFor(
-        () => !allSocietiesComponent.findComponent(InfiniteScroll).vm.loading
-      )
+      await allSocietiesComponent.findComponent(InfiniteScroll).vm.$nextTick()
       expect(allSocietiesComponent.findAllComponents(SocietyTile)).length(3)
       expect(
         allSocietiesComponent.findComponent(SocietyTile).props('society').name

@@ -8,11 +8,7 @@ import Ticket from '@/components/booking/Ticket.vue'
 import ViewBooking from '@/pages/user/booking/_reference/index'
 
 import FakeBooking from '../../fixtures/Booking.js'
-import {
-  generateMountOptions,
-  mountWithRouterMock,
-  waitFor,
-} from '../../helpers'
+import { generateMountOptions, mountWithRouterMock } from '../../helpers'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse.js'
 import User from '../../fixtures/User.js'
 import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection.js'
@@ -54,7 +50,6 @@ describe('View Booking', () => {
         },
       }
     )
-    await waitFor(() => viewBookingComponent.vm.booking.performance)
     await viewBookingComponent.vm.$nextTick()
   })
 
