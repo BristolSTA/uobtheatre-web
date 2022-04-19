@@ -7,7 +7,6 @@ import {
   fixTextSpacing,
   generateMountOptions,
   mountWithRouterMock,
-  waitFor,
 } from '../../helpers'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 
@@ -32,7 +31,7 @@ describe('Venue page', function () {
   })
 
   it('fetches the venue', async () => {
-    await waitFor(() => venuePageComponent.vm.venue)
+    await venuePageComponent.vm.$nextTick()
     expect(venuePageComponent.vm.venue.name).to.eq('Anson Theatre')
     expect(venuePageComponent.text()).to.contain('Anson Theatre')
     expect(venuePageComponent.text()).to.contain('not the anson rooms')
@@ -55,7 +54,7 @@ describe('Venue page', function () {
   describe('venue address', () => {
     let addressContainer
     beforeEach(async () => {
-      await waitFor(() => venuePageComponent.vm.venue)
+      await venuePageComponent.vm.$nextTick()
       addressContainer = venuePageComponent.findComponent({ ref: 'address' })
     })
 
@@ -137,7 +136,6 @@ describe('Venue page', function () {
         },
       }
     )
-    await waitFor(() => errorFn.mock.calls.length)
     expect(errorFn.mock.calls.length).to.eq(1)
     expect(errorFn.mock.calls[0][0]).to.include({ statusCode: 404 })
   })

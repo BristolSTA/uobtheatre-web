@@ -10,7 +10,6 @@ import {
   generateMountOptions,
   mountWithRouterMock,
   RouterLinkStub,
-  waitFor,
 } from '../helpers'
 import GenericApolloResponse from '../fixtures/support/GenericApolloResponse'
 import GenericMutationResponse from '../fixtures/support/GenericMutationResponse'
@@ -150,7 +149,7 @@ describe('AuthBox', function () {
         password: 'fakeness',
       })
       await authBoxComponent.find('form').trigger('submit')
-      await waitFor(() => authBoxComponent.vm.login_errors)
+      await authBoxComponent.vm.$nextTick()
       expect(authBoxComponent.text()).to.contain(
         'Error: Unable to log in with provided credentials.'
       )
@@ -176,7 +175,7 @@ describe('AuthBox', function () {
         password: 'fakeness',
       })
       await authBoxComponent.find('form').trigger('submit')
-      await waitFor(() => authBoxComponent.vm.login_errors)
+      await authBoxComponent.vm.$nextTick()
       expect(authBoxComponent.findComponent({ ref: 'resendEmail' }).exists()).to
         .be.true
       expect(authBoxComponent.vm.$apollo.mock.handledMutations()).to.eq(1)

@@ -4,7 +4,7 @@ import { expect } from 'chai'
 import ChangeEmail from '@/components/user/ChangeEmail.vue'
 import { swal } from '@/utils'
 
-import { generateMountOptions, waitFor } from '../../helpers'
+import { generateMountOptions } from '../../helpers'
 import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 
@@ -33,7 +33,6 @@ describe('Change Email', () => {
     inputs.at(1).setValue('mypassword')
     await component.find('form').trigger('submit')
 
-    await waitFor(() => stub.mock.calls.length)
     await component.vm.$nextTick()
     expect(stub.mock.calls).length(1)
   })
