@@ -10,6 +10,7 @@ module.exports = {
     '.*\\.(vue)$': 'vue-jest',
     '\\.(gql|graphql)$': 'jest-transform-graphql',
   },
+  timers: 'modern',
   collectCoverageFrom: [
     '<rootDir>/components/**/*.vue',
     '<rootDir>/pages/**/*.vue',

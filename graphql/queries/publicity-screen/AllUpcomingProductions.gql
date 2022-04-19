@@ -1,18 +1,22 @@
 query allUpcomingProductions($now: DateTime!) {
   productions(orderBy: "start", end_Gte: $now, status: "PUBLISHED") {
-    id
-    slug
-    name
-    start
-    end
-    isBookable
-    featuredImage {
-      id
-      url
-    }
-    venues {
-      id
-      name
+    edges {
+      node {
+        id
+        slug
+        name
+        start
+        end
+        isBookable
+        featuredImage {
+          id
+          url
+        }
+        venues {
+          id
+          name
+        }
+      }
     }
   }
 }

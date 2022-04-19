@@ -1,9 +1,10 @@
 <template>
   <div class="h-full">
-    <!-- If no productions at this venue upcoming / bookable -->
+    <!-- If productions are active right now -->
     <template v-if="productionsOnNow.length">
       <component
         :is="currentScreen"
+        ref="activeBoxOfficeComponent"
         :production="productionsOnNow[onNowProductionIndex]"
         :performance="
           productionsOnNow[onNowProductionIndex].performances.edges[0].node
@@ -11,7 +12,7 @@
       />
     </template>
 
-    <!-- with upcoming productions -->
+    <!-- If upcoming productions -->
     <div
       v-else-if="marketableProductions.length"
       class="flex flex-col p-4 gap-2 h-full overflow-hidden"
@@ -39,7 +40,11 @@
             }}</icon-list-item
           >
           <icon-list-item icon="map-marker">
-            {{ currentDisplayedProduction.venues.join(', ') }}</icon-list-item
+            {{
+              currentDisplayedProduction.venues
+                .map((venue) => venue.name)
+                .join(', ')
+            }}</icon-list-item
           >
         </div>
       </div>
@@ -61,6 +66,7 @@
       </div>
     </div>
 
+    <!-- If no productions to shown -->
     <div v-else class="flex items-center h-screen justify-center">
       <div class="px-4 text-white text-center space-y-10">
         <div class="text-rxl font-bold">
@@ -99,7 +105,6 @@ export default {
   data() {
     return {
       now: null,
-      nowTimer: null,
 
       productions: [],
       venues: [],
@@ -168,11 +173,9 @@ export default {
   mounted() {
     this.fetchData()
 
-    this.nowTimer = setInterval(() => {
-      this.now = DateTime.now()
-    }, 5000)
     this.dataFetchTimer = setInterval(this.fetchData, 7200000)
     this.slideTimer = setInterval(() => {
+      this.now = DateTime.now()
       if (this.paused) return
 
       // General promotion
@@ -210,7 +213,6 @@ export default {
     }, 1000 * 10)
   },
   destroyed() {
-    clearInterval(this.nowTimer)
     clearInterval(this.dataFetchTimer)
     clearInterval(this.slideTimer)
   },
@@ -232,7 +234,10 @@ export default {
     },
     async fetchData() {
       const slugs = this.$route.params.venueSlugs.split(',')
-      const showAllUpcoming = this.$route.query.onlyTheseVenues ?? true
+      const showAllUpcoming =
+        this.$route.query.onlyTheseVenues === undefined
+          ? true
+          : !this.$route.query.onlyTheseVenues
       const queries = []
 
       for (const slug of slugs) {
