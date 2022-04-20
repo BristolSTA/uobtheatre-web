@@ -21,6 +21,17 @@ const prod3 = Production({
     }),
   ]),
 })
+const prod4 = Production({
+  id: 4,
+  name: 'My Production 4',
+  isBookable: false,
+  performances: GenericNodeConnection([
+    Performance({
+      doorsOpen: '2020-01-01T10:30:00',
+      start: '2020-01-01T10:40:00',
+    }),
+  ]),
+})
 
 describe('Publicity Screen', function () {
   let pageComponent
@@ -88,7 +99,7 @@ describe('Publicity Screen', function () {
             'venue',
             Venue({
               name: 'My Venue 2',
-              productions: GenericNodeConnection([prod1]),
+              productions: GenericNodeConnection([prod1, prod4]),
             })
           ),
           GenericApolloResponse(
@@ -100,7 +111,7 @@ describe('Publicity Screen', function () {
       )
     }
 
-    it('can show all upcoming productions', async () => {
+    it('can show all bookable upcoming productions', async () => {
       await genComponent()
       // First slide is the first production
       expect(pageComponent.vm.marketableProductions.length).to.eq(2)
@@ -130,73 +141,82 @@ describe('Publicity Screen', function () {
   })
 
   describe('with an active performance', () => {
-    const genComponent = async () => {
-      await makeComponent(
-        [
-          GenericApolloResponse(
-            'venue',
-            Venue({
-              id: 1,
-              name: 'My Venue 1',
-              productions: GenericNodeConnection([prod1]),
-            })
-          ),
-          GenericApolloResponse(
-            'venue',
-            Venue({
-              id: 2,
-              name: 'My Venue 2',
-              productions: GenericNodeConnection([prod3]),
-            })
-          ),
+    it.each([
+      [prod3, 'My Production 3', 2],
+      [prod4, 'My Production 4', 1],
+    ])(
+      `shows box office screens (%#)`,
+      async (
+        activePerformanceProduction,
+        productionName,
+        numExpectedMarketable
+      ) => {
+        await makeComponent(
+          [
+            GenericApolloResponse(
+              'venue',
+              Venue({
+                id: 1,
+                name: 'My Venue 1',
+                productions: GenericNodeConnection([prod1]),
+              })
+            ),
+            GenericApolloResponse(
+              'venue',
+              Venue({
+                id: 2,
+                name: 'My Venue 2',
+                productions: GenericNodeConnection([
+                  activePerformanceProduction,
+                ]),
+              })
+            ),
+          ],
+          true
+        )
+        jest.setSystemTime(new Date('2020-01-01T10:00:00'))
 
-          GenericApolloResponse('productions', GenericNodeConnection([prod2])),
-        ],
-        true
-      )
-    }
-    it('shows box office screens', async () => {
-      await genComponent()
-      jest.setSystemTime(new Date('2020-01-01T10:00:00'))
+        // Currently 10:00:00, doors open at 10:30:00 (over 20 mins away, so we expect to be in general upcoming productions state)
+        expect(pageComponent.vm.productionsOnNow.length).to.be.eq(0)
+        expect(pageComponent.vm.marketableProductions.length).to.be.eq(
+          numExpectedMarketable
+        )
+        expect(pageComponent.text()).to.contain('Book now at')
+        expect(
+          pageComponent
+            .findComponent({ ref: 'activeBoxOfficeComponent' })
+            .exists()
+        ).to.be.false
 
-      // Currently 10:00:00, doors open at 10:30:00 (over 20 mins away, so we expect to be in general upcoming productions state)
-      expect(pageComponent.vm.productionsOnNow.length).to.be.eq(0)
-      expect(pageComponent.vm.marketableProductions.length).to.be.eq(2)
-      expect(pageComponent.text()).to.contain('Book now at')
-      expect(
-        pageComponent
-          .findComponent({ ref: 'activeBoxOfficeComponent' })
-          .exists()
-      ).to.be.false
+        jest.setSystemTime(new Date('2020-01-01T10:11:00'))
+        jest.advanceTimersByTime(10000)
+        await pageComponent.vm.$nextTick()
+        expect(pageComponent.vm.productionsOnNow.length).to.be.eq(1)
+        expect(
+          pageComponent
+            .findComponent({ ref: 'activeBoxOfficeComponent' })
+            .exists()
+        ).to.be.true
+        expect(pageComponent.text()).to.contain(
+          `Welcome to this performance of ${productionName}`
+        )
 
-      jest.setSystemTime(new Date('2020-01-01T10:11:00'))
-      jest.advanceTimersByTime(10000)
-      await pageComponent.vm.$nextTick()
-      expect(pageComponent.vm.productionsOnNow.length).to.be.eq(1)
-      expect(
-        pageComponent
-          .findComponent({ ref: 'activeBoxOfficeComponent' })
-          .exists()
-      ).to.be.true
-      expect(pageComponent.text()).to.contain(
-        'Welcome to this performance of My Production 3'
-      )
+        jest.setSystemTime(new Date('2020-01-01T10:31:00'))
+        jest.advanceTimersByTime(10000)
+        await pageComponent.vm.$nextTick()
+        expect(pageComponent.findComponent(HaveTicketsReadyScreen).exists()).to
+          .be.true
 
-      jest.setSystemTime(new Date('2020-01-01T10:31:00'))
-      jest.advanceTimersByTime(10000)
-      await pageComponent.vm.$nextTick()
-      expect(pageComponent.findComponent(HaveTicketsReadyScreen).exists()).to.be
-        .true
-
-      jest.setSystemTime(new Date('2020-01-01T11:00:00'))
-      jest.advanceTimersByTime(10000)
-      await pageComponent.vm.$nextTick()
-      expect(pageComponent.text()).to.contain('Book now at')
-      expect(
-        pageComponent
-          .findComponent({ ref: 'activeBoxOfficeComponent' })
-          .exists()
-      ).to.be.false
-    })
+        jest.setSystemTime(new Date('2020-01-01T11:00:00'))
+        jest.advanceTimersByTime(10000)
+        await pageComponent.vm.$nextTick()
+        expect(pageComponent.text()).to.contain('Book now at')
+        expect(
+          pageComponent
+            .findComponent({ ref: 'activeBoxOfficeComponent' })
+            .exists()
+        ).to.be.false
+      }
+    )
   })
 })

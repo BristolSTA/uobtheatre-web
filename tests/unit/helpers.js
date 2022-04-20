@@ -88,28 +88,46 @@ const generateMountOptions = function (types = [], options = {}) {
 }
 
 const generateApolloMock = function (options) {
-  let queryCount = 0
-  let mutationCount = 0
   const queryCallstack = options ? options.queryCallstack : []
   const mutationCallstack = options ? options.mutationCallstack : []
+  const queryCalls = []
+  const mutationCalls = []
 
   return {
     mock: {
+      queryCalls,
       queryCallstack,
+      mutationCalls,
       mutationCallstack,
-      handledQueries: () => queryCount,
-      handledMutations: () => mutationCount,
+      handledQueries: () => queryCalls.length,
+      handledMutations: () => mutationCalls.length,
     },
-    query: jest.fn(() => {
-      queryCount++
-      if (queryCallstack[queryCount - 1])
-        return Promise.resolve(queryCallstack[queryCount - 1])
+    query: jest.fn((options) => {
+      queryCalls.push(options)
+      if (queryCallstack[queryCalls.length - 1])
+        return Promise.resolve(queryCallstack[queryCalls.length - 1])
+
+      // eslint-disable-next-line no-console
+      console.warn(
+        `Unhandled apollo query. ${
+          queryCalls.length - 1
+        } previous calls, but only ${queryCallstack.length} in stack`,
+        options.query
+      )
       return Promise.resolve()
     }),
     mutate: jest.fn(() => {
-      mutationCount++
-      if (mutationCallstack[mutationCount - 1])
-        return Promise.resolve(mutationCallstack[mutationCount - 1])
+      mutationCalls.push(options)
+      if (mutationCallstack[mutationCalls.length - 1])
+        return Promise.resolve(mutationCallstack[mutationCalls.length - 1])
+
+      // eslint-disable-next-line no-console
+      console.warn(
+        `Unhandled apollo mutation. ${
+          mutationCalls.length - 1
+        } previous calls, but only ${mutationCallstack.length} in stack`,
+        options.mutation
+      )
       return Promise.resolve()
     }),
   }
