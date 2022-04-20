@@ -10,6 +10,16 @@
         "kind": "build",
         "isDefault": true
       }
+    },
+    {
+      "label": "Run Unit Tests",
+      "type": "shell",
+      "command": "yarn test:unit",
+      "problemMatcher": [],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
     }
   ]
 }
