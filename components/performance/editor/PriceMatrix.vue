@@ -1,30 +1,34 @@
 <template>
   <div>
-    <table class="w-full">
-      <tr>
-        <th
-          class="font-normal relative text-xs xl:text-sm"
-          style="max-width: 200px"
+    <safe-table>
+      <table-row :striped="false">
+        <table-head-item class="font-normal relative text-xs xl:text-sm">
+          <div style="width: 250px">
+            <div
+              class="
+                absolute
+                cell-right-to-left-diagonal
+                p-2
+                pt-4
+                top-0
+                min-h-full
+                w-full
+              "
+            />
+            <div class="absolute top-3 right-2 w-20 xl:w-40 text-right">
+              Percentage Discount
+            </div>
+            <div class="absolute left-2 bottom-2 w-20 xl:w-40 text-left">
+              Seat Group Price
+            </div>
+          </div>
+        </table-head-item>
+        <table-head-item
+          v-for="discount in singleDiscounts"
+          :key="discount.id"
+          :text-left="false"
+          class="pb-2"
         >
-          <div
-            class="
-              absolute
-              cell-right-to-left-diagonal
-              p-2
-              pt-4
-              top-0
-              min-h-full
-              w-full
-            "
-          />
-          <div class="absolute top-3 right-2 w-20 xl:w-40 text-right">
-            Percentage Discount
-          </div>
-          <div class="absolute left-2 bottom-2 w-20 xl:w-40 text-left">
-            Seat Group Price
-          </div>
-        </th>
-        <th v-for="discount in singleDiscounts" :key="discount.id" class="pb-2">
           <form-label label-class="">
             {{ discount.requirements[0].concessionType.name }}
             <badge
@@ -50,14 +54,18 @@
               </div>
             </template>
           </form-label>
-        </th>
-      </tr>
-      <tr
+        </table-head-item>
+      </table-row>
+      <table-row
         v-for="performanceSeatGroup in performanceSeatGroups"
         :key="performanceSeatGroup.id"
         class="odd:bg-sta-gray even:bg-sta-gray-dark"
       >
-        <th class="p-2 break-words" style="max-width: 200px">
+        <table-head-item
+          :text-left="false"
+          class="p-2 break-words"
+          style="width: 250px"
+        >
           <form-label label-class="text-sta-orange">
             {{ performanceSeatGroup.seatGroup.name }}
             <template #control>
@@ -81,14 +89,14 @@
               </div>
             </template>
           </form-label>
-        </th>
-        <td v-for="discount in singleDiscounts" :key="discount.id">
+        </table-head-item>
+        <table-row-item v-for="discount in singleDiscounts" :key="discount.id">
           <div v-if="discount.percentage != null" class="text-center">
             £{{ displayPrice(performanceSeatGroup, discount) }}
           </div>
-        </td>
-      </tr>
-    </table>
+        </table-row-item>
+      </table-row>
+    </safe-table>
     <div v-if="editing" class="m-2 p-2 bg-sta-gray-dark">
       Note:
       <badge class="bg-blue-400"><font-awesome-icon icon="sync" /></badge>
@@ -99,13 +107,27 @@
 </template>
 
 <script>
+/* eslint-disable vue/no-unused-components */
 import FormLabel from '@/components/ui/FormLabel.vue'
 import Badge from '@/components/ui/Badge.vue'
 import CurrencyInput from '@/components/ui/Inputs/CurrencyInput.vue'
 import PercentageInput from '@/components/ui/Inputs/PercentageInput.vue'
 import { singleDiscounts as singleDiscountsFn } from '@/utils/performance'
+import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue'
+import SafeTable from '@/components/ui/Tables/SafeTable.vue'
+import TableRow from '@/components/ui/Tables/TableRow.vue'
+import TableRowItem from '@/components/ui/Tables/TableRowItem.vue'
 export default {
-  components: { FormLabel, Badge, CurrencyInput, PercentageInput },
+  components: {
+    FormLabel,
+    Badge,
+    CurrencyInput,
+    PercentageInput,
+    TableHeadItem,
+    SafeTable,
+    TableRow,
+    TableRowItem,
+  },
   props: {
     editing: {
       default: false,
@@ -123,6 +145,14 @@ export default {
   computed: {
     singleDiscounts() {
       return singleDiscountsFn(this.discounts)
+    },
+  },
+  watch: {
+    performanceSeatGroups: {
+      deep: true,
+      handler() {
+        this.$forceUpdate()
+      },
     },
   },
   methods: {

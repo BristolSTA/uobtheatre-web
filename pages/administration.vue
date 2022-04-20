@@ -6,7 +6,7 @@
       @close="showSidebar = false"
     />
     <div
-      class="flex-grow max-w-full"
+      class="flex-grow max-w-full min-w-0"
       :class="{ 'hidden md:visible': showSidebar }"
     >
       <breadcrumbs :use-auto="true" :wide="true" />
