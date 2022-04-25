@@ -285,8 +285,17 @@ export default {
     },
     actions() {
       const list = []
-
-      if (this.hasEditPermissions) {
+      if (this.canEdit) {
+        list.push({
+          icon: 'list-ul',
+          action: () =>
+            this.$router.push(
+              `/administration/productions/${this.production.slug}/permissions`
+            ),
+          text: 'Edit Permissions',
+        })
+      }
+      if (this.canEditRightNow) {
         // If the current user has permissions to edit/change
         list.push({
           icon: 'list-ul',
