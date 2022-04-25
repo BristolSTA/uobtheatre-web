@@ -74,11 +74,11 @@
             {{ displayStartEnd(production.start, production.end, 'd MMMM') }}
           </p>
           <p>
-            {{ production.description | truncate(230) }}
+            {{ oneLiner(production.description) | truncate(230) }}
           </p>
           <NuxtLink
             :to="`/production/${production.slug}`"
-            class="mt-6 btn btn-rouge"
+            class="mt-6 btn btn-green"
           >
             More Information & Book
           </NuxtLink>
@@ -113,6 +113,7 @@ import lo from 'lodash'
 
 import Carousel from '@/components/ui/Carousel.vue'
 import { displayStartEnd } from '@/utils'
+import { oneLiner } from '@/utils/lang'
 
 export default {
   components: { Carousel },
@@ -128,17 +129,6 @@ export default {
       title: `${appName} | The Home Of Bristol Student Performing Arts`,
       titleTemplate: null,
     }
-  },
-  apollo: {
-    upcomingProductions: {
-      query: require('@/graphql/queries/HomeUpcomingProductions.gql'),
-      update: (data) => data.productions.edges.map((edge) => edge.node),
-      variables() {
-        return {
-          now: new Date(),
-        }
-      },
-    },
   },
   computed: {
     bannerProductions() {
@@ -162,6 +152,20 @@ export default {
     },
     upcomingProductionsToShow() {
       return lo.take(this.upcomingProductions, 4)
+    },
+  },
+  methods: {
+    oneLiner,
+  },
+  apollo: {
+    upcomingProductions: {
+      query: require('@/graphql/queries/HomeUpcomingProductions.gql'),
+      update: (data) => data.productions.edges.map((edge) => edge.node),
+      variables() {
+        return {
+          now: new Date(),
+        }
+      },
     },
   },
 }

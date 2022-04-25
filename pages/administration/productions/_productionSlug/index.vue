@@ -8,7 +8,7 @@
         >View Public Page</sta-button
       >
       <sta-button
-        v-if="hasEditAbilityNow"
+        v-if="canEditRightNow"
         colour="orange"
         icon="edit"
         :to="`${production.slug}/edit`"
@@ -52,7 +52,9 @@
               <table-head-item>Net Society Revenue</table-head-item>
               <table-row-item
                 >£{{
-                  (production.salesBreakdown.netIncome / 100).toFixed(2)
+                  (
+                    production.salesBreakdown.societyTransferValue / 100
+                  ).toFixed(2)
                 }}</table-row-item
               >
             </tr>
@@ -112,13 +114,21 @@
             >
               <table-row-item>
                 <performance-status-badge :performance="performance" />
+                <badge
+                  v-if="performance.minSeatPrice === 0"
+                  class="text-white bg-sta-rouge"
+                  >Free</badge
+                >
               </table-row-item>
               <table-row-item>{{
                 performance.start | dateFormat('EEEE dd MMMM y')
               }}</table-row-item>
-              <table-row-item>{{
-                performance.doorsOpen | dateFormat('HH:mm ZZZZ')
-              }}</table-row-item>
+              <table-row-item>
+                {{ performance.doorsOpen | dateFormat('HH:mm ZZZZ') }}
+                <span class="text-sm">
+                  ({{ humanDuration(performance.durationMins) }})
+                </span>
+              </table-row-item>
               <table-row-item>{{ performance.venue.name }}</table-row-item>
               <table-row-item>
                 <template v-if="performance.ticketsBreakdown.totalCapacity">
@@ -179,11 +189,13 @@ import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue'
 import ProductionStatusBadge from '@/components/production/ProductionStatusBadge.vue'
 import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue'
 import TableRow from '@/components/ui/Tables/TableRow.vue'
+import Badge from '@/components/ui/Badge.vue'
 import {
   getValidationErrors,
   performMutation,
   successToast,
   swal,
+  humanDuration,
 } from '@/utils'
 
 export default {
@@ -198,6 +210,7 @@ export default {
     ProductionStatusBadge,
     PaginatedTable,
     TableRow,
+    Badge,
   },
   async asyncData({ params, error, app }) {
     // Execute query
@@ -250,8 +263,8 @@ export default {
     statusDescription() {
       if (this.production.status.description === 'Draft')
         return 'This production is private, and not bookable'
-      if (this.production.status.description === 'Submitted')
-        return 'This production has been submitted for review'
+      if (this.production.status.description === 'Pending')
+        return 'This production has been submitted for review. You will recieve an email once this has been completed'
       if (this.production.status.description === 'Published')
         return 'This production is being displayed publically'
       if (this.production.status.description === 'Closed')
@@ -267,8 +280,11 @@ export default {
     hasEditPermissions() {
       return (
         this.production.permissions.includes('change_production') ||
-        this.hasEditAbilityNow
+        this.canEditRightNow
       )
+    },
+    canEditRightNow() {
+      return this.production.permissions.includes('edit_production')
     },
     actions() {
       const list = []
@@ -338,6 +354,7 @@ export default {
           performance.ticketsBreakdown.totalCapacity
       )
     },
+    humanDuration,
     async setStatus(status) {
       const swalArgs = {
         title: 'Are you sure?',

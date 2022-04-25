@@ -4,15 +4,25 @@
       v-for="(performanceGroup, time) in groupedPerformances"
       :key="time"
       ref="performance-group"
-      class="mb-4"
     >
-      <h2 class="mb-2 text-white text-2xl font-semibold">
+      <h2 class="mt-4 mb-2 text-white text-2xl font-semibold">
         {{ time }}
       </h2>
-      <div class="grid gap-2 grid-cols-2 lg:gap-4 xl:grid-cols-3">
+      <div
+        class="
+          grid
+          gap-2
+          grid-cols-1
+          sm:grid-cols-2
+          lg:gap-4
+          xl:grid-cols-3
+          2xl:grid-cols-4
+        "
+      >
         <performance-overview
           v-for="(performance, index) in performanceGroup"
           :key="index"
+          class="performance"
           :performance="performance"
           @select="$emit('select-performance', performance)"
         >
@@ -26,6 +36,7 @@
 <script>
 import { groupBy } from 'lodash'
 import { DateTime } from 'luxon'
+import { humanDayTime } from '@/utils'
 import PerformanceOverview from '@/components/performance/PerformanceOverview.vue'
 export default {
   components: { PerformanceOverview },
@@ -38,10 +49,7 @@ export default {
   computed: {
     groupedPerformances() {
       return groupBy(this.performances, (performance) => {
-        const time = DateTime.fromISO(performance.start)
-        if (time.hour < 12) return 'Morning'
-        if (time.hour < 17) return 'Afternoon'
-        return 'Evening'
+        return humanDayTime(DateTime.fromISO(performance.start))
       })
     },
   },

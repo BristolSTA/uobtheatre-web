@@ -15,6 +15,7 @@
       focus:outline-none
     "
     :to="route"
+    @click.native="$emit('click')"
   >
     <div
       v-if="icon"

@@ -2,11 +2,7 @@ import { RouterLinkStub } from '@vue/test-utils'
 import { expect } from 'chai'
 
 import Society from '@/pages/society/_slug/index'
-import {
-  generateMountOptions,
-  mountWithRouterMock,
-  waitFor,
-} from '../../helpers'
+import { generateMountOptions, mountWithRouterMock } from '../../helpers'
 import FakeSociety from '../../fixtures/Society'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection'
@@ -52,7 +48,7 @@ describe('Society page', function () {
   })
 
   it('fetches the society', async () => {
-    await waitFor(() => societyPageComponent.vm.society)
+    await societyPageComponent.vm.$nextTick()
     expect(societyPageComponent.vm.society.name).to.eq('STA')
 
     expect(societyPageComponent.text()).to.contain('STA')
@@ -69,7 +65,7 @@ describe('Society page', function () {
   })
 
   it('shows society splashscreen', async () => {
-    await waitFor(() => societyPageComponent.vm.society)
+    await societyPageComponent.vm.$nextTick()
     const splashscreenContainer = societyPageComponent.findComponent({
       ref: 'banner',
     })
@@ -123,7 +119,6 @@ describe('Society page', function () {
         },
       }
     )
-    await waitFor(() => errorFn.mock.calls.length)
     expect(errorFn.mock.calls.length).to.eq(1)
     expect(errorFn.mock.calls[0][0]).to.include({ statusCode: 404 })
   })

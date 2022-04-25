@@ -3,6 +3,7 @@ query adminProductions(
   $offset: Int
   $status: String
   $startLte: DateTime
+  $search: String
 ) {
   productions(
     first: 10
@@ -12,6 +13,7 @@ query adminProductions(
     start_Lte: $startLte
     end_Gte: $endGte
     status: $status
+    search: $search
   ) {
     pageInfo {
       hasNextPage

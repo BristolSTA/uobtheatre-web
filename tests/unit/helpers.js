@@ -3,42 +3,6 @@ import { expect } from 'chai'
 import config from '@/config'
 
 /**
- * Waits for a certain DOM element to be present
- *
- * @param {any} wrapper Vue Wrapper
- * @param {string} selector CSS Selector
- * @returns {Promise} Resolves once DOM element found
- */
-const waitForDOM = function (wrapper, selector) {
-  return new Promise((resolve) => {
-    const timer = setInterval(() => {
-      const userEl = wrapper.findAll(selector)
-      if (userEl.length > 0) {
-        clearInterval(timer)
-        resolve()
-      }
-    }, 100)
-  })
-}
-
-/**
- * Waits for a given callback function to return true
- *
- * @param {Function} callback Callable function to check every cycle. Passes when it returns truthy
- * @returns {Promise} Resolves once DOM element found
- */
-const waitFor = function (callback) {
-  return new Promise((resolve) => {
-    const timer = setInterval(() => {
-      if (callback()) {
-        clearInterval(timer)
-        resolve()
-      }
-    }, 2)
-  })
-}
-
-/**
  * Fixes test "contains" issues caused by content being spread over new lines.
  * Removes double-spacing / new lining in a given string.
  *
@@ -124,28 +88,46 @@ const generateMountOptions = function (types = [], options = {}) {
 }
 
 const generateApolloMock = function (options) {
-  let queryCount = 0
-  let mutationCount = 0
   const queryCallstack = options ? options.queryCallstack : []
   const mutationCallstack = options ? options.mutationCallstack : []
+  const queryCalls = []
+  const mutationCalls = []
 
   return {
     mock: {
+      queryCalls,
       queryCallstack,
+      mutationCalls,
       mutationCallstack,
-      handledQueries: () => queryCount,
-      handledMutations: () => mutationCount,
+      handledQueries: () => queryCalls.length,
+      handledMutations: () => mutationCalls.length,
     },
-    query: jest.fn(() => {
-      queryCount++
-      if (queryCallstack[queryCount - 1])
-        return Promise.resolve(queryCallstack[queryCount - 1])
+    query: jest.fn((options) => {
+      queryCalls.push(options)
+      if (queryCallstack[queryCalls.length - 1])
+        return Promise.resolve(queryCallstack[queryCalls.length - 1])
+
+      // eslint-disable-next-line no-console
+      console.warn(
+        `Unhandled apollo query. ${
+          queryCalls.length - 1
+        } previous calls, but only ${queryCallstack.length} in stack`,
+        options.query
+      )
       return Promise.resolve()
     }),
     mutate: jest.fn(() => {
-      mutationCount++
-      if (mutationCallstack[mutationCount - 1])
-        return Promise.resolve(mutationCallstack[mutationCount - 1])
+      mutationCalls.push(options)
+      if (mutationCallstack[mutationCalls.length - 1])
+        return Promise.resolve(mutationCallstack[mutationCalls.length - 1])
+
+      // eslint-disable-next-line no-console
+      console.warn(
+        `Unhandled apollo mutation. ${
+          mutationCalls.length - 1
+        } previous calls, but only ${mutationCallstack.length} in stack`,
+        options.mutation
+      )
       return Promise.resolve()
     }),
   }
@@ -168,6 +150,4 @@ export {
   generateApolloMock,
   mountWithRouterMock,
   RouterLinkStub,
-  waitFor,
-  waitForDOM,
 }

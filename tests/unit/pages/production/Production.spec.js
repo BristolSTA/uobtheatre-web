@@ -6,11 +6,7 @@ import ProductionOverview from '@/components/production/ProductionOverview.vue'
 import ProductionHeader from '@/components/production/ProductionHeader.vue'
 import ProductionPerformances from '@/components/production/ProductionPerformances.vue'
 
-import {
-  generateMountOptions,
-  mountWithRouterMock,
-  waitFor,
-} from '../../helpers'
+import { generateMountOptions, mountWithRouterMock } from '../../helpers'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 import Production from '../../fixtures/Production'
 
@@ -77,7 +73,7 @@ describe('Production', function () {
   })
 
   it('fetches the production', async () => {
-    await waitFor(() => productionPageComponent.vm.production)
+    await productionPageComponent.vm.$nextTick()
     expect(productionPageComponent.vm.production.name).to.eq('Legally Ginger')
   })
 })

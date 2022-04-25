@@ -108,7 +108,16 @@ export default {
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
     manifest: {
+      name: 'UOB Theatre',
       lang: 'en',
+      description:
+        'The offical app for UOBTheatre.com, the hub for Bristol student performing arts and events',
+      background_color: '#2B303A',
+      theme_color: '#4B8F8C',
+    },
+    icon: {
+      source: 'static/icon.png',
+      filename: 'icon.png',
     },
   },
 

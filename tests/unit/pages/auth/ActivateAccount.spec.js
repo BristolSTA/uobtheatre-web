@@ -5,7 +5,7 @@ import { authService } from '@/services'
 import { swalToast } from '@/utils'
 import ActivateAccount from '@/pages/login/activate/_token/index'
 
-import { generateMountOptions, waitFor } from '../../helpers'
+import { generateMountOptions } from '../../helpers'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse'
 import GenericError from '../../fixtures/support/GenericError'
@@ -46,7 +46,7 @@ describe('Activate Account', function () {
     expect(component.text()).to.contain('Activating your account')
     expect(component.text()).not.to.contain('error')
 
-    return waitFor(() => routerPushFake.mock.calls.length > 0).then(() => {
+    return component.vm.$nextTick().then(() => {
       expect(activateAccountStub.mock.calls).length(1)
       expect(activateAccountStub.mock.calls[0][1]).includes({
         token: '1234abcd',
@@ -59,7 +59,7 @@ describe('Activate Account', function () {
     })
   })
 
-  it('shows error with invalid token', () => {
+  it('shows error with invalid token', async () => {
     component = mount(
       ActivateAccount,
       generateMountOptions(['apollo'], {
@@ -81,8 +81,8 @@ describe('Activate Account', function () {
       })
     )
 
-    return waitFor(() => component.vm.error).then(() => {
-      expect(component.text()).to.contain('There was an error')
-    })
+    await component.vm.$nextTick()
+    await component.vm.$nextTick()
+    expect(component.text()).to.contain('There was an error')
   })
 })

@@ -1,0 +1,14 @@
+#import "../../fragments/publicity-screen/ProductionsDetailsFragment.gql"
+query venueUpcomingProductions(
+  $slug: String!
+  $now: DateTime!
+  $nowDate: Date
+) {
+  venue(slug: $slug) {
+    id
+    name
+    productions(orderBy: "start", end_Gte: $now, status: "PUBLISHED") {
+      ...ProductionsDetailsFragment
+    }
+  }
+}

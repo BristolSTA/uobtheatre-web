@@ -6,6 +6,7 @@
     </template>
     <template #subtitle>
       <p class="text-h3">
+        {{ humanDayTime(startTime) }} of
         {{ performance.start | dateFormat('EEEE d MMMM kkkk') }}
       </p>
     </template>
@@ -28,7 +29,8 @@
 <script>
 import IconListItem from '@/components/ui/IconListItem.vue'
 
-import { humanDuration } from '@/utils'
+import { humanDuration, humanDayTime } from '@/utils'
+import { DateTime } from 'luxon'
 import OverviewBox from '../../ui/Card.vue'
 
 export default {
@@ -44,8 +46,14 @@ export default {
       type: Object,
     },
   },
+  computed: {
+    startTime() {
+      return DateTime.fromISO(self.performance.start)
+    },
+  },
   methods: {
     humanDuration,
+    humanDayTime,
   },
 }
 </script>

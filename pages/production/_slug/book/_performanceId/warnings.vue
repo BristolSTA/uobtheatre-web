@@ -1,5 +1,8 @@
 <template>
-  <div class="flex flex-col items-center justify-evenly min-h-full">
+  <div
+    v-if="booking.performance"
+    class="flex flex-col items-center justify-evenly min-h-full"
+  >
     <card
       v-if="booking.performance.description"
       ref="perf-description"
@@ -42,8 +45,9 @@ export default {
   stageInfo: new BookingStage({
     name: 'Auidence Warnings',
     routeName: 'production-slug-book-performanceId-warnings',
-    shouldBeUsed: (production, booking) =>
-      production.warnings.length > 0 || booking.performance.description,
+    shouldBeUsed: (production, booking) => {
+      return production.warnings.length > 0 || booking?.performance?.description
+    },
   }),
   components: {
     Card,

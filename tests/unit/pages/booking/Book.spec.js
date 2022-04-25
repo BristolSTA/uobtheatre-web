@@ -6,11 +6,7 @@ import ProductionBanner from '@/components/production/ProductionBanner.vue'
 import { swal } from '@/utils'
 import Book from '@/pages/production/_slug/book.vue'
 
-import {
-  generateMountOptions,
-  mountWithRouterMock,
-  waitFor,
-} from '../../helpers'
+import { generateMountOptions, mountWithRouterMock } from '../../helpers'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 import Production from '../../fixtures/Production'
 import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection'
@@ -140,7 +136,7 @@ describe('Create Booking Page', () => {
         }
       )
 
-      await waitFor(() => bookingComponent.vm.ticketMatrix)
+      await bookingComponent.vm.$nextTick()
     })
 
     it('loads required data on mount if has a performance id', () => {
@@ -212,8 +208,7 @@ describe('Create Booking Page', () => {
     it('can resume booking', async () => {
       stub.mockResolvedValue({ isConfirmed: true })
       await mount()
-
-      await waitFor(() => stub.mock.calls.length)
+      await bookingComponent.vm.$nextTick()
 
       expect(stub.mock.calls).length(1)
       expect(bookingComponent.vm.booking.id).to.eq(1)
@@ -225,7 +220,7 @@ describe('Create Booking Page', () => {
         .spyOn(bookingComponent.vm.booking, 'updateFromAPIData')
         .mockImplementation()
 
-      await waitFor(() => stub.mock.calls.length)
+      await bookingComponent.vm.$nextTick()
 
       expect(stub.mock.calls).length(1)
       expect(updateStub.mock.calls).length(0)

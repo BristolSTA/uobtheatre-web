@@ -8,7 +8,12 @@
       >
     </template>
     <div class="flex flex-wrap gap-3 items-end md:flex-nowrap">
-      <div><t-input placeholder="Search by name" /></div>
+      <div>
+        <t-input
+          v-model="productionSearchFilter"
+          placeholder="Search by name"
+        />
+      </div>
       <div>
         <label>Status</label
         ><t-select
@@ -101,6 +106,7 @@ export default {
       productionsOffset: 0,
       productionsStatusFilter: null,
       productionsRunDateFilter: null,
+      productionSearchFilter: null,
     }
   },
   head: {
@@ -122,6 +128,7 @@ export default {
           endGte: this.productionsRunDateFilter
             ? this.productionsRunDateFilter + 'T00:00:00'
             : null,
+          search: this.productionSearchFilter,
         }
       },
       update: (data) => data.productions,

@@ -232,6 +232,9 @@ export default {
       }
     },
   },
+  mounted() {
+    this.$apollo.queries.ticketBreakdown.refetch()
+  },
   methods: {
     humanDuration,
   },

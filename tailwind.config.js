@@ -42,6 +42,9 @@ module.exports = {
           dark: '#CC6C00',
           light: '#ffb833',
         },
+        'sta-gold': {
+          DEFAULT: '#FDAE39',
+        },
       },
       opacity: {
         40: '0.4',
@@ -51,6 +54,10 @@ module.exports = {
         h2: '2rem',
         h3: '1.5rem',
         h4: '1.25rem',
+        rxl: '8vw',
+        rlg: '5vw',
+        rmd: '3vw',
+        rsm: '2vw',
       },
       minWidth: {
         '1/2': '50%',

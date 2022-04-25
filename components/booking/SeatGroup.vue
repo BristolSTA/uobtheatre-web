@@ -38,7 +38,7 @@
         <font-awesome-icon :icon="expanded ? 'chevron-up' : 'chevron-down'" />
       </div>
     </div>
-    <div v-if="expanded" class="pb-2 bg-sta-gray">
+    <div v-if="expanded" class="pb-2">
       <div
         v-if="groupCapacityRemaining < 10"
         class="pt-2 px-2 text-center text-sta-rouge"

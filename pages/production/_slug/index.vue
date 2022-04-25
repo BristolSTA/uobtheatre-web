@@ -62,6 +62,8 @@ import ProductionPageQuery from '@/graphql/queries/ProductionBySlug.gql'
 import ProductionOverview from '@/components/production/ProductionOverview.vue'
 import ClickableLink from '@/components/ui/ClickableLink.vue'
 
+import { oneLiner } from '@/utils/lang.js'
+
 export default {
   components: {
     ProductionHeader,
@@ -96,8 +98,37 @@ export default {
   },
   head() {
     const productionName = this.production ? this.production.name : 'Loading...'
+    const meta = []
+    if (this.production) {
+      const description = oneLiner(
+        this.$options.filters.truncate(this.production.description, 100)
+      )
+      meta.push(
+        {
+          hid: 'description',
+          name: 'description',
+          content: description,
+        },
+        {
+          hid: 'og:title',
+          name: 'og:title',
+          content: productionName,
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content: description,
+        },
+        {
+          hid: 'og:image',
+          name: 'og:image',
+          content: this.production.featuredImage.url,
+        }
+      )
+    }
     return {
       title: `${productionName}`,
+      meta,
     }
   },
   computed: {

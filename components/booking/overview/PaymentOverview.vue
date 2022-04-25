@@ -14,7 +14,7 @@
             {{ mainPayment.last4 }}</template
           >
           <template v-else>{{
-            mainPayment.provider.description.toLowerCase()
+            mainPayment.provider.description.replace('_', ' ').toLowerCase()
           }}</template>
         </template>
       </p>

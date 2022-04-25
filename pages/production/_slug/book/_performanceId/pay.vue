@@ -139,7 +139,7 @@ export default {
         this.loading = false
       }
     },
-    async onNonceRecieved(nonce) {
+    async onNonceRecieved(paymentData) {
       try {
         const data = await performMutation(
           this.$apollo,
@@ -147,9 +147,10 @@ export default {
             mutation: require('@/graphql/mutations/booking/PayBooking.gql'),
             variables: {
               id: this.booking.id,
-              nonce,
+              nonce: paymentData.nonce,
               totalPence: this.booking.totalPrice,
               idempotencyKey: this.booking.idempotencyKey,
+              verifyToken: paymentData.verifyToken,
             },
           },
           'payBooking'

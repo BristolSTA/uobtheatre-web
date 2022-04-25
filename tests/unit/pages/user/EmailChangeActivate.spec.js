@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
 
 import EmailChangeActivate from '@/pages/user/email-change/_token/index.vue'
-import { generateMountOptions, waitFor } from '../../helpers'
+import { generateMountOptions } from '../../helpers'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse'
 import GenericErrorsResponse from '../../fixtures/support/GenericErrorsResponse'
@@ -34,13 +34,15 @@ describe('Email Change Activate', function () {
 
     expect(component.text()).to.contain('Adding email')
 
-    await waitFor(() => component.vm.addedOk)
+    await component.vm.$nextTick()
+    await component.vm.$nextTick()
+    await component.vm.$nextTick()
 
     expect(component.text()).to.contain('Complete email change')
     expect(component.findAll('input')).length(1)
   })
 
-  it('shows error with invalid token', () => {
+  it('shows error with invalid token', async () => {
     component = mount(
       EmailChangeActivate,
       generateMountOptions(['apollo'], {
@@ -62,9 +64,11 @@ describe('Email Change Activate', function () {
       })
     )
 
-    return waitFor(() => !component.vm.loading).then(() => {
-      expect(component.text()).to.contain('There was an error')
-    })
+    await component.vm.$nextTick()
+    await component.vm.$nextTick()
+    await component.vm.$nextTick()
+
+    expect(component.text()).to.contain('There was an error')
   })
 
   describe('with added secondary email', () => {
@@ -101,14 +105,18 @@ describe('Email Change Activate', function () {
           },
         })
       )
-      await waitFor(() => component.vm.addedOk)
+      await component.vm.$nextTick()
+      await component.vm.$nextTick()
+      await component.vm.$nextTick()
     })
 
     it('can enter password to swap', async () => {
       component.find('input').setValue('mypassword')
       component.find('form').trigger('submit')
 
-      await waitFor(() => replaceStub.mock.calls.length)
+      await component.vm.$nextTick()
+      await component.vm.$nextTick()
+      await component.vm.$nextTick()
 
       expect(replaceStub.mock.calls).length(1)
       expect(replaceStub.mock.calls[0][0]).to.eq('/user')
