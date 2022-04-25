@@ -77,7 +77,7 @@
         </div>
       </div>
       <card title="Performances">
-        <template v-if="hasEditAbilityNow" #messageBox>
+        <template v-if="canEdit" #messageBox>
           <div class="flex items-center">
             <nuxt-link
               class="hover:text-gray-300"
@@ -274,10 +274,7 @@ export default {
 
       return null
     },
-    hasEditAbilityNow() {
-      return this.production.permissions.includes('edit_production')
-    },
-    hasEditPermissions() {
+    canEdit() {
       return (
         this.production.permissions.includes('change_production') ||
         this.canEditRightNow
