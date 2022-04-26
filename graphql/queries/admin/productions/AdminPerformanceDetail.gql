@@ -79,6 +79,5 @@ query adminPerformanceDetail($productionSlug: String!, $performanceId: ID!) {
         }
       }
     }
-    permissions
   }
 }
