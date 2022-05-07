@@ -20,7 +20,7 @@ export default (
       image: {
         url: 'http://pathto.example/venue-image.png',
       },
-      publicallyListed: true,
+      publicalyListed: true,
       slug: 'anson-theatre',
       seatGroups: GenericConnection(),
       performances: GenericConnection(

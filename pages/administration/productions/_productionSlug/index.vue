@@ -266,7 +266,7 @@ export default {
       if (this.production.status.description === 'Pending')
         return 'This production has been submitted for review. You will recieve an email once this has been completed'
       if (this.production.status.description === 'Published')
-        return 'This production is being displayed publically'
+        return 'This production is being displayed publicly'
       if (this.production.status.description === 'Closed')
         return 'This production has been closed, and it no longer accepting bookings'
       if (this.production.status.description === 'Complete')
