@@ -1,5 +1,5 @@
 mutation setBookingUser($id: IdInputField!, $email: String!) {
-  updateBooking(bookingId: $id, targetUserEmail: $email) {
+  booking(input: { id: $id, userEmail: $email }) {
     success
     errors {
       ... on NonFieldError {
