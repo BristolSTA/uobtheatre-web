@@ -50,7 +50,7 @@ import ContentWarningsDisplay from '@/components/production/content-warnings/Con
 
 export default {
   stageInfo: new BookingStage({
-    name: 'Auidence Warnings',
+    name: 'Content Warnings',
     routeName: 'production-slug-book-performanceId-warnings',
     shouldBeUsed: (production, booking) => {
       return production.warnings.length > 0 || booking?.performance?.description
