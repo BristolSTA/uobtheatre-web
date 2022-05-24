@@ -6,7 +6,7 @@ import PerformanceOverview from '@/components/performance/PerformanceOverview.vu
 import { mountWithRouterMock, fixTextSpacing } from '../../helpers'
 import Performance from '../../fixtures/Performance'
 
-describe('Pick Performance Stage', () => {
+describe('Performance Overview', () => {
   let performanceOverviewComponent
 
   beforeEach(async () => {
@@ -106,5 +106,15 @@ describe('Pick Performance Stage', () => {
     expect(
       performanceOverviewComponent.find('button').attributes('disabled')
     ).to.eq('disabled')
+  })
+
+  it.each([null, 10])('shows interval length when able', async (duration) => {
+    await performanceOverviewComponent.setProps({
+      performance: Performance({ intervalDurationMins: duration }),
+    })
+
+    expect(fixTextSpacing(performanceOverviewComponent.text())).to.contain(
+      duration ? `2 hours inc. interval` : '2 hours'
+    )
   })
 })
