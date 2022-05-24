@@ -25,6 +25,7 @@ query adminPerformancesIndex(
           }
           minSeatPrice
           durationMins
+          intervalDurationMins
           doorsOpen
           start
           disabled

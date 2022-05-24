@@ -59,17 +59,24 @@
               </template>
               <template v-if="index == venueOverflow + 1"> and others</template>
             </span>
+            <template v-if="hasOnlinePerformances"> and Online </template>
           </template>
-          <template v-if="hasOnlinePerformances && hasInPersonPerformances">
-            and Online
-          </template>
-          <template v-if="!hasInPersonPerformances">View Online</template>
+          <template v-else>View Online</template>
         </p>
         <p>
           {{ displayStartEnd(production.start, production.end, 'd MMM') }}
         </p>
         <icon-list-item v-if="duration" icon="clock">
           {{ duration }}
+          <template
+            v-if="
+              production.performances.edges
+                .map((edge) => edge.node)
+                .find((node) => node.intervalDurationMins)
+            "
+            ><br />
+            <small>(inc. interval)</small>
+          </template>
         </icon-list-item>
         <icon-list-item v-if="production.isBookable" icon="ticket-alt">
           <template v-if="production.minSeatPrice">
@@ -78,7 +85,7 @@
               £{{ (production.minSeatPrice / 100).toFixed(2) }}
             </span>
             <br />
-            <small>(excluding concessions and fees)</small>
+            <small>(exc. concessions and fees)</small>
           </template>
           <template v-else> Free tickets </template>
         </icon-list-item>

@@ -36,5 +36,6 @@ fragment DetailedBookingDetails on BookingNode {
       slug
     }
     durationMins
+    intervalDurationMins
   }
 }

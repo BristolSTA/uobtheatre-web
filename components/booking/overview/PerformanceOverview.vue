@@ -21,6 +21,9 @@
       </div>
       <icon-list-item icon="clock">
         {{ humanDuration(performance.durationMins) }}
+        <template v-if="performance.intervalDurationMins"
+          >inc. {{ performance.intervalDurationMins }} min interval</template
+        >
       </icon-list-item>
     </div>
   </overview-box>

@@ -73,6 +73,24 @@
             />
           </template>
         </form-label>
+        <form-label name="intervalDurationMins" :errors="errors">
+          Interval Length
+          <template #control>
+            <t-input
+              :value="intervalDurationMins"
+              type="number"
+              min="1"
+              @input="$emit('update:intervalDurationMins', $event)"
+              @keypress.stop="
+                if (!/^[0-9]$/i.test($event.key)) $event.preventDefault()
+              "
+            />
+          </template>
+          <template #helper>
+            If your performance has an interval, enter the approximate duration
+            <u>in minutes</u>. Otherwise, you can leave it blank.
+          </template>
+        </form-label>
       </div>
     </card>
 
@@ -329,6 +347,10 @@ export default {
       type: String,
       default: null,
     },
+    intervalDurationMins: {
+      type: Number,
+      default: null,
+    },
   },
   data() {
     return {
@@ -416,12 +438,25 @@ export default {
       },
       immediate: true,
     },
+    similarPerformances(newVal) {
+      // If this is a create operation, and there are similar performances
+      if (newVal.length && !this.id) {
+        // If no interval has been set yet, but similar performances has an interval, pre-fill with those interval lengths
+        const intervalLength = newVal.find(
+          (performance) => performance.intervalDurationMins
+        )?.intervalDurationMins
+        if (this.intervalDurationMins === null && intervalLength) {
+          this.$emit('update:intervalDurationMins', intervalLength)
+        }
+      }
+    },
   },
   methods: {
     getInputData() {
       const returnObject = {
         id: this.id,
         doorsOpen: this.doorsOpen,
+        intervalDurationMins: this.intervalDurationMins,
         start: this.start,
         end: this.end,
         venue: this.venue?.id,

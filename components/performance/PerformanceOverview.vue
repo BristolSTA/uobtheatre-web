@@ -22,6 +22,7 @@
     <div>Doors open at {{ performance.doorsOpen | dateFormat('T') }}</div>
     <div v-if="performance.durationMins">
       {{ humanDuration(performance.durationMins) }}
+      <template v-if="performance.intervalDurationMins">inc. interval</template>
     </div>
     <div class="text-sm font-semibold">
       <p v-if="!performance.isBookable">No Tickets Available</p>
