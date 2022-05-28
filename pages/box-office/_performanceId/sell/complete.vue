@@ -8,14 +8,28 @@
       <tickets-overview :booking="booking" />
       <payment-overview :booking="booking" />
     </div>
-
-    <button
-      class="btn btn-orange font-semibold"
-      @click="goToMenu()"
-      @keypress="goToMenu()"
-    >
-      Back to Menu
-    </button>
+    <div class="flex justify-center mb-2">
+      <div>
+        <button
+          v-if="!checkedIn"
+          class="btn btn-green font-semibold animate-pulse animate w-30"
+          @click="checkInTickets()"
+          @keypress="checkInTickets()"
+        >
+          Check In Tickets
+        </button>
+        <button v-if="checkedIn" class="btn btn-outline disabled w-30" disabled>
+          Tickets Checked In
+        </button>
+        <button
+          class="btn btn-orange font-semibold"
+          @click="goToMenu()"
+          @keypress="goToMenu()"
+        >
+          Back to Menu
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -34,41 +48,48 @@ export default {
       type: Booking,
     },
   },
-  async mounted() {
-    if (!this.booking.reference) return this.$router.push('../')
-
-    try {
-      await performMutation(
-        this.$apollo,
-        {
-          mutation: CheckInTickets,
-          variables: {
-            reference: this.booking.reference,
-            performanceId: this.booking.performance.id,
-            tickets: this.booking.tickets.map((ticket) => {
-              return {
-                ticketId: ticket.id,
-              }
-            }),
-          },
-        },
-        'checkInBooking'
-      )
-      successToast.fire({
-        timer: 4000,
-        title: 'Tickets automatically checked in',
-      })
-    } catch (e) {
-      errorToast.fire({
-        title: 'Unable to check in tickets automatically',
-      })
+  data() {
+    return {
+      checkedIn: false,
     }
+  },
+  mounted() {
+    if (!this.booking.reference) return this.$router.push('../')
   },
   beforeDestroy() {
     // Remove stored booking ID
     this.$store.commit('box-office/SET_IN_PROGRESS_BOOKING_ID', null)
   },
   methods: {
+    async checkInTickets() {
+      try {
+        await performMutation(
+          this.$apollo,
+          {
+            mutation: CheckInTickets,
+            variables: {
+              reference: this.booking.reference,
+              performanceId: this.booking.performance.id,
+              tickets: this.booking.tickets.map((ticket) => {
+                return {
+                  ticketId: ticket.id,
+                }
+              }),
+            },
+          },
+          'checkInBooking'
+        )
+        this.checkedIn = true
+        successToast.fire({
+          timer: 4000,
+          title: 'Tickets checked in',
+        })
+      } catch (e) {
+        errorToast.fire({
+          title: 'Unable to check in tickets',
+        })
+      }
+    },
     goToMenu() {
       this.$router.push(`/box-office/${this.booking.performance.id}`)
     },
