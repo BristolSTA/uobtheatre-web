@@ -74,8 +74,8 @@
                 .map((edge) => edge.node)
                 .find((node) => node.intervalDurationMins)
             "
-            ><br />
-            <small>(inc. interval)</small>
+          >
+            <small>inc. interval</small>
           </template>
         </icon-list-item>
         <icon-list-item v-if="production.isBookable" icon="ticket-alt">

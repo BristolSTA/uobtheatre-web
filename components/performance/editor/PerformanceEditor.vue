@@ -348,7 +348,7 @@ export default {
       default: null,
     },
     intervalDurationMins: {
-      type: Number,
+      type: [Number],
       default: null,
     },
   },
@@ -456,7 +456,8 @@ export default {
       const returnObject = {
         id: this.id,
         doorsOpen: this.doorsOpen,
-        intervalDurationMins: this.intervalDurationMins,
+        intervalDurationMins:
+          this.intervalDurationMins === '' ? null : this.intervalDurationMins,
         start: this.start,
         end: this.end,
         venue: this.venue?.id,

@@ -88,7 +88,7 @@ export default {
           return this.$router.push(`${this.performance.id}/edit`)
         }
         successToast.fire({ title: 'Performance Created' })
-        return this.$router.push('../')
+        return this.$router.push(`../performances/${this.performance.id}`)
       } catch (e) {
         this.errors = getValidationErrors(e)
         Swal.close()
