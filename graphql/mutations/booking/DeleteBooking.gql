@@ -1,0 +1,10 @@
+mutation deleteBooking($bookingId: IdInputField!) {
+  deleteBooking(id: $bookingId) {
+    success
+    errors {
+      ... on NonFieldError {
+        message
+      }
+    }
+  }
+}

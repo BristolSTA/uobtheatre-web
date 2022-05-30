@@ -1,20 +1,6 @@
 #import "../../fragments/booking/DetailedBookingDetails.gql"
-mutation booking(
-  $bookingId: IdInputField
-  $performanceId: IdInputField!
-  $tickets: [CreateTicketInput]
-  $targetUserEmail: String
-  $adminDiscountPercentage: Float
-) {
-  booking(
-    input: {
-      id: $bookingId
-      performance: $performanceId
-      userEmail: $targetUserEmail
-      tickets: $tickets
-      adminDiscountPercentage: $adminDiscountPercentage
-    }
-  ) {
+mutation booking($input: BookingMutationInput!) {
+  booking(input: $input) {
     success
     booking {
       ...DetailedBookingDetails

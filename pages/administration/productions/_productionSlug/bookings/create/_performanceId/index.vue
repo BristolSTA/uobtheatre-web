@@ -105,10 +105,12 @@ export default {
           {
             mutation: BookingMutation,
             variables: {
-              adminDiscountPercentage: 1,
-              performanceId: this.performance.id,
-              userEmail: this.bookingEmail,
-              tickets: this.booking.toAPIData().tickets,
+              input: {
+                adminDiscountPercentage: 1,
+                performance: this.performance.id,
+                userEmail: this.bookingEmail,
+                tickets: this.booking.toAPIData().tickets,
+              },
             },
           },
           'booking'

@@ -69,8 +69,10 @@ export default {
             {
               mutation: BookingMutation,
               variables: {
-                performanceId: this.booking.performance.id,
-                tickets: this.booking.toAPIData().tickets,
+                input: {
+                  performance: this.booking.performance.id,
+                  tickets: this.booking.toAPIData().tickets,
+                },
               },
             },
             'booking'
@@ -83,8 +85,10 @@ export default {
             {
               mutation: BookingMutation,
               variables: {
-                id: this.booking.id,
-                tickets: this.booking.toAPIData().tickets,
+                input: {
+                  id: this.booking.id,
+                  tickets: this.booking.toAPIData().tickets,
+                },
               },
             },
             'booking'

@@ -107,13 +107,13 @@ export default {
         ],
         [
           'Created By',
-          `${this.rawBooking.creator.firstName} ${this.rawBooking.creator.lastName}`,
+          `${this.rawBooking.creator.firstName} ${this.rawBooking.creator.lastName} (Email: ${this.rawBooking.creator.email})`,
         ],
         [
           'Owned By',
           `${this.rawBooking.user.firstName} ${this.rawBooking.user.lastName} (Email: ${this.rawBooking.user.email})`,
         ],
-        ['Admin Discount', this.rawBooking.adminDiscountPercentage],
+        ['Admin Discount', this.rawBooking.adminDiscountPercentage * 100 + '%'],
       ]
     },
   },

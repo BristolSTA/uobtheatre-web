@@ -20,6 +20,13 @@
         >
           Proceed to Payment
         </button>
+        <button
+          class="btn bg-gray-400 hover:bg-gray-500 font-semibold"
+          @click="cancel"
+          @keypress="cancel"
+        >
+          Cancel Booking
+        </button>
       </div>
     </div>
   </div>
@@ -59,20 +66,6 @@ export default {
       errors: null,
     }
   },
-  computed: {
-    crumbs() {
-      return [
-        { text: 'Box Office', path: '/box-office' },
-        {
-          text: `${this.performance.production.name} on day X`,
-          path: `/box-office/${this.performance.id}`,
-        },
-        {
-          text: 'Sell Tickets',
-        },
-      ]
-    },
-  },
   methods: {
     async updateAPI() {
       let bookingResponse
@@ -84,8 +77,10 @@ export default {
             {
               mutation: BookingMutation,
               variables: {
-                performanceId: this.booking.performance.id,
-                tickets: this.booking.toAPIData().tickets,
+                input: {
+                  performance: this.booking.performance.id,
+                  tickets: this.booking.toAPIData().tickets,
+                },
               },
             },
             'booking'
@@ -98,8 +93,10 @@ export default {
             {
               mutation: BookingMutation,
               variables: {
-                id: this.booking.id,
-                tickets: this.booking.toAPIData().tickets,
+                input: {
+                  id: this.booking.id,
+                  tickets: this.booking.toAPIData().tickets,
+                },
               },
             },
             'booking'
@@ -124,6 +121,10 @@ export default {
 
       // There has been a change in the selected tickets whilst calling the API. Let's trigger another call...
       this.interaction_timer()
+    },
+    cancel() {
+      this.$store.dispatch('box-office/cancelInProgressBooking')
+      this.$router.push(`/box-office/${this.performance.id}`)
     },
   },
 }
