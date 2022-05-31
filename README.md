@@ -6,7 +6,7 @@ This repository is the frontend for uobtheatre.com, the Shows and Events platfor
 
 ## Geting started 🌟
 
-If you are new to programming and/or the repository, we recommend you take a look at our [Begineers Guide](https://github.com/BristolSTA/uobtheatre-web/wiki/Beginners-Guide)
+If you are new to programming and/or the repository, we recommend you take a look at our [Beginners Guide](https://github.com/BristolSTA/uobtheatre-web/wiki/Beginners-Guide)
 
 ## Running
 
