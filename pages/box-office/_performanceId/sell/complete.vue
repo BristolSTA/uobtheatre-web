@@ -18,9 +18,18 @@
         >
           Check In Tickets
         </button>
-        <button v-if="checkedIn" class="btn btn-outline disabled w-30" disabled>
-          Tickets Checked In
-        </button>
+        <template v-else>
+          <button
+            class="btn btn-outline btn-rouge font-semibold"
+            @click="unCheckInTickets()"
+            @keypress="unCheckInTickets()"
+          >
+            Revert Check-In
+          </button>
+          <button class="btn btn-outline disabled w-30" disabled>
+            Tickets Checked In
+          </button>
+        </template>
         <button
           class="btn btn-orange font-semibold"
           @click="goToMenu()"
@@ -38,6 +47,7 @@ import Booking from '@/classes/Booking'
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue'
 import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue'
 import CheckInTickets from '@/graphql/mutations/box-office/CheckInTickets.gql'
+import UnCheckInTickets from '@/graphql/mutations/box-office/UnCheckInTickets.gql'
 import { performMutation, errorToast, successToast } from '@/utils'
 import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue'
 export default {
@@ -51,10 +61,25 @@ export default {
   data() {
     return {
       checkedIn: false,
+      currentTime: new Date(),
     }
+  },
+  computed: {
+    performanceDoorsDiffMinutes() {
+      return (
+        (Date.parse(this.booking.performance.doorsOpen) - this.currentTime) /
+        60000
+      )
+    },
+    autoCheckIn() {
+      // Performance doors are opening within 15 minutes
+      return this.performanceDoorsDiffMinutes <= 15
+    },
   },
   mounted() {
     if (!this.booking.reference) return this.$router.push('../')
+
+    if (this.autoCheckIn) this.checkInTickets()
   },
   beforeDestroy() {
     // Remove stored booking ID
@@ -80,13 +105,46 @@ export default {
           'checkInBooking'
         )
         this.checkedIn = true
+        let message = 'Tickets checked in'
+        if (this.autoCheckIn) {
+          message = 'Tickets automatically checked in'
+        }
         successToast.fire({
           timer: 4000,
-          title: 'Tickets checked in',
+          title: message,
         })
       } catch (e) {
         errorToast.fire({
           title: 'Unable to check in tickets',
+        })
+      }
+    },
+    async unCheckInTickets() {
+      try {
+        await performMutation(
+          this.$apollo,
+          {
+            mutation: UnCheckInTickets,
+            variables: {
+              reference: this.booking.reference,
+              performanceId: this.booking.performance.id,
+              tickets: this.booking.tickets.map((ticket) => {
+                return {
+                  ticketId: ticket.id,
+                }
+              }),
+            },
+          },
+          'unCheckInBooking'
+        )
+        this.checkedIn = false
+        successToast.fire({
+          timer: 4000,
+          title: 'Tickets un-checked in',
+        })
+      } catch (e) {
+        errorToast.fire({
+          title: 'Unable to un-check in tickets',
         })
       }
     },
