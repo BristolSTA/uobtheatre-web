@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="booking.performance && booking.performance.production">
     <div class="space-y-4">
       <performance-overview
         :production="booking.performance.production"
