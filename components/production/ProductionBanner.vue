@@ -71,16 +71,16 @@
         <icon-list-item v-if="duration" icon="clock">
           {{ duration }}
         </icon-list-item>
-        <icon-list-item
-          v-if="production.minSeatPrice && production.isBookable"
-          icon="ticket-alt"
-        >
-          Tickets from
-          <span class="font-semibold">
-            £{{ (production.minSeatPrice / 100).toFixed(2) }}
-          </span>
-          <br />
-          <small>(excluding concessions and fees)</small>
+        <icon-list-item v-if="production.isBookable" icon="ticket-alt">
+          <template v-if="production.minSeatPrice">
+            Tickets from
+            <span class="font-semibold">
+              £{{ (production.minSeatPrice / 100).toFixed(2) }}
+            </span>
+            <br />
+            <small>(excluding concessions and fees)</small>
+          </template>
+          <template v-else> Free tickets </template>
         </icon-list-item>
       </template>
       <button

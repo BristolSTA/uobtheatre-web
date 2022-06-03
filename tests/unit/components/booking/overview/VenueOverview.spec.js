@@ -6,7 +6,7 @@ import OverviewBox from '@/components/ui/Card.vue'
 import VenueOverview from '@/components/booking/overview/VenueOverview.vue'
 
 import Venue from '@/tests/unit/fixtures/Venue'
-import { fixTextSpacing, mountWithRouterMock, waitFor } from '../../../helpers'
+import { fixTextSpacing, mountWithRouterMock } from '../../../helpers'
 
 describe('Venue Overview', function () {
   let venueOverviewComponent
@@ -37,7 +37,7 @@ describe('Venue Overview', function () {
 
   describe('correct venue information', () => {
     beforeEach(async () => {
-      await waitFor(() => venueOverviewComponent.vm.venue)
+      await venueOverviewComponent.vm.$nextTick()
     })
 
     it('has working links', () => {

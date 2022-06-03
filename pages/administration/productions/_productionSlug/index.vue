@@ -52,7 +52,9 @@
               <table-head-item>Net Society Revenue</table-head-item>
               <table-row-item
                 >£{{
-                  (production.salesBreakdown.netIncome / 100).toFixed(2)
+                  (
+                    production.salesBreakdown.societyTransferValue / 100
+                  ).toFixed(2)
                 }}</table-row-item
               >
             </tr>
@@ -264,7 +266,7 @@ export default {
       if (this.production.status.description === 'Pending')
         return 'This production has been submitted for review. You will recieve an email once this has been completed'
       if (this.production.status.description === 'Published')
-        return 'This production is being displayed publically'
+        return 'This production is being displayed publicly'
       if (this.production.status.description === 'Closed')
         return 'This production has been closed, and it no longer accepting bookings'
       if (this.production.status.description === 'Complete')
@@ -273,26 +275,30 @@ export default {
       return null
     },
     canEdit() {
+      // Returns if the user has any edit permissions, at any point, for this produciton
       return (
         this.production.permissions.includes('change_production') ||
         this.canEditRightNow
       )
     },
     canEditRightNow() {
+      // Returns if the user can edit production details right now (i.e. the ability)
       return this.production.permissions.includes('edit_production')
     },
     actions() {
       const list = []
-      list.push({
-        icon: 'list-ul',
-        action: () =>
-          this.$router.push(
-            `/administration/productions/${this.production.slug}/permissions`
-          ),
-        text: 'Edit Permissions',
-      })
-
       if (this.canEdit) {
+        list.push({
+          icon: 'list-ul',
+          action: () =>
+            this.$router.push(
+              `/administration/productions/${this.production.slug}/permissions`
+            ),
+          text: 'Edit Permissions',
+        })
+      }
+      if (this.canEditRightNow) {
+        // Add action button based on status
         if (this.production.status.value === 'DRAFT') {
           list.push({
             icon: 'user-check',

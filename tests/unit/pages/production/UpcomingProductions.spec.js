@@ -4,11 +4,7 @@ import ProductionTile from '@/components/production/ProductionTile'
 import InfiniteScroll from '@/components/ui/InfiniteScroll'
 import UpcomingProductions from '@/pages/productions'
 
-import {
-  generateMountOptions,
-  mountWithRouterMock,
-  waitFor,
-} from '../../helpers'
+import { generateMountOptions, mountWithRouterMock } from '../../helpers'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection'
 import Production from '../../fixtures/Production'
@@ -39,10 +35,9 @@ describe('Upcoming Productions', () => {
 
   describe('with no productions', () => {
     it('displays no productions notice', async () => {
-      await waitFor(
-        () =>
-          !upcomingProductionsComponent.findComponent(InfiniteScroll).vm.loading
-      )
+      await upcomingProductionsComponent
+        .findComponent(InfiniteScroll)
+        .vm.$nextTick()
       expect(upcomingProductionsComponent.text()).to.contain(
         'There are currently no upcoming productions'
       )
@@ -70,10 +65,9 @@ describe('Upcoming Productions', () => {
     })
 
     it('fetches first 9 performances and displays loader', async () => {
-      await waitFor(
-        () =>
-          !upcomingProductionsComponent.findComponent(InfiniteScroll).vm.loading
-      )
+      await upcomingProductionsComponent
+        .findComponent(InfiniteScroll)
+        .vm.$nextTick()
       expect(
         upcomingProductionsComponent.findAllComponents(ProductionTile)
       ).length(9)
@@ -112,10 +106,9 @@ describe('Upcoming Productions', () => {
     })
 
     it('fetches all the productions and doesnt display loader', async () => {
-      await waitFor(
-        () =>
-          !upcomingProductionsComponent.findComponent(InfiniteScroll).vm.loading
-      )
+      await upcomingProductionsComponent
+        .findComponent(InfiniteScroll)
+        .vm.$nextTick()
       expect(
         upcomingProductionsComponent.findAllComponents(ProductionTile)
       ).length(3)

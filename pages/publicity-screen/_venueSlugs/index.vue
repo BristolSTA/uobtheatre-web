@@ -1,9 +1,10 @@
 <template>
   <div class="h-full">
-    <!-- If no productions at this venue upcoming / bookable -->
+    <!-- If productions are active right now -->
     <template v-if="productionsOnNow.length">
       <component
         :is="currentScreen"
+        ref="activeBoxOfficeComponent"
         :production="productionsOnNow[onNowProductionIndex]"
         :performance="
           productionsOnNow[onNowProductionIndex].performances.edges[0].node
@@ -11,7 +12,7 @@
       />
     </template>
 
-    <!-- with upcoming productions -->
+    <!-- If upcoming productions -->
     <div
       v-else-if="marketableProductions.length"
       class="flex flex-col p-4 gap-2 h-full overflow-hidden"
@@ -40,11 +41,9 @@
           >
           <icon-list-item icon="map-marker">
             {{
-              venues.find((venue) =>
-                venue.productions.edges.find(
-                  (edge) => edge.node.id == currentDisplayedProduction.id
-                )
-              ).name
+              currentDisplayedProduction.venues
+                .map((venue) => venue.name)
+                .join(', ')
             }}</icon-list-item
           >
         </div>
@@ -69,6 +68,7 @@
       </div>
     </div>
 
+    <!-- If no productions to shown -->
     <div v-else class="flex items-center h-screen justify-center">
       <div class="px-4 text-white text-center space-y-10">
         <div class="text-rxl font-bold">
@@ -85,7 +85,8 @@
 </template>
 
 <script>
-import VenueUpcomingProductionsQuery from '@/graphql/queries/venue/VenueUpcomingProductions.gql'
+import VenueUpcomingProductionsQuery from '@/graphql/queries/publicity-screen/VenueUpcomingProductions.gql'
+import UpcomingProductionsQuery from '@/graphql/queries/publicity-screen/AllUpcomingProductions.gql'
 import { DateTime } from 'luxon'
 import QrcodeVue from 'qrcode.vue'
 import { displayStartEnd } from '@/utils'
@@ -106,7 +107,6 @@ export default {
   data() {
     return {
       now: null,
-      nowTimer: null,
 
       productions: [],
       venues: [],
@@ -140,7 +140,7 @@ export default {
     productionsOnNow() {
       if (!this.now) return []
       return this.productions.filter((production) => {
-        if (!production.performances.edges.length) {
+        if (!production?.performances?.edges?.length) {
           return false
         }
         const doorsOpenTime = DateTime.fromISO(
@@ -175,11 +175,9 @@ export default {
   mounted() {
     this.fetchData()
 
-    this.nowTimer = setInterval(() => {
-      this.now = DateTime.now()
-    }, 5000)
     this.dataFetchTimer = setInterval(this.fetchData, 7200000)
     this.slideTimer = setInterval(() => {
+      this.now = DateTime.now()
       if (this.paused) return
 
       // General promotion
@@ -217,7 +215,6 @@ export default {
     }, 1000 * 10)
   },
   destroyed() {
-    clearInterval(this.nowTimer)
     clearInterval(this.dataFetchTimer)
     clearInterval(this.slideTimer)
   },
@@ -239,6 +236,10 @@ export default {
     },
     async fetchData() {
       const slugs = this.$route.params.venueSlugs.split(',')
+      const showAllUpcoming =
+        this.$route.query.onlyTheseVenues === undefined
+          ? true
+          : !this.$route.query.onlyTheseVenues
       const queries = []
 
       for (const slug of slugs) {
@@ -267,6 +268,23 @@ export default {
           )
         }
       })
+
+      if (showAllUpcoming) {
+        const { data } = await this.$apollo.query({
+          query: UpcomingProductionsQuery,
+          variables: { now: new Date() },
+        })
+        data.productions.edges.forEach((edge) => {
+          if (
+            this.productions
+              .map((production) => production.id)
+              .includes(edge.node.id)
+          ) {
+            return
+          }
+          this.productions.push(edge.node)
+        })
+      }
     },
   },
 }

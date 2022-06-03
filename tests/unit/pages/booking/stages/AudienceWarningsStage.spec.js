@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
+import BookingCls from '@/classes/Booking'
 
 import AudienceWarningsStage from '@/pages/production/_slug/book/_performanceId/warnings.vue'
 import Production from '@/tests/unit/fixtures/Production'
@@ -13,7 +14,9 @@ describe('Audience Warnings Stage', () => {
       warningComponent = mount(AudienceWarningsStage, {
         propsData: {
           production: Production(),
-          booking: Booking({ performance: { descrption: null } }),
+          booking: BookingCls.fromAPIData(
+            Booking({ performance: { descrption: null } })
+          ),
         },
       })
     })
@@ -41,7 +44,7 @@ describe('Audience Warnings Stage', () => {
       warningComponent = mount(AudienceWarningsStage, {
         propsData: {
           production: Production({ warnings: [] }),
-          booking: Booking(),
+          booking: BookingCls.fromAPIData(Booking()),
         },
       })
     })

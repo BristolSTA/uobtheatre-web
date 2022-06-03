@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
 
 import EmailVerify from '@/pages/user/email-verify/_token/index.vue'
-import { generateMountOptions, waitFor } from '../../helpers'
+import { generateMountOptions } from '../../helpers'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse'
 import GenericErrorsResponse from '../../fixtures/support/GenericErrorsResponse'
@@ -35,13 +35,14 @@ describe('Email Verify', function () {
 
     expect(component.text()).to.contain('Verifying email')
 
-    await waitFor(() => routerReplaceMock.mock.calls.length)
+    await component.vm.$nextTick()
+    await component.vm.$nextTick()
 
     expect(routerReplaceMock.mock.calls.length).to.eq(1)
     expect(routerReplaceMock.mock.calls[0][0]).to.eq('/login')
   })
 
-  it('shows error with invalid token', () => {
+  it('shows error with invalid token', async () => {
     component = mount(
       EmailVerify,
       generateMountOptions(['apollo'], {
@@ -60,8 +61,8 @@ describe('Email Verify', function () {
       })
     )
 
-    return waitFor(() => !component.vm.loading).then(() => {
-      expect(component.text()).to.contain('There was an error')
-    })
+    await component.vm.$nextTick()
+    await component.vm.$nextTick()
+    expect(component.text()).to.contain('There was an error')
   })
 })
