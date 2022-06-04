@@ -8,28 +8,30 @@
       <tickets-overview :booking="booking" />
       <payment-overview :booking="booking" />
     </div>
-    <div class="flex justify-center mb-2">
-      <div>
+    <div class="flex flex-col mb-2">
+      <div class="flex justify-center mb-2">
         <button
           v-if="!checkedIn"
-          class="btn btn-green font-semibold animate-pulse animate w-30"
-          @click="checkInTickets()"
-          @keypress="checkInTickets()"
+          class="btn btn-green font-semibold animate-pulse animate w-52"
+          @click="changeTicketStatus(true)"
+          @keypress="changeTicketStatus(true)"
         >
           Check In Tickets
         </button>
         <template v-else>
           <button
-            class="btn btn-outline btn-rouge font-semibold"
-            @click="unCheckInTickets()"
-            @keypress="unCheckInTickets()"
+            class="btn btn-outline btn-rouge font-semibold mr-1 w-52"
+            @click="changeTicketStatus(false)"
+            @keypress="changeTicketStatus(false)"
           >
             Revert Check-In
           </button>
-          <button class="btn btn-outline disabled w-30" disabled>
+          <button class="btn btn-outline disabled ml-1 w-52" disabled>
             Tickets Checked In
           </button>
         </template>
+      </div>
+      <div class="flex justify-center">
         <button
           class="btn btn-orange font-semibold"
           @click="goToMenu()"
@@ -64,67 +66,44 @@ export default {
       currentTime: new Date(),
     }
   },
-  computed: {
-    performanceDoorsDiffMinutes() {
-      return (
-        (Date.parse(this.booking.performance.doorsOpen) - this.currentTime) /
-        60000
-      )
-    },
-    autoCheckIn() {
-      // Performance doors are opening within 15 minutes
-      return this.performanceDoorsDiffMinutes <= 15
-    },
-  },
   mounted() {
     if (!this.booking.reference) return this.$router.push('../')
 
-    if (this.autoCheckIn) this.checkInTickets()
+    if (this.canAutoCheckIn) this.changeTicketStatus(true)
   },
   beforeDestroy() {
     // Remove stored booking ID
     this.$store.commit('box-office/SET_IN_PROGRESS_BOOKING_ID', null)
   },
   methods: {
-    async checkInTickets() {
-      try {
-        await performMutation(
-          this.$apollo,
-          {
-            mutation: CheckInTickets,
-            variables: {
-              reference: this.booking.reference,
-              performanceId: this.booking.performance.id,
-              tickets: this.booking.tickets.map((ticket) => {
-                return {
-                  ticketId: ticket.id,
-                }
-              }),
-            },
-          },
-          'checkInBooking'
-        )
-        this.checkedIn = true
-        let message = 'Tickets checked in'
-        if (this.autoCheckIn) {
-          message = 'Tickets automatically checked in'
-        }
-        successToast.fire({
-          timer: 4000,
-          title: message,
-        })
-      } catch (e) {
-        errorToast.fire({
-          title: 'Unable to check in tickets',
-        })
-      }
+    canAutoCheckIn() {
+      return this.performanceDoorsDiffMinutes <= 15
     },
-    async unCheckInTickets() {
+    performanceDoorsDiffMinutes() {
+      return (
+        (Date.parse(this.booking.performance.doorsOpen) - new Date()) / 60000
+      )
+    },
+    async changeTicketStatus(checkingIn) {
+      let checkInMutationGQL = CheckInTickets
+      let checkInMutationName = 'checkInBooking'
+      let sucsessMessage = this.autoCheckIn
+        ? 'Tickets automatically checked in'
+        : 'Tickets checked in'
+      let errMessage = 'Unable to check in tickets'
+
+      if (!checkingIn) {
+        checkInMutationGQL = UnCheckInTickets
+        checkInMutationName = 'uncheckInBooking'
+        sucsessMessage = 'Tickets un-checked in'
+        errMessage = 'Unable to un-check in tickets'
+      }
+
       try {
         await performMutation(
           this.$apollo,
           {
-            mutation: UnCheckInTickets,
+            mutation: checkInMutationGQL,
             variables: {
               reference: this.booking.reference,
               performanceId: this.booking.performance.id,
@@ -135,16 +114,17 @@ export default {
               }),
             },
           },
-          'unCheckInBooking'
+          checkInMutationName
         )
-        this.checkedIn = false
+
+        this.checkedIn = checkingIn
         successToast.fire({
           timer: 4000,
-          title: 'Tickets un-checked in',
+          title: sucsessMessage,
         })
       } catch (e) {
         errorToast.fire({
-          title: 'Unable to un-check in tickets',
+          title: errMessage,
         })
       }
     },
