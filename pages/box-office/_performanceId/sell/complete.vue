@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import { DateTime } from 'luxon'
 import Booking from '@/classes/Booking'
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue'
 import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue'
@@ -80,9 +81,9 @@ export default {
       return this.performanceDoorsDiffMinutes() <= 15
     },
     performanceDoorsDiffMinutes() {
-      return (
-        (Date.parse(this.booking.performance.doorsOpen) - new Date()) / 60000
-      )
+      return DateTime.fromISO(this.booking.performance.doorsOpen)
+        .diff(DateTime.now())
+        .as('minutes')
     },
     async changeTicketStatus(checkingIn) {
       try {
