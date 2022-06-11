@@ -69,7 +69,7 @@ export default {
   mounted() {
     if (!this.booking.reference) return this.$router.push('../')
 
-    if (this.canAutoCheckIn) this.changeTicketStatus(true)
+    if (this.canAutoCheckIn()) this.changeTicketStatus(true)
   },
   beforeDestroy() {
     // Remove stored booking ID
@@ -77,7 +77,7 @@ export default {
   },
   methods: {
     canAutoCheckIn() {
-      return this.performanceDoorsDiffMinutes <= 15
+      return this.performanceDoorsDiffMinutes() <= 15
     },
     performanceDoorsDiffMinutes() {
       return (
@@ -85,25 +85,11 @@ export default {
       )
     },
     async changeTicketStatus(checkingIn) {
-      let checkInMutationGQL = CheckInTickets
-      let checkInMutationName = 'checkInBooking'
-      let sucsessMessage = this.autoCheckIn
-        ? 'Tickets automatically checked in'
-        : 'Tickets checked in'
-      let errMessage = 'Unable to check in tickets'
-
-      if (!checkingIn) {
-        checkInMutationGQL = UnCheckInTickets
-        checkInMutationName = 'uncheckInBooking'
-        sucsessMessage = 'Tickets un-checked in'
-        errMessage = 'Unable to un-check in tickets'
-      }
-
       try {
         await performMutation(
           this.$apollo,
           {
-            mutation: checkInMutationGQL,
+            mutation: checkingIn ? CheckInTickets : UnCheckInTickets,
             variables: {
               reference: this.booking.reference,
               performanceId: this.booking.performance.id,
@@ -114,17 +100,23 @@ export default {
               }),
             },
           },
-          checkInMutationName
+          checkingIn ? 'checkInBooking' : 'uncheckInBooking'
         )
 
         this.checkedIn = checkingIn
         successToast.fire({
           timer: 4000,
-          title: sucsessMessage,
+          title: !checkingIn
+            ? 'Tickets un-checked in'
+            : this.canAutoCheckIn()
+            ? 'Tickets automatically checked in'
+            : 'Tickets un-checked in',
         })
       } catch (e) {
         errorToast.fire({
-          title: errMessage,
+          title: checkingIn
+            ? 'Unable to check in tickets'
+            : 'Unable to un-check in tickets',
         })
       }
     },
