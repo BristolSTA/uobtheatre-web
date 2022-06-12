@@ -64,7 +64,6 @@ export default {
   data() {
     return {
       checkedIn: false,
-      currentTime: new Date(),
     }
   },
   mounted() {
