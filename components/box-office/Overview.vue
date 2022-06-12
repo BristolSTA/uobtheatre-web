@@ -157,22 +157,26 @@ export default {
   data() {
     return {
       ticketBreakdown: {},
+      currentTime: new Date(),
     }
   },
   computed: {
+    currentTimeLuxon() {
+      return DateTime.fromJSDate(this.currentTime)
+    },
     performanceDoorsDiffMinutes() {
       return DateTime.fromISO(this.performance.doorsOpen)
-        .diff(DateTime.now())
+        .diff(this.currentTimeLuxon)
         .as('minutes')
     },
     performanceStartDiffMinutes() {
       return DateTime.fromISO(this.performance.start)
-        .diff(DateTime.now())
+        .diff(this.currentTimeLuxon)
         .as('minutes')
     },
     performanceEndDiffMinutes() {
       return DateTime.fromISO(this.performance.end)
-        .diff(DateTime.now())
+        .diff(this.currentTimeLuxon)
         .as('minutes')
     },
     status() {
