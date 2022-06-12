@@ -126,6 +126,8 @@
 </template>
 
 <script>
+import { DateTime } from 'luxon'
+
 import IconListItem from '@/components/ui/IconListItem.vue'
 import { humanDuration } from '@/utils'
 import Clock from '@/components/ui/Clock.vue'
@@ -159,14 +161,23 @@ export default {
     }
   },
   computed: {
+    currentTimeLuxon() {
+      return DateTime.fromJSDate(this.currentTime)
+    },
     performanceDoorsDiffMinutes() {
-      return (Date.parse(this.performance.doorsOpen) - this.currentTime) / 60000
+      return DateTime.fromISO(this.performance.doorsOpen)
+        .diff(this.currentTimeLuxon)
+        .as('minutes')
     },
     performanceStartDiffMinutes() {
-      return (Date.parse(this.performance.start) - this.currentTime) / 60000
+      return DateTime.fromISO(this.performance.start)
+        .diff(this.currentTimeLuxon)
+        .as('minutes')
     },
     performanceEndDiffMinutes() {
-      return (Date.parse(this.performance.end) - this.currentTime) / 60000
+      return DateTime.fromISO(this.performance.end)
+        .diff(this.currentTimeLuxon)
+        .as('minutes')
     },
     status() {
       // Performance end is in the past
