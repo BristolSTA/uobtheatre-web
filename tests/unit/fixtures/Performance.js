@@ -27,6 +27,7 @@ export default (overrides = {}) => {
       ticketOptions: [PerformanceSeatGroup()],
       minSeatPrice: 250,
       durationMins: 120,
+      intervalDurationMins: 10,
       isInperson: true,
       isOnline: false,
       soldOut: false,

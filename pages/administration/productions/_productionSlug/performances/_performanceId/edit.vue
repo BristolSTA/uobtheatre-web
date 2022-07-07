@@ -86,7 +86,7 @@ export default {
         if (saveResult) {
           successToast.fire({ title: 'Performance Updated' })
           return this.$router.push(
-            `/administration/productions/${this.production.slug}`
+            `/administration/productions/${this.production.slug}/performances/${this.performance.id}`
           )
         }
         errorToast.fire({ title: 'Performance saved but with errors' })

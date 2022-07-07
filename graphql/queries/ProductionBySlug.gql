@@ -52,6 +52,7 @@ query productionBySlug($slug: String!) {
           end
           soldOut
           durationMins
+          intervalDurationMins
           isOnline
           isInperson
           ticketsBreakdown {

@@ -36,7 +36,7 @@
 
 <script>
 import FullPerformanceAndTicketOptionsQuery from '@/graphql/queries/FullPerformanceAndTicketOptions.gql'
-import CreateBookingMutation from '@/graphql/mutations/booking/CreateBooking.gql'
+import BookingMutation from '@/graphql/mutations/booking/Booking.gql'
 import PayBookingMutation from '@/graphql/mutations/booking/PayBooking.gql'
 import TicketsMatrix from '@/classes/TicketsMatrix'
 import Booking from '@/classes/Booking'
@@ -103,17 +103,19 @@ export default {
         const data = await performMutation(
           this.$apollo,
           {
-            mutation: CreateBookingMutation,
+            mutation: BookingMutation,
             variables: {
-              adminDiscountPercentage: 1,
-              performanceId: this.performance.id,
-              targetUserEmail: this.bookingEmail,
-              tickets: this.booking.toAPIData().tickets,
+              input: {
+                adminDiscountPercentage: 1,
+                performance: this.performance.id,
+                userEmail: this.bookingEmail,
+                tickets: this.booking.toAPIData().tickets,
+              },
             },
           },
-          'createBooking'
+          'booking'
         )
-        this.booking.updateFromAPIData(data.createBooking.booking)
+        this.booking.updateFromAPIData(data.booking.booking)
 
         // Pay the booking
         await performMutation(

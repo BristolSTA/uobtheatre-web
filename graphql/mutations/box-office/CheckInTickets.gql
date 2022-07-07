@@ -6,7 +6,7 @@ mutation checkInBooking(
 ) {
   checkInBooking(
     bookingReference: $reference
-    performanceId: $performanceId
+    performance: $performanceId
     tickets: $tickets
   ) {
     success

@@ -45,6 +45,7 @@ fragment BookingWithProductionDetails on BookingNode {
     end
     doorsOpen
     durationMins
+    intervalDurationMins
     venue {
       id
       slug

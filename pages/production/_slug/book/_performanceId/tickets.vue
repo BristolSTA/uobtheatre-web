@@ -25,8 +25,7 @@ import lo from 'lodash'
 
 import Booking from '@/classes/Booking'
 import TicketMatrix from '@/classes/TicketsMatrix'
-import CreateBooking from '@/graphql/mutations/booking/CreateBooking.gql'
-import UpdateBooking from '@/graphql/mutations/booking/UpdateBooking.gql'
+import BookingMutation from '@/graphql/mutations/booking/Booking.gql'
 import { getValidationErrors, performMutation } from '@/utils'
 
 import BookingStage from '@/classes/BookingStage'
@@ -68,29 +67,33 @@ export default {
           const data = await performMutation(
             this.$apollo,
             {
-              mutation: CreateBooking,
+              mutation: BookingMutation,
               variables: {
-                performanceId: this.booking.performance.id,
-                tickets: this.booking.toAPIData().tickets,
+                input: {
+                  performance: this.booking.performance.id,
+                  tickets: this.booking.toAPIData().tickets,
+                },
               },
             },
-            'createBooking'
+            'booking'
           )
-          bookingResponse = data.createBooking.booking
+          bookingResponse = data.booking.booking
         } else {
           // We have a booking, lets update it
           const data = await performMutation(
             this.$apollo,
             {
-              mutation: UpdateBooking,
+              mutation: BookingMutation,
               variables: {
-                id: this.booking.id,
-                tickets: this.booking.toAPIData().tickets,
+                input: {
+                  id: this.booking.id,
+                  tickets: this.booking.toAPIData().tickets,
+                },
               },
             },
-            'updateBooking'
+            'booking'
           )
-          bookingResponse = data.updateBooking.booking
+          bookingResponse = data.booking.booking
         }
       } catch (e) {
         this.errors = getValidationErrors(e)

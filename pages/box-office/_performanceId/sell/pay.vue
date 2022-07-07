@@ -333,7 +333,7 @@ export default {
               email: this.user.email,
             },
           },
-          'updateBooking'
+          'booking'
         )
 
         const data = await performMutation(

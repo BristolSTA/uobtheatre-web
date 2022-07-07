@@ -95,6 +95,7 @@ export default {
   },
   methods: {
     async loadExistingBookingData() {
+      if (!this.inProgressID) return
       const { data } = await this.$apollo.query({
         query: BoxOfficePerformanceBooking,
         variables: {
