@@ -2,7 +2,7 @@
   <div>
     <component
       :is="expandable ? 'button' : 'div'"
-      class="w-full py-1 px-3 transition-colors"
+      class="w-full py-1 px-3 transition-colors group"
       :class="{
         'hover:bg-gray-600 rounded': expandable,
         'bg-gray-600 rounded-bl-none rounded-br-none': expanded && expandable,
@@ -15,10 +15,17 @@
     >
       <div class="flex justify-between items-center">
         <h3>{{ contentWarning.name }}</h3>
-        <font-awesome-icon
+        <div
           v-if="contentWarning.description"
-          :icon="expanded ? 'chevron-up' : 'chevron-down'"
-        />
+          class="rounded px-1"
+          :class="{
+            'border group-hover:border-0 group-hover:bg-white group-hover:text-gray-700':
+              !expanded,
+          }"
+        >
+          <span v-if="!expanded">See Details</span>
+          <font-awesome-icon :icon="expanded ? 'chevron-up' : 'chevron-down'" />
+        </div>
       </div>
     </component>
     <div
