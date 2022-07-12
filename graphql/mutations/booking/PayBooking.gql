@@ -9,7 +9,7 @@ mutation payBooking(
   $verifyToken: String
 ) {
   payBooking(
-    bookingId: $id
+    id: $id
     nonce: $nonce
     price: $totalPence
     paymentProvider: $provider

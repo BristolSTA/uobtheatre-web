@@ -98,6 +98,7 @@
           text-center text-xl
           font-semibold
         "
+        :disabled="!email || !password"
         type="submit"
       >
         Log In

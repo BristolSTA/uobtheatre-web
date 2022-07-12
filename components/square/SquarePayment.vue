@@ -136,11 +136,10 @@ export default {
         this.square.methods.gpay = await this.square.payments.googlePay(
           this.square.request
         )
-        this.square.methods.gpay.attach('#sq-gpay-button', {
+        await this.square.methods.gpay.attach('#sq-gpay-button', {
           buttonColor: 'white',
         })
       } catch (e) {
-        // eslint-disable-next-line no-console
         if (e.name !== 'PaymentMethodUnsupportedError') silentErrorHandler(e)
       }
 
@@ -150,7 +149,6 @@ export default {
           this.square.request
         )
       } catch (e) {
-        // eslint-disable-next-line no-console
         if (e.name !== 'PaymentMethodUnsupportedError') silentErrorHandler(e)
       }
 

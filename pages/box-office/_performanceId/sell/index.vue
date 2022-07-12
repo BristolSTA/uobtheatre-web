@@ -20,6 +20,13 @@
         >
           Proceed to Payment
         </button>
+        <button
+          class="btn bg-gray-400 hover:bg-gray-500 font-semibold"
+          @click="cancel"
+          @keypress="cancel"
+        >
+          Cancel Booking
+        </button>
       </div>
     </div>
   </div>
@@ -28,8 +35,7 @@
 <script>
 import lo from 'lodash'
 import Booking from '@/classes/Booking'
-import CreateBooking from '@/graphql/mutations/booking/CreateBooking.gql'
-import UpdateBooking from '@/graphql/mutations/booking/UpdateBooking.gql'
+import BookingMutation from '@/graphql/mutations/booking/Booking.gql'
 import { performMutation } from '@/utils'
 import TicketsMatrix from '@/classes/TicketsMatrix'
 import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue'
@@ -60,20 +66,6 @@ export default {
       errors: null,
     }
   },
-  computed: {
-    crumbs() {
-      return [
-        { text: 'Box Office', path: '/box-office' },
-        {
-          text: `${this.performance.production.name} on day X`,
-          path: `/box-office/${this.performance.id}`,
-        },
-        {
-          text: 'Sell Tickets',
-        },
-      ]
-    },
-  },
   methods: {
     async updateAPI() {
       let bookingResponse
@@ -83,29 +75,33 @@ export default {
           const data = await performMutation(
             this.$apollo,
             {
-              mutation: CreateBooking,
+              mutation: BookingMutation,
               variables: {
-                performanceId: this.booking.performance.id,
-                tickets: this.booking.toAPIData().tickets,
+                input: {
+                  performance: this.booking.performance.id,
+                  tickets: this.booking.toAPIData().tickets,
+                },
               },
             },
-            'createBooking'
+            'booking'
           )
-          bookingResponse = data.createBooking.booking
+          bookingResponse = data.booking.booking
         } else {
           // We have a booking, lets update it
           const data = await performMutation(
             this.$apollo,
             {
-              mutation: UpdateBooking,
+              mutation: BookingMutation,
               variables: {
-                id: this.booking.id,
-                tickets: this.booking.toAPIData().tickets,
+                input: {
+                  id: this.booking.id,
+                  tickets: this.booking.toAPIData().tickets,
+                },
               },
             },
-            'updateBooking'
+            'booking'
           )
-          bookingResponse = data.updateBooking.booking
+          bookingResponse = data.booking.booking
         }
       } catch ({ errors }) {
         this.errors = errors
@@ -125,6 +121,10 @@ export default {
 
       // There has been a change in the selected tickets whilst calling the API. Let's trigger another call...
       this.interaction_timer()
+    },
+    cancel() {
+      this.$store.dispatch('box-office/cancelInProgressBooking')
+      this.$router.push(`/box-office/${this.performance.id}`)
     },
   },
 }

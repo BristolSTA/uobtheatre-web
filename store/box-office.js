@@ -1,4 +1,5 @@
 import Cookie from 'js-cookie'
+import DeleteBookingMutation from '@/graphql/mutations/booking/DeleteBooking.gql'
 
 const locationCookieKey = 'uobtheatre-boxoffice-location'
 
@@ -23,6 +24,15 @@ export const mutations = {
 export const actions = {
   rememberState(context) {
     context.commit('SET_LOCATION', Cookie.get(locationCookieKey))
+  },
+  async cancelInProgressBooking(context) {
+    await this.app.apolloProvider.defaultClient.mutate({
+      mutation: DeleteBookingMutation,
+      variables: {
+        bookingId: context.state.inProgressBookingID,
+      },
+    })
+    context.commit('SET_IN_PROGRESS_BOOKING_ID', null)
   },
   setDeviceLocation(context, locationId, temporary = false) {
     if (!locationId) Cookie.remove(locationCookieKey)

@@ -149,6 +149,7 @@ export default {
       },
       debounce: 600,
       result(result) {
+        if (!result.data) return
         this.bookingsPageInfo =
           result.data.production.performances.edges[0].node.bookings.pageInfo
       },

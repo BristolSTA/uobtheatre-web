@@ -61,6 +61,7 @@
             @hook:mounted="onChildMount"
             @select-performance="onSelectPerformance"
             @next-stage="navigateToStage()"
+            @paid="paid = true"
           />
         </div>
       </div>
@@ -74,6 +75,7 @@ import TicketsMatrix from '@/classes/TicketsMatrix'
 import BookingNavigation from '@/components/booking/BookingNavigation.vue'
 import ProductionBanner from '@/components/production/ProductionBanner.vue'
 import ClickableLink from '@/components/ui/ClickableLink.vue'
+import DeleteBookingMutation from '@/graphql/mutations/booking/DeleteBooking.gql'
 import { swal } from '@/utils'
 
 import ProductionBasicInfoFragment from '@/graphql/fragments/production/ProductionBasicInfoFragment.gql'
@@ -91,6 +93,31 @@ export default {
     ProductionBanner,
     ClickableLink,
     TimeRemainingCountdown,
+  },
+  async beforeRouteLeave(to, from, next) {
+    if (!this.booking.id || this.paid) return next()
+
+    const { isDismissed } = await swal.fire({
+      title: "You haven't finished your booking!",
+      text: "You haven't yet paid for your booking. If you leave now, your reserved tickets will be released back for sale. Are you sure you want to leave?",
+      showConfirmButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Abandon Booking',
+      confirmButtonColor: '#d94519',
+      cancelButtonText: 'Keep editing',
+    })
+
+    if (isDismissed) return next(false)
+
+    // Delete their booking
+    this.$apollo.mutate({
+      mutation: DeleteBookingMutation,
+      variables: {
+        bookingId: this.booking.id,
+      },
+    })
+
+    return next()
   },
   middleware: 'authed',
   async asyncData({ params, app, error }) {
@@ -126,6 +153,7 @@ export default {
       ticketMatrix: null,
       previousBooking: null,
       currentStage: null,
+      paid: false,
     }
   },
   head() {

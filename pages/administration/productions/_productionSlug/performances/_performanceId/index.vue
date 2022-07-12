@@ -47,6 +47,14 @@
               {{ performance.start | dateFormat('dd MM y T ZZZZ') }}
             </table-row-item>
           </tr>
+          <tr v-if="performance.intervalDurationMins">
+            <table-head-item :text-left="false"
+              >Interval Length</table-head-item
+            >
+            <table-row-item>
+              {{ performance.intervalDurationMins }} minutes
+            </table-row-item>
+          </tr>
           <tr>
             <table-head-item :text-left="false">Ends</table-head-item>
             <table-row-item>

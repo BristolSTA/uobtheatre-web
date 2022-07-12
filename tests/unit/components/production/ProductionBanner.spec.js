@@ -241,6 +241,14 @@ describe('ProductionBanner', function () {
     expect(headerContainer.text()).to.not.contain('Tickets from £1.20')
   })
 
+  it.each([null, 10])('shows interval length when able', (duration) => {
+    createWithPerformances([Performance({ intervalDurationMins: duration })])
+
+    expect(fixTextSpacing(headerContainer.text())).to.contain(
+      duration ? `2 hours inc. interval` : '2 hours'
+    )
+  })
+
   const createWithPerformances = (
     performances,
     productionOverrides,

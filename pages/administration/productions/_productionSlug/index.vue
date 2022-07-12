@@ -116,7 +116,7 @@
                 <performance-status-badge :performance="performance" />
                 <badge
                   v-if="performance.minSeatPrice === 0"
-                  class="text-white bg-sta-rouge"
+                  class="text-white bg-sta-orange font-bold"
                   >Free</badge
                 >
               </table-row-item>
@@ -126,7 +126,10 @@
               <table-row-item>
                 {{ performance.doorsOpen | dateFormat('HH:mm ZZZZ') }}
                 <span class="text-sm">
-                  ({{ humanDuration(performance.durationMins) }})
+                  ({{ humanDuration(performance.durationMins)
+                  }}<template v-if="performance.intervalDurationMins">
+                    inc. interval</template
+                  >)
                 </span>
               </table-row-item>
               <table-row-item>{{ performance.venue.name }}</table-row-item>

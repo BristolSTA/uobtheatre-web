@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
+import { fixTextSpacing } from '@/tests/unit/helpers'
 
 import OverviewBox from '@/components/ui/Card.vue'
 import PerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue'
@@ -35,6 +36,15 @@ describe('Performance Overview', function () {
       )
       expect(performanceOverviewComponent.text()).to.contain(
         'Performance Starts: 16:00'
+      )
+    })
+    it.each([null, 10])('shows interval length when able', async (duration) => {
+      await performanceOverviewComponent.setProps({
+        performance: Performance({ intervalDurationMins: duration }),
+      })
+
+      expect(fixTextSpacing(performanceOverviewComponent.text())).to.contain(
+        duration ? `2 hours inc. ${duration} min interval` : '2 hours'
       )
     })
   })

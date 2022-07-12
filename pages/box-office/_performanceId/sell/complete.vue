@@ -8,22 +8,49 @@
       <tickets-overview :booking="booking" />
       <payment-overview :booking="booking" />
     </div>
-
-    <button
-      class="btn btn-orange font-semibold"
-      @click="goToMenu()"
-      @keypress="goToMenu()"
-    >
-      Back to Menu
-    </button>
+    <div class="flex flex-col mb-2">
+      <div class="flex justify-center mb-2">
+        <button
+          v-if="!checkedIn"
+          class="btn btn-green font-semibold animate-pulse animate w-52"
+          @click="changeTicketStatus(true)"
+          @keypress="changeTicketStatus(true)"
+        >
+          Check In Tickets
+        </button>
+        <template v-else>
+          <button
+            class="btn btn-outline btn-rouge font-semibold mr-1 w-52"
+            @click="changeTicketStatus(false)"
+            @keypress="changeTicketStatus(false)"
+          >
+            Revert Check-In
+          </button>
+          <button class="btn btn-outline disabled ml-1 w-52" disabled>
+            Tickets Checked In
+          </button>
+        </template>
+      </div>
+      <div class="flex justify-center">
+        <button
+          class="btn btn-orange font-semibold"
+          @click="goToMenu()"
+          @keypress="goToMenu()"
+        >
+          Back to Menu
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import { DateTime } from 'luxon'
 import Booking from '@/classes/Booking'
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue'
 import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue'
 import CheckInTickets from '@/graphql/mutations/box-office/CheckInTickets.gql'
+import UnCheckInTickets from '@/graphql/mutations/box-office/UnCheckInTickets.gql'
 import { performMutation, errorToast, successToast } from '@/utils'
 import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue'
 export default {
@@ -34,41 +61,65 @@ export default {
       type: Booking,
     },
   },
-  async mounted() {
+  data() {
+    return {
+      checkedIn: false,
+    }
+  },
+  mounted() {
     if (!this.booking.reference) return this.$router.push('../')
 
-    try {
-      await performMutation(
-        this.$apollo,
-        {
-          mutation: CheckInTickets,
-          variables: {
-            reference: this.booking.reference,
-            performanceId: this.booking.performance.id,
-            tickets: this.booking.tickets.map((ticket) => {
-              return {
-                ticketId: ticket.id,
-              }
-            }),
-          },
-        },
-        'checkInBooking'
-      )
-      successToast.fire({
-        timer: 4000,
-        title: 'Tickets automatically checked in',
-      })
-    } catch (e) {
-      errorToast.fire({
-        title: 'Unable to check in tickets automatically',
-      })
-    }
+    if (this.canAutoCheckIn()) this.changeTicketStatus(true)
   },
   beforeDestroy() {
     // Remove stored booking ID
     this.$store.commit('box-office/SET_IN_PROGRESS_BOOKING_ID', null)
   },
   methods: {
+    canAutoCheckIn() {
+      return this.performanceDoorsDiffMinutes() <= 15
+    },
+    performanceDoorsDiffMinutes() {
+      return DateTime.fromISO(this.booking.performance.doorsOpen)
+        .diff(DateTime.now())
+        .as('minutes')
+    },
+    async changeTicketStatus(checkingIn) {
+      try {
+        await performMutation(
+          this.$apollo,
+          {
+            mutation: checkingIn ? CheckInTickets : UnCheckInTickets,
+            variables: {
+              reference: this.booking.reference,
+              performanceId: this.booking.performance.id,
+              tickets: this.booking.tickets.map((ticket) => {
+                return {
+                  ticketId: ticket.id,
+                }
+              }),
+            },
+          },
+          checkingIn ? 'checkInBooking' : 'uncheckInBooking'
+        )
+
+        this.checkedIn = checkingIn
+        successToast.fire({
+          timer: 4000,
+          title: !checkingIn
+            ? 'Tickets un-checked in'
+            : this.canAutoCheckIn()
+            ? 'Tickets automatically checked in'
+            : 'Tickets un-checked in',
+        })
+      } catch (e) {
+        errorToast.fire({
+          title: checkingIn
+            ? 'Unable to check in tickets'
+            : 'Unable to un-check in tickets',
+        })
+      }
+    },
     goToMenu() {
       this.$router.push(`/box-office/${this.booking.performance.id}`)
     },
