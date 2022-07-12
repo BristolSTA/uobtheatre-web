@@ -61,6 +61,7 @@
             @hook:mounted="onChildMount"
             @select-performance="onSelectPerformance"
             @next-stage="navigateToStage()"
+            @paid="paid = true"
           />
         </div>
       </div>
@@ -94,7 +95,7 @@ export default {
     TimeRemainingCountdown,
   },
   async beforeRouteLeave(to, from, next) {
-    if (!this.booking.id) return next()
+    if (!this.booking.id || this.paid) return next()
 
     const { isDismissed } = await swal.fire({
       title: "You haven't finished your booking!",
@@ -152,6 +153,7 @@ export default {
       ticketMatrix: null,
       previousBooking: null,
       currentStage: null,
+      paid: false,
     }
   },
   head() {

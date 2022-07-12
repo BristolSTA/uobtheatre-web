@@ -164,6 +164,7 @@ export default {
       this.progressPopup.close()
     },
     onBookingComplete(reference) {
+      this.$emit('paid')
       swal
         .fire({
           icon: 'success',
