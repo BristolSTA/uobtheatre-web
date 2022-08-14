@@ -43,8 +43,6 @@ describe('Production Overview', function () {
     // correct warnings
     const warnings = overviewContainer.findComponent({ ref: 'warnings' })
     expect(warnings.exists()).to.be.true
-    expect(warnings.text()).to.contain('Strobe Lighting')
-    expect(warnings.text()).to.contain('Nudity')
 
     // correct medium for in person
     expect(overviewContainer.text()).to.contain('Medium: In Person Only')
@@ -79,8 +77,8 @@ describe('Production Overview', function () {
         },
       ],
       {
-        __dont_factory: ['warnings'],
-        warnings: [],
+        __dont_factory: ['contentWarnings'],
+        contentWarnings: [],
         ageRating: null,
         facebookEvent: null,
       }

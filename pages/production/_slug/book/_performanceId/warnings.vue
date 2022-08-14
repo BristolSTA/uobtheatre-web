@@ -21,14 +21,16 @@
       <p>
         This production features content warnings that may make it unsuitable or
         distressing to viewers. For more information, please contact
-        <a :href="`mailto:${contactEmail}`" class="underline">{{
-          contactEmail
+        <a :href="`mailto:${production.supportEmail}`" class="underline">{{
+          production.supportEmail
         }}</a
         >.
       </p>
 
       <hr class="my-2 border-sta-gray-light" />
-      <content-warnings-display :content-warnings="contentWarningData" />
+      <content-warnings-display
+        :content-warnings="production.contentWarnings"
+      />
     </div>
     <div>
       <button
@@ -72,32 +74,6 @@ export default {
       required: true,
       type: Booking,
     },
-  },
-  data() {
-    return {
-      contentWarningData: [
-        // TODO: Remove and replace with actual data
-        {
-          name: 'Themes of Suicide',
-          description: null,
-        },
-        {
-          name: 'Themes of Gore',
-          description: 'Lots of blood everywhere',
-        },
-        {
-          name: 'Themes of Mental Illness',
-        },
-        {
-          name: 'Strobe Lighting',
-        },
-        {
-          name: 'Other',
-          description: 'Use of fake blood throughout performance',
-        },
-      ],
-      contactEmail: 'email@address.com', // TODO: Remove and replace with actual data
-    }
   },
   methods: {
     onUnderstood() {
