@@ -14,9 +14,9 @@
       "
     >
       <div class="flex justify-between items-center">
-        <h3>{{ contentWarning.name }}</h3>
+        <h3>{{ contentWarning.warning.shortDescription }}</h3>
         <div
-          v-if="contentWarning.description"
+          v-if="expandable"
           class="rounded px-1"
           :class="{
             'border group-hover:border-0 group-hover:bg-white group-hover:text-gray-700':
@@ -29,10 +29,10 @@
       </div>
     </component>
     <div
-      v-if="contentWarning.description && expanded"
+      v-if="expandable && expanded"
       class="p-3 bg-gray-700 overflow-x-auto rounded-bl rounded-br"
     >
-      {{ contentWarning.description }}
+      {{ description }}
     </div>
   </div>
 </template>
@@ -56,7 +56,13 @@ export default {
   },
   computed: {
     expandable() {
-      return this.contentWarning.description
+      return !!this.description
+    },
+    description() {
+      return (
+        this.contentWarning.information ??
+        this.contentWarning.warning.longDescription
+      )
     },
   },
   watch: {

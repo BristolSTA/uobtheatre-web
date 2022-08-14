@@ -53,7 +53,10 @@ export default {
     name: 'Content Warnings',
     routeName: 'production-slug-book-performanceId-warnings',
     shouldBeUsed: (production, booking) => {
-      return production.warnings.length > 0 || booking?.performance?.description
+      return (
+        production.contentWarnings.length > 0 ||
+        booking?.performance?.description
+      )
     },
   }),
   components: {

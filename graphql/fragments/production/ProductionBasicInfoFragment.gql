@@ -24,8 +24,10 @@ fragment ProductionBasicInfo on ProductionNode {
   start
   end
   minSeatPrice
-  warnings {
-    description
+  contentWarnings {
+    warning {
+      shortDescription
+    }
   }
   isBookable
 }

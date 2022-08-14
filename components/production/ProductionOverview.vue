@@ -31,17 +31,20 @@
               This production features content warnings that may make it
               unsuitable or distressing to viewers. For more information, please
               contact
-              <a :href="`mailto:${contactEmail}`" class="underline">{{
-                contactEmail
-              }}</a
+              <a
+                :href="`mailto:${production.supportEmail}`"
+                class="underline"
+                >{{ production.supportEmail }}</a
               >.
             </p>
             <hr class="my-1 border-sta-gray-light" />
-            <content-warnings-display :content-warnings="contentWarningData" />
+            <content-warnings-display
+              :content-warnings="production.contentWarnings"
+            />
           </div>
         </modal>
         <button
-          v-if="production.warnings.length"
+          v-if="production.contentWarnings.length"
           ref="warnings"
           class="
             p-3
@@ -118,18 +121,6 @@ export default {
   },
   data() {
     return {
-      contentWarningData: [
-        // TODO: Remove and replace with actual data
-        {
-          name: 'Suicide',
-          description: null,
-        },
-        {
-          name: 'Gore',
-          description: 'Lots of blood everywhere',
-        },
-      ],
-      contactEmail: 'email@address.com', // TODO: Remove and replace with actual data
       showContentWarningsDetail: false,
     }
   },

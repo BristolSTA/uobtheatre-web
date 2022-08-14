@@ -5,6 +5,7 @@ query productionBySlug($slug: String!) {
     id
     subtitle
     description
+    supportEmail
     society {
       id
       name
@@ -32,9 +33,13 @@ query productionBySlug($slug: String!) {
     start
     end
     minSeatPrice
-    warnings {
-      id
-      description
+    contentWarnings {
+      information
+      warning {
+        id
+        shortDescription
+        longDescription
+      }
     }
     performances(orderBy: "start", disabled: false) {
       edges {

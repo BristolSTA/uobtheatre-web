@@ -34,14 +34,17 @@
             <icon-list-item icon="clock">
               {{ humanDuration(performance.durationMins) }}
             </icon-list-item>
-            <div v-if="production.warnings.length" class="flex justify-center">
+            <div
+              v-if="production.contentWarnings.length"
+              class="flex justify-center"
+            >
               <div class="m-2 px-3 py-2 w-full bg-sta-rouge">
                 <p class="font-semibold">Warnings:</p>
                 <div
-                  v-for="(warning, index) in production.warnings"
+                  v-for="(warning, index) in production.contentWarnings"
                   :key="index"
                 >
-                  <p class="px-2">- {{ warning.description }}</p>
+                  <p class="px-2">- {{ warning.warning.shortDescription }}</p>
                 </div>
               </div>
             </div>

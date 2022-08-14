@@ -3,7 +3,8 @@ query warnings {
     edges {
       node {
         id
-        description
+        shortDescription
+        longDescription
       }
     }
   }

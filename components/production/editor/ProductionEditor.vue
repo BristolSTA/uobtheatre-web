@@ -74,6 +74,15 @@
             @input="$emit('update:subtitle', $event)"
           />
         </form-label>
+        <form-label :errors="errors" name="supportEmail" :required="true">
+          Support Email Address
+          <template #control>
+            <t-input
+              :value="supportEmail"
+              @input="$emit('update:supportEmail', $event)"
+            />
+          </template>
+        </form-label>
         <form-label :errors="errors" name="description" :required="true">
           Description
           <template #control>
@@ -84,30 +93,40 @@
           </template>
         </form-label>
         <form-label :errors="errors" name="warnings">
-          Audience Warnings
+          Content Warnings
           <template #control>
-            <div
-              class="
-                grid
-                gap-1
-                grid-flow-row
-                2xl:grid-cols-4
-                lg:grid-cols-3
-                grid-cols-2
-              "
-            >
-              <div v-for="(warning, index) in availableWarnings" :key="index">
-                <input
-                  type="checkbox"
-                  :checked="
-                    warnings.find(
-                      (currentWarning) => currentWarning.id === warning.id
-                    )
-                  "
-                  @change="updateWarnings(warning, $event.target.checked)"
-                />
-                {{ warning.description }}
-              </div>
+            <div>
+              <table class="w-full">
+                <tr
+                  v-for="contentWarning in contentWarnings"
+                  :key="contentWarning.warning.id"
+                >
+                  <th>{{ contentWarning.warning.shortDescription }}</th>
+                  <td>
+                    <textarea
+                      v-model="contentWarning.information"
+                      class="w-full text-black"
+                      type="text"
+                      :placeholder="
+                        contentWarning.information
+                          ? contentWarning.information
+                          : contentWarning.warning.longDescription
+                          ? contentWarning.warning.longDescription
+                          : 'You can provide extended information about this content warning here'
+                      "
+                    ></textarea>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div>
+              <sta-button
+                class="bg-sta-green"
+                icon="plus-circle"
+                :small="true"
+                @click="onAddWarning"
+                >Add</sta-button
+              >
             </div>
           </template>
         </form-label>
@@ -239,10 +258,10 @@ import Errors from '@/classes/Errors'
 
 import imageUpload from '@/services/imageUploadService'
 import { v4 as uuid } from 'uuid'
-import map from 'lodash/map'
 import kebabCase from 'lodash/kebabCase'
 import ErrorHelper from '@/components/ui/ErrorHelper.vue'
 import StaButton from '@/components/ui/StaButton.vue'
+import { swal } from '@/utils'
 import ImageInput from '../../ui/Inputs/ImageInput.vue'
 import FormLabel from '../../ui/FormLabel.vue'
 import Card from '../../ui/Card.vue'
@@ -273,11 +292,15 @@ export default {
       type: String,
       default: null,
     },
+    supportEmail: {
+      type: String,
+      default: null,
+    },
     description: {
       type: String,
       default: null,
     },
-    warnings: {
+    contentWarnings: {
       default: () => [],
       type: Array,
     },
@@ -337,13 +360,37 @@ export default {
   },
   methods: {
     kebabCase,
+    async onAddWarning() {
+      const { value } = await swal.fire({
+        input: 'select',
+        inputOptions: Object.fromEntries(
+          this.availableWarnings
+            .filter(
+              (warning) =>
+                !this.contentWarnings
+                  .map((cw) => cw.warning.id)
+                  .includes(warning.id)
+            )
+            .map((warning) => [warning.id, warning.shortDescription])
+        ),
+        showCancelButton: true,
+        confirmButtonText: 'Add',
+      })
+
+      if (!value) return
+
+      this.updateWarnings(
+        this.availableWarnings.find((warning) => warning.id === value),
+        true
+      )
+    },
     updateWarnings(warning, include) {
       return this.$emit(
-        'update:warnings',
+        'update:contentWarnings',
         include
-          ? [...this.warnings, warning]
-          : this.warnings.filter(
-              (currentWarning) => currentWarning.id !== warning.id
+          ? [...this.contentWarnings, { information: null, warning }]
+          : this.contentWarnings.filter(
+              (currentWarning) => currentWarning.warning.id !== warning.id
             )
       )
     },
@@ -379,7 +426,11 @@ export default {
         description: this.description,
         ageRating: this.ageRating,
         facebookEvent: this.facebookEvent,
-        warnings: map(this.warnings, 'id'),
+        supportEmail: this.supportEmail,
+        contentWarnings: this.contentWarnings.map((cw) => ({
+          id: cw.warning.id,
+          information: cw.information,
+        })),
         society: this.society?.id,
         ...images,
       }
