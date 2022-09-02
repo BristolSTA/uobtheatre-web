@@ -61,6 +61,10 @@ module.exports = {
       },
       minWidth: {
         '1/2': '50%',
+        '1/3': '33%',
+      },
+      width: {
+        '1/3-screen': '33vw',
       },
       minHeight: {
         '25vh': '25vh',

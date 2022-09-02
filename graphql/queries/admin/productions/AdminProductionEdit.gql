@@ -3,6 +3,7 @@ query adminProductionEdit($slug: String!) {
     id
     name
     subtitle
+    supportEmail
     society {
       id
       name
@@ -13,9 +14,13 @@ query adminProductionEdit($slug: String!) {
     }
     slug
     description
-    warnings {
-      id
-      description
+    contentWarnings {
+      information
+      warning {
+        id
+        shortDescription
+        longDescription
+      }
     }
     coverImage {
       id

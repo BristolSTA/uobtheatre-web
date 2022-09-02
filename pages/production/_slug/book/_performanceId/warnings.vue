@@ -13,16 +13,24 @@
       </template>
       {{ booking.performance.description }}
     </card>
-    <div class="mb-2 p-6 pt-3 text-white bg-sta-rouge">
-      <h2 class="text-h3 sm:text-h2">
-        Please note the following warnings for this production:
-      </h2>
+    <div class="mb-2 p-6 pt-3 text-white">
+      <h3 class="text-h3 font-semibold">
+        <font-awesome-icon icon="exclamation-triangle" class="text-sta-rouge" />
+        Content Warnings
+      </h3>
+      <p>
+        This production features content warnings that may make it unsuitable or
+        distressing to viewers. For more information, please contact
+        <a :href="`mailto:${production.supportEmail}`" class="underline">{{
+          production.supportEmail
+        }}</a
+        >.
+      </p>
 
-      <ul class="list-inside list-disc">
-        <li v-for="(warning, index) in production.warnings" :key="index">
-          {{ warning.description }}
-        </li>
-      </ul>
+      <hr class="my-2 border-sta-gray-light" />
+      <content-warnings-display
+        :content-warnings="production.contentWarnings"
+      />
     </div>
     <div>
       <button
@@ -40,17 +48,22 @@
 import BookingStage from '@/classes/BookingStage'
 import Booking from '@/classes/Booking'
 import Card from '@/components/ui/Card.vue'
+import ContentWarningsDisplay from '@/components/production/content-warnings/ContentWarningsDisplay.vue'
 
 export default {
   stageInfo: new BookingStage({
-    name: 'Auidence Warnings',
+    name: 'Content Warnings',
     routeName: 'production-slug-book-performanceId-warnings',
     shouldBeUsed: (production, booking) => {
-      return production.warnings.length > 0 || booking?.performance?.description
+      return (
+        production.contentWarnings.length > 0 ||
+        booking?.performance?.description
+      )
     },
   }),
   components: {
     Card,
+    ContentWarningsDisplay,
   },
   props: {
     production: {

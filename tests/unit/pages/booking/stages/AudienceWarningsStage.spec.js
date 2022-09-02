@@ -43,7 +43,7 @@ describe('Audience Warnings Stage', () => {
     beforeAll(() => {
       warningComponent = mount(AudienceWarningsStage, {
         propsData: {
-          production: Production({ warnings: [] }),
+          production: Production({ contentWarnings: [] }),
           booking: BookingCls.fromAPIData(Booking()),
         },
       })
