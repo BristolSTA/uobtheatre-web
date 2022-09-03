@@ -74,7 +74,7 @@
             {{ displayStartEnd(production.start, production.end, 'd MMMM') }}
           </p>
           <p>
-            {{ oneLiner(production.description) | truncate(230) }}
+            {{ production.excerpt }}
           </p>
           <NuxtLink
             :to="`/production/${production.slug}`"

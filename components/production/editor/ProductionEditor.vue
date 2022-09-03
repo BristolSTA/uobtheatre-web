@@ -92,6 +92,13 @@
             />
           </template>
         </form-label>
+        <form-label :errors="errors" name="excerptText">
+          Excerpt
+          <t-input
+            :value="excerptText"
+            @input="$emit('update:excerptText', $event)"
+          />
+        </form-label>
         <form-label :errors="errors" name="warnings">
           Content Warnings
           <template #control>
@@ -300,6 +307,10 @@ export default {
       type: String,
       default: null,
     },
+    excerptText: {
+      type: String,
+      default: null,
+    },
     contentWarnings: {
       default: () => [],
       type: Array,
@@ -424,9 +435,10 @@ export default {
         slug: this.slug,
         subtitle: this.subtitle,
         description: this.description,
+        excerptText: this.excerptText,
         ageRating: this.ageRating,
         facebookEvent: this.facebookEvent,
-        supportEmail: this.supportEmail,
+        // supportEmail: this.supportEmail,
         contentWarnings: this.contentWarnings.map((cw) => ({
           id: cw.warning.id,
           information: cw.information,
