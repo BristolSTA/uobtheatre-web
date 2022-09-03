@@ -75,6 +75,13 @@
             <rich-text-input v-model="production.description" />
           </template>
         </form-label>
+        <form-label :errors="errors" name="excerptText">
+          Excerpt
+          <t-input
+            :value="excerptText"
+            @input="$emit('update:excerptText', $event)"
+          />
+        </form-label>
         <form-label :errors="errors" name="warnings">
           Content Warnings
           <template #control>
