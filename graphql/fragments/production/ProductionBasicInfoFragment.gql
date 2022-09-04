@@ -3,7 +3,7 @@ fragment ProductionBasicInfo on ProductionNode {
   name
   subtitle
   description
-  supportEmail
+  contactEmail
   society {
     id
     name

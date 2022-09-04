@@ -5,7 +5,7 @@ query productionBySlug($slug: String!) {
     id
     subtitle
     description
-    supportEmail
+    contactEmail
     society {
       id
       name

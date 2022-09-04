@@ -74,13 +74,17 @@
             @input="$emit('update:subtitle', $event)"
           />
         </form-label>
-        <form-label :errors="errors" name="supportEmail" :required="true">
-          Support Email Address
+        <form-label :errors="errors" name="contactEmail" :required="true">
+          Contact Email Address
           <template #control>
             <t-input
-              :value="supportEmail"
-              @input="$emit('update:supportEmail', $event)"
+              :value="contactEmail"
+              @input="$emit('update:contactEmail', $event)"
             />
+          </template>
+          <template #helper>
+            This email will be shown to people equiring about accessibility and
+            content warnings.
           </template>
         </form-label>
         <form-label :errors="errors" name="description" :required="true">
@@ -292,7 +296,7 @@ export default {
       type: String,
       default: null,
     },
-    supportEmail: {
+    contactEmail: {
       type: String,
       default: null,
     },
@@ -426,7 +430,7 @@ export default {
         description: this.description,
         ageRating: this.ageRating,
         facebookEvent: this.facebookEvent,
-        supportEmail: this.supportEmail,
+        contactEmail: this.contactEmail,
         contentWarnings: this.contentWarnings.map((cw) => ({
           id: cw.warning.id,
           information: cw.information,

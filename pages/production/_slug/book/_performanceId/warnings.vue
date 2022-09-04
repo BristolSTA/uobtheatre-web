@@ -21,8 +21,8 @@
       <p>
         This production features content warnings that may make it unsuitable or
         distressing to viewers. For more information, please contact
-        <a :href="`mailto:${production.supportEmail}`" class="underline">{{
-          production.supportEmail
+        <a :href="`mailto:${production.contactEmail}`" class="underline">{{
+          production.contactEmail
         }}</a
         >.
       </p>

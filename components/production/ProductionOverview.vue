@@ -32,9 +32,9 @@
               unsuitable or distressing to viewers. For more information, please
               contact
               <a
-                :href="`mailto:${production.supportEmail}`"
+                :href="`mailto:${production.contactEmail}`"
                 class="underline"
-                >{{ production.supportEmail }}</a
+                >{{ production.contactEmail }}</a
               >.
             </p>
             <hr class="my-1 border-sta-gray-light" />
