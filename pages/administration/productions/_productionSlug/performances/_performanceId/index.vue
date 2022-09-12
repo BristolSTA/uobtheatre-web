@@ -278,7 +278,7 @@ export default {
       const data = await performMutation(
         this.$apollo,
         {
-          mutation: require('@/graphql/mutations/admin/GenerateReport.gql'),
+          mutation: require('@/graphql/mutations/admin/reports/GenerateReport.gql'),
           variables: {
             name: 'PerformanceBookings',
             options: [{ name: 'id', value: this.performance.id }],
