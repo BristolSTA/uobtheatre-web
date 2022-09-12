@@ -365,7 +365,7 @@ export default {
   methods: {
     kebabCase,
     async onAddWarning() {
-      const { value } = await swal.fire({
+      const { value: warningId } = await swal.fire({
         input: 'select',
         inputOptions: Object.fromEntries(
           this.availableWarnings
@@ -381,18 +381,37 @@ export default {
         confirmButtonText: 'Add',
       })
 
-      if (!value) return
+      if (!warningId) return
+
+      const warningDescriptors = [
+        'Contains themes throughout',
+        'Contains references in dialogue',
+        'Contains graphic references in dialogue',
+        'Contains depiction of this trigger',
+      ]
+
+      const { value: descriptorIndex } = await swal.fire({
+        title: 'Please choose a description for this content warning',
+        text: 'Note that you can provide a custom, more detailed description by clicking the button below',
+        input: 'select',
+        inputOptions: warningDescriptors,
+        showCancelButton: true,
+        cancelButtonText: 'Let me add my own description',
+        inputPlaceholder: 'Select a description',
+        confirmButtonText: 'Finish',
+      })
 
       this.updateWarnings(
-        this.availableWarnings.find((warning) => warning.id === value),
-        true
+        this.availableWarnings.find((warning) => warning.id === warningId),
+        true,
+        descriptorIndex ? warningDescriptors[descriptorIndex] : null
       )
     },
-    updateWarnings(warning, include) {
+    updateWarnings(warning, include, information = null) {
       return this.$emit(
         'update:contentWarnings',
         include
-          ? [...this.contentWarnings, { information: null, warning }]
+          ? [...this.contentWarnings, { information, warning }]
           : this.contentWarnings.filter(
               (currentWarning) => currentWarning.warning.id !== warning.id
             )
