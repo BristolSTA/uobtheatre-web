@@ -4,14 +4,8 @@ fragment BookingPaymentDetails on BookingNode {
       node {
         id
         createdAt
-        type {
-          value
-          description
-        }
-        provider {
-          value
-          description
-        }
+        type
+        provider
         value
         cardBrand
         last4

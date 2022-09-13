@@ -107,7 +107,7 @@ export default {
       if (
         data.performance.bookings.edges.length &&
         !data.performance.bookings.edges[0].node.expired &&
-        data.performance.bookings.edges[0].node.status.value === 'IN_PROGRESS'
+        data.performance.bookings.edges[0].node.status === 'IN_PROGRESS'
       ) {
         this.booking.updateFromAPIData(data.performance.bookings.edges[0].node)
       } else {

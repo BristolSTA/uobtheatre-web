@@ -6,15 +6,15 @@
     </template>
     <template #subtitle>
       <p class="text-h4">
-        {{ booking.status.description }}
-        <template v-if="mainPayment && booking.status.value == 'PAID'">
+        {{ new BookingStatusEnum(booking.status).value }}
+        <template v-if="mainPayment && booking.status == 'PAID'">
           using
           <template v-if="mainPayment.cardBrand && mainPayment.last4"
             >{{ mainPayment.cardBrand.replace('_', ' ') }} ending
             {{ mainPayment.last4 }}</template
           >
           <template v-else>{{
-            mainPayment.provider.description.replace('_', ' ').toLowerCase()
+            new ProviderNameEnum(mainPayment.provider).name
           }}</template>
         </template>
       </p>
@@ -41,6 +41,8 @@
 import { DateTime } from 'luxon'
 
 import Booking from '@/classes/Booking'
+import BookingStatusEnum from '@/enums/PayableStatusEnum'
+import ProviderNameEnum from '@/enums/TransactionProviderNameEnum'
 
 import OverviewBox from '../../ui/Card.vue'
 export default {
@@ -51,6 +53,12 @@ export default {
       required: true,
       type: Booking,
     },
+  },
+  data() {
+    return {
+      BookingStatusEnum,
+      ProviderNameEnum,
+    }
   },
   computed: {
     mainPayment() {

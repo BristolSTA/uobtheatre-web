@@ -6,10 +6,7 @@ fragment DetailedBookingDetails on BookingNode {
   reference
   expired
   expiresAt
-  status {
-    value
-    description
-  }
+  status
   user {
     id
     firstName

@@ -271,7 +271,7 @@ export default {
           ? data.performance.bookings.edges[0].node
           : null,
       result() {
-        if (this.refreshedBooking.status.value === 'PAID') {
+        if (this.refreshedBooking.status === 'PAID') {
           this.bookingCompleted(this.refreshedBooking)
         }
       },
