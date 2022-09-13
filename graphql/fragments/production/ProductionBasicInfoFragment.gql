@@ -17,9 +17,7 @@ fragment ProductionBasicInfo on ProductionNode {
     id
     url
   }
-  status {
-    value
-  }
+  status
   ageRating
   slug
   start
