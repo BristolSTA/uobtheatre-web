@@ -13,10 +13,7 @@ export default (overrides = {}) => {
       reference: 'yOIYg6Co8vGR',
       user: UserNode(),
       performance: PerformanceNode(),
-      status: {
-        value: 'PAID',
-        description: 'Paid',
-      },
+      status: 'PAID',
       tickets: [Ticket()],
       priceBreakdown: PriceBreakdown(),
       transactions: GenericNodeConnection([Payment()]),

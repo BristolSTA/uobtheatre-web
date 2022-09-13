@@ -6,7 +6,7 @@
     </template>
     <template #subtitle>
       <p class="text-h4">
-        {{ new BookingStatusEnum(booking.status).value }}
+        {{ new BookingStatusEnum(booking.status).name }}
         <template v-if="mainPayment && booking.status == 'PAID'">
           using
           <template v-if="mainPayment.cardBrand && mainPayment.last4"
