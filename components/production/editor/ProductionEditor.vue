@@ -92,11 +92,11 @@
             />
           </template>
         </form-label>
-        <form-label :errors="errors" name="excerptText">
-          Excerpt
+        <form-label :errors="errors" name="shortDescription">
+          Shortdescription
           <t-input
-            :value="excerptText"
-            @input="$emit('update:excerptText', $event)"
+            :value="shortDescription"
+            @input="$emit('update:shortDescription', $event)"
           />
         </form-label>
         <form-label :errors="errors" name="warnings">
@@ -307,7 +307,7 @@ export default {
       type: String,
       default: null,
     },
-    excerptText: {
+    shortDescription: {
       type: String,
       default: null,
     },
@@ -435,7 +435,7 @@ export default {
         slug: this.slug,
         subtitle: this.subtitle,
         description: this.description,
-        excerptText: this.excerptText,
+        shortDescription: this.shortDescription,
         ageRating: this.ageRating,
         facebookEvent: this.facebookEvent,
         // supportEmail: this.supportEmail,

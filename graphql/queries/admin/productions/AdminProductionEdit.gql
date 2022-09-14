@@ -14,7 +14,7 @@ query adminProductionEdit($slug: String!) {
     }
     slug
     description
-    excerptText
+    shortDescription
     contentWarnings {
       information
       warning {
