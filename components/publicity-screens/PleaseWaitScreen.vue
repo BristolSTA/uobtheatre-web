@@ -4,9 +4,9 @@
       Welcome to this performance of<br />
       <span class="text-sta-gold text-rlg">{{ production.name }}</span>
     </h1>
-    <img
+    <production-featured-image
       class="flex-shrink"
-      :src="production.featuredImage.url"
+      :image-object="production.featuredImage"
       style="max-width: 100%; width: 50vw"
     />
     <h2 class="text-rmd">
@@ -16,7 +16,9 @@
 </template>
 
 <script>
+import ProductionFeaturedImage from '../production/ProductionFeaturedImage.vue'
 export default {
+  components: { ProductionFeaturedImage },
   props: {
     performance: {
       required: true,
