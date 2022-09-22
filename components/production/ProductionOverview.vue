@@ -3,10 +3,10 @@
     <div
       class="flex-none order-1 w-full text-center sm:w-auto lg:mb-0 lg:w-auto"
     >
-      <img
+      <production-poster-image
         ref="poster-image"
         class="inline-block max-h-80"
-        :src="production.posterImage.url"
+        :image-object="production.posterImage"
         alt="show poster"
       />
     </div>
@@ -21,18 +21,61 @@
         <p v-if="production.ageRating" ref="age-rating">
           Ages {{ production.ageRating }}+
         </p>
-        <div
-          v-if="production.warnings.length"
-          ref="warnings"
-          class="p-3 bg-sta-rouge"
+        <modal
+          v-if="showContentWarningsDetail"
+          @close="showContentWarningsDetail = false"
         >
-          <span class="text-xl font-semibold uppercase">Audience Warnings</span>
-          <ul class="list-inside list-disc">
-            <li v-for="(warning, index) in production.warnings" :key="index">
-              {{ warning.description }}
-            </li>
-          </ul>
-        </div>
+          <div class="lg:w-1/3-screen">
+            <h2 class="text-lg font-semibold">Content Warnings</h2>
+            <p>
+              This production features content warnings that may make it
+              unsuitable or distressing to viewers. For more information, please
+              contact
+              <a
+                :href="`mailto:${production.contactEmail}`"
+                class="underline"
+                >{{ production.contactEmail }}</a
+              >.
+            </p>
+            <hr class="my-1 border-sta-gray-light" />
+            <content-warnings-display
+              :content-warnings="production.contentWarnings"
+            />
+          </div>
+        </modal>
+        <button
+          v-if="production.contentWarnings.length"
+          ref="warnings"
+          class="
+            p-3
+            bg-sta-rouge
+            rounded-md
+            hover:bg-sta-rouge-dark
+            transition-colors
+            scale-110
+            flex
+            gap-2
+            items-center
+            flex-wrap
+            lg:flex-nowrap
+            justify-center
+          "
+          @click="showContentWarningsDetail = true"
+        >
+          This production has content warnings.
+          <div
+            class="
+              text-right
+              min-w-max
+              flex
+              items-center
+              justify-items-center
+              gap-1
+            "
+          >
+            See More <font-awesome-icon icon="chevron-right" />
+          </div>
+        </button>
         <p>
           A production by
           <NuxtLink
@@ -61,16 +104,24 @@
 <script>
 import IconListItem from '@/components/ui/IconListItem.vue'
 import TipTapOutput from '@/components/ui/TipTapOutput.vue'
+import Modal from '../ui/Modal.vue'
+import ContentWarningsDisplay from './content-warnings/ContentWarningsDisplay.vue'
+import ProductionPosterImage from './ProductionPosterImage.vue'
 export default {
   components: {
     IconListItem,
     TipTapOutput,
+    Modal,
+    ContentWarningsDisplay,
+    ProductionPosterImage,
   },
   props: {
-    production: {
-      required: true,
-      type: Object,
-    },
+    production: { required: true, type: Object },
+  },
+  data() {
+    return {
+      showContentWarningsDetail: false,
+    }
   },
   computed: {
     medium() {

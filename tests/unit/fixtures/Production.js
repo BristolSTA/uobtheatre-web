@@ -36,7 +36,10 @@ export default (overrides = {}, includePerformance = false) => {
       venues: [Venue({}, undefined, false)],
       productionTeam: [ProductionTeamMember()],
       society: Society(),
-      warnings: [{ description: 'Strobe Lighting' }, { description: 'Nudity' }],
+      contentWarnings: [
+        { warning: { shortDescription: 'Strobe Lighting' } },
+        { warning: { shortDescription: 'Nudity' } },
+      ],
       performances: includePerformance
         ? GenericNodeConnection([Performance()])
         : GenericNodeConnection(),

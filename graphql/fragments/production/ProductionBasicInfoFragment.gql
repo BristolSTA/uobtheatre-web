@@ -3,6 +3,7 @@ fragment ProductionBasicInfo on ProductionNode {
   name
   subtitle
   description
+  contactEmail
   society {
     id
     name
@@ -24,8 +25,13 @@ fragment ProductionBasicInfo on ProductionNode {
   start
   end
   minSeatPrice
-  warnings {
-    description
+  contentWarnings {
+    information
+    warning {
+      id
+      shortDescription
+      longDescription
+    }
   }
   isBookable
 }

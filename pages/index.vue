@@ -52,8 +52,8 @@
           :class="[index % 2 == 0 ? 'md:text-right' : 'md:text-left']"
         >
           <NuxtLink :to="`/production/${production.slug}`">
-            <img
-              :src="production.featuredImage.url"
+            <production-featured-image
+              :image-object="production.featuredImage"
               :alt="`${production.name} feature image`"
               class="inline-block"
               style="max-height: 300px"
@@ -114,9 +114,10 @@ import lo from 'lodash'
 import Carousel from '@/components/ui/Carousel.vue'
 import { displayStartEnd } from '@/utils'
 import { oneLiner } from '@/utils/lang'
+import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue'
 
 export default {
-  components: { Carousel },
+  components: { Carousel, ProductionFeaturedImage },
   data() {
     return {
       upcomingProductions: [],
