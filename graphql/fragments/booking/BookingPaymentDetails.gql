@@ -5,7 +5,9 @@ fragment BookingPaymentDetails on BookingNode {
         id
         createdAt
         type
-        provider
+        providerName
+        providerTransactionId
+        providerFee
         value
         cardBrand
         last4
