@@ -32,8 +32,8 @@
             "
             @click="selectedPerformance = performance"
           >
-            <img
-              :src="performance.production.featuredImage.url"
+            <production-featured-image
+              :image-object="performance.production.featuredImage"
               class="w-full"
             />
             <h3 class="text-sta-orange text-xl font-semibold">
@@ -78,8 +78,9 @@
 import BoxOfficePerformancesAvailable from '@/graphql/queries/box-office/BoxOfficePerformancesAvailable.gql'
 import { DateTime } from 'luxon'
 import LoadingContainer from '@/components/ui/LoadingContainer.vue'
+import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue'
 export default {
-  components: { LoadingContainer },
+  components: { LoadingContainer, ProductionFeaturedImage },
   middleware: ['authed', 'can-boxoffice'],
   data() {
     return {

@@ -26,6 +26,7 @@ fragment ProductionBasicInfo on ProductionNode {
   contentWarnings {
     information
     warning {
+      id
       shortDescription
       longDescription
     }

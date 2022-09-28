@@ -105,7 +105,18 @@
                   v-for="contentWarning in contentWarnings"
                   :key="contentWarning.warning.id"
                 >
-                  <th>{{ contentWarning.warning.shortDescription }}</th>
+                  <th>
+                    {{ contentWarning.warning.shortDescription }}
+                    <p>
+                      <sta-button
+                        icon="trash"
+                        :small="true"
+                        colour="rouge"
+                        @click="updateWarnings(contentWarning.warning, false)"
+                        >Remove</sta-button
+                      >
+                    </p>
+                  </th>
                   <td>
                     <textarea
                       v-model="contentWarning.information"
@@ -383,6 +394,10 @@ export default {
 
       if (!warningId) return
 
+      const warning = this.availableWarnings.find(
+        (warning) => warning.id === warningId
+      )
+
       const warningDescriptors = [
         'Contains themes throughout',
         'Contains references in dialogue',
@@ -391,7 +406,7 @@ export default {
       ]
 
       const { value: descriptorIndex } = await swal.fire({
-        title: 'Please choose a description for this content warning',
+        title: `Please choose a description for "<strong>${warning.shortDescription}</strong>"`,
         text: 'Note that you can provide a custom, more detailed description by clicking the button below',
         input: 'select',
         inputOptions: warningDescriptors,
@@ -402,7 +417,7 @@ export default {
       })
 
       this.updateWarnings(
-        this.availableWarnings.find((warning) => warning.id === warningId),
+        warning,
         true,
         descriptorIndex ? warningDescriptors[descriptorIndex] : null
       )

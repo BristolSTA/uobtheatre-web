@@ -3,10 +3,10 @@
     <div
       class="flex-none order-1 w-full text-center sm:w-auto lg:mb-0 lg:w-auto"
     >
-      <img
+      <production-poster-image
         ref="poster-image"
         class="inline-block max-h-80"
-        :src="production.posterImage.url"
+        :image-object="production.posterImage"
         alt="show poster"
       />
     </div>
@@ -106,18 +106,17 @@ import IconListItem from '@/components/ui/IconListItem.vue'
 import TipTapOutput from '@/components/ui/TipTapOutput.vue'
 import Modal from '../ui/Modal.vue'
 import ContentWarningsDisplay from './content-warnings/ContentWarningsDisplay.vue'
+import ProductionPosterImage from './ProductionPosterImage.vue'
 export default {
   components: {
     IconListItem,
     TipTapOutput,
     Modal,
     ContentWarningsDisplay,
+    ProductionPosterImage,
   },
   props: {
-    production: {
-      required: true,
-      type: Object,
-    },
+    production: { required: true, type: Object },
   },
   data() {
     return {

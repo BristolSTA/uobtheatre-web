@@ -12,10 +12,10 @@
     "
   >
     <NuxtLink :to="`/production/${production.slug}`">
-      <img
+      <production-featured-image
         class="max-w-full"
-        :src="production.featuredImage.url"
-        alt="show poster"
+        :image-object="production.featuredImage"
+        alt="Production feature image"
       />
       <h2
         class="
@@ -36,7 +36,9 @@
 
 <script>
 import { displayStartEnd } from '@/utils'
+import ProductionFeaturedImage from './ProductionFeaturedImage.vue'
 export default {
+  components: { ProductionFeaturedImage },
   props: {
     production: {
       required: true,

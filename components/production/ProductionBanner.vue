@@ -3,10 +3,10 @@
     class="flex flex-wrap items-center justify-center space-x-0 md:space-x-10"
   >
     <div class="relative inline-block m-8 w-full max-w-xl md:w-2/3">
-      <img
+      <production-featured-image
         ref="featured-image"
         class="p-4 w-full sm:p-8"
-        :src="production.featuredImage.url"
+        :image-object="production.featuredImage"
         :alt="`${production.name} feature image`"
       />
       <img
@@ -108,10 +108,11 @@ import lo from 'lodash'
 
 import IconListItem from '@/components/ui/IconListItem.vue'
 import { displayStartEnd } from '@/utils'
+import ProductionFeaturedImage from './ProductionFeaturedImage.vue'
 
 export default {
   name: 'ProductionBanner',
-  components: { IconListItem },
+  components: { IconListItem, ProductionFeaturedImage },
   props: {
     production: {
       required: true,

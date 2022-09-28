@@ -118,13 +118,15 @@ export default {
           hid: 'og:description',
           name: 'og:description',
           content: description,
-        },
-        {
+        }
+      )
+      if (this.production.featuredImage) {
+        meta.push({
           hid: 'og:image',
           name: 'og:image',
           content: this.production.featuredImage.url,
-        }
-      )
+        })
+      }
     }
     return {
       title: `${productionName}`,

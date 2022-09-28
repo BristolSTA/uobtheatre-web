@@ -19,8 +19,8 @@
     >
       <div class="flex h-2/3 gap-4">
         <div class="flex items-center justify-center">
-          <img
-            :src="currentDisplayedProduction.featuredImage.url"
+          <production-featured-image
+            :image-object="currentDisplayedProduction.featuredImage"
             class="w-auto max-h-full"
           />
         </div>
@@ -95,6 +95,7 @@ import HaveTicketsReadyScreen from '@/components/publicity-screens/HaveTicketsRe
 import SoldOutScreen from '@/components/publicity-screens/SoldOutScreen.vue'
 import WelcomeScreen from '@/components/publicity-screens/WelcomeScreen.vue'
 import PleaseWaitScreen from '@/components/publicity-screens/PleaseWaitScreen.vue'
+import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue'
 
 export default {
   components: {
@@ -102,6 +103,7 @@ export default {
     IconListItem,
     HaveTicketsReadyScreen,
     SoldOutScreen,
+    ProductionFeaturedImage,
   },
   layout: 'publicityScreen',
   data() {
