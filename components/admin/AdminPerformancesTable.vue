@@ -80,6 +80,7 @@ import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue'
 import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue'
 import TableRow from '@/components/ui/Tables/TableRow.vue'
 import Badge from '@/components/ui/Badge.vue'
+import { humanDuration } from '@/utils'
 
 export default {
   components: {
@@ -117,6 +118,7 @@ export default {
           performance.ticketsBreakdown.totalCapacity
       )
     },
+    humanDuration,
   },
 }
 </script>

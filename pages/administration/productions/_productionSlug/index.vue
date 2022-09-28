@@ -124,7 +124,6 @@ import {
   performMutation,
   successToast,
   swal,
-  humanDuration,
 } from '@/utils'
 
 export default {
@@ -278,7 +277,6 @@ export default {
           performance.ticketsBreakdown.totalCapacity
       )
     },
-    humanDuration,
     async setStatus(status) {
       const swalArgs = {
         title: 'Are you sure?',
