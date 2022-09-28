@@ -15,8 +15,8 @@
         />
       </div>
       <div>
-        <label>Status</label
-        ><t-select
+        <label>Status</label>
+        <t-select
           v-model="productionsStatusFilter"
           :options="[
             { value: null, text: 'All' },
@@ -53,9 +53,9 @@
             v-for="(production, index) in slotProps.items"
             :key="index"
           >
-            <table-row-item
-              ><production-status-badge :production="production"
-            /></table-row-item>
+            <table-row-item>
+              <production-status-badge :production="production" />
+            </table-row-item>
             <table-row-item>
               <nuxt-link
                 :to="`/administration/productions/${production.slug}`"
@@ -73,8 +73,8 @@
             </table-row-item>
           </table-row>
         </template>
-      </paginated-table></card
-    >
+      </paginated-table>
+    </card>
   </admin-page>
 </template>
 

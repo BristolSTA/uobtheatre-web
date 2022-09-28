@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import BookingStatusEnum from '@/enums/PayableStatusEnum'
+import BookingStatusEnum from '@/enums/ProductionStatusEnum'
 import Badge from '../ui/Badge.vue'
 export default {
   components: { Badge },
