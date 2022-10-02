@@ -56,8 +56,7 @@
     <p>
       We use your data for a variety of reasons, including those highlighted
       above. However, your data will always only be used for the purposes of
-      providing our Services, and will never be sold or distributed to 3rd
-      parties.
+      providing our Services and will never be sold to 3rd parties.
     </p>
     <p>The main reasons we process your data are:</p>
     <ul class="list-inside list-disc">
@@ -68,14 +67,27 @@
       <li>To be able to deliver our Services effectively;</li>
       <li>To comply with legal obligations;</li>
       <li>
-        For our legitimate business interests, which may include but not be
-        limited to, provide information on our shows and services and analyse
-        the use of our websites and services to continually improve your
-        customer experience and our business; and
+        For our legitimate business interests which include, but are not limited
+        to, providing information on our shows and services and analysing the
+        use of our websites and services to continually improve your customer
+        experience and our business; or
       </li>
       <li>
         You have provided consent for us to collect and process your personal
         information
+      </li>
+    </ul>
+    <p class="mt-3">
+      Generally, your personal information is never distributed to third
+      parties. However, there are certain cases where we may share personal
+      information with external groups:
+    </p>
+    <ul class="list-inside list-disc">
+      <li>
+        Providing information about bookings made (including the name of the
+        person who made the booking) to production teams to help them handle
+        support queries and operate a Box Office service to control access to
+        their performances
       </li>
     </ul>
     <h2>3. When we collect data</h2>
@@ -231,7 +243,7 @@ export default {
           items: [
             {
               purpose:
-                'Provision of a personalised experience, and to identify you across the site',
+                'Provision of a personalised experience and to enable us to provide a better service (e.g. fetching your tickets by taking your name, instead of a booking reference',
               basis: 'Legitimate interests',
               data: ['Full Name'],
             },
