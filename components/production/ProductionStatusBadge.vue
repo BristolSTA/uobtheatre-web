@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import BookingStatusEnum from '@/enums/ProductionStatusEnum'
+import ProductionStatusEnum from '@/enums/ProductionStatusEnum'
 import Badge from '../ui/Badge.vue'
 export default {
   components: { Badge },
@@ -28,7 +28,7 @@ export default {
         (!this.production.status || this.production.status === 'PUBLISHED')
       )
         return 'Not Bookable'
-      return new BookingStatusEnum(this.production.status).name
+      return new ProductionStatusEnum(this.production.status).name
     },
   },
 }
