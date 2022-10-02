@@ -13,9 +13,14 @@ query adminProductionShow($slug: String!) {
     end
     isBookable
     salesBreakdown {
-      netIncome
-      totalSales
-      totalCardSales
+      totalPayments
+      totalCardPayments
+      totalRefunds
+      totalCardRefunds
+      netTransactions
+      netCardTransactions
+      appFee
+      appPaymentValue
       providerPaymentValue
       appPaymentValue
       societyTransferValue

@@ -39,9 +39,14 @@ query adminPerformanceDetail($productionSlug: String!, $performanceId: ID!) {
             totalTicketsSold
           }
           salesBreakdown {
-            netIncome
-            totalSales
-            totalCardSales
+            totalPayments
+            totalCardPayments
+            totalRefunds
+            totalCardRefunds
+            netTransactions
+            netCardTransactions
+            appFee
+            appPaymentValue
             providerPaymentValue
             appPaymentValue
             societyTransferValue
