@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import ProductionPage from '@/pages/production/_slug/index'
 import ProductionCastCredits from '@/components/production/ProductionCastCredits.vue'
 import ProductionOverview from '@/components/production/ProductionOverview.vue'
-import ProductionHeader from '@/components/production/ProductionHeader.vue'
+import ProductionBanner from '@/components/production/ProductionBanner.vue'
 import ProductionPerformances from '@/components/production/ProductionPerformances.vue'
 
 import { generateMountOptions, mountWithRouterMock } from '../../helpers'
@@ -34,7 +34,7 @@ describe('Production', function () {
   })
 
   const findComponents = () => {
-    headerComponent = productionPageComponent.findComponent(ProductionHeader)
+    headerComponent = productionPageComponent.findComponent(ProductionBanner)
     castCreditsComponent = productionPageComponent.findComponent(
       ProductionCastCredits
     )
