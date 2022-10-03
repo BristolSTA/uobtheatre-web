@@ -243,7 +243,7 @@ export default {
           items: [
             {
               purpose:
-                'Provision of a personalised experience and to enable us to provide a better service (e.g. fetching your tickets by taking your name, instead of a booking reference',
+                'Provision of a personalised experience and to enable us to provide a better service (e.g. fetching your tickets by taking your name, instead of a booking reference)',
               basis: 'Legitimate interests',
               data: ['Full Name'],
             },
