@@ -7,10 +7,10 @@
       Loading Production...
     </div>
     <template v-else>
-      <production-header
-        ref="header"
+      <production-banner
+        class="pb-12 pt-6"
         :production="production"
-        @scroll-to-tickets="$refs.performances.$el.scrollIntoView()"
+        @on-buy-tickets-click="$refs.performances.$el.scrollIntoView()"
       />
       <hr class="border-t-2 border-sta-gray-dark" />
       <div class="container my-6 text-white">
@@ -56,21 +56,21 @@
 
 <script>
 import ProductionCastCredits from '@/components/production/ProductionCastCredits.vue'
-import ProductionHeader from '@/components/production/ProductionHeader.vue'
 import ProductionPerformances from '@/components/production/ProductionPerformances.vue'
 import ProductionPageQuery from '@/graphql/queries/ProductionBySlug.gql'
 import ProductionOverview from '@/components/production/ProductionOverview.vue'
 import ClickableLink from '@/components/ui/ClickableLink.vue'
 
 import { oneLiner } from '@/utils/lang.js'
+import ProductionBanner from '@/components/production/ProductionBanner.vue'
 
 export default {
   components: {
-    ProductionHeader,
     ProductionCastCredits,
     ProductionPerformances,
     ProductionOverview,
     ClickableLink,
+    ProductionBanner,
   },
   async asyncData({ params, error, app }) {
     // Execute query

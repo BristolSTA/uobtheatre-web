@@ -2,7 +2,7 @@ import { mount, RouterLinkStub } from '@vue/test-utils'
 import { expect } from 'chai'
 import { DateTime } from 'luxon'
 
-import ProductionHeader from '@/components/production/ProductionBanner.vue'
+import ProductionBanner from '@/components/production/ProductionBanner.vue'
 
 import {
   assertNoVisualDifference,
@@ -261,7 +261,7 @@ describe('ProductionBanner', function () {
     )
 
     headerContainer = mount(
-      ProductionHeader,
+      ProductionBanner,
       generateMountOptions(['router'], {
         propsData: {
           production,
