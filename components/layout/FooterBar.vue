@@ -20,23 +20,25 @@
           </ul>
         </nav>
       </div>
-      <div class="flex flex-1 flex-wrap items-center mt-4 w-full md:mt-0">
-        <div class="w-1/2 h-16 md:w-32 md:h-auto">
+      <div
+        class="flex flex-1 flex-wrap items-center mt-4 w-full md:mt-0 gap-x-4"
+      >
+        <div class="w-1/2 h-16 md:w-44 md:h-auto">
           <a href="https://bristolsta.com" target="_blank">
             <img
-              src="@/assets/images/sta-logo-white.png"
+              src="@/assets/images/sta-logo-left.png"
               class="mx-auto max-h-full"
-              style="max-width: 100px"
+              style="max-height: 100px"
               alt="Stage Technicians' Association Logo"
             />
           </a>
         </div>
-        <div class="w-1/2 h-16 md:w-32 md:h-auto">
+        <div class="w-1/2 h-16 md:w-48 md:h-auto">
           <a href="https://bristolsu.org.uk" target="_blank">
             <img
-              src="@/assets/images/bristol-su-logo.png"
+              src="@/assets/images/bristol-su-supporting-logo.png"
               class="mx-auto max-h-full"
-              style="max-width: 100px"
+              style="max-height: 100px"
               alt="Bristol SU Balloon Logo"
             />
           </a>
@@ -47,7 +49,7 @@
             flex-1
             mt-2
             text-center text-white
-            md:ml-12 md:mt-0 md:text-left
+            md:mt-0 md:text-left md:ml-12
           "
         >
           <p class="mb-2 md:mb-4">
