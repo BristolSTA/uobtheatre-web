@@ -49,6 +49,11 @@ export default {
         statusCode: 404,
         message: 'This production does not exist',
       })
+    if (production.assignedUsers === null)
+      return error({
+        statusCode: 401,
+        message: 'You do not have permission to alter permissions',
+      })
     return {
       production,
     }
