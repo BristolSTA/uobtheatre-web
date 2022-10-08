@@ -1,13 +1,19 @@
 <template>
   <div class="bg-sta-gray-light">
     <div class="container flex flex-wrap p-4 md:my-2">
-      <div class="flex items-center w-full md:w-1/3 lg:w-2/5">
+      <div class="flex items-center w-full md:w-1/4 lg:w-1/5">
         <nav class="w-full">
           <ul class="flex justify-evenly space-x-2 md:block md:space-x-0">
             <li
               v-for="(item, index) in navItems"
               :key="index"
-              class="flex mt-2 text-center text-white md:block md:text-left"
+              class="
+                flex
+                mt-2
+                text-center text-white
+                md:block md:text-left
+                underline
+              "
             >
               <component
                 :is="item[0].startsWith('/') ? 'NuxtLink' : 'a'"
@@ -21,9 +27,17 @@
         </nav>
       </div>
       <div
-        class="flex flex-1 flex-wrap items-center mt-4 w-full md:mt-0 gap-x-4"
+        class="
+          flex flex-1 flex-wrap
+          items-center
+          justify-center
+          mt-4
+          w-full
+          md:mt-0
+          gap-x-4
+        "
       >
-        <div class="w-1/2 h-16 md:w-44 md:h-auto">
+        <div class="w-44">
           <a href="https://bristolsta.com" target="_blank">
             <img
               src="@/assets/images/sta-logo-left.png"
@@ -33,7 +47,7 @@
             />
           </a>
         </div>
-        <div class="w-1/2 h-16 md:w-48 md:h-auto">
+        <div class="w-48">
           <a href="https://bristolsu.org.uk" target="_blank">
             <img
               src="@/assets/images/bristol-su-supporting-logo.png"
@@ -46,10 +60,12 @@
 
         <div
           class="
-            flex-1
+            lg:flex-1
             mt-2
             text-center text-white
-            md:mt-0 md:text-left md:ml-12
+            md:mt-0
+            lg:text-left
+            md:ml-12
           "
         >
           <p class="mb-2 md:mb-4">
