@@ -1,4 +1,4 @@
-mutation setBookingUser($id: IdInputField!, $email: String!) {
+mutation setBookingUser($id: ID!, $email: String!) {
   booking(input: { id: $id, userEmail: $email }) {
     success
     errors {
