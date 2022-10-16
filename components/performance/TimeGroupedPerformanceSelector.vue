@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { groupBy } from 'lodash'
+import lo from 'lodash'
 import { DateTime } from 'luxon'
 import { humanDayTime } from '@/utils'
 import PerformanceOverview from '@/components/performance/PerformanceOverview.vue'
@@ -48,9 +48,15 @@ export default {
   },
   computed: {
     groupedPerformances() {
-      return groupBy(this.performances, (performance) => {
-        return humanDayTime(DateTime.fromISO(performance.start))
-      })
+      return lo
+        .chain(this.performances)
+        .sortBy((performance) => {
+          return DateTime.fromISO(performance.start)
+        })
+        .groupBy((performance) => {
+          return humanDayTime(DateTime.fromISO(performance.start))
+        })
+        .value()
     },
   },
 }
