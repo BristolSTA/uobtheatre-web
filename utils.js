@@ -64,6 +64,12 @@ const humanDuration = (durationMins, options) => {
   return humanizeDuration(durationMins * 60 * 1000, mergedOptions)
 }
 
+/**
+ * Generates a readable string the time of day of the passed date
+ *
+ * @param {DateTime} date number of minuites
+ * @returns {string} String of time of day
+ */
 const humanDayTime = (date) => {
   if (date.hour < 12) return 'Morning'
   if (date.hour < 17) return 'Afternoon'
