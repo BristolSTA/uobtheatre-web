@@ -24,7 +24,7 @@
       />
     </td>
     <td class="p-2 font-mono">
-      £{{ (booking.raw.totalSales / 100).toFixed(2) }}
+      £{{ (booking.raw.salesBreakdown.totalPayments / 100).toFixed(2) }}
     </td>
   </tr>
 </template>

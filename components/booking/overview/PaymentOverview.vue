@@ -14,7 +14,7 @@
             {{ mainPayment.last4 }}</template
           >
           <template v-else>{{
-            new ProviderNameEnum(mainPayment.provider).name
+            new ProviderNameEnum(mainPayment.providerName).name
           }}</template>
         </template>
       </p>

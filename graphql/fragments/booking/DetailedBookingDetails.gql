@@ -12,7 +12,9 @@ fragment DetailedBookingDetails on BookingNode {
     firstName
     lastName
   }
-  totalSales
+  salesBreakdown {
+    totalPayments
+  }
   priceBreakdown {
     ...AllPriceBreakdown
   }

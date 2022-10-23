@@ -13,17 +13,6 @@ query adminProductionShow($slug: String!) {
     end
     isBookable
     salesBreakdown {
-      totalPayments
-      totalCardPayments
-      totalRefunds
-      totalCardRefunds
-      netTransactions
-      netCardTransactions
-      appFee
-      appPaymentValue
-      providerPaymentValue
-      appPaymentValue
-      societyTransferValue
       societyRevenue
     }
     totalCapacity

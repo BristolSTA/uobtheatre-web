@@ -52,9 +52,7 @@
               <table-head-item>Net Society Revenue</table-head-item>
               <table-row-item
                 >£{{
-                  (
-                    production.salesBreakdown.societyTransferValue / 100
-                  ).toFixed(2)
+                  (production.salesBreakdown.societyRevenue / 100).toFixed(2)
                 }}</table-row-item
               >
             </tr>
