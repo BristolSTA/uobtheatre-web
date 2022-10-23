@@ -10,8 +10,12 @@
     <sidebar-item icon="theater-masks" href="/administration/productions">
       Productions
     </sidebar-item>
-    <sidebar-item icon="money-bill" href="/administration/finance-reports">
-      Finance Reports
+    <sidebar-item
+      v-if="$auth().hasPermission('finance_reports')"
+      icon="chart-bar"
+      href="/administration/reports"
+    >
+      Reports
     </sidebar-item>
   </sidebar>
 </template>

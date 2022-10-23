@@ -1,0 +1,29 @@
+mutation reportDetailsQuery(
+  $name: String!
+  $startTime: DateTime
+  $endTime: DateTime
+) {
+  generateReport(name: $name, startTime: $startTime, endTime: $endTime) {
+    success
+    errors {
+      ... on FieldError {
+        message
+        field
+      }
+      ... on NonFieldError {
+        message
+      }
+    }
+    report {
+      meta {
+        name
+        value
+      }
+      datasets {
+        name
+        headings
+        data
+      }
+    }
+  }
+}

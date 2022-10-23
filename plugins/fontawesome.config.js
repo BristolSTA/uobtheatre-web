@@ -57,6 +57,7 @@ export default {
     'faTrash',
     'faMobileAlt',
     'faFileExport',
+    'faChartBar',
   ],
   brands: ['faFacebook'],
 }
