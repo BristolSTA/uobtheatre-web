@@ -94,6 +94,9 @@ export default {
 
     // Font Awesome
     '@nuxtjs/fontawesome',
+
+    // Typescript
+    '@nuxt/typescript-build',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules

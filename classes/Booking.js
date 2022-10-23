@@ -61,7 +61,7 @@ export default class Booking {
       )
     }
     if (bookingData.tickets) {
-      this.tickets = bookingData.tickets.map((ticketAPIData) =>
+      this.tickets = bookingData.tickets.map(ticketAPIData =>
         Ticket.fromAPIData(ticketAPIData)
       )
     }
@@ -76,7 +76,7 @@ export default class Booking {
     }
     if (bookingData.transactions && bookingData.transactions.edges.length) {
       this.transactions = bookingData.transactions.edges.map(
-        (edge) => edge.node
+        edge => edge.node
       )
     }
     this.id = bookingData.id
@@ -92,7 +92,7 @@ export default class Booking {
     return {
       tickets: this.tickets.map((ticket) => {
         return ticket.apiData
-      }),
+      })
     }
   }
 
@@ -104,7 +104,9 @@ export default class Booking {
    * @param {number} number Number of tickets to add
    */
   addTicket(ticket, ticketMatrix, number = 1) {
-    if (!ticketMatrix.canAddTickets(number, ticket.seatGroup.id)) return
+    if (!ticketMatrix.canAddTickets(number, ticket.seatGroup.id)) {
+      return
+    }
 
     for (let i = 0; i < number; i++) {
       this.tickets.push(ticket)
@@ -211,7 +213,7 @@ export default class Booking {
    */
   ticketsTotalPriceEstimate(ticketMatrix) {
     return this.tickets
-      .map((ticket) => ticket.price(ticketMatrix.ticketOptions))
+      .map(ticket => ticket.price(ticketMatrix.ticketOptions))
       .reduce((a, b) => a + b, 0)
   }
 
@@ -226,18 +228,20 @@ export default class Booking {
   }
 
   get allCheckedIn() {
-    return this.tickets.every((ticket) => ticket.checkedIn)
+    return this.tickets.every(ticket => ticket.checkedIn)
   }
 
   get numberCheckedIn() {
-    return this.tickets.filter((ticket) => ticket.checkedIn).length
+    return this.tickets.filter(ticket => ticket.checkedIn).length
   }
 
   /**
    * @returns {number} Total cost / price of the booking in pennies
    */
   get totalPrice() {
-    if (!this.priceBreakdown) return 0
+    if (!this.priceBreakdown) {
+      return 0
+    }
     return this.priceBreakdown.totalPrice
   }
 
@@ -252,7 +256,9 @@ export default class Booking {
    * @returns {string} Price of tickets minus any discounts in pounds
    */
   get subTotalPricePounds() {
-    if (!this.priceBreakdown) return (0).toFixed(2)
+    if (!this.priceBreakdown) {
+      return (0).toFixed(2)
+    }
     return (this.priceBreakdown.subtotalPrice / 100).toFixed(2)
   }
 
@@ -260,7 +266,9 @@ export default class Booking {
    * @returns {string} Total cost / price of the tickets in pounds
    */
   get ticketsPricePounds() {
-    if (!this.priceBreakdown) return (0).toFixed(2)
+    if (!this.priceBreakdown) {
+      return (0).toFixed(2)
+    }
     return (this.priceBreakdown.ticketsPrice / 100).toFixed(2)
   }
 
@@ -268,7 +276,9 @@ export default class Booking {
    * @returns {string} Total cost / price of the tickets in pounds taking into account any discounts
    */
   get ticketsDiscountedPricePounds() {
-    if (!this.priceBreakdown) return (0).toFixed(2)
+    if (!this.priceBreakdown) {
+      return (0).toFixed(2)
+    }
     return (this.priceBreakdown.ticketsDiscountedPrice / 100).toFixed(2)
   }
 
@@ -276,7 +286,9 @@ export default class Booking {
    * @returns {boolean} True if the booking has discounts applied
    */
   get hasDiscounts() {
-    if (!this.priceBreakdown) return false
+    if (!this.priceBreakdown) {
+      return false
+    }
     return this.priceBreakdown.discountsValue !== 0
   }
 
@@ -284,7 +296,9 @@ export default class Booking {
    * @returns {string} Total cost / price of the group discounts in pounds
    */
   get discountsValuePounds() {
-    if (!this.priceBreakdown) return (0).toFixed(2)
+    if (!this.priceBreakdown) {
+      return (0).toFixed(2)
+    }
     return (this.priceBreakdown.discountsValue / 100).toFixed(2)
   }
 
@@ -294,10 +308,11 @@ export default class Booking {
    */
   ticketOverview(ticketMatrix = null) {
     if (!this.priceBreakdown || this.dirty) {
-      if (!ticketMatrix)
+      if (!ticketMatrix) {
         throw new Error(
           'A ticket matrix is required to generate the ticket overview'
         )
+      }
       return this.ticketOverviewEstimate(ticketMatrix)
     }
     return this.priceBreakdown.tickets
@@ -310,11 +325,11 @@ export default class Booking {
   ticketOverviewEstimate(ticketMatrix) {
     return lo
       .chain(this.tickets)
-      .groupBy((ticket) => [ticket.seatGroup.id, ticket.concessionType.id])
+      .groupBy(ticket => [ticket.seatGroup.id, ticket.concessionType.id])
       .values()
       .map((groupedTickets) => {
         const option = ticketMatrix.ticketOptions.find(
-          (option) => option.seatGroup.id === groupedTickets[0].seatGroup.id
+          option => option.seatGroup.id === groupedTickets[0].seatGroup.id
         )
 
         if (!option) {
@@ -325,7 +340,7 @@ export default class Booking {
 
         const seatGroup = option.seatGroup
         const concessionTypeEdge = option.concessionTypes.find(
-          (cocnessionTypeEdge) =>
+          cocnessionTypeEdge =>
             cocnessionTypeEdge.concessionType.id ===
             groupedTickets[0].concessionType.id
         )
@@ -341,7 +356,7 @@ export default class Booking {
           concessionType: concessionTypeEdge.concessionType,
           seatGroup,
           ticketPrice: concessionTypeEdge.price,
-          totalPrice: concessionTypeEdge.price * groupedTickets.length,
+          totalPrice: concessionTypeEdge.price * groupedTickets.length
         }
       })
       .value()
@@ -351,10 +366,12 @@ export default class Booking {
    * @returns {Array} List of misc costs, giving name, description, an optional perctange value and the additional cost (in pounds)
    */
   get miscCosts() {
-    if (!this.priceBreakdown) return []
+    if (!this.priceBreakdown) {
+      return []
+    }
     return this.priceBreakdown.miscCosts.map((miscCost) => {
       return Object.assign(miscCost, {
-        valuePounds: (miscCost.value / 100).toFixed(2),
+        valuePounds: (miscCost.value / 100).toFixed(2)
       })
     })
   }
@@ -371,7 +388,9 @@ export default class Booking {
   }
 
   get status() {
-    if (!this.raw.status) return ''
+    if (!this.raw.status) {
+      return ''
+    }
     return this.raw.status
   }
 
