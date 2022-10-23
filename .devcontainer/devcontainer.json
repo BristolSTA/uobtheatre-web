@@ -9,6 +9,7 @@
     "dbaeumer.vscode-eslint",
     "bradlc.vscode-tailwindcss",
     "christian-kohler.path-intellisense",
+    "esbenp.prettier-vscode",
     "apollographql.vscode-apollo",
     "gruntfuggly.todo-tree",
     "eamodio.gitlens",
