@@ -104,7 +104,7 @@
             >
             <table-row-item
               >£{{
-                (performance.salesBreakdown.netIncome / 100).toFixed(2)
+                (performance.salesBreakdown.societyRevenue / 100).toFixed(2)
               }}</table-row-item
             >
           </tr>

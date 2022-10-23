@@ -61,7 +61,9 @@
               booking.tickets.length > 1 ? 's' : ''
             }}</table-row-item
           >
-          <table-row-item>{{ booking.status.description }}</table-row-item>
+          <table-row-item>{{
+            new BookingStatusEnum(booking.status).name
+          }}</table-row-item>
           <table-row-item>{{
             booking.createdAt | dateFormat('dd/MMM/y HH:mm ZZZZ')
           }}</table-row-item>
@@ -81,6 +83,7 @@ import TableRowItem from '@/components/ui/Tables/TableRowItem.vue'
 import Card from '@/components/ui/Card.vue'
 import SortIcon from '@/components/ui/SortIcon.vue'
 import AdminProductionLookupQuery from '@/graphql/queries/admin/productions/AdminProductionLookup.gql'
+import BookingStatusEnum from '@/enums/PayableStatusEnum'
 export default {
   components: {
     AdminPage,
@@ -120,6 +123,8 @@ export default {
       bookingsStatus: null,
 
       production: null,
+
+      BookingStatusEnum,
     }
   },
   head() {

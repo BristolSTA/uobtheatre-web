@@ -27,10 +27,7 @@ query adminProductions(
           id
           url
         }
-        status {
-          description
-          value
-        }
+        status
         society {
           id
           name

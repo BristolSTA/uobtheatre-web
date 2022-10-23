@@ -1,7 +1,7 @@
 <template>
   <div class="mb-10 min-h-full text-white bg-sta-gray">
     <div v-if="booking.performance" class="container">
-      <alert v-if="booking.status.value == 'CANCELLED'" level="danger"
+      <alert v-if="booking.status == 'CANCELLED'" level="danger"
         >This booking has been cancelled, and is no longer valid</alert
       >
       <h1 class="pt-2 text-h1">Your Booking</h1>
@@ -42,7 +42,7 @@
         <tickets-overview class="lg:col-span-2" :booking="booking" />
       </div>
 
-      <div v-if="booking.status.value == 'PAID'" class="mt-4">
+      <div v-if="booking.status == 'PAID'" class="mt-4">
         <div
           ref="tickets"
           class="

@@ -129,7 +129,7 @@ export default {
         data.performances.edges
           .map((edge) => edge.node)
           .filter(
-            (performance) => performance.production.status.value === 'PUBLISHED'
+            (performance) => performance.production.status === 'PUBLISHED'
           ),
     },
   },

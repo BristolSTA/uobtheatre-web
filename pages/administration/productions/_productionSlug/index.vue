@@ -52,9 +52,7 @@
               <table-head-item>Net Society Revenue</table-head-item>
               <table-row-item
                 >£{{
-                  (
-                    production.salesBreakdown.societyTransferValue / 100
-                  ).toFixed(2)
+                  (production.salesBreakdown.societyRevenue / 100).toFixed(2)
                 }}</table-row-item
               >
             </tr>
@@ -264,15 +262,15 @@ export default {
   },
   computed: {
     statusDescription() {
-      if (this.production.status.description === 'Draft')
+      if (this.production.status === 'DRAFT')
         return 'This production is private, and not bookable'
-      if (this.production.status.description === 'Pending')
+      if (this.production.status === 'PENDING')
         return 'This production has been submitted for review. You will recieve an email once this has been completed'
-      if (this.production.status.description === 'Published')
+      if (this.production.status === 'PUBLISHED')
         return 'This production is being displayed publicly'
-      if (this.production.status.description === 'Closed')
+      if (this.production.status === 'CLOSED')
         return 'This production has been closed, and it no longer accepting bookings'
-      if (this.production.status.description === 'Complete')
+      if (this.production.status === 'COMPLETED')
         return 'This production has been completed, and income has been transfered to the society'
 
       return null
@@ -300,7 +298,7 @@ export default {
           text: 'Edit Permissions',
         })
 
-        if (this.production.status.value === 'APPROVED') {
+        if (this.production.status === 'APPROVED') {
           list.push({
             icon: 'globe',
             class: 'animate-pulse animate',
@@ -310,7 +308,7 @@ export default {
         }
       }
       if (
-        this.production.status.value === 'PENDING' &&
+        this.production.status === 'PENDING' &&
         this.production.permissions.includes('approve_production')
       ) {
         list.push({
@@ -325,7 +323,7 @@ export default {
         })
       }
       if (
-        this.production.status.value === 'PUBLISHED' &&
+        this.production.status === 'PUBLISHED' &&
         new Date(this.production.end) < new Date() &&
         this.production.permissions.includes('force_change_production')
       ) {
@@ -336,7 +334,7 @@ export default {
         })
       }
       // Add action button based on status
-      if (this.canEditRightNow && this.production.status.value === 'DRAFT') {
+      if (this.canEditRightNow && this.production.status === 'DRAFT') {
         list.push({
           icon: 'user-check',
           action: () => this.setStatus('PENDING'),
@@ -362,7 +360,7 @@ export default {
         showCancelButton: true,
         showConfirmButton: true,
       }
-      if (status === 'DRAFT' && this.production.status.value === 'PENDING') {
+      if (status === 'DRAFT' && this.production.status === 'PENDING') {
         swalArgs.input = 'text'
         swalArgs.inputLabel = 'Reason'
         swalArgs.inputValidator = (value) => {

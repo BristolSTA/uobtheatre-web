@@ -114,6 +114,7 @@ import lo from 'lodash'
 import Carousel from '@/components/ui/Carousel.vue'
 import { displayStartEnd } from '@/utils'
 import { oneLiner } from '@/utils/lang'
+import PayableStatusEnum from '@/enums/PayableStatusEnum'
 import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue'
 
 export default {
@@ -153,6 +154,9 @@ export default {
     },
     upcomingProductionsToShow() {
       return lo.take(this.upcomingProductions, 4)
+    },
+    enumTest() {
+      return new PayableStatusEnum('IN_PROGRESS')
     },
   },
   methods: {

@@ -7,21 +7,12 @@ query adminProductionShow($slug: String!) {
       id
       name
     }
-    status {
-      description
-      value
-    }
+    status
     slug
     start
     end
     isBookable
     salesBreakdown {
-      netIncome
-      totalSales
-      totalCardSales
-      providerPaymentValue
-      appPaymentValue
-      societyTransferValue
       societyRevenue
     }
     totalCapacity

@@ -46,6 +46,7 @@ import Card from '@/components/ui/Card.vue'
 import TableRow from '@/components/ui/Tables/TableRow.vue'
 import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue'
 import TableRowItem from '@/components/ui/Tables/TableRowItem.vue'
+import BookingStatusEnum from '@/enums/PayableStatusEnum'
 export default {
   components: {
     AdminPage,
@@ -90,7 +91,7 @@ export default {
     },
     adminInfo() {
       return [
-        ['Status', this.rawBooking.status.description],
+        ['Status', new BookingStatusEnum(this.rawBooking.status).name],
         [
           'Created At',
           this.$options.filters.dateFormat(
