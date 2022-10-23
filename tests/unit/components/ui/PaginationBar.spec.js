@@ -10,8 +10,8 @@ describe('Pagination Bar', () => {
       propsData: {
         numberOfPages: 5,
         currentPage: 5,
-        numberPagesToDisplay: 5,
-      },
+        numberPagesToDisplay: 5
+      }
     })
   })
 
@@ -98,9 +98,9 @@ describe('Pagination Bar', () => {
     numToDisplay = null
   ) => {
     const updateObj = {}
-    if (numPages) updateObj.numberOfPages = numPages
-    if (currentPage) updateObj.currentPage = currentPage
-    if (numToDisplay) updateObj.numberPagesToDisplay = numToDisplay
+    if (numPages) { updateObj.numberOfPages = numPages }
+    if (currentPage) { updateObj.currentPage = currentPage }
+    if (numToDisplay) { updateObj.numberPagesToDisplay = numToDisplay }
     await component.setProps(updateObj)
   }
 

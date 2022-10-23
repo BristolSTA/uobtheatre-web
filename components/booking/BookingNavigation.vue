@@ -18,49 +18,48 @@
 <script>
 import Booking from '@/classes/Booking'
 import Stages, {
-  getStageIndex,
+  getStageIndex
 } from '@/pages/production/_slug/book/-bookingStages'
 export default {
   name: 'BookingNavigation',
   props: {
     currentStageIndex: {
       required: true,
-      type: Number,
+      type: Number
     },
     production: {
       required: true,
-      type: Object,
+      type: Object
     },
     booking: {
       required: true,
-      type: Booking,
-    },
+      type: Booking
+    }
   },
   computed: {
-    applicableStages() {
+    applicableStages () {
       return Stages.filter((stageComponent) => {
         return stageComponent.stageInfo.shouldBeUsed(
           this.production,
           this.booking
         )
       })
-    },
+    }
   },
   methods: {
-    stylesForButton(stage) {
+    stylesForButton (stage) {
       const stageIndex = getStageIndex(stage)
-      if (this.currentStageIndex === stageIndex) return 'btn-orange'
+      if (this.currentStageIndex === stageIndex) { return 'btn-orange' }
       if (
         this.currentStageIndex > stageIndex &&
         stage.eligable(this.production, this.booking)
-      )
-        return 'btn-green'
+      ) { return 'btn-green' }
       return 'btn-gray-light disabled'
     },
-    onSelectStage(stage) {
-      if (getStageIndex(stage.stageInfo) === this.currentStageIndex) return
+    onSelectStage (stage) {
+      if (getStageIndex(stage.stageInfo) === this.currentStageIndex) { return }
       this.$emit('goto-stage', stage)
-    },
-  },
+    }
+  }
 }
 </script>

@@ -7,7 +7,7 @@
       :style="{
         'background-image': banner,
       }"
-    ></div>
+    />
     <div>
       <h1 class="container pt-8 text-left text-h1">
         {{ society.name }}
@@ -36,7 +36,7 @@
           ref="society-logo"
           :src="society.logo.url"
           :alt="`${society.name} logo`"
-        />
+        >
       </div>
 
       <div
@@ -45,7 +45,9 @@
         class="flex-none px-1 md:w-1/2"
       >
         <div class="p-2 bg-sta-gray-dark">
-          <h2 class="flex justify-center mb-2 text-2xl">Productions</h2>
+          <h2 class="flex justify-center mb-2 text-2xl">
+            Productions
+          </h2>
           <table class="table-auto w-full">
             <tbody>
               <tr
@@ -119,46 +121,47 @@ import TipTapOutput from '@/components/ui/TipTapOutput.vue'
 
 export default {
   components: { TipTapOutput },
-  async asyncData({ params, app, error }) {
+  async asyncData ({ params, app, error }) {
     const { data } = await app.apolloProvider.defaultClient.query({
       query: SocietyDetailQuery,
       variables: {
-        slug: params.slug,
-      },
+        slug: params.slug
+      }
     })
 
     const society = data.society
-    if (!society)
+    if (!society) {
       return error({
         statusCode: 404,
-        message: 'This society does not exists',
+        message: 'This society does not exists'
       })
+    }
     return {
-      society,
+      society
     }
   },
-  data() {
+  data () {
     return {
-      society: null,
+      society: null
     }
   },
-  head() {
+  head () {
     const societyName = this.society ? this.society.name : 'Loading...'
     return {
-      title: `${societyName}`,
+      title: `${societyName}`
     }
   },
   computed: {
-    banner() {
+    banner () {
       return this.society.banner.url
         ? `url("${this.society.banner.url}")`
         : null
     },
-    productions() {
+    productions () {
       return this.society.productions.edges
-        .map((edge) => edge.node)
-        .filter((production) => production.end)
-    },
-  },
+        .map(edge => edge.node)
+        .filter(production => production.end)
+    }
+  }
 }
 </script>

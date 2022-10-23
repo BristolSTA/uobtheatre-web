@@ -1,12 +1,12 @@
 import { RouterLinkStub } from '@vue/test-utils'
 import { expect } from 'chai'
 
+import { mountWithRouterMock } from '../../../helpers'
 import Booking from '@/classes/Booking'
 import BookingSummaryOverview from '@/components/booking/overview/BookingSummaryOverview.vue'
 import OverviewBox from '@/components/ui/Card.vue'
 
 import FullBooking from '@/tests/unit/fixtures/instances/FullBooking'
-import { mountWithRouterMock } from '../../../helpers'
 
 describe('Booking Summary Overview', function () {
   let bookingSummaryOverviewComponent
@@ -20,8 +20,8 @@ describe('Booking Summary Overview', function () {
       BookingSummaryOverview,
       {
         propsData: {
-          booking,
-        },
+          booking
+        }
       }
     )
   })

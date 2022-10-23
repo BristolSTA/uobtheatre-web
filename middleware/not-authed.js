@@ -7,7 +7,7 @@ import authService from '@/services/authService'
 export default function (context) {
   if (authService.isLoggedIn(context)) {
     return context.redirect({
-      path: '/',
+      path: '/'
     })
   }
 }

@@ -1,9 +1,9 @@
 import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
 
+import PerformanceSeatGroup from '../../fixtures/PerformanceSeatGroup'
 import Ticket from '@/classes/Ticket'
 import ConcessionType from '@/components/booking/ConcessionType.vue'
-import PerformanceSeatGroup from '../../fixtures/PerformanceSeatGroup'
 
 describe('Concession Type', () => {
   let concessionTypeComponent
@@ -12,8 +12,8 @@ describe('Concession Type', () => {
       propsData: {
         concessionTypeEdge: PerformanceSeatGroup().concessionTypes[0],
         maxAddAllowed: 10,
-        currentTickets: [new Ticket(1, 1), new Ticket(1, 1), new Ticket(1, 2)], // Assumes that seat_group filtering already done as required
-      },
+        currentTickets: [new Ticket(1, 1), new Ticket(1, 1), new Ticket(1, 2)] // Assumes that seat_group filtering already done as required
+      }
     })
   })
 
@@ -41,7 +41,7 @@ describe('Concession Type', () => {
 
   it('disables removing a ticket if current quantity 0', async () => {
     await concessionTypeComponent.setProps({
-      currentTickets: [],
+      currentTickets: []
     })
     const button = concessionTypeComponent.findAll('button').at(0)
     expect(button.attributes('disabled')).to.eq('disabled')
@@ -70,14 +70,14 @@ describe('Concession Type', () => {
     expect(input.element.value).to.eq('2')
 
     await concessionTypeComponent.setProps({
-      currentTickets: [],
+      currentTickets: []
     })
 
     expect(input.element.value).to.eq('0')
   })
   it('disables add ticket button if not allowed', async () => {
     await concessionTypeComponent.setProps({
-      maxAddAllowed: 0,
+      maxAddAllowed: 0
     })
 
     const button = concessionTypeComponent.findAll('button').at(1) // Add buttton
@@ -87,13 +87,13 @@ describe('Concession Type', () => {
   })
   it('wont emit set tickets if value over allowed value', async () => {
     await concessionTypeComponent.setProps({
-      maxAddAllowed: 0,
+      maxAddAllowed: 0
     })
     await concessionTypeComponent.find('input').setValue(4)
     expect(concessionTypeComponent.emitted()['set-tickets']).not.to.be.ok
 
     await concessionTypeComponent.setProps({
-      maxAddAllowed: 3,
+      maxAddAllowed: 3
     })
     await concessionTypeComponent.find('input').setValue(6) // Currently have 2 tickets of this type. 3 more can be added, so by changing to 6, this should fail
     expect(concessionTypeComponent.emitted()['set-tickets']).not.to.be.ok

@@ -40,55 +40,56 @@ export default {
     AdminPage,
     PaginationBar,
     LoadingContainer,
-    TimeGroupedPerformanceSelector,
+    TimeGroupedPerformanceSelector
   },
-  async asyncData({ params, error, app }) {
+  async asyncData ({ params, error, app }) {
     // Execute query
     const { data } = await app.apolloProvider.defaultClient.query({
       query: AdminProductionLookupQuery,
       variables: {
-        slug: params.productionSlug,
-      },
+        slug: params.productionSlug
+      }
     })
 
     const production = data.production
-    if (!production)
+    if (!production) {
       return error({
         statusCode: 404,
-        message: 'This production does not exist',
+        message: 'This production does not exist'
       })
+    }
     return {
-      production,
+      production
     }
   },
   apollo: {
     performancesData: {
       query: AdminPerformancesIndexQuery,
-      variables() {
+      variables () {
         return {
           productionSlug: this.production.slug,
           offset: this.performancesOffset,
           soldOut: false,
           disabled: false,
-          take: 8,
+          take: 8
         }
       },
-      update: (data) => data.production.performances,
-    },
+      update: data => data.production.performances
+    }
   },
-  data() {
+  data () {
     return {
       production: null,
 
       performancesData: null,
-      performancesOffset: 0,
+      performancesOffset: 0
     }
   },
-  head() {
+  head () {
     const title = `Create booking for ${this.production.name}`
     return {
-      title,
+      title
     }
-  },
+  }
 }
 </script>

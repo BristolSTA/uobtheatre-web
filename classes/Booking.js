@@ -24,7 +24,7 @@ export default class Booking {
   /** @member {string} */
   idempotencyKey
 
-  constructor() {
+  constructor () {
     this.tickets = []
     this.transactions = []
     this.refreshIdempotencyKey()
@@ -37,7 +37,7 @@ export default class Booking {
    * @returns {Booking} A Booking Instance
    * @static
    */
-  static fromAPIData(bookingData) {
+  static fromAPIData (bookingData) {
     const booking = new this()
     booking.updateFromAPIData(bookingData)
     return booking
@@ -48,17 +48,10 @@ export default class Booking {
    *
    * @param {object} bookingData API Booking Data
    */
-  updateFromAPIData(bookingData) {
+  updateFromAPIData (bookingData) {
     this.raw = bookingData
     if (bookingData.priceBreakdown) {
       this.priceBreakdown = bookingData.priceBreakdown
-      this.priceBreakdown.tickets = this.priceBreakdown.tickets.map(
-        (ticketSummary) => {
-          ticketSummary.concession_type = ticketSummary.concessionType
-          ticketSummary.seat_group = ticketSummary.seatGroup
-          return ticketSummary
-        }
-      )
     }
     if (bookingData.tickets) {
       this.tickets = bookingData.tickets.map(ticketAPIData =>
@@ -88,7 +81,7 @@ export default class Booking {
    *
    * @returns {object} Booking Object
    */
-  toAPIData() {
+  toAPIData () {
     return {
       tickets: this.tickets.map((ticket) => {
         return ticket.apiData
@@ -103,7 +96,7 @@ export default class Booking {
    * @param {TicketsMatrix} ticketMatrix TicketMatrix Object
    * @param {number} number Number of tickets to add
    */
-  addTicket(ticket, ticketMatrix, number = 1) {
+  addTicket (ticket, ticketMatrix, number = 1) {
     if (!ticketMatrix.canAddTickets(number, ticket.seatGroup.id)) {
       return
     }
@@ -119,14 +112,14 @@ export default class Booking {
   /**
    * Sets the number of tickets for a certain seat group and concession type to the given number
    *
-   * @param {object|null} seat_group Seat Group Object
-   * @param {object|null} concession_type Concession Type Object
+   * @param {object|null} seatGroup Seat Group Object
+   * @param {object|null} concessionType Concession Type Object
    * @param {number} count Number of tickets
    * @param {TicketsMatrix} ticketMatrix TicketMatrix Object
    */
-  setTicketCount(
-    seat_group = null,
-    concession_type = null,
+  setTicketCount (
+    seatGroup = null,
+    concessionType = null,
     count,
     ticketMatrix
   ) {
@@ -134,12 +127,12 @@ export default class Booking {
 
     // Step 1 - Check how many matching tickets we have for the criteria. Remove if required (and update TicketMatrix)
     this.tickets = this.tickets.filter((ticket) => {
-      if (ticket.matches(seat_group, concession_type)) {
+      if (ticket.matches(seatGroup, concessionType)) {
         rollingTotal++
         if (rollingTotal > count) {
           // Remove this ticket
           ticketMatrix.incrementPerformanceCapacity()
-          ticketMatrix.incrementSeatGroupCapacity(seat_group.id)
+          ticketMatrix.incrementSeatGroupCapacity(seatGroup.id)
           return false
         }
       }
@@ -148,7 +141,7 @@ export default class Booking {
 
     while (rollingTotal < count) {
       this.addTicket(
-        new Ticket(seat_group.id, concession_type.id),
+        new Ticket(seatGroup.id, concessionType.id),
         ticketMatrix
       )
       rollingTotal++
@@ -159,13 +152,13 @@ export default class Booking {
   /**
    * Finds tickets, optionally by seat group or concession type
    *
-   * @param {object|null} seat_group Seat Group Object
-   * @param {object|null} concession_type Concession Type Object
+   * @param {object|null} seatGroup Seat Group Object
+   * @param {object|null} concessionType Concession Type Object
    * @returns {Ticket[]} Matching tickets
    */
-  findTickets(seat_group = null, concession_type = null) {
+  findTickets (seatGroup = null, concessionType = null) {
     return this.tickets.filter((ticket) => {
-      return ticket.matches(seat_group, concession_type)
+      return ticket.matches(seatGroup, concessionType)
     })
   }
 
@@ -176,7 +169,7 @@ export default class Booking {
    * @param {object} concessionType Concession Type Object
    * @param {TicketsMatrix} ticketMatrix TicketMatrix Object
    */
-  removeTicket(seatGroup, concessionType, ticketMatrix) {
+  removeTicket (seatGroup, concessionType, ticketMatrix) {
     this.setTicketCount(
       seatGroup,
       concessionType,
@@ -189,18 +182,18 @@ export default class Booking {
   /**
    * Finds the number of tickets, optionally by seat group or concession type
    *
-   * @param {object} seat_group Seat Group Object
-   * @param {object} concession_type Concession Type Object
+   * @param {object} seatGroup Seat Group Object
+   * @param {object} concessionType Concession Type Object
    * @returns {number} Number of matching tickets
    */
-  ticketCount(seat_group = null, concession_type = null) {
-    return this.findTickets(seat_group, concession_type).length
+  ticketCount (seatGroup = null, concessionType = null) {
+    return this.findTickets(seatGroup, concessionType).length
   }
 
   /**
    * Clears the booking's tickets
    */
-  clearTickets() {
+  clearTickets () {
     this.tickets = []
     this.dirty = true
   }
@@ -211,7 +204,7 @@ export default class Booking {
    * @param {TicketsMatrix} ticketMatrix Ticket Matrix instance
    * @returns {number} Total price of the tickets (without discounts), in pennies
    */
-  ticketsTotalPriceEstimate(ticketMatrix) {
+  ticketsTotalPriceEstimate (ticketMatrix) {
     return this.tickets
       .map(ticket => ticket.price(ticketMatrix.ticketOptions))
       .reduce((a, b) => a + b, 0)
@@ -223,22 +216,22 @@ export default class Booking {
    * @param {TicketsMatrix} ticketMatrix Ticket Matrix instance
    * @returns {number} Total price of the booking, in pounds to 2 d.p.
    */
-  ticketsTotalPricePoundsEstimate(ticketMatrix) {
+  ticketsTotalPricePoundsEstimate (ticketMatrix) {
     return (this.ticketsTotalPriceEstimate(ticketMatrix) / 100).toFixed(2)
   }
 
-  get allCheckedIn() {
+  get allCheckedIn () {
     return this.tickets.every(ticket => ticket.checkedIn)
   }
 
-  get numberCheckedIn() {
+  get numberCheckedIn () {
     return this.tickets.filter(ticket => ticket.checkedIn).length
   }
 
   /**
    * @returns {number} Total cost / price of the booking in pennies
    */
-  get totalPrice() {
+  get totalPrice () {
     if (!this.priceBreakdown) {
       return 0
     }
@@ -248,14 +241,14 @@ export default class Booking {
   /**
    * @returns {string} Total cost / price of the booking in pounds
    */
-  get totalPricePounds() {
+  get totalPricePounds () {
     return (this.totalPrice / 100).toFixed(2)
   }
 
   /**
    * @returns {string} Price of tickets minus any discounts in pounds
    */
-  get subTotalPricePounds() {
+  get subTotalPricePounds () {
     if (!this.priceBreakdown) {
       return (0).toFixed(2)
     }
@@ -265,7 +258,7 @@ export default class Booking {
   /**
    * @returns {string} Total cost / price of the tickets in pounds
    */
-  get ticketsPricePounds() {
+  get ticketsPricePounds () {
     if (!this.priceBreakdown) {
       return (0).toFixed(2)
     }
@@ -275,7 +268,7 @@ export default class Booking {
   /**
    * @returns {string} Total cost / price of the tickets in pounds taking into account any discounts
    */
-  get ticketsDiscountedPricePounds() {
+  get ticketsDiscountedPricePounds () {
     if (!this.priceBreakdown) {
       return (0).toFixed(2)
     }
@@ -285,7 +278,7 @@ export default class Booking {
   /**
    * @returns {boolean} True if the booking has discounts applied
    */
-  get hasDiscounts() {
+  get hasDiscounts () {
     if (!this.priceBreakdown) {
       return false
     }
@@ -295,7 +288,7 @@ export default class Booking {
   /**
    * @returns {string} Total cost / price of the group discounts in pounds
    */
-  get discountsValuePounds() {
+  get discountsValuePounds () {
     if (!this.priceBreakdown) {
       return (0).toFixed(2)
     }
@@ -306,7 +299,7 @@ export default class Booking {
    * @param {TicketsMatrix} ticketMatrix Ticket Matrix instance
    * @returns {Array} List of tickets grouped by seat group & concession type, giving capacity and price
    */
-  ticketOverview(ticketMatrix = null) {
+  ticketOverview (ticketMatrix = null) {
     if (!this.priceBreakdown || this.dirty) {
       if (!ticketMatrix) {
         throw new Error(
@@ -322,7 +315,7 @@ export default class Booking {
    * @param {TicketsMatrix} ticketMatrix Ticket Matrix instance
    * @returns {Array} List of tickets grouped by seat group & concession type, giving capacity and price (based on selected tickets and not API data)
    */
-  ticketOverviewEstimate(ticketMatrix) {
+  ticketOverviewEstimate (ticketMatrix) {
     return lo
       .chain(this.tickets)
       .groupBy(ticket => [ticket.seatGroup.id, ticket.concessionType.id])
@@ -365,7 +358,7 @@ export default class Booking {
   /**
    * @returns {Array} List of misc costs, giving name, description, an optional perctange value and the additional cost (in pounds)
    */
-  get miscCosts() {
+  get miscCosts () {
     if (!this.priceBreakdown) {
       return []
     }
@@ -379,7 +372,7 @@ export default class Booking {
   /**
    * @returns {boolean} True if in the future / current day or false
    */
-  get isActive() {
+  get isActive () {
     const performanceEndTime = DateTime.fromISO(this.performance.end)
     return (
       performanceEndTime > DateTime.local() ||
@@ -387,14 +380,14 @@ export default class Booking {
     )
   }
 
-  get status() {
+  get status () {
     if (!this.raw.status) {
       return ''
     }
     return this.raw.status
   }
 
-  refreshIdempotencyKey() {
+  refreshIdempotencyKey () {
     this.idempotencyKey = uuidv4()
   }
 }

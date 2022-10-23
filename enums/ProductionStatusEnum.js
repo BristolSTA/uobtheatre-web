@@ -7,6 +7,6 @@ export default class extends BaseEnum {
     APPROVED: 'Approved',
     PUBLISHED: 'Published',
     CLOSED: 'Closed',
-    COMPLETE: 'Complete',
+    COMPLETE: 'Complete'
   }
 }

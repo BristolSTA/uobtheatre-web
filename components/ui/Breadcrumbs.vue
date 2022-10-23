@@ -21,8 +21,8 @@
             />
           </NuxtLink>
           <template v-else>
-            {{ crumb.text ? crumb.text : crumb.title }}</template
-          >
+            {{ crumb.text ? crumb.text : crumb.title }}
+          </template>
         </div>
       </div>
     </div>
@@ -36,40 +36,40 @@ export default {
   props: {
     crumbs: {
       default: null,
-      type: Array,
+      type: Array
     },
     wide: {
       default: false,
-      type: Boolean,
+      type: Boolean
     },
     useAuto: {
       default: false,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
   computed: {
-    crumbsToUse() {
+    crumbsToUse () {
       return this.crumbs || (this.useAuto ? this.routeCrumbs : [])
     },
-    routeCrumbs() {
+    routeCrumbs () {
       const fullPath = this.$route.fullPath.split('?')[0]
       const params = fullPath.startsWith('/')
         ? fullPath.substring(1).split('/')
         : fullPath.split('/')
       const crumbs = []
       let path = ''
-      params.forEach((param, index) => {
+      params.forEach((param) => {
         path = `${path}/${param}`
         const match = this.$router.match(path)
         if (match.name !== null && !param.endsWith('=')) {
           crumbs.push({
             title: startCase(param.replace(/-/g, ' ').toLowerCase()),
-            ...match,
+            ...match
           })
         }
       })
       return crumbs
-    },
-  },
+    }
+  }
 }
 </script>

@@ -1,14 +1,13 @@
 import { expect } from 'chai'
 
+import { generateMountOptions, mountWithRouterMock } from '../../helpers'
+import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
+import Production from '../../fixtures/Production'
 import ProductionPage from '@/pages/production/_slug/index'
 import ProductionCastCredits from '@/components/production/ProductionCastCredits.vue'
 import ProductionOverview from '@/components/production/ProductionOverview.vue'
 import ProductionBanner from '@/components/production/ProductionBanner.vue'
 import ProductionPerformances from '@/components/production/ProductionPerformances.vue'
-
-import { generateMountOptions, mountWithRouterMock } from '../../helpers'
-import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
-import Production from '../../fixtures/Production'
 
 describe('Production', function () {
   let productionPageComponent,
@@ -22,13 +21,13 @@ describe('Production', function () {
       ProductionPage,
       generateMountOptions(['apollo'], {
         apollo: {
-          queryCallstack: [GenericApolloResponse('production', Production())],
-        },
+          queryCallstack: [GenericApolloResponse('production', Production())]
+        }
       }),
       {
         params: {
-          slug: 'legally-ginger',
-        },
+          slug: 'legally-ginger'
+        }
       }
     )
   })
@@ -61,7 +60,7 @@ describe('Production', function () {
 
   it('can show cast credits component', async () => {
     await productionPageComponent.setData({
-      overview: false,
+      overview: false
     })
     findComponents()
 

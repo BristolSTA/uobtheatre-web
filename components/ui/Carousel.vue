@@ -23,7 +23,7 @@
           'background-image': bannerBackgorund(carouselItems[index]),
         }"
       >
-        <slot :carouselItem="carouselItems[index]"></slot>
+        <slot :carouselItem="carouselItems[index]" />
       </div>
     </transition-group>
     <template v-if="carouselLength > 1">
@@ -46,7 +46,7 @@
               :class="[n - 1 == currentItem ? 'bg-white' : 'bg-transparent']"
               @click="goTo(n - 1), enableAutoPlay()"
               @keypress="goTo(n - 1)"
-            ></button>
+            />
           </li>
         </ul>
       </div>
@@ -121,68 +121,68 @@ export default {
   props: {
     carouselItems: {
       required: true,
-      type: Array,
+      type: Array
     },
     navArrows: {
       default: true,
-      type: Boolean,
+      type: Boolean
     },
     vheight: {
       default: 50,
-      type: Number,
+      type: Number
     },
     autoplay: {
       default: true,
-      type: Boolean,
+      type: Boolean
     },
     autoplaySpeed: {
       default: 5000,
-      type: Number,
+      type: Number
     },
     pauseOnHover: {
       default: true,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
-  data() {
+  data () {
     return {
       currentItem: 0,
-      autoplayInterval: null,
+      autoplayInterval: null
     }
   },
   computed: {
-    carouselLength() {
+    carouselLength () {
       return this.carouselItems.length
-    },
+    }
   },
-  mounted() {
+  mounted () {
     this.enableAutoPlay()
   },
-  beforeDestroy() {
+  beforeDestroy () {
     this.disableAutoPlay()
   },
   methods: {
-    bannerBackgorund(carouselItem) {
+    bannerBackgorund (carouselItem) {
       return `url("${carouselItem.displayImage.url}")`
     },
-    goTo(currentItem) {
+    goTo (currentItem) {
       this.currentItem = currentItem
     },
-    goToPrev() {
+    goToPrev () {
       if (this.currentItem === 0) {
         this.goTo(this.carouselLength - 1)
-      } else this.goTo(this.currentItem - 1)
+      } else { this.goTo(this.currentItem - 1) }
     },
-    goToNext() {
+    goToNext () {
       if (this.currentItem === this.carouselLength - 1) {
         this.goTo(0)
-      } else this.goTo(this.currentItem + 1)
+      } else { this.goTo(this.currentItem + 1) }
     },
-    disableAutoPlay() {
+    disableAutoPlay () {
       clearInterval(this.autoplayInterval)
       this.autoplayInterval = null
     },
-    enableAutoPlay() {
+    enableAutoPlay () {
       if (this.autoplayInterval) {
         clearInterval(this.autoplayInterval)
         this.autoplayInterval = null
@@ -193,21 +193,21 @@ export default {
         }, this.autoplaySpeed)
       }
     },
-    handleMouseOver(element) {
+    handleMouseOver (element) {
       if (this.autoplay) {
         if (element === 'carousel' && this.pauseOnHover) {
           this.disableAutoPlay()
         }
       }
     },
-    handleMouseOut(element) {
+    handleMouseOut (element) {
       if (this.autoplay) {
         if (element === 'carousel' && this.pauseOnHover) {
           this.enableAutoPlay()
         }
       }
-    },
-  },
+    }
+  }
 }
 </script>
 

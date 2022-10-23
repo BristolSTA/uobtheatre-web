@@ -10,8 +10,8 @@ require('dotenv').config({ path: path.resolve(process.cwd(), '.env.test') })
 
 // Load globally required stubs & plugins
 Vue.component('FontAwesomeIcon', {
-  template: '<a></a>',
+  template: '<a></a>'
 })
 FiltersPlugin({
-  $config: config(),
+  $config: config()
 })

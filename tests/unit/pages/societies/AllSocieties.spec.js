@@ -1,17 +1,16 @@
 import { expect } from 'chai'
 
-import SocietyTile from '@/components/society/SocietyTile'
-import InfiniteScroll from '@/components/ui/InfiniteScroll'
-import AllSocieties from '@/pages/societies'
-
 import { generateMountOptions, mountWithRouterMock } from '../../helpers'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection'
 import Society from '../../fixtures/Society'
+import AllSocieties from '@/pages/societies'
+import InfiniteScroll from '@/components/ui/InfiniteScroll'
+import SocietyTile from '@/components/society/SocietyTile'
 
 jest.mock('@/utils.js', () => ({
   ...jest.requireActual('@/utils.js'),
-  isInViewport: jest.fn(() => false),
+  isInViewport: jest.fn(() => false)
 }))
 describe('All Societies', () => {
   let allSocietiesComponent
@@ -21,9 +20,9 @@ describe('All Societies', () => {
       generateMountOptions(['apollo'], {
         apollo: {
           queryCallstack: [
-            GenericApolloResponse('societies', GenericNodeConnection()),
-          ],
-        },
+            GenericApolloResponse('societies', GenericNodeConnection())
+          ]
+        }
       })
     )
   })
@@ -52,11 +51,11 @@ describe('All Societies', () => {
               GenericApolloResponse(
                 'societies',
                 GenericNodeConnection(Array(9).fill(Society()), {
-                  hasNextPage: true,
+                  hasNextPage: true
                 })
-              ),
-            ],
-          },
+              )
+            ]
+          }
         })
       )
     })
@@ -87,9 +86,9 @@ describe('All Societies', () => {
               GenericApolloResponse(
                 'societies',
                 GenericNodeConnection(Array(3).fill(Society()))
-              ),
-            ],
-          },
+              )
+            ]
+          }
         })
       )
     })

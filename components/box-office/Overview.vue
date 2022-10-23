@@ -9,13 +9,17 @@
       lg:px-12
     "
   >
-    <alert :level="status.bannerLevel" :class="status.bannerClass">{{
-      status.bannerText
-    }}</alert>
+    <alert :level="status.bannerLevel" :class="status.bannerClass">
+      {{
+        status.bannerText
+      }}
+    </alert>
     <div class="flex flex-wrap">
       <div class="flex justify-center w-full md:block md:w-auto">
         <div>
-          <p class="text-h2">{{ production.name }}</p>
+          <p class="text-h2">
+            {{ production.name }}
+          </p>
           <p class="-mt-2 mb-1 text-sta-gray-lighter font-semibold">
             by {{ production.society.name }}
           </p>
@@ -39,12 +43,16 @@
               class="flex justify-center"
             >
               <div class="m-2 px-3 py-2 w-full bg-sta-rouge">
-                <p class="font-semibold">Warnings:</p>
+                <p class="font-semibold">
+                  Warnings:
+                </p>
                 <div
                   v-for="(warning, index) in production.contentWarnings"
                   :key="index"
                 >
-                  <p class="px-2">- {{ warning.warning.shortDescription }}</p>
+                  <p class="px-2">
+                    - {{ warning.warning.shortDescription }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -64,31 +72,41 @@
             <div class="p-4 max-w-sm bg-sta-gray-light lg:px-10 xl:my-4">
               <table class="table-fixed w-full">
                 <tr>
-                  <td class="font-semibold">Total Tickets</td>
+                  <td class="font-semibold">
+                    Total Tickets
+                  </td>
                   <td class="pl-2 w-1/5 text-sta-orange font-mono">
                     {{ ticketBreakdown.totalCapacity }}
                   </td>
                 </tr>
                 <tr>
-                  <td class="font-semibold">Total Sold</td>
+                  <td class="font-semibold">
+                    Total Sold
+                  </td>
                   <td class="pl-2 w-1/5 text-sta-orange font-mono">
                     {{ ticketBreakdown.totalTicketsSold }}
                   </td>
                 </tr>
                 <tr>
-                  <td class="pl-6 font-semibold">Collected</td>
+                  <td class="pl-6 font-semibold">
+                    Collected
+                  </td>
                   <td class="pl-2 w-1/5 text-sta-orange font-mono">
                     {{ ticketBreakdown.totalTicketsCheckedIn }}
                   </td>
                 </tr>
                 <tr>
-                  <td class="pl-6 font-semibold">To be Collected</td>
+                  <td class="pl-6 font-semibold">
+                    To be Collected
+                  </td>
                   <td class="pl-2 w-1/5 text-sta-orange font-mono">
                     {{ ticketBreakdown.totalTicketsToCheckIn }}
                   </td>
                 </tr>
                 <tr>
-                  <td class="font-semibold">Available to Sell</td>
+                  <td class="font-semibold">
+                    Available to Sell
+                  </td>
                   <td class="pl-2 w-1/5 text-sta-orange font-mono">
                     {{ ticketBreakdown.totalTicketsAvailable }}
                   </td>
@@ -106,7 +124,7 @@
                       rounded-full
                       animate-ping
                     "
-                  ></span>
+                  />
                   <span
                     class="
                       relative
@@ -116,7 +134,7 @@
                       bg-sta-rouge
                       rounded-full
                     "
-                  ></span>
+                  />
                 </span>
                 <p>Live</p>
               </div>
@@ -131,108 +149,113 @@
 <script>
 import { DateTime } from 'luxon'
 
+import Alert from '../ui/Alert.vue'
 import IconListItem from '@/components/ui/IconListItem.vue'
 import { humanDuration } from '@/utils'
 import Clock from '@/components/ui/Clock.vue'
-import Alert from '../ui/Alert.vue'
 
 export default {
   name: 'Overview',
   components: {
     IconListItem,
     Clock,
-    Alert,
+    Alert
   },
   props: {
     production: {
       required: true,
-      type: Object,
+      type: Object
     },
     performance: {
       required: true,
-      type: Object,
+      type: Object
     },
     detailed: {
       default: true,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
-  data() {
+  data () {
     return {
       ticketBreakdown: {},
-      currentTime: new Date(),
+      currentTime: new Date()
     }
   },
   computed: {
-    currentTimeLuxon() {
+    currentTimeLuxon () {
       return DateTime.fromJSDate(this.currentTime)
     },
-    performanceDoorsDiffMinutes() {
+    performanceDoorsDiffMinutes () {
       return DateTime.fromISO(this.performance.doorsOpen)
         .diff(this.currentTimeLuxon)
         .as('minutes')
     },
-    performanceStartDiffMinutes() {
+    performanceStartDiffMinutes () {
       return DateTime.fromISO(this.performance.start)
         .diff(this.currentTimeLuxon)
         .as('minutes')
     },
-    performanceEndDiffMinutes() {
+    performanceEndDiffMinutes () {
       return DateTime.fromISO(this.performance.end)
         .diff(this.currentTimeLuxon)
         .as('minutes')
     },
-    status() {
+    status () {
       // Performance end is in the past
-      if (this.performanceEndDiffMinutes <= 0)
+      if (this.performanceEndDiffMinutes <= 0) {
         return {
           clockClass: null,
           bannerLevel: 'danger',
           bannerText:
-            'This performance is in the past. Are you sure you are viewing the right performance?',
+            'This performance is in the past. Are you sure you are viewing the right performance?'
         }
+      }
 
       // Performance has started
-      if (this.performanceStartDiffMinutes <= 0)
+      if (this.performanceStartDiffMinutes <= 0) {
         return {
           clockClass: 'text-sta-rouge',
           bannerLevel: 'danger',
-          bannerText: 'This performance should now have started',
+          bannerText: 'This performance should now have started'
         }
+      }
 
       // Performance is starting within 5 minutes
-      if (this.performanceStartDiffMinutes <= 5)
+      if (this.performanceStartDiffMinutes <= 5) {
         return {
           clockClass: 'text-sta-orange animate-pulse',
           bannerLevel: 'warning',
           bannerText: `This performance is due to start in ${humanDuration(
             this.performanceStartDiffMinutes
-          )}`,
+          )}`
         }
+      }
 
       // Performance doors are open
-      if (this.performanceDoorsDiffMinutes < 0)
+      if (this.performanceDoorsDiffMinutes < 0) {
         return {
           clockClass: 'text-sta-green',
           bannerLevel: 'success',
-          bannerText: `The doors should now be open (wait for clearance from your stage team)`,
+          bannerText: 'The doors should now be open (wait for clearance from your stage team)'
         }
+      }
 
       // Performance doors are opening within 5 minutes
-      if (this.performanceDoorsDiffMinutes <= 5)
+      if (this.performanceDoorsDiffMinutes <= 5) {
         return {
           clockClass: 'animate-pulse',
           bannerLevel: 'warning',
           bannerText: `Doors should be opening in ${humanDuration(
             this.performanceDoorsDiffMinutes
-          )} (wait for clearance from your stage team)`,
+          )} (wait for clearance from your stage team)`
         }
+      }
 
       // Performance is within 3 hours
       if (this.performanceDoorsDiffMinutes >= 3 * 60) {
         return {
           bannerLevel: 'danger',
-          bannerText: `This performance is over 3 hours away. Are you sure you have the right performance selected?`,
+          bannerText: 'This performance is over 3 hours away. Are you sure you have the right performance selected?'
         }
       }
 
@@ -242,30 +265,30 @@ export default {
           this.performanceDoorsDiffMinutes
         )}`,
         bannerLevel: '',
-        bannerClass: 'border',
+        bannerClass: 'border'
       }
-    },
+    }
   },
-  mounted() {
+  mounted () {
     this.$apollo.queries.ticketBreakdown.refetch()
   },
   methods: {
-    humanDuration,
+    humanDuration
   },
   apollo: {
     ticketBreakdown: {
       query: require('@/graphql/queries/box-office/BoxOfficePerformanceTicketBreakdown.gql'),
-      variables() {
+      variables () {
         return {
-          id: this.performance.id,
+          id: this.performance.id
         }
       },
-      skip() {
+      skip () {
         return !this.detailed
       },
       pollInterval: 5000,
-      update: (data) => data.performance.ticketsBreakdown,
-    },
-  },
+      update: data => data.performance.ticketsBreakdown
+    }
+  }
 }
 </script>

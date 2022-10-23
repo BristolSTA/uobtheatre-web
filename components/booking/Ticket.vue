@@ -19,8 +19,12 @@
       v-if="ticket.concessionType.name && ticket.seatGroup.name"
       class="flex justify-between w-full font-semibold"
     >
-      <p class="pr-1">1x {{ ticket.concessionType.name }}</p>
-      <p class="pl-1 text-right">{{ ticket.seatGroup.name }}</p>
+      <p class="pr-1">
+        1x {{ ticket.concessionType.name }}
+      </p>
+      <p class="pl-1 text-right">
+        {{ ticket.seatGroup.name }}
+      </p>
     </div>
     <div class="flex flex-grow items-center justify-center py-2 w-full">
       <qrcode-vue
@@ -50,32 +54,32 @@ import Ticket from '@/classes/Ticket'
 export default {
   name: 'Ticket',
   components: {
-    QrcodeVue,
+    QrcodeVue
   },
   props: {
     performance: {
       required: true,
-      type: Object,
+      type: Object
     },
     reference: {
       required: true,
-      type: String,
+      type: String
     },
     ticket: {
       required: true,
-      type: Ticket,
+      type: Ticket
     },
     user: {
       default: null,
-      type: Object,
-    },
+      type: Object
+    }
   },
   computed: {
-    fullName() {
+    fullName () {
       return this.user
         ? lo.join([this.user.firstName, this.user.lastName], ' ')
         : null
-    },
-  },
+    }
+  }
 }
 </script>

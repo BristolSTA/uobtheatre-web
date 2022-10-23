@@ -1,9 +1,9 @@
 import { DateTime } from 'luxon'
-import ValidationError from '@/errors/ValidationError'
 import Swal from 'sweetalert2'
 import resolveConfig from 'tailwindcss/resolveConfig'
 import humanizeDuration from 'humanize-duration'
 import * as Sentry from '@sentry/browser'
+import ValidationError from '@/errors/ValidationError'
 
 import Errors from '@/classes/Errors'
 
@@ -71,8 +71,8 @@ const humanDuration = (durationMins, options) => {
  * @returns {string} String of time of day
  */
 const humanDayTime = (date) => {
-  if (date.hour < 12) return 'Morning'
-  if (date.hour < 17) return 'Afternoon'
+  if (date.hour < 12) { return 'Morning' }
+  if (date.hour < 17) { return 'Afternoon' }
   return 'Evening'
 }
 
@@ -102,9 +102,9 @@ const silentErrorHandler = (e) => {
  * @param {Function} callback The function to call if is a valid exception
  */
 const catchOnly = (errors, caughtError, callback) => {
-  if (!Array.isArray(errors)) errors = [errors]
+  if (!Array.isArray(errors)) { errors = [errors] }
 
-  if (errors.some((errorClass) => caughtError instanceof errorClass)) {
+  if (errors.some(errorClass => caughtError instanceof errorClass)) {
     return callback(caughtError)
   }
 
@@ -113,7 +113,7 @@ const catchOnly = (errors, caughtError, callback) => {
 
 const getValidationErrors = (error, throwExp = true) => {
   if (!(error instanceof ValidationError)) {
-    if (!throwExp) return
+    if (!throwExp) { return }
     throw error
   }
   return error.errors
@@ -124,10 +124,11 @@ const performMutation = (apollo, options, mutationName) => {
     apollo
       .mutate(options)
       .then(({ data }) => {
-        if (!data[mutationName].success)
+        if (!data[mutationName].success) {
           return reject(
             new ValidationError(Errors.createFromAPI(data[mutationName].errors))
           )
+        }
         resolve(data)
       })
       .catch((e) => {
@@ -147,36 +148,36 @@ const swal = Swal.mixin({
     title: 'text-white',
     content: 'text-white',
     htmlContainer: 'text-white',
-    input: 'bg-white',
+    input: 'bg-white'
   },
   confirmButtonColor: tailwindConfig.theme.colors['sta-orange'].DEFAULT,
-  denyButtonColor: tailwindConfig.theme.colors['sta-rouge'].DEFAULT,
+  denyButtonColor: tailwindConfig.theme.colors['sta-rouge'].DEFAULT
 })
 const swalToast = swal.mixin({
   toast: true,
   showConfirmButton: false,
-  position: 'bottom-end',
+  position: 'bottom-end'
 })
 const errorToast = swalToast.mixin({
-  icon: 'error',
+  icon: 'error'
 })
 const successToast = swalToast.mixin({
   icon: 'success',
   timer: 8000,
-  timerProgressBar: true,
+  timerProgressBar: true
 })
 const apiErrorToast = errorToast.mixin({
   icon: 'error',
   title: 'There was a server error while executing your request',
   timerProgressBar: true,
-  timer: 4000,
+  timer: 4000
 })
 const loadingSwal = swal.mixin({
   didOpen: () => {
     Swal.showLoading()
   },
   allowOutsideClick: false,
-  allowEscapeKey: false,
+  allowEscapeKey: false
 })
 
 const isInViewport = function (elem) {
@@ -209,5 +210,5 @@ export {
   tailwindConfig,
   catchOnly,
   getValidationErrors,
-  isInViewport,
+  isInViewport
 }

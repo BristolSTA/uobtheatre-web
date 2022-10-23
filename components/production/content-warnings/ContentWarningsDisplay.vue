@@ -13,8 +13,8 @@ export default {
   props: {
     contentWarnings: {
       required: true,
-      type: Array,
-    },
-  },
+      type: Array
+    }
+  }
 }
 </script>

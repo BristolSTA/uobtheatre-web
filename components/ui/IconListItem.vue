@@ -4,7 +4,7 @@
       <font-awesome-icon :icon="icon" />
     </div>
     <div>
-      <slot></slot>
+      <slot />
     </div>
   </div>
 </template>
@@ -16,8 +16,8 @@ export default {
     icon: {
       requried: true,
       type: [Array, String],
-      default: null,
-    },
-  },
+      default: null
+    }
+  }
 }
 </script>

@@ -53,9 +53,9 @@
             <button
               v-if="
                 !errors &&
-                booking &&
-                booking.tickets.length &&
-                booking.tickets.some((ticket) => !ticket.checkedIn)
+                  booking &&
+                  booking.tickets.length &&
+                  booking.tickets.some((ticket) => !ticket.checkedIn)
               "
               class="
                 block
@@ -76,9 +76,11 @@
               <div class="flex justify-between space-x-2 md:mb-2">
                 <h3 class="text-lg font-semibold">
                   Booking Information
-                  <template v-if="booking"
-                    >({{ booking.tickets.length }} tickets)</template
+                  <template
+                    v-if="booking"
                   >
+                    ({{ booking.tickets.length }} tickets)
+                  </template>
                 </h3>
                 <nuxt-link
                   :to="`bookings?q=${scanData.bookingReference}&qTicket=${scanData.ticketId}`"
@@ -100,12 +102,10 @@
                     {{ booking.user.lastName }}
                   </p>
                   <p v-if="booking && booking.tickets">
-                    <strong
-                      >{{ booking.tickets.length }} tickets ({{
-                        bookingInstance.numberCheckedIn
-                      }}
-                      checked in)</strong
-                    >
+                    <strong>{{ booking.tickets.length }} tickets ({{
+                      bookingInstance.numberCheckedIn
+                    }}
+                      checked in)</strong>
                   </p>
                 </div>
                 <table v-if="booking && booking.priceBreakdown">
@@ -121,7 +121,9 @@
                     <td class="pb-1 px-1">
                       {{ ticketGroup.concessionType.name }},
                     </td>
-                    <td class="pb-1 px-1">{{ ticketGroup.seatGroup.name }}</td>
+                    <td class="pb-1 px-1">
+                      {{ ticketGroup.seatGroup.name }}
+                    </td>
                   </tr>
                 </table>
               </div>
@@ -145,32 +147,32 @@ export default {
   props: {
     alreadyCheckedIn: {
       type: Boolean,
-      default: false,
+      default: false
     },
     scanData: {
       type: Object,
-      required: true,
+      required: true
     },
     errors: {
       type: Array,
-      default: null,
+      default: null
     },
     ticket: {
       type: Object,
-      default: null,
+      default: null
     },
     booking: {
       type: Object,
-      default: null,
-    },
+      default: null
+    }
   },
   computed: {
-    bookingInstance() {
+    bookingInstance () {
       return Booking.fromAPIData(this.booking)
-    },
+    }
   },
-  mounted() {
+  mounted () {
     new Audio(this.errors ? AudioNegative : AudioPositive).play()
-  },
+  }
 }
 </script>

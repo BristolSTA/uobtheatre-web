@@ -8,7 +8,7 @@
       }
     "
   >
-    <slot></slot>
+    <slot />
   </a>
 </template>
 
@@ -18,8 +18,8 @@ export default {
   props: {
     disabled: {
       default: false,
-      type: Boolean,
-    },
-  },
+      type: Boolean
+    }
+  }
 }
 </script>

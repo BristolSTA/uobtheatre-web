@@ -5,12 +5,12 @@ import InfiniteScroll from '@/components/ui/InfiniteScroll'
 
 jest.mock('@/utils.js', () => ({
   ...jest.requireActual('@/utils.js'),
-  isInViewport: jest.fn(() => false),
+  isInViewport: jest.fn(() => false)
 }))
 describe('Infinite Scroll', () => {
   let infiniteScrollComponent, apolloQueryMock, promiseResolve
   const fakeQuery = {
-    some: 'GQL Tag query',
+    some: 'GQL Tag query'
   }
   jest.spyOn(window, 'addEventListener')
   jest.spyOn(window, 'removeEventListener')
@@ -27,12 +27,12 @@ describe('Infinite Scroll', () => {
               new Promise((resolve) => {
                 promiseResolve = resolve
               })
-          )),
-        },
+          ))
+        }
       },
       propsData: {
-        apolloQuery: fakeQuery,
-      },
+        apolloQuery: fakeQuery
+      }
     })
   })
 
@@ -65,7 +65,7 @@ describe('Infinite Scroll', () => {
     expect(apolloQueryMock.mock.calls).length(1)
     expect(apolloQueryMock.mock.calls[0][0].query).to.eq(fakeQuery)
     expect(apolloQueryMock.mock.calls[0][0].variables).to.include({
-      afterCursor: null,
+      afterCursor: null
     })
 
     // Resolve the query
@@ -74,10 +74,10 @@ describe('Infinite Scroll', () => {
         queryName: {
           pageInfo: {
             endCursor: null,
-            hasNextPage: false,
-          },
-        },
-      },
+            hasNextPage: false
+          }
+        }
+      }
     }
     promiseResolve(result)
     await infiniteScrollComponent.vm.$nextTick()
@@ -104,10 +104,10 @@ describe('Infinite Scroll', () => {
         queryName: {
           pageInfo: {
             endCursor: 'abcdefg',
-            hasNextPage: true,
-          },
-        },
-      },
+            hasNextPage: true
+          }
+        }
+      }
     }
     promiseResolve(result)
     await infiniteScrollComponent.vm.$nextTick()
@@ -134,10 +134,10 @@ describe('Infinite Scroll', () => {
         queryName: {
           pageInfo: {
             endCursor: 'abcdefg',
-            hasNextPage: true,
-          },
-        },
-      },
+            hasNextPage: true
+          }
+        }
+      }
     }
     promiseResolve(result)
     await infiniteScrollComponent.vm.$nextTick()
@@ -153,7 +153,7 @@ describe('Infinite Scroll', () => {
       'offsetTop',
       {
         writable: false,
-        value: 800,
+        value: 800
       }
     )
 
@@ -167,7 +167,7 @@ describe('Infinite Scroll', () => {
     expect(apolloQueryMock.mock.calls).length(1)
     expect(apolloQueryMock.mock.calls[0][0].query).to.eq(fakeQuery)
     expect(apolloQueryMock.mock.calls[0][0].variables).to.include({
-      afterCursor: 'abcdefg',
+      afterCursor: 'abcdefg'
     })
 
     result.data.queryName.pageInfo.hasNextPage = false
@@ -188,10 +188,10 @@ describe('Infinite Scroll', () => {
         queryName: {
           pageInfo: {
             endCursor: null,
-            hasNextPage: false,
-          },
-        },
-      },
+            hasNextPage: false
+          }
+        }
+      }
     })
     apolloQueryMock.mockClear()
     await infiniteScrollComponent.vm.$nextTick()

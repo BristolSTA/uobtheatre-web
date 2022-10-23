@@ -1,9 +1,8 @@
 import { RouterLinkStub } from '@vue/test-utils'
 import { expect } from 'chai'
 
-import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
-
 import { mountWithRouterMock } from '../../helpers'
+import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
 
 describe('Breadcrumbs', () => {
   let breadcrumsComponent
@@ -13,19 +12,19 @@ describe('Breadcrumbs', () => {
       stubs: { 'font-awesome-icon': true },
       mocks: {
         $route: {
-          fullPath: '/productions/legally-ginger/book',
-        },
+          fullPath: '/productions/legally-ginger/book'
+        }
       },
       propsData: {
         crumbs: [
           { text: 'Whats On', path: '/productions' },
           {
             text: 'Legally Ginger',
-            path: '/productions/legally-ginger',
+            path: '/productions/legally-ginger'
           },
-          { text: 'Book' },
-        ],
-      },
+          { text: 'Book' }
+        ]
+      }
     })
   })
 

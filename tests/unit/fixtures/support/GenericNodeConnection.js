@@ -7,10 +7,10 @@ export default (edges = [], pageInfoOverrides = {}) => {
         hasNextPage: false,
         hasPreviousPage: false,
         startCursor: '4xnj10uTyFFz',
-        endCursor: '8bqjJfmyCXR8',
+        endCursor: '8bqjJfmyCXR8'
       },
       pageInfoOverrides
     ),
-    edges: edges.map((edge) => GenericNodeEdge(edge)),
+    edges: edges.map(edge => GenericNodeEdge(edge))
   }
 }

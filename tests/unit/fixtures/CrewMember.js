@@ -5,7 +5,7 @@ export default (overrides = {}) => {
       id: 1,
       name: 'Jill Bloggs',
       role: CrewRole(),
-      production: null,
+      production: null
     },
     overrides
   )

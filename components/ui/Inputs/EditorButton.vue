@@ -9,7 +9,7 @@
     @click="$emit('click', editor.chain())"
   >
     <font-awesome-icon v-if="icon" :icon="icon" />
-    <slot></slot>
+    <slot />
   </button>
 </template>
 
@@ -18,25 +18,24 @@ export default {
   props: {
     editor: {
       required: true,
-      type: Object,
+      type: Object
     },
     activeKey: {
       default: null,
-      type: [String, Array],
+      type: [String, Array]
     },
     icon: {
       default: null,
-      type: String,
-    },
+      type: String
+    }
   },
   computed: {
-    isActive() {
-      if (!this.activeKey) return
+    isActive () {
+      if (!this.activeKey) { return }
 
-      if (Array.isArray(this.activeKey))
-        return this.editor.isActive(...this.activeKey)
+      if (Array.isArray(this.activeKey)) { return this.editor.isActive(...this.activeKey) }
       return this.editor.isActive(this.activeKey)
-    },
-  },
+    }
+  }
 }
 </script>

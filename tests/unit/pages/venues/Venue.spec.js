@@ -1,14 +1,14 @@
 import { expect } from 'chai'
 
-import Venue from '@/pages/venue/_slug/index.vue'
 import FakeVenue from '../../fixtures/Venue'
 
 import {
   fixTextSpacing,
   generateMountOptions,
-  mountWithRouterMock,
+  mountWithRouterMock
 } from '../../helpers'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
+import Venue from '@/pages/venue/_slug/index.vue'
 
 describe('Venue page', function () {
   let venuePageComponent
@@ -19,13 +19,13 @@ describe('Venue page', function () {
       Venue,
       generateMountOptions(['apollo'], {
         apollo: {
-          queryCallstack: [GenericApolloResponse('venue', FakeVenue())],
-        },
+          queryCallstack: [GenericApolloResponse('venue', FakeVenue())]
+        }
       }),
       {
         params: {
-          slug: 'anson-theatre',
-        },
+          slug: 'anson-theatre'
+        }
       }
     )
   })
@@ -42,7 +42,7 @@ describe('Venue page', function () {
     expect(
       venuePageComponent
         .findComponent({
-          ref: 'image',
+          ref: 'image'
         })
         .attributes('src')
     ).to.equal('http://pathto.example/venue-image.png')
@@ -73,9 +73,9 @@ describe('Venue page', function () {
         venue: {
           address: Object.assign({}, address, {
             buildingName: 'Wills Memorial Building',
-            buildingNumber: null,
-          }),
-        },
+            buildingNumber: null
+          })
+        }
       })
       expect(fixTextSpacing(addressContainer.text())).to.contain(
         'Wills Memorial Building Queens Road'
@@ -88,9 +88,9 @@ describe('Venue page', function () {
         venue: {
           address: Object.assign({}, address, {
             buildingName: null,
-            buildingNumber: '69',
-          }),
-        },
+            buildingNumber: '69'
+          })
+        }
       })
       expect(fixTextSpacing(addressContainer.text())).to.contain(
         '69 Queens Road'
@@ -103,9 +103,9 @@ describe('Venue page', function () {
         venue: {
           address: Object.assign({}, address, {
             buildingName: null,
-            buildingNumber: null,
-          }),
-        },
+            buildingNumber: null
+          })
+        }
       })
       expect(fixTextSpacing(addressContainer.text())).to.contain('Queens Road')
     })
@@ -113,7 +113,7 @@ describe('Venue page', function () {
 
   it('checks map doesnt exist with invalid lat or long', async () => {
     await venuePageComponent.setData({
-      venue: { address: { latitude: null } },
+      venue: { address: { latitude: null } }
     })
 
     expect(venuePageComponent.findComponent({ ref: 'venue-map' }).exists()).to
@@ -126,14 +126,14 @@ describe('Venue page', function () {
       Venue,
       generateMountOptions(['apollo'], {
         apollo: {
-          queryCallstack: [GenericApolloResponse('venue')],
-        },
+          queryCallstack: [GenericApolloResponse('venue')]
+        }
       }),
       {
         error: errorFn,
         params: {
-          slug: 'anson-theatre-allowed',
-        },
+          slug: 'anson-theatre-allowed'
+        }
       }
     )
     expect(errorFn.mock.calls.length).to.eq(1)

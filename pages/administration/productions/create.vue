@@ -1,8 +1,12 @@
 <template>
   <admin-page title="Create a Production">
     <template #toolbar>
-      <sta-button colour="green" @click="create">Create Draft</sta-button>
-      <sta-button colour="orange" @click="$router.go(-1)">Cancel</sta-button>
+      <sta-button colour="green" @click="create">
+        Create Draft
+      </sta-button>
+      <sta-button colour="orange" @click="$router.go(-1)">
+        Cancel
+      </sta-button>
     </template>
     <non-field-error :errors="errors" />
     <production-editor
@@ -21,6 +25,7 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
 import ProductionEditor from '@/components/production/editor/ProductionEditor.vue'
 import AdminPage from '@/components/admin/AdminPage.vue'
 import StaButton from '@/components/ui/StaButton.vue'
@@ -28,28 +33,27 @@ import {
   getValidationErrors,
   loadingSwal,
   performMutation,
-  successToast,
+  successToast
 } from '@/utils'
-import Swal from 'sweetalert2'
 import NonFieldError from '@/components/ui/NonFieldError.vue'
 export default {
   components: {
     ProductionEditor,
     AdminPage,
     StaButton,
-    NonFieldError,
+    NonFieldError
   },
-  data() {
+  data () {
     return {
       production: null,
-      errors: null,
+      errors: null
     }
   },
-  async mounted() {
+  async mounted () {
     this.production = await this.$refs.editor.getInputData()
   },
   methods: {
-    async create() {
+    async create () {
       this.errors = null
       loadingSwal.fire()
       try {
@@ -58,8 +62,8 @@ export default {
           {
             mutation: require('@/graphql/mutations/admin/production/ProductionMutation.gql'),
             variables: {
-              input: await this.$refs.editor.getInputData(),
-            },
+              input: await this.$refs.editor.getInputData()
+            }
           },
           'production'
         )
@@ -69,7 +73,7 @@ export default {
         this.errors = getValidationErrors(e)
       }
       Swal.close()
-    },
-  },
+    }
+  }
 }
 </script>

@@ -1,11 +1,11 @@
 import { mount, RouterLinkStub } from '@vue/test-utils'
-import ProductionOverview from '@/components/production/ProductionOverview'
 import { expect } from 'chai'
 import { DateTime } from 'luxon'
 import Production from '../../fixtures/Production.js'
 import Performance from '../../fixtures/Performance.js'
 import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection.js'
 import { fixTextSpacing, generateMountOptions } from '../../helpers.js'
+import ProductionOverview from '@/components/production/ProductionOverview'
 
 describe('Production Overview', function () {
   let overviewContainer
@@ -14,8 +14,8 @@ describe('Production Overview', function () {
       {
         start: DateTime.fromISO('2020-11-14'),
         isInperson: true,
-        isOnline: false,
-      },
+        isOnline: false
+      }
     ])
 
     // correct descriprion
@@ -25,7 +25,7 @@ describe('Production Overview', function () {
     expect(
       overviewContainer
         .findComponent({
-          ref: 'poster-image',
+          ref: 'poster-image'
         })
         .attributes('src')
     ).to.equal('http://pathto.example/poster-image.png')
@@ -36,8 +36,8 @@ describe('Production Overview', function () {
       {
         start: DateTime.fromISO('2020-11-14'),
         isInperson: true,
-        isOnline: false,
-      },
+        isOnline: false
+      }
     ])
 
     // correct warnings
@@ -73,14 +73,14 @@ describe('Production Overview', function () {
         {
           start: DateTime.fromISO('2020-11-14'),
           isInperson: false,
-          isOnline: true,
-        },
+          isOnline: true
+        }
       ],
       {
         __dont_factory: ['contentWarnings'],
         contentWarnings: [],
         ageRating: null,
-        facebookEvent: null,
+        facebookEvent: null
       }
     )
 
@@ -105,8 +105,8 @@ describe('Production Overview', function () {
       {
         start: DateTime.fromISO('2020-11-14'),
         isInperson: true,
-        isOnline: true,
-      },
+        isOnline: true
+      }
     ])
 
     // medium is online and in person
@@ -121,15 +121,15 @@ describe('Production Overview', function () {
   const createWithPerformances = (performances, productionOverrides) => {
     const production = Production(productionOverrides)
     production.performances = GenericNodeConnection(
-      performances.map((performance) => Performance(performance))
+      performances.map(performance => Performance(performance))
     )
 
     overviewContainer = mount(
       ProductionOverview,
       generateMountOptions(['router'], {
         propsData: {
-          production,
-        },
+          production
+        }
       })
     )
   }

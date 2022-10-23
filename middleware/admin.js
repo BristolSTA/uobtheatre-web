@@ -10,7 +10,7 @@ export default function (context) {
     !context.$auth().hasPermission('admin_open')
   ) {
     return context.redirect({
-      path: '/',
+      path: '/'
     })
   }
 }

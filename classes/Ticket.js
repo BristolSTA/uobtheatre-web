@@ -9,13 +9,13 @@ export default class {
    * @param {object} concessionTypeId Concession Type ID
    * @param {string} id Optional ID of ticket in database
    */
-  constructor(seatGroupId, concessionTypeId, id = null) {
+  constructor (seatGroupId, concessionTypeId, id = null) {
     this.seatGroup.id = seatGroupId
     this.concessionType.id = concessionTypeId
     this.id = id
   }
 
-  static fromAPIData(ticketAPIData) {
+  static fromAPIData (ticketAPIData) {
     const ticket = new this(
       ticketAPIData.seatGroup.id,
       ticketAPIData.concessionType.id,
@@ -23,15 +23,15 @@ export default class {
     )
     ticket.seatGroup = ticketAPIData.seatGroup
     ticket.concessionType = ticketAPIData.concessionType
-    if (ticketAPIData.checkedIn) ticket.checkedIn = ticketAPIData.checkedIn
+    if (ticketAPIData.checkedIn) { ticket.checkedIn = ticketAPIData.checkedIn }
     return ticket
   }
 
-  static dataFromQRCode(rawQRCode) {
+  static dataFromQRCode (rawQRCode) {
     const result = JSON.parse(atob(rawQRCode))
     return {
       bookingReference: result[0],
-      ticketId: result[1],
+      ticketId: result[1]
     }
   }
 
@@ -42,7 +42,7 @@ export default class {
    * @param {object|null} concessionType Concession Data Object
    * @returns {boolean} True if ticket matches
    */
-  matches(seatGroup, concessionType) {
+  matches (seatGroup, concessionType) {
     const matchesSeatGroup = seatGroup
       ? this.seatGroup.id === seatGroup.id
       : true
@@ -58,11 +58,11 @@ export default class {
    * @param {object} ticketOptions Raw data from the ticket_types endpoint (i.e. grouped Seat Group -> Concession Types data) which contains the price data
    * @returns {number} Price of the ticket in pennies
    */
-  price(ticketOptions) {
+  price (ticketOptions) {
     return ticketOptions
-      .find((option) => option.seatGroup.id === this.seatGroup.id)
+      .find(option => option.seatGroup.id === this.seatGroup.id)
       .concessionTypes.find(
-        (concessionEdge) =>
+        concessionEdge =>
           concessionEdge.concessionType.id === this.concessionType.id
       ).price
   }
@@ -73,19 +73,19 @@ export default class {
    * @param {string} bookingReference Booking Reference
    * @returns {string} Base 64 encoded string
    */
-  generateQRCodeString(bookingReference) {
+  generateQRCodeString (bookingReference) {
     return btoa(JSON.stringify([bookingReference, this.id]))
   }
 
   /**
    * @returns {object} API Data object that represents the ticket
    */
-  get apiData() {
+  get apiData () {
     const ticketData = {
       seatGroupId: this.seatGroup.id,
-      concessionTypeId: this.concessionType.id,
+      concessionTypeId: this.concessionType.id
     }
-    if (this.id) ticketData.id = this.id
+    if (this.id) { ticketData.id = this.id }
 
     return ticketData
   }

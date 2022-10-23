@@ -24,11 +24,11 @@ export default {
   props: {
     performance: {
       required: true,
-      type: Object,
-    },
+      type: Object
+    }
   },
   computed: {
-    crumbs() {
+    crumbs () {
       return [
         { text: 'Box Office', path: '/box-office' },
         {
@@ -38,13 +38,13 @@ export default {
             this.performance.start,
             'ccc dd MMM T'
           )}`,
-          path: `/box-office/${this.performance.id}`,
+          path: `/box-office/${this.performance.id}`
         },
         {
-          text: 'Collect or Check',
-        },
+          text: 'Collect or Check'
+        }
       ]
-    },
-  },
+    }
+  }
 }
 </script>

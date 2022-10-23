@@ -33,8 +33,12 @@
       <font-awesome-icon :icon="icon" class="w-1/2" />
     </div>
     <div :class="{ 'ml-3': icon }">
-      <p class="font-semibold">{{ title }}</p>
-      <p v-if="subtitle" class="text-sm">{{ subtitle }}</p>
+      <p class="font-semibold">
+        {{ title }}
+      </p>
+      <p v-if="subtitle" class="text-sm">
+        {{ subtitle }}
+      </p>
     </div>
   </NuxtLink>
 </template>
@@ -44,20 +48,20 @@ export default {
   props: {
     title: {
       required: true,
-      type: String,
+      type: String
     },
     subtitle: {
       default: null,
-      type: String,
+      type: String
     },
     icon: {
       default: null,
-      type: String,
+      type: String
     },
     route: {
       required: true,
-      type: [Object, String],
-    },
-  },
+      type: [Object, String]
+    }
+  }
 }
 </script>

@@ -1,17 +1,16 @@
 import { expect } from 'chai'
 
-import ProductionTile from '@/components/production/ProductionTile'
-import InfiniteScroll from '@/components/ui/InfiniteScroll'
-import UpcomingProductions from '@/pages/productions'
-
 import { generateMountOptions, mountWithRouterMock } from '../../helpers'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection'
 import Production from '../../fixtures/Production'
+import UpcomingProductions from '@/pages/productions'
+import InfiniteScroll from '@/components/ui/InfiniteScroll'
+import ProductionTile from '@/components/production/ProductionTile'
 
 jest.mock('@/utils.js', () => ({
   ...jest.requireActual('@/utils.js'),
-  isInViewport: jest.fn(() => false),
+  isInViewport: jest.fn(() => false)
 }))
 describe('Upcoming Productions', () => {
   let upcomingProductionsComponent
@@ -21,9 +20,9 @@ describe('Upcoming Productions', () => {
       generateMountOptions(['apollo'], {
         apollo: {
           queryCallstack: [
-            GenericApolloResponse('productions', GenericNodeConnection()),
-          ],
-        },
+            GenericApolloResponse('productions', GenericNodeConnection())
+          ]
+        }
       })
     )
   })
@@ -55,11 +54,11 @@ describe('Upcoming Productions', () => {
               GenericApolloResponse(
                 'productions',
                 GenericNodeConnection(Array(9).fill(Production()), {
-                  hasNextPage: true,
+                  hasNextPage: true
                 })
-              ),
-            ],
-          },
+              )
+            ]
+          }
         })
       )
     })
@@ -98,9 +97,9 @@ describe('Upcoming Productions', () => {
               GenericApolloResponse(
                 'productions',
                 GenericNodeConnection(Array(3).fill(Production()))
-              ),
-            ],
-          },
+              )
+            ]
+          }
         })
       )
     })

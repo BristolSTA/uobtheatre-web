@@ -1,6 +1,6 @@
 <template>
   <tr :class="classes" @click="clickable ? $emit('click') : null">
-    <slot></slot>
+    <slot />
   </tr>
 </template>
 
@@ -9,15 +9,15 @@ export default {
   props: {
     striped: {
       default: true,
-      type: Boolean,
+      type: Boolean
     },
     clickable: {
       default: false,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
   computed: {
-    classes() {
+    classes () {
       const classes = []
       if (this.striped) {
         classes.push('odd:bg-sta-gray even:bg-sta-gray-dark')
@@ -26,7 +26,7 @@ export default {
         classes.push('hover:bg-sta-orange transition-colors cursor-pointer')
       }
       return classes
-    },
-  },
+    }
+  }
 }
 </script>

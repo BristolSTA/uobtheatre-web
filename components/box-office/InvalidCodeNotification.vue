@@ -20,8 +20,8 @@
 <script>
 import AudioNegative from '@/assets/audio/beep_negative.mp3'
 export default {
-  mounted() {
+  mounted () {
     new Audio(AudioNegative).play()
-  },
+  }
 }
 </script>

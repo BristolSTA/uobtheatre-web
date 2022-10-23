@@ -23,7 +23,7 @@ import {
   TTable,
   TDatepicker,
   TToggle,
-  TDialog,
+  TDialog
 } from 'vue-tailwind/dist/components'
 
 const settings = {
@@ -54,7 +54,7 @@ const settings = {
   TTable,
   TDatepicker,
   TToggle,
-  TDialog,
+  TDialog
 }
 
 Vue.use(VueTailwind, settings)

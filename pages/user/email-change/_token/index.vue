@@ -12,13 +12,17 @@
   >
     <div class="relative text-center">
       <template v-if="!addedOk && loading">
-        <h1 class="text-h3">Adding email...</h1>
+        <h1 class="text-h3">
+          Adding email...
+        </h1>
         <div>
           <loading-icon size-class="text-h1" />
         </div>
       </template>
       <template v-else-if="addedOk">
-        <h1 class="text-h3">Complete email change</h1>
+        <h1 class="text-h3">
+          Complete email change
+        </h1>
         <p>
           To complete the change of your account's email, enter your password
           below
@@ -36,13 +40,17 @@
               required
               class="mt-4"
             />
-            <button class="btn btn-green mt-4">Complete Change</button>
+            <button class="btn btn-green mt-4">
+              Complete Change
+            </button>
           </form>
         </loading-container>
       </template>
       <template v-else>
         <font-awesome-icon class="text-sta-rouge text-h1" icon="times-circle" />
-        <h1 class="text-h3">There was an error activating this email</h1>
+        <h1 class="text-h3">
+          There was an error activating this email
+        </h1>
         <p>This activation has either expired or doesn't exist!</p>
       </template>
     </div>
@@ -62,20 +70,20 @@ export default {
     NonFieldError,
     TextInput,
     LoadingContainer,
-    LoadingIcon,
+    LoadingIcon
   },
   middleware: 'authed',
-  data() {
+  data () {
     return {
       password: null,
       addedOk: false,
-      loading: true,
+      loading: true
     }
   },
   head: {
-    title: 'Change Email',
+    title: 'Change Email'
   },
-  async mounted() {
+  async mounted () {
     try {
       await performMutation(
         this.$apollo,
@@ -88,8 +96,8 @@ export default {
           }
         `,
           variables: {
-            token: this.$route.params.token,
-          },
+            token: this.$route.params.token
+          }
         },
         'verifySecondaryEmail'
       )
@@ -100,7 +108,7 @@ export default {
     this.loading = false
   },
   methods: {
-    async finishSwap() {
+    async finishSwap () {
       this.loading = true
       try {
         await performMutation(
@@ -114,8 +122,8 @@ export default {
             }
           `,
             variables: {
-              password: this.password,
-            },
+              password: this.password
+            }
           },
           'swapEmails'
         )
@@ -131,8 +139,8 @@ export default {
             }
           `,
             variables: {
-              password: this.password,
-            },
+              password: this.password
+            }
           },
           'removeSecondaryEmail'
         )
@@ -140,14 +148,14 @@ export default {
         swalToast.fire({
           position: 'bottom-end',
           icon: 'success',
-          title: 'Email changed!',
+          title: 'Email changed!'
         })
         return this.$router.replace('/user')
       } catch (e) {
         this.errors = getValidationErrors(e)
       }
       this.loading = false
-    },
-  },
+    }
+  }
 }
 </script>

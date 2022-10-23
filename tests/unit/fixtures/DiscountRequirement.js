@@ -6,7 +6,7 @@ export default (overrides = {}) => {
       id: 1,
       number: 1,
       discount: null,
-      concessionType: ConcessionType(),
+      concessionType: ConcessionType()
     },
     overrides
   )

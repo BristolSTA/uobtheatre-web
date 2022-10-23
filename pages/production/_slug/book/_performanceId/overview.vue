@@ -41,20 +41,20 @@ export default {
   stageInfo: new BookingStage({
     name: 'Overview',
     routeName: 'production-slug-book-performanceId-overview',
-    eligable: (production, booking) => !booking.dirty,
+    eligable: (_, booking) => !booking.dirty
   }),
   components: {
     VenueOverview,
     PerformanceOverview,
     UserOverview,
     TicketsOverview,
-    BookingPriceOverview,
+    BookingPriceOverview
   },
   props: {
     booking: {
       required: true,
-      type: Booking,
-    },
-  },
+      type: Booking
+    }
+  }
 }
 </script>

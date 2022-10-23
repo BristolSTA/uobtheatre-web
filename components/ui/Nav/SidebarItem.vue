@@ -8,7 +8,7 @@
         <div v-if="icon" class="flex w-5">
           <font-awesome-icon :icon="icon" />
         </div>
-        <div><slot></slot></div>
+        <div><slot /></div>
       </div>
     </nuxt-link>
   </div>
@@ -19,25 +19,25 @@ export default {
   props: {
     icon: {
       default: null,
-      type: String,
+      type: String
     },
     href: {
       default: null,
-      type: String,
+      type: String
     },
     isRoot: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   computed: {
-    isActive() {
+    isActive () {
       const currentUrl = this.$nuxt.$route.path
       if (this.isRoot) {
         return currentUrl === this.href
       }
       return currentUrl.startsWith(this.href)
-    },
-  },
+    }
+  }
 }
 </script>

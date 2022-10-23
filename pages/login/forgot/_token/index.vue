@@ -11,7 +11,9 @@
         shadow-2xl
       "
     >
-      <h1 class="text-h3">Reset your password</h1>
+      <h1 class="text-h3">
+        Reset your password
+      </h1>
       <form
         class="flex flex-col p-6 pt-0 space-y-2"
         @submit.prevent="attemptReset"
@@ -36,7 +38,9 @@
           required
         />
         <div>
-          <button class="btn btn-green mr-2">Reset</button>
+          <button class="btn btn-green mr-2">
+            Reset
+          </button>
         </div>
       </form>
     </div>
@@ -52,18 +56,18 @@ import TextInput from '@/components/ui/TextInput.vue'
 export default {
   components: { AuthPageTemplate, NonFieldError, TextInput },
   middleware: 'not-authed',
-  data() {
+  data () {
     return {
       errors: null,
       newPassword: null,
-      confirmedNewPassword: null,
+      confirmedNewPassword: null
     }
   },
   head: {
-    title: 'Reset your password',
+    title: 'Reset your password'
   },
   methods: {
-    async attemptReset() {
+    async attemptReset () {
       try {
         await performMutation(
           this.$apollo,
@@ -72,8 +76,8 @@ export default {
             variables: {
               token: this.$route.params.token,
               newPassword: this.newPassword,
-              confirmedNewPassword: this.confirmedNewPassword,
-            },
+              confirmedNewPassword: this.confirmedNewPassword
+            }
           },
           'passwordReset'
         )
@@ -82,7 +86,7 @@ export default {
       } catch (e) {
         this.errors = getValidationErrors(e)
       }
-    },
-  },
+    }
+  }
 }
 </script>

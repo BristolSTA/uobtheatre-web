@@ -1,6 +1,6 @@
 <template>
   <th class="p-2" :class="{ 'text-left': textLeft }">
-    <slot></slot>
+    <slot />
   </th>
 </template>
 
@@ -9,8 +9,8 @@ export default {
   props: {
     textLeft: {
       default: true,
-      type: Boolean,
-    },
-  },
+      type: Boolean
+    }
+  }
 }
 </script>

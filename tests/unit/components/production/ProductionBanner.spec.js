@@ -2,16 +2,15 @@ import { mount, RouterLinkStub } from '@vue/test-utils'
 import { expect } from 'chai'
 import { DateTime } from 'luxon'
 
-import ProductionBanner from '@/components/production/ProductionBanner.vue'
-
 import {
   assertNoVisualDifference,
   fixTextSpacing,
-  generateMountOptions,
+  generateMountOptions
 } from '../../helpers.js'
 import Production from '../../fixtures/Production.js'
 import Performance from '../../fixtures/Performance.js'
 import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection.js'
+import ProductionBanner from '@/components/production/ProductionBanner.vue'
 
 describe('ProductionBanner', function () {
   let headerContainer
@@ -20,12 +19,12 @@ describe('ProductionBanner', function () {
     const venue1 = {
       name: 'The New Vic',
       slug: 'the-new-vic',
-      publiclyListed: false,
+      publiclyListed: false
     }
     const venue2 = {
       name: 'The Newer Vic',
       slug: 'the-newer-vic',
-      publiclyListed: true,
+      publiclyListed: true
     }
     await createWithPerformances([
       {
@@ -33,15 +32,15 @@ describe('ProductionBanner', function () {
         venue: venue1,
         isInperson: true,
         isOnline: false,
-        durationMins: 102,
+        durationMins: 102
       },
       {
         start: DateTime.fromISO('2020-11-15'),
         venue: venue2,
         isInperson: true,
         isOnline: false,
-        durationMins: 112,
-      },
+        durationMins: 112
+      }
     ])
 
     expect(headerContainer.text()).to.contain('Legally Ginger')
@@ -71,7 +70,7 @@ describe('ProductionBanner', function () {
     expect(
       headerContainer
         .findComponent({
-          ref: 'featured-image',
+          ref: 'featured-image'
         })
         .attributes('src')
     ).to.equal('http://pathto.example/featured-image.png')
@@ -80,7 +79,7 @@ describe('ProductionBanner', function () {
     expect(
       headerContainer
         .findComponent({
-          ref: 'society-image',
+          ref: 'society-image'
         })
         .attributes('src')
     ).to.equal('http://pathto.example/logo-image.png')
@@ -93,7 +92,7 @@ describe('ProductionBanner', function () {
     expect(
       headerContainer
         .findComponent({
-          ref: 'society-image',
+          ref: 'society-image'
         })
         .exists()
     ).to.be.false
@@ -105,20 +104,20 @@ describe('ProductionBanner', function () {
         venue: {
           name: 'The New Vic',
           slug: 'the-new-vic',
-          publiclyListed: false,
+          publiclyListed: false
         },
         isInperson: false,
-        isOnline: true,
+        isOnline: true
       },
       {
         venue: {
           name: 'The Newer Vic',
           slug: 'the-newer-vic',
-          publiclyListed: true,
+          publiclyListed: true
         },
         isInperson: false,
-        isOnline: true,
-      },
+        isOnline: true
+      }
     ])
     assertNoVisualDifference(headerContainer.vm.venues, [])
     expect(fixTextSpacing(headerContainer.text())).to.contain('View Online')
@@ -131,11 +130,11 @@ describe('ProductionBanner', function () {
         venue: {
           name: 'The Newer Vic',
           slug: 'the-newer-vic',
-          publiclyListed: true,
+          publiclyListed: true
         },
         isInperson: true,
-        isOnline: true,
-      },
+        isOnline: true
+      }
     ])
 
     // test online and live
@@ -150,47 +149,47 @@ describe('ProductionBanner', function () {
       {
         venue: {
           name: 'The Newer Vic',
-          slug: 'the-newer-vic',
+          slug: 'the-newer-vic'
         },
         isInperson: true,
-        isOnline: true,
+        isOnline: true
       },
       {
         start: DateTime.fromISO('2020-11-14'),
         venue: {
           name: 'The New Vic',
-          slug: 'the-new-vic',
+          slug: 'the-new-vic'
         },
         isInperson: true,
-        isOnline: false,
+        isOnline: false
       },
       {
         start: DateTime.fromISO('2020-11-15'),
         venue: {
           name: 'Anson Theatre',
-          slug: 'anson-theatre',
+          slug: 'anson-theatre'
         },
         isInperson: true,
-        isOnline: false,
+        isOnline: false
       },
       {
         start: DateTime.fromISO('2020-11-15'),
         venue: {
           name: 'Pegg Rooms',
-          slug: 'pegg-rooms',
+          slug: 'pegg-rooms'
         },
         isInperson: true,
-        isOnline: false,
+        isOnline: false
       },
       {
         start: DateTime.fromISO('2020-11-15'),
         venue: {
           name: 'Winston Rooms',
-          slug: 'winston-rooms',
+          slug: 'winston-rooms'
         },
         isInperson: true,
-        isOnline: false,
-      },
+        isOnline: false
+      }
     ])
 
     // test venue overflow
@@ -205,11 +204,11 @@ describe('ProductionBanner', function () {
         venue: {
           name: 'The Newer Vic',
           slug: 'the-newer-vic',
-          publiclyListed: true,
+          publiclyListed: true
         },
         isInperson: true,
-        isOnline: true,
-      },
+        isOnline: true
+      }
     ])
     await headerContainer.find('button').trigger('click')
     expect(headerContainer.emitted('on-buy-tickets-click').length).to.eq(1)
@@ -218,7 +217,7 @@ describe('ProductionBanner', function () {
   // no buy tickets when not bookable
   it('doesnt show buy tickets button when not bookable', async () => {
     await createWithPerformances([{}], {
-      isBookable: false,
+      isBookable: false
     })
     expect(fixTextSpacing(headerContainer.text())).not.to.contain(
       'Tickets from £1.20'
@@ -245,7 +244,7 @@ describe('ProductionBanner', function () {
     createWithPerformances([Performance({ intervalDurationMins: duration })])
 
     expect(fixTextSpacing(headerContainer.text())).to.contain(
-      duration ? `2 hours inc. interval` : '2 hours'
+      duration ? '2 hours inc. interval' : '2 hours'
     )
   })
 
@@ -257,7 +256,7 @@ describe('ProductionBanner', function () {
   ) => {
     const production = Production(productionOverrides)
     production.performances = GenericNodeConnection(
-      performances.map((performance) => Performance(performance))
+      performances.map(performance => Performance(performance))
     )
 
     headerContainer = mount(
@@ -266,8 +265,8 @@ describe('ProductionBanner', function () {
         propsData: {
           production,
           showBuyTicketsButton,
-          showDetailedInfo,
-        },
+          showDetailedInfo
+        }
       })
     )
   }

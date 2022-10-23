@@ -4,10 +4,14 @@
       <div class="text-left">
         <slot>
           <h1 class="text-h1">
-            <slot name="title"> Oops! </slot>
+            <slot name="title">
+              Oops!
+            </slot>
           </h1>
           <h2 class="text-h2">
-            <slot name="subtitle"> {{ message }}</slot>
+            <slot name="subtitle">
+              {{ message }}
+            </slot>
           </h2>
           <p v-if="error.message">
             {{ error.message }}
@@ -31,24 +35,24 @@ export default {
   props: {
     buttonText: {
       default: 'Return Home',
-      type: String,
+      type: String
     },
     buttonTo: {
       default: '/',
-      type: String,
+      type: String
     },
     error: {
       required: false,
       type: Object,
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   computed: {
-    message() {
-      if (this.error.statusCode === 404) return '404 - Page Not found'
-      if (this.error.statusCode === 401) return '401 - Unauthorized'
+    message () {
+      if (this.error.statusCode === 404) { return '404 - Page Not found' }
+      if (this.error.statusCode === 401) { return '401 - Unauthorized' }
       return 'There was an issue.'
-    },
-  },
+    }
+  }
 }
 </script>

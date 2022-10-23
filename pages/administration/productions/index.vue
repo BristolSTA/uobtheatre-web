@@ -4,8 +4,9 @@
       <sta-button
         class="bg-sta-green hover:bg-sta-green-dark transition-colors"
         to="productions/create"
-        >Start New Draft</sta-button
       >
+        Start New Draft
+      </sta-button>
     </template>
     <div class="flex flex-wrap gap-3 items-end md:flex-nowrap">
       <div>
@@ -60,8 +61,9 @@
               <nuxt-link
                 :to="`/administration/productions/${production.slug}`"
                 class="text-sta-orange hover:text-sta-orange-dark font-semibold"
-                >{{ production.name }}</nuxt-link
               >
+                {{ production.name }}
+              </nuxt-link>
             </table-row-item>
             <table-row-item>{{ production.society.name }}</table-row-item>
             <table-row-item>
@@ -98,27 +100,27 @@ export default {
     TableRow,
     ProductionStatusBadge,
     AdminPage,
-    StaButton,
+    StaButton
   },
-  data() {
+  data () {
     return {
       productionsData: null,
       productionsOffset: 0,
       productionsStatusFilter: null,
       productionsRunDateFilter: null,
-      productionSearchFilter: null,
+      productionSearchFilter: null
     }
   },
   head: {
-    title: 'Your Productions',
+    title: 'Your Productions'
   },
   methods: {
-    displayStartEnd,
+    displayStartEnd
   },
   apollo: {
     productionsData: {
       query: AdminProductionsQuery,
-      variables() {
+      variables () {
         return {
           offset: this.productionsOffset,
           status: this.productionsStatusFilter,
@@ -128,11 +130,11 @@ export default {
           endGte: this.productionsRunDateFilter
             ? this.productionsRunDateFilter + 'T00:00:00'
             : null,
-          search: this.productionSearchFilter,
+          search: this.productionSearchFilter
         }
       },
-      update: (data) => data.productions,
-    },
-  },
+      update: data => data.productions
+    }
+  }
 }
 </script>

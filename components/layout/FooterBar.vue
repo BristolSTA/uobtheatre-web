@@ -44,7 +44,7 @@
               class="mx-auto max-h-full"
               style="max-height: 100px"
               alt="Stage Technicians' Association Logo"
-            />
+            >
           </a>
         </div>
         <div class="w-48">
@@ -54,7 +54,7 @@
               class="mx-auto max-h-full"
               style="max-height: 100px"
               alt="Bristol SU Balloon Logo"
-            />
+            >
           </a>
         </div>
 
@@ -81,17 +81,17 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       navItems: [
         ['/privacy', 'Privacy Policy'],
         ['/terms', 'Terms & Conditions'],
         [
           'mailto:support@uobtheatre.com?subject=Request For Support',
-          'Contact Us',
-        ],
-      ],
+          'Contact Us'
+        ]
+      ]
     }
-  },
+  }
 }
 </script>

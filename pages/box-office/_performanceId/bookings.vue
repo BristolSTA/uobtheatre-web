@@ -10,7 +10,9 @@
 
         <box-office-navigation :performance="performance" :compact="true" />
       </div>
-      <h2 class="mb-2 text-center text-h2">Performance Bookings</h2>
+      <h2 class="mb-2 text-center text-h2">
+        Performance Bookings
+      </h2>
 
       <div v-if="!scanning" class="flex justify-center mb-4">
         <div class="px-2 w-full lg:max-w-4xl">
@@ -21,7 +23,7 @@
                 type="text"
                 class="mb-2 p-2 w-44 text-gray-800 rounded outline-none md:w-64"
                 placeholder="Search"
-              />
+              >
               <button
                 class="
                   p-2
@@ -39,8 +41,7 @@
             </div>
 
             <div>
-              <label>Filter</label
-              ><t-select
+              <label>Filter</label><t-select
                 v-model="bookingFilter"
                 :options="[
                   { value: null, text: 'All' },
@@ -64,8 +65,8 @@
                 <th>Name</th>
                 <th>Reference</th>
                 <th>Checked In?<sort-icon v-model="checkedInSort" /></th>
-                <th>Price</th></template
-              ><template v-for="(booking, index) in bookings">
+                <th>Price</th>
+              </template><template v-for="(booking, index) in bookings">
                 <booking-row
                   :key="`${index}-row`"
                   :index="index"
@@ -90,13 +91,16 @@
       </div>
       <div v-else class="flex flex-col">
         <div class="mb-6 mx-auto p-2 bg-sta-rouge">
-          <h3 class="text-center text-h3">Find a booking</h3>
+          <h3 class="text-center text-h3">
+            Find a booking
+          </h3>
           <p class="text-center">
             <nuxt-link
               to="collect"
               class="hover:text-gray-300 underline transition-colors"
-              >Looking to check in tickets instead?</nuxt-link
             >
+              Looking to check in tickets instead?
+            </nuxt-link>
           </p>
         </div>
         <ticket-scanner
@@ -148,15 +152,15 @@ export default {
     BookingDetailsRow,
     TicketScanner,
     PaginatedTable,
-    BoxOfficeNavigation,
+    BoxOfficeNavigation
   },
   props: {
     performance: {
       required: true,
-      type: Object,
-    },
+      type: Object
+    }
   },
-  data() {
+  data () {
     return {
       bookings: [],
       pageInfo: {},
@@ -168,11 +172,11 @@ export default {
       selected_booking_index: null,
 
       scanning: false,
-      scannedTicket: null,
+      scannedTicket: null
     }
   },
   computed: {
-    crumbs() {
+    crumbs () {
       return [
         { text: 'Box Office', path: '/box-office' },
         {
@@ -182,15 +186,15 @@ export default {
             this.performance.start,
             'ccc dd MMM T'
           )}`,
-          path: `/box-office/${this.performance.id}`,
+          path: `/box-office/${this.performance.id}`
         },
         {
-          text: 'All Bookings',
-        },
+          text: 'All Bookings'
+        }
       ]
-    },
+    }
   },
-  mounted() {
+  mounted () {
     if (this.$route.query.q) {
       this.searchQuery = this.$route.query.q
     }
@@ -201,7 +205,7 @@ export default {
   apollo: {
     bookings: {
       query: BoxOfficePerformanceBookings,
-      variables() {
+      variables () {
         return {
           id: this.$route.params.performanceId,
           search: this.searchQuery,
@@ -211,22 +215,21 @@ export default {
               ? `${this.checkedInSort}checked_in`
               : null,
           checkedIn: this.bookingFilter === 'NOCHECKIN' ? false : null,
-          discount: this.bookingFilter === 'COMPS' ? 1 : null,
+          discount: this.bookingFilter === 'COMPS' ? 1 : null
         }
       },
       debounce: 100,
-      update: (data) =>
-        data.performance.bookings.edges.map((edge) =>
+      update: data =>
+        data.performance.bookings.edges.map(edge =>
           Booking.fromAPIData(edge.node)
         ),
-      result(result) {
-        if (result.data)
-          this.pageInfo = result.data.performance.bookings.pageInfo
+      result (result) {
+        if (result.data) { this.pageInfo = result.data.performance.bookings.pageInfo }
 
         this.selected_booking_index = this.bookings.length === 1 ? 0 : null
       },
-      fetchPolicy: 'cache-and-network',
-    },
-  },
+      fetchPolicy: 'cache-and-network'
+    }
+  }
 }
 </script>

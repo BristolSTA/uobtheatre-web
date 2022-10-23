@@ -6,7 +6,7 @@ export default async (context) => {
   window.addEventListener('storage', (event) => {
     if (event.key === 'logout' && authService.isLoggedIn(context)) {
       authService.logout(context, false)
-      if (context.route.path !== '/') context.redirect('/')
+      if (context.route.path !== '/') { context.redirect('/') }
     }
   })
 

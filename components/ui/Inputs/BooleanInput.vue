@@ -5,7 +5,7 @@
       type="checkbox"
       :checked="checked"
       @change="$emit('change', $event)"
-    />
+    >
     <font-awesome-icon
       v-else
       :icon="checked ? 'check-circle' : 'times-circle'"
@@ -19,12 +19,12 @@ export default {
   props: {
     checked: {
       type: Boolean,
-      required: true,
+      required: true
     },
     disabled: {
       type: Boolean,
-      default: false,
-    },
-  },
+      default: false
+    }
+  }
 }
 </script>

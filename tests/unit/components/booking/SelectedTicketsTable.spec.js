@@ -1,10 +1,10 @@
 // Copy and rename this file to <testname>.spec.js
 import { expect } from 'chai'
-import SelectedTicketsTable from '@/components/booking/SelectedTicketsTable.vue'
 import { mount } from '@vue/test-utils'
+import FullBooking from '../../fixtures/instances/FullBooking'
+import SelectedTicketsTable from '@/components/booking/SelectedTicketsTable.vue'
 import Booking from '@/classes/Booking'
 import TicketsMatrix from '@/classes/TicketsMatrix'
-import FullBooking from '../../fixtures/instances/FullBooking'
 
 describe('Selected Tickets Table', () => {
   let component
@@ -12,8 +12,8 @@ describe('Selected Tickets Table', () => {
     component = mount(SelectedTicketsTable, {
       propsData: {
         booking: Booking.fromAPIData(FullBooking()),
-        ticketMatrix: new TicketsMatrix(FullBooking().performance),
-      },
+        ticketMatrix: new TicketsMatrix(FullBooking().performance)
+      }
     })
   })
 
@@ -44,7 +44,7 @@ describe('Selected Tickets Table', () => {
     const booking = FullBooking()
     booking.priceBreakdown.discountsValue = 0
     await component.setProps({
-      booking: Booking.fromAPIData(booking),
+      booking: Booking.fromAPIData(booking)
     })
 
     expect(component.find('table').text()).not.to.contain('Discounts')

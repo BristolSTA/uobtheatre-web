@@ -6,7 +6,9 @@
     >
       <thead>
         <table-row>
-          <table-head-item :text-left="false">User</table-head-item>
+          <table-head-item :text-left="false">
+            User
+          </table-head-item>
           <table-head-item
             v-for="(permission, index) in assignablePermissions"
             :key="index"
@@ -24,7 +26,7 @@
         >
           <table-row-item>
             {{ assignedUser.user.firstName }} {{ assignedUser.user.lastName }}
-            <br />
+            <br>
             <sta-button
               :small="true"
               class="
@@ -58,7 +60,7 @@
       <form-label :required="true">
         User Email Address
         <template #control>
-          <input v-model="newUser.email" type="email" class="text-black" />
+          <input v-model="newUser.email" type="email" class="text-black">
         </template>
         <template #helper>
           This user must have an account on this site
@@ -87,7 +89,7 @@
                 v-model="newUser.permissions"
                 type="checkbox"
                 :value="assignablePermission.name"
-              />
+              >
             </table-row-item>
           </table-row>
         </tbody>
@@ -119,48 +121,48 @@ export default {
     TableRowItem,
     TableRow,
     StaButton,
-    FormLabel,
+    FormLabel
   },
   props: {
     assignablePermissions: {
       type: Array,
-      required: true,
+      required: true
     },
     assignedUsers: {
       type: Array,
-      required: true,
-    },
+      required: true
+    }
   },
-  data() {
+  data () {
     return {
       newUser: {
         email: null,
-        permissions: [],
-      },
+        permissions: []
+      }
     }
   },
   computed: {
-    userAssignablePermissions() {
-      return this.assignablePermissions.filter((ap) => ap.userCanAssign)
-    },
+    userAssignablePermissions () {
+      return this.assignablePermissions.filter(ap => ap.userCanAssign)
+    }
   },
   methods: {
-    togglePermission(user, permission) {
+    togglePermission (user, permission) {
       user.modified = true
       if (user.assignedPermissions.includes(permission.name)) {
         user.assignedPermissions = user.assignedPermissions.filter(
-          (permissionName) => permissionName !== permission.name
+          permissionName => permissionName !== permission.name
         )
       } else {
         user.assignedPermissions.push(permission.name)
       }
     },
-    addNewUser() {
+    addNewUser () {
       this.$emit('add', this.newUser)
     },
-    removeUser(user) {
+    removeUser (user) {
       this.$emit('remove', user)
-    },
-  },
+    }
+  }
 }
 </script>

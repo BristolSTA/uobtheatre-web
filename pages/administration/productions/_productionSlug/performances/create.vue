@@ -1,8 +1,12 @@
 <template>
   <admin-page title="Create a performance">
     <template #toolbar>
-      <sta-button colour="green" icon="save" @click="create">Create</sta-button>
-      <sta-button colour="orange" to="../../">Cancel</sta-button>
+      <sta-button colour="green" icon="save" @click="create">
+        Create
+      </sta-button>
+      <sta-button colour="orange" to="../../">
+        Cancel
+      </sta-button>
     </template>
     <non-field-error :errors="errors" />
     <performance-editor
@@ -16,6 +20,7 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
 import AdminPage from '@/components/admin/AdminPage.vue'
 import PerformanceEditor from '@/components/performance/editor/PerformanceEditor.vue'
 import StaButton from '@/components/ui/StaButton.vue'
@@ -24,43 +29,43 @@ import {
   getValidationErrors,
   loadingSwal,
   performMutation,
-  successToast,
+  successToast
 } from '@/utils'
-import Swal from 'sweetalert2'
 import NonFieldError from '@/components/ui/NonFieldError.vue'
 export default {
   components: { AdminPage, PerformanceEditor, StaButton, NonFieldError },
-  async asyncData({ params, error, app }) {
+  async asyncData ({ params, error, app }) {
     // Execute query
     const { data } = await app.apolloProvider.defaultClient.query({
       query: require('@/graphql/queries/admin/productions/AdminProductionLookup.gql'),
       variables: {
-        slug: params.productionSlug,
-      },
+        slug: params.productionSlug
+      }
     })
 
     const production = data.production
-    if (!production)
+    if (!production) {
       return error({
         statusCode: 404,
-        message: 'This production does not exist',
+        message: 'This production does not exist'
       })
+    }
     return {
-      production,
+      production
     }
   },
-  data() {
+  data () {
     return {
       performance: {},
       production: null,
-      errors: null,
+      errors: null
     }
   },
-  mounted() {
+  mounted () {
     this.performance = { discounts: {}, ...this.$refs.editor.getInputData() }
   },
   methods: {
-    async create() {
+    async create () {
       this.errors = null
       loadingSwal.fire()
       try {
@@ -71,9 +76,9 @@ export default {
             variables: {
               input: {
                 ...this.$refs.editor.getInputData(),
-                production: this.production.id,
-              },
-            },
+                production: this.production.id
+              }
+            }
           },
           'performance'
         )
@@ -83,7 +88,7 @@ export default {
         if (!(await this.$refs.editor.saveRelated())) {
           errorToast.fire({
             title:
-              'Performance created, but there was an issue creating the related objects',
+              'Performance created, but there was an issue creating the related objects'
           })
           return this.$router.push(`${this.performance.id}/edit`)
         }
@@ -93,7 +98,7 @@ export default {
         this.errors = getValidationErrors(e)
         Swal.close()
       }
-    },
-  },
+    }
+  }
 }
 </script>

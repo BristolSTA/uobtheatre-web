@@ -1,21 +1,20 @@
 import { expect } from 'chai'
 
-import Errors from '@/classes/Errors'
-import UserAuthBox from '@/components/auth/UserAuthBox.vue'
-import { authService } from '@/services'
-import { swalToast } from '@/utils'
-
 import {
   generateApolloMock,
   generateMountOptions,
   mountWithRouterMock,
-  RouterLinkStub,
+  RouterLinkStub
 } from '../helpers'
 import GenericApolloResponse from '../fixtures/support/GenericApolloResponse'
 import GenericMutationResponse from '../fixtures/support/GenericMutationResponse'
 import GenericError from '../fixtures/support/GenericError'
 import User from '../fixtures/User'
 import GenericErrorsResponse from '../fixtures/support/GenericErrorsResponse'
+import { swalToast } from '@/utils'
+import { authService } from '@/services'
+import UserAuthBox from '@/components/auth/UserAuthBox.vue'
+import Errors from '@/classes/Errors'
 
 jest.spyOn(authService, 'queueRefresh').mockImplementation(() => {})
 
@@ -28,11 +27,11 @@ describe('AuthBox', function () {
         $store: {
           state: {
             'box-office': {
-              locationId: null,
-            },
-          },
-        },
-      },
+              locationId: null
+            }
+          }
+        }
+      }
     })
     const buttons = authBoxComponent.findAll('div[role=navigation] button')
     expect(authBoxComponent.emitted('go-login')).to.be.undefined
@@ -49,7 +48,7 @@ describe('AuthBox', function () {
     expect(authBoxComponent.text()).to.contain('Log In')
 
     await authBoxComponent.setProps({
-      login: false,
+      login: false
     })
 
     expect(buttons.at(1).classes()).to.contain('bg-sta-orange')
@@ -63,17 +62,17 @@ describe('AuthBox', function () {
         $store: {
           state: {
             'box-office': {
-              locationId: null,
-            },
-          },
-        },
-      },
+              locationId: null
+            }
+          }
+        }
+      }
     })
     expect(authBoxComponent.findComponent({ ref: 'loading-overlay' }).exists())
       .to.be.false
 
     await authBoxComponent.setData({
-      loading: true,
+      loading: true
     })
 
     expect(authBoxComponent.findComponent({ ref: 'loading-overlay' }).exists())
@@ -89,11 +88,11 @@ describe('AuthBox', function () {
             $store: {
               state: {
                 'box-office': {
-                  locationId: null,
-                },
-              },
-            },
-          },
+                  locationId: null
+                }
+              }
+            }
+          }
         })
       )
     })
@@ -141,12 +140,12 @@ describe('AuthBox', function () {
             GenericErrorsResponse(
               GenericError('Unable to log in with provided credentials.')
             )
-          ),
-        ],
+          )
+        ]
       })
       authBoxComponent.setData({
         email: 'nobody@example.org',
-        password: 'fakeness',
+        password: 'fakeness'
       })
       await authBoxComponent.find('form').trigger('submit')
       await authBoxComponent.vm.$nextTick()
@@ -167,12 +166,12 @@ describe('AuthBox', function () {
           GenericApolloResponse(
             'resendActivationEmail',
             GenericMutationResponse()
-          ),
-        ],
+          )
+        ]
       })
       authBoxComponent.setData({
         email: 'nobody@example.org',
-        password: 'fakeness',
+        password: 'fakeness'
       })
       await authBoxComponent.find('form').trigger('submit')
       await authBoxComponent.vm.$nextTick()
@@ -192,20 +191,20 @@ describe('AuthBox', function () {
           mocks: {
             $route: {
               query: {
-                redirect: '/some/path',
-              },
+                redirect: '/some/path'
+              }
             },
             $store: {
               dispatch: (storeDispatchFn = jest.fn(() => Promise.resolve())),
               state: {
                 'box-office': {
-                  locationId: null,
-                },
-              },
+                  locationId: null
+                }
+              }
             },
             $router: {
-              replace: (fakeReplace = jest.fn(() => Promise.resolve())),
-            },
+              replace: (fakeReplace = jest.fn(() => Promise.resolve()))
+            }
           },
           apollo: {
             mutationCallstack: [
@@ -213,17 +212,17 @@ describe('AuthBox', function () {
                 'login',
                 GenericMutationResponse({
                   token: '36c86c19f8f8d73aa59c3a00814137bdee0ab8de',
-                  user: User(),
+                  user: User()
                 })
-              ),
-            ],
+              )
+            ]
           },
-          data() {
+          data () {
             return {
               email: 'm.pegg@example.org',
-              password: '1234',
+              password: '1234'
             }
-          },
+          }
         })
       )
 
@@ -244,26 +243,26 @@ describe('AuthBox', function () {
         UserAuthBox,
         generateMountOptions(['apollo', 'config'], {
           propsData: {
-            login: true,
+            login: true
           },
           mocks: {
             $route: {
-              query: {},
+              query: {}
             },
             $apolloHelpers: {
-              onLogin: jest.fn(),
+              onLogin: jest.fn()
             },
             $store: {
               dispatch: jest.fn(() => Promise.resolve()),
               state: {
                 'box-office': {
-                  locationId: null,
-                },
-              },
+                  locationId: null
+                }
+              }
             },
             $router: {
-              replace: (fakeReplace = jest.fn()),
-            },
+              replace: (fakeReplace = jest.fn())
+            }
           },
           apollo: {
             mutationCallstack: [
@@ -271,17 +270,17 @@ describe('AuthBox', function () {
                 'login',
                 GenericMutationResponse({
                   token: '36c86c19f8f8d73aa59c3a00814137bdee0ab8de',
-                  user: User(),
+                  user: User()
                 })
-              ),
-            ],
+              )
+            ]
           },
-          data() {
+          data () {
             return {
               email: 'm.pegg@example.org',
-              password: '1234',
+              password: '1234'
             }
-          },
+          }
         })
       )
 
@@ -307,20 +306,20 @@ describe('AuthBox', function () {
         UserAuthBox,
         generateMountOptions(['apollo'], {
           propsData: {
-            login: false,
+            login: false
           },
           mocks: {
             $router: {
-              push: (routerPushStub = jest.fn()),
+              push: (routerPushStub = jest.fn())
             },
             $store: {
               state: {
                 'box-office': {
-                  locationId: null,
-                },
-              },
-            },
-          },
+                  locationId: null
+                }
+              }
+            }
+          }
         })
       )
     })
@@ -382,8 +381,8 @@ describe('AuthBox', function () {
 
       authBoxComponent.vm.$apollo = generateApolloMock({
         mutationCallstack: [
-          GenericApolloResponse('register', GenericMutationResponse()),
-        ],
+          GenericApolloResponse('register', GenericMutationResponse())
+        ]
       })
 
       return authBoxComponent.vm.attemptSignup().then(() => {
@@ -393,7 +392,7 @@ describe('AuthBox', function () {
           lastName: 'Bloggs',
           email: 'joe.bloggs@example.org',
           password: '12345678',
-          confirmedPassword: '12345678',
+          confirmedPassword: '12345678'
         })
         expect(swalToastStub.mock.calls).length(1)
 
@@ -428,8 +427,8 @@ describe('AuthBox', function () {
             GenericErrorsResponse(
               GenericError('Your confirmed password does not match')
             )
-          ),
-        ],
+          )
+        ]
       })
 
       return authBoxComponent.vm.attemptSignup().then(() => {

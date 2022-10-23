@@ -1,13 +1,12 @@
 import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
 
+import { fixTextSpacing } from '../../helpers'
+import Performance from '../../fixtures/Performance'
 import Ticket from '@/classes/Ticket'
 import ConcessionType from '@/components/booking/ConcessionType.vue'
 import GroupTicketButton from '@/components/booking/GroupTicketButton.vue'
 import SeatGroup from '@/components/booking/SeatGroup.vue'
-
-import { fixTextSpacing } from '../../helpers'
-import Performance from '../../fixtures/Performance'
 
 describe('Seat Location Component', () => {
   let seatGroupComponent
@@ -18,21 +17,21 @@ describe('Seat Location Component', () => {
 
     const student = {
       name: 'Student',
-      id: 2,
+      id: 2
     }
     performance.ticketOptions[0].concessionTypes.push({
       concessionType: student,
       price: 800,
-      pricePounds: '8.00',
+      pricePounds: '8.00'
     })
 
-    discounts = performance.discounts.edges.map((edge) => edge.node)
+    discounts = performance.discounts.edges.map(edge => edge.node)
 
     discounts[0].requirements.push({
       id: 1,
       number: 2,
       discount: null,
-      concessionType: student,
+      concessionType: student
     })
 
     seatGroupComponent = mount(SeatGroup, {
@@ -41,8 +40,8 @@ describe('Seat Location Component', () => {
         ticketOption: (ticketOption = performance.ticketOptions[0]),
         groupCapacityRemaining: 100,
         currentTickets: [],
-        discounts,
-      },
+        discounts
+      }
     })
   })
 
@@ -68,7 +67,7 @@ describe('Seat Location Component', () => {
     const header = seatGroupComponent.findComponent({ ref: 'header' })
     expect(header.text()).not.to.contain('The best seats obviously')
     await seatGroupComponent.setProps({
-      expanded: true,
+      expanded: true
     })
     expect(header.text()).to.contain('The best seats obviously')
   })
@@ -76,7 +75,7 @@ describe('Seat Location Component', () => {
   it('displays correct ticket warnings', async () => {
     await seatGroupComponent.setProps({
       expanded: true,
-      groupCapacityRemaining: 9,
+      groupCapacityRemaining: 9
     })
     expect(fixTextSpacing(seatGroupComponent.text())).to.contain(
       'Hurry! Only 9 tickets remaining in this location'
@@ -102,7 +101,7 @@ describe('Seat Location Component', () => {
     const tickets = [new Ticket(1, 1), new Ticket(1, 1), new Ticket(1, 2)]
     await seatGroupComponent.setProps({
       expanded: true,
-      currentTickets: tickets,
+      currentTickets: tickets
     })
 
     expect(seatGroupComponent.findComponent({ ref: 'ticket-warning' }).exists())
@@ -133,7 +132,7 @@ describe('Seat Location Component', () => {
 
   it('contains the correct amount of group ticket buttons', async () => {
     await seatGroupComponent.setProps({
-      expanded: true,
+      expanded: true
     })
     const discountComponents =
       seatGroupComponent.findAllComponents(GroupTicketButton)
@@ -145,7 +144,7 @@ describe('Seat Location Component', () => {
 
   it('handles add discount tickets event and emits add ticket(s) event', async () => {
     await seatGroupComponent.setProps({
-      expanded: true,
+      expanded: true
     })
     await seatGroupComponent
       .findAllComponents(GroupTicketButton)
@@ -156,20 +155,20 @@ describe('Seat Location Component', () => {
       JSON.stringify([
         ticketOption.seatGroup,
         discounts[0].requirements[0].concessionType,
-        discounts[0].requirements[0].number,
+        discounts[0].requirements[0].number
       ])
     )
     expect(JSON.stringify(seatGroupComponent.emitted()['add-ticket'][1])).to.eq(
       JSON.stringify([
         ticketOption.seatGroup,
         discounts[0].requirements[1].concessionType,
-        discounts[0].requirements[1].number,
+        discounts[0].requirements[1].number
       ])
     )
   })
   it('doesnt display group ticket buttons if the remaining capacity doesnt allow for it', async () => {
     await seatGroupComponent.setProps({
-      groupCapacityRemaining: 2,
+      groupCapacityRemaining: 2
     })
     expect(
       seatGroupComponent.findAllComponents(GroupTicketButton).length
@@ -178,7 +177,7 @@ describe('Seat Location Component', () => {
   describe('sold out group', () => {
     beforeEach(() => {
       seatGroupComponent.setProps({
-        groupCapacityRemaining: 0,
+        groupCapacityRemaining: 0
       })
     })
 
@@ -199,8 +198,8 @@ describe('Seat Location Component', () => {
             new Ticket(
               ticketOption.seatGroup.id,
               ticketOption.concessionTypes[0].concessionType.id
-            ),
-          ],
+            )
+          ]
         })
       })
 

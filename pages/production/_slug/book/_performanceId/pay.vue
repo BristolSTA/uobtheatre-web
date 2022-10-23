@@ -39,8 +39,7 @@
           href="/terms"
           target="_blank"
           class="text-sta-orange hover:text-sta-orange-dark transition-colors"
-          >booking terms of conditions.</a
-        >
+        >booking terms of conditions.</a>
         As per these terms, all our tickets are, in most cases, non-refundable
         and non-transferable.
       </p>
@@ -82,16 +81,16 @@ export default {
   stageInfo: new BookingStage({
     name: 'Payment',
     routeName: 'production-slug-book-performanceId-pay',
-    eligable: (production, booking) => !booking.dirty,
+    eligable: (_, booking) => !booking.dirty
   }),
   components: { AllErrorsDisplay, SquarePayment, LoadingContainer },
   props: {
     booking: {
       required: true,
-      type: Booking,
-    },
+      type: Booking
+    }
   },
-  data() {
+  data () {
     return {
       paymentForm: null,
       errors: null,
@@ -100,12 +99,12 @@ export default {
       progressPopup: null,
       enabledDigitalWallets: {
         google: false,
-        apple: false,
-      },
+        apple: false
+      }
     }
   },
   methods: {
-    onPaying() {
+    onPaying () {
       this.progressPopup = swal.fire({
         title: 'Confirming your booking...',
         allowOutsideClick: false,
@@ -113,11 +112,11 @@ export default {
         allowEnterKey: false,
         didOpen: () => {
           Swal.showLoading()
-        },
+        }
       })
     },
-    async payFree() {
-      if (this.loading) return
+    async payFree () {
+      if (this.loading) { return }
       this.loading = true
       try {
         const data = await performMutation(
@@ -127,8 +126,8 @@ export default {
             variables: {
               id: this.booking.id,
               totalPence: this.booking.totalPrice,
-              idempotencyKey: this.booking.idempotencyKey,
-            },
+              idempotencyKey: this.booking.idempotencyKey
+            }
           },
           'payBooking'
         )
@@ -139,7 +138,7 @@ export default {
         this.loading = false
       }
     },
-    async onNonceRecieved(paymentData) {
+    async onNonceRecieved (paymentData) {
       try {
         const data = await performMutation(
           this.$apollo,
@@ -150,8 +149,8 @@ export default {
               nonce: paymentData.nonce,
               totalPence: this.booking.totalPrice,
               idempotencyKey: this.booking.idempotencyKey,
-              verifyToken: paymentData.verifyToken,
-            },
+              verifyToken: paymentData.verifyToken
+            }
           },
           'payBooking'
         )
@@ -163,7 +162,7 @@ export default {
       }
       this.progressPopup.close()
     },
-    onBookingComplete(reference) {
+    onBookingComplete (reference) {
       this.$emit('paid')
       swal
         .fire({
@@ -174,12 +173,12 @@ export default {
           timerProgressBar: true,
           showConfirmButton: false,
           allowEscapeKey: false,
-          allowOutsideClick: false,
+          allowOutsideClick: false
         })
         .then(() => {
           this.$router.push(`/user/booking/${reference}`)
         })
-    },
-  },
+    }
+  }
 }
 </script>

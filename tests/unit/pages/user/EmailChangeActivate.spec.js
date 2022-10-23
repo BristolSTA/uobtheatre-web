@@ -1,11 +1,11 @@
 import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
 
-import EmailChangeActivate from '@/pages/user/email-change/_token/index.vue'
 import { generateMountOptions } from '../../helpers'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse'
 import GenericErrorsResponse from '../../fixtures/support/GenericErrorsResponse'
+import EmailChangeActivate from '@/pages/user/email-change/_token/index.vue'
 
 describe('Email Change Activate', function () {
   let component
@@ -19,16 +19,16 @@ describe('Email Change Activate', function () {
             GenericApolloResponse(
               'verifySecondaryEmail',
               GenericMutationResponse()
-            ),
-          ],
+            )
+          ]
         },
         mocks: {
           $route: {
             params: {
-              token: '1234abcd',
-            },
-          },
-        },
+              token: '1234abcd'
+            }
+          }
+        }
       })
     )
 
@@ -51,16 +51,16 @@ describe('Email Change Activate', function () {
             GenericApolloResponse(
               'verifySecondaryEmail',
               GenericErrorsResponse()
-            ),
-          ],
+            )
+          ]
         },
         mocks: {
           $route: {
             params: {
-              token: 'invalidCode',
-            },
-          },
-        },
+              token: 'invalidCode'
+            }
+          }
+        }
       })
     )
 
@@ -78,7 +78,7 @@ describe('Email Change Activate', function () {
         EmailChangeActivate,
         generateMountOptions(['apollo'], {
           propsData: {
-            token: '1234abcd',
+            token: '1234abcd'
           },
           apollo: {
             mutationCallstack: [
@@ -90,19 +90,19 @@ describe('Email Change Activate', function () {
               GenericApolloResponse(
                 'removeSecondaryEmail',
                 GenericMutationResponse()
-              ),
-            ],
+              )
+            ]
           },
           mocks: {
             $router: {
-              replace: (replaceStub = jest.fn()),
+              replace: (replaceStub = jest.fn())
             },
             $route: {
               params: {
-                token: '1234abcd',
-              },
-            },
-          },
+                token: '1234abcd'
+              }
+            }
+          }
         })
       )
       await component.vm.$nextTick()

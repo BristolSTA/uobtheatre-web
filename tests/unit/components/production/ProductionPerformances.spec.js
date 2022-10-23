@@ -2,13 +2,12 @@ import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
 import { DateTime } from 'luxon'
 
-import PerformanceOverview from '@/components/performance/PerformanceOverview.vue'
-import ProductionPerformances from '@/components/production/ProductionPerformances.vue'
-
 import { fixTextSpacing, generateMountOptions } from '../../helpers.js'
 import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection.js'
 import Production from '../../fixtures/Production.js'
 import Performance from '../../fixtures/Performance.js'
+import ProductionPerformances from '@/components/production/ProductionPerformances.vue'
+import PerformanceOverview from '@/components/performance/PerformanceOverview.vue'
 
 describe('Production Performances', function () {
   let performancesContainer
@@ -47,7 +46,7 @@ describe('Production Performances', function () {
           soldOut: false,
           disabled: false,
           isOnline: true,
-          isInperson: true,
+          isInperson: true
         },
         // A sold out performance
         {
@@ -59,8 +58,8 @@ describe('Production Performances', function () {
           isBookable: false,
           disabled: false,
           isOnline: true,
-          isInperson: false,
-        },
+          isInperson: false
+        }
       ])
     })
 
@@ -107,21 +106,21 @@ describe('Production Performances', function () {
   const createWithPerformances = (performances, productionOverrides) => {
     const production = Production(productionOverrides)
     production.performances = GenericNodeConnection(
-      performances.map((performance) => Performance(performance))
+      performances.map(performance => Performance(performance))
     )
 
     performancesContainer = mount(
       ProductionPerformances,
       generateMountOptions(['router'], {
         propsData: {
-          production,
+          production
         },
 
         mocks: {
           $router: {
-            push: (fakeJestPush = jest.fn()),
-          },
-        },
+            push: (fakeJestPush = jest.fn())
+          }
+        }
       })
     )
   }

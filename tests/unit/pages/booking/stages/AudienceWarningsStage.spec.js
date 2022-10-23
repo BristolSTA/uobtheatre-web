@@ -16,8 +16,8 @@ describe('Audience Warnings Stage', () => {
           production: Production(),
           booking: BookingCls.fromAPIData(
             Booking({ performance: { descrption: null } })
-          ),
-        },
+          )
+        }
       })
     })
 
@@ -44,8 +44,8 @@ describe('Audience Warnings Stage', () => {
       warningComponent = mount(AudienceWarningsStage, {
         propsData: {
           production: Production({ contentWarnings: [] }),
-          booking: BookingCls.fromAPIData(Booking()),
-        },
+          booking: BookingCls.fromAPIData(Booking())
+        }
       })
     })
 

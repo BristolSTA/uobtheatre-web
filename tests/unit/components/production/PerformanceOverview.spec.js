@@ -1,10 +1,9 @@
 import { RouterLinkStub } from '@vue/test-utils'
 import { expect } from 'chai'
 
-import PerformanceOverview from '@/components/performance/PerformanceOverview.vue'
-
 import { mountWithRouterMock, fixTextSpacing } from '../../helpers'
 import Performance from '../../fixtures/Performance'
+import PerformanceOverview from '@/components/performance/PerformanceOverview.vue'
 
 describe('Performance Overview', () => {
   let performanceOverviewComponent
@@ -15,9 +14,9 @@ describe('Performance Overview', () => {
       {
         propsData: {
           performance: Performance({
-            isOnline: true,
-          }),
-        },
+            isOnline: true
+          })
+        }
       }
     )
   })
@@ -59,8 +58,8 @@ describe('Performance Overview', () => {
         disabled: true,
         isBookable: false,
         isOnline: false,
-        isInperson: true,
-      }),
+        isInperson: true
+      })
     })
     expect(performanceOverviewComponent.find('div.bg-sta-green').exists()).to.be
       .false
@@ -85,8 +84,8 @@ describe('Performance Overview', () => {
         disabled: false,
         isBookable: false,
         isOnline: true,
-        isInperson: false,
-      }),
+        isInperson: false
+      })
     })
 
     expect(performanceOverviewComponent.find('div.bg-sta-green').exists()).to.be
@@ -110,11 +109,11 @@ describe('Performance Overview', () => {
 
   it.each([null, 10])('shows interval length when able', async (duration) => {
     await performanceOverviewComponent.setProps({
-      performance: Performance({ intervalDurationMins: duration }),
+      performance: Performance({ intervalDurationMins: duration })
     })
 
     expect(fixTextSpacing(performanceOverviewComponent.text())).to.contain(
-      duration ? `2 hours inc. interval` : '2 hours'
+      duration ? '2 hours inc. interval' : '2 hours'
     )
   })
 })

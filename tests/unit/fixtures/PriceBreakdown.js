@@ -12,7 +12,7 @@ export default (overrides = {}) => {
       subtotalPrice: 490,
       miscCostsValue: 5,
       totalPrice: 495,
-      ticketsDiscountedPrice: 490,
+      ticketsDiscountedPrice: 490
     },
     overrides
   )

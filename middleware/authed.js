@@ -8,7 +8,7 @@ export default function (context) {
   if (!authService.isLoggedIn(context)) {
     return context.redirect({
       path: '/login',
-      query: { redirect: context.route.fullPath },
+      query: { redirect: context.route.fullPath }
     })
   }
 }

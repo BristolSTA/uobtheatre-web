@@ -35,19 +35,19 @@
 </template>
 
 <script>
-import { displayStartEnd } from '@/utils'
 import ProductionFeaturedImage from './ProductionFeaturedImage.vue'
+import { displayStartEnd } from '@/utils'
 export default {
   components: { ProductionFeaturedImage },
   props: {
     production: {
       required: true,
-      type: Object,
-    },
+      type: Object
+    }
   },
   methods: {
-    displayStartEnd,
-  },
+    displayStartEnd
+  }
 }
 </script>
 

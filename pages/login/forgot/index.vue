@@ -21,7 +21,9 @@
       </div>
       <div class="p-6 text-white">
         <template v-if="!resetToken">
-          <h1 class="text-h3">Forgot your password?</h1>
+          <h1 class="text-h3">
+            Forgot your password?
+          </h1>
           <form class="flex flex-col space-y-2" @submit.prevent="requestReset">
             <text-input
               v-model="email"
@@ -31,11 +33,15 @@
               :errrors="errors"
               required
             />
-            <button class="btn btn-orange">Request Reset</button>
+            <button class="btn btn-orange">
+              Request Reset
+            </button>
           </form>
         </template>
         <template v-else>
-          <h1 class="text-h3">Reset Password</h1>
+          <h1 class="text-h3">
+            Reset Password
+          </h1>
 
           <non-field-error :errors="errors" />
           <form class="flex flex-col space-y-2" @submit.prevent="resetPassword">
@@ -57,11 +63,15 @@
               error-key="new_password2"
               required
             />
-            <button class="btn btn-orange">Reset</button>
+            <button class="btn btn-orange">
+              Reset
+            </button>
           </form>
         </template>
         <p class="mt-4 text-center">
-          <NuxtLink to="/login"> Back to login </NuxtLink>
+          <NuxtLink to="/login">
+            Back to login
+          </NuxtLink>
         </p>
       </div>
     </div>
@@ -79,60 +89,60 @@ import LoadingIcon from '@/components/ui/LoadingIcon.vue'
 export default {
   components: { AuthPageTemplate, TextInput, NonFieldError, LoadingIcon },
   middleware: ['not-authed'],
-  data() {
+  data () {
     return {
       email: null,
       loading: false,
       errors: null,
 
       password: null,
-      confirmedPassword: null,
+      confirmedPassword: null
     }
   },
   head: {
-    title: 'Reset Password',
+    title: 'Reset Password'
   },
   computed: {
-    resetToken() {
+    resetToken () {
       return this.$route.query.resetToken
-    },
+    }
   },
   methods: {
-    async requestReset() {
+    async requestReset () {
       this.loading = true
       try {
         await authService.requestPasswordReset(this, {
-          email: this.email,
+          email: this.email
         })
         swal.fire({
           icon: 'info',
           title: 'Check your email',
-          text: 'A link to reset your password has been sent by email if we have an account with this email',
+          text: 'A link to reset your password has been sent by email if we have an account with this email'
         })
       } catch (e) {
         this.errors = getValidationErrors(e)
       }
       this.loading = false
     },
-    async resetPassword() {
+    async resetPassword () {
       this.loading = true
       try {
         await authService.resetPassword(this, {
           token: this.resetToken,
           password: this.password,
-          confirmedPassword: this.confirmedPassword,
+          confirmedPassword: this.confirmedPassword
         })
         swalToast.fire({
           icon: 'success',
           title: 'Password Reset Succesfully',
-          position: 'bottom-end',
+          position: 'bottom-end'
         })
         return this.$router.push('/login')
       } catch (e) {
         this.errors = getValidationErrors(e)
       }
       this.loading = false
-    },
-  },
+    }
+  }
 }
 </script>

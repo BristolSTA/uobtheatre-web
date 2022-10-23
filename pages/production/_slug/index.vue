@@ -12,7 +12,7 @@
         :production="production"
         @on-buy-tickets-click="$refs.performances.$el.scrollIntoView()"
       />
-      <hr class="border-t-2 border-sta-gray-dark" />
+      <hr class="border-t-2 border-sta-gray-dark">
       <div class="container my-6 text-white">
         <ul class="text-xl uppercase">
           <li
@@ -48,7 +48,7 @@
           :production="production"
         />
       </div>
-      <hr class="border-t-2 border-sta-gray-dark" />
+      <hr class="border-t-2 border-sta-gray-dark">
       <production-performances ref="performances" :production="production" />
     </template>
   </div>
@@ -70,33 +70,34 @@ export default {
     ProductionPerformances,
     ProductionOverview,
     ClickableLink,
-    ProductionBanner,
+    ProductionBanner
   },
-  async asyncData({ params, error, app }) {
+  async asyncData ({ params, error, app }) {
     // Execute query
     const { data } = await app.apolloProvider.defaultClient.query({
       query: ProductionPageQuery,
       variables: {
-        slug: params.slug,
-      },
+        slug: params.slug
+      }
     })
 
     const production = data.production
-    if (!production)
+    if (!production) {
       return error({
         statusCode: 404,
-        message: 'This production does not exist',
+        message: 'This production does not exist'
       })
+    }
     return {
-      production,
+      production
     }
   },
-  data() {
+  data () {
     return {
-      overview: true,
+      overview: true
     }
   },
-  head() {
+  head () {
     const productionName = this.production ? this.production.name : 'Loading...'
     const meta = []
     if (this.production) {
@@ -107,49 +108,49 @@ export default {
         {
           hid: 'description',
           name: 'description',
-          content: description,
+          content: description
         },
         {
           hid: 'og:title',
           name: 'og:title',
-          content: productionName,
+          content: productionName
         },
         {
           hid: 'og:description',
           name: 'og:description',
-          content: description,
+          content: description
         }
       )
       if (this.production.featuredImage) {
         meta.push({
           hid: 'og:image',
           name: 'og:image',
-          content: this.production.featuredImage.url,
+          content: this.production.featuredImage.url
         })
       }
     }
     return {
       title: `${productionName}`,
-      meta,
+      meta
     }
   },
   computed: {
-    route() {
+    route () {
       return this.$route
     },
-    crumbs() {
+    crumbs () {
       return [
         { text: 'Whats On', path: '/productions' },
-        { text: this.production.name },
+        { text: this.production.name }
       ]
     },
-    hasCastCrew() {
+    hasCastCrew () {
       return Boolean(
         this.production.crew.length ||
           this.production.cast.length ||
           this.production.productionTeam.length
       )
-    },
-  },
+    }
+  }
 }
 </script>

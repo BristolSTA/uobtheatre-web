@@ -10,13 +10,13 @@ import UnverifiedLoginError from '@/errors/auth/UnverifiedLoginError'
 let refreshTimer
 
 export default {
-  currentAuthToken(context) {
+  currentAuthToken (context) {
     return (
       context.store?.state?.auth?.token || context.$store?.state?.auth?.token
     )
   },
 
-  isRemembering(context) {
+  isRemembering (context) {
     return cookie.get(context.$config.auth.rememberKey)
   },
 
@@ -24,25 +24,29 @@ export default {
    * @param {object} context Nuxt Context
    * @returns {boolean} Whether or not the user is logged in
    */
-  isLoggedIn(context) {
+  isLoggedIn (context) {
     return !!this.currentAuthToken(context) && !!context.store.state.auth.user
   },
 
-  logout(context, trigger = true) {
+  logout (context, trigger = true) {
     clearTimeout(refreshTimer)
     context.store.dispatch('auth/logout') // Remove token
     cookie.remove(context.$config.auth.refreshTokenKey) // Remove fresh token cookie
     cookie.remove(context.$config.auth.rememberKey) // Remove remember cookie
-    if (trigger) window.localStorage.setItem('logout', Date.now())
+    if (trigger) {
+      window.localStorage.setItem('logout', Date.now())
+    }
   },
 
   /**
    * @param {object} context Nuxt Context
    * @returns {string|null} API Authentication Token
    */
-  async silentRefresh(context) {
+  async silentRefresh (context) {
     const refreshToken = cookie.get(context.$config.auth.refreshTokenKey)
-    if (!refreshToken) return this.logout(context)
+    if (!refreshToken) {
+      return this.logout(context)
+    }
 
     const provider = context.app
       ? context.app.apolloProvider
@@ -58,11 +62,13 @@ export default {
         }
       `,
       variables: {
-        refreshToken,
-      },
+        refreshToken
+      }
     })
 
-    if (!data.refreshToken.token) return this.logout(context)
+    if (!data.refreshToken.token) {
+      return this.logout(context)
+    }
 
     this.setToken(context, data.refreshToken.token)
     this.setRefreshToken(context, data.refreshToken.refreshToken)
@@ -70,33 +76,37 @@ export default {
 
     return context.store.dispatch('auth/loadUserDetails', {
       apollo: context.app.apolloProvider.defaultClient,
-      nuxtContext: context,
+      nuxtContext: context
     })
   },
 
-  setRefreshToken(context, token, remember = null) {
+  setRefreshToken (context, token, remember = null) {
     const rememberLengthDays = 365
     if (remember !== null) {
-      if (remember)
+      if (remember) {
         cookie.set(context.$config.auth.rememberKey, true, {
-          expires: remember ? rememberLengthDays : null,
+          expires: remember ? rememberLengthDays : null
         })
-      else if (cookie.get(context.$config.auth.rememberKey)) {
+      } else if (cookie.get(context.$config.auth.rememberKey)) {
         cookie.remove(context.$config.auth.rememberKey)
       }
     }
 
     cookie.set(context.$config.auth.refreshTokenKey, token, {
-      expires: this.isRemembering(context) ? rememberLengthDays : null,
+      expires: this.isRemembering(context) ? rememberLengthDays : null
     })
   },
 
-  queueRefresh(context) {
-    if (refreshTimer) clearTimeout(refreshTimer)
+  queueRefresh (context) {
+    if (refreshTimer) {
+      clearTimeout(refreshTimer)
+    }
     const { exp } = jwtDecode(this.currentAuthToken(context))
     let timeoutSeconds = exp - Math.round(Date.now() / 1000) - 30
 
-    if (timeoutSeconds < 1) timeoutSeconds = 1
+    if (timeoutSeconds < 1) {
+      timeoutSeconds = 1
+    }
 
     refreshTimer = setTimeout(() => {
       refreshTimer = null
@@ -104,7 +114,7 @@ export default {
     }, timeoutSeconds * 1000)
   },
 
-  setToken(context, token) {
+  setToken (context, token) {
     context.store.dispatch('auth/login', token)
   },
 
@@ -117,7 +127,7 @@ export default {
    * @param {boolean} remember Whether or not to remember the user on this browser
    * @returns {Promise} API Response Promise
    */
-  login(componentContext, email, password, remember = false) {
+  login (componentContext, email, password, remember = false) {
     return new Promise((resolve, reject) => {
       componentContext.$apollo
         .mutate({
@@ -135,24 +145,26 @@ export default {
           `,
           variables: {
             email,
-            password,
-          },
+            password
+          }
         })
         .then(({ data }) => {
-          if (!data.login.success)
+          if (!data.login.success) {
             return reject(
               new ValidationError(Errors.createFromAPI(data.login.errors))
             )
+          }
 
-          if (!data.login.user.verified)
+          if (!data.login.user.verified) {
             return reject(new UnverifiedLoginError())
+          }
 
           const standardContext = {
             store: componentContext.$store,
             $config: componentContext.$config,
             app: {
-              apolloProvider: componentContext.$apolloProvider,
-            },
+              apolloProvider: componentContext.$apolloProvider
+            }
           }
 
           this.setToken(standardContext, data.login.token)
@@ -164,7 +176,7 @@ export default {
           this.queueRefresh(standardContext)
           standardContext.store
             .dispatch('auth/loadUserDetails', {
-              apollo: standardContext.app.apolloProvider.defaultClient,
+              apollo: standardContext.app.apolloProvider.defaultClient
             })
             .then(() => resolve(data.login))
         })
@@ -178,7 +190,7 @@ export default {
    * @param {string} email User's Email
    * @returns {Promise} API Response Promise
    */
-  resendVerificationEmail(componentContext, email) {
+  resendVerificationEmail (componentContext, email) {
     return new Promise((resolve, reject) => {
       componentContext.$apollo
         .mutate({
@@ -190,16 +202,17 @@ export default {
             }
           `,
           variables: {
-            email,
-          },
+            email
+          }
         })
         .then(({ data }) => {
-          if (!data.resendActivationEmail.success)
+          if (!data.resendActivationEmail.success) {
             return reject(
               new ValidationError(
                 Errors.createFromAPI(data.resendActivationEmail.errors)
               )
             )
+          }
 
           return resolve()
         })
@@ -218,7 +231,7 @@ export default {
    * @param {string} userDetails.confirmedPassword User's Password (Confirmation)
    * @returns {Promise} API Response Promise
    */
-  register(
+  register (
     componentContext,
     { firstName, lastName, email, password, confirmedPassword }
   ) {
@@ -249,8 +262,8 @@ export default {
             password,
             confirmedPassword,
             firstName,
-            lastName,
-          },
+            lastName
+          }
         })
         .then((result) => {
           if (result.data.register.success) {
@@ -265,7 +278,7 @@ export default {
     })
   },
 
-  requestPasswordReset(componentContext, { email }) {
+  requestPasswordReset (componentContext, { email }) {
     return new Promise((resolve, reject) => {
       componentContext.$apollo
         .mutate({
@@ -277,8 +290,8 @@ export default {
             }
           `,
           variables: {
-            email,
-          },
+            email
+          }
         })
         .then((result) => {
           if (result.data.sendPasswordResetEmail.success) {
@@ -293,7 +306,7 @@ export default {
     })
   },
 
-  resetPassword(componentContext, { token, password, confirmedPassword }) {
+  resetPassword (componentContext, { token, password, confirmedPassword }) {
     return new Promise((resolve, reject) => {
       componentContext.$apollo
         .mutate({
@@ -307,8 +320,8 @@ export default {
           variables: {
             token,
             password,
-            confirmedPassword,
-          },
+            confirmedPassword
+          }
         })
         .then((result) => {
           if (result.data.passwordReset.success) {
@@ -323,7 +336,7 @@ export default {
     })
   },
 
-  activateAccount(componentContext, { token }) {
+  activateAccount (componentContext, { token }) {
     return new Promise((resolve, reject) => {
       componentContext.$apollo
         .mutate({
@@ -335,8 +348,8 @@ export default {
             }
           `,
           variables: {
-            token,
-          },
+            token
+          }
         })
         .then((result) => {
           if (result.data.verifyAccount.success) {
@@ -349,5 +362,5 @@ export default {
           )
         })
     })
-  },
+  }
 }

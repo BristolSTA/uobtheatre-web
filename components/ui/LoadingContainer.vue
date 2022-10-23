@@ -17,9 +17,9 @@
       "
     >
       <loading-icon :size-class="loaderIconSize" class="text-3xl" />
-      <slot name="overlay"></slot>
+      <slot name="overlay" />
     </div>
-    <slot v-if="showContent"></slot>
+    <slot v-if="showContent" />
   </div>
 </template>
 
@@ -30,21 +30,21 @@ export default {
   props: {
     loading: {
       default: false,
-      type: Boolean,
+      type: Boolean
     },
     hideContentWhenLoading: {
       default: false,
-      type: Boolean,
+      type: Boolean
     },
     loaderIconSize: {
       default: '',
-      type: String,
-    },
+      type: String
+    }
   },
   computed: {
-    showContent() {
+    showContent () {
       return !this.loading || !this.hideContentWhenLoading
-    },
-  },
+    }
+  }
 }
 </script>

@@ -44,9 +44,8 @@
 <script>
 import lo from 'lodash'
 
-import Booking from '@/classes/Booking'
-
 import OverviewBox from '../../ui/Card.vue'
+import Booking from '@/classes/Booking'
 
 export default {
   name: 'TicketsOverview',
@@ -54,16 +53,16 @@ export default {
   props: {
     booking: {
       required: true,
-      type: Booking,
-    },
+      type: Booking
+    }
   },
   computed: {
-    seatGroupedTickets() {
+    seatGroupedTickets () {
       return lo.groupBy(
         this.booking.ticketOverview(),
-        (concessionTickets) => concessionTickets.seatGroup.id
+        concessionTickets => concessionTickets.seatGroup.id
       )
-    },
-  },
+    }
+  }
 }
 </script>

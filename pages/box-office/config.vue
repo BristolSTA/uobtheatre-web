@@ -34,17 +34,17 @@ import { successToast } from '@/utils'
 export default {
   components: { FormLabel, AdminPage },
   middleware: ['authed', 'can-boxoffice'],
-  data() {
+  data () {
     return {
-      locationId: this.$store.state['box-office'].locationId,
+      locationId: this.$store.state['box-office'].locationId
     }
   },
   methods: {
-    save() {
+    save () {
       this.$store.dispatch('box-office/setDeviceLocation', this.locationId)
 
       successToast.fire({ title: 'Saved' })
-    },
-  },
+    }
+  }
 }
 </script>

@@ -6,8 +6,9 @@
         class="bg-sta-green hover:bg-sta-green-dark transition-colors"
         icon="save"
         @click="savePermissions"
-        >Save</sta-button
       >
+        Save
+      </sta-button>
     </template>
     <all-errors-display :errors="errors" />
     <permissions-assigner
@@ -20,6 +21,7 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
 import AdminPage from '@/components/admin/AdminPage.vue'
 import PermissionsAssigner from '@/components/admin/permissions/PermissionsAssigner.vue'
 import StaButton from '@/components/ui/StaButton.vue'
@@ -27,47 +29,48 @@ import {
   getValidationErrors,
   loadingSwal,
   performMutation,
-  successToast,
+  successToast
 } from '@/utils'
-import Swal from 'sweetalert2'
 import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue'
 export default {
   components: { AdminPage, PermissionsAssigner, StaButton, AllErrorsDisplay },
-  async asyncData({ params, error, app }) {
+  async asyncData ({ params, error, app }) {
     // Execute query
     const { data } = await app.apolloProvider.defaultClient.query({
       query: require('@/graphql/queries/admin/productions/AdminProductionPermissions.gql'),
       variables: {
-        slug: params.productionSlug,
+        slug: params.productionSlug
       },
-      fetchPolicy: 'no-cache',
+      fetchPolicy: 'no-cache'
     })
 
     const production = data.production
-    if (!production)
+    if (!production) {
       return error({
         statusCode: 404,
-        message: 'This production does not exist',
+        message: 'This production does not exist'
       })
-    if (production.assignedUsers === null)
+    }
+    if (production.assignedUsers === null) {
       return error({
         statusCode: 401,
-        message: 'You do not have permission to alter permissions',
+        message: 'You do not have permission to alter permissions'
       })
+    }
     return {
-      production,
+      production
     }
   },
-  data() {
+  data () {
     return {
       production: null,
-      errors: null,
+      errors: null
     }
   },
   methods: {
-    async savePermissions() {
+    async savePermissions () {
       const changedUsers = this.production.assignedUsers.filter(
-        (user) => user.modified
+        user => user.modified
       )
       const mutations = changedUsers.map((assignedUser) => {
         return this.setUserPermissions(
@@ -83,7 +86,7 @@ export default {
         this.$nuxt.refresh()
       }
     },
-    async addUserPermissions(newUser) {
+    async addUserPermissions (newUser) {
       loadingSwal.fire()
       if (
         !(await this.setUserPermissions(newUser.email, newUser.permissions))
@@ -93,7 +96,7 @@ export default {
       successToast.fire({ title: 'User has been added' })
       this.$nuxt.refresh()
     },
-    async removeUserPermissions(assignedUser) {
+    async removeUserPermissions (assignedUser) {
       loadingSwal.fire()
       if (!(await this.setUserPermissions(assignedUser.user.email, []))) {
         return Swal.close()
@@ -101,7 +104,7 @@ export default {
       successToast.fire({ title: 'User has been removed' })
       this.$nuxt.refresh()
     },
-    async setUserPermissions(email, permissions) {
+    async setUserPermissions (email, permissions) {
       this.errors = null
       try {
         await performMutation(
@@ -111,8 +114,8 @@ export default {
             variables: {
               productionId: this.production.id,
               userEmail: email,
-              permissions,
-            },
+              permissions
+            }
           },
           'productionPermissions'
         )
@@ -121,7 +124,7 @@ export default {
         this.errors = getValidationErrors(e)
         return false
       }
-    },
-  },
+    }
+  }
 }
 </script>

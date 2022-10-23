@@ -1,12 +1,11 @@
 import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
 
-import ChangeEmail from '@/components/user/ChangeEmail.vue'
-import { swal } from '@/utils'
-
 import { generateMountOptions } from '../../helpers'
 import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
+import { swal } from '@/utils'
+import ChangeEmail from '@/components/user/ChangeEmail.vue'
 
 describe('Change Email', () => {
   let component
@@ -19,9 +18,9 @@ describe('Change Email', () => {
             GenericApolloResponse(
               'sendSecondaryEmailActivation',
               GenericMutationResponse()
-            ),
-          ],
-        },
+            )
+          ]
+        }
       })
     )
   })

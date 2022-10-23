@@ -1,7 +1,7 @@
 <template functional>
   <div class="auth-background h-screen bg-sta-gray">
     <div class="flex items-center justify-center h-full">
-      <slot></slot>
+      <slot />
     </div>
   </div>
 </template>

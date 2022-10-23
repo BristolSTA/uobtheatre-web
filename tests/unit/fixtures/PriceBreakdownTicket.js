@@ -8,7 +8,7 @@ export default (overrides = {}) => {
       number: 1,
       seatGroup: SeatGroup(),
       concessionType: ConcessionType(),
-      totalPrice: 250,
+      totalPrice: 250
     },
     overrides
   )

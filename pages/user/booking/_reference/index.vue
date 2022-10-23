@@ -1,10 +1,15 @@
 <template>
   <div class="mb-10 min-h-full text-white bg-sta-gray">
     <div v-if="booking.performance" class="container">
-      <alert v-if="booking.status == 'CANCELLED'" level="danger"
-        >This booking has been cancelled, and is no longer valid</alert
+      <alert
+        v-if="booking.status == 'CANCELLED'"
+        level="danger"
       >
-      <h1 class="pt-2 text-h1">Your Booking</h1>
+        This booking has been cancelled, and is no longer valid
+      </alert>
+      <h1 class="pt-2 text-h1">
+        Your Booking
+      </h1>
       <h2 class="text-sta-orange text-h2">
         Reference - {{ booking.reference }}
       </h2>
@@ -59,7 +64,9 @@
           @click="ticketToggle"
           @keypress="ticketToggle"
         >
-          <h3 class="inline-block">View Tickets</h3>
+          <h3 class="inline-block">
+            View Tickets
+          </h3>
           <font-awesome-icon :icon="expanded ? 'chevron-up' : 'chevron-down'" />
         </div>
         <div
@@ -108,61 +115,62 @@ export default {
     ProductionBanner,
     PaymentOverview,
     Ticket,
-    Alert,
+    Alert
   },
   middleware: 'authed',
-  async asyncData({ app, params, error }) {
+  async asyncData ({ app, params, error }) {
     const { data } = await app.apolloProvider.defaultClient.query({
       query: require('@/graphql/queries/UserCompletedBooking.gql'),
       variables: {
-        bookingRef: params.reference,
-      },
+        bookingRef: params.reference
+      }
     })
 
-    if (!data.me.bookings.edges[0])
+    if (!data.me.bookings.edges[0]) {
       return error({
         statusCode: 404,
-        message: 'This booking does not exist',
+        message: 'This booking does not exist'
       })
+    }
 
     return {
-      booking: Booking.fromAPIData(data.me.bookings.edges[0].node),
+      booking: Booking.fromAPIData(data.me.bookings.edges[0].node)
     }
   },
-  data() {
+  data () {
     return {
       booking: null,
       user: null,
-      expanded: false,
+      expanded: false
     }
   },
-  head() {
+  head () {
     const production = this.production
     return {
-      title: production ? `Booking for ${production.name}` : 'Loading...',
+      title: production ? `Booking for ${production.name}` : 'Loading...'
     }
   },
   computed: {
-    production() {
+    production () {
       return this.booking.performance
         ? this.booking.performance.production
         : null
     },
-    crumbs() {
+    crumbs () {
       return [
         { text: 'My Account', path: '/user' },
-        { text: 'Booking Details' },
+        { text: 'Booking Details' }
       ]
-    },
+    }
   },
   methods: {
-    ticketToggle() {
+    ticketToggle () {
       this.expanded = !this.expanded
     },
-    jumpToTickets() {
+    jumpToTickets () {
       this.expanded = true
       this.$refs.tickets.scrollIntoView()
-    },
-  },
+    }
+  }
 }
 </script>

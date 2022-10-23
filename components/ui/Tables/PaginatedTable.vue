@@ -4,15 +4,17 @@
       <div class="overflow-auto">
         <table class="w-full">
           <thead>
-            <slot name="head"></slot>
+            <slot name="head" />
           </thead>
           <tbody>
-            <slot :items="items"></slot>
+            <slot :items="items" />
 
             <tr v-if="empty && !loading">
               <td colspan="100%" class="py-3 text-center bg-sta-gray-light">
-                <h3 class="text-h3">{{ emptyText }}</h3>
-                <slot name="empty"></slot>
+                <h3 class="text-h3">
+                  {{ emptyText }}
+                </h3>
+                <slot name="empty" />
               </td>
             </tr>
           </tbody>
@@ -39,52 +41,52 @@ export default {
   props: {
     pageInfo: {
       default: () => {},
-      type: Object,
+      type: Object
     },
     items: {
       required: true,
-      type: Array,
+      type: Array
     },
     offset: {
       required: true,
-      type: Number,
+      type: Number
     },
     maxPerPage: {
       default: null,
-      type: Number,
+      type: Number
     },
     emptyText: {
       default: 'No matching data found',
-      type: String,
+      type: String
     },
     loading: {
       default: false,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
   computed: {
-    hasNextPage() {
+    hasNextPage () {
       return this.pageInfo.hasNextPage
     },
-    hasPreviousPage() {
+    hasPreviousPage () {
       return this.pageInfo.hasPreviousPage || this.offset > 0
     },
-    empty() {
+    empty () {
       return !this.items.length
-    },
+    }
   },
   methods: {
-    nextPage() {
+    nextPage () {
       this.$emit('nextPage')
       this.$emit('update:offset', this.offset + this.items.length)
     },
-    previousPage() {
+    previousPage () {
       this.$emit('previousPage')
       this.$emit(
         'update:offset',
         Math.max(0, this.offset - (this.maxPerPage ?? this.items.length))
       )
-    },
-  },
+    }
+  }
 }
 </script>

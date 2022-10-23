@@ -9,8 +9,8 @@ export default async function (context, file, name = undefined) {
   const result = await axios.post(endpoint, formData, {
     headers: {
       'content-type': 'multipart/form-data',
-      Authorization: `JWT ${authService.currentAuthToken(context)}`,
-    },
+      Authorization: `JWT ${authService.currentAuthToken(context)}`
+    }
   })
   return result.data
 }

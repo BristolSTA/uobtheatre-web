@@ -2,8 +2,12 @@
   <div v-if="booking.reference">
     <box-office-navigation :performance="booking.performance" />
 
-    <h2 class="text-h2">Booking Complete!</h2>
-    <h3 class="text-gray-500 text-h3">Reference {{ booking.reference }}</h3>
+    <h2 class="text-h2">
+      Booking Complete!
+    </h2>
+    <h3 class="text-gray-500 text-h3">
+      Reference {{ booking.reference }}
+    </h3>
     <div class="grid gap-4 grid-cols-1 mb-6 md:grid-cols-2">
       <tickets-overview :booking="booking" />
       <payment-overview :booking="booking" />
@@ -58,33 +62,33 @@ export default {
   props: {
     booking: {
       required: true,
-      type: Booking,
-    },
-  },
-  data() {
-    return {
-      checkedIn: false,
+      type: Booking
     }
   },
-  mounted() {
-    if (!this.booking.reference) return this.$router.push('../')
-
-    if (this.canAutoCheckIn()) this.changeTicketStatus(true)
+  data () {
+    return {
+      checkedIn: false
+    }
   },
-  beforeDestroy() {
+  mounted () {
+    if (!this.booking.reference) { return this.$router.push('../') }
+
+    if (this.canAutoCheckIn()) { this.changeTicketStatus(true) }
+  },
+  beforeDestroy () {
     // Remove stored booking ID
     this.$store.commit('box-office/SET_IN_PROGRESS_BOOKING_ID', null)
   },
   methods: {
-    canAutoCheckIn() {
+    canAutoCheckIn () {
       return this.performanceDoorsDiffMinutes() <= 15
     },
-    performanceDoorsDiffMinutes() {
+    performanceDoorsDiffMinutes () {
       return DateTime.fromISO(this.booking.performance.doorsOpen)
         .diff(DateTime.now())
         .as('minutes')
     },
-    async changeTicketStatus(checkingIn) {
+    async changeTicketStatus (checkingIn) {
       try {
         await performMutation(
           this.$apollo,
@@ -95,10 +99,10 @@ export default {
               performanceId: this.booking.performance.id,
               tickets: this.booking.tickets.map((ticket) => {
                 return {
-                  ticketId: ticket.id,
+                  ticketId: ticket.id
                 }
-              }),
-            },
+              })
+            }
           },
           checkingIn ? 'checkInBooking' : 'uncheckInBooking'
         )
@@ -109,20 +113,20 @@ export default {
           title: !checkingIn
             ? 'Tickets un-checked in'
             : this.canAutoCheckIn()
-            ? 'Tickets automatically checked in'
-            : 'Tickets un-checked in',
+              ? 'Tickets automatically checked in'
+              : 'Tickets un-checked in'
         })
       } catch (e) {
         errorToast.fire({
           title: checkingIn
             ? 'Unable to check in tickets'
-            : 'Unable to un-check in tickets',
+            : 'Unable to un-check in tickets'
         })
       }
     },
-    goToMenu() {
+    goToMenu () {
       this.$router.push(`/box-office/${this.booking.performance.id}`)
-    },
-  },
+    }
+  }
 }
 </script>

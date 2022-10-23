@@ -15,7 +15,7 @@
         :src="production.society.logo.url"
         :alt="`${production.society.name} logo`"
         class="absolute bottom-0 left-0 w-10 sm:w-20"
-      />
+      >
     </div>
     <div
       class="
@@ -59,9 +59,13 @@
               </template>
               <template v-if="index == venueOverflow + 1"> and others</template>
             </span>
-            <template v-if="hasOnlinePerformances"> and Online </template>
+            <template v-if="hasOnlinePerformances">
+              and Online
+            </template>
           </template>
-          <template v-else>View Online</template>
+          <template v-else>
+            View Online
+          </template>
         </p>
         <p>
           {{ displayStartEnd(production.start, production.end, 'd MMM') }}
@@ -84,10 +88,12 @@
             <span class="font-semibold">
               £{{ (production.minSeatPrice / 100).toFixed(2) }}
             </span>
-            <br />
+            <br>
             <small>(exc. concessions and fees)</small>
           </template>
-          <template v-else> Free tickets </template>
+          <template v-else>
+            Free tickets
+          </template>
         </icon-list-item>
       </template>
       <button
@@ -106,9 +112,9 @@
 import humanizeDuration from 'humanize-duration'
 import lo from 'lodash'
 
+import ProductionFeaturedImage from './ProductionFeaturedImage.vue'
 import IconListItem from '@/components/ui/IconListItem.vue'
 import { displayStartEnd } from '@/utils'
-import ProductionFeaturedImage from './ProductionFeaturedImage.vue'
 
 export default {
   name: 'ProductionBanner',
@@ -116,24 +122,24 @@ export default {
   props: {
     production: {
       required: true,
-      type: Object,
+      type: Object
     },
     showBuyTicketsButton: {
       default: true,
-      type: Boolean,
+      type: Boolean
     },
     showDetailedInfo: {
       default: true,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
-  data() {
+  data () {
     return {
-      venueOverflow: 3,
+      venueOverflow: 3
     }
   },
   computed: {
-    venues() {
+    venues () {
       let venues = []
       if (this.hasInPersonPerformances) {
         venues = lo.uniqBy(
@@ -146,30 +152,30 @@ export default {
       lo.take(venues, this.venueOverflow + 1)
       return venues
     },
-    hasOnlinePerformances() {
+    hasOnlinePerformances () {
       return !!this.production.performances.edges.find(
-        (edge) => edge.node.isOnline
+        edge => edge.node.isOnline
       )
     },
-    hasInPersonPerformances() {
+    hasInPersonPerformances () {
       return !!this.production.performances.edges.find(
-        (edge) => edge.node.isInperson
+        edge => edge.node.isInperson
       )
     },
-    duration() {
-      if (!this.production.performances.edges.length) return
+    duration () {
+      if (!this.production.performances.edges.length) { return }
       return humanizeDuration(
         lo
-          .chain(this.production.performances.edges.map((edge) => edge.node))
+          .chain(this.production.performances.edges.map(edge => edge.node))
           .minBy('durationMins')
           .value().durationMins *
           60 *
           1000
       )
-    },
+    }
   },
   methods: {
-    displayStartEnd,
-  },
+    displayStartEnd
+  }
 }
 </script>

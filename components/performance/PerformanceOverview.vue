@@ -17,18 +17,26 @@
       <template v-if="performance.isOnline && performance.isInperson">
         and
       </template>
-      <template v-if="performance.isOnline">Online</template>
+      <template v-if="performance.isOnline">
+        Online
+      </template>
     </div>
     <div>Doors open at {{ performance.doorsOpen | dateFormat('T') }}</div>
     <div v-if="performance.durationMins">
       {{ humanDuration(performance.durationMins) }}
-      <template v-if="performance.intervalDurationMins">inc. interval</template>
+      <template v-if="performance.intervalDurationMins">
+        inc. interval
+      </template>
     </div>
     <div class="text-sm font-semibold">
-      <p v-if="!performance.isBookable">No Tickets Available</p>
-      <p v-else>Tickets Available</p>
+      <p v-if="!performance.isBookable">
+        No Tickets Available
+      </p>
+      <p v-else>
+        Tickets Available
+      </p>
     </div>
-    <div class="flex-grow"></div>
+    <div class="flex-grow" />
     <button
       v-if="!performance.isBookable"
       class="
@@ -51,7 +59,9 @@
       @click="onAction"
       @keypress="onAction"
     >
-      <slot name="select-button">Book</slot>
+      <slot name="select-button">
+        Book
+      </slot>
     </component>
   </div>
 </template>
@@ -63,24 +73,24 @@ export default {
   props: {
     performance: {
       required: true,
-      type: Object,
+      type: Object
     },
     actionPath: {
       default: null,
-      type: String,
-    },
+      type: String
+    }
   },
   computed: {
-    disabledReason() {
-      if (this.performance.soldOut) return 'SOLD OUT'
+    disabledReason () {
+      if (this.performance.soldOut) { return 'SOLD OUT' }
       return 'Unavailable'
-    },
+    }
   },
   methods: {
-    onAction() {
+    onAction () {
       this.$emit('select')
     },
-    humanDuration,
-  },
+    humanDuration
+  }
 }
 </script>

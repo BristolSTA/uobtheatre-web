@@ -7,7 +7,7 @@ export default (context, inject) => {
       logout: () => authService.logout(context),
       hasPermission: (permission) => {
         return context.store.state.auth.user.permissions.includes(permission)
-      },
+      }
     }
   })
 }

@@ -31,26 +31,26 @@
 </template>
 
 <script>
-import AudioSingle from '@/assets/audio/beep_single.mp3'
-import Ticket from '@/classes/Ticket'
 import { QrcodeStream } from 'vue-qrcode-reader'
 import LoadingIcon from '../ui/LoadingIcon.vue'
+import AudioSingle from '@/assets/audio/beep_single.mp3'
+import Ticket from '@/classes/Ticket'
 export default {
   components: { QrcodeStream, LoadingIcon },
   props: {
     on: {
       type: Boolean,
-      default: true,
-    },
+      default: true
+    }
   },
-  data() {
+  data () {
     return {
       error: null,
-      ready: false,
+      ready: false
     }
   },
   methods: {
-    onTrackEvent(detectedCodes, ctx) {
+    onTrackEvent (detectedCodes, ctx) {
       for (const detectedCode of detectedCodes) {
         const [firstPoint, ...otherPoints] = detectedCode.cornerPoints
         ctx.strokeStyle = 'red'
@@ -64,7 +64,7 @@ export default {
         ctx.stroke()
       }
     },
-    async onInit(promise) {
+    async onInit (promise) {
       try {
         await promise
         this.ready = true
@@ -97,7 +97,7 @@ export default {
         this.$emit('unable', this.error)
       }
     },
-    onDecode(string) {
+    onDecode (string) {
       new Audio(AudioSingle).play()
 
       try {
@@ -111,9 +111,9 @@ export default {
               'The string to be decoded is not correctly encoded'
             ))
         this.$emit('invalidCode')
-        if (!isAllowedSilentException) throw e
+        if (!isAllowedSilentException) { throw e }
       }
-    },
-  },
+    }
+  }
 }
 </script>

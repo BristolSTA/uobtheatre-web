@@ -1,6 +1,8 @@
 <template>
   <div class="text-center">
-    <h3 class="text-h3">Change your email</h3>
+    <h3 class="text-h3">
+      Change your email
+    </h3>
     <loading-container :loading="loading">
       <non-field-error :errors="errors" />
       <form
@@ -22,7 +24,9 @@
           :errors="errors"
           required
         />
-        <button class="btn btn-green">Send Verification Email</button>
+        <button class="btn btn-green">
+          Send Verification Email
+        </button>
       </form>
       <button
         class="btn btn-orange"
@@ -38,29 +42,28 @@
 <script>
 import gql from 'graphql-tag'
 
-import { getValidationErrors, performMutation, swal } from '@/utils'
-
 import LoadingContainer from '../ui/LoadingContainer.vue'
 import NonFieldError from '../ui/NonFieldError.vue'
 import TextInput from '../ui/TextInput.vue'
+import { getValidationErrors, performMutation, swal } from '@/utils'
 export default {
   components: {
     LoadingContainer,
     TextInput,
-    NonFieldError,
+    NonFieldError
   },
-  data() {
+  data () {
     return {
       email: null,
 
       password: null,
 
       loading: false,
-      errors: null,
+      errors: null
     }
   },
   methods: {
-    async addNewEmail() {
+    async addNewEmail () {
       this.loading = true
       try {
         await performMutation(
@@ -75,21 +78,21 @@ export default {
         `,
             variables: {
               email: this.email,
-              password: this.password,
-            },
+              password: this.password
+            }
           },
           'sendSecondaryEmailActivation'
         )
         swal.fire({
           icon: 'info',
           title: 'Check your email',
-          text: `We have sent a verification email to ${this.email}`,
+          text: `We have sent a verification email to ${this.email}`
         })
       } catch (e) {
         this.errors = getValidationErrors(e)
       }
       this.loading = false
-    },
-  },
+    }
+  }
 }
 </script>

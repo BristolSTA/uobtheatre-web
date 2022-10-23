@@ -5,7 +5,7 @@ export default (errors = [], overrides = {}) => {
     GenericMutationResponse(),
     {
       success: false,
-      errors: Array.isArray(errors) ? errors : [errors],
+      errors: Array.isArray(errors) ? errors : [errors]
     },
     overrides
   )

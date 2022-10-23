@@ -4,7 +4,7 @@ import FaIconSet from './plugins/fontawesome.config'
 export default {
   server: {
     host: '0.0.0.0',
-    port: 3000,
+    port: 3000
   },
 
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
@@ -18,7 +18,7 @@ export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: '',
-    titleTemplate: (titleChunk) =>
+    titleTemplate: titleChunk =>
       titleChunk
         ? `${titleChunk} - UOB Theatre`
         : 'UOB Theatre | The Home Of Bristol Student Theatre',
@@ -28,42 +28,42 @@ export default {
       {
         hid: 'og:title',
         name: 'og:title',
-        content: 'UOB Theatre',
+        content: 'UOB Theatre'
       },
       {
         hid: 'og:site_name',
         name: 'og:site_name',
-        content: 'UOB Theatre',
+        content: 'UOB Theatre'
       },
       {
         hid: 'og:description',
         name: 'og:description',
         content:
-          'From Aristophanes to Ayckbourn, from Puccini to pantomime, Bristol Student Theatre has it all. Find out about our performances, buy tickets, discover our societies and how to get involved, and sign up to our newsletter to stay updated with all the latest shows.',
+          'From Aristophanes to Ayckbourn, from Puccini to pantomime, Bristol Student Theatre has it all. Find out about our performances, buy tickets, discover our societies and how to get involved, and sign up to our newsletter to stay updated with all the latest shows.'
       },
       {
         hid: 'description',
         name: 'description',
         content:
-          'From Aristophanes to Ayckbourn, from Puccini to pantomime, Bristol Student Theatre has it all. Find out about our performances, buy tickets, discover our societies and how to get involved, and sign up to our newsletter to stay updated with all the latest shows.',
+          'From Aristophanes to Ayckbourn, from Puccini to pantomime, Bristol Student Theatre has it all. Find out about our performances, buy tickets, discover our societies and how to get involved, and sign up to our newsletter to stay updated with all the latest shows.'
       },
       {
         name: 'keywords',
         content:
-          'bristol,student,theatre,performing,arts,university,winston,bristol su',
-      },
+          'bristol,student,theatre,performing,arts,university,winston,bristol su'
+      }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap',
+        href: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap'
       },
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@360;600&display=swap',
-      },
-    ],
+        href: 'https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@360;600&display=swap'
+      }
+    ]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -75,7 +75,7 @@ export default {
     '~/plugins/vue-tailwind.js',
     '~/plugins/initial-auth.js',
     '~/plugins/auth-helpers.js',
-    '~/plugins/gtag.js',
+    '~/plugins/gtag.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -96,7 +96,7 @@ export default {
     '@nuxtjs/fontawesome',
 
     // Typescript
-    '@nuxt/typescript-build',
+    '@nuxt/typescript-build'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -106,7 +106,7 @@ export default {
 
     '@nuxtjs/apollo',
 
-    '@nuxtjs/sentry',
+    '@nuxtjs/sentry'
   ],
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
@@ -117,58 +117,58 @@ export default {
       description:
         'The offical app for UOBTheatre.com, the hub for Bristol student performing arts and events',
       background_color: '#2B303A',
-      theme_color: '#4B8F8C',
+      theme_color: '#4B8F8C'
     },
     icon: {
       source: 'static/icon.png',
-      filename: 'icon.png',
-    },
+      filename: 'icon.png'
+    }
   },
 
   // Loading Bar
   loading: {
     color: '#FF9F1C',
-    height: '5px',
+    height: '5px'
   },
 
   // Initial SPA Loading Spinner
   loadingIndicator: {
-    background: '#2B303A',
+    background: '#2B303A'
   },
 
   // ESLint
   eslint: {
-    fix: true,
+    fix: true
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    extend(config, ctx) {
+    extend (config) {
       config.module.rules.push({
         test: /\.(ogg|mp3|wav|mpe?g)$/i,
         loader: 'file-loader',
         options: {
-          name: '[path][name].[ext]',
-        },
+          name: '[path][name].[ext]'
+        }
       })
-    },
+    }
   },
 
   // Apollo Configuration
   apollo: {
     clientConfigs: {
-      default: '~/plugins/vue-apollo.config.js',
+      default: '~/plugins/vue-apollo.config.js'
     },
     // Name of cookie to store token
     tokenName: config().auth.cookie,
 
     // Sets the authentication type for any authorized request.
-    authenticationType: 'JWT',
+    authenticationType: 'JWT'
   },
 
   // FontAwesome Configuration
   fontawesome: {
-    icons: FaIconSet,
+    icons: FaIconSet
   },
 
   // Sentry
@@ -179,6 +179,6 @@ export default {
     config: {
       // Add native Sentry config here
       // https://docs.sentry.io/platforms/javascript/guides/vue/configuration/options/
-    },
-  },
+    }
+  }
 }

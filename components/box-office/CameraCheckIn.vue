@@ -28,11 +28,11 @@
 </template>
 
 <script>
-import CheckInScan from '@/graphql/mutations/box-office/CheckInTickets.gql'
-import { successToast } from '@/utils'
 import CheckInNotification from './CheckInNotification.vue'
 import InvalidCodeNotification from './InvalidCodeNotification.vue'
 import CameraScanner from './CameraScanner.vue'
+import { successToast } from '@/utils'
+import CheckInScan from '@/graphql/mutations/box-office/CheckInTickets.gql'
 
 const checkedInDataState = () => {
   return {
@@ -40,7 +40,7 @@ const checkedInDataState = () => {
     errors: null,
     booking: null,
     ticket: null,
-    scanData: {},
+    scanData: {}
   }
 }
 
@@ -48,28 +48,28 @@ export default {
   components: {
     CheckInNotification,
     InvalidCodeNotification,
-    CameraScanner,
+    CameraScanner
   },
 
   props: {
     performanceId: {
       type: [String, Number],
-      required: true,
-    },
+      required: true
+    }
   },
-  data() {
+  data () {
     return {
       cameraOff: false,
       invalidCode: false,
-      checkedInData: checkedInDataState(),
+      checkedInData: checkedInDataState()
     }
   },
   methods: {
-    onInvalidCode() {
+    onInvalidCode () {
       this.checkedInData = checkedInDataState()
       this.invalidCode = true
     },
-    async onScan(scannedData) {
+    async onScan (scannedData) {
       this.$emit('scanned', scannedData)
       const { bookingReference, ticketId } = scannedData
       this.checkedInData = checkedInDataState()
@@ -81,25 +81,26 @@ export default {
         variables: {
           reference: bookingReference,
           performanceId: this.performanceId,
-          tickets: [{ ticketId }],
-        },
+          tickets: [{ ticketId }]
+        }
       })
       this.checkedInData.success = data.checkInBooking.success
       this.checkedInData.booking = data.checkInBooking.booking
       this.checkedInData.scanData = { bookingReference, ticketId }
-      if (data.checkInBooking.booking)
+      if (data.checkInBooking.booking) {
         this.checkedInData.ticket = data.checkInBooking.booking.tickets.find(
-          (ticket) => ticket.id === ticketId
+          ticket => ticket.id === ticketId
         )
+      }
       this.checkedInData.errors = data.checkInBooking.errors
       this.cameraOff = false
     },
-    async checkInAll() {
+    async checkInAll () {
       const ticketIdsToCheckin = this.checkedInData.booking.tickets
-        .filter((ticket) => !ticket.checkedIn)
+        .filter(ticket => !ticket.checkedIn)
         .map((ticket) => {
           return {
-            ticketId: ticket.id,
+            ticketId: ticket.id
           }
         })
       if (ticketIdsToCheckin.length) {
@@ -108,19 +109,19 @@ export default {
           variables: {
             reference: this.checkedInData.booking.reference,
             performanceId: this.performanceId,
-            tickets: ticketIdsToCheckin,
-          },
+            tickets: ticketIdsToCheckin
+          }
         })
         this.checkedInData.booking = data.checkInBooking.booking
       }
 
       successToast.fire({
-        title: 'All Booking Tickets Checked In',
+        title: 'All Booking Tickets Checked In'
       })
     },
-    closeNotificaton() {
+    closeNotificaton () {
       this.checkedInData = checkedInDataState()
-    },
-  },
+    }
+  }
 }
 </script>

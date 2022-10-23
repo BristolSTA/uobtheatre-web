@@ -1,6 +1,6 @@
 export default (queryRootName, data) => {
   const returnObj = {
-    data: {},
+    data: {}
   }
   returnObj.data[queryRootName] = data
   return returnObj

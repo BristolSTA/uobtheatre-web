@@ -54,10 +54,18 @@
         <div class="flex flex-grow order-1 overflow-x-auto">
           <table class="w-full text-sm sm:text-base">
             <tr class="text-left border-b">
-              <th class="hidden sm:table-cell pr-4">Seat Group</th>
-              <th class="pr-3 sm:pr-4">Type</th>
-              <th class="pr-3 sm:pr-4">Ticket ID</th>
-              <th class="text-center">Checked In?</th>
+              <th class="hidden sm:table-cell pr-4">
+                Seat Group
+              </th>
+              <th class="pr-3 sm:pr-4">
+                Type
+              </th>
+              <th class="pr-3 sm:pr-4">
+                Ticket ID
+              </th>
+              <th class="text-center">
+                Checked In?
+              </th>
             </tr>
             <template v-for="(seatGroup, i) in seatGroupList">
               <tr :key="i" class="sm:hidden">
@@ -78,16 +86,21 @@
                 }"
               >
                 <td class="hidden sm:table-cell pr-4">
-                  <template v-if="n == 0">{{ ticket.seatGroup.name }}</template>
+                  <template v-if="n == 0">
+                    {{ ticket.seatGroup.name }}
+                  </template>
                   <template
                     v-else-if="
                       sortedTicketArray[i][n - 1].seatGroup.name !=
-                      ticket.seatGroup.name
+                        ticket.seatGroup.name
                     "
-                    >{{ ticket.seatGroup.name }}</template
                   >
+                    {{ ticket.seatGroup.name }}
+                  </template>
                 </td>
-                <td class="pr-3 sm:">{{ ticket.concessionType.name }}</td>
+                <td class="pr-3 sm:">
+                  {{ ticket.concessionType.name }}
+                </td>
                 <td class="pr-3 sm: font-mono md:text-base text-xs sm:text-sm">
                   {{ ticket.id }}
                 </td>
@@ -133,66 +146,66 @@
 
 <script>
 import lo from 'lodash'
+import LoadingIcon from '../ui/LoadingIcon.vue'
 import Booking from '@/classes/Booking'
 
 import CheckInMutation from '@/graphql/mutations/box-office/CheckInTickets.gql'
 import UnCheckInMutation from '@/graphql/mutations/box-office/UnCheckInTickets.gql'
 import BoxOfficePerformanceBooking from '@/graphql/queries/box-office/BoxOfficePerformanceBooking.gql'
-import LoadingIcon from '../ui/LoadingIcon.vue'
 
 export default {
   components: { LoadingIcon },
   props: {
     booking: {
       required: true,
-      type: Booking,
+      type: Booking
     },
     index: {
       required: true,
-      type: Number,
+      type: Number
     },
     highlightTicketId: {
       default: null,
-      type: [String, Number],
-    },
+      type: [String, Number]
+    }
   },
-  data() {
+  data () {
     return {
       editing: false,
       editingData: null,
-      saving: false,
+      saving: false
     }
   },
   computed: {
-    seatGroupList() {
+    seatGroupList () {
       return lo
-        .uniqBy(this.booking.tickets, (ticket) => ticket.seatGroup.id)
-        .map((ticket) => ticket.seatGroup)
+        .uniqBy(this.booking.tickets, ticket => ticket.seatGroup.id)
+        .map(ticket => ticket.seatGroup)
     },
-    sortedTicketArray() {
+    sortedTicketArray () {
       return Object.values(
-        lo.groupBy(this.booking.tickets, (ticket) => ticket.seatGroup.id)
+        lo.groupBy(this.booking.tickets, ticket => ticket.seatGroup.id)
       )
-    },
+    }
   },
   methods: {
-    startEditing() {
+    startEditing () {
       this.editingData = lo.fromPairs(
-        this.booking.tickets.map((ticket) => [ticket.id, ticket.checkedIn])
+        this.booking.tickets.map(ticket => [ticket.id, ticket.checkedIn])
       )
       this.editing = true
     },
-    async updateBookingCheckins() {
+    async updateBookingCheckins () {
       this.saving = true
       const ticketsToCheckIn = this.booking.tickets
         .filter(
-          (ticket) => !ticket.checkedIn && this.editingData[ticket.id] === true
+          ticket => !ticket.checkedIn && this.editingData[ticket.id] === true
         )
         .map((ticket) => {
           return { ticketId: ticket.id }
         })
       const ticketsToUnCheckIn = this.booking.tickets
-        .filter((ticket) => this.editingData[ticket.id] === false)
+        .filter(ticket => this.editingData[ticket.id] === false)
         .map((ticket) => {
           return { ticketId: ticket.id }
         })
@@ -206,8 +219,8 @@ export default {
             variables: {
               reference: this.booking.reference,
               performanceId: this.booking.performance.id,
-              tickets: ticketsToCheckIn,
-            },
+              tickets: ticketsToCheckIn
+            }
           })
         )
       }
@@ -219,8 +232,8 @@ export default {
             variables: {
               reference: this.booking.reference,
               performanceId: this.booking.performance.id,
-              tickets: ticketsToUnCheckIn,
-            },
+              tickets: ticketsToUnCheckIn
+            }
           })
         )
       }
@@ -231,17 +244,17 @@ export default {
         query: BoxOfficePerformanceBooking,
         variables: {
           performanceId: this.booking.performance.id,
-          bookingId: this.booking.id,
-        },
+          bookingId: this.booking.id
+        }
       })
 
       this.booking.updateFromAPIData(data.performance.bookings.edges[0].node)
 
       this.editing = this.saving = false
     },
-    cancelEdits() {
+    cancelEdits () {
       this.editing = false
-    },
-  },
+    }
+  }
 }
 </script>

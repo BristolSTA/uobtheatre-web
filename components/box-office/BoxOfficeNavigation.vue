@@ -8,8 +8,9 @@
       class="bg-sta-green hover:bg-sta-orange"
       :text-size="compact ? 'text-sm' : undefined"
       :class="[compact ? '' : 'w-full md:w-1/3 lg:w-1/4 2xl:w-1/5']"
-      >{{ box.name }}</menu-tile
     >
+      {{ box.name }}
+    </menu-tile>
   </div>
 </template>
 
@@ -20,51 +21,52 @@ export default {
   props: {
     performance: {
       required: true,
-      type: Object,
+      type: Object
     },
     showHome: {
       default: true,
-      type: Boolean,
+      type: Boolean
     },
     compact: {
       default: false,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
-  data() {
+  data () {
     return {
       navItems: [
         {
           name: 'Check or Collect Tickets',
           icon: 'user-check',
-          path: `/box-office/${this.performance.id}/collect`,
+          path: `/box-office/${this.performance.id}/collect`
         },
         {
           name: 'Sell Tickets',
           icon: 'cash-register',
-          path: `/box-office/${this.performance.id}/sell`,
+          path: `/box-office/${this.performance.id}/sell`
         },
         {
           name: 'View Bookings',
           icon: 'clipboard-list',
-          path: `/box-office/${this.performance.id}/bookings`,
-        },
-      ],
+          path: `/box-office/${this.performance.id}/bookings`
+        }
+      ]
     }
   },
   computed: {
-    completeNavItems() {
+    completeNavItems () {
       const items = []
-      if (this.showHome)
+      if (this.showHome) {
         items.push({
           name: 'Dashboard',
           icon: 'home',
-          path: `/box-office/${this.performance.id}`,
+          path: `/box-office/${this.performance.id}`
         })
+      }
 
       items.push(...this.navItems)
       return items
-    },
-  },
+    }
+  }
 }
 </script>

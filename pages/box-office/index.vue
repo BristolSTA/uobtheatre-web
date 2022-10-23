@@ -5,13 +5,17 @@
       :hide-content-when-loading="true"
     >
       <div v-if="performances.length">
-        <h1 class="text-center text-h1">Select a performance</h1>
+        <h1 class="text-center text-h1">
+          Select a performance
+        </h1>
         <select
           v-if="performances.length > 4"
           v-model="selectedPerformance"
           class="p-2 w-full text-gray-700"
         >
-          <option selected disabled>Select one...</option>
+          <option selected disabled>
+            Select one...
+          </option>
           <option v-for="(performance, index) in performances" :key="index">
             {{ performance.production.name }} -
             {{ performance.start | dateFormat('cccc dd MMMM T') }}
@@ -42,15 +46,15 @@
             <h4 class="text-sta-green">
               {{ performance.venue.name }}
             </h4>
-            <span
-              >{{ performance.start | dateFormat('cccc dd MMMM T') }} (Doors
-              {{ performance.doorsOpen | dateFormat('T') }})</span
-            >
+            <span>{{ performance.start | dateFormat('cccc dd MMMM T') }} (Doors
+              {{ performance.doorsOpen | dateFormat('T') }})</span>
           </div>
         </div>
       </div>
       <div v-else>
-        <h1 class="text-h1">No performances available</h1>
+        <h1 class="text-h1">
+          No performances available
+        </h1>
         <p>
           There are no performances available for you to open a box office for
           on the date selected.
@@ -75,77 +79,77 @@
 </template>
 
 <script>
-import BoxOfficePerformancesAvailable from '@/graphql/queries/box-office/BoxOfficePerformancesAvailable.gql'
 import { DateTime } from 'luxon'
+import BoxOfficePerformancesAvailable from '@/graphql/queries/box-office/BoxOfficePerformancesAvailable.gql'
 import LoadingContainer from '@/components/ui/LoadingContainer.vue'
 import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue'
 export default {
   components: { LoadingContainer, ProductionFeaturedImage },
   middleware: ['authed', 'can-boxoffice'],
-  data() {
+  data () {
     return {
       selectedPerformance: null,
       performances: [],
       selectedDate: null,
       datePickerDate: null,
       dateOptions: [],
-      optionsTimer: null,
+      optionsTimer: null
     }
   },
   head: {
-    title: 'Box Office Select',
+    title: 'Box Office Select'
   },
   computed: {
-    dateToSearch() {
+    dateToSearch () {
       return this.selectedDate !== '' ? this.selectedDate : this.datePickerDate
-    },
+    }
   },
   watch: {
-    selectedPerformance(performance) {
+    selectedPerformance (performance) {
       this.$router.push(`/box-office/${performance.id}`)
-    },
+    }
   },
-  mounted() {
+  mounted () {
     this.updateDateOptions()
     this.optionsTimer = setInterval(this.updateDateOptions, 60 * 60 * 1000)
   },
-  destroyed() {
+  destroyed () {
     clearInterval(this.optionsTimer)
   },
   apollo: {
     performances: {
       query: BoxOfficePerformancesAvailable,
-      variables() {
+      variables () {
         return {
-          date: this.dateToSearch,
+          date: this.dateToSearch
         }
       },
-      skip() {
+      skip () {
         return !this.dateToSearch || this.dateToSeach === ''
       },
       fetchPolicy: 'cache-and-network',
 
-      update: (data) =>
+      update: data =>
         data.performances.edges
-          .map((edge) => edge.node)
+          .map(edge => edge.node)
           .filter(
-            (performance) => performance.production.status === 'PUBLISHED'
-          ),
-    },
+            performance => performance.production.status === 'PUBLISHED'
+          )
+    }
   },
   methods: {
-    updateDateOptions() {
+    updateDateOptions () {
       this.selectedDate = DateTime.now().toISODate()
       this.datePickerDate = DateTime.now().toISODate()
       this.dateOptions = [
         { value: DateTime.now().toISODate(), text: 'Today' },
         {
           value: DateTime.now().plus({ days: 1 }).toISODate(),
-          text: 'Tomorrow',
+          text: 'Tomorrow'
         },
-        { value: null, text: 'Custom' },
+        { value: null, text: 'Custom' }
       ]
-    },
-  },
+    }
+  }
 }
 </script>

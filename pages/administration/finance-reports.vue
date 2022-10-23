@@ -3,7 +3,9 @@
     <all-errors-display :errors="errors" />
     <loading-container :loading="generating">
       <div class="space-y-4">
-        <h2 class="text-h2">Select Report</h2>
+        <h2 class="text-h2">
+          Select Report
+        </h2>
         <t-select
           v-model="currentReport"
           placeholder="Select a report"
@@ -13,7 +15,9 @@
         <template
           v-if="currentReportObject && currentReportObject.requires_times"
         >
-          <h2 class="text-h2">Set report times</h2>
+          <h2 class="text-h2">
+            Set report times
+          </h2>
           <form-label field-name="startTime">
             Start Time
             <template #control>
@@ -47,7 +51,7 @@
         <template
           v-if="
             currentReportObject &&
-            (!currentReportObject.requires_times || (start && end))
+              (!currentReportObject.requires_times || (start && end))
           "
         >
           <button
@@ -70,7 +74,7 @@ import { getValidationErrors, performMutation } from '@/utils'
 import LoadingContainer from '@/components/ui/LoadingContainer.vue'
 export default {
   components: { AdminPage, AllErrorsDisplay, FormLabel, LoadingContainer },
-  data() {
+  data () {
     return {
       errors: null,
       currentReport: null,
@@ -80,21 +84,21 @@ export default {
 
       reports: [
         { text: 'Period Totals', value: 'PeriodTotals', requires_times: true },
-        { text: 'Outstanding Payments', value: 'OutstandingPayments' },
-      ],
+        { text: 'Outstanding Payments', value: 'OutstandingPayments' }
+      ]
     }
   },
   head: {
-    title: 'Finance Reports',
+    title: 'Finance Reports'
   },
   computed: {
-    currentReportObject() {
-      if (!this.currentReport) return
-      return this.reports.find((report) => report.value === this.currentReport)
-    },
+    currentReportObject () {
+      if (!this.currentReport) { return }
+      return this.reports.find(report => report.value === this.currentReport)
+    }
   },
   methods: {
-    async generateReport() {
+    async generateReport () {
       this.generating = true
       try {
         const data = await performMutation(
@@ -104,8 +108,8 @@ export default {
             variables: {
               name: this.currentReport,
               start: this.start,
-              end: this.end,
-            },
+              end: this.end
+            }
           },
           'generateReport'
         )
@@ -115,7 +119,7 @@ export default {
       } finally {
         this.generating = false
       }
-    },
-  },
+    }
+  }
 }
 </script>

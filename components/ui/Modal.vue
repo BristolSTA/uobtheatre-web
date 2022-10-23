@@ -24,14 +24,14 @@
           p-4
         "
       >
-        <slot name="header"></slot>
+        <slot name="header" />
         <button type="button" @click="close">
           <font-awesome-icon icon="times" />
         </button>
       </header>
 
       <section class="modal-body p-4 overflow-y-auto">
-        <slot></slot>
+        <slot />
       </section>
     </div>
   </div>
@@ -40,9 +40,9 @@
 <script>
 export default {
   methods: {
-    close() {
+    close () {
       this.$emit('close')
-    },
-  },
+    }
+  }
 }
 </script>

@@ -1,9 +1,8 @@
 import { expect } from 'chai'
 
+import { mountWithRouterMock } from '../../helpers'
 import AuthBox from '@/components/auth/UserAuthBox.vue'
 import Login from '@/pages/login/index'
-
-import { mountWithRouterMock } from '../../helpers'
 
 jest.mock('@/services')
 
@@ -15,16 +14,16 @@ describe('Login', function () {
     loginComponent = await mountWithRouterMock(Login, {
       mocks: {
         $router: {
-          replace: (fakeReplace = jest.fn()),
+          replace: (fakeReplace = jest.fn())
         },
         $store: {
           state: {
             'box-office': {
-              locationId: null,
-            },
-          },
-        },
-      },
+              locationId: null
+            }
+          }
+        }
+      }
     })
     authBoxComponent = loginComponent.findComponent(AuthBox)
   })

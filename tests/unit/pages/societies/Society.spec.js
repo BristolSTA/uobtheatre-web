@@ -1,12 +1,12 @@
 import { RouterLinkStub } from '@vue/test-utils'
 import { expect } from 'chai'
 
-import Society from '@/pages/society/_slug/index'
 import { generateMountOptions, mountWithRouterMock } from '../../helpers'
 import FakeSociety from '../../fixtures/Society'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection'
 import Production from '../../fixtures/Production'
+import Society from '@/pages/society/_slug/index'
 
 describe('Society page', function () {
   let societyPageComponent
@@ -25,24 +25,24 @@ describe('Society page', function () {
                     name: 'Bins',
                     slug: 'bins',
                     isBookable: true,
-                    end: '2020-10-18T00:00:00',
+                    end: '2020-10-18T00:00:00'
                   }),
                   Production({
                     name: 'Centuary',
                     slug: 'centuary',
                     isBookable: false,
-                    end: '2019-10-19T00:00:00',
-                  }),
-                ]),
+                    end: '2019-10-19T00:00:00'
+                  })
+                ])
               })
-            ),
-          ],
-        },
+            )
+          ]
+        }
       }),
       {
         params: {
-          slug: 'sta',
-        },
+          slug: 'sta'
+        }
       }
     )
   })
@@ -58,7 +58,7 @@ describe('Society page', function () {
     expect(
       societyPageComponent
         .findComponent({
-          ref: 'society-logo',
+          ref: 'society-logo'
         })
         .attributes('src')
     ).to.equal('http://pathto.example/logo-image.png')
@@ -67,7 +67,7 @@ describe('Society page', function () {
   it('shows society splashscreen', async () => {
     await societyPageComponent.vm.$nextTick()
     const splashscreenContainer = societyPageComponent.findComponent({
-      ref: 'banner',
+      ref: 'banner'
     })
 
     expect(splashscreenContainer.attributes('style')).to.contain(
@@ -109,14 +109,14 @@ describe('Society page', function () {
       Society,
       generateMountOptions(['apollo'], {
         apollo: {
-          queryCallstack: [GenericApolloResponse('society')],
-        },
+          queryCallstack: [GenericApolloResponse('society')]
+        }
       }),
       {
         error: errorFn,
         params: {
-          slug: 'not-drama-soc',
-        },
+          slug: 'not-drama-soc'
+        }
       }
     )
     expect(errorFn.mock.calls.length).to.eq(1)

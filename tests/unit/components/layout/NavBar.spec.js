@@ -1,14 +1,13 @@
 import { expect } from 'chai'
 
-import DropdownNavItem from '@/components/layout/DropdownNavItem.vue'
-import NavBar from '@/components/layout/NavBar.vue'
-import ClickableLink from '@/components/ui/ClickableLink.vue'
-
 import {
   fixTextSpacing,
   mountWithRouterMock,
-  RouterLinkStub,
+  RouterLinkStub
 } from '../../helpers'
+import DropdownNavItem from '@/components/layout/DropdownNavItem.vue'
+import NavBar from '@/components/layout/NavBar.vue'
+import ClickableLink from '@/components/ui/ClickableLink.vue'
 
 describe('NavBar', function () {
   let navbarComponent, routerPushFake, logoutFn
@@ -18,22 +17,22 @@ describe('NavBar', function () {
       mocks: {
         $route: {},
         $router: {
-          push: (routerPushFake = jest.fn()),
+          push: (routerPushFake = jest.fn())
         },
         $store: {
           state: {
             auth: {
-              user: null,
-            },
-          },
+              user: null
+            }
+          }
         },
         $auth: () => {
           return {
             logout: (logoutFn = jest.fn()),
-            hasPermission: jest.fn(() => true),
+            hasPermission: jest.fn(() => true)
           }
-        },
-      },
+        }
+      }
     })
   })
 
@@ -46,8 +45,8 @@ describe('NavBar', function () {
     await navbarComponent.setData({
       navItems: [
         ['/', 'Home'],
-        ['/about-us', 'About Us'],
-      ],
+        ['/about-us', 'About Us']
+      ]
     })
 
     const links = navbarComponent.findAllComponents(RouterLinkStub)
@@ -112,7 +111,7 @@ describe('NavBar', function () {
 
   it('shows user context bar when authenticated', async () => {
     navbarComponent.vm.$store.state.auth.user = {
-      firstName: 'Joe',
+      firstName: 'Joe'
     }
     await navbarComponent.vm.$forceUpdate()
 

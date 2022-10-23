@@ -99,7 +99,9 @@
     </safe-table>
     <div v-if="editing" class="m-2 p-2 bg-sta-gray-dark">
       Note:
-      <badge class="bg-blue-400"><font-awesome-icon icon="sync" /></badge>
+      <badge class="bg-blue-400">
+        <font-awesome-icon icon="sync" />
+      </badge>
       Denotates a setting that is synced or shared across multiple performances.
       By changing this, it will change for the other performances too
     </div>
@@ -126,37 +128,37 @@ export default {
     TableHeadItem,
     SafeTable,
     TableRow,
-    TableRowItem,
+    TableRowItem
   },
   props: {
     editing: {
       default: false,
-      type: Boolean,
+      type: Boolean
     },
     performanceSeatGroups: {
       type: Array,
-      required: true,
+      required: true
     },
     discounts: {
       required: true,
-      type: Array,
-    },
+      type: Array
+    }
   },
   computed: {
-    singleDiscounts() {
+    singleDiscounts () {
       return singleDiscountsFn(this.discounts)
-    },
+    }
   },
   watch: {
     performanceSeatGroups: {
       deep: true,
-      handler() {
+      handler () {
         this.$forceUpdate()
-      },
-    },
+      }
+    }
   },
   methods: {
-    displayPrice(performanceSeatGroup, discount) {
+    displayPrice (performanceSeatGroup, discount) {
       // Get the value the API says this should be at the moment
       const discountConcessionType = discount.requirements[0].concessionType
       const currentValue =
@@ -176,7 +178,7 @@ export default {
         ).toFixed(2)
       }
       return (currentValue / 100).toFixed(2)
-    },
-  },
+    }
+  }
 }
 </script>

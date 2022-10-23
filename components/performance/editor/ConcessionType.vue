@@ -46,7 +46,7 @@
           />
         </template>
       </form-label>
-      <slot name="editor-footer"></slot>
+      <slot name="editor-footer" />
     </div>
   </div>
 </template>
@@ -59,25 +59,25 @@ export default {
   props: {
     name: {
       required: true,
-      type: String,
+      type: String
     },
     description: {
       default: null,
-      type: String,
+      type: String
     },
     editable: {
       default: false,
-      type: Boolean,
+      type: Boolean
     },
     removable: {
       default: false,
-      type: Boolean,
-    },
-  },
-  data() {
-    return {
-      editing: false,
+      type: Boolean
     }
   },
+  data () {
+    return {
+      editing: false
+    }
+  }
 }
 </script>

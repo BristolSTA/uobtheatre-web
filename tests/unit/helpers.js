@@ -33,9 +33,9 @@ const mountWithRouterMock = async function (
       error: jest.fn(),
       app: {
         apolloProvider: {
-          defaultClient: mountOptions.mocks ? mountOptions.mocks.$apollo : null,
-        },
-      },
+          defaultClient: mountOptions.mocks ? mountOptions.mocks.$apollo : null
+        }
+      }
     },
     contextOptions
   )
@@ -69,15 +69,15 @@ const mountWithRouterMock = async function (
  * @returns {object} Vue mounting options
  */
 const generateMountOptions = function (types = [], options = {}) {
-  if (!options.stubs) options.stubs = {}
-  if (!options.mocks) options.mocks = {}
+  if (!options.stubs) { options.stubs = {} }
+  if (!options.mocks) { options.mocks = {} }
   if (types.includes('config')) {
     options.mocks.$config = config()
   }
   if (types.includes('apollo')) {
     options.mocks.$apollo = generateApolloMock(options.apollo)
     options.mocks.$apolloProvider = {
-      defaultClient: options.mocks.$apollo,
+      defaultClient: options.mocks.$apollo
     }
     delete options.apollo
   }
@@ -100,12 +100,11 @@ const generateApolloMock = function (options) {
       mutationCalls,
       mutationCallstack,
       handledQueries: () => queryCalls.length,
-      handledMutations: () => mutationCalls.length,
+      handledMutations: () => mutationCalls.length
     },
     query: jest.fn((options) => {
       queryCalls.push(options)
-      if (queryCallstack[queryCalls.length - 1])
-        return Promise.resolve(queryCallstack[queryCalls.length - 1])
+      if (queryCallstack[queryCalls.length - 1]) { return Promise.resolve(queryCallstack[queryCalls.length - 1]) }
 
       // eslint-disable-next-line no-console
       console.warn(
@@ -118,8 +117,7 @@ const generateApolloMock = function (options) {
     }),
     mutate: jest.fn(() => {
       mutationCalls.push(options)
-      if (mutationCallstack[mutationCalls.length - 1])
-        return Promise.resolve(mutationCallstack[mutationCalls.length - 1])
+      if (mutationCallstack[mutationCalls.length - 1]) { return Promise.resolve(mutationCallstack[mutationCalls.length - 1]) }
 
       // eslint-disable-next-line no-console
       console.warn(
@@ -129,7 +127,7 @@ const generateApolloMock = function (options) {
         options.mutation
       )
       return Promise.resolve()
-    }),
+    })
   }
 }
 
@@ -149,5 +147,5 @@ export {
   generateMountOptions,
   generateApolloMock,
   mountWithRouterMock,
-  RouterLinkStub,
+  RouterLinkStub
 }

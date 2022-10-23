@@ -1,11 +1,11 @@
 import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
 
-import EmailVerify from '@/pages/user/email-verify/_token/index.vue'
 import { generateMountOptions } from '../../helpers'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse'
 import GenericErrorsResponse from '../../fixtures/support/GenericErrorsResponse'
+import EmailVerify from '@/pages/user/email-verify/_token/index.vue'
 
 describe('Email Verify', function () {
   let component
@@ -17,19 +17,19 @@ describe('Email Verify', function () {
       generateMountOptions(['apollo'], {
         apollo: {
           mutationCallstack: [
-            GenericApolloResponse('verifyAccount', GenericMutationResponse()),
-          ],
+            GenericApolloResponse('verifyAccount', GenericMutationResponse())
+          ]
         },
         mocks: {
           $route: {
             params: {
-              token: '1234abcd',
-            },
+              token: '1234abcd'
+            }
           },
           $router: {
-            replace: routerReplaceMock,
-          },
-        },
+            replace: routerReplaceMock
+          }
+        }
       })
     )
 
@@ -48,16 +48,16 @@ describe('Email Verify', function () {
       generateMountOptions(['apollo'], {
         apollo: {
           mutationCallstack: [
-            GenericApolloResponse('verifyAccount', GenericErrorsResponse()),
-          ],
+            GenericApolloResponse('verifyAccount', GenericErrorsResponse())
+          ]
         },
         mocks: {
           $route: {
             params: {
-              token: 'invalidCode',
-            },
-          },
-        },
+              token: 'invalidCode'
+            }
+          }
+        }
       })
     )
 

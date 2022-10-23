@@ -1,16 +1,15 @@
 import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
 
-import FooterBar from '@/components/layout/FooterBar.vue'
-
 import { fixTextSpacing } from '../../helpers'
+import FooterBar from '@/components/layout/FooterBar.vue'
 
 describe('FooterBar', function () {
   let footerBarComponent
 
   beforeEach(() => {
     footerBarComponent = mount(FooterBar, {
-      stubs: ['NuxtLink'],
+      stubs: ['NuxtLink']
     })
   })
 
@@ -25,8 +24,8 @@ describe('FooterBar', function () {
     await footerBarComponent.setData({
       navItems: [
         ['/privacy', 'Privacy'],
-        ['/terms', 'Terms'],
-      ],
+        ['/terms', 'Terms']
+      ]
     })
     const links = footerBarComponent.findAll('ul nuxtlink-stub')
 

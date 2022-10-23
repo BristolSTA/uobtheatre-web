@@ -4,10 +4,10 @@ export default (overrides = {}) => {
       id: 1,
       name: 'Joe Bloggs',
       profilePicture: {
-        url: 'http://pathto.example/profile-pic.png',
+        url: 'http://pathto.example/profile-pic.png'
       },
       role: 'Peter Pan',
-      production: null,
+      production: null
     },
     overrides
   )

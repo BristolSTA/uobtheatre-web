@@ -1,4 +1,4 @@
-export function getEnumTextUsingMap(enumValue, map) {
+export function getEnumTextUsingMap (enumValue, map) {
   return map[enumValue]
 }
 
@@ -6,15 +6,15 @@ export default class {
   enumValue
   nameMap = {}
 
-  constructor(enumValue) {
+  constructor (enumValue) {
     this.enumValue = enumValue
   }
 
-  get name() {
+  get name () {
     return this.nameMap[this.enumValue]
   }
 
-  get value() {
+  get value () {
     return this.enumValue
   }
 }

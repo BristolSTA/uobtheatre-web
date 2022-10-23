@@ -1,6 +1,8 @@
 <template>
   <div class="h-full text-white bg-sta-gray">
-    <h1 class="container py-6 text-left text-h1">{{ venue.name }}</h1>
+    <h1 class="container py-6 text-left text-h1">
+      {{ venue.name }}
+    </h1>
     <div
       class="flex flex-wrap items-center justify-center mt-2 lg:mb-8 lg:px-8"
     >
@@ -17,7 +19,7 @@
           class="p-3 w-full md:p-0"
           :src="venue.image.url"
           :alt="`${venue.name} image`"
-        />
+        >
       </div>
     </div>
     <div class="flex flex-wrap items-center justify-center">
@@ -32,15 +34,23 @@
         "
       >
         <div>
-          <h2 class="text-sta-orange text-3xl font-semibold">Venue Info:</h2>
+          <h2 class="text-sta-orange text-3xl font-semibold">
+            Venue Info:
+          </h2>
           <table class="table-auto">
             <tbody>
               <tr>
-                <th class="align-top pb-2 pr-2">Capacity:</th>
-                <td class="align-top">Max {{ venue.internalCapacity }}</td>
+                <th class="align-top pb-2 pr-2">
+                  Capacity:
+                </th>
+                <td class="align-top">
+                  Max {{ venue.internalCapacity }}
+                </td>
               </tr>
               <tr>
-                <th class="align-top pr-2">Address:</th>
+                <th class="align-top pr-2">
+                  Address:
+                </th>
                 <td class="align-top">
                   <div v-if="venue.address" ref="address">
                     <p v-if="venue.address.buildingName">
@@ -75,7 +85,7 @@
         "
         class="flex justify-center w-full h-96 lg:mb-4 lg:w-3/5"
       >
-        <div ref="venue-map" class="w-full"></div>
+        <div ref="venue-map" class="w-full" />
       </div>
     </div>
   </div>
@@ -92,7 +102,7 @@ import TipTapOutput from '@/components/ui/TipTapOutput.vue'
 export default {
   name: 'VenuePage',
   components: { IconListItem, TipTapOutput },
-  async asyncData({ params, app, error }) {
+  async asyncData ({ params, app, error }) {
     const { data } = await app.apolloProvider.defaultClient.query({
       query: gql`
         query venue($slug: String!) {
@@ -111,62 +121,63 @@ export default {
         ${AddressFragment}
       `,
       variables: {
-        slug: params.slug,
-      },
+        slug: params.slug
+      }
     })
     const venue = data.venue
-    if (!venue)
+    if (!venue) {
       return error({
         statusCode: 404,
-        message: 'This society does not exists',
+        message: 'This society does not exists'
       })
+    }
 
     return {
-      venue,
+      venue
     }
   },
-  data() {
+  data () {
     return {
-      venue: null,
+      venue: null
     }
   },
-  head() {
+  head () {
     const venueName = this.venue ? this.venue.name : 'Loading...'
     return {
-      title: `${venueName}`,
+      title: `${venueName}`
     }
   },
   computed: {
-    googleMapsLink() {
+    googleMapsLink () {
       return (
         `https://maps.google.com/?q=${this.venue.name}` +
         (this.venue.address
           ? `,${this.venue.address.street},${this.venue.address.city}`
           : '')
       )
-    },
+    }
   },
-  mounted() {
+  mounted () {
     this.createMap()
   },
   methods: {
-    createMap() {
+    createMap () {
       const venue = this.venue
-      if (!venue?.address?.latitude || !venue?.address?.longitude) return
+      if (!venue?.address?.latitude || !venue?.address?.longitude) { return }
       const map = L.map(this.$refs['venue-map']).setView(
         [venue.address.latitude, venue.address.longitude],
         14
       )
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map)
 
       L.popup({ closeButton: false })
         .setLatLng(L.latLng(venue.address.latitude, venue.address.longitude))
         .setContent(`${venue.name}`)
         .openOn(map)
-    },
-  },
+    }
+  }
 }
 </script>

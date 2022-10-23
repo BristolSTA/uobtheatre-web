@@ -5,15 +5,17 @@
         colour="green"
         icon="link"
         :to="`/production/${production.slug}`"
-        >View Public Page</sta-button
       >
+        View Public Page
+      </sta-button>
       <sta-button
         v-if="canEditRightNow"
         colour="orange"
         icon="edit"
         :to="`${production.slug}/edit`"
-        >Edit</sta-button
       >
+        Edit
+      </sta-button>
     </template>
     <div class="space-y-4">
       <div class="flex flex-wrap justify-around space-y-4">
@@ -23,7 +25,9 @@
               <table-head-item>Status</table-head-item>
               <table-row-item>
                 <production-status-badge :production="production" />
-                <p class="text-sm">{{ statusDescription }}</p>
+                <p class="text-sm">
+                  {{ statusDescription }}
+                </p>
               </table-row-item>
             </tr>
             <tr>
@@ -43,18 +47,18 @@
                 <progress-bar
                   :percentage="
                     (100 * production.totalTicketsSold) /
-                    production.totalCapacity
+                      production.totalCapacity
                   "
                 />
               </table-row-item>
             </tr>
             <tr v-if="production.salesBreakdown">
               <table-head-item>Net Society Revenue</table-head-item>
-              <table-row-item
-                >£{{
+              <table-row-item>
+                £{{
                   (production.salesBreakdown.societyRevenue / 100).toFixed(2)
-                }}</table-row-item
-              >
+                }}
+              </table-row-item>
             </tr>
           </table>
         </card>
@@ -68,8 +72,9 @@
                 :class="action.class"
                 :icon="action.icon"
                 @click="action.action()"
-                >{{ action.text }}</sta-button
               >
+                {{ action.text }}
+              </sta-button>
             </div>
           </card>
         </div>
@@ -98,12 +103,12 @@
           :offset.sync="performancesOffset"
         >
           <template #head>
-            <table-head-item></table-head-item>
+            <table-head-item />
             <table-head-item>Date</table-head-item>
             <table-head-item>Doors Time</table-head-item>
             <table-head-item>Venue</table-head-item>
             <table-head-item>Sales</table-head-item>
-            <table-head-item></table-head-item>
+            <table-head-item />
           </template>
           <template #default="slotProps">
             <table-row
@@ -115,19 +120,21 @@
                 <badge
                   v-if="performance.minSeatPrice === 0"
                   class="text-white bg-sta-orange font-bold"
-                  >Free</badge
                 >
+                  Free
+                </badge>
               </table-row-item>
-              <table-row-item>{{
-                performance.start | dateFormat('EEEE dd MMMM y')
-              }}</table-row-item>
+              <table-row-item>
+                {{
+                  performance.start | dateFormat('EEEE dd MMMM y')
+                }}
+              </table-row-item>
               <table-row-item>
                 {{ performance.doorsOpen | dateFormat('HH:mm ZZZZ') }}
                 <span class="text-sm">
                   ({{ humanDuration(performance.durationMins)
                   }}<template v-if="performance.intervalDurationMins">
-                    inc. interval</template
-                  >)
+                    inc. interval</template>)
                 </span>
               </table-row-item>
               <table-row-item>{{ performance.venue.name }}</table-row-item>
@@ -150,8 +157,9 @@
                   :small="true"
                   colour="green"
                   :to="`/administration/productions/${production.slug}/performances/${performance.id}`"
-                  >View</sta-button
                 >
+                  View
+                </sta-button>
               </table-row-item>
             </table-row>
           </template>
@@ -196,7 +204,7 @@ import {
   performMutation,
   successToast,
   swal,
-  humanDuration,
+  humanDuration
 } from '@/utils'
 
 export default {
@@ -211,82 +219,78 @@ export default {
     ProductionStatusBadge,
     PaginatedTable,
     TableRow,
-    Badge,
+    Badge
   },
-  async asyncData({ params, error, app }) {
+  async asyncData ({ params, error, app }) {
     // Execute query
     const { data } = await app.apolloProvider.defaultClient.query({
       query: AdminProductionShowQuery,
       variables: {
-        slug: params.productionSlug,
+        slug: params.productionSlug
       },
-      fetchPolicy: 'no-cache',
+      fetchPolicy: 'no-cache'
     })
 
     const production = data.production
-    if (!production)
+    if (!production) {
       return error({
         statusCode: 404,
-        message: 'This production does not exist',
+        message: 'This production does not exist'
       })
+    }
     return {
-      production,
+      production
     }
   },
-  data() {
+  data () {
     return {
       production: null,
 
       performancesData: null,
-      performancesOffset: 0,
+      performancesOffset: 0
     }
   },
   apollo: {
     performancesData: {
       query: AdminPerformancesIndexQuery,
-      variables() {
+      variables () {
         return {
           productionSlug: this.production.slug,
-          offset: this.performancesOffset,
+          offset: this.performancesOffset
         }
       },
-      update: (data) => data.production.performances,
-      fetchPolicy: 'cache-and-network',
-    },
+      update: data => data.production.performances,
+      fetchPolicy: 'cache-and-network'
+    }
   },
-  head() {
+  head () {
     const productionName = this.production ? this.production.name : 'Loading...'
     return {
-      title: productionName,
+      title: productionName
     }
   },
   computed: {
-    statusDescription() {
-      if (this.production.status === 'DRAFT')
-        return 'This production is private, and not bookable'
-      if (this.production.status === 'PENDING')
-        return 'This production has been submitted for review. You will recieve an email once this has been completed'
-      if (this.production.status === 'PUBLISHED')
-        return 'This production is being displayed publicly'
-      if (this.production.status === 'CLOSED')
-        return 'This production has been closed, and it no longer accepting bookings'
-      if (this.production.status === 'COMPLETED')
-        return 'This production has been completed, and income has been transfered to the society'
+    statusDescription () {
+      if (this.production.status === 'DRAFT') { return 'This production is private, and not bookable' }
+      if (this.production.status === 'PENDING') { return 'This production has been submitted for review. You will recieve an email once this has been completed' }
+      if (this.production.status === 'PUBLISHED') { return 'This production is being displayed publicly' }
+      if (this.production.status === 'CLOSED') { return 'This production has been closed, and it no longer accepting bookings' }
+      if (this.production.status === 'COMPLETED') { return 'This production has been completed, and income has been transfered to the society' }
 
       return null
     },
-    canEdit() {
+    canEdit () {
       // Returns if the user has any edit permissions, at any point, for this produciton
       return (
         this.production.permissions.includes('change_production') ||
         this.canEditRightNow
       )
     },
-    canEditRightNow() {
+    canEditRightNow () {
       // Returns if the user can edit production details right now (i.e. the ability)
       return this.production.permissions.includes('edit_production')
     },
-    actions() {
+    actions () {
       const list = []
       if (this.canEdit) {
         list.push({
@@ -295,7 +299,7 @@ export default {
             this.$router.push(
               `/administration/productions/${this.production.slug}/permissions`
             ),
-          text: 'Edit Permissions',
+          text: 'Edit Permissions'
         })
 
         if (this.production.status === 'APPROVED') {
@@ -303,7 +307,7 @@ export default {
             icon: 'globe',
             class: 'animate-pulse animate',
             action: () => this.setStatus('PUBLISHED'),
-            text: 'Make Live',
+            text: 'Make Live'
           })
         }
       }
@@ -314,12 +318,12 @@ export default {
         list.push({
           icon: 'check',
           action: () => this.setStatus('APPROVED'),
-          text: 'Approve',
+          text: 'Approve'
         })
         list.push({
           icon: 'exclamation',
           action: () => this.setStatus('DRAFT'),
-          text: 'Reject',
+          text: 'Reject'
         })
       }
       if (
@@ -330,7 +334,7 @@ export default {
         list.push({
           icon: 'times-circle',
           action: () => this.setStatus('CLOSED'),
-          text: 'Close Production',
+          text: 'Close Production'
         })
       }
       // Add action button based on status
@@ -338,27 +342,27 @@ export default {
         list.push({
           icon: 'user-check',
           action: () => this.setStatus('PENDING'),
-          text: 'Submit for Review',
+          text: 'Submit for Review'
         })
       }
 
       return list
-    },
+    }
   },
   methods: {
-    salesPercentage(performance) {
+    salesPercentage (performance) {
       return Math.floor(
         (100 * performance.ticketsBreakdown.totalTicketsSold) /
           performance.ticketsBreakdown.totalCapacity
       )
     },
     humanDuration,
-    async setStatus(status) {
+    async setStatus (status) {
       const swalArgs = {
         title: 'Are you sure?',
         text: `Are you sure you want to change the status to '${status}'`,
         showCancelButton: true,
-        showConfirmButton: true,
+        showConfirmButton: true
       }
       if (status === 'DRAFT' && this.production.status === 'PENDING') {
         swalArgs.input = 'text'
@@ -371,7 +375,7 @@ export default {
       }
 
       const { isConfirmed, value } = await swal.fire(swalArgs)
-      if (!isConfirmed) return
+      if (!isConfirmed) { return }
 
       try {
         await performMutation(
@@ -381,8 +385,8 @@ export default {
             variables: {
               id: this.production.id,
               message: value,
-              status,
-            },
+              status
+            }
           },
           'setProductionStatus'
         )
@@ -391,14 +395,14 @@ export default {
         swal.fire({
           title: 'There was an issue',
           html: errors.allErrors
-            .map((error) => `<p>${error.message}</p>`)
-            .join(''),
+            .map(error => `<p>${error.message}</p>`)
+            .join('')
         })
         return
       }
       await this.$nuxt.refresh()
       successToast.fire({ title: 'Status updated' })
-    },
-  },
+    }
+  }
 }
 </script>

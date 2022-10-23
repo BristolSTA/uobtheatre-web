@@ -1,5 +1,5 @@
 <template>
-  <img :src="imageUrl" />
+  <img :src="imageUrl">
 </template>
 
 <script>
@@ -9,13 +9,13 @@ export default {
   props: {
     imageObject: {
       required: true,
-      type: Object,
-    },
+      type: Object
+    }
   },
   computed: {
-    imageUrl() {
+    imageUrl () {
       return this.imageObject ? this.imageObject.url : PlaceholderImage
-    },
-  },
+    }
+  }
 }
 </script>

@@ -22,9 +22,9 @@ import SidebarItem from '../ui/Nav/SidebarItem.vue'
 export default {
   components: { Sidebar, SidebarItem },
   watch: {
-    $route() {
+    $route () {
       this.$emit('close')
-    },
-  },
+    }
+  }
 }
 </script>

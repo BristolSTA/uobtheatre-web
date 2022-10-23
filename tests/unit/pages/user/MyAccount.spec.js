@@ -1,16 +1,16 @@
 import { expect } from 'chai'
 
+import {
+  generateMountOptions,
+  mountWithRouterMock,
+  RouterLinkStub
+} from '../../helpers'
+import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
+import User from '../../fixtures/User'
 import BookingSummaryOverview from '@/components/booking/overview/BookingSummaryOverview.vue'
 import BookingsTable from '@/components/user/BookingsTable.vue'
 import UserDetails from '@/components/user/UserDetails.vue'
 import MyAccount from '@/pages/user/index'
-import {
-  generateMountOptions,
-  mountWithRouterMock,
-  RouterLinkStub,
-} from '../../helpers'
-import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
-import User from '../../fixtures/User'
 
 describe('My Account', () => {
   let myAccountComponent
@@ -20,8 +20,8 @@ describe('My Account', () => {
       MyAccount,
       generateMountOptions(['apollo'], {
         apollo: {
-          queryCallstack: [GenericApolloResponse('me', User())],
-        },
+          queryCallstack: [GenericApolloResponse('me', User())]
+        }
       })
     )
   })

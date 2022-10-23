@@ -26,7 +26,9 @@
           :performance="performance"
           @select="$emit('select-performance', performance)"
         >
-          <template #select-button>Select</template>
+          <template #select-button>
+            Select
+          </template>
         </performance-overview>
       </div>
     </div>
@@ -43,11 +45,11 @@ export default {
   props: {
     performances: {
       type: Array,
-      required: true,
-    },
+      required: true
+    }
   },
   computed: {
-    groupedPerformances() {
+    groupedPerformances () {
       return lo
         .chain(this.performances)
         .sortBy((performance) => {
@@ -57,7 +59,7 @@ export default {
           return humanDayTime(DateTime.fromISO(performance.start))
         })
         .value()
-    },
-  },
+    }
+  }
 }
 </script>

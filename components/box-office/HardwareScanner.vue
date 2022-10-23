@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h2 class="font-bold">Scan a Ticket</h2>
+    <h2 class="font-bold">
+      Scan a Ticket
+    </h2>
     <text-input
       ref="input"
       :value="value"
@@ -26,43 +28,42 @@
 </template>
 
 <script>
-import Ticket from '@/classes/Ticket'
 import TextInput from '../ui/TextInput.vue'
 import InvalidCodeNotification from './InvalidCodeNotification.vue'
+import Ticket from '@/classes/Ticket'
 export default {
   components: { TextInput, InvalidCodeNotification },
   props: {
     value: {
       default: null,
-      type: String,
-    },
+      type: String
+    }
   },
-  data() {
+  data () {
     return {
       placeholder: 'Scan a Ticket...',
       invalidCode: false,
-      focused: true,
+      focused: true
     }
   },
   watch: {
-    focused(newVal) {
-      if (newVal) this.placeholder = 'Scan a Ticket...'
-      else this.placeholder = 'Click here to scan'
+    focused (newVal) {
+      if (newVal) { this.placeholder = 'Scan a Ticket...' } else { this.placeholder = 'Click here to scan' }
     },
-    value() {
+    value () {
       this.invalidCode = false
     },
-    invalidCode(newVal) {
-      if (newVal) this.$emit('invalidCode')
-    },
+    invalidCode (newVal) {
+      if (newVal) { this.$emit('invalidCode') }
+    }
   },
-  mounted() {
+  mounted () {
     this.focus()
   },
   methods: {
-    handleScan($event) {
+    handleScan ($event) {
       const code = $event.target.value
-      if (!code) return
+      if (!code) { return }
       try {
         const { bookingReference, ticketId } = Ticket.dataFromQRCode(code)
         this.$emit('scanned', { bookingReference, ticketId })
@@ -74,12 +75,12 @@ export default {
               'The string to be decoded is not correctly encoded'
             ))
         this.invalidCode = true
-        if (!isAllowedSilentException) throw e
+        if (!isAllowedSilentException) { throw e }
       }
     },
-    focus() {
+    focus () {
       this.$refs.input.focus()
-    },
-  },
+    }
+  }
 }
 </script>

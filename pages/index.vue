@@ -7,7 +7,9 @@
         style="min-height: 50vh"
       >
         <div class="container px-4 text-white lg:w-2/3">
-          <div class="text-4xl">Welcome to {{ $appName }}</div>
+          <div class="text-4xl">
+            Welcome to {{ $appName }}
+          </div>
           <div class="text-2xl">
             The Home of Bristol Student Performing Arts
           </div>
@@ -23,7 +25,9 @@
               <div class="text-2xl">
                 {{ slotProps.carouselItem.text.society.name }}
               </div>
-              <div class="text-h1">{{ slotProps.carouselItem.text.name }}</div>
+              <div class="text-h1">
+                {{ slotProps.carouselItem.text.name }}
+              </div>
               <div class="text-2xl">
                 {{
                   displayStartEnd(
@@ -40,7 +44,9 @@
     </div>
 
     <div ref="whatson" class="container mt-4 text-white">
-      <h1 class="text-h1">What's On</h1>
+      <h1 class="text-h1">
+        What's On
+      </h1>
       <div
         v-for="(production, index) in upcomingProductionsToShow"
         :key="production.id"
@@ -90,7 +96,9 @@
         style="height: 30vh"
       >
         <div class="w-full">
-          <h2 class="text-h2">There are currently no upcoming productions</h2>
+          <h2 class="text-h2">
+            There are currently no upcoming productions
+          </h2>
           <p>Please be sure to check back soon!</p>
         </div>
       </div>
@@ -119,21 +127,21 @@ import ProductionFeaturedImage from '@/components/production/ProductionFeaturedI
 
 export default {
   components: { Carousel, ProductionFeaturedImage },
-  data() {
+  data () {
     return {
       upcomingProductions: [],
-      displayStartEnd,
+      displayStartEnd
     }
   },
-  head() {
+  head () {
     const appName = this.$appName
     return {
       title: `${appName} | The Home Of Bristol Student Performing Arts`,
-      titleTemplate: null,
+      titleTemplate: null
     }
   },
   computed: {
-    bannerProductions() {
+    bannerProductions () {
       return this.upcomingProductionsToShow
         .filter((production) => {
           return !!production.coverImage
@@ -147,32 +155,32 @@ export default {
               name: production.name,
               start: production.start,
               end: production.end,
-              society: production.society,
-            },
+              society: production.society
+            }
           }
         })
     },
-    upcomingProductionsToShow() {
+    upcomingProductionsToShow () {
       return lo.take(this.upcomingProductions, 4)
     },
-    enumTest() {
+    enumTest () {
       return new PayableStatusEnum('IN_PROGRESS')
-    },
+    }
   },
   methods: {
-    oneLiner,
+    oneLiner
   },
   apollo: {
     upcomingProductions: {
       query: require('@/graphql/queries/HomeUpcomingProductions.gql'),
-      update: (data) => data.productions.edges.map((edge) => edge.node),
-      variables() {
+      update: data => data.productions.edges.map(edge => edge.node),
+      variables () {
         return {
-          now: new Date(),
+          now: new Date()
         }
-      },
-    },
-  },
+      }
+    }
+  }
 }
 </script>
 

@@ -1,13 +1,13 @@
 // Copy and rename this file to <testname>.spec.js
 import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
+import lo from 'lodash'
+import FullBooking from '../../fixtures/instances/FullBooking'
 import TicketOptions from '@/components/booking/TicketOptions.vue'
 import SeatGroup from '@/components/booking/SeatGroup.vue'
 import Booking from '@/classes/Booking'
 import TicketsMatrix from '@/classes/TicketsMatrix'
 import Ticket from '@/classes/Ticket'
-import lo from 'lodash'
-import FullBooking from '../../fixtures/instances/FullBooking'
 
 describe('Ticket Options', () => {
   let component
@@ -15,8 +15,8 @@ describe('Ticket Options', () => {
     component = mount(TicketOptions, {
       propsData: {
         booking: Booking.fromAPIData(FullBooking()),
-        ticketMatrix: new TicketsMatrix(FullBooking().performance),
-      },
+        ticketMatrix: new TicketsMatrix(FullBooking().performance)
+      }
     })
   })
 
@@ -131,7 +131,7 @@ describe('Ticket Options', () => {
       new Ticket(
         FullBooking().performance.ticketOptions[0].seatGroup.id,
         FullBooking().performance.ticketOptions[0].concessionTypes[0].concessionType.id
-      ),
+      )
     ]
     await component
       .findComponent(SeatGroup)
@@ -151,8 +151,8 @@ describe('Ticket Options', () => {
     component = mount(TicketOptions, {
       propsData: {
         booking: component.vm.booking,
-        ticketMatrix: component.vm.ticketMatrix,
-      },
+        ticketMatrix: component.vm.ticketMatrix
+      }
     })
     expect(lo.debounce.mock.calls.length).to.eq(1)
     expect(lo.debounce.mock.calls[0][0]).to.eq(component.vm.requestUpdate)

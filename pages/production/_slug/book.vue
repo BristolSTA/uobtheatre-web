@@ -32,7 +32,7 @@
             >
               {{ currentStage.name }}
             </h1>
-            <div class="flex-1"></div>
+            <div class="flex-1" />
           </div>
           <div
             v-if="booking.raw && booking.raw.expiresAt"
@@ -70,6 +70,12 @@
 </template>
 
 <script>
+import gql from 'graphql-tag'
+import {
+  getNextStage,
+  getPreviousStage,
+  getStageIndex
+} from './book/-bookingStages'
 import Booking from '@/classes/Booking'
 import TicketsMatrix from '@/classes/TicketsMatrix'
 import BookingNavigation from '@/components/booking/BookingNavigation.vue'
@@ -80,22 +86,16 @@ import { swal } from '@/utils'
 
 import ProductionBasicInfoFragment from '@/graphql/fragments/production/ProductionBasicInfoFragment.gql'
 import ProductionPerformancesFragment from '@/graphql/fragments/production/ProductionPerformancesFragment.gql'
-import gql from 'graphql-tag'
 import TimeRemainingCountdown from '@/components/ui/Formatters/TimeRemainingCountdown.vue'
-import {
-  getNextStage,
-  getPreviousStage,
-  getStageIndex,
-} from './book/-bookingStages'
 export default {
   components: {
     BookingNavigation,
     ProductionBanner,
     ClickableLink,
-    TimeRemainingCountdown,
+    TimeRemainingCountdown
   },
-  async beforeRouteLeave(to, from, next) {
-    if (!this.booking.id || this.paid) return next()
+  async beforeRouteLeave (_, __, next) {
+    if (!this.booking.id || this.paid) { return next() }
 
     const { isDismissed } = await swal.fire({
       title: "You haven't finished your booking!",
@@ -104,23 +104,23 @@ export default {
       showCancelButton: true,
       confirmButtonText: 'Abandon Booking',
       confirmButtonColor: '#d94519',
-      cancelButtonText: 'Keep editing',
+      cancelButtonText: 'Keep editing'
     })
 
-    if (isDismissed) return next(false)
+    if (isDismissed) { return next(false) }
 
     // Delete their booking
     this.$apollo.mutate({
       mutation: DeleteBookingMutation,
       variables: {
-        bookingId: this.booking.id,
-      },
+        bookingId: this.booking.id
+      }
     })
 
     return next()
   },
   middleware: 'authed',
-  async asyncData({ params, app, error }) {
+  async asyncData ({ params, app, error }) {
     const { data } = await app.apolloProvider.defaultClient.query({
       query: gql`
         query production($slug: String!) {
@@ -133,52 +133,53 @@ export default {
         ${ProductionPerformancesFragment}
       `,
       variables: {
-        slug: params.slug,
-      },
+        slug: params.slug
+      }
     })
 
     const production = data.production
-    if (!production)
+    if (!production) {
       return error({
         statusCode: 404,
-        message: 'This production does not exist',
+        message: 'This production does not exist'
       })
+    }
     return {
-      production,
+      production
     }
   },
-  data() {
+  data () {
     return {
       booking: new Booking(),
       ticketMatrix: null,
       previousBooking: null,
       currentStage: null,
-      paid: false,
+      paid: false
     }
   },
-  head() {
+  head () {
     return {
       title: `Book ${this.production.name}`,
-      script: [{ src: this.$config.services.square.script, defer: true }],
+      script: [{ src: this.$config.services.square.script, defer: true }]
     }
   },
   computed: {
-    currentStageIndex() {
+    currentStageIndex () {
       return getStageIndex(this.currentStage)
     },
-    crumbs() {
+    crumbs () {
       return [
         { text: 'Whats On', path: '/productions' },
         {
           text: this.production.name,
-          path: `/production/${this.production.slug}`,
+          path: `/production/${this.production.slug}`
         },
-        { text: 'Book' },
+        { text: 'Book' }
       ]
-    },
+    }
   },
   methods: {
-    bookingExpired() {
+    bookingExpired () {
       const production = this.production
       this.loadDataForStage()
       this.booking = new Booking()
@@ -189,14 +190,14 @@ export default {
           confirmButtonText: 'Create a new booking',
           cancelButtonText: 'Return to home',
           showCancelButton: true,
-          showConfirmButton: true,
+          showConfirmButton: true
         })
-        .then(({ isConfirmed, isDismissed }) => {
-          if (isDismissed) return this.$router.push('/')
+        .then(({ isDismissed }) => {
+          if (isDismissed) { return this.$router.push('/') }
           return this.$router.push(`/production/${production.slug}/book`)
         })
     },
-    onChildMount() {
+    onChildMount () {
       this.currentStage = this.$refs.stageComponent.$options.stageInfo
 
       this.loadDataForStage()
@@ -207,18 +208,19 @@ export default {
         return this.gotoPreviousStage()
       }
     },
-    gotoPreviousStage() {
+    gotoPreviousStage () {
       this.navigateToStage(
         getPreviousStage(this.currentStageIndex, this.production, this.booking)
       )
     },
-    navigateToStage(stage = null, replace = false) {
-      if (!stage)
+    navigateToStage (stage = null, replace = false) {
+      if (!stage) {
         stage = getNextStage(
           this.currentStageIndex,
           this.production,
           this.booking
         )
+      }
 
       this.$router[replace ? 'replace' : 'push']({
         name: stage.stageInfo.routeName,
@@ -227,11 +229,11 @@ export default {
           slug: this.production.slug,
           performanceId: this.booking.performance
             ? this.booking.performance.id
-            : null,
-        },
+            : null
+        }
       })
     },
-    loadDataForStage() {
+    loadDataForStage () {
       if (this.$route.params.performanceId) {
         // Check if user already has a draft booking for this performance if not already
         if (this.previousBooking === null) {
@@ -239,9 +241,9 @@ export default {
             .query({
               query: require('@/graphql/queries/DraftBookingForPerformance.gql'),
               variables: {
-                performanceID: this.$route.params.performanceId,
+                performanceID: this.$route.params.performanceId
               },
-              fetchPolicy: 'no-cache',
+              fetchPolicy: 'no-cache'
             })
             .then(({ data }) => {
               this.previousBooking = data.me.bookings.edges.length
@@ -255,7 +257,7 @@ export default {
                     text: 'You previously started a booking for this performance. Would you like to resume it?',
                     showCancelButton: true,
                     confirmButtonText: 'Resume',
-                    cancelButtonText: 'No, start fresh',
+                    cancelButtonText: 'No, start fresh'
                   })
                   .then((result) => {
                     if (result.isConfirmed) {
@@ -268,9 +270,9 @@ export default {
 
         if (!this.booking.performance) {
           this.booking.performance = this.production.performances.edges
-            .map((edge) => edge.node)
+            .map(edge => edge.node)
             .find(
-              (performance) =>
+              performance =>
                 performance.id === this.$route.params.performanceId
             )
         }
@@ -280,8 +282,8 @@ export default {
             .query({
               query: require('@/graphql/queries/PerformanceTicketOptions.gql'),
               variables: {
-                id: this.booking.performance.id,
-              },
+                id: this.booking.performance.id
+              }
             })
             .then((result) => {
               this.ticketMatrix = new TicketsMatrix(result.data.performance)
@@ -289,12 +291,12 @@ export default {
         }
       }
     },
-    onSelectPerformance(performance) {
+    onSelectPerformance (performance) {
       this.booking.performance = performance
       this.booking.tickets = []
       this.ticketMatrix = null
       this.navigateToStage()
-    },
-  },
+    }
+  }
 }
 </script>

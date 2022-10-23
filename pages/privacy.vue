@@ -1,6 +1,8 @@
 <template>
   <div class="text-page container mx-auto">
-    <h1 class="my-4 text-h1">Privacy Policy</h1>
+    <h1 class="my-4 text-h1">
+      Privacy Policy
+    </h1>
     <p>
       It is our policy to respect your privacy regarding any information we may
       collect during your use of this website. Accordingly, we have developed
@@ -17,12 +19,20 @@
       data we collect, along with its purpose (our legitimate interest).
     </p>
     <div v-for="section in collectedData" :key="section.title" class="mb-6">
-      <h3 class="text-xl">{{ section.title }}</h3>
+      <h3 class="text-xl">
+        {{ section.title }}
+      </h3>
       <table class="w-full">
         <thead>
-          <table-head-item :text-left="false">Purpose</table-head-item>
-          <table-head-item :text-left="false">Legal Basis</table-head-item>
-          <table-head-item :text-left="false">Collected Data</table-head-item>
+          <table-head-item :text-left="false">
+            Purpose
+          </table-head-item>
+          <table-head-item :text-left="false">
+            Legal Basis
+          </table-head-item>
+          <table-head-item :text-left="false">
+            Collected Data
+          </table-head-item>
         </thead>
         <tbody>
           <table-row v-for="(row, index) in section.items" :key="index">
@@ -49,8 +59,7 @@
       <a
         href="https://squareup.com/gb/en/legal/general/ua"
         class="text-sta-orange hover:text-sta-orange"
-        >https://squareup.com/gb/en/legal/general/ua</a
-      >.
+      >https://squareup.com/gb/en/legal/general/ua</a>.
     </p>
     <h2>2. What we do with your data</h2>
     <p>
@@ -149,7 +158,9 @@
     </p>
     <ul class="ml-4 list-disc">
       <li>
-        <h3 class="text-lg">Google</h3>
+        <h3 class="text-lg">
+          Google
+        </h3>
         <p>
           Collect and provide aggregated data on site performance, user
           profiles, behaviour and other analytical data
@@ -158,11 +169,12 @@
           href="https://policies.google.com/privacy"
           target="_blank"
           class="text-sta-orange hover:text-sta-orange-dark transition-colors"
-          >Privacy Policy</a
-        >
+        >Privacy Policy</a>
       </li>
       <li>
-        <h3 class="text-lg">Squareup International</h3>
+        <h3 class="text-lg">
+          Squareup International
+        </h3>
         <p>
           Collect payment information and create payment charges for non-cash
           payment methods.
@@ -171,8 +183,7 @@
           href="https://squareup.com/gb/en/legal/general/ua"
           target="_blank"
           class="text-sta-orange hover:text-sta-orange-dark transition-colors"
-          >Privacy Policy</a
-        >
+        >Privacy Policy</a>
       </li>
     </ul>
     <h2>7. Links to Other Web Sites</h2>
@@ -235,7 +246,7 @@ import TableRow from '@/components/ui/Tables/TableRow.vue'
 import TableRowItem from '@/components/ui/Tables/TableRowItem.vue'
 export default {
   components: { TableRowItem, TableRow, TableHeadItem },
-  data() {
+  data () {
     return {
       collectedData: [
         {
@@ -245,14 +256,14 @@ export default {
               purpose:
                 'Provision of a personalised experience and to enable us to provide a better service (e.g. fetching your tickets by taking your name, instead of a booking reference)',
               basis: 'Legitimate interests',
-              data: ['Full Name'],
+              data: ['Full Name']
             },
             {
               purpose: 'Password reset functionality',
               basis: 'Legitimate interests',
-              data: ['Email Address'],
-            },
-          ],
+              data: ['Email Address']
+            }
+          ]
         },
         {
           title: 'Tickets and Bookings',
@@ -260,22 +271,22 @@ export default {
             {
               purpose: 'Provision of payment receipt, and booking confirmation',
               basis: 'Legitimate interests',
-              data: ['Email Address'],
+              data: ['Email Address']
             },
             {
               purpose:
                 'Operational statistics to indicate the number of remaining tickets to be checked in or collected',
               basis: 'Legitimate interests',
-              data: ['Ticket Check In State'],
-            },
-          ],
-        },
-      ],
+              data: ['Ticket Check In State']
+            }
+          ]
+        }
+      ]
     }
   },
   head: {
-    title: `Privacy Policy`,
-  },
+    title: 'Privacy Policy'
+  }
 }
 </script>
 

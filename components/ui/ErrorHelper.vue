@@ -14,12 +14,12 @@ export default {
     errors: {
       required: false,
       default: null,
-      type: Errors,
+      type: Errors
     },
     fieldName: {
       required: true,
-      type: String,
-    },
-  },
+      type: String
+    }
+  }
 }
 </script>

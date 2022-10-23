@@ -23,13 +23,13 @@ export default (overrides = {}, includePerformance = false) => {
       minSeatPrice: 120,
       isBookable: true,
       coverImage: {
-        url: 'http://pathto.example/cover-image.png',
+        url: 'http://pathto.example/cover-image.png'
       },
       posterImage: {
-        url: 'http://pathto.example/poster-image.png',
+        url: 'http://pathto.example/poster-image.png'
       },
       featuredImage: {
-        url: 'http://pathto.example/featured-image.png',
+        url: 'http://pathto.example/featured-image.png'
       },
       cast: [CastMember()],
       crew: [CrewMember()],
@@ -38,11 +38,11 @@ export default (overrides = {}, includePerformance = false) => {
       society: Society(),
       contentWarnings: [
         { warning: { shortDescription: 'Strobe Lighting' } },
-        { warning: { shortDescription: 'Nudity' } },
+        { warning: { shortDescription: 'Nudity' } }
       ],
       performances: includePerformance
         ? GenericNodeConnection([Performance()])
-        : GenericNodeConnection(),
+        : GenericNodeConnection()
     },
     overrides
   )

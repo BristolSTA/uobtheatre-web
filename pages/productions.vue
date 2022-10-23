@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <h1 class="py-4 text-h1">Whats On</h1>
+    <h1 class="py-4 text-h1">
+      Whats On
+    </h1>
     <infinite-scroll
       :apollo-query="require('@/graphql/queries/UpcomingProductions.gql')"
       :apollo-variables="{ now: new Date() }"
@@ -24,7 +26,9 @@
       style="height: 30vh"
     >
       <div class="w-full">
-        <h2 class="text-h2">There are currently no upcoming productions</h2>
+        <h2 class="text-h2">
+          There are currently no upcoming productions
+        </h2>
         <p>Please be sure to check back soon!</p>
       </div>
     </div>
@@ -36,19 +40,19 @@ import ProductionTile from '@/components/production/ProductionTile.vue'
 import InfiniteScroll from '@/components/ui/InfiniteScroll.vue'
 export default {
   components: { ProductionTile, InfiniteScroll },
-  data() {
+  data () {
     return {
-      productions: null,
+      productions: null
     }
   },
   head: {
-    title: 'Upcoming Productions',
+    title: 'Upcoming Productions'
   },
   methods: {
-    handleNewData(data) {
-      if (!this.productions) this.productions = []
-      this.productions.push(...data.edges.map((edge) => edge.node))
-    },
-  },
+    handleNewData (data) {
+      if (!this.productions) { this.productions = [] }
+      this.productions.push(...data.edges.map(edge => edge.node))
+    }
+  }
 }
 </script>

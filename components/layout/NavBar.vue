@@ -142,42 +142,41 @@
 </template>
 
 <script>
-import ClickableLink from '@/components/ui/ClickableLink.vue'
-import { authService } from '@/services'
-
 import DropdownItem from './DropdownItem.vue'
 import DropdownNavItem from './DropdownNavItem.vue'
+import ClickableLink from '@/components/ui/ClickableLink.vue'
+import { authService } from '@/services'
 
 export default {
   components: {
     ClickableLink,
     DropdownNavItem,
-    DropdownItem,
+    DropdownItem
   },
-  data() {
+  data () {
     return {
       navItems: [
         [{ path: '/productions' }, 'Whats On'],
-        [{ path: '/societies' }, 'Societies'],
+        [{ path: '/societies' }, 'Societies']
       ],
       open: false,
-      authService,
+      authService
     }
   },
   watch: {
-    $route() {
+    $route () {
       this.open = false
-    },
+    }
   },
   methods: {
-    onLogout() {
+    onLogout () {
       this.$auth().logout()
       this.$router.push('/')
     },
-    closeUserMenu() {
-      if (this.$refs['user-dropdown']) this.$refs['user-dropdown'].hideMenu()
-    },
-  },
+    closeUserMenu () {
+      if (this.$refs['user-dropdown']) { this.$refs['user-dropdown'].hideMenu() }
+    }
+  }
 }
 </script>
 

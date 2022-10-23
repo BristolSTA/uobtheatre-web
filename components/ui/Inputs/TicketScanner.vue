@@ -42,7 +42,9 @@
             Switch to Camera-based Scanner
           </div>
         </div>
-        <template v-if="showCamera">Switch to Hardware-based Scanner</template>
+        <template v-if="showCamera">
+          Switch to Hardware-based Scanner
+        </template>
       </button>
     </div>
   </div>
@@ -58,27 +60,27 @@ export default {
     CameraCheckIn,
     HardwareScannerCheckIn,
     CameraScanner,
-    HardwareScanner,
+    HardwareScanner
   },
   props: {
     checkInMode: {
       default: false,
-      type: Boolean,
+      type: Boolean
     },
     performanceId: {
       default: null,
-      type: [Number, String],
-    },
-  },
-  data() {
-    return {
-      showCamera: false,
+      type: [Number, String]
     }
   },
-  mounted() {
+  data () {
+    return {
+      showCamera: false
+    }
+  },
+  mounted () {
     if (this.checkInMode && !this.performanceId) {
       throw new Error('Performance ID must be supplied in check in mode')
     }
-  },
+  }
 }
 </script>

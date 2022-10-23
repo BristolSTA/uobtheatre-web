@@ -24,7 +24,9 @@
               First Name
             </th>
             <td class="pb-2">
-              <p v-if="!editing">{{ user.firstName }}</p>
+              <p v-if="!editing">
+                {{ user.firstName }}
+              </p>
               <text-input
                 v-else
                 v-model="firstName"
@@ -37,9 +39,13 @@
             </td>
           </tr>
           <tr class="pb-4">
-            <th class="pb-2 pr-6 text-sta-orange">Last Name</th>
+            <th class="pb-2 pr-6 text-sta-orange">
+              Last Name
+            </th>
             <td class="pb-2">
-              <p v-if="!editing">{{ user.lastName }}</p>
+              <p v-if="!editing">
+                {{ user.lastName }}
+              </p>
               <text-input
                 v-else
                 v-model="lastName"
@@ -52,9 +58,13 @@
             </td>
           </tr>
           <tr class="pb-4">
-            <th class="pb-2 pr-6 text-sta-orange">Email</th>
+            <th class="pb-2 pr-6 text-sta-orange">
+              Email
+            </th>
             <td class="pb-2">
-              <p v-if="!editing" class="break-all">{{ user.email }}</p>
+              <p v-if="!editing" class="break-all">
+                {{ user.email }}
+              </p>
               <button
                 v-else
                 class="btn btn-orange btn-outline px-2 py-1"
@@ -66,9 +76,13 @@
             </td>
           </tr>
           <tr>
-            <th class="pb-2 pr-6 text-sta-orange">Password</th>
+            <th class="pb-2 pr-6 text-sta-orange">
+              Password
+            </th>
             <td class="pb-2">
-              <template v-if="!editing">************</template>
+              <template v-if="!editing">
+                ************
+              </template>
               <button
                 v-else
                 class="btn btn-orange btn-outline px-2 py-1"
@@ -82,7 +96,9 @@
         </table>
         <div v-if="editing" class="m-4 text-center">
           <non-field-error class="pb-2" :errors="errors" />
-          <button class="btn btn-green mr-2">Save Details</button>
+          <button class="btn btn-green mr-2">
+            Save Details
+          </button>
           <button
             class="btn btn-orange"
             @click.prevent="editToggle"
@@ -92,7 +108,7 @@
           </button>
           <p class="mt-2">
             Want to delete your account? Get in touch at
-            <span v-html="$config.application.support_email"></span>
+            <span v-html="$config.application.support_email" />
           </p>
         </div>
       </form>

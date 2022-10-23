@@ -1,18 +1,17 @@
 import { expect } from 'chai'
 
-import { authService } from '@/services'
-import { swal, swalToast } from '@/utils'
-import ForgotPassword from '@/pages/login/forgot/index.vue'
-
 import {
   generateApolloMock,
   generateMountOptions,
-  mountWithRouterMock,
+  mountWithRouterMock
 } from '../../helpers'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse'
 import GenericErrorsResponse from '../../fixtures/support/GenericErrorsResponse'
 import GenericError from '../../fixtures/support/GenericError'
+import ForgotPassword from '@/pages/login/forgot/index.vue'
+import { swal, swalToast } from '@/utils'
+import { authService } from '@/services'
 
 describe('Forgot Password', function () {
   let forgotPasswordComponent
@@ -30,17 +29,17 @@ describe('Forgot Password', function () {
         generateMountOptions(['apollo'], {
           mocks: {
             $route: {
-              query: {},
-            },
+              query: {}
+            }
           },
           apollo: {
             mutationCallstack: [
               GenericApolloResponse(
                 'sendPasswordResetEmail',
                 GenericMutationResponse()
-              ),
-            ],
-          },
+              )
+            ]
+          }
         })
       )
     })
@@ -66,7 +65,7 @@ describe('Forgot Password', function () {
 
       expect(authService.requestPasswordReset.mock.calls).length(1)
       expect(authService.requestPasswordReset.mock.calls[0][1]).to.include({
-        email: 'joe.bloggs@example.org',
+        email: 'joe.bloggs@example.org'
       })
       expect(swalStub.mock.calls).length(1)
     })
@@ -80,9 +79,9 @@ describe('Forgot Password', function () {
           mocks: {
             $route: {
               query: {
-                resetToken: '123',
-              },
-            },
+                resetToken: '123'
+              }
+            }
           },
           apollo: {
             mutationCallstack: [
@@ -91,9 +90,9 @@ describe('Forgot Password', function () {
                 GenericErrorsResponse(
                   GenericError('Invalid Password Reset Token')
                 )
-              ),
-            ],
-          },
+              )
+            ]
+          }
         })
       )
     })
@@ -127,13 +126,13 @@ describe('Forgot Password', function () {
         generateMountOptions(['apollo'], {
           mocks: {
             $router: {
-              push: (routerPushFake = jest.fn()),
+              push: (routerPushFake = jest.fn())
             },
             $route: {
               query: {
-                resetToken: '1234abcd',
-              },
-            },
+                resetToken: '1234abcd'
+              }
+            }
           },
           apollo: {
             mutationCallstack: [
@@ -142,9 +141,9 @@ describe('Forgot Password', function () {
                 GenericErrorsResponse(
                   GenericError('Your confirmed password does not match!')
                 )
-              ),
-            ],
-          },
+              )
+            ]
+          }
         })
       )
     })
@@ -171,8 +170,8 @@ describe('Forgot Password', function () {
 
       forgotPasswordComponent.vm.$apollo = generateApolloMock({
         mutationCallstack: [
-          GenericApolloResponse('passwordReset', GenericMutationResponse()),
-        ],
+          GenericApolloResponse('passwordReset', GenericMutationResponse())
+        ]
       })
 
       await forgotPasswordComponent
@@ -192,7 +191,7 @@ describe('Forgot Password', function () {
       expect(authService.resetPassword.mock.calls[0][1]).to.include({
         token: '1234abcd',
         password: 'example1234',
-        confirmedPassword: 'example1234',
+        confirmedPassword: 'example1234'
       })
       expect(swalToastStub.mock.calls).length(1)
       expect(routerPushFake.mock.calls).length(1)

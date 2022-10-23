@@ -17,12 +17,12 @@ export default {
   props: {
     performance: {
       required: true,
-      type: Object,
+      type: Object
     },
     production: {
       required: true,
-      type: Object,
-    },
-  },
+      type: Object
+    }
+  }
 }
 </script>

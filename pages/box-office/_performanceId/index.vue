@@ -19,17 +19,17 @@ export default {
   props: {
     performance: {
       required: true,
-      type: Object,
-    },
+      type: Object
+    }
   },
 
-  head() {
+  head () {
     return {
-      title: `${this.performance.production.name} Box Office`,
+      title: `${this.performance.production.name} Box Office`
     }
   },
   computed: {
-    crumbs() {
+    crumbs () {
       return [
         { text: 'Box Office', path: '/box-office' },
         {
@@ -38,10 +38,10 @@ export default {
           } on ${this.$options.filters.dateFormat(
             this.performance.start,
             'ccc dd MMM T'
-          )}`,
-        },
+          )}`
+        }
       ]
-    },
-  },
+    }
+  }
 }
 </script>

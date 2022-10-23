@@ -1,7 +1,9 @@
 <template>
   <div class="min-h-full text-white bg-sta-gray">
     <div class="container">
-      <h1 class="py-4 text-h1">Societies</h1>
+      <h1 class="py-4 text-h1">
+        Societies
+      </h1>
       <infinite-scroll
         :apollo-query="require('@/graphql/queries/AllSocieties.gql')"
         @newData="handleNewData"
@@ -20,7 +22,9 @@
         style="height: 30vh"
       >
         <div class="w-full">
-          <h2 class="text-h2">There are currently no societies</h2>
+          <h2 class="text-h2">
+            There are currently no societies
+          </h2>
           <p>Please be sure to check back soon!</p>
         </div>
       </div>
@@ -33,19 +37,19 @@ import SocietyTile from '@/components/society/SocietyTile.vue'
 import InfiniteScroll from '@/components/ui/InfiniteScroll.vue'
 export default {
   components: { SocietyTile, InfiniteScroll },
-  data() {
+  data () {
     return {
-      societies: null,
+      societies: null
     }
   },
   head: {
-    title: 'Societies',
+    title: 'Societies'
   },
   methods: {
-    handleNewData(data) {
-      if (!this.societies) this.societies = []
-      this.societies.push(...data.edges.map((edge) => edge.node))
-    },
-  },
+    handleNewData (data) {
+      if (!this.societies) { this.societies = [] }
+      this.societies.push(...data.edges.map(edge => edge.node))
+    }
+  }
 }
 </script>

@@ -1,11 +1,11 @@
 import { expect } from 'chai'
 
+import { fixTextSpacing, mountWithRouterMock } from '../../../helpers'
 import Booking from '@/classes/Booking'
 import BookingPriceOverview from '@/components/booking/overview/BookingPriceOverview.vue'
 import OverviewBox from '@/components/ui/Card.vue'
 
 import FullBooking from '@/tests/unit/fixtures/instances/FullBooking'
-import { fixTextSpacing, mountWithRouterMock } from '../../../helpers'
 
 describe('Booking Price Overview', function () {
   let bookingPriceOverviewComponent
@@ -18,8 +18,8 @@ describe('Booking Price Overview', function () {
       BookingPriceOverview,
       {
         propsData: {
-          booking,
-        },
+          booking
+        }
       }
     )
   })

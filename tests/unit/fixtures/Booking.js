@@ -16,7 +16,7 @@ export default (overrides = {}) => {
       status: 'PAID',
       tickets: [Ticket()],
       priceBreakdown: PriceBreakdown(),
-      transactions: GenericNodeConnection([Payment()]),
+      transactions: GenericNodeConnection([Payment()])
     },
     overrides
   )

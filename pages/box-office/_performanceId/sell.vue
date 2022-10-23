@@ -27,21 +27,22 @@ import Overview from '@/components/box-office/Overview.vue'
 export default {
   components: { Overview },
   middleware: 'authed',
-  async asyncData({ params, app, error, store }) {
+  async asyncData ({ params, app, error }) {
     const { data } = await app.apolloProvider.defaultClient.query({
       query: FullPerformanceAndTicketOptions,
       variables: {
-        id: params.performanceId,
+        id: params.performanceId
       },
-      fetchPolicy: 'no-cache',
+      fetchPolicy: 'no-cache'
     })
 
     const performance = data.performance
-    if (!performance)
+    if (!performance) {
       return error({
         statusCode: 404,
-        message: 'This performance does not exist',
+        message: 'This performance does not exist'
       })
+    }
 
     const ticketMatrix = new TicketsMatrix(performance)
 
@@ -51,19 +52,19 @@ export default {
     return {
       ticketMatrix,
       performance,
-      booking,
+      booking
     }
   },
-  data() {
+  data () {
     return {
-      booking: null,
+      booking: null
     }
   },
   computed: {
-    inProgressID() {
+    inProgressID () {
       return this.$store.state['box-office'].inProgressBookingID
     },
-    crumbs() {
+    crumbs () {
       return [
         { text: 'Box Office', path: '/box-office' },
         {
@@ -73,36 +74,35 @@ export default {
             this.performance.start,
             'ccc dd MMM T'
           )}`,
-          path: `/box-office/${this.performance.id}`,
+          path: `/box-office/${this.performance.id}`
         },
         {
-          text: 'Sell Tickets',
-        },
+          text: 'Sell Tickets'
+        }
       ]
-    },
+    }
   },
   watch: {
-    inProgressID(newVal) {
-      if (newVal) this.loadExistingBookingData()
-      else {
+    inProgressID (newVal) {
+      if (newVal) { this.loadExistingBookingData() } else {
         this.booking = new Booking()
         this.booking.performance = this.performance
       }
-    },
+    }
   },
-  mounted() {
+  mounted () {
     this.loadExistingBookingData()
   },
   methods: {
-    async loadExistingBookingData() {
-      if (!this.inProgressID) return
+    async loadExistingBookingData () {
+      if (!this.inProgressID) { return }
       const { data } = await this.$apollo.query({
         query: BoxOfficePerformanceBooking,
         variables: {
           performanceId: this.performance.id,
-          bookingId: this.inProgressID,
+          bookingId: this.inProgressID
         },
-        fetchPolicy: 'no-cache',
+        fetchPolicy: 'no-cache'
       })
       if (
         data.performance.bookings.edges.length &&
@@ -115,10 +115,10 @@ export default {
         this.$store.commit('box-office/SET_IN_PROGRESS_BOOKING_ID', null)
       }
     },
-    onNextStage() {
+    onNextStage () {
       this.detailed = false
       this.$router.push(`/box-office/${this.performance.id}/sell/pay`)
-    },
-  },
+    }
+  }
 }
 </script>

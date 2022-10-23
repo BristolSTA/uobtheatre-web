@@ -2,9 +2,8 @@ import { createLocalVue, mount } from '@vue/test-utils'
 import { expect } from 'chai'
 import Vuex from 'vuex'
 
-import UserOverview from '@/components/booking/overview/UserOverview.vue'
-
 import { fixTextSpacing } from '../../../helpers'
+import UserOverview from '@/components/booking/overview/UserOverview.vue'
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
@@ -14,10 +13,10 @@ const store = new Vuex.Store({
       user: {
         firstName: 'Joe',
         lastName: 'Bloggs',
-        email: 'joe.bloggs@example.org',
-      },
-    },
-  },
+        email: 'joe.bloggs@example.org'
+      }
+    }
+  }
 })
 
 describe('User Overview', () => {
@@ -25,7 +24,7 @@ describe('User Overview', () => {
   beforeEach(() => {
     userOverviewComponent = mount(UserOverview, {
       store,
-      localVue,
+      localVue
     })
   })
 

@@ -22,10 +22,10 @@ describe('Booking Navigation', () => {
         propsData: {
           currentStageIndex: 0,
           production: {
-            warnings: ['Generic Warning Here'],
+            warnings: ['Generic Warning Here']
           },
-          booking,
-        },
+          booking
+        }
       })
     })
 
@@ -48,7 +48,7 @@ describe('Booking Navigation', () => {
 
       await navigationComponent.setProps({
         currentStageIndex: 1,
-        maxAllowedStageIndex: 1,
+        maxAllowedStageIndex: 1
       })
 
       expect(
@@ -65,7 +65,7 @@ describe('Booking Navigation', () => {
     it('correctly disables buttons', async () => {
       await navigationComponent.setProps({
         currentStageIndex: Math.round(Stages.length / 2),
-        maxAllowedStageIndex: Math.round(Stages.length / 2),
+        maxAllowedStageIndex: Math.round(Stages.length / 2)
       })
 
       jest.spyOn(navigationComponent.vm, 'onSelectStage')
@@ -109,7 +109,7 @@ describe('Booking Navigation', () => {
     it('emits event when valid navigation block clicked', async () => {
       await navigationComponent.setProps({
         currentStageIndex: 1,
-        maxAllowedStageIndex: 1,
+        maxAllowedStageIndex: 1
       })
       await navigationComponent.findAll('button').at(0).trigger('click')
       expect(navigationComponent.emitted()['goto-stage'].length).to.eq(1)
@@ -138,10 +138,10 @@ describe('Booking Navigation', () => {
           currentStageIndex: 0,
           maxAllowedStageIndex: 0,
           production: {
-            warnings: ['Generic Warning Here'],
+            warnings: ['Generic Warning Here']
           },
-          booking: new Booking(),
-        },
+          booking: new Booking()
+        }
       })
     })
 

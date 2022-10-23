@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <h2 class="text-h2">Booking Tickets</h2>
+    <h2 class="text-h2">
+      Booking Tickets
+    </h2>
     <nuxt-link
       class="
         btn
@@ -12,8 +14,9 @@
         mb-2
       "
       to="./"
-      >View Full Booking</nuxt-link
     >
+      View Full Booking
+    </nuxt-link>
 
     <div
       class="
@@ -44,25 +47,25 @@ import TicketClass from '@/classes/Ticket'
 import Ticket from '@/components/booking/Ticket.vue'
 export default {
   components: { Ticket },
-  async asyncData({ app, params, error, query, redirect }) {
-    if (!query.ticketID || !query.performanceID) return redirect('./')
+  async asyncData ({ app, params, query, redirect }) {
+    if (!query.ticketID || !query.performanceID) { return redirect('./') }
     const { data } = await app.apolloProvider.defaultClient.query({
       query: require('@/graphql/queries/performance/PerformanceById.gql'),
       variables: {
-        id: query.performanceID,
-      },
+        id: query.performanceID
+      }
     })
 
-    if (!data.performance) return redirect('./')
+    if (!data.performance) { return redirect('./') }
     const tickets = (
       Array.isArray(query.ticketID) ? query.ticketID : [query.ticketID]
-    ).map((ticketID) => new TicketClass(null, null, ticketID))
+    ).map(ticketID => new TicketClass(null, null, ticketID))
 
     return {
       performance: data.performance,
       reference: params.reference,
-      tickets,
+      tickets
     }
-  },
+  }
 }
 </script>

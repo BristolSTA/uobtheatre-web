@@ -1,9 +1,8 @@
 import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
 
-import SocietyTile from '@/components/society/SocietyTile.vue'
-
 import { generateMountOptions, RouterLinkStub } from '../../helpers'
+import SocietyTile from '@/components/society/SocietyTile.vue'
 
 describe('Society Tile', () => {
   let societyTileComponent
@@ -16,10 +15,10 @@ describe('Society Tile', () => {
             name: 'Dramsoc',
             slug: 'dramsoc',
             logo: {
-              url: 'example.org/logo.png',
-            },
-          },
-        },
+              url: 'example.org/logo.png'
+            }
+          }
+        }
       })
     )
   })

@@ -22,7 +22,7 @@
       @click.stop="open = !open"
       @keypress.stop="open = !open"
     >
-      <slot></slot>
+      <slot />
       <svg
         fill="currentColor"
         viewBox="0 0 20 20"
@@ -60,7 +60,7 @@
         @click.stop
       >
         <div class="px-2 py-2 bg-white rounded-md shadow-lg">
-          <slot name="content" :open="open"></slot>
+          <slot name="content" :open="open" />
         </div>
       </div>
     </transition>
@@ -69,26 +69,26 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
-      open: false,
+      open: false
     }
   },
   watch: {
-    $route() {
+    $route () {
       this.open = false
-    },
+    }
   },
-  mounted() {
+  mounted () {
     document.addEventListener('click', this.hideMenu)
   },
-  destroyed() {
+  destroyed () {
     document.removeEventListener('click', this.hideMenu)
   },
   methods: {
-    hideMenu() {
+    hideMenu () {
       this.open = false
-    },
-  },
+    }
+  }
 }
 </script>

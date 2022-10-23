@@ -15,8 +15,8 @@ describe('Performance Overview', function () {
     performanceOverviewComponent = mount(PerformanceOverview, {
       propsData: {
         production: Production(),
-        performance: Performance(),
-      },
+        performance: Performance()
+      }
     })
   })
 
@@ -40,7 +40,7 @@ describe('Performance Overview', function () {
     })
     it.each([null, 10])('shows interval length when able', async (duration) => {
       await performanceOverviewComponent.setProps({
-        performance: Performance({ intervalDurationMins: duration }),
+        performance: Performance({ intervalDurationMins: duration })
       })
 
       expect(fixTextSpacing(performanceOverviewComponent.text())).to.contain(

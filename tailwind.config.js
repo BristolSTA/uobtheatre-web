@@ -1,15 +1,15 @@
 module.exports = {
   future: {
-    removeDeprecatedGapUtilities: true,
+    removeDeprecatedGapUtilities: true
     // purgeLayersByDefault: true,
   },
   purge: {
-    content: ['node_modules/vue-tailwind/dist/*.js'],
+    content: ['node_modules/vue-tailwind/dist/*.js']
   },
   theme: {
     fontFamily: {
       body: ['Montserrat', 'sans-serif'],
-      mono: ['"Roboto Mono"', 'monospace'],
+      mono: ['"Roboto Mono"', 'monospace']
     },
     container: {
       center: true,
@@ -17,8 +17,8 @@ module.exports = {
         DEFAULT: '1rem',
         sm: '2rem',
         lg: '4rem',
-        xl: '5rem',
-      },
+        xl: '5rem'
+      }
     },
     extend: {
       colors: {
@@ -27,27 +27,27 @@ module.exports = {
           dark: '#23272A',
           light: '#3D434E',
           lighter: '#908e89',
-          lightest: '#cecdca',
+          lightest: '#cecdca'
         },
         'sta-rouge': {
           DEFAULT: '#FF6978',
-          dark: '#CC3645',
+          dark: '#CC3645'
         },
         'sta-green': {
           DEFAULT: '#4B8F8C',
-          dark: '#185C59',
+          dark: '#185C59'
         },
         'sta-orange': {
           DEFAULT: '#FF9F1C',
           dark: '#CC6C00',
-          light: '#ffb833',
+          light: '#ffb833'
         },
         'sta-gold': {
-          DEFAULT: '#FDAE39',
-        },
+          DEFAULT: '#FDAE39'
+        }
       },
       opacity: {
-        40: '0.4',
+        40: '0.4'
       },
       fontSize: {
         h1: '2.5rem',
@@ -57,30 +57,30 @@ module.exports = {
         rxl: '8vw',
         rlg: '5vw',
         rmd: '3vw',
-        rsm: '2vw',
+        rsm: '2vw'
       },
       minWidth: {
         '1/2': '50%',
-        '1/3': '33%',
+        '1/3': '33%'
       },
       width: {
-        '1/3-screen': '33vw',
+        '1/3-screen': '33vw'
       },
       minHeight: {
         '25vh': '25vh',
-        '40vh': '40vh',
+        '40vh': '40vh'
       },
       dropShadow: {
-        dark: '0 2px 4px rgba(0, 0, 0, 0.35)',
-      },
-    },
+        dark: '0 2px 4px rgba(0, 0, 0, 0.35)'
+      }
+    }
   },
   variants: {
     extend: {
       backgroundColor: ['checked', 'odd', 'even'],
       flexDirection: ['odd'],
-      dropShadow: ['hover'],
-    },
+      dropShadow: ['hover']
+    }
   },
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [require('@tailwindcss/forms')]
 }

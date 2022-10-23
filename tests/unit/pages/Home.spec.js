@@ -1,15 +1,14 @@
 import { RouterLinkStub } from '@vue/test-utils'
 import { expect } from 'chai'
 
-import Carousel from '@/components/ui/Carousel.vue'
-import Home from '@/pages/index.vue'
-
 import {
   fixTextSpacing,
   generateMountOptions,
-  mountWithRouterMock,
+  mountWithRouterMock
 } from '../helpers'
 import Production from '../fixtures/Production'
+import Carousel from '@/components/ui/Carousel.vue'
+import Home from '@/pages/index.vue'
 
 describe('Home', function () {
   let homepageComponent
@@ -36,9 +35,9 @@ describe('Home', function () {
 
     it('shows fallback with no featured production with image', async () => {
       homepageComponent = await mountWithRouterMock(Home, {
-        data() {
+        data () {
           return { upcomingProductions: [Production({ coverImage: null })] }
-        },
+        }
       })
 
       expect(fixTextSpacing(homepageComponent.text())).to.contain(
@@ -90,7 +89,7 @@ describe('Home', function () {
 
       const whatsOnProductions = homepageComponent
         .findComponent({
-          ref: 'whatson',
+          ref: 'whatson'
         })
         .findAll('.production-feature')
 
@@ -129,22 +128,22 @@ describe('Home', function () {
     homepageComponent = await mountWithRouterMock(
       Home,
       generateMountOptions(['apollo'], {
-        data() {
+        data () {
           return {
             upcomingProductions: [
               // Seed a production that can't be featured (no cover photo)
               Production({
                 coverImage: null,
                 start: '2020-11-13',
-                end: '2020-11-13',
+                end: '2020-11-13'
               }),
               // Seed a production that can be featured
               Production({ id: 2, start: '2020-11-14', end: '2020-11-18' }),
               Production({ id: 3, start: '2020-11-14', end: '2020-11-18' }),
-              Production({ id: 4 }),
-            ],
+              Production({ id: 4 })
+            ]
           }
-        },
+        }
       })
     )
   }

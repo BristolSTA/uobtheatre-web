@@ -2,25 +2,25 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { RouterLinkStub } from '@vue/test-utils'
 import { expect } from 'chai'
 
+import { fixTextSpacing, mountWithRouterMock } from '../../../helpers'
 import OverviewBox from '@/components/ui/Card.vue'
 import VenueOverview from '@/components/booking/overview/VenueOverview.vue'
 
 import Venue from '@/tests/unit/fixtures/Venue'
-import { fixTextSpacing, mountWithRouterMock } from '../../../helpers'
 
 describe('Venue Overview', function () {
   let venueOverviewComponent
 
   beforeEach(async () => {
     venueOverviewComponent = await mountWithRouterMock(VenueOverview, {
-      data() {
+      data () {
         return {
-          venue: Venue(),
+          venue: Venue()
         }
       },
       propsData: {
-        venueData: Venue(),
-      },
+        venueData: Venue()
+      }
     })
   })
 
@@ -65,9 +65,9 @@ describe('Venue Overview', function () {
         venue: {
           address: Object.assign({}, venueOverviewComponent.vm.venue.address, {
             buildingName: 'Wills Memorial Building',
-            buildingNumber: null,
-          }),
-        },
+            buildingNumber: null
+          })
+        }
       })
       expect(fixTextSpacing(venueOverviewComponent.text())).to.contain(
         'Wills Memorial Building Queens Road'
@@ -80,9 +80,9 @@ describe('Venue Overview', function () {
         venue: {
           address: Object.assign({}, venueOverviewComponent.vm.venue.address, {
             buildingName: null,
-            buildingNumber: '69',
-          }),
-        },
+            buildingNumber: '69'
+          })
+        }
       })
       expect(fixTextSpacing(venueOverviewComponent.text())).to.contain(
         '69 Queens Road'
@@ -95,9 +95,9 @@ describe('Venue Overview', function () {
         venue: {
           address: Object.assign({}, venueOverviewComponent.vm.venue.address, {
             buildingName: null,
-            buildingNumber: null,
-          }),
-        },
+            buildingNumber: null
+          })
+        }
       })
       expect(fixTextSpacing(venueOverviewComponent.text())).to.contain(
         'Queens Road'

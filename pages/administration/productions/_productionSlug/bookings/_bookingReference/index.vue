@@ -1,6 +1,8 @@
 <template>
   <admin-page title="View Booking">
-    <h2 class="text-sta-orange text-h2">Reference - {{ booking.reference }}</h2>
+    <h2 class="text-sta-orange text-h2">
+      Reference - {{ booking.reference }}
+    </h2>
     <production-banner
       class="pb-2 md:pb-8"
       :production="production"
@@ -58,38 +60,39 @@ export default {
     TableHeadItem,
     TableRowItem,
     TableRow,
-    Card,
+    Card
   },
-  async asyncData({ app, params, error }) {
+  async asyncData ({ app, params, error }) {
     const { data } = await app.apolloProvider.defaultClient.query({
       query: require('@/graphql/queries/admin/productions/AdminBookingDetail.gql'),
       variables: {
-        bookingReference: params.bookingReference,
-      },
+        bookingReference: params.bookingReference
+      }
     })
 
-    if (!data.bookings.edges[0])
+    if (!data.bookings.edges[0]) {
       return error({
         statusCode: 404,
-        message: 'This booking does not exist',
+        message: 'This booking does not exist'
       })
+    }
 
     const rawBooking = data.bookings.edges[0].node
 
     return {
       booking: Booking.fromAPIData(rawBooking),
-      rawBooking,
+      rawBooking
     }
   },
-  head() {
+  head () {
     const title = `Booking ${this.booking.reference}`
     return { title }
   },
   computed: {
-    production() {
+    production () {
       return this.booking.performance.production
     },
-    adminInfo() {
+    adminInfo () {
       return [
         ['Status', new BookingStatusEnum(this.rawBooking.status).name],
         [
@@ -97,26 +100,26 @@ export default {
           this.$options.filters.dateFormat(
             this.rawBooking.createdAt,
             'dd/MMM/y HH:mm ZZZZ'
-          ),
+          )
         ],
         [
           'Updated At',
           this.$options.filters.dateFormat(
             this.rawBooking.updatedAt,
             'dd/MMM/y HH:mm ZZZZ'
-          ),
+          )
         ],
         [
           'Created By',
-          `${this.rawBooking.creator.firstName} ${this.rawBooking.creator.lastName} (Email: ${this.rawBooking.creator.email})`,
+          `${this.rawBooking.creator.firstName} ${this.rawBooking.creator.lastName} (Email: ${this.rawBooking.creator.email})`
         ],
         [
           'Owned By',
-          `${this.rawBooking.user.firstName} ${this.rawBooking.user.lastName} (Email: ${this.rawBooking.user.email})`,
+          `${this.rawBooking.user.firstName} ${this.rawBooking.user.lastName} (Email: ${this.rawBooking.user.email})`
         ],
-        ['Admin Discount', this.rawBooking.adminDiscountPercentage * 100 + '%'],
+        ['Admin Discount', this.rawBooking.adminDiscountPercentage * 100 + '%']
       ]
-    },
-  },
+    }
+  }
 }
 </script>

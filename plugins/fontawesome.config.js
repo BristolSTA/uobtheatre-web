@@ -56,7 +56,7 @@ export default {
     'faImage',
     'faTrash',
     'faMobileAlt',
-    'faFileExport',
+    'faFileExport'
   ],
-  brands: ['faFacebook'],
+  brands: ['faFacebook']
 }

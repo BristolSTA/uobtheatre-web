@@ -41,36 +41,36 @@ export default {
   props: {
     contentWarning: {
       required: true,
-      type: Object,
+      type: Object
     },
     open: {
       default: false,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
-  data() {
+  data () {
     return {
-      expanded: this.open,
+      expanded: this.open
     }
   },
   computed: {
-    expandable() {
+    expandable () {
       return !!this.description
     },
-    description() {
+    description () {
       return (
         this.contentWarning.information ??
         this.contentWarning.warning.longDescription
       )
-    },
+    }
   },
   watch: {
-    open(newVal) {
+    open (newVal) {
       this.expanded = newVal
     },
-    expanded(newVal) {
+    expanded (newVal) {
       this.$emit('update:open', newVal)
-    },
-  },
+    }
+  }
 }
 </script>

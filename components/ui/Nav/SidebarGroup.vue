@@ -11,7 +11,7 @@
     >
       {{ name }}
     </h3>
-    <slot></slot>
+    <slot />
   </div>
 </template>
 
@@ -20,8 +20,8 @@ export default {
   props: {
     name: {
       required: true,
-      type: String,
-    },
-  },
+      type: String
+    }
+  }
 }
 </script>

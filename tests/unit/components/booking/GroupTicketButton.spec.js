@@ -1,9 +1,8 @@
 import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
 
-import GroupTicketButton from '@/components/booking/GroupTicketButton.vue'
-
 import Performance from '../../fixtures/Performance'
+import GroupTicketButton from '@/components/booking/GroupTicketButton.vue'
 
 describe('Group Ticket Button', () => {
   let buttonComponent
@@ -12,25 +11,25 @@ describe('Group Ticket Button', () => {
 
     const student = {
       name: 'Student',
-      id: 2,
+      id: 2
     }
     performance.ticketOptions[0].concessionTypes.push({
       concessionType: student,
       price: 800,
-      pricePounds: '8.00',
+      pricePounds: '8.00'
     })
     const discount = performance.discounts.edges[0].node
     discount.requirements.push({
       id: 1,
       number: 2,
       discount: null,
-      concessionType: student,
+      concessionType: student
     })
 
     buttonComponent = mount(GroupTicketButton, {
       propsData: {
-        discount,
-      },
+        discount
+      }
     })
   })
 

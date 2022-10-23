@@ -1,24 +1,23 @@
 import { expect } from 'chai'
 
-import stages from '@/pages/production/_slug/book/-bookingStages'
-import BookingNavigation from '@/components/booking/BookingNavigation.vue'
-import ProductionBanner from '@/components/production/ProductionBanner.vue'
-import { swal } from '@/utils'
-import Book from '@/pages/production/_slug/book.vue'
-
 import { generateMountOptions, mountWithRouterMock } from '../../helpers'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 import Production from '../../fixtures/Production'
 import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection'
 import Performance from '../../fixtures/Performance'
 import Booking from '../../fixtures/Booking'
+import Book from '@/pages/production/_slug/book.vue'
+import { swal } from '@/utils'
+import ProductionBanner from '@/components/production/ProductionBanner.vue'
+import BookingNavigation from '@/components/booking/BookingNavigation.vue'
+import stages from '@/pages/production/_slug/book/-bookingStages'
 
 describe('Create Booking Page', () => {
   let bookingComponent, routerPushFake, routerReplaceFake
   const fakeNuxtChild = {
     template: '<div />',
     stageInfo: stages[0].stageInfo,
-    props: ['production', 'ticketMatrix', 'booking'],
+    props: ['production', 'ticketMatrix', 'booking']
   }
 
   beforeEach(async () => {
@@ -27,23 +26,23 @@ describe('Create Booking Page', () => {
       generateMountOptions(['apollo'], {
         mocks: {
           $router: {
-            push: (routerPushFake = jest.fn()),
+            push: (routerPushFake = jest.fn())
           },
           $route: {
-            params: {},
-          },
+            params: {}
+          }
         },
         apollo: {
           queryCallstack: [
-            GenericApolloResponse('production', Production({}, true)),
-          ],
+            GenericApolloResponse('production', Production({}, true))
+          ]
         },
-        stubs: { NuxtChild: fakeNuxtChild },
+        stubs: { NuxtChild: fakeNuxtChild }
       }),
       {
         params: {
-          slug: 'legally-ginger',
-        },
+          slug: 'legally-ginger'
+        }
       }
     )
   })
@@ -68,7 +67,7 @@ describe('Create Booking Page', () => {
 
   it('has a nuxt child', async () => {
     await bookingComponent.setData({
-      ticketMatrix: 'fakeMatrix',
+      ticketMatrix: 'fakeMatrix'
     })
     const nuxtChild = bookingComponent.findComponent(fakeNuxtChild)
     expect(nuxtChild.exists()).to.be.true
@@ -81,7 +80,7 @@ describe('Create Booking Page', () => {
     const childComponent = bookingComponent.findComponent(fakeNuxtChild)
 
     await childComponent.vm.$emit('select-performance', {
-      id: 1,
+      id: 1
     })
 
     expect(bookingComponent.vm.booking.performance.id).to.eq(1)
@@ -110,29 +109,29 @@ describe('Create Booking Page', () => {
         generateMountOptions(['apollo'], {
           mocks: {
             $router: {
-              push: (routerPushFake = jest.fn()),
+              push: (routerPushFake = jest.fn())
             },
             $route: {
               params: {
-                performanceId: 1,
-              },
-            },
+                performanceId: 1
+              }
+            }
           },
           apollo: {
             queryCallstack: [
               ...bookingComponent.vm.$apollo.mock.queryCallstack,
               GenericApolloResponse('me', {
-                bookings: GenericNodeConnection(),
+                bookings: GenericNodeConnection()
               }),
-              GenericApolloResponse('performance', Performance()),
-            ],
+              GenericApolloResponse('performance', Performance())
+            ]
           },
-          stubs: { NuxtChild: fakeNuxtChild },
+          stubs: { NuxtChild: fakeNuxtChild }
         }),
         {
           params: {
-            slug: 'legally-ginger',
-          },
+            slug: 'legally-ginger'
+          }
         }
       )
 
@@ -172,30 +171,30 @@ describe('Create Booking Page', () => {
           generateMountOptions(['apollo'], {
             mocks: {
               $router: {
-                push: (routerPushFake = jest.fn()),
+                push: (routerPushFake = jest.fn())
               },
               $route: {
                 params: {
-                  performanceId: 1,
-                },
-              },
+                  performanceId: 1
+                }
+              }
             },
 
             apollo: {
               queryCallstack: [
                 ...bookingComponent.vm.$apollo.mock.queryCallstack,
                 GenericApolloResponse('me', {
-                  bookings: GenericNodeConnection([Booking()]),
+                  bookings: GenericNodeConnection([Booking()])
                 }),
-                GenericApolloResponse('performance', Performance()),
-              ],
+                GenericApolloResponse('performance', Performance())
+              ]
             },
-            stubs: { NuxtChild: fakeNuxtChild },
+            stubs: { NuxtChild: fakeNuxtChild }
           }),
           {
             params: {
-              slug: 'legally-ginger',
-            },
+              slug: 'legally-ginger'
+            }
           }
         )
       }
@@ -238,31 +237,31 @@ describe('Create Booking Page', () => {
           mocks: {
             $router: {
               push: (routerPushFake = jest.fn()),
-              replace: (routerReplaceFake = jest.fn()),
+              replace: (routerReplaceFake = jest.fn())
             },
             $route: {
               params: {
-                performanceId: 1,
-              },
-            },
+                performanceId: 1
+              }
+            }
           },
           apollo: {
             queryCallstack: [
               ...bookingComponent.vm.$apollo.mock.queryCallstack,
               GenericApolloResponse('me', {
-                bookings: GenericNodeConnection(),
+                bookings: GenericNodeConnection()
               }),
-              GenericApolloResponse('performance', Performance()),
-            ],
+              GenericApolloResponse('performance', Performance())
+            ]
           },
           stubs: {
-            NuxtChild: fakeChild,
-          },
+            NuxtChild: fakeChild
+          }
         }),
         {
           params: {
-            slug: 'legally-ginger',
-          },
+            slug: 'legally-ginger'
+          }
         }
       )
     }

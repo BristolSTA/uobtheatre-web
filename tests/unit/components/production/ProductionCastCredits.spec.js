@@ -3,8 +3,6 @@ import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
 import { DateTime } from 'luxon'
 
-import ProductionCastCredits from '@/components/production/ProductionCastCredits'
-
 import { generateMountOptions } from '../../helpers.js'
 import Production from '../../fixtures/Production.js'
 import Performance from '../../fixtures/Performance.js'
@@ -13,6 +11,7 @@ import CrewMember from '../../fixtures/CrewMember.js'
 import CrewRole from '../../fixtures/CrewRole.js'
 import ProductionTeamMember from '../../fixtures/ProductionTeamMember.js'
 import CastMember from '../../fixtures/CastMember.js'
+import ProductionCastCredits from '@/components/production/ProductionCastCredits'
 
 describe('Production Cast and Credits', function () {
   let castCreditsContainer
@@ -23,39 +22,39 @@ describe('Production Cast and Credits', function () {
         {
           start: DateTime.fromISO('2020-11-14'),
           isInperson: true,
-          isOnline: false,
-        },
+          isOnline: false
+        }
       ],
       {
         crew: [
           CrewMember({
             name: 'James E',
-            role: CrewRole({ department: { description: 'Lighting' } }),
+            role: CrewRole({ department: { description: 'Lighting' } })
           }),
           CrewMember({
             name: 'Alex T',
-            role: CrewRole({ department: { description: 'Lighting' } }),
+            role: CrewRole({ department: { description: 'Lighting' } })
           }),
           CrewMember({
             name: 'Tom S',
-            role: CrewRole({ department: { description: 'Sound' } }),
-          }),
+            role: CrewRole({ department: { description: 'Sound' } })
+          })
         ],
         productionTeam: [
           ProductionTeamMember({ name: 'Joe Bloggs', role: 'Producer' }),
           ProductionTeamMember({
             name: 'Jill Bloggs',
-            role: 'Musical Director',
-          }),
+            role: 'Musical Director'
+          })
         ],
         cast: [
           CastMember({ name: 'Kit', role: 'Crazy Person' }),
           CastMember({
             name: 'John',
             role: 'Good Guy',
-            profilePicture: null,
-          }),
-        ],
+            profilePicture: null
+          })
+        ]
       }
     )
   })
@@ -104,15 +103,15 @@ describe('Production Cast and Credits', function () {
   const createWithPerformances = (performances, productionOverrides) => {
     const production = Production(productionOverrides)
     production.performances = GenericNodeConnection(
-      performances.map((performance) => Performance(performance))
+      performances.map(performance => Performance(performance))
     )
 
     castCreditsContainer = mount(
       ProductionCastCredits,
       generateMountOptions(['router'], {
         propsData: {
-          production,
-        },
+          production
+        }
       })
     )
   }

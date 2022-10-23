@@ -1,8 +1,7 @@
 import { expect } from 'chai'
 
-import TicketsMatrix from '@/classes/TicketsMatrix'
-
 import Performance from '../fixtures/Performance'
+import TicketsMatrix from '@/classes/TicketsMatrix'
 
 describe('TicketsMatrix', () => {
   let matrix

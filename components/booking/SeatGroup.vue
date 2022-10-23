@@ -7,8 +7,8 @@
         expanded
           ? 'bg-sta-orange'
           : available
-          ? 'bg-sta-green'
-          : 'bg-sta-gray-dark border-2 border-sta-rouge',
+            ? 'bg-sta-green'
+            : 'bg-sta-gray-dark border-2 border-sta-rouge',
         available ? 'cursor-pointer' : '',
       ]"
       @click="onHeaderClick"
@@ -27,9 +27,9 @@
         >
           Sold Out
         </h3>
-        <span v-else-if="showCapacities"
-          >({{ groupCapacityRemaining }} available)</span
-        >
+        <span
+          v-else-if="showCapacities"
+        >({{ groupCapacityRemaining }} available)</span>
         <p v-if="expanded && ticketOption.seatGroup.description" class="py-2">
           {{ ticketOption.seatGroup.description }}
         </p>
@@ -49,7 +49,9 @@
           }}
           remaining in this location
         </template>
-        <template v-else>No more tickets available at this location</template>
+        <template v-else>
+          No more tickets available at this location
+        </template>
       </div>
       <concession-type
         v-for="(concessionTypeEdge, index) in orderedConcessionTypes"
@@ -109,9 +111,9 @@
 </template>
 
 <script>
+import lo from 'lodash'
 import ConcessionType from '@/components/booking/ConcessionType.vue'
 import GroupTicketButton from '@/components/booking/GroupTicketButton.vue'
-import lo from 'lodash'
 
 export default {
   name: 'SeatGroup',
@@ -119,51 +121,51 @@ export default {
   props: {
     expanded: {
       required: true,
-      type: Boolean,
+      type: Boolean
     },
     ticketOption: {
       required: true,
-      type: Object,
+      type: Object
     },
     groupCapacityRemaining: {
       required: true,
-      type: Number,
+      type: Number
     },
     currentTickets: {
       required: true,
-      type: Array,
+      type: Array
     },
     discounts: {
       required: true,
-      type: Array,
+      type: Array
     },
     showCapacities: {
       default: false,
-      type: Boolean,
+      type: Boolean
     },
     canAddTickets: {
       default: true,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
   computed: {
-    orderedConcessionTypes() {
+    orderedConcessionTypes () {
       return lo.sortBy(this.ticketOption.concessionTypes, 'price').reverse()
     },
-    available() {
+    available () {
       return (
         this.groupCapacityRemaining !== 0 ||
         this.currentLocationTickets.length !== 0
       )
     },
-    currentLocationTickets() {
+    currentLocationTickets () {
       return this.currentTickets.filter((ticket) => {
         return ticket.matches(this.ticketOption.seatGroup)
       })
-    },
+    }
   },
   methods: {
-    onAddDiscountTickets(discount) {
+    onAddDiscountTickets (discount) {
       discount.requirements.forEach((requirement) => {
         this.$emit(
           'add-ticket',
@@ -173,11 +175,11 @@ export default {
         )
       })
     },
-    onHeaderClick() {
+    onHeaderClick () {
       if (this.available) {
         this.$emit('select-location')
       }
-    },
-  },
+    }
+  }
 }
 </script>

@@ -42,32 +42,32 @@ import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue'
 
 export default {
   components: {
-    TicketsEditor,
+    TicketsEditor
   },
   props: {
     booking: {
       required: true,
-      type: Booking,
+      type: Booking
     },
     ticketMatrix: {
       required: true,
-      type: TicketsMatrix,
+      type: TicketsMatrix
     },
     performance: {
       required: true,
-      type: Object,
-    },
+      type: Object
+    }
   },
-  data() {
+  data () {
     return {
       selected_location_index: null,
 
       interaction_timer: lo.debounce(this.updateAPI, 2 * 1000),
-      errors: null,
+      errors: null
     }
   },
   methods: {
-    async updateAPI() {
+    async updateAPI () {
       let bookingResponse
       try {
         if (!this.booking.id) {
@@ -79,9 +79,9 @@ export default {
               variables: {
                 input: {
                   performance: this.booking.performance.id,
-                  tickets: this.booking.toAPIData().tickets,
-                },
-              },
+                  tickets: this.booking.toAPIData().tickets
+                }
+              }
             },
             'booking'
           )
@@ -95,9 +95,9 @@ export default {
               variables: {
                 input: {
                   id: this.booking.id,
-                  tickets: this.booking.toAPIData().tickets,
-                },
-              },
+                  tickets: this.booking.toAPIData().tickets
+                }
+              }
             },
             'booking'
           )
@@ -122,10 +122,10 @@ export default {
       // There has been a change in the selected tickets whilst calling the API. Let's trigger another call...
       this.interaction_timer()
     },
-    cancel() {
+    cancel () {
       this.$store.dispatch('box-office/cancelInProgressBooking')
       this.$router.push(`/box-office/${this.performance.id}`)
-    },
-  },
+    }
+  }
 }
 </script>

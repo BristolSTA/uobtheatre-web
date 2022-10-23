@@ -18,7 +18,7 @@
       @focus="$emit('focus', $event)"
       @blur="$emit('blur', $event)"
       @change="$emit('change', $event)"
-    />
+    >
     <error-helper :errors="errors" :field-name="inputId" />
   </label>
 </template>
@@ -26,9 +26,9 @@
 <script>
 import lo from 'lodash'
 
+import ErrorHelper from './ErrorHelper.vue'
 import Errors from '@/classes/Errors'
 
-import ErrorHelper from './ErrorHelper.vue'
 export default {
   name: 'TextInput',
   components: { ErrorHelper },
@@ -36,62 +36,62 @@ export default {
   props: {
     value: {
       required: true,
-      validator: () => true,
+      validator: () => true
     },
     inputClass: {
       default: null,
-      type: [String, Array, Object],
+      type: [String, Array, Object]
     },
     name: {
       default: null,
-      type: String,
+      type: String
     },
     type: {
       default: 'text',
-      type: String,
+      type: String
     },
     autocomplete: {
       required: false,
       validator: () => true,
-      default: null,
+      default: null
     },
     errors: {
       required: false,
       type: Errors,
-      default: null,
+      default: null
     },
     required: {
       required: false,
       default: false,
-      type: Boolean,
+      type: Boolean
     },
     errorKey: {
       required: false,
       default: null,
-      type: String,
+      type: String
     },
     showLabel: {
       default: true,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
   computed: {
-    inputId() {
+    inputId () {
       return (
         this.errorKey ?? lo.chain(this.name).lowerCase().camelCase().value()
       )
-    },
+    }
   },
   methods: {
-    onInput(event) {
+    onInput (event) {
       this.$emit('input', event.target.value)
       if (this.errors) {
         this.errors.clear(this.inputId)
       }
     },
-    focus() {
+    focus () {
       this.$refs.input.focus()
-    },
-  },
+    }
+  }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div class="my-2 px-1 py-2 bg-sta-gray-dark md:p-2">
     <h2 class="flex justify-center mb-2 text-2xl">
-      <slot name="title"></slot>
+      <slot name="title" />
     </h2>
     <table v-if="bookings.length" class="table-auto w-full">
       <tbody>
@@ -38,7 +38,9 @@
         </tr>
       </tbody>
     </table>
-    <h4 v-else class="p-2 text-center text-h4">No Previous Bookings</h4>
+    <h4 v-else class="p-2 text-center text-h4">
+      No Previous Bookings
+    </h4>
   </div>
 </template>
 
@@ -48,12 +50,12 @@ export default {
   props: {
     bookings: {
       required: true,
-      type: Array,
+      type: Array
     },
     canLoadMore: {
       default: false,
-      type: Boolean,
-    },
-  },
+      type: Boolean
+    }
+  }
 }
 </script>

@@ -14,9 +14,9 @@ module.exports = {
           'variants',
           'responsive',
           'screen',
-          'layer',
-        ],
-      },
-    ],
-  },
+          'layer'
+        ]
+      }
+    ]
+  }
 }

@@ -41,7 +41,7 @@
                 $emit('set-tickets', event.target.value)
               }
             "
-          />
+          >
           <button
             class="btn p-0 w-8 h-8"
             :class="[
@@ -67,35 +67,35 @@ export default {
   props: {
     concessionTypeEdge: {
       required: true,
-      type: Object,
+      type: Object
     },
     currentTickets: {
       required: true,
-      type: Array,
+      type: Array
     },
     maxAddAllowed: {
       required: true,
-      type: Number,
+      type: Number
     },
     canAddTickets: {
       default: true,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
   computed: {
-    numTickets() {
+    numTickets () {
       return this.currentTickets.filter((ticket) => {
         return ticket.matches(null, this.concessionTypeEdge.concessionType)
       }).length
-    },
+    }
   },
   methods: {
-    addTicket() {
+    addTicket () {
       this.$emit('add-ticket')
     },
-    minusTicket() {
+    minusTicket () {
       this.$emit('remove-ticket')
-    },
-  },
+    }
+  }
 }
 </script>

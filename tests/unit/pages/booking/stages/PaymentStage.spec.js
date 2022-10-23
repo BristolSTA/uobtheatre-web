@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
 
+import { generateMountOptions } from '../../../helpers'
 import Booking from '@/classes/Booking'
 import { swal } from '@/utils'
 import PagementStage from '@/pages/production/_slug/book/_performanceId/pay.vue'
@@ -12,7 +13,6 @@ import FakeBooking from '@/tests/unit/fixtures/Booking'
 import GenericErrorsResponse from '@/tests/unit/fixtures/support/GenericErrorsResponse'
 import GenericError from '@/tests/unit/fixtures/support/GenericError'
 import CardPayment from '@/components/square/SquarePayment.vue'
-import { generateMountOptions } from '../../../helpers'
 
 describe('Payment Stage', () => {
   let paymentStageComponent, routerPushMock
@@ -29,33 +29,33 @@ describe('Payment Stage', () => {
         start: '2020-03-22T14:00:00',
         end: '2020-03-22T16:00:00',
         production: {
-          name: 'Legally Ginger',
-        },
+          name: 'Legally Ginger'
+        }
       },
       tickets: [
         {
           id: 456,
           seatGroup: { id: 1 },
-          concessionType: { id: 1 },
-        },
+          concessionType: { id: 1 }
+        }
       ],
       priceBreakdown: {
         tickets: [],
-        totalPrice: 1050,
-      },
+        totalPrice: 1050
+      }
     })
     paymentStageComponent = mount(
       PagementStage,
       generateMountOptions(['apollo', 'config'], {
         propsData: {
-          booking,
+          booking
         },
         mocks: {
           $router: {
-            push: (routerPushMock = jest.fn()),
-          },
+            push: (routerPushMock = jest.fn())
+          }
         },
-        stubs: ['card-payment'],
+        stubs: ['card-payment']
       })
     )
   })
@@ -64,8 +64,8 @@ describe('Payment Stage', () => {
     let popupClose
     await paymentStageComponent.setData({
       progressPopup: {
-        close: (popupClose = jest.fn()),
-      },
+        close: (popupClose = jest.fn())
+      }
     })
     await paymentStageComponent.findComponent(CardPayment).vm.$emit('cancelled')
     expect(popupClose.mock.calls).length(1)
@@ -78,8 +78,8 @@ describe('Payment Stage', () => {
       paymentStageComponent.vm.booking.id = 1
       await paymentStageComponent.setData({
         progressPopup: {
-          close: (popupClose = jest.fn()),
-        },
+          close: (popupClose = jest.fn())
+        }
       })
     })
 
@@ -89,7 +89,7 @@ describe('Payment Stage', () => {
           'payBooking',
           GenericMutationResponse({
             payment: Payment(),
-            booking: FakeBooking(),
+            booking: FakeBooking()
           })
         )
       )
@@ -122,7 +122,7 @@ describe('Payment Stage', () => {
       )
       paymentStageComponent.vm.booking.priceBreakdown.totalPrice = 1000
       await paymentStageComponent.vm.onNonceRecieved({
-        nonce: 'cnon:card-nonce-ok',
+        nonce: 'cnon:card-nonce-ok'
       })
       expect(paymentStageComponent.text()).to.contain(
         'There was a price difference between the booking and the requested price'

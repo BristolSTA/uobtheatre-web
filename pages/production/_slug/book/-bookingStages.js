@@ -9,15 +9,15 @@ const stages = [
   AudienceWarningsStage,
   TicketSelectionStage,
   OverviewStage,
-  PaymentStage,
+  PaymentStage
 ]
 
 /**
  * @param {Object|Class} stageInfo The stage of which to find the index or the vue class
  * @returns {number} The index of the stage, or -1 if not in list
  */
-export function getStageIndex(stageInfo) {
-  if (!stageInfo) return -1
+export function getStageIndex (stageInfo) {
+  if (!stageInfo) { return -1 }
   return stages.findIndex((stageComponent) => {
     return stageComponent.stageInfo === (stageInfo.stageInfo ?? stageInfo)
   })
@@ -29,7 +29,7 @@ export function getStageIndex(stageInfo) {
  * @param {object|null} booking Booking Data Object
  * @returns {BookingStage|null} Next booking stage
  */
-export function getNextStage(currentStage, production, booking) {
+export function getNextStage (currentStage, production, booking) {
   return stages.find((stageComponent, index) => {
     return (
       (!isNaN(currentStage)
@@ -46,7 +46,7 @@ export function getNextStage(currentStage, production, booking) {
  * @param {object|null} booking Booking Data Object
  * @returns {BookingStage|null} Next booking stage
  */
-export function getPreviousStage(currentStage, production, booking) {
+export function getPreviousStage (currentStage, production, booking) {
   const currentStageIndex = isNaN(currentStage)
     ? getStageIndex(currentStage.stageInfo)
     : currentStage

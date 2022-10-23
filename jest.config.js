@@ -4,23 +4,23 @@ module.exports = {
       'identity-obj-proxy',
     '^@/(.*)$': '<rootDir>/$1',
     '^~/(.*)$': '<rootDir>/$1',
-    '^vue$': 'vue/dist/vue.common.js',
+    '^vue$': 'vue/dist/vue.common.js'
   },
   moduleFileExtensions: ['js', 'vue', 'json'],
   transform: {
     '^.+\\.js$': 'babel-jest',
     '.*\\.(vue)$': 'vue-jest',
-    '\\.(gql|graphql)$': 'jest-transform-graphql',
+    '\\.(gql|graphql)$': 'jest-transform-graphql'
   },
   timers: 'modern',
   testEnvironment: 'jsdom',
   collectCoverageFrom: [
     '<rootDir>/components/**/*.vue',
-    '<rootDir>/pages/**/*.vue',
+    '<rootDir>/pages/**/*.vue'
   ],
   watchPlugins: [
     'jest-watch-typeahead/filename',
-    'jest-watch-typeahead/testname',
+    'jest-watch-typeahead/testname'
   ],
-  setupFilesAfterEnv: ['<rootDir>tests/unit/setup.js'],
+  setupFilesAfterEnv: ['<rootDir>tests/unit/setup.js']
 }

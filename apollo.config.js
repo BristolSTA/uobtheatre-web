@@ -5,7 +5,7 @@ module.exports = {
       name: 'uobtheatre-api',
       url: 'http://uobtheatre-api:8000/graphql/',
       // optional disable SSL validation check
-      skipSSLValidation: true,
-    },
-  },
+      skipSSLValidation: true
+    }
+  }
 }

@@ -6,7 +6,7 @@
     <div
       class="h-full bg-sta-green rounded-full"
       :style="{ width: `${Math.min(100, percentage)}%` }"
-    ></div>
+    />
   </div>
 </template>
 
@@ -15,12 +15,12 @@ export default {
   props: {
     percentage: {
       default: 0,
-      type: Number,
+      type: Number
     },
     height: {
       default: 4,
-      type: Number,
-    },
-  },
+      type: Number
+    }
+  }
 }
 </script>

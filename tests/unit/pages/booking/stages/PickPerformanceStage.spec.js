@@ -1,12 +1,12 @@
 import { expect } from 'chai'
 
+import { mountWithRouterMock } from '../../../helpers'
 import PerformanceOverview from '@/components/performance/PerformanceOverview.vue'
 
 import PickPerformanceStage from '@/pages/production/_slug/book/index.vue'
 import Production from '@/tests/unit/fixtures/Production'
 import Performance from '@/tests/unit/fixtures/Performance'
 import GenericNodeConnection from '@/tests/unit/fixtures/support/GenericNodeConnection'
-import { mountWithRouterMock } from '../../../helpers'
 
 describe('Pick Performance Stage', () => {
   let stageComponent
@@ -18,24 +18,24 @@ describe('Pick Performance Stage', () => {
         Performance({
           start: '2020-12-25T10:00:00',
           end: '2020-12-25T12:00:00',
-          soldOut: false,
+          soldOut: false
         }),
         Performance({
           start: '2020-12-26T14:00:00',
           end: '2020-12-26T16:00:00',
-          soldOut: false,
+          soldOut: false
         }),
         Performance({
           start: '2020-12-27T18:00:00',
           end: '2020-12-27T20:00:00',
-          soldOut: false,
-        }),
-      ]),
+          soldOut: false
+        })
+      ])
     })
     stageComponent = await mountWithRouterMock(PickPerformanceStage, {
       propsData: {
-        production,
-      },
+        production
+      }
     })
   })
 

@@ -23,11 +23,10 @@
         distressing to viewers. For more information, please contact
         <a :href="`mailto:${production.contactEmail}`" class="underline">{{
           production.contactEmail
-        }}</a
-        >.
+        }}</a>.
       </p>
 
-      <hr class="my-2 border-sta-gray-light" />
+      <hr class="my-2 border-sta-gray-light">
       <content-warnings-display
         :content-warnings="production.contentWarnings"
       />
@@ -59,26 +58,26 @@ export default {
         production.contentWarnings.length > 0 ||
         booking?.performance?.description
       )
-    },
+    }
   }),
   components: {
     Card,
-    ContentWarningsDisplay,
+    ContentWarningsDisplay
   },
   props: {
     production: {
       required: true,
-      type: Object,
+      type: Object
     },
     booking: {
       required: true,
-      type: Booking,
-    },
+      type: Booking
+    }
   },
   methods: {
-    onUnderstood() {
+    onUnderstood () {
       this.$emit('next-stage')
-    },
-  },
+    }
+  }
 }
 </script>

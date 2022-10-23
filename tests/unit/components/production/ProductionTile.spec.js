@@ -1,9 +1,8 @@
 import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
 
-import ProductionTile from '@/components/production/ProductionTile'
-
 import { generateMountOptions, RouterLinkStub } from '../../helpers'
+import ProductionTile from '@/components/production/ProductionTile'
 
 describe('Production Tile', () => {
   let productionTileComponent
@@ -16,12 +15,12 @@ describe('Production Tile', () => {
             slug: 'legally-ginger',
             name: 'Legally Ginger',
             featuredImage: {
-              url: 'example.org/feature-image.png',
+              url: 'example.org/feature-image.png'
             },
             start: '2021-03-03T14:00:00',
-            end: '2021-03-06T14:00:00',
-          },
-        },
+            end: '2021-03-06T14:00:00'
+          }
+        }
       })
     )
   })

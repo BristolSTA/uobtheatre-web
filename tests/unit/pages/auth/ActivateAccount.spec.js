@@ -1,15 +1,14 @@
 import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
 
-import { authService } from '@/services'
-import { swalToast } from '@/utils'
-import ActivateAccount from '@/pages/login/activate/_token/index'
-
 import { generateMountOptions } from '../../helpers'
 import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse'
 import GenericError from '../../fixtures/support/GenericError'
 import GenericErrorsResponse from '../../fixtures/support/GenericErrorsResponse'
+import ActivateAccount from '@/pages/login/activate/_token/index'
+import { swalToast } from '@/utils'
+import { authService } from '@/services'
 
 describe('Activate Account', function () {
   let component
@@ -27,19 +26,19 @@ describe('Activate Account', function () {
       generateMountOptions(['apollo'], {
         mocks: {
           $router: {
-            push: (routerPushFake = jest.fn()),
+            push: (routerPushFake = jest.fn())
           },
           $route: {
             params: {
-              token: '1234abcd',
-            },
-          },
+              token: '1234abcd'
+            }
+          }
         },
         apollo: {
           mutationCallstack: [
-            GenericApolloResponse('verifyAccount', GenericMutationResponse()),
-          ],
-        },
+            GenericApolloResponse('verifyAccount', GenericMutationResponse())
+          ]
+        }
       })
     )
 
@@ -49,7 +48,7 @@ describe('Activate Account', function () {
     return component.vm.$nextTick().then(() => {
       expect(activateAccountStub.mock.calls).length(1)
       expect(activateAccountStub.mock.calls[0][1]).includes({
-        token: '1234abcd',
+        token: '1234abcd'
       })
 
       expect(swalToastStub.mock.calls).length(1)
@@ -66,18 +65,18 @@ describe('Activate Account', function () {
         mocks: {
           $route: {
             params: {
-              token: 'invalidCode',
-            },
-          },
+              token: 'invalidCode'
+            }
+          }
         },
         apollo: {
           mutationCallstack: [
             GenericApolloResponse(
               'verifyAccount',
               GenericErrorsResponse(GenericError('There was an error'))
-            ),
-          ],
-        },
+            )
+          ]
+        }
       })
     )
 

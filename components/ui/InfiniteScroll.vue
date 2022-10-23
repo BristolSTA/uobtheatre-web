@@ -1,6 +1,6 @@
 <template>
   <div>
-    <slot></slot>
+    <slot />
     <p v-if="hasMore" ref="bottom-loader" class="pb-4 text-center text-4xl">
       <loading-icon size-class="" />
     </p>
@@ -8,51 +8,51 @@
 </template>
 
 <script>
-import { isInViewport } from '@/utils'
 import LoadingIcon from './LoadingIcon.vue'
+import { isInViewport } from '@/utils'
 export default {
   components: { LoadingIcon },
   props: {
     apolloQuery: {
       required: true,
-      type: Object,
+      type: Object
     },
     apolloVariables: {
       required: false,
       type: Object,
-      default: () => {},
+      default: () => {}
     },
     apolloAfterCursorVariableKey: {
       required: false,
       default: 'afterCursor',
-      type: String,
-    },
+      type: String
+    }
   },
-  data() {
+  data () {
     return {
       loading: false,
-      endCursor: null,
+      endCursor: null
     }
   },
   computed: {
-    hasMore() {
+    hasMore () {
       return this.endCursor || this.loading
-    },
+    }
   },
   watch: {
-    loading(newValue) {
+    loading (newValue) {
       this.$emit('loadingChange', newValue)
-    },
+    }
   },
-  mounted() {
+  mounted () {
     window.addEventListener('scroll', this.handleScroll)
     this.runQuery()
   },
-  destroyed() {
+  destroyed () {
     window.removeEventListener('scroll', this.handleScroll)
   },
   methods: {
-    async runQuery() {
+    async runQuery () {
       this.loading = true
 
       const defaultVariables = {}
@@ -61,7 +61,7 @@ export default {
       const variables = Object.assign(defaultVariables, this.apolloVariables)
       const result = await this.$apollo.query({
         query: this.apolloQuery,
-        variables,
+        variables
       })
       this.loading = false
 
@@ -90,8 +90,8 @@ export default {
         this.runQuery()
       }
     },
-    handleScroll() {
-      if (this.loading) return
+    handleScroll () {
+      if (this.loading) { return }
       const bottomLoaderEl = this.$refs['bottom-loader']
       if (
         bottomLoaderEl &&
@@ -99,7 +99,7 @@ export default {
       ) {
         this.runQuery()
       }
-    },
-  },
+    }
+  }
 }
 </script>

@@ -2,10 +2,12 @@
   <loading-container :loading="!ready">
     <div class="grid gap-4 grid-cols-1 xl:grid-cols-2">
       <div>
-        <h2 class="mb-2 text-center text-white text-h2">Pay with card</h2>
+        <h2 class="mb-2 text-center text-white text-h2">
+          Pay with card
+        </h2>
         <form id="payment-form">
           <div class="space-y-3">
-            <div id="card-container"></div>
+            <div id="card-container" />
 
             <button
               id="card-button"
@@ -21,15 +23,17 @@
         </form>
       </div>
       <div class="text-center">
-        <h2 class="mb-2 text-white text-h2">Pay with a digital wallet</h2>
+        <h2 class="mb-2 text-white text-h2">
+          Pay with a digital wallet
+        </h2>
         <div
           id="sq-gpay-button"
           @click="square.methods.gpay ? payGPay() : null"
-        ></div>
+        />
         <div
           id="sq-applepay-button"
           @click="square.methods.applepay ? payApplePay() : null"
-        ></div>
+        />
       </div>
     </div>
 
@@ -56,14 +60,14 @@ export default {
   props: {
     useWallets: {
       default: true,
-      type: Boolean,
+      type: Boolean
     },
     price: {
       required: true,
-      type: String,
-    },
+      type: String
+    }
   },
-  data() {
+  data () {
     return {
       squareErrors: [],
       timer: null,
@@ -73,17 +77,16 @@ export default {
       square: {
         payments: null,
         request: null,
-        methods: null,
-      },
+        methods: null
+      }
     }
   },
   watch: {
-    paying(newVal) {
-      if (newVal) this.$emit('paying')
-      else this.$emit('cancelled')
-    },
+    paying (newVal) {
+      if (newVal) { this.$emit('paying') } else { this.$emit('cancelled') }
+    }
   },
-  mounted() {
+  mounted () {
     const checkToInit = () => {
       if (typeof Square !== 'undefined') {
         clearInterval(this.timer)
@@ -93,12 +96,12 @@ export default {
     checkToInit()
     this.timer = setInterval(checkToInit, 100)
   },
-  beforeDestroy() {
+  beforeDestroy () {
     clearInterval(this.timer)
   },
   methods: {
-    async initSquare() {
-      if (this.square.payments) return
+    async initSquare () {
+      if (this.square.payments) { return }
 
       // eslint-disable-next-line no-undef
       this.square.payments = Square.payments(
@@ -114,20 +117,20 @@ export default {
         currencyCode: 'GBP',
         total: {
           amount: this.price,
-          label: 'Total',
-        },
+          label: 'Total'
+        }
       })
 
       // Init card payment
       this.square.methods.card = await this.square.payments.card({
         style: {
           '.message-icon': {
-            color: 'white',
+            color: 'white'
           },
           '.message-text': {
-            color: 'white',
-          },
-        },
+            color: 'white'
+          }
+        }
       })
       await this.square.methods.card.attach('#card-container')
 
@@ -137,10 +140,10 @@ export default {
           this.square.request
         )
         await this.square.methods.gpay.attach('#sq-gpay-button', {
-          buttonColor: 'white',
+          buttonColor: 'white'
         })
       } catch (e) {
-        if (e.name !== 'PaymentMethodUnsupportedError') silentErrorHandler(e)
+        if (e.name !== 'PaymentMethodUnsupportedError') { silentErrorHandler(e) }
       }
 
       try {
@@ -149,23 +152,23 @@ export default {
           this.square.request
         )
       } catch (e) {
-        if (e.name !== 'PaymentMethodUnsupportedError') silentErrorHandler(e)
+        if (e.name !== 'PaymentMethodUnsupportedError') { silentErrorHandler(e) }
       }
 
       this.$emit('ready')
       this.ready = true
     },
-    async verifyBuyer(token) {
+    async verifyBuyer (token) {
       const details = {
         amount: this.price,
         billingContact: {},
         currencyCode: 'GBP',
-        intent: 'CHARGE',
+        intent: 'CHARGE'
       }
       const results = await this.square.payments.verifyBuyer(token, details)
       return results.token
     },
-    async pay(provider, verify = false) {
+    async pay (provider, verify = false) {
       this.paying = true
       this.squareErrors = []
 
@@ -173,35 +176,34 @@ export default {
         const result = await provider.tokenize()
         if (result.status === 'OK') {
           const paymentData = { nonce: result.token }
-          if (verify)
-            paymentData.verifyToken = await this.verifyBuyer(result.token)
+          if (verify) { paymentData.verifyToken = await this.verifyBuyer(result.token) }
           return this.$emit('nonceRecieved', paymentData)
         }
 
         this.paying = false
         if (result.status !== 'Cancel') {
-          this.squareErrors = result.errors.map((error) => error.message)
+          this.squareErrors = result.errors.map(error => error.message)
           this.$emit('nonceError', this.squareErrors)
         }
       } catch (e) {
         this.paying = false
         this.squareErrors = [
-          'An unexpected error was encountered whilst trying to process your payment. No charge has been made.',
+          'An unexpected error was encountered whilst trying to process your payment. No charge has been made.'
         ]
         silentErrorHandler(e)
         this.$emit('nonceError', this.squareErrors)
       }
     },
-    payCard() {
+    payCard () {
       return this.pay(this.square.methods.card, true)
     },
-    payGPay() {
+    payGPay () {
       return this.pay(this.square.methods.gpay)
     },
-    payApplePay() {
+    payApplePay () {
       return this.pay(this.square.methods.applepay)
-    },
-  },
+    }
+  }
 }
 </script>
 

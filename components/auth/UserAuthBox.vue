@@ -86,7 +86,7 @@
           v-model="remember_me"
           type="checkbox"
           class="border-sta-grey w-5 h-5 border rounded-sm focus:outline-none"
-        />
+        >
         <span class="text-white text-xs font-semibold">Remember me?</span>
       </label>
 
@@ -104,7 +104,7 @@
         Log In
       </button>
 
-      <hr class="border-t-2 border-sta-gray-dark" />
+      <hr class="border-t-2 border-sta-gray-dark">
 
       <p class="mt-2 text-white">
         <clickable-link @click="$emit('go-signup')">
@@ -198,20 +198,18 @@
           type="checkbox"
           required
           class="border-sta-grey w-5 h-5 border rounded-sm focus:outline-none"
-        />
+        >
         <span class="text-white text-xs font-semibold">
           I have read and agree to the
           <nuxt-link
             to="/terms"
             class="hover:text-sta-orange underline transition-colors"
-            >Terms of Service</nuxt-link
-          >
+          >Terms of Service</nuxt-link>
           and
           <nuxt-link
             to="/privacy"
             class="hover:text-sta-orange underline transition-colors"
-            >Privacy Policy</nuxt-link
-          >
+          >Privacy Policy</nuxt-link>
         </span>
         <error-helper :errors="signup_errors" field-name="acceptedTerms" />
       </label>
@@ -239,6 +237,7 @@
 <script>
 import lo from 'lodash'
 
+import LoadingIcon from '../ui/LoadingIcon.vue'
 import ClickableLink from '@/components/ui/ClickableLink.vue'
 import ErrorHelper from '@/components/ui/ErrorHelper.vue'
 import NonFieldError from '@/components/ui/NonFieldError.vue'
@@ -248,12 +247,11 @@ import {
   catchOnly,
   getValidationErrors,
   swalToast,
-  successToast,
+  successToast
 } from '@/utils'
 import ValidationError from '@/errors/ValidationError'
 import UnverifiedLoginError from '@/errors/auth/UnverifiedLoginError'
 import Errors from '@/classes/Errors'
-import LoadingIcon from '../ui/LoadingIcon.vue'
 
 export default {
   name: 'UserAuthBox',
@@ -262,15 +260,15 @@ export default {
     TextInput,
     ErrorHelper,
     NonFieldError,
-    LoadingIcon,
+    LoadingIcon
   },
   props: {
     login: {
       default: true,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
-  data() {
+  data () {
     return {
       fullName: null,
       firstName: null,
@@ -284,11 +282,11 @@ export default {
       loading: false,
 
       login_errors: null,
-      signup_errors: null,
+      signup_errors: null
     }
   },
   methods: {
-    async attemptLogin() {
+    async attemptLogin () {
       this.loading = true
       this.login_errors = null
 
@@ -303,7 +301,7 @@ export default {
         // Redirect to intended if has
         if (this.$route.query.redirect) {
           return this.$router.replace(this.$route.query.redirect).catch((e) => {
-            if (!e.message.includes('Redirected when going from')) throw e
+            if (!e.message.includes('Redirected when going from')) { throw e }
           })
         }
 
@@ -314,7 +312,7 @@ export default {
           if (e instanceof UnverifiedLoginError) {
             this.login_errors.push({
               message: 'Your account has not been verified yet.',
-              code: 'not_verified',
+              code: 'not_verified'
             })
           }
         })
@@ -322,7 +320,7 @@ export default {
 
       this.loading = false
     },
-    async attemptSignup() {
+    async attemptSignup () {
       this.loading = true
       this.signup_errors = null
 
@@ -332,8 +330,8 @@ export default {
           {
             message: 'Please provider a last name',
             field: 'lastName',
-            __typename: 'FieldError',
-          },
+            __typename: 'FieldError'
+          }
         ])
         return (this.loading = false)
       }
@@ -344,7 +342,7 @@ export default {
           lastName: this.lastName,
           email: this.email,
           password: this.password,
-          confirmedPassword: this.confirmedPassword,
+          confirmedPassword: this.confirmedPassword
         })
 
         swalToast.fire({
@@ -352,7 +350,7 @@ export default {
           title: 'Account Created',
           text: 'Please check your emails to verify your account',
           showConfirmButton: true,
-          position: 'bottom-end',
+          position: 'bottom-end'
         })
         return this.$router.push('/')
       } catch (e) {
@@ -361,24 +359,24 @@ export default {
 
       this.loading = false
     },
-    async resendVerificationEmail() {
+    async resendVerificationEmail () {
       this.loading = true
       this.login_errors = null
       try {
         await authService.resendVerificationEmail(this, this.email)
         successToast.fire({
-          title: 'Verfication email sent!',
+          title: 'Verfication email sent!'
         })
       } catch (e) {
         this.login_errors = getValidationErrors(e)
       }
       this.loading = false
     },
-    guessNameParts() {
+    guessNameParts () {
       const components = lo.trim(this.fullName).split(' ')
       this.firstName = components.shift()
       this.lastName = components.join(' ')
-    },
-  },
+    }
+  }
 }
 </script>

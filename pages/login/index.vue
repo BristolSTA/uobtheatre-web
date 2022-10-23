@@ -20,7 +20,7 @@ export default {
   components: { UserAuthBox, AuthPageTemplate },
   middleware: 'not-authed',
   head: {
-    title: 'Login',
-  },
+    title: 'Login'
+  }
 }
 </script>

@@ -10,35 +10,36 @@
 import BoxOfficePerformance from '@/graphql/queries/box-office/BoxOfficePerformance.gql'
 export default {
   middleware: 'authed',
-  async asyncData({ params, error, app }) {
+  async asyncData ({ params, error, app }) {
     // Execute query
     const { data } = await app.apolloProvider.defaultClient.query({
       query: BoxOfficePerformance,
       variables: {
-        id: params.performanceId,
-      },
+        id: params.performanceId
+      }
     })
 
     const performance = data.performance
-    if (!performance)
+    if (!performance) {
       return error({
         statusCode: 404,
-        message: 'This performance does not exist',
+        message: 'This performance does not exist'
       })
+    }
     return {
-      performance,
+      performance
     }
   },
   computed: {
-    crumbs() {
+    crumbs () {
       return this.$refs.child.crumbs
-    },
+    }
   },
   methods: {
-    regenerateCrumbsLink() {
+    regenerateCrumbsLink () {
       this._computedWatchers.crumbs.run()
       this.$forceUpdate()
-    },
-  },
+    }
+  }
 }
 </script>

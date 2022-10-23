@@ -35,15 +35,15 @@
                 currentDisplayedProduction.end,
                 'd MMM'
               )
-            }}</icon-list-item
-          >
+            }}
+          </icon-list-item>
           <icon-list-item icon="map-marker">
             {{
               currentDisplayedProduction.venues
                 .map((venue) => venue.name)
                 .join(', ')
-            }}</icon-list-item
-          >
+            }}
+          </icon-list-item>
         </div>
       </div>
       <div class="flex flex-grow items-center justify-between gap-x-20">
@@ -83,10 +83,10 @@
 </template>
 
 <script>
-import VenueUpcomingProductionsQuery from '@/graphql/queries/publicity-screen/VenueUpcomingProductions.gql'
-import UpcomingProductionsQuery from '@/graphql/queries/publicity-screen/AllUpcomingProductions.gql'
 import { DateTime } from 'luxon'
 import QrcodeVue from 'qrcode.vue'
+import VenueUpcomingProductionsQuery from '@/graphql/queries/publicity-screen/VenueUpcomingProductions.gql'
+import UpcomingProductionsQuery from '@/graphql/queries/publicity-screen/AllUpcomingProductions.gql'
 import { displayStartEnd } from '@/utils'
 import IconListItem from '@/components/ui/IconListItem.vue'
 import HaveTicketsReadyScreen from '@/components/publicity-screens/HaveTicketsReadyScreen.vue'
@@ -101,10 +101,10 @@ export default {
     IconListItem,
     HaveTicketsReadyScreen,
     SoldOutScreen,
-    ProductionFeaturedImage,
+    ProductionFeaturedImage
   },
   layout: 'publicityScreen',
-  data() {
+  data () {
     return {
       now: null,
       pageOpenTime: DateTime.now(),
@@ -118,28 +118,28 @@ export default {
 
       onNowScreenIndex: 0,
       onNowProductionIndex: 0,
-      paused: false,
+      paused: false
     }
   },
   computed: {
-    marketableProductions() {
-      return this.productions.filter((production) => production.isBookable)
+    marketableProductions () {
+      return this.productions.filter(production => production.isBookable)
     },
-    currentDisplayedProduction() {
+    currentDisplayedProduction () {
       return this.marketableProductions
         ? this.marketableProductions[this.currentProductionIndex]
         : null
     },
-    currentDisplayedProductionUrl() {
+    currentDisplayedProductionUrl () {
       return this.currentDisplayedProduction
         ? window.location.host +
             this.$router.resolve({
-              path: `/production/${this.currentDisplayedProduction.slug}`,
+              path: `/production/${this.currentDisplayedProduction.slug}`
             }).href
         : ''
     },
-    productionsOnNow() {
-      if (!this.now) return []
+    productionsOnNow () {
+      if (!this.now) { return [] }
       return this.productions.filter((production) => {
         if (!production?.performances?.edges?.length) {
           return false
@@ -157,23 +157,23 @@ export default {
         )
       })
     },
-    currentScreen() {
+    currentScreen () {
       return this.productionsOnNow.length
         ? this.screensForPerformance(
-            this.productionsOnNow[this.onNowProductionIndex].performances
-              .edges[0].node
-          )[this.onNowScreenIndex]
+          this.productionsOnNow[this.onNowProductionIndex].performances
+            .edges[0].node
+        )[this.onNowScreenIndex]
         : null
-    },
+    }
   },
   watch: {
-    productionsOnNow(newVal, oldVal) {
+    productionsOnNow (newVal, oldVal) {
       if (newVal.length === 0 && oldVal.length !== 0) {
         this.fetchData()
       }
-    },
+    }
   },
-  mounted() {
+  mounted () {
     this.fetchData()
 
     this.dataFetchTimer = setInterval(this.fetchData, 2 * 60 * 60 * 1000) // Every 2 hours
@@ -182,7 +182,7 @@ export default {
       this.now = DateTime.now()
       this.refreshPageIfRequired()
 
-      if (this.paused) return
+      if (this.paused) { return }
 
       // General promotion
       if (
@@ -218,13 +218,13 @@ export default {
       }
     }, 1000 * 10)
   },
-  destroyed() {
+  destroyed () {
     clearInterval(this.dataFetchTimer)
     clearInterval(this.slideTimer)
   },
   methods: {
     displayStartEnd,
-    screensForPerformance(performance) {
+    screensForPerformance (performance) {
       const screens = []
       if (this.now < DateTime.fromISO(performance.doorsOpen)) {
         screens.push(PleaseWaitScreen)
@@ -238,7 +238,7 @@ export default {
 
       return screens
     },
-    async fetchData() {
+    async fetchData () {
       const slugs = this.$route.params.venueSlugs.split(',')
       const showAllUpcoming =
         this.$route.query.onlyTheseVenues === undefined
@@ -253,9 +253,9 @@ export default {
             variables: {
               slug,
               now: new Date(),
-              nowDate: DateTime.now().toISODate(),
+              nowDate: DateTime.now().toISODate()
             },
-            fetchPolicy: 'no-cache',
+            fetchPolicy: 'no-cache'
           })
         )
       }
@@ -268,7 +268,7 @@ export default {
         if (queryResult.data.venue) {
           this.venues.push(queryResult.data.venue)
           this.productions.push(
-            ...queryResult.data.venue.productions.edges.map((edge) => edge.node)
+            ...queryResult.data.venue.productions.edges.map(edge => edge.node)
           )
         }
       })
@@ -276,12 +276,12 @@ export default {
       if (showAllUpcoming) {
         const { data } = await this.$apollo.query({
           query: UpcomingProductionsQuery,
-          variables: { now: new Date() },
+          variables: { now: new Date() }
         })
         data.productions.edges.forEach((edge) => {
           if (
             this.productions
-              .map((production) => production.id)
+              .map(production => production.id)
               .includes(edge.node.id)
           ) {
             return
@@ -290,12 +290,12 @@ export default {
         })
       }
     },
-    refreshPageIfRequired() {
+    refreshPageIfRequired () {
       // Every 12 hours, do a full refresh of the page to load new code
       if (this.now - this.pageOpenTime > 12 * 60 * 60 && this.now.hour === 0) {
         window.location.reload()
       }
-    },
-  },
+    }
+  }
 }
 </script>

@@ -1,15 +1,14 @@
 import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
 
+import { generateMountOptions } from '../../helpers'
+import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse'
+import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 import TextInput from '@/components/ui/TextInput.vue'
 import ChangeEmail from '@/components/user/ChangeEmail.vue'
 import ChangePassword from '@/components/user/ChangePassword.vue'
 import UserDetails from '@/components/user/UserDetails.vue'
 import { swalToast } from '@/utils'
-
-import { generateMountOptions } from '../../helpers'
-import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse'
-import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
 
 describe('User Details', () => {
   let userDetailsComponent
@@ -22,14 +21,14 @@ describe('User Details', () => {
           user: {
             firstName: 'Joe',
             lastName: 'Bloggs',
-            email: 'joe.bloggs@example.org',
-          },
+            email: 'joe.bloggs@example.org'
+          }
         },
         apollo: {
           mutationCallstack: [
-            GenericApolloResponse('updateAccount', GenericMutationResponse()),
-          ],
-        },
+            GenericApolloResponse('updateAccount', GenericMutationResponse())
+          ]
+        }
       })
     )
   })
@@ -53,7 +52,7 @@ describe('User Details', () => {
   describe('while editing', () => {
     beforeEach(async () => {
       await userDetailsComponent.setData({
-        editing: true,
+        editing: true
       })
     })
     it('can update their name', async () => {

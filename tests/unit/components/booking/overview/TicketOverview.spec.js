@@ -1,11 +1,11 @@
 import { expect } from 'chai'
 
+import { fixTextSpacing, mountWithRouterMock } from '../../../helpers'
 import Booking from '@/classes/Booking'
 import OverviewBox from '@/components/ui/Card.vue'
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue'
 
 import FullBooking from '@/tests/unit/fixtures/instances/FullBooking'
-import { fixTextSpacing, mountWithRouterMock } from '../../../helpers'
 
 describe('Ticket Overview', function () {
   let ticketOverviewComponent
@@ -17,8 +17,8 @@ describe('Ticket Overview', function () {
 
     ticketOverviewComponent = await mountWithRouterMock(TicketsOverview, {
       propsData: {
-        booking,
-      },
+        booking
+      }
     })
   })
 

@@ -6,9 +6,9 @@ export default (overrides = {}) => {
       name: 'CLX',
       department: {
         value: 'LIGHTING',
-        description: 'Lighting',
+        description: 'Lighting'
       },
-      crewMembers: GenericConnection(),
+      crewMembers: GenericConnection()
     },
     overrides
   )

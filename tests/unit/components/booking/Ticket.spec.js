@@ -2,10 +2,9 @@ import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
 import QrcodeVue from 'qrcode.vue'
 
+import BookingFixture from '../../fixtures/Booking'
 import Booking from '@/classes/Booking'
 import Ticket from '@/components/booking/Ticket.vue'
-
-import BookingFixture from '../../fixtures/Booking'
 
 describe('Ticket component', function () {
   let ticketComponent
@@ -20,11 +19,11 @@ describe('Ticket component', function () {
         reference: booking.reference,
         user: {
           firstName: 'Alex',
-          lastName: 'Toof',
+          lastName: 'Toof'
         },
-        index: 1,
+        index: 1
       },
-      stubs: ['qrcode-vue'],
+      stubs: ['qrcode-vue']
     })
   })
 

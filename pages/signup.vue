@@ -19,10 +19,10 @@ import AuthPageTemplate from '@/components/auth/AuthPageTemplate.vue'
 export default {
   components: { UserAuthBox, AuthPageTemplate },
   middleware: 'not-authed',
-  head() {
+  head () {
     return {
-      title: 'Sign Up',
+      title: 'Sign Up'
     }
-  },
+  }
 }
 </script>

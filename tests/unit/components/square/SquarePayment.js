@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
-import SquarePayment from '@/components/square/SquarePayment.vue'
 import { generateMountOptions } from '../../helpers'
+import SquarePayment from '@/components/square/SquarePayment.vue'
 
 describe('Card Payment', () => {
   let squarePaymentsMock, component, cardMock, gpayMock, applePayMock
@@ -12,29 +12,29 @@ describe('Card Payment', () => {
           paymentRequest: jest.fn(),
           card: (cardMock = jest.fn(() => {
             return {
-              tokenize: jest.fn(),
+              tokenize: jest.fn()
             }
           })),
           googlePay: (gpayMock = jest.fn(() => {
             return {
-              tokenize: jest.fn(),
+              tokenize: jest.fn()
             }
           })),
           applePay: (applePayMock = jest.fn(() => {
             return {
-              tokenize: jest.fn(),
+              tokenize: jest.fn()
             }
-          })),
+          }))
         }
-      })),
+      }))
     }
 
     component = mount(
       SquarePayment,
       generateMountOptions(['config'], {
         propsData: {
-          price: '10.00',
-        },
+          price: '10.00'
+        }
       })
     )
   })
@@ -55,7 +55,7 @@ describe('Card Payment', () => {
 
   it('requests card nonce on pay click', async () => {
     await component.setData({
-      ready: true,
+      ready: true
     })
     component.find('button#card-button').trigger('click')
     expect(component.vm.square.card.tokenize.mock.calls).length(1)

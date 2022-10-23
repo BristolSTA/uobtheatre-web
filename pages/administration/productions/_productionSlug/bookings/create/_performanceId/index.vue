@@ -16,14 +16,16 @@
             :disabled="!!booking.id"
             type="text"
             placeholder="joe.bloggs@example.org"
-        /></template>
+          />
+        </template>
       </form-label>
       <sta-button
         colour="orange"
         :disabled="!bookingEmail || !booking.tickets.length"
         @click="create"
-        >Create Booking</sta-button
       >
+        Create Booking
+      </sta-button>
       <p>
         <strong>Note:</strong> Only complimentary bookings (100% discount) can
         be created here. Once you click create, booking confirmation will be
@@ -52,23 +54,24 @@ export default {
     Card,
     FormLabel,
     StaButton,
-    LoadingContainer,
+    LoadingContainer
   },
-  async asyncData({ params, app, error }) {
+  async asyncData ({ params, app, error }) {
     const { data } = await app.apolloProvider.defaultClient.query({
       query: FullPerformanceAndTicketOptionsQuery,
       variables: {
-        id: params.performanceId,
+        id: params.performanceId
       },
-      fetchPolicy: 'no-cache',
+      fetchPolicy: 'no-cache'
     })
 
     const performance = data.performance
-    if (!performance)
+    if (!performance) {
       return error({
         statusCode: 404,
-        message: 'This performance does not exist',
+        message: 'This performance does not exist'
       })
+    }
 
     const ticketsMatrix = new TicketsMatrix(performance)
 
@@ -78,10 +81,10 @@ export default {
     return {
       ticketsMatrix,
       performance,
-      booking,
+      booking
     }
   },
-  data() {
+  data () {
     return {
       ticketsMatrix: null,
       performance: null,
@@ -89,14 +92,14 @@ export default {
 
       booking: null,
       bookingEmail: null,
-      errors: null,
+      errors: null
     }
   },
   head: {
-    title: 'Create Complimentary Booking',
+    title: 'Create Complimentary Booking'
   },
   methods: {
-    async create() {
+    async create () {
       this.loading = true
       try {
         // Make the booking
@@ -109,9 +112,9 @@ export default {
                 adminDiscountPercentage: 1,
                 performance: this.performance.id,
                 userEmail: this.bookingEmail,
-                tickets: this.booking.toAPIData().tickets,
-              },
-            },
+                tickets: this.booking.toAPIData().tickets
+              }
+            }
           },
           'booking'
         )
@@ -124,14 +127,14 @@ export default {
             mutation: PayBookingMutation,
             variables: {
               id: this.booking.id,
-              totalPence: this.booking.totalPrice,
-            },
+              totalPence: this.booking.totalPrice
+            }
           },
           'payBooking'
         )
 
         successToast.fire({
-          title: 'Booking created!',
+          title: 'Booking created!'
         })
 
         this.$router.replace(`../${this.booking.reference}`)
@@ -140,7 +143,7 @@ export default {
       } finally {
         this.loading = false
       }
-    },
-  },
+    }
+  }
 }
 </script>

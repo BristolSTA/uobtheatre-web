@@ -1,7 +1,7 @@
 import { createApolloClient } from 'vue-cli-plugin-apollo/graphql-client'
 import VueApollo from 'vue-apollo'
-import authService from '@/services/authService'
 import * as Sentry from '@sentry/browser'
+import authService from '@/services/authService'
 
 // Config
 const defaultOptions = {
@@ -13,9 +13,9 @@ const defaultOptions = {
   // Cache Options
   inMemoryCacheOptions: {
     fragmentMatcher: {
-      GQLErrorUnion: ['NonFieldError', 'FieldError'],
-    },
-  },
+      GQLErrorUnion: ['NonFieldError', 'FieldError']
+    }
+  }
 }
 
 export default (context) => {
@@ -24,20 +24,19 @@ export default (context) => {
     httpEndpoint: context.$config.api.graphql_endpoint,
     authenticationType: 'JWT',
     getAuth: () => {
-      if (authService.currentAuthToken(context))
-        return `JWT ${authService.currentAuthToken(context)}`
-    },
+      if (authService.currentAuthToken(context)) { return `JWT ${authService.currentAuthToken(context)}` }
+    }
   }
 }
 
-export function createClient(options = {}) {
+export function createClient (options = {}) {
   return createApolloClient({
     ...defaultOptions,
-    ...options,
+    ...options
   })
 }
 
-export function createProvider(clientOptions = {}, vueApolloOptions = {}) {
+export function createProvider (clientOptions = {}, vueApolloOptions = {}) {
   // Create apollo client
   const { apolloClient, wsClient } = createClient(clientOptions)
   apolloClient.wsClient = wsClient
@@ -46,7 +45,7 @@ export function createProvider(clientOptions = {}, vueApolloOptions = {}) {
   const apolloProvider = new VueApollo({
     defaultClient: apolloClient,
     defaultOptions: vueApolloOptions,
-    errorHandler(error) {
+    errorHandler (error) {
       // eslint-disable-next-line no-console
       console.log(
         '%cError',
@@ -54,7 +53,7 @@ export function createProvider(clientOptions = {}, vueApolloOptions = {}) {
         error.message
       )
       Sentry.captureException(error)
-    },
+    }
   })
 
   return apolloProvider

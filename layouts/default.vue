@@ -16,26 +16,26 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
 export default {
   components: { NavBar, FooterBar, Breadcrumbs },
   computed: {
-    crumbs() {
-      if (!this.$refs.page) return null
+    crumbs () {
+      if (!this.$refs.page) { return null }
       return this.$refs.page.$children[0].crumbs
-    },
+    }
   },
   watch: {
-    $route() {
+    $route () {
       const timer = setInterval(() => {
         if (this.$refs.page.$children.length > 0) {
           this.getCrumbs()
           clearInterval(timer)
         }
       }, 100)
-    },
+    }
   },
   methods: {
-    getCrumbs() {
+    getCrumbs () {
       this._computedWatchers.crumbs.run()
       this.$forceUpdate()
-    },
-  },
+    }
+  }
 }
 </script>

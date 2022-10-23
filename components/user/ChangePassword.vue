@@ -1,6 +1,8 @@
 <template>
   <loading-container :loading="loading" class="text-center">
-    <h3 class="text-h3">Change your password</h3>
+    <h3 class="text-h3">
+      Change your password
+    </h3>
     <form
       class="flex flex-col p-6 pt-0 space-y-2"
       @submit.prevent="attemptChange"
@@ -34,7 +36,9 @@
         required
       />
       <div>
-        <button class="btn btn-green mr-2">Update</button>
+        <button class="btn btn-green mr-2">
+          Update
+        </button>
         <button
           class="btn btn-orange"
           @click.prevent="$emit('cancel')"
@@ -58,19 +62,19 @@ export default {
   components: {
     LoadingContainer,
     NonFieldError,
-    TextInput,
+    TextInput
   },
-  data() {
+  data () {
     return {
       loading: false,
       currentPassword: null,
       newPassword: null,
       confirmedNewPassword: null,
-      errors: null,
+      errors: null
     }
   },
   methods: {
-    async attemptChange() {
+    async attemptChange () {
       this.loading = true
       try {
         await performMutation(
@@ -86,22 +90,22 @@ export default {
             variables: {
               currentPassword: this.currentPassword,
               newPassword: this.newPassword,
-              confirmedNewPassword: this.confirmedNewPassword,
-            },
+              confirmedNewPassword: this.confirmedNewPassword
+            }
           },
           'passwordChange'
         )
         swalToast.fire({
           icon: 'success',
           title: 'Password Changed',
-          position: 'bottom-end',
+          position: 'bottom-end'
         })
         this.$emit('cancel')
       } catch (e) {
         this.errors = getValidationErrors(e)
       }
       this.loading = false
-    },
-  },
+    }
+  }
 }
 </script>

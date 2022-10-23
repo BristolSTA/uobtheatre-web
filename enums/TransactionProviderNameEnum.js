@@ -7,6 +7,6 @@ export default class extends BaseEnum {
     SQUARE_POS: 'Square Point of Sale',
     SQUARE_ONLINE: 'Square Online',
     MANUAL_CARD_REFUND: 'Manual Card Refund',
-    SQUARE_REFUND: 'Square Refund',
+    SQUARE_REFUND: 'Square Refund'
   }
 }

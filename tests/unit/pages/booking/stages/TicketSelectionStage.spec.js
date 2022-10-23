@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils'
 import { expect } from 'chai'
 
+import { generateMountOptions } from '../../../helpers'
 import Booking from '@/classes/Booking'
 import Ticket from '@/classes/Ticket'
 import TicketsMatrix from '@/classes/TicketsMatrix'
@@ -11,7 +12,6 @@ import TicketOptions from '@/components/booking/TicketOptions.vue'
 import FullBooking from '@/tests/unit/fixtures/instances/FullBooking'
 import GenericApolloResponse from '@/tests/unit/fixtures/support/GenericApolloResponse'
 import GenericMutationResponse from '@/tests/unit/fixtures/support/GenericMutationResponse'
-import { generateMountOptions } from '../../../helpers'
 
 describe('Ticket Selection Stage', () => {
   let stageComponent
@@ -34,8 +34,8 @@ describe('Ticket Selection Stage', () => {
         propsData: {
           production,
           booking,
-          ticketMatrix: ticketTypes,
-        },
+          ticketMatrix: ticketTypes
+        }
       })
     )
   })
@@ -84,10 +84,10 @@ describe('Ticket Selection Stage', () => {
         new Ticket(
           performance.ticketOptions[1].seatGroup.id,
           performance.ticketOptions[0].concessionTypes[1].concessionType.id
-        ),
+        )
       ]
       await stageComponent.setProps({
-        booking,
+        booking
       })
     })
 

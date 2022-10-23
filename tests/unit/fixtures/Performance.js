@@ -32,8 +32,8 @@ export default (overrides = {}) => {
       isOnline: false,
       soldOut: false,
       ticketsBreakdown: {
-        totalCapacity: 10,
-      },
+        totalCapacity: 10
+      }
     },
     overrides
   )
