@@ -299,31 +299,7 @@ export default {
             ),
           text: 'Edit Permissions',
         })
-      }
-      if (this.canEditRightNow) {
-        // Add action button based on status
-        if (this.production.status === 'DRAFT') {
-          list.push({
-            icon: 'user-check',
-            action: () => this.setStatus('PENDING'),
-            text: 'Submit for Review',
-          })
-        }
-        if (
-          this.production.status === 'PENDING' &&
-          this.production.permissions.includes('approve_production')
-        ) {
-          list.push({
-            icon: 'check',
-            action: () => this.setStatus('APPROVED'),
-            text: 'Approve',
-          })
-          list.push({
-            icon: 'exclamation',
-            action: () => this.setStatus('DRAFT'),
-            text: 'Reject',
-          })
-        }
+
         if (this.production.status === 'APPROVED') {
           list.push({
             icon: 'globe',
@@ -332,17 +308,40 @@ export default {
             text: 'Make Live',
           })
         }
-        if (
-          this.production.status === 'PUBLISHED' &&
-          new Date(this.production.end) < new Date() &&
-          this.production.permissions.includes('force_change_production')
-        ) {
-          list.push({
-            icon: 'times-circle',
-            action: () => this.setStatus('CLOSED'),
-            text: 'Close Production',
-          })
-        }
+      }
+      if (
+        this.production.status === 'PENDING' &&
+        this.production.permissions.includes('approve_production')
+      ) {
+        list.push({
+          icon: 'check',
+          action: () => this.setStatus('APPROVED'),
+          text: 'Approve',
+        })
+        list.push({
+          icon: 'exclamation',
+          action: () => this.setStatus('DRAFT'),
+          text: 'Reject',
+        })
+      }
+      if (
+        this.production.status === 'PUBLISHED' &&
+        new Date(this.production.end) < new Date() &&
+        this.production.permissions.includes('force_change_production')
+      ) {
+        list.push({
+          icon: 'times-circle',
+          action: () => this.setStatus('CLOSED'),
+          text: 'Close Production',
+        })
+      }
+      // Add action button based on status
+      if (this.canEditRightNow && this.production.status === 'DRAFT') {
+        list.push({
+          icon: 'user-check',
+          action: () => this.setStatus('PENDING'),
+          text: 'Submit for Review',
+        })
       }
 
       return list

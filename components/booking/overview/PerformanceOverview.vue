@@ -51,7 +51,7 @@ export default {
   },
   computed: {
     startTime() {
-      return DateTime.fromISO(self.performance.start)
+      return DateTime.fromISO(this.performance.start)
     },
   },
   methods: {

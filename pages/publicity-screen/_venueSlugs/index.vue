@@ -17,16 +17,14 @@
       v-else-if="marketableProductions.length"
       class="flex flex-col p-4 gap-2 h-full overflow-hidden"
     >
-      <div class="flex h-2/3 gap-4">
+      <div class="flex h-2/3 gap-4 justify-evenly">
         <div class="flex items-center justify-center">
           <production-featured-image
             :image-object="currentDisplayedProduction.featuredImage"
             class="w-auto max-h-full"
           />
         </div>
-        <div
-          class="flex flex-col flex-grow items-center justify-evenly text-rsm"
-        >
+        <div class="flex flex-col items-center justify-evenly text-rsm">
           <h2 class="text-rmd font-bold text-sta-orange text-center">
             {{ currentDisplayedProduction.name }}
           </h2>
@@ -109,6 +107,7 @@ export default {
   data() {
     return {
       now: null,
+      pageOpenTime: DateTime.now(),
 
       productions: [],
       venues: [],
@@ -177,9 +176,12 @@ export default {
   mounted() {
     this.fetchData()
 
-    this.dataFetchTimer = setInterval(this.fetchData, 7200000)
+    this.dataFetchTimer = setInterval(this.fetchData, 2 * 60 * 60 * 1000) // Every 2 hours
+
     this.slideTimer = setInterval(() => {
       this.now = DateTime.now()
+      this.refreshPageIfRequired()
+
       if (this.paused) return
 
       // General promotion
@@ -286,6 +288,12 @@ export default {
           }
           this.productions.push(edge.node)
         })
+      }
+    },
+    refreshPageIfRequired() {
+      // Every 12 hours, do a full refresh of the page to load new code
+      if (this.now - this.pageOpenTime > 12 * 60 * 60 && this.now.hour === 0) {
+        window.location.reload()
       }
     },
   },
