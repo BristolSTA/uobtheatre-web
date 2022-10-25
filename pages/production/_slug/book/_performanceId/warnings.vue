@@ -23,10 +23,11 @@
         distressing to viewers. For more information, please contact
         <a :href="`mailto:${production.contactEmail}`" class="underline">{{
           production.contactEmail
-        }}</a>.
+        }}</a
+        >.
       </p>
 
-      <hr class="my-2 border-sta-gray-light">
+      <hr class="my-2 border-sta-gray-light" />
       <content-warnings-display
         :content-warnings="production.contentWarnings"
       />
@@ -44,40 +45,40 @@
 </template>
 
 <script>
-import BookingStage from '@/classes/BookingStage'
-import Booking from '@/classes/Booking'
-import Card from '@/components/ui/Card.vue'
-import ContentWarningsDisplay from '@/components/production/content-warnings/ContentWarningsDisplay.vue'
+import BookingStage from "@/classes/BookingStage";
+import Booking from "@/classes/Booking";
+import Card from "@/components/ui/Card.vue";
+import ContentWarningsDisplay from "@/components/production/content-warnings/ContentWarningsDisplay.vue";
 
 export default {
   stageInfo: new BookingStage({
-    name: 'Content Warnings',
-    routeName: 'production-slug-book-performanceId-warnings',
+    name: "Content Warnings",
+    routeName: "production-slug-book-performanceId-warnings",
     shouldBeUsed: (production, booking) => {
       return (
         production.contentWarnings.length > 0 ||
         booking?.performance?.description
-      )
-    }
+      );
+    },
   }),
   components: {
     Card,
-    ContentWarningsDisplay
+    ContentWarningsDisplay,
   },
   props: {
     production: {
       required: true,
-      type: Object
+      type: Object,
     },
     booking: {
       required: true,
-      type: Booking
-    }
+      type: Booking,
+    },
   },
   methods: {
-    onUnderstood () {
-      this.$emit('next-stage')
-    }
-  }
-}
+    onUnderstood() {
+      this.$emit("next-stage");
+    },
+  },
+};
 </script>

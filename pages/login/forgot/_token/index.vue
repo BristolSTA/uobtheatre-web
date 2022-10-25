@@ -1,19 +1,9 @@
 <template>
   <auth-page-template>
     <div
-      class="
-        w-100
-        relative
-        p-6
-        max-w-xs
-        text-center text-white
-        bg-sta-gray
-        shadow-2xl
-      "
+      class="w-100 relative p-6 max-w-xs text-center text-white bg-sta-gray shadow-2xl"
     >
-      <h1 class="text-h3">
-        Reset your password
-      </h1>
+      <h1 class="text-h3">Reset your password</h1>
       <form
         class="flex flex-col p-6 pt-0 space-y-2"
         @submit.prevent="attemptReset"
@@ -38,55 +28,53 @@
           required
         />
         <div>
-          <button class="btn btn-green mr-2">
-            Reset
-          </button>
+          <button class="btn btn-green mr-2">Reset</button>
         </div>
       </form>
     </div>
   </auth-page-template>
 </template>
 <script>
-import { getValidationErrors, performMutation, successToast } from '@/utils'
+import { getValidationErrors, performMutation, successToast } from "@/utils";
 
-import AuthPageTemplate from '@/components/auth/AuthPageTemplate.vue'
-import NonFieldError from '@/components/ui/NonFieldError.vue'
-import TextInput from '@/components/ui/TextInput.vue'
+import AuthPageTemplate from "@/components/auth/AuthPageTemplate.vue";
+import NonFieldError from "@/components/ui/NonFieldError.vue";
+import TextInput from "@/components/ui/TextInput.vue";
 
 export default {
   components: { AuthPageTemplate, NonFieldError, TextInput },
-  middleware: 'not-authed',
-  data () {
+  middleware: "not-authed",
+  data() {
     return {
       errors: null,
       newPassword: null,
-      confirmedNewPassword: null
-    }
+      confirmedNewPassword: null,
+    };
   },
   head: {
-    title: 'Reset your password'
+    title: "Reset your password",
   },
   methods: {
-    async attemptReset () {
+    async attemptReset() {
       try {
         await performMutation(
           this.$apollo,
           {
-            mutation: require('@/graphql/mutations/user/AttemptPasswordReset.gql'),
+            mutation: require("@/graphql/mutations/user/AttemptPasswordReset.gql"),
             variables: {
               token: this.$route.params.token,
               newPassword: this.newPassword,
-              confirmedNewPassword: this.confirmedNewPassword
-            }
+              confirmedNewPassword: this.confirmedNewPassword,
+            },
           },
-          'passwordReset'
-        )
-        successToast.fire({ title: 'Password Changed!' })
-        return this.$router.replace('/login')
+          "passwordReset"
+        );
+        successToast.fire({ title: "Password Changed!" });
+        return this.$router.replace("/login");
       } catch (e) {
-        this.errors = getValidationErrors(e)
+        this.errors = getValidationErrors(e);
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>

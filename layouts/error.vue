@@ -4,9 +4,7 @@
       <div class="text-left">
         <slot>
           <h1 class="text-h1">
-            <slot name="title">
-              Oops!
-            </slot>
+            <slot name="title"> Oops! </slot>
           </h1>
           <h2 class="text-h2">
             <slot name="subtitle">
@@ -34,25 +32,29 @@
 export default {
   props: {
     buttonText: {
-      default: 'Return Home',
-      type: String
+      default: "Return Home",
+      type: String,
     },
     buttonTo: {
-      default: '/',
-      type: String
+      default: "/",
+      type: String,
     },
     error: {
       required: false,
       type: Object,
-      default: () => {}
-    }
+      default: () => {},
+    },
   },
   computed: {
-    message () {
-      if (this.error.statusCode === 404) { return '404 - Page Not found' }
-      if (this.error.statusCode === 401) { return '401 - Unauthorized' }
-      return 'There was an issue.'
-    }
-  }
-}
+    message() {
+      if (this.error.statusCode === 404) {
+        return "404 - Page Not found";
+      }
+      if (this.error.statusCode === 401) {
+        return "401 - Unauthorized";
+      }
+      return "There was an issue.";
+    },
+  },
+};
 </script>

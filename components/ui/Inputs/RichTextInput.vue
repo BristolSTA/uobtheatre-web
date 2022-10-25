@@ -86,59 +86,59 @@
 </template>
 
 <script>
-import { Editor, EditorContent } from '@tiptap/vue-2'
-import StarterKit from '@tiptap/starter-kit'
-import EditorButton from './EditorButton.vue'
+import { Editor, EditorContent } from "@tiptap/vue-2";
+import StarterKit from "@tiptap/starter-kit";
+import EditorButton from "./EditorButton.vue";
 
 export default {
   components: {
     EditorContent,
-    EditorButton
+    EditorButton,
   },
 
   props: {
     value: {
       type: String,
-      default: ''
-    }
+      default: "",
+    },
   },
 
-  data () {
+  data() {
     return {
-      editor: null
-    }
+      editor: null,
+    };
   },
 
   watch: {
-    value (value) {
-      const isSame = this.editor.getHTML() === value
+    value(value) {
+      const isSame = this.editor.getHTML() === value;
 
       if (isSame) {
-        return
+        return;
       }
 
-      this.editor.commands.setContent(this.value, false)
-    }
+      this.editor.commands.setContent(this.value, false);
+    },
   },
 
-  mounted () {
+  mounted() {
     this.editor = new Editor({
       extensions: [StarterKit],
       content: this.value,
       editorProps: {
         attributes: {
-          class: 'tiptap-output'
-        }
+          class: "tiptap-output",
+        },
       },
       onUpdate: () => {
         // HTML
-        this.$emit('input', this.editor.getHTML())
-      }
-    })
+        this.$emit("input", this.editor.getHTML());
+      },
+    });
   },
 
-  beforeDestroy () {
-    this.editor.destroy()
-  }
-}
+  beforeDestroy() {
+    this.editor.destroy();
+  },
+};
 </script>

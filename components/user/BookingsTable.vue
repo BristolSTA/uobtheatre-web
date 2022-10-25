@@ -19,7 +19,7 @@
                 {{ booking.performance.production.name }}
               </NuxtLink>
               <p class="text-sta-orange">
-                {{ booking.performance.start | dateFormat('d MMMM kkkk') }}
+                {{ booking.performance.start | dateFormat("d MMMM kkkk") }}
               </p>
             </div>
           </td>
@@ -38,24 +38,22 @@
         </tr>
       </tbody>
     </table>
-    <h4 v-else class="p-2 text-center text-h4">
-      No Previous Bookings
-    </h4>
+    <h4 v-else class="p-2 text-center text-h4">No Previous Bookings</h4>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'BookingsTable',
+  name: "BookingsTable",
   props: {
     bookings: {
       required: true,
-      type: Array
+      type: Array,
     },
     canLoadMore: {
       default: false,
-      type: Boolean
-    }
-  }
-}
+      type: Boolean,
+    },
+  },
+};
 </script>

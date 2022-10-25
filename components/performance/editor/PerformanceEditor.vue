@@ -19,11 +19,10 @@
           )
         "
       />
-      <span
-        v-if="performanceSeatGroups.length"
-        class="text-sm font-semibold"
-      >You can't change the venue whilst the performance has seat groups
-        assigned</span>
+      <span v-if="performanceSeatGroups.length" class="text-sm font-semibold"
+        >You can't change the venue whilst the performance has seat groups
+        assigned</span
+      >
       <error-helper :errors="errors" field-name="venue" />
     </card>
     <card title="Timings">
@@ -83,7 +82,7 @@
               min="1"
               @input="$emit('update:intervalDurationMins', $event)"
               @keypress.stop="
-                if (!/^[0-9]$/i.test($event.key)) $event.preventDefault()
+                if (!/^[0-9]$/i.test($event.key)) $event.preventDefault();
               "
             />
           </template>
@@ -126,15 +125,11 @@
           </sta-button>
         </div>
       </template>
-      <template
-        v-else
-      >
+      <template v-else>
         <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
           <div class="px-2 border border-sta-gray rounded-lg">
             <div class="flex items-center justify-between pt-3">
-              <h4 class="text-h4">
-                Seat Groups
-              </h4>
+              <h4 class="text-h4">Seat Groups</h4>
               <font-awesome-icon
                 v-if="remainingSeatGroups.length"
                 icon="plus-circle"
@@ -169,9 +164,7 @@
           </div>
           <div class="px-2 border border-sta-gray rounded-lg">
             <div class="flex items-center justify-between pt-3">
-              <h4 class="text-h4">
-                Concessions
-              </h4>
+              <h4 class="text-h4">Concessions</h4>
               <font-awesome-icon
                 icon="plus-circle"
                 class="cursor-pointer text-lg hover:text-gray-300"
@@ -202,9 +195,7 @@
           </div>
         </div>
 
-        <h4 class="mt-6 text-h4">
-          Ticket Pricing
-        </h4>
+        <h4 class="mt-6 text-h4">Ticket Pricing</h4>
         <div
           v-if="!performanceSeatGroups.length"
           class="p-4 text-white bg-sta-rouge"
@@ -256,7 +247,7 @@
               min="1"
               @input="$emit('update:capacity', $event)"
               @keypress.stop="
-                if (!/^[0-9]$/i.test($event.key)) $event.preventDefault()
+                if (!/^[0-9]$/i.test($event.key)) $event.preventDefault();
               "
             />
           </template>
@@ -282,17 +273,17 @@
 </template>
 
 <script>
-import Card from '../../ui/Card.vue'
-import FormLabel from '../../ui/FormLabel.vue'
-import SeatGroup from './SeatGroup.vue'
-import ConcessionType from './ConcessionType.vue'
-import PriceMatrix from './PriceMatrix.vue'
-import ErrorHelper from '@/components/ui/ErrorHelper.vue'
-import Errors from '@/classes/Errors'
-import { getValidationErrors, performMutation, swal } from '@/utils'
-import StaButton from '@/components/ui/StaButton.vue'
-import Alert from '@/components/ui/Alert.vue'
-import { singleDiscounts as singleDiscountsFn } from '@/utils/performance'
+import Card from "../../ui/Card.vue";
+import FormLabel from "../../ui/FormLabel.vue";
+import SeatGroup from "./SeatGroup.vue";
+import ConcessionType from "./ConcessionType.vue";
+import PriceMatrix from "./PriceMatrix.vue";
+import ErrorHelper from "@/components/ui/ErrorHelper.vue";
+import Errors from "@/classes/Errors";
+import { getValidationErrors, performMutation, swal } from "@/utils";
+import StaButton from "@/components/ui/StaButton.vue";
+import Alert from "@/components/ui/Alert.vue";
+import { singleDiscounts as singleDiscountsFn } from "@/utils/performance";
 
 export default {
   components: {
@@ -303,67 +294,67 @@ export default {
     ErrorHelper,
     StaButton,
     Alert,
-    PriceMatrix
+    PriceMatrix,
   },
   props: {
     performance: {
       default: null,
-      type: Object
+      type: Object,
     },
     id: {
       type: String,
-      default: null
+      default: null,
     },
     capacity: {
       type: [Number, String],
-      default: null
+      default: null,
     },
     doorsOpen: {
       type: String,
-      default: null
+      default: null,
     },
     start: {
       type: String,
-      default: null
+      default: null,
     },
     production: {
       type: Object,
-      default: null
+      default: null,
     },
     end: {
       type: String,
-      default: null
+      default: null,
     },
     venue: {
       type: Object,
-      default: null
+      default: null,
     },
     errors: {
       type: Errors,
-      default: null
+      default: null,
     },
     discounts: {
       type: Object,
-      default: () => {}
+      default: () => {},
     },
     ticketOptions: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     description: {
       type: String,
-      default: null
+      default: null,
     },
     intervalDurationMins: {
       type: [Number],
-      default: null
-    }
+      default: null,
+    },
   },
-  data () {
+  data() {
     return {
       ignoredExisitingPerformances: false,
       availableSeatGroups: [],
@@ -372,152 +363,154 @@ export default {
 
       performanceSeatGroups: [],
 
-      deletedDiscounts: []
-    }
+      deletedDiscounts: [],
+    };
   },
   apollo: {
     availableVenues: {
-      query: require('@/graphql/queries/Venues.gql'),
-      update: data => data.venues.edges.map(edge => edge.node)
+      query: require("@/graphql/queries/Venues.gql"),
+      update: (data) => data.venues.edges.map((edge) => edge.node),
     },
     availableSeatGroups: {
-      query: require('@/graphql/queries/admin/venue/AdminVenueDetailed.gql'),
-      update: data => data.venue.seatGroups.edges.map(edge => edge.node),
-      variables () {
+      query: require("@/graphql/queries/admin/venue/AdminVenueDetailed.gql"),
+      update: (data) => data.venue.seatGroups.edges.map((edge) => edge.node),
+      variables() {
         return {
-          slug: this.venue.slug
-        }
+          slug: this.venue.slug,
+        };
       },
-      skip () {
-        return !this.venue
-      }
+      skip() {
+        return !this.venue;
+      },
     },
     otherPerformances: {
-      query: require('@/graphql/queries/admin/productions/AdminPerformancesIndex.gql'),
-      update: data =>
-        data.production.performances.edges.map(edge => edge.node),
-      variables () {
+      query: require("@/graphql/queries/admin/productions/AdminPerformancesIndex.gql"),
+      update: (data) =>
+        data.production.performances.edges.map((edge) => edge.node),
+      variables() {
         return {
-          productionId: this.production.id
-        }
+          productionId: this.production.id,
+        };
       },
-      fetchPolicy: 'cache-and-network'
-    }
+      fetchPolicy: "cache-and-network",
+    },
   },
   computed: {
-    remainingSeatGroups () {
+    remainingSeatGroups() {
       return this.availableSeatGroups.filter(
-        seatGroup =>
+        (seatGroup) =>
           !this.currentSeatGroups.find(
-            currentSeatGroup => currentSeatGroup.id === seatGroup.id
+            (currentSeatGroup) => currentSeatGroup.id === seatGroup.id
           )
-      )
+      );
     },
-    similarPerformances () {
+    similarPerformances() {
       return this.otherPerformances.filter(
-        performance =>
+        (performance) =>
           performance.venue.id === this.venue?.id && performance.id !== this.id
-      )
+      );
     },
-    currentSeatGroups () {
+    currentSeatGroups() {
       return this.performanceSeatGroups.map(
-        ticketOption => ticketOption.seatGroup
-      )
+        (ticketOption) => ticketOption.seatGroup
+      );
     },
-    singleDiscounts () {
-      return singleDiscountsFn(this.discounts?.edges || [])
+    singleDiscounts() {
+      return singleDiscountsFn(this.discounts?.edges || []);
     },
-    selectedSeatGroupCapacities () {
+    selectedSeatGroupCapacities() {
       return this.performanceSeatGroups.reduce(
         (sum, option) => sum + option.capacity,
         0
-      )
+      );
     },
-    showTicketsEditor () {
+    showTicketsEditor() {
       return (
         this.performanceSeatGroups.length ||
         this.singleDiscounts.length ||
         this.ignoredExisitingPerformances ||
         !this.similarPerformances.length
-      )
-    }
+      );
+    },
   },
   watch: {
     ticketOptions: {
-      handler (newValue) {
-        this.performanceSeatGroups = [...newValue]
+      handler(newValue) {
+        this.performanceSeatGroups = [...newValue];
       },
-      immediate: true
+      immediate: true,
     },
-    similarPerformances (newVal) {
+    similarPerformances(newVal) {
       // If this is a create operation, and there are similar performances
       if (newVal.length && !this.id) {
         // If no interval has been set yet, but similar performances has an interval, pre-fill with those interval lengths
         const intervalLength = newVal.find(
-          performance => performance.intervalDurationMins
-        )?.intervalDurationMins
+          (performance) => performance.intervalDurationMins
+        )?.intervalDurationMins;
         if (this.intervalDurationMins === null && intervalLength) {
-          this.$emit('update:intervalDurationMins', intervalLength)
+          this.$emit("update:intervalDurationMins", intervalLength);
         }
       }
-    }
+    },
   },
   methods: {
-    getInputData () {
+    getInputData() {
       const returnObject = {
         id: this.id,
         doorsOpen: this.doorsOpen,
         intervalDurationMins:
-          this.intervalDurationMins === '' ? null : this.intervalDurationMins,
+          this.intervalDurationMins === "" ? null : this.intervalDurationMins,
         start: this.start,
         end: this.end,
         venue: this.venue?.id,
         disabled: this.disabled,
         description: this.description,
-        capacity: this.capacity === '' ? null : this.capacity
-      }
+        capacity: this.capacity === "" ? null : this.capacity,
+      };
 
       if (!returnObject.id) {
-        delete returnObject.id
+        delete returnObject.id;
       }
 
-      return returnObject
+      return returnObject;
     },
-    async loadTicketOptions () {
+    async loadTicketOptions() {
       const { value } = await swal.fire({
-        input: 'select',
+        input: "select",
         inputOptions: Object.fromEntries(
-          this.similarPerformances.map(performance => [
+          this.similarPerformances.map((performance) => [
             performance.id,
-            'Performance at ' +
+            "Performance at " +
               this.$options.filters.dateFormat(
                 performance.start,
-                'EEEE dd MMMM y HH:mm ZZZZ'
-              )
+                "EEEE dd MMMM y HH:mm ZZZZ"
+              ),
           ])
         ),
         showCancelButton: true,
-        confirmButtonText: 'Load'
-      })
-      if (!value) { return }
+        confirmButtonText: "Load",
+      });
+      if (!value) {
+        return;
+      }
 
       // Load the details
       const { data } = await this.$apollo.query({
-        query: require('@/graphql/queries/admin/productions/AdminPerformanceDetail.gql'),
+        query: require("@/graphql/queries/admin/productions/AdminPerformanceDetail.gql"),
         variables: {
           productionSlug: this.production.slug,
-          performanceId: value
+          performanceId: value,
         },
-        fetchPolicy: 'no-cache'
-      })
+        fetchPolicy: "no-cache",
+      });
 
       // Delete exisiting performance seat groups
-      const performance = data.production.performances.edges[0].node
-      this.performanceSeatGroups = []
+      const performance = data.production.performances.edges[0].node;
+      this.performanceSeatGroups = [];
 
       // Delete exisiting discounts / concessions
       for (const discount of this.singleDiscounts) {
-        await this.deleteConcession(discount)
+        await this.deleteConcession(discount);
       }
 
       // For the chosen performancem add seat groups ...
@@ -525,77 +518,81 @@ export default {
         this.addSeatGroup(
           performanceSeatGroup.seatGroup,
           performanceSeatGroup.price
-        )
-      })
+        );
+      });
 
       // And concession types...
       for (const edge of performance.discounts.edges) {
         if (
           edge.node.requirements.length > 1 ||
           edge.node.requirements[0].number !== 1
-        ) { continue }
-        const requirement = edge.node.requirements[0]
+        ) {
+          continue;
+        }
+        const requirement = edge.node.requirements[0];
         await this.addNewConcession(
           requirement.concessionType.name,
           requirement.concessionType.description,
           edge.node.percentage,
           requirement.concessionType.id
-        )
+        );
       }
     },
-    async saveRelated () {
-      const mutations = []
+    async saveRelated() {
+      const mutations = [];
       // Process seat group changes
       const currentSeatGroupIds = this.ticketOptions.map(
-        ticketOption => ticketOption.id
-      )
+        (ticketOption) => ticketOption.id
+      );
       const editedSeatGroupIds = this.performanceSeatGroups.map(
-        performanceSeatGroup => performanceSeatGroup.id
-      )
+        (performanceSeatGroup) => performanceSeatGroup.id
+      );
 
       // Delete deleted seat groups
       currentSeatGroupIds
-        .filter(currentId => !editedSeatGroupIds.includes(currentId))
+        .filter((currentId) => !editedSeatGroupIds.includes(currentId))
         .forEach((currentId) => {
           mutations.push(
             performMutation(
               this.$apollo,
               {
-                mutation: require('@/graphql/mutations/admin/performance/DeletePerformanceSeatGroup.gql'),
+                mutation: require("@/graphql/mutations/admin/performance/DeletePerformanceSeatGroup.gql"),
                 variables: {
-                  id: currentId
-                }
+                  id: currentId,
+                },
               },
-              'deletePerformanceSeatGroup'
+              "deletePerformanceSeatGroup"
             )
-          )
-        })
+          );
+        });
 
       // Update or add edited ones
       this.performanceSeatGroups.forEach((performanceSeatGroup) => {
         const input = {
           seatGroup: performanceSeatGroup.seatGroup.id,
           performance: this.performance.id,
-          price: performanceSeatGroup.price
+          price: performanceSeatGroup.price,
+        };
+        if (performanceSeatGroup.id) {
+          input.id = performanceSeatGroup.id;
         }
-        if (performanceSeatGroup.id) { input.id = performanceSeatGroup.id }
         mutations.push(
           performMutation(
             this.$apollo,
             {
-              mutation: require('@/graphql/mutations/admin/performance/PerformanceSeatGroupMutation.gql'),
+              mutation: require("@/graphql/mutations/admin/performance/PerformanceSeatGroupMutation.gql"),
               variables: {
-                input
-              }
+                input,
+              },
             },
-            'performanceSeatGroup'
+            "performanceSeatGroup"
           )
-        )
-      })
+        );
+      });
 
       // Delete old discounts
       this.deletedDiscounts
-        .filter(discount => discount.id)
+        .filter((discount) => discount.id)
         .forEach((discount) => {
           // Check if we want to delete the mutation, or if we can just remove the performances
           if (discount.performances.length > 1) {
@@ -603,19 +600,19 @@ export default {
               performMutation(
                 this.$apollo,
                 {
-                  mutation: require('@/graphql/mutations/admin/performance/DiscountMutation.gql'),
+                  mutation: require("@/graphql/mutations/admin/performance/DiscountMutation.gql"),
                   variables: {
                     input: {
                       id: discount.id,
                       performances: discount.performances.edges
-                        .map(edge => edge.node.id)
-                        .filter(id => id !== this.performance.id)
-                    }
-                  }
+                        .map((edge) => edge.node.id)
+                        .filter((id) => id !== this.performance.id),
+                    },
+                  },
                 },
-                'discount'
+                "discount"
               )
-            )
+            );
           }
 
           // Otherwise, try the delete
@@ -623,19 +620,19 @@ export default {
             performMutation(
               this.$apollo,
               {
-                mutation: require('@/graphql/mutations/admin/performance/DeleteDiscount.gql'),
-                variables: { id: discount.id }
+                mutation: require("@/graphql/mutations/admin/performance/DeleteDiscount.gql"),
+                variables: { id: discount.id },
               },
-              'deleteDiscount'
+              "deleteDiscount"
             )
-          )
-        })
+          );
+        });
 
       // Create or update concession types
 
       if (this.discounts?.edges) {
         this.discounts.edges
-          .map(edge => edge.node)
+          .map((edge) => edge.node)
           .forEach((discount) => {
             mutations.push(
               new Promise((resolve, reject) => {
@@ -643,116 +640,126 @@ export default {
                 const input = {
                   percentage: discount.percentage,
                   performances: discount.performances.edges.map(
-                    edge => edge.node.id
-                  )
+                    (edge) => edge.node.id
+                  ),
+                };
+                if (discount.id) {
+                  input.id = discount.id;
                 }
-                if (discount.id) { input.id = discount.id }
                 performMutation(
                   this.$apollo,
                   {
-                    mutation: require('@/graphql/mutations/admin/performance/DiscountMutation.gql'),
+                    mutation: require("@/graphql/mutations/admin/performance/DiscountMutation.gql"),
                     variables: {
-                      input
-                    }
+                      input,
+                    },
                   },
-                  'discount'
+                  "discount"
                 ).then((data) => {
-                  discount.id = data.discount.discount.id
+                  discount.id = data.discount.discount.id;
                   // Create or update the discount requirement & concession
                   discount.requirements.forEach((requirement) => {
                     // Step #1: Concession Type
                     let input = {
                       name: requirement.concessionType.name,
-                      description: requirement.concessionType.description
-                    }
+                      description: requirement.concessionType.description,
+                    };
 
-                    if (requirement.concessionType.id) { input.id = requirement.concessionType.id }
+                    if (requirement.concessionType.id) {
+                      input.id = requirement.concessionType.id;
+                    }
 
                     performMutation(
                       this.$apollo,
                       {
-                        mutation: require('@/graphql/mutations/admin/performance/ConcessionTypeMutation.gql'),
+                        mutation: require("@/graphql/mutations/admin/performance/ConcessionTypeMutation.gql"),
                         variables: {
-                          input
-                        }
+                          input,
+                        },
                       },
-                      'concessionType'
+                      "concessionType"
                     )
                       .then((data) => {
                         requirement.concessionType.id =
-                          data.concessionType.concessionType.id
+                          data.concessionType.concessionType.id;
 
                         // Step#2: Update or create the requirement
                         input = {
                           number: requirement.number,
                           concessionType: requirement.concessionType.id,
-                          discount: discount.id
+                          discount: discount.id,
+                        };
+                        if (requirement.id) {
+                          input.id = requirement.id;
                         }
-                        if (requirement.id) { input.id = requirement.id }
 
                         performMutation(
                           this.$apollo,
                           {
-                            mutation: require('@/graphql/mutations/admin/performance/DiscountRequirementMutation.gql'),
+                            mutation: require("@/graphql/mutations/admin/performance/DiscountRequirementMutation.gql"),
                             variables: {
-                              input
-                            }
+                              input,
+                            },
                           },
-                          'discountRequirement'
+                          "discountRequirement"
                         )
                           .then(resolve())
-                          .catch(e => reject(e))
+                          .catch((e) => reject(e));
                       })
-                      .catch(e => reject(e))
-                  })
-                })
+                      .catch((e) => reject(e));
+                  });
+                });
               })
-            )
-          })
+            );
+          });
       }
 
       try {
-        await Promise.all(mutations)
-        return true
+        await Promise.all(mutations);
+        return true;
       } catch (e) {
-        this.$emit('update:errors', getValidationErrors(e))
-        return false
+        this.$emit("update:errors", getValidationErrors(e));
+        return false;
       }
     },
-    async addSeatGroup (sg = null, price = 0) {
+    async addSeatGroup(sg = null, price = 0) {
       if (!sg) {
         const { value } = await swal.fire({
-          text: 'Select seat group:',
-          input: 'select',
+          text: "Select seat group:",
+          input: "select",
           inputOptions: Object.fromEntries(
-            this.remainingSeatGroups.map(seatGroup => [
+            this.remainingSeatGroups.map((seatGroup) => [
               seatGroup.id,
-              seatGroup.name
+              seatGroup.name,
             ])
           ),
           showCancelButton: true,
-          confirmButtonText: 'Add'
-        })
-        if (!value) { return }
+          confirmButtonText: "Add",
+        });
+        if (!value) {
+          return;
+        }
         sg = this.remainingSeatGroups.find(
-          seatGroup => seatGroup.id === value
-        )
+          (seatGroup) => seatGroup.id === value
+        );
       }
 
       this.performanceSeatGroups.push({
         seatGroup: sg,
         price,
-        capacity: sg.capacity
-      })
+        capacity: sg.capacity,
+      });
     },
-    async addNewConcession (
+    async addNewConcession(
       name = null,
       description = null,
       percentage = 0,
       id = null
     ) {
-      const currentNum = this.discounts?.edges ? this.discounts.edges.length : 0
-      await this.$emit('update:discounts', {
+      const currentNum = this.discounts?.edges
+        ? this.discounts.edges.length
+        : 0;
+      await this.$emit("update:discounts", {
         edges: [
           ...(this.discounts?.edges || []),
           {
@@ -765,23 +772,23 @@ export default {
                   concessionType: {
                     id,
                     name: name || `New Concession Type ${currentNum + 1}`,
-                    description
-                  }
-                }
-              ]
-            }
-          }
-        ]
-      })
+                    description,
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      });
     },
-    async deleteConcession (discount) {
+    async deleteConcession(discount) {
       // Remove from array
-      await this.$emit('update:discounts', {
-        edges: this.discounts.edges.filter(edge => edge.node !== discount)
-      })
+      await this.$emit("update:discounts", {
+        edges: this.discounts.edges.filter((edge) => edge.node !== discount),
+      });
 
-      this.deletedDiscounts.push(discount)
-    }
-  }
-}
+      this.deletedDiscounts.push(discount);
+    },
+  },
+};
 </script>

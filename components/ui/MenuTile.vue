@@ -20,21 +20,25 @@ export default {
   props: {
     to: {
       default: null,
-      type: [Object, String]
+      type: [Object, String],
     },
     icon: {
       default: null,
-      type: String
+      type: String,
     },
     textSize: {
-      default: 'text-h2',
-      type: String
-    }
+      default: "text-h2",
+      type: String,
+    },
   },
   methods: {
-    go () {
-      if (this.to) { this.$router.push(this.to) } else { this.$emit('click') }
-    }
-  }
-}
+    go() {
+      if (this.to) {
+        this.$router.push(this.to);
+      } else {
+        this.$emit("click");
+      }
+    },
+  },
+};
 </script>

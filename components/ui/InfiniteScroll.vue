@@ -8,65 +8,65 @@
 </template>
 
 <script>
-import LoadingIcon from './LoadingIcon.vue'
-import { isInViewport } from '@/utils'
+import LoadingIcon from "./LoadingIcon.vue";
+import { isInViewport } from "@/utils";
 export default {
   components: { LoadingIcon },
   props: {
     apolloQuery: {
       required: true,
-      type: Object
+      type: Object,
     },
     apolloVariables: {
       required: false,
       type: Object,
-      default: () => {}
+      default: () => {},
     },
     apolloAfterCursorVariableKey: {
       required: false,
-      default: 'afterCursor',
-      type: String
-    }
+      default: "afterCursor",
+      type: String,
+    },
   },
-  data () {
+  data() {
     return {
       loading: false,
-      endCursor: null
-    }
+      endCursor: null,
+    };
   },
   computed: {
-    hasMore () {
-      return this.endCursor || this.loading
-    }
+    hasMore() {
+      return this.endCursor || this.loading;
+    },
   },
   watch: {
-    loading (newValue) {
-      this.$emit('loadingChange', newValue)
-    }
+    loading(newValue) {
+      this.$emit("loadingChange", newValue);
+    },
   },
-  mounted () {
-    window.addEventListener('scroll', this.handleScroll)
-    this.runQuery()
+  mounted() {
+    window.addEventListener("scroll", this.handleScroll);
+    this.runQuery();
   },
-  destroyed () {
-    window.removeEventListener('scroll', this.handleScroll)
+  destroyed() {
+    window.removeEventListener("scroll", this.handleScroll);
   },
   methods: {
-    async runQuery () {
-      this.loading = true
+    async runQuery() {
+      this.loading = true;
 
-      const defaultVariables = {}
-      defaultVariables[this.apolloAfterCursorVariableKey] = this.endCursor
+      const defaultVariables = {};
+      defaultVariables[this.apolloAfterCursorVariableKey] = this.endCursor;
 
-      const variables = Object.assign(defaultVariables, this.apolloVariables)
+      const variables = Object.assign(defaultVariables, this.apolloVariables);
       const result = await this.$apollo.query({
         query: this.apolloQuery,
-        variables
-      })
-      this.loading = false
+        variables,
+      });
+      this.loading = false;
 
       // Find root query
-      const root = Object.keys(result.data)[0]
+      const root = Object.keys(result.data)[0];
 
       // Check for pageInfo
       if (
@@ -76,30 +76,32 @@ export default {
       ) {
         throw new Error(
           `endCursor or hasNextPage was not returned for the query "${root}"`
-        )
+        );
       }
       this.endCursor = result.data[root].pageInfo.hasNextPage
         ? result.data[root].pageInfo.endCursor
-        : null
+        : null;
 
       // Emit with the new data
-      this.$emit('newData', result.data[root])
+      this.$emit("newData", result.data[root]);
 
       // Check if loader on screen
-      if (this.hasMore && isInViewport(this.$refs['bottom-loader'])) {
-        this.runQuery()
+      if (this.hasMore && isInViewport(this.$refs["bottom-loader"])) {
+        this.runQuery();
       }
     },
-    handleScroll () {
-      if (this.loading) { return }
-      const bottomLoaderEl = this.$refs['bottom-loader']
+    handleScroll() {
+      if (this.loading) {
+        return;
+      }
+      const bottomLoaderEl = this.$refs["bottom-loader"];
       if (
         bottomLoaderEl &&
         bottomLoaderEl.offsetTop <= window.scrollY + window.innerHeight
       ) {
-        this.runQuery()
+        this.runQuery();
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>

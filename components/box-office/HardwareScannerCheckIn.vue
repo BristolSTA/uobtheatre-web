@@ -20,10 +20,10 @@
 </template>
 
 <script>
-import CheckInNotification from './CheckInNotification.vue'
-import HardwareScanner from './HardwareScanner.vue'
-import CheckInScan from '@/graphql/mutations/box-office/CheckInTickets.gql'
-import { successToast } from '@/utils'
+import CheckInNotification from "./CheckInNotification.vue";
+import HardwareScanner from "./HardwareScanner.vue";
+import CheckInScan from "@/graphql/mutations/box-office/CheckInTickets.gql";
+import { successToast } from "@/utils";
 
 const checkedInDataState = () => {
   return {
@@ -31,81 +31,81 @@ const checkedInDataState = () => {
     errors: null,
     booking: null,
     ticket: null,
-    scanData: {}
-  }
-}
+    scanData: {},
+  };
+};
 export default {
   components: {
     CheckInNotification,
-    HardwareScanner
+    HardwareScanner,
   },
   props: {
     performanceId: {
       required: true,
-      type: [Number, String]
-    }
+      type: [Number, String],
+    },
   },
-  data () {
+  data() {
     return {
       scannedCode: null,
-      checkedInData: checkedInDataState()
-    }
+      checkedInData: checkedInDataState(),
+    };
   },
   methods: {
-    async checkTicket (scannedData) {
-      this.$emit('scanned', scannedData)
-      const { bookingReference, ticketId } = scannedData
-      this.checkedInData = checkedInDataState()
-      this.scannedCode = null
+    async checkTicket(scannedData) {
+      this.$emit("scanned", scannedData);
+      const { bookingReference, ticketId } = scannedData;
+      this.checkedInData = checkedInDataState();
+      this.scannedCode = null;
 
       const { data } = await this.$apollo.mutate({
         mutation: CheckInScan,
         variables: {
           reference: bookingReference,
           performanceId: this.performanceId,
-          tickets: [{ ticketId }]
-        }
-      })
-      this.checkedInData.success = data.checkInBooking.success
-      this.checkedInData.booking = data.checkInBooking.booking
-      this.checkedInData.scanData = { bookingReference, ticketId }
+          tickets: [{ ticketId }],
+        },
+      });
+      this.checkedInData.success = data.checkInBooking.success;
+      this.checkedInData.booking = data.checkInBooking.booking;
+      this.checkedInData.scanData = { bookingReference, ticketId };
       if (data.checkInBooking.booking) {
         this.checkedInData.ticket = data.checkInBooking.booking.tickets.find(
-          ticket => ticket.id === ticketId
-        )
+          (ticket) => ticket.id === ticketId
+        );
       }
-      this.checkedInData.errors = data.checkInBooking.errors
+      this.checkedInData.errors = data.checkInBooking.errors;
     },
-    async checkInAll () {
+    async checkInAll() {
       const ticketIdsToCheckin = this.checkedInData.booking.tickets
-        .filter(ticket => !ticket.checkedIn)
+        .filter((ticket) => !ticket.checkedIn)
         .map((ticket) => {
           return {
-            ticketId: ticket.id
-          }
-        })
+            ticketId: ticket.id,
+          };
+        });
       if (ticketIdsToCheckin.length) {
         const { data } = await this.$apollo.mutate({
           mutation: CheckInScan,
           variables: {
             reference: this.checkedInData.booking.reference,
             performanceId: this.performanceId,
-            tickets: ticketIdsToCheckin
-          }
-        })
+            tickets: ticketIdsToCheckin,
+          },
+        });
 
-        this.checkedInData.booking = data.checkInBooking.booking
+        this.checkedInData.booking = data.checkInBooking.booking;
       }
 
       successToast.fire({
-        title: 'All Booking Tickets Checked In'
-      })
+        title: "All Booking Tickets Checked In",
+      });
 
-      this.$refs.scanInput.focus()
+      this.$refs.scanInput.focus();
     },
-    closeNotificaton () {
-      this.checkedInData = checkedInDataState()
-    }
-  }
-}
+    closeNotificaton() {
+      this.checkedInData = checkedInDataState();
+    },
+  },
+};
 </script>

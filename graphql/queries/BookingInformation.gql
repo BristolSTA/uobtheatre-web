@@ -1,6 +1,0 @@
-#import "../fragments/booking/DetailedBookingDetails.gql"
-query bookingByID($bookingId: ID!) {
-  booking(id: $bookingId) {
-    ...DetailedBookingDetails
-  }
-}

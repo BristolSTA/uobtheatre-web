@@ -12,14 +12,7 @@
       </template>
     </form-label>
     <button
-      class="
-        inline-block
-        p-3
-        mt-4
-        transition-colors
-        bg-sta-green
-        hover:bg-sta-green-dark
-      "
+      class="inline-block p-3 mt-4 transition-colors bg-sta-green hover:bg-sta-green-dark"
       @click="save"
     >
       Save
@@ -28,23 +21,23 @@
 </template>
 
 <script>
-import AdminPage from '@/components/admin/AdminPage.vue'
-import FormLabel from '@/components/ui/FormLabel.vue'
-import { successToast } from '@/utils'
+import AdminPage from "@/components/admin/AdminPage.vue";
+import FormLabel from "@/components/ui/FormLabel.vue";
+import { successToast } from "@/utils";
 export default {
   components: { FormLabel, AdminPage },
-  middleware: ['authed', 'can-boxoffice'],
-  data () {
+  middleware: ["authed", "can-boxoffice"],
+  data() {
     return {
-      locationId: this.$store.state['box-office'].locationId
-    }
+      locationId: this.$store.state["box-office"].locationId,
+    };
   },
   methods: {
-    save () {
-      this.$store.dispatch('box-office/setDeviceLocation', this.locationId)
+    save() {
+      this.$store.dispatch("box-office/setDeviceLocation", this.locationId);
 
-      successToast.fire({ title: 'Saved' })
-    }
-  }
-}
+      successToast.fire({ title: "Saved" });
+    },
+  },
+};
 </script>

@@ -52,32 +52,32 @@
 </template>
 
 <script>
-import FormLabel from '@/components/ui/FormLabel.vue'
+import FormLabel from "@/components/ui/FormLabel.vue";
 
 export default {
   components: { FormLabel },
   props: {
     name: {
       required: true,
-      type: String
+      type: String,
     },
     description: {
       default: null,
-      type: String
+      type: String,
     },
     editable: {
       default: false,
-      type: Boolean
+      type: Boolean,
     },
     removable: {
       default: false,
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
-  data () {
+  data() {
     return {
-      editing: false
-    }
-  }
-}
+      editing: false,
+    };
+  },
+};
 </script>

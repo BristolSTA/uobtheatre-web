@@ -12,18 +12,18 @@ export default class {
    *
    * @param {Object} stageInfo
    */
-  constructor ({
+  constructor({
     name,
     routeName,
     shouldBeUsed = null,
     eligable = null,
-    requiresPerformance = true
+    requiresPerformance = true,
   }) {
-    this.name = name
-    this.routeName = routeName
-    this.shouldBeUsedFn = shouldBeUsed
-    this.eligableFn = eligable
-    this.requiresPerformance = requiresPerformance
+    this.name = name;
+    this.routeName = routeName;
+    this.shouldBeUsedFn = shouldBeUsed;
+    this.eligableFn = eligable;
+    this.requiresPerformance = requiresPerformance;
   }
 
   /**
@@ -31,8 +31,10 @@ export default class {
    * @param {object|null} booking Booking Data Object
    * @returns {boolean} Whether the stage should be used in the booking process
    */
-  shouldBeUsed (production, booking = null) {
-    return this.shouldBeUsedFn ? this.shouldBeUsedFn(production, booking) : true
+  shouldBeUsed(production, booking = null) {
+    return this.shouldBeUsedFn
+      ? this.shouldBeUsedFn(production, booking)
+      : true;
   }
 
   /**
@@ -40,10 +42,10 @@ export default class {
    * @param {object|null} booking Booking Data Object
    * @returns {boolean} Whether the stage can be naviagated to
    */
-  eligable (production, booking = null) {
+  eligable(production, booking = null) {
     return (
       (this.eligableFn ? this.eligableFn(production, booking) : true) &&
       !(this.requiresPerformance && !booking.performance)
-    )
+    );
   }
 }

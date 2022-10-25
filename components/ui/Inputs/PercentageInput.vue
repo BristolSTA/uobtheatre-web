@@ -10,7 +10,7 @@
     @blur="onBlur"
     @keypress.stop="
       () => {
-        if (!/^[0-9.]$/i.test($event.key)) $event.preventDefault()
+        if (!/^[0-9.]$/i.test($event.key)) $event.preventDefault();
       }
     "
   />
@@ -21,24 +21,28 @@ export default {
   props: {
     value: {
       type: Number,
-      default: null
+      default: null,
     },
     options: {
       default: null,
-      type: Object
-    }
+      type: Object,
+    },
   },
   methods: {
-    onInput (event) {
-      this.$emit('input', event)
+    onInput(event) {
+      this.$emit("input", event);
     },
-    onBlur (event) {
-      let newVal = event.target.value
-      if (newVal > 100) { newVal = 100 }
-      if (newVal < 0) { newVal = 0 }
-      this.$emit('input', newVal)
-      this.$emit('blur', newVal)
-    }
-  }
-}
+    onBlur(event) {
+      let newVal = event.target.value;
+      if (newVal > 100) {
+        newVal = 100;
+      }
+      if (newVal < 0) {
+        newVal = 0;
+      }
+      this.$emit("input", newVal);
+      this.$emit("blur", newVal);
+    },
+  },
+};
 </script>

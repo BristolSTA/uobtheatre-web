@@ -1,54 +1,42 @@
 <template>
   <div
-    class="
-      flex
-      items-center
-      justify-center
-      p-6
-      min-h-full
-      text-white
-      bg-sta-gray
-    "
+    class="flex items-center justify-center p-6 min-h-full text-white bg-sta-gray"
   >
     <div class="relative text-center">
       <template v-if="loading">
-        <h1 class="text-h3">
-          Verifying email...
-        </h1>
+        <h1 class="text-h3">Verifying email...</h1>
         <div>
           <loading-icon size-class="text-h1" />
         </div>
       </template>
       <template v-else>
         <font-awesome-icon class="text-sta-rouge text-h1" icon="times-circle" />
-        <h1 class="text-h3">
-          There was an error verifying this email
-        </h1>
+        <h1 class="text-h3">There was an error verifying this email</h1>
         <p>This activation has either expired or doesn't exist!</p>
       </template>
     </div>
   </div>
 </template>
 <script>
-import gql from 'graphql-tag'
+import gql from "graphql-tag";
 
-import { getValidationErrors, performMutation, swalToast } from '@/utils'
-import LoadingIcon from '@/components/ui/LoadingIcon.vue'
+import { getValidationErrors, performMutation, swalToast } from "@/utils";
+import LoadingIcon from "@/components/ui/LoadingIcon.vue";
 
 export default {
   components: {
-    LoadingIcon
+    LoadingIcon,
   },
-  data () {
+  data() {
     return {
       password: null,
-      loading: true
-    }
+      loading: true,
+    };
   },
   head: {
-    title: 'Verify Email'
+    title: "Verify Email",
   },
-  async mounted () {
+  async mounted() {
     try {
       await performMutation(
         this.$apollo,
@@ -56,26 +44,26 @@ export default {
           mutation: gql`
           mutation ($token: String!) {
             verifyAccount(token: $token) {
-                ${require('@/graphql/partials/ErrorsPartial').default}
+                ${require("@/graphql/partials/ErrorsPartial").default}
             }
           }
         `,
           variables: {
-            token: this.$route.params.token
-          }
+            token: this.$route.params.token,
+          },
         },
-        'verifyAccount'
-      )
+        "verifyAccount"
+      );
       swalToast.fire({
-        position: 'bottom-end',
-        icon: 'success',
-        title: 'Email verified!'
-      })
-      return this.$router.replace('/login')
+        position: "bottom-end",
+        icon: "success",
+        title: "Email verified!",
+      });
+      return this.$router.replace("/login");
     } catch (e) {
-      this.errors = getValidationErrors(e)
+      this.errors = getValidationErrors(e);
     }
-    this.loading = false
-  }
-}
+    this.loading = false;
+  },
+};
 </script>

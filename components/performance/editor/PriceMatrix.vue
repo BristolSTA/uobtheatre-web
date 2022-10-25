@@ -5,15 +5,7 @@
         <table-head-item class="font-normal relative text-xs xl:text-sm">
           <div style="width: 250px">
             <div
-              class="
-                absolute
-                cell-right-to-left-diagonal
-                p-2
-                pt-4
-                top-0
-                min-h-full
-                w-full
-              "
+              class="absolute cell-right-to-left-diagonal p-2 pt-4 top-0 min-h-full w-full"
             />
             <div class="absolute top-3 right-2 w-20 xl:w-40 text-right">
               Percentage Discount
@@ -44,8 +36,8 @@
                 :value="discount.percentage * 100"
                 @blur="
                   (event) => {
-                    discount.percentage = event / 100
-                    discount._percentageModified = true
+                    discount.percentage = event / 100;
+                    discount._percentageModified = true;
                   }
                 "
               />
@@ -77,8 +69,8 @@
                     placeholder="Base Price"
                     @input="
                       (event) => {
-                        performanceSeatGroup.price = event * 100
-                        performanceSeatGroup._priceModified = true
+                        performanceSeatGroup.price = event * 100;
+                        performanceSeatGroup._priceModified = true;
                       }
                     "
                   />
@@ -110,15 +102,15 @@
 
 <script>
 /* eslint-disable vue/no-unused-components */
-import FormLabel from '@/components/ui/FormLabel.vue'
-import Badge from '@/components/ui/Badge.vue'
-import CurrencyInput from '@/components/ui/Inputs/CurrencyInput.vue'
-import PercentageInput from '@/components/ui/Inputs/PercentageInput.vue'
-import { singleDiscounts as singleDiscountsFn } from '@/utils/performance'
-import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue'
-import SafeTable from '@/components/ui/Tables/SafeTable.vue'
-import TableRow from '@/components/ui/Tables/TableRow.vue'
-import TableRowItem from '@/components/ui/Tables/TableRowItem.vue'
+import FormLabel from "@/components/ui/FormLabel.vue";
+import Badge from "@/components/ui/Badge.vue";
+import CurrencyInput from "@/components/ui/Inputs/CurrencyInput.vue";
+import PercentageInput from "@/components/ui/Inputs/PercentageInput.vue";
+import { singleDiscounts as singleDiscountsFn } from "@/utils/performance";
+import TableHeadItem from "@/components/ui/Tables/TableHeadItem.vue";
+import SafeTable from "@/components/ui/Tables/SafeTable.vue";
+import TableRow from "@/components/ui/Tables/TableRow.vue";
+import TableRowItem from "@/components/ui/Tables/TableRowItem.vue";
 export default {
   components: {
     FormLabel,
@@ -128,57 +120,57 @@ export default {
     TableHeadItem,
     SafeTable,
     TableRow,
-    TableRowItem
+    TableRowItem,
   },
   props: {
     editing: {
       default: false,
-      type: Boolean
+      type: Boolean,
     },
     performanceSeatGroups: {
       type: Array,
-      required: true
+      required: true,
     },
     discounts: {
       required: true,
-      type: Array
-    }
+      type: Array,
+    },
   },
   computed: {
-    singleDiscounts () {
-      return singleDiscountsFn(this.discounts)
-    }
+    singleDiscounts() {
+      return singleDiscountsFn(this.discounts);
+    },
   },
   watch: {
     performanceSeatGroups: {
       deep: true,
-      handler () {
-        this.$forceUpdate()
-      }
-    }
+      handler() {
+        this.$forceUpdate();
+      },
+    },
   },
   methods: {
-    displayPrice (performanceSeatGroup, discount) {
+    displayPrice(performanceSeatGroup, discount) {
       // Get the value the API says this should be at the moment
-      const discountConcessionType = discount.requirements[0].concessionType
+      const discountConcessionType = discount.requirements[0].concessionType;
       const currentValue =
         performanceSeatGroup.concessionTypes &&
         performanceSeatGroup.concessionTypes.find((concessionType) => {
-          return concessionType.concessionType.id === discountConcessionType.id
-        })?.price
+          return concessionType.concessionType.id === discountConcessionType.id;
+        })?.price;
 
       if (
         performanceSeatGroup._priceModified ||
         discount._percentageModified ||
-        typeof currentValue !== 'number'
+        typeof currentValue !== "number"
       ) {
         return (
           Math.ceil(performanceSeatGroup.price * (1 - discount.percentage)) /
           100
-        ).toFixed(2)
+        ).toFixed(2);
       }
-      return (currentValue / 100).toFixed(2)
-    }
-  }
-}
+      return (currentValue / 100).toFixed(2);
+    },
+  },
+};
 </script>

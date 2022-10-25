@@ -1,8 +1,6 @@
 <template>
   <div class="text-page container mx-auto">
-    <h1 class="my-4 text-h1">
-      Terms and Conditions
-    </h1>
+    <h1 class="my-4 text-h1">Terms and Conditions</h1>
     <h2>1. Definitions</h2>
     <p>
       "Bristol SU", "We", "Our", "Ours" and "Us" refers to the University of
@@ -90,9 +88,9 @@
 /* eslint-disable vue/no-v-html */
 export default {
   head: {
-    title: 'Terms and Conditions'
-  }
-}
+    title: "Terms and Conditions",
+  },
+};
 </script>
 
 <style lang="scss">

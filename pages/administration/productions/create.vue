@@ -1,12 +1,8 @@
 <template>
   <admin-page title="Create a Production">
     <template #toolbar>
-      <sta-button colour="green" @click="create">
-        Create Draft
-      </sta-button>
-      <sta-button colour="orange" @click="$router.go(-1)">
-        Cancel
-      </sta-button>
+      <sta-button colour="green" @click="create"> Create Draft </sta-button>
+      <sta-button colour="orange" @click="$router.go(-1)"> Cancel </sta-button>
     </template>
     <non-field-error :errors="errors" />
     <production-editor
@@ -25,55 +21,55 @@
 </template>
 
 <script>
-import Swal from 'sweetalert2'
-import ProductionEditor from '@/components/production/editor/ProductionEditor.vue'
-import AdminPage from '@/components/admin/AdminPage.vue'
-import StaButton from '@/components/ui/StaButton.vue'
+import Swal from "sweetalert2";
+import ProductionEditor from "@/components/production/editor/ProductionEditor.vue";
+import AdminPage from "@/components/admin/AdminPage.vue";
+import StaButton from "@/components/ui/StaButton.vue";
 import {
   getValidationErrors,
   loadingSwal,
   performMutation,
-  successToast
-} from '@/utils'
-import NonFieldError from '@/components/ui/NonFieldError.vue'
+  successToast,
+} from "@/utils";
+import NonFieldError from "@/components/ui/NonFieldError.vue";
 export default {
   components: {
     ProductionEditor,
     AdminPage,
     StaButton,
-    NonFieldError
+    NonFieldError,
   },
-  data () {
+  data() {
     return {
       production: null,
-      errors: null
-    }
+      errors: null,
+    };
   },
-  async mounted () {
-    this.production = await this.$refs.editor.getInputData()
+  async mounted() {
+    this.production = await this.$refs.editor.getInputData();
   },
   methods: {
-    async create () {
-      this.errors = null
-      loadingSwal.fire()
+    async create() {
+      this.errors = null;
+      loadingSwal.fire();
       try {
         const data = await performMutation(
           this.$apollo,
           {
-            mutation: require('@/graphql/mutations/admin/production/ProductionMutation.gql'),
+            mutation: require("@/graphql/mutations/admin/production/ProductionMutation.gql"),
             variables: {
-              input: await this.$refs.editor.getInputData()
-            }
+              input: await this.$refs.editor.getInputData(),
+            },
           },
-          'production'
-        )
-        successToast.fire({ title: 'Production Created' })
-        this.$router.push(`${data.production.production.slug}`)
+          "production"
+        );
+        successToast.fire({ title: "Production Created" });
+        this.$router.push(`${data.production.production.slug}`);
       } catch (e) {
-        this.errors = getValidationErrors(e)
+        this.errors = getValidationErrors(e);
       }
-      Swal.close()
-    }
-  }
-}
+      Swal.close();
+    },
+  },
+};
 </script>

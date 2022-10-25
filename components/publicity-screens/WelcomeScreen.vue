@@ -11,18 +11,18 @@
 </template>
 
 <script>
-import ProductionFeaturedImage from '../production/ProductionFeaturedImage.vue'
+import ProductionFeaturedImage from "../production/ProductionFeaturedImage.vue";
 export default {
   components: { ProductionFeaturedImage },
   props: {
     performance: {
       required: true,
-      type: Object
+      type: Object,
     },
     production: {
       required: true,
-      type: Object
-    }
-  }
-}
+      type: Object,
+    },
+  },
+};
 </script>

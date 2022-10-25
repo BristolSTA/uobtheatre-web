@@ -4,7 +4,7 @@
     @click="$emit('click')"
     @keypress="
       (e) => {
-        e.target.click()
+        e.target.click();
       }
     "
   >
@@ -14,12 +14,12 @@
 
 <script>
 export default {
-  name: 'ClickableLink',
+  name: "ClickableLink",
   props: {
     disabled: {
       default: false,
-      type: Boolean
-    }
-  }
-}
+      type: Boolean,
+    },
+  },
+};
 </script>

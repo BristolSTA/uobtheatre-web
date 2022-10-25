@@ -26,41 +26,31 @@
       <card title="Summary" class="max-w-2xl">
         <table class="table-auto w-full">
           <tr>
-            <table-head-item :text-left="false">
-              Status
-            </table-head-item>
+            <table-head-item :text-left="false"> Status </table-head-item>
             <table-row-item>
               <performance-status-badge :performance="performance" />
             </table-row-item>
           </tr>
           <tr>
-            <table-head-item :text-left="false">
-              Venue
-            </table-head-item>
+            <table-head-item :text-left="false"> Venue </table-head-item>
             <table-row-item>
               {{ performance.venue.name }}
             </table-row-item>
           </tr>
           <tr>
-            <table-head-item :text-left="false">
-              Doors Open
-            </table-head-item>
+            <table-head-item :text-left="false"> Doors Open </table-head-item>
             <table-row-item>
-              {{ performance.doorsOpen | dateFormat('dd MM y T ZZZZ') }}
+              {{ performance.doorsOpen | dateFormat("dd MM y T ZZZZ") }}
             </table-row-item>
           </tr>
           <tr>
-            <table-head-item :text-left="false">
-              Starts
-            </table-head-item>
+            <table-head-item :text-left="false"> Starts </table-head-item>
             <table-row-item>
-              {{ performance.start | dateFormat('dd MM y T ZZZZ') }}
+              {{ performance.start | dateFormat("dd MM y T ZZZZ") }}
             </table-row-item>
           </tr>
           <tr v-if="performance.intervalDurationMins">
-            <table-head-item
-              :text-left="false"
-            >
+            <table-head-item :text-left="false">
               Interval Length
             </table-head-item>
             <table-row-item>
@@ -68,11 +58,9 @@
             </table-row-item>
           </tr>
           <tr>
-            <table-head-item :text-left="false">
-              Ends
-            </table-head-item>
+            <table-head-item :text-left="false"> Ends </table-head-item>
             <table-row-item>
-              {{ performance.end | dateFormat('dd MM y T ZZZZ') }}
+              {{ performance.end | dateFormat("dd MM y T ZZZZ") }}
             </table-row-item>
           </tr>
         </table>
@@ -87,9 +75,7 @@
             <table-row-item>100 TODO</table-row-item>
           </tr> -->
           <tr>
-            <table-head-item :text-left="false">
-              Ticket Sales
-            </table-head-item>
+            <table-head-item :text-left="false"> Ticket Sales </table-head-item>
             <table-row-item>
               {{ performance.ticketsBreakdown.totalTicketsSold }} tickets sold |
               {{
@@ -97,8 +83,9 @@
                   (100 * performance.ticketsBreakdown.totalTicketsSold) /
                   performance.ticketsBreakdown.totalCapacity
                 ).toFixed(0)
-              }}%<br>
-              <small>(of
+              }}%<br />
+              <small
+                >(of
                 {{ performance.ticketsBreakdown.totalCapacity }} performance
                 capacity)
               </small>
@@ -114,9 +101,7 @@
             </table-row-item>
           </tr>
           <tr v-if="performance.salesBreakdown">
-            <table-head-item
-              :text-left="false"
-            >
+            <table-head-item :text-left="false">
               Performance Net Society Revenue
             </table-head-item>
             <table-row-item>
@@ -135,17 +120,11 @@
             <table>
               <thead>
                 <tr>
-                  <table-head-item
-                    :text-left="false"
-                  >
+                  <table-head-item :text-left="false">
                     Seat Group
                   </table-head-item>
+                  <table-head-item :text-left="false"> Sold </table-head-item>
                   <table-head-item :text-left="false">
-                    Sold
-                  </table-head-item>
-                  <table-head-item
-                    :text-left="false"
-                  >
                     Remaining Capacity
                   </table-head-item>
                 </tr>
@@ -159,19 +138,13 @@
                   class="text-center"
                 >
                   <table-row-item>
-                    {{
-                      performanceSeatGroup.seatGroup.name
-                    }}
+                    {{ performanceSeatGroup.seatGroup.name }}
                   </table-row-item>
                   <table-row-item>
-                    {{
-                      performanceSeatGroup.numberTicketsSold
-                    }}
+                    {{ performanceSeatGroup.numberTicketsSold }}
                   </table-row-item>
                   <table-row-item>
-                    {{
-                      performanceSeatGroup.capacityRemaining
-                    }}
+                    {{ performanceSeatGroup.capacityRemaining }}
                   </table-row-item>
                 </table-row>
               </tbody>
@@ -207,18 +180,9 @@
       </card>
     </div>
     <div class="mt-6">
-      <h2 class="text-h2">
-        Tools
-      </h2>
+      <h2 class="text-h2">Tools</h2>
       <div
-        class="
-          grid
-          gap-6
-          grid-cols-1
-          sm:grid-cols-2
-          lg:grid-cols-3
-          xl:grid-cols-4
-        "
+        class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       >
         <menu-tile
           class="bg-sta-green hover:bg-sta-green-dark"
@@ -247,19 +211,19 @@
 </template>
 
 <script>
-import AdminPerformanceDetailQuery from '@/graphql/queries/admin/productions/AdminPerformanceDetail.gql'
-import Card from '@/components/ui/Card.vue'
-import AdminPage from '@/components/admin/AdminPage.vue'
-import StaButton from '@/components/ui/StaButton.vue'
-import ProgressBar from '@/components/ui/ProgressBar.vue'
-import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue'
-import TableRowItem from '@/components/ui/Tables/TableRowItem.vue'
-import MenuTile from '@/components/ui/MenuTile.vue'
-import PerformanceStatusBadge from '@/components/performance/PerformanceStatusBadge.vue'
-import TicketsMatrix from '@/classes/TicketsMatrix'
-import TableRow from '@/components/ui/Tables/TableRow.vue'
-import { performMutation } from '@/utils'
-import PriceMatrix from '@/components/performance/editor/PriceMatrix.vue'
+import AdminPerformanceDetailQuery from "@/graphql/queries/admin/productions/AdminPerformanceDetail.gql";
+import Card from "@/components/ui/Card.vue";
+import AdminPage from "@/components/admin/AdminPage.vue";
+import StaButton from "@/components/ui/StaButton.vue";
+import ProgressBar from "@/components/ui/ProgressBar.vue";
+import TableHeadItem from "@/components/ui/Tables/TableHeadItem.vue";
+import TableRowItem from "@/components/ui/Tables/TableRowItem.vue";
+import MenuTile from "@/components/ui/MenuTile.vue";
+import PerformanceStatusBadge from "@/components/performance/PerformanceStatusBadge.vue";
+import TicketsMatrix from "@/classes/TicketsMatrix";
+import TableRow from "@/components/ui/Tables/TableRow.vue";
+import { performMutation } from "@/utils";
+import PriceMatrix from "@/components/performance/editor/PriceMatrix.vue";
 export default {
   components: {
     Card,
@@ -271,59 +235,59 @@ export default {
     MenuTile,
     PerformanceStatusBadge,
     TableRow,
-    PriceMatrix
+    PriceMatrix,
   },
-  async asyncData ({ params, error, app }) {
+  async asyncData({ params, error, app }) {
     // Execute query
     const { data } = await app.apolloProvider.defaultClient.query({
       query: AdminPerformanceDetailQuery,
       variables: {
         productionSlug: params.productionSlug,
-        performanceId: params.performanceId
+        performanceId: params.performanceId,
       },
-      fetchPolicy: 'no-cache'
-    })
+      fetchPolicy: "no-cache",
+    });
 
-    const production = data.production
+    const production = data.production;
     if (!production || !production.performances.edges.length) {
       return error({
-        statusCode: 404
-      })
+        statusCode: 404,
+      });
     }
-    const performance = production.performances.edges[0].node
+    const performance = production.performances.edges[0].node;
     return {
       performance,
       production,
-      ticketsMatrix: new TicketsMatrix(performance)
-    }
+      ticketsMatrix: new TicketsMatrix(performance),
+    };
   },
-  data () {
+  data() {
     return {
       production: null,
       performance: null,
-      ticketsMatrix: null
-    }
+      ticketsMatrix: null,
+    };
   },
-  head () {
-    const title = `Performance of ${this.production.name}`
-    return { title }
+  head() {
+    const title = `Performance of ${this.production.name}`;
+    return { title };
   },
   methods: {
-    async downloadBookings () {
+    async downloadBookings() {
       const data = await performMutation(
         this.$apollo,
         {
-          mutation: require('@/graphql/mutations/admin/GenerateReport.gql'),
+          mutation: require("@/graphql/mutations/admin/GenerateReport.gql"),
           variables: {
-            name: 'PerformanceBookings',
-            options: [{ name: 'id', value: this.performance.id }]
-          }
+            name: "PerformanceBookings",
+            options: [{ name: "id", value: this.performance.id }],
+          },
         },
-        'generateReport'
-      )
+        "generateReport"
+      );
 
-      window.open(data.generateReport.downloadUri)
-    }
-  }
-}
+      window.open(data.generateReport.downloadUri);
+    },
+  },
+};
 </script>

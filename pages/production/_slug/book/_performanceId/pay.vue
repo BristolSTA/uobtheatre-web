@@ -8,13 +8,13 @@
         {{ booking.performance.production.name }}
       </p>
       <p class="text-sta-orange">
-        {{ booking.performance.start | dateFormat('cccc d MMM y') }}, Starting
+        {{ booking.performance.start | dateFormat("cccc d MMM y") }}, Starting
         at
-        {{ booking.performance.start | dateFormat('T') }}
+        {{ booking.performance.start | dateFormat("T") }}
       </p>
       <p class="text-sta-orange">
         {{ booking.tickets.length }} Ticket{{
-          booking.tickets.length > 1 ? 's' : ''
+          booking.tickets.length > 1 ? "s" : ""
         }}
       </p>
     </div>
@@ -39,7 +39,8 @@
           href="/terms"
           target="_blank"
           class="text-sta-orange hover:text-sta-orange-dark transition-colors"
-        >booking terms of conditions.</a>
+          >booking terms of conditions.</a
+        >
         As per these terms, all our tickets are, in most cases, non-refundable
         and non-transferable.
       </p>
@@ -51,14 +52,7 @@
           payment is requried. Please click below to complete your booking.
         </p>
         <button
-          class="
-            p-2
-            bg-sta-green
-            hover:bg-sta-green-dark
-            rounded
-            focus:outline-none
-            transition-colors
-          "
+          class="p-2 bg-sta-green hover:bg-sta-green-dark rounded focus:outline-none transition-colors"
           @click="payFree"
         >
           Complete Booking
@@ -69,28 +63,28 @@
 </template>
 
 <script>
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
-import Booking from '@/classes/Booking'
-import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue'
-import { getValidationErrors, performMutation, swal } from '@/utils'
-import BookingStage from '@/classes/BookingStage'
-import SquarePayment from '@/components/square/SquarePayment.vue'
-import LoadingContainer from '@/components/ui/LoadingContainer.vue'
+import Booking from "@/classes/Booking";
+import AllErrorsDisplay from "@/components/ui/AllErrorsDisplay.vue";
+import { getValidationErrors, performMutation, swal } from "@/utils";
+import BookingStage from "@/classes/BookingStage";
+import SquarePayment from "@/components/square/SquarePayment.vue";
+import LoadingContainer from "@/components/ui/LoadingContainer.vue";
 export default {
   stageInfo: new BookingStage({
-    name: 'Payment',
-    routeName: 'production-slug-book-performanceId-pay',
-    eligable: (_, booking) => !booking.dirty
+    name: "Payment",
+    routeName: "production-slug-book-performanceId-pay",
+    eligable: (_, booking) => !booking.dirty,
   }),
   components: { AllErrorsDisplay, SquarePayment, LoadingContainer },
   props: {
     booking: {
       required: true,
-      type: Booking
-    }
+      type: Booking,
+    },
   },
-  data () {
+  data() {
     return {
       paymentForm: null,
       errors: null,
@@ -99,86 +93,88 @@ export default {
       progressPopup: null,
       enabledDigitalWallets: {
         google: false,
-        apple: false
-      }
-    }
+        apple: false,
+      },
+    };
   },
   methods: {
-    onPaying () {
+    onPaying() {
       this.progressPopup = swal.fire({
-        title: 'Confirming your booking...',
+        title: "Confirming your booking...",
         allowOutsideClick: false,
         allowEscapeKey: false,
         allowEnterKey: false,
         didOpen: () => {
-          Swal.showLoading()
-        }
-      })
+          Swal.showLoading();
+        },
+      });
     },
-    async payFree () {
-      if (this.loading) { return }
-      this.loading = true
+    async payFree() {
+      if (this.loading) {
+        return;
+      }
+      this.loading = true;
       try {
         const data = await performMutation(
           this.$apollo,
           {
-            mutation: require('@/graphql/mutations/booking/PayBooking.gql'),
+            mutation: require("@/graphql/mutations/booking/PayBooking.gql"),
             variables: {
               id: this.booking.id,
               totalPence: this.booking.totalPrice,
-              idempotencyKey: this.booking.idempotencyKey
-            }
+              idempotencyKey: this.booking.idempotencyKey,
+            },
           },
-          'payBooking'
-        )
-        this.onBookingComplete(data.payBooking.booking.reference)
+          "payBooking"
+        );
+        this.onBookingComplete(data.payBooking.booking.reference);
       } catch (e) {
-        this.errors = getValidationErrors(e)
-        this.booking.refreshIdempotencyKey()
-        this.loading = false
+        this.errors = getValidationErrors(e);
+        this.booking.refreshIdempotencyKey();
+        this.loading = false;
       }
     },
-    async onNonceRecieved (paymentData) {
+    async onNonceRecieved(paymentData) {
       try {
         const data = await performMutation(
           this.$apollo,
           {
-            mutation: require('@/graphql/mutations/booking/PayBooking.gql'),
+            mutation: require("@/graphql/mutations/booking/PayBooking.gql"),
             variables: {
               id: this.booking.id,
               nonce: paymentData.nonce,
               totalPence: this.booking.totalPrice,
               idempotencyKey: this.booking.idempotencyKey,
-              verifyToken: paymentData.verifyToken
-            }
+              verifyToken: paymentData.verifyToken,
+            },
           },
-          'payBooking'
-        )
+          "payBooking"
+        );
 
-        this.onBookingComplete(data.payBooking.booking.reference)
+        this.onBookingComplete(data.payBooking.booking.reference);
       } catch (e) {
-        this.errors = getValidationErrors(e)
-        this.booking.refreshIdempotencyKey()
+        this.errors = getValidationErrors(e);
+        this.booking.refreshIdempotencyKey();
       }
-      this.progressPopup.close()
+      this.progressPopup.close();
     },
-    onBookingComplete (reference) {
-      this.$emit('paid')
+    onBookingComplete(reference) {
+      this.$emit("paid");
       swal
         .fire({
-          icon: 'success',
-          title: 'Payment Confirmed!',
-          text: 'Taking you to your booking...',
+          icon: "success",
+          title: "Payment Confirmed!",
+          text: "Taking you to your booking...",
           timer: 2000,
           timerProgressBar: true,
           showConfirmButton: false,
           allowEscapeKey: false,
-          allowOutsideClick: false
+          allowOutsideClick: false,
         })
         .then(() => {
-          this.$router.push(`/user/booking/${reference}`)
-        })
-    }
-  }
-}
+          this.$router.push(`/user/booking/${reference}`);
+        });
+    },
+  },
+};
 </script>

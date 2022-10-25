@@ -34,59 +34,59 @@
 </template>
 
 <script>
-import LoadingContainer from '../LoadingContainer.vue'
-import PaginationBar from '../PaginationBar.vue'
+import LoadingContainer from "../LoadingContainer.vue";
+import PaginationBar from "../PaginationBar.vue";
 export default {
   components: { PaginationBar, LoadingContainer },
   props: {
     pageInfo: {
       default: () => {},
-      type: Object
+      type: Object,
     },
     items: {
       required: true,
-      type: Array
+      type: Array,
     },
     offset: {
       required: true,
-      type: Number
+      type: Number,
     },
     maxPerPage: {
       default: null,
-      type: Number
+      type: Number,
     },
     emptyText: {
-      default: 'No matching data found',
-      type: String
+      default: "No matching data found",
+      type: String,
     },
     loading: {
       default: false,
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   computed: {
-    hasNextPage () {
-      return this.pageInfo.hasNextPage
+    hasNextPage() {
+      return this.pageInfo.hasNextPage;
     },
-    hasPreviousPage () {
-      return this.pageInfo.hasPreviousPage || this.offset > 0
+    hasPreviousPage() {
+      return this.pageInfo.hasPreviousPage || this.offset > 0;
     },
-    empty () {
-      return !this.items.length
-    }
+    empty() {
+      return !this.items.length;
+    },
   },
   methods: {
-    nextPage () {
-      this.$emit('nextPage')
-      this.$emit('update:offset', this.offset + this.items.length)
+    nextPage() {
+      this.$emit("nextPage");
+      this.$emit("update:offset", this.offset + this.items.length);
     },
-    previousPage () {
-      this.$emit('previousPage')
+    previousPage() {
+      this.$emit("previousPage");
       this.$emit(
-        'update:offset',
+        "update:offset",
         Math.max(0, this.offset - (this.maxPerPage ?? this.items.length))
-      )
-    }
-  }
-}
+      );
+    },
+  },
+};
 </script>

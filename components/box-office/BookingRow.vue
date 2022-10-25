@@ -5,18 +5,16 @@
       active
         ? 'bg-sta-orange'
         : index % 2 == 0
-          ? 'bg-sta-gray-light'
-          : 'bg-sta-gray',
+        ? 'bg-sta-gray-light'
+        : 'bg-sta-gray',
     ]"
     @click="$emit('select-booking')"
     @keypress="$emit('select-booking')"
   >
     <td class="p-2">
-      <template
-        v-if="booking.user.firstName"
-      >
-        {{ booking.user.firstName }} {{ booking.user.lastName }}
-      </template><template v-else>
+      <template v-if="booking.user.firstName">
+        {{ booking.user.firstName }} {{ booking.user.lastName }} </template
+      ><template v-else>
         <i>Anonymous User</i>
       </template>
     </td>
@@ -36,22 +34,22 @@
 </template>
 
 <script>
-import Booking from '@/classes/Booking'
+import Booking from "@/classes/Booking";
 
 export default {
   props: {
     booking: {
       required: true,
-      type: Booking
+      type: Booking,
     },
     active: {
       required: true,
-      type: Boolean
+      type: Boolean,
     },
     index: {
       required: true,
-      type: Number
-    }
-  }
-}
+      type: Number,
+    },
+  },
+};
 </script>

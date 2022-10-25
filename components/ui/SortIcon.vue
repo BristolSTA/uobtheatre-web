@@ -13,43 +13,49 @@ export default {
   props: {
     value: {
       type: String,
-      default: null
+      default: null,
     },
     mustSort: {
       type: Boolean,
-      default: false
+      default: false,
     },
     sortField: {
       type: String,
-      default: null
-    }
+      default: null,
+    },
   },
   computed: {
-    currentlySorted () {
+    currentlySorted() {
       return (
         this.value && (!this.sortField || this.value.endsWith(this.sortField))
-      )
+      );
     },
-    currentlySortedUp () {
-      return this.currentlySorted && this.value.startsWith('-')
+    currentlySortedUp() {
+      return this.currentlySorted && this.value.startsWith("-");
     },
-    currentlySortedDown () {
-      return this.currentlySorted && !this.currentlySortedUp
+    currentlySortedDown() {
+      return this.currentlySorted && !this.currentlySortedUp;
+    },
+  },
+  mounted() {
+    if (this.mustSort && !this.currentlySorted) {
+      this.onSort();
     }
   },
-  mounted () {
-    if (this.mustSort && !this.currentlySorted) { this.onSort() }
-  },
   methods: {
-    onSort () {
+    onSort() {
       // If we have a sort field, check if the current sort is targeting it.
       // If it doesn't we wi
 
       if (this.currentlySorted) {
         // Exisiting sort
-        if (this.value.startsWith('-')) { this.$emit('input', this.mustSort ? '' + this.sortField : null) } else { this.$emit('input', '-' + this.sortField) }
+        if (this.value.startsWith("-")) {
+          this.$emit("input", this.mustSort ? "" + this.sortField : null);
+        } else {
+          this.$emit("input", "-" + this.sortField);
+        }
       } else {
-        this.$emit('input', '' + this.sortField)
+        this.$emit("input", "" + this.sortField);
       }
 
       // if (this.value === '-') {
@@ -59,7 +65,7 @@ export default {
       // } else {
       //   this.$emit('input', '-')
       // }
-    }
-  }
-}
+    },
+  },
+};
 </script>

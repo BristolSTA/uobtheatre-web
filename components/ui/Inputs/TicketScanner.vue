@@ -51,36 +51,36 @@
 </template>
 
 <script>
-import CameraCheckIn from '@/components/box-office/CameraCheckIn.vue'
-import HardwareScannerCheckIn from '@/components/box-office/HardwareScannerCheckIn.vue'
-import CameraScanner from '@/components/box-office/CameraScanner.vue'
-import HardwareScanner from '@/components/box-office/HardwareScanner.vue'
+import CameraCheckIn from "@/components/box-office/CameraCheckIn.vue";
+import HardwareScannerCheckIn from "@/components/box-office/HardwareScannerCheckIn.vue";
+import CameraScanner from "@/components/box-office/CameraScanner.vue";
+import HardwareScanner from "@/components/box-office/HardwareScanner.vue";
 export default {
   components: {
     CameraCheckIn,
     HardwareScannerCheckIn,
     CameraScanner,
-    HardwareScanner
+    HardwareScanner,
   },
   props: {
     checkInMode: {
       default: false,
-      type: Boolean
+      type: Boolean,
     },
     performanceId: {
       default: null,
-      type: [Number, String]
-    }
+      type: [Number, String],
+    },
   },
-  data () {
+  data() {
     return {
-      showCamera: false
+      showCamera: false,
+    };
+  },
+  mounted() {
+    if (this.checkInMode && !this.performanceId) {
+      throw new Error("Performance ID must be supplied in check in mode");
     }
   },
-  mounted () {
-    if (this.checkInMode && !this.performanceId) {
-      throw new Error('Performance ID must be supplied in check in mode')
-    }
-  }
-}
+};
 </script>

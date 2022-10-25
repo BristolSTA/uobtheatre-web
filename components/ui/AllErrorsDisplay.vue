@@ -3,9 +3,7 @@
     v-if="errors && errors.any()"
     class="text-sta-rouge text-sm font-semibold"
   >
-    <h4 class="text-h4">
-      Whoops. There were some errors:
-    </h4>
+    <h4 class="text-h4">Whoops. There were some errors:</h4>
     <ul class="list-inside list-disc">
       <li v-for="(error, index) in errors.allErrors" :key="index">
         {{ error.message }}
@@ -15,14 +13,14 @@
 </template>
 
 <script>
-import Errors from '@/classes/Errors'
+import Errors from "@/classes/Errors";
 export default {
   props: {
     errors: {
       required: false,
       default: null,
-      type: Errors
-    }
-  }
-}
+      type: Errors,
+    },
+  },
+};
 </script>

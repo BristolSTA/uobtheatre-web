@@ -1,21 +1,21 @@
-import Discount from './Discount'
-import PerformanceSeatGroup from './PerformanceSeatGroup'
-import Production from './Production'
-import GenericNodeConnection from './support/GenericNodeConnection'
-import Venue from './Venue'
+import Discount from "./Discount";
+import PerformanceSeatGroup from "./PerformanceSeatGroup";
+import Production from "./Production";
+import GenericNodeConnection from "./support/GenericNodeConnection";
+import Venue from "./Venue";
 
 export default (overrides = {}) => {
   return Object.assign(
     {
-      createdAt: '2020-05-08T14:00:00.000',
-      updatedAt: '2020-05-08T14:00:00.000',
+      createdAt: "2020-05-08T14:00:00.000",
+      updatedAt: "2020-05-08T14:00:00.000",
       id: 1,
       production: Production(),
       venue: Venue(),
-      doorsOpen: '2020-03-09T15:00:00',
-      start: '2020-03-09T16:00:00',
-      end: '2020-03-09T18:00:00',
-      description: 'the performance description',
+      doorsOpen: "2020-03-09T15:00:00",
+      start: "2020-03-09T16:00:00",
+      end: "2020-03-09T18:00:00",
+      description: "the performance description",
       extraInformation: null,
       disabled: false,
       isBookable: true,
@@ -32,9 +32,9 @@ export default (overrides = {}) => {
       isOnline: false,
       soldOut: false,
       ticketsBreakdown: {
-        totalCapacity: 10
-      }
+        totalCapacity: 10,
+      },
     },
     overrides
-  )
-}
+  );
+};

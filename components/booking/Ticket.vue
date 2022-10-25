@@ -4,24 +4,22 @@
       {{ performance.production.name }}
     </h1>
     <p>
-      {{ performance.start | dateFormat('EEEE d MMMM kkkk') }}
+      {{ performance.start | dateFormat("EEEE d MMMM kkkk") }}
     </p>
     <p>
       <span class="pr-2">
-        Doors: {{ performance.doorsOpen | dateFormat('t') }}
+        Doors: {{ performance.doorsOpen | dateFormat("t") }}
       </span>
       |
       <span class="pl-2">
-        Start: {{ performance.start | dateFormat('t') }}
+        Start: {{ performance.start | dateFormat("t") }}
       </span>
     </p>
     <div
       v-if="ticket.concessionType.name && ticket.seatGroup.name"
       class="flex justify-between w-full font-semibold"
     >
-      <p class="pr-1">
-        1x {{ ticket.concessionType.name }}
-      </p>
+      <p class="pr-1">1x {{ ticket.concessionType.name }}</p>
       <p class="pl-1 text-right">
         {{ ticket.seatGroup.name }}
       </p>
@@ -46,40 +44,40 @@
 </template>
 
 <script>
-import lo from 'lodash'
-import QrcodeVue from 'qrcode.vue'
+import lo from "lodash";
+import QrcodeVue from "qrcode.vue";
 
-import Ticket from '@/classes/Ticket'
+import Ticket from "@/classes/Ticket";
 
 export default {
-  name: 'Ticket',
+  name: "Ticket",
   components: {
-    QrcodeVue
+    QrcodeVue,
   },
   props: {
     performance: {
       required: true,
-      type: Object
+      type: Object,
     },
     reference: {
       required: true,
-      type: String
+      type: String,
     },
     ticket: {
       required: true,
-      type: Ticket
+      type: Ticket,
     },
     user: {
       default: null,
-      type: Object
-    }
+      type: Object,
+    },
   },
   computed: {
-    fullName () {
+    fullName() {
       return this.user
-        ? lo.join([this.user.firstName, this.user.lastName], ' ')
-        : null
-    }
-  }
-}
+        ? lo.join([this.user.firstName, this.user.lastName], " ")
+        : null;
+    },
+  },
+};
 </script>

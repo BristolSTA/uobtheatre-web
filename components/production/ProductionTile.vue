@@ -1,15 +1,6 @@
 <template>
   <div
-    class="
-      production-tile
-      px-4
-      cursor-pointer
-      transition-all
-      hover:drop-shadow-dark
-      drop-shadow-none
-      filter
-      sm:px-0
-    "
+    class="production-tile px-4 cursor-pointer transition-all hover:drop-shadow-dark drop-shadow-none filter sm:px-0"
   >
     <NuxtLink :to="`/production/${production.slug}`">
       <production-featured-image
@@ -18,37 +9,32 @@
         alt="Production feature image"
       />
       <h2
-        class="
-          production-title
-          text-sta-orange text-2xl
-          font-semibold
-          transition-colors
-        "
+        class="production-title text-sta-orange text-2xl font-semibold transition-colors"
       >
         {{ production.name }}
       </h2>
       <h2 class="text-2xl transition-colors">
-        {{ displayStartEnd(production.start, production.end, 'd MMM') }}
+        {{ displayStartEnd(production.start, production.end, "d MMM") }}
       </h2>
     </NuxtLink>
   </div>
 </template>
 
 <script>
-import ProductionFeaturedImage from './ProductionFeaturedImage.vue'
-import { displayStartEnd } from '@/utils'
+import ProductionFeaturedImage from "./ProductionFeaturedImage.vue";
+import { displayStartEnd } from "@/utils";
 export default {
   components: { ProductionFeaturedImage },
   props: {
     production: {
       required: true,
-      type: Object
-    }
+      type: Object,
+    },
   },
   methods: {
-    displayStartEnd
-  }
-}
+    displayStartEnd,
+  },
+};
 </script>
 
 <style scoped lang="scss">

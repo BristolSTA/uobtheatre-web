@@ -69,8 +69,8 @@
             <table-row-item>
               {{
                 production.start && production.end
-                  ? displayStartEnd(production.start, production.end, 'd MMMM')
-                  : ''
+                  ? displayStartEnd(production.start, production.end, "d MMMM")
+                  : ""
               }}
             </table-row-item>
           </table-row>
@@ -81,16 +81,16 @@
 </template>
 
 <script>
-import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue'
-import AdminProductionsQuery from '@/graphql/queries/admin/productions/AdminProductionsIndex.gql'
-import { displayStartEnd } from '@/utils'
-import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue'
-import TableRow from '@/components/ui/Tables/TableRow.vue'
-import TableRowItem from '@/components/ui/Tables/TableRowItem.vue'
-import Card from '@/components/ui/Card.vue'
-import ProductionStatusBadge from '@/components/production/ProductionStatusBadge.vue'
-import AdminPage from '@/components/admin/AdminPage.vue'
-import StaButton from '@/components/ui/StaButton.vue'
+import PaginatedTable from "@/components/ui/Tables/PaginatedTable.vue";
+import AdminProductionsQuery from "@/graphql/queries/admin/productions/AdminProductionsIndex.gql";
+import { displayStartEnd } from "@/utils";
+import TableHeadItem from "@/components/ui/Tables/TableHeadItem.vue";
+import TableRow from "@/components/ui/Tables/TableRow.vue";
+import TableRowItem from "@/components/ui/Tables/TableRowItem.vue";
+import Card from "@/components/ui/Card.vue";
+import ProductionStatusBadge from "@/components/production/ProductionStatusBadge.vue";
+import AdminPage from "@/components/admin/AdminPage.vue";
+import StaButton from "@/components/ui/StaButton.vue";
 export default {
   components: {
     PaginatedTable,
@@ -100,41 +100,41 @@ export default {
     TableRow,
     ProductionStatusBadge,
     AdminPage,
-    StaButton
+    StaButton,
   },
-  data () {
+  data() {
     return {
       productionsData: null,
       productionsOffset: 0,
       productionsStatusFilter: null,
       productionsRunDateFilter: null,
-      productionSearchFilter: null
-    }
+      productionSearchFilter: null,
+    };
   },
   head: {
-    title: 'Your Productions'
+    title: "Your Productions",
   },
   methods: {
-    displayStartEnd
+    displayStartEnd,
   },
   apollo: {
     productionsData: {
       query: AdminProductionsQuery,
-      variables () {
+      variables() {
         return {
           offset: this.productionsOffset,
           status: this.productionsStatusFilter,
           startLte: this.productionsRunDateFilter
-            ? this.productionsRunDateFilter + 'T23:59:59'
+            ? this.productionsRunDateFilter + "T23:59:59"
             : null,
           endGte: this.productionsRunDateFilter
-            ? this.productionsRunDateFilter + 'T00:00:00'
+            ? this.productionsRunDateFilter + "T00:00:00"
             : null,
-          search: this.productionSearchFilter
-        }
+          search: this.productionSearchFilter,
+        };
       },
-      update: data => data.productions
-    }
-  }
-}
+      update: (data) => data.productions,
+    },
+  },
+};
 </script>

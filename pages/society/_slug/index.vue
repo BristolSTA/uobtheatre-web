@@ -14,29 +14,17 @@
       </h1>
     </div>
     <div
-      class="
-        flex-wrap
-        justify-around
-        mt-4
-        md:container md:flex md:my-8 md:space-x-6
-      "
+      class="flex-wrap justify-around mt-4 md:container md:flex md:my-8 md:space-x-6"
     >
       <div
         v-if="society.logo.url"
-        class="
-          flex
-          justify-center
-          mx-4
-          py-2
-          h-40
-          md:mx-0 md:py-0 md:w-60 md:h-60
-        "
+        class="flex justify-center mx-4 py-2 h-40 md:mx-0 md:py-0 md:w-60 md:h-60"
       >
         <img
           ref="society-logo"
           :src="society.logo.url"
           :alt="`${society.name} logo`"
-        >
+        />
       </div>
 
       <div
@@ -45,9 +33,7 @@
         class="flex-none px-1 md:w-1/2"
       >
         <div class="p-2 bg-sta-gray-dark">
-          <h2 class="flex justify-center mb-2 text-2xl">
-            Productions
-          </h2>
+          <h2 class="flex justify-center mb-2 text-2xl">Productions</h2>
           <table class="table-auto w-full">
             <tbody>
               <tr
@@ -62,21 +48,14 @@
                 </td>
                 <td v-if="production.isBookable" class="px-4 text-right">
                   <NuxtLink
-                    class="
-                      btn btn-orange
-                      my-1
-                      px-3
-                      py-1.5
-                      text-center text-sm
-                      font-semibold
-                    "
+                    class="btn btn-orange my-1 px-3 py-1.5 text-center text-sm font-semibold"
                     :to="`/production/${production.slug}/book`"
                   >
                     Book Now
                   </NuxtLink>
                 </td>
                 <td v-else class="px-4 text-right">
-                  {{ production.end | dateFormat('MMMM y') }}
+                  {{ production.end | dateFormat("MMMM y") }}
                 </td>
               </tr>
             </tbody>
@@ -116,52 +95,52 @@
 </template>
 
 <script>
-import SocietyDetailQuery from '@/graphql/queries/SocietyDetail.gql'
-import TipTapOutput from '@/components/ui/TipTapOutput.vue'
+import SocietyDetailQuery from "@/graphql/queries/SocietyDetail.gql";
+import TipTapOutput from "@/components/ui/TipTapOutput.vue";
 
 export default {
   components: { TipTapOutput },
-  async asyncData ({ params, app, error }) {
+  async asyncData({ params, app, error }) {
     const { data } = await app.apolloProvider.defaultClient.query({
       query: SocietyDetailQuery,
       variables: {
-        slug: params.slug
-      }
-    })
+        slug: params.slug,
+      },
+    });
 
-    const society = data.society
+    const society = data.society;
     if (!society) {
       return error({
         statusCode: 404,
-        message: 'This society does not exists'
-      })
+        message: "This society does not exists",
+      });
     }
     return {
-      society
-    }
+      society,
+    };
   },
-  data () {
+  data() {
     return {
-      society: null
-    }
+      society: null,
+    };
   },
-  head () {
-    const societyName = this.society ? this.society.name : 'Loading...'
+  head() {
+    const societyName = this.society ? this.society.name : "Loading...";
     return {
-      title: `${societyName}`
-    }
+      title: `${societyName}`,
+    };
   },
   computed: {
-    banner () {
+    banner() {
       return this.society.banner.url
         ? `url("${this.society.banner.url}")`
-        : null
+        : null;
     },
-    productions () {
+    productions() {
       return this.society.productions.edges
-        .map(edge => edge.node)
-        .filter(production => production.end)
-    }
-  }
-}
+        .map((edge) => edge.node)
+        .filter((production) => production.end);
+    },
+  },
+};
 </script>

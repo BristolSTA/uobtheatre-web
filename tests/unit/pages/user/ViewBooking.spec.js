@@ -1,91 +1,91 @@
-import { expect } from 'chai'
+import { expect } from "chai";
 
-import FakeBooking from '../../fixtures/Booking.js'
-import { generateMountOptions, mountWithRouterMock } from '../../helpers'
-import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse.js'
-import User from '../../fixtures/User.js'
-import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection.js'
-import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue'
-import PerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue'
-import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue'
-import VenueOverview from '@/components/booking/overview/VenueOverview.vue'
-import Ticket from '@/components/booking/Ticket.vue'
-import ViewBooking from '@/pages/user/booking/_reference/index'
+import FakeBooking from "../../fixtures/Booking.js";
+import { generateMountOptions, mountWithRouterMock } from "../../helpers";
+import GenericApolloResponse from "../../fixtures/support/GenericApolloResponse.js";
+import User from "../../fixtures/User.js";
+import GenericNodeConnection from "../../fixtures/support/GenericNodeConnection.js";
+import PaymentOverview from "@/components/booking/overview/PaymentOverview.vue";
+import PerformanceOverview from "@/components/booking/overview/PerformanceOverview.vue";
+import TicketsOverview from "@/components/booking/overview/TicketsOverview.vue";
+import VenueOverview from "@/components/booking/overview/VenueOverview.vue";
+import Ticket from "@/components/booking/Ticket.vue";
+import ViewBooking from "@/pages/user/booking/_reference/index";
 
-describe('View Booking', () => {
-  let viewBookingComponent
+describe("View Booking", () => {
+  let viewBookingComponent;
 
   beforeEach(async () => {
     viewBookingComponent = await mountWithRouterMock(
       ViewBooking,
-      generateMountOptions(['apollo'], {
+      generateMountOptions(["apollo"], {
         apollo: {
           queryCallstack: [
             GenericApolloResponse(
-              'me',
+              "me",
               User({
-                bookings: GenericNodeConnection([FakeBooking()])
+                bookings: GenericNodeConnection([FakeBooking()]),
               })
-            )
-          ]
+            ),
+          ],
         },
         mocks: {
           $store: {
             state: {
               auth: {
                 user: {
-                  firstName: 'Alex',
-                  lastName: 'Toof'
-                }
-              }
-            }
-          }
+                  firstName: "Alex",
+                  lastName: "Toof",
+                },
+              },
+            },
+          },
         },
-        stubs: { 'qrcode-vue': true }
+        stubs: { "qrcode-vue": true },
       }),
       {
         params: {
-          reference: 'ABS1352EBV54'
-        }
+          reference: "ABS1352EBV54",
+        },
       }
-    )
-    await viewBookingComponent.vm.$nextTick()
-  })
+    );
+    await viewBookingComponent.vm.$nextTick();
+  });
 
-  it('contains correct components', () => {
+  it("contains correct components", () => {
     expect(viewBookingComponent.findComponent(PerformanceOverview).exists()).to
-      .be.true
+      .be.true;
     expect(viewBookingComponent.findComponent(VenueOverview).exists()).to.be
-      .true
+      .true;
     expect(viewBookingComponent.findComponent(TicketsOverview).exists()).to.be
-      .true
+      .true;
     expect(viewBookingComponent.findComponent(PaymentOverview).exists()).to.be
-      .true
-  })
+      .true;
+  });
 
-  it('has working ticket dropdown', async () => {
-    const ticketbanner = viewBookingComponent.findComponent({ ref: 'tickets' })
+  it("has working ticket dropdown", async () => {
+    const ticketbanner = viewBookingComponent.findComponent({ ref: "tickets" });
 
-    expect(viewBookingComponent.vm.expanded).to.be.false
-    expect(viewBookingComponent.findAllComponents(Ticket).length).to.eq(0)
+    expect(viewBookingComponent.vm.expanded).to.be.false;
+    expect(viewBookingComponent.findAllComponents(Ticket).length).to.eq(0);
 
-    await ticketbanner.trigger('click')
+    await ticketbanner.trigger("click");
 
-    expect(viewBookingComponent.findAllComponents(Ticket).length).to.eq(1)
+    expect(viewBookingComponent.findAllComponents(Ticket).length).to.eq(1);
 
-    await ticketbanner.trigger('click')
-    expect(viewBookingComponent.vm.expanded).to.be.false
-    expect(viewBookingComponent.findAllComponents(Ticket).length).to.eq(0)
-  })
+    await ticketbanner.trigger("click");
+    expect(viewBookingComponent.vm.expanded).to.be.false;
+    expect(viewBookingComponent.findAllComponents(Ticket).length).to.eq(0);
+  });
 
-  it('scrolls to tickets on btn', () => {
-    viewBookingComponent.vm.$refs.tickets.scrollIntoView = jest.fn()
-    expect(viewBookingComponent.vm.expanded).to.be.false
+  it("scrolls to tickets on btn", () => {
+    viewBookingComponent.vm.$refs.tickets.scrollIntoView = jest.fn();
+    expect(viewBookingComponent.vm.expanded).to.be.false;
 
-    viewBookingComponent.find('#ticket-jump').trigger('click')
-    expect(viewBookingComponent.vm.expanded).to.be.true
+    viewBookingComponent.find("#ticket-jump").trigger("click");
+    expect(viewBookingComponent.vm.expanded).to.be.true;
     expect(
       viewBookingComponent.vm.$refs.tickets.scrollIntoView.mock.calls
-    ).length(1)
-  })
-})
+    ).length(1);
+  });
+});

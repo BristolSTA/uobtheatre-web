@@ -18,80 +18,80 @@
       @focus="$emit('focus', $event)"
       @blur="$emit('blur', $event)"
       @change="$emit('change', $event)"
-    >
+    />
     <error-helper :errors="errors" :field-name="inputId" />
   </label>
 </template>
 
 <script>
-import lo from 'lodash'
+import lo from "lodash";
 
-import ErrorHelper from './ErrorHelper.vue'
-import Errors from '@/classes/Errors'
+import ErrorHelper from "./ErrorHelper.vue";
+import Errors from "@/classes/Errors";
 
 export default {
-  name: 'TextInput',
+  name: "TextInput",
   components: { ErrorHelper },
   inheritAttrs: false,
   props: {
     value: {
       required: true,
-      validator: () => true
+      validator: () => true,
     },
     inputClass: {
       default: null,
-      type: [String, Array, Object]
+      type: [String, Array, Object],
     },
     name: {
       default: null,
-      type: String
+      type: String,
     },
     type: {
-      default: 'text',
-      type: String
+      default: "text",
+      type: String,
     },
     autocomplete: {
       required: false,
       validator: () => true,
-      default: null
+      default: null,
     },
     errors: {
       required: false,
       type: Errors,
-      default: null
+      default: null,
     },
     required: {
       required: false,
       default: false,
-      type: Boolean
+      type: Boolean,
     },
     errorKey: {
       required: false,
       default: null,
-      type: String
+      type: String,
     },
     showLabel: {
       default: true,
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   computed: {
-    inputId () {
+    inputId() {
       return (
         this.errorKey ?? lo.chain(this.name).lowerCase().camelCase().value()
-      )
-    }
+      );
+    },
   },
   methods: {
-    onInput (event) {
-      this.$emit('input', event.target.value)
+    onInput(event) {
+      this.$emit("input", event.target.value);
       if (this.errors) {
-        this.errors.clear(this.inputId)
+        this.errors.clear(this.inputId);
       }
     },
-    focus () {
-      this.$refs.input.focus()
-    }
-  }
-}
+    focus() {
+      this.$refs.input.focus();
+    },
+  },
+};
 </script>

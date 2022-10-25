@@ -1,52 +1,52 @@
-import { RouterLinkStub } from '@vue/test-utils'
-import { expect } from 'chai'
+import { RouterLinkStub } from "@vue/test-utils";
+import { expect } from "chai";
 
-import { mountWithRouterMock } from '../../helpers'
-import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
+import { mountWithRouterMock } from "../../helpers";
+import Breadcrumbs from "@/components/ui/Breadcrumbs.vue";
 
-describe('Breadcrumbs', () => {
-  let breadcrumsComponent
+describe("Breadcrumbs", () => {
+  let breadcrumsComponent;
 
   beforeEach(async () => {
     breadcrumsComponent = await mountWithRouterMock(Breadcrumbs, {
-      stubs: { 'font-awesome-icon': true },
+      stubs: { "font-awesome-icon": true },
       mocks: {
         $route: {
-          fullPath: '/productions/legally-ginger/book'
-        }
+          fullPath: "/productions/legally-ginger/book",
+        },
       },
       propsData: {
         crumbs: [
-          { text: 'Whats On', path: '/productions' },
+          { text: "Whats On", path: "/productions" },
           {
-            text: 'Legally Ginger',
-            path: '/productions/legally-ginger'
+            text: "Legally Ginger",
+            path: "/productions/legally-ginger",
           },
-          { text: 'Book' }
-        ]
-      }
-    })
-  })
+          { text: "Book" },
+        ],
+      },
+    });
+  });
 
-  it('has 2 chevrons', () => {
-    expect(breadcrumsComponent.findAll('font-awesome-icon-stub')).length(2)
-  })
+  it("has 2 chevrons", () => {
+    expect(breadcrumsComponent.findAll("font-awesome-icon-stub")).length(2);
+  });
 
-  it('has corrct text', () => {
-    expect(breadcrumsComponent.text()).to.contain('Whats On')
-    expect(breadcrumsComponent.text()).to.contain('Legally Ginger')
-    expect(breadcrumsComponent.text()).to.contain('Book')
-  })
+  it("has corrct text", () => {
+    expect(breadcrumsComponent.text()).to.contain("Whats On");
+    expect(breadcrumsComponent.text()).to.contain("Legally Ginger");
+    expect(breadcrumsComponent.text()).to.contain("Book");
+  });
 
-  it('has correct links', () => {
+  it("has correct links", () => {
     expect(
       breadcrumsComponent.findAllComponents(RouterLinkStub).length
-    ).to.equal(2)
+    ).to.equal(2);
     expect(
-      breadcrumsComponent.findAllComponents(RouterLinkStub).at(0).props('to')
-    ).to.equal('/productions')
+      breadcrumsComponent.findAllComponents(RouterLinkStub).at(0).props("to")
+    ).to.equal("/productions");
     expect(
-      breadcrumsComponent.findAllComponents(RouterLinkStub).at(1).props('to')
-    ).to.equal('/productions/legally-ginger')
-  })
-})
+      breadcrumsComponent.findAllComponents(RouterLinkStub).at(1).props("to")
+    ).to.equal("/productions/legally-ginger");
+  });
+});

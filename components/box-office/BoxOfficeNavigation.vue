@@ -15,58 +15,58 @@
 </template>
 
 <script>
-import MenuTile from '../ui/MenuTile.vue'
+import MenuTile from "../ui/MenuTile.vue";
 export default {
   components: { MenuTile },
   props: {
     performance: {
       required: true,
-      type: Object
+      type: Object,
     },
     showHome: {
       default: true,
-      type: Boolean
+      type: Boolean,
     },
     compact: {
       default: false,
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
-  data () {
+  data() {
     return {
       navItems: [
         {
-          name: 'Check or Collect Tickets',
-          icon: 'user-check',
-          path: `/box-office/${this.performance.id}/collect`
+          name: "Check or Collect Tickets",
+          icon: "user-check",
+          path: `/box-office/${this.performance.id}/collect`,
         },
         {
-          name: 'Sell Tickets',
-          icon: 'cash-register',
-          path: `/box-office/${this.performance.id}/sell`
+          name: "Sell Tickets",
+          icon: "cash-register",
+          path: `/box-office/${this.performance.id}/sell`,
         },
         {
-          name: 'View Bookings',
-          icon: 'clipboard-list',
-          path: `/box-office/${this.performance.id}/bookings`
-        }
-      ]
-    }
+          name: "View Bookings",
+          icon: "clipboard-list",
+          path: `/box-office/${this.performance.id}/bookings`,
+        },
+      ],
+    };
   },
   computed: {
-    completeNavItems () {
-      const items = []
+    completeNavItems() {
+      const items = [];
       if (this.showHome) {
         items.push({
-          name: 'Dashboard',
-          icon: 'home',
-          path: `/box-office/${this.performance.id}`
-        })
+          name: "Dashboard",
+          icon: "home",
+          path: `/box-office/${this.performance.id}`,
+        });
       }
 
-      items.push(...this.navItems)
-      return items
-    }
-  }
-}
+      items.push(...this.navItems);
+      return items;
+    },
+  },
+};
 </script>

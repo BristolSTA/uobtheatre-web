@@ -37,54 +37,54 @@
 </template>
 
 <script>
-import FullPerformanceAndTicketOptionsQuery from '@/graphql/queries/FullPerformanceAndTicketOptions.gql'
-import BookingMutation from '@/graphql/mutations/booking/Booking.gql'
-import PayBookingMutation from '@/graphql/mutations/booking/PayBooking.gql'
-import TicketsMatrix from '@/classes/TicketsMatrix'
-import Booking from '@/classes/Booking'
-import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue'
-import Card from '@/components/ui/Card.vue'
-import FormLabel from '@/components/ui/FormLabel.vue'
-import StaButton from '@/components/ui/StaButton.vue'
-import { getValidationErrors, performMutation, successToast } from '@/utils'
-import LoadingContainer from '@/components/ui/LoadingContainer.vue'
+import FullPerformanceAndTicketOptionsQuery from "@/graphql/queries/FullPerformanceAndTicketOptions.gql";
+import BookingMutation from "@/graphql/mutations/booking/Booking.gql";
+import PayBookingMutation from "@/graphql/mutations/booking/PayBooking.gql";
+import TicketsMatrix from "@/classes/TicketsMatrix";
+import Booking from "@/classes/Booking";
+import TicketsEditor from "@/components/booking/editor/TicketsEditor.vue";
+import Card from "@/components/ui/Card.vue";
+import FormLabel from "@/components/ui/FormLabel.vue";
+import StaButton from "@/components/ui/StaButton.vue";
+import { getValidationErrors, performMutation, successToast } from "@/utils";
+import LoadingContainer from "@/components/ui/LoadingContainer.vue";
 export default {
   components: {
     TicketsEditor,
     Card,
     FormLabel,
     StaButton,
-    LoadingContainer
+    LoadingContainer,
   },
-  async asyncData ({ params, app, error }) {
+  async asyncData({ params, app, error }) {
     const { data } = await app.apolloProvider.defaultClient.query({
       query: FullPerformanceAndTicketOptionsQuery,
       variables: {
-        id: params.performanceId
+        id: params.performanceId,
       },
-      fetchPolicy: 'no-cache'
-    })
+      fetchPolicy: "no-cache",
+    });
 
-    const performance = data.performance
+    const performance = data.performance;
     if (!performance) {
       return error({
         statusCode: 404,
-        message: 'This performance does not exist'
-      })
+        message: "This performance does not exist",
+      });
     }
 
-    const ticketsMatrix = new TicketsMatrix(performance)
+    const ticketsMatrix = new TicketsMatrix(performance);
 
-    const booking = new Booking()
-    booking.performance = performance
+    const booking = new Booking();
+    booking.performance = performance;
 
     return {
       ticketsMatrix,
       performance,
-      booking
-    }
+      booking,
+    };
   },
-  data () {
+  data() {
     return {
       ticketsMatrix: null,
       performance: null,
@@ -92,15 +92,15 @@ export default {
 
       booking: null,
       bookingEmail: null,
-      errors: null
-    }
+      errors: null,
+    };
   },
   head: {
-    title: 'Create Complimentary Booking'
+    title: "Create Complimentary Booking",
   },
   methods: {
-    async create () {
-      this.loading = true
+    async create() {
+      this.loading = true;
       try {
         // Make the booking
         const data = await performMutation(
@@ -112,13 +112,13 @@ export default {
                 adminDiscountPercentage: 1,
                 performance: this.performance.id,
                 userEmail: this.bookingEmail,
-                tickets: this.booking.toAPIData().tickets
-              }
-            }
+                tickets: this.booking.toAPIData().tickets,
+              },
+            },
           },
-          'booking'
-        )
-        this.booking.updateFromAPIData(data.booking.booking)
+          "booking"
+        );
+        this.booking.updateFromAPIData(data.booking.booking);
 
         // Pay the booking
         await performMutation(
@@ -127,23 +127,23 @@ export default {
             mutation: PayBookingMutation,
             variables: {
               id: this.booking.id,
-              totalPence: this.booking.totalPrice
-            }
+              totalPence: this.booking.totalPrice,
+            },
           },
-          'payBooking'
-        )
+          "payBooking"
+        );
 
         successToast.fire({
-          title: 'Booking created!'
-        })
+          title: "Booking created!",
+        });
 
-        this.$router.replace(`../${this.booking.reference}`)
+        this.$router.replace(`../${this.booking.reference}`);
       } catch (e) {
-        this.errors = getValidationErrors(e)
+        this.errors = getValidationErrors(e);
       } finally {
-        this.loading = false
+        this.loading = false;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>

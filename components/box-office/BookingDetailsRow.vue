@@ -8,14 +8,7 @@
         <div class="flex-none order-2 md:pl-2 pb-2 sm:b-0">
           <button
             v-if="!editing"
-            class="
-              p-2
-              bg-sta-green
-              hover:bg-sta-green-dark
-              rounded
-              focus:outline-none
-              transition-colors
-            "
+            class="p-2 bg-sta-green hover:bg-sta-green-dark rounded focus:outline-none transition-colors"
             @click="startEditing"
           >
             Alter Check Ins
@@ -23,27 +16,13 @@
           <loading-icon v-else-if="saving" />
           <template v-else>
             <button
-              class="
-                p-2
-                bg-sta-green
-                hover:bg-sta-green-dark
-                rounded
-                focus:outline-none
-                transition-colors
-              "
+              class="p-2 bg-sta-green hover:bg-sta-green-dark rounded focus:outline-none transition-colors"
               @click="updateBookingCheckins"
             >
               Save
             </button>
             <button
-              class="
-                p-2
-                bg-gray-400
-                roundedhover:bg-gray-500
-                rounded
-                focus:outline-none
-                transition-colors
-              "
+              class="p-2 bg-gray-400 roundedhover:bg-gray-500 rounded focus:outline-none transition-colors"
               @click="cancelEdits"
             >
               Cancel
@@ -54,18 +33,10 @@
         <div class="flex flex-grow order-1 overflow-x-auto">
           <table class="w-full text-sm sm:text-base">
             <tr class="text-left border-b">
-              <th class="hidden sm:table-cell pr-4">
-                Seat Group
-              </th>
-              <th class="pr-3 sm:pr-4">
-                Type
-              </th>
-              <th class="pr-3 sm:pr-4">
-                Ticket ID
-              </th>
-              <th class="text-center">
-                Checked In?
-              </th>
+              <th class="hidden sm:table-cell pr-4">Seat Group</th>
+              <th class="pr-3 sm:pr-4">Type</th>
+              <th class="pr-3 sm:pr-4">Ticket ID</th>
+              <th class="text-center">Checked In?</th>
             </tr>
             <template v-for="(seatGroup, i) in seatGroupList">
               <tr :key="i" class="sm:hidden">
@@ -92,7 +63,7 @@
                   <template
                     v-else-if="
                       sortedTicketArray[i][n - 1].seatGroup.name !=
-                        ticket.seatGroup.name
+                      ticket.seatGroup.name
                     "
                   >
                     {{ ticket.seatGroup.name }}
@@ -120,18 +91,10 @@
                     />
                     <button
                       v-if="editing && !saving"
-                      class="
-                        flex-none
-                        p-1
-                        bg-sta-orange
-                        hover:bg-sta-orange-dark
-                        rounded
-                        focus:outline-none
-                        transition-colors
-                      "
+                      class="flex-none p-1 bg-sta-orange hover:bg-sta-orange-dark rounded focus:outline-none transition-colors"
                       @click="editingData[ticket.id] = !editingData[ticket.id]"
                     >
-                      {{ editingData[ticket.id] ? 'Un-Check In' : 'Check In' }}
+                      {{ editingData[ticket.id] ? "Un-Check In" : "Check In" }}
                     </button>
                   </div>
                 </td>
@@ -145,72 +108,72 @@
 </template>
 
 <script>
-import lo from 'lodash'
-import LoadingIcon from '../ui/LoadingIcon.vue'
-import Booking from '@/classes/Booking'
+import lo from "lodash";
+import LoadingIcon from "../ui/LoadingIcon.vue";
+import Booking from "@/classes/Booking";
 
-import CheckInMutation from '@/graphql/mutations/box-office/CheckInTickets.gql'
-import UnCheckInMutation from '@/graphql/mutations/box-office/UnCheckInTickets.gql'
-import BoxOfficePerformanceBooking from '@/graphql/queries/box-office/BoxOfficePerformanceBooking.gql'
+import CheckInMutation from "@/graphql/mutations/box-office/CheckInTickets.gql";
+import UnCheckInMutation from "@/graphql/mutations/box-office/UnCheckInTickets.gql";
+import BoxOfficePerformanceBooking from "@/graphql/queries/box-office/BoxOfficePerformanceBooking.gql";
 
 export default {
   components: { LoadingIcon },
   props: {
     booking: {
       required: true,
-      type: Booking
+      type: Booking,
     },
     index: {
       required: true,
-      type: Number
+      type: Number,
     },
     highlightTicketId: {
       default: null,
-      type: [String, Number]
-    }
+      type: [String, Number],
+    },
   },
-  data () {
+  data() {
     return {
       editing: false,
       editingData: null,
-      saving: false
-    }
+      saving: false,
+    };
   },
   computed: {
-    seatGroupList () {
+    seatGroupList() {
       return lo
-        .uniqBy(this.booking.tickets, ticket => ticket.seatGroup.id)
-        .map(ticket => ticket.seatGroup)
+        .uniqBy(this.booking.tickets, (ticket) => ticket.seatGroup.id)
+        .map((ticket) => ticket.seatGroup);
     },
-    sortedTicketArray () {
+    sortedTicketArray() {
       return Object.values(
-        lo.groupBy(this.booking.tickets, ticket => ticket.seatGroup.id)
-      )
-    }
+        lo.groupBy(this.booking.tickets, (ticket) => ticket.seatGroup.id)
+      );
+    },
   },
   methods: {
-    startEditing () {
+    startEditing() {
       this.editingData = lo.fromPairs(
-        this.booking.tickets.map(ticket => [ticket.id, ticket.checkedIn])
-      )
-      this.editing = true
+        this.booking.tickets.map((ticket) => [ticket.id, ticket.checkedIn])
+      );
+      this.editing = true;
     },
-    async updateBookingCheckins () {
-      this.saving = true
+    async updateBookingCheckins() {
+      this.saving = true;
       const ticketsToCheckIn = this.booking.tickets
         .filter(
-          ticket => !ticket.checkedIn && this.editingData[ticket.id] === true
+          (ticket) => !ticket.checkedIn && this.editingData[ticket.id] === true
         )
         .map((ticket) => {
-          return { ticketId: ticket.id }
-        })
+          return { ticketId: ticket.id };
+        });
       const ticketsToUnCheckIn = this.booking.tickets
-        .filter(ticket => this.editingData[ticket.id] === false)
+        .filter((ticket) => this.editingData[ticket.id] === false)
         .map((ticket) => {
-          return { ticketId: ticket.id }
-        })
+          return { ticketId: ticket.id };
+        });
 
-      const queries = []
+      const queries = [];
 
       if (ticketsToCheckIn.length) {
         queries.push(
@@ -219,10 +182,10 @@ export default {
             variables: {
               reference: this.booking.reference,
               performanceId: this.booking.performance.id,
-              tickets: ticketsToCheckIn
-            }
+              tickets: ticketsToCheckIn,
+            },
           })
-        )
+        );
       }
 
       if (ticketsToUnCheckIn.length) {
@@ -232,29 +195,29 @@ export default {
             variables: {
               reference: this.booking.reference,
               performanceId: this.booking.performance.id,
-              tickets: ticketsToUnCheckIn
-            }
+              tickets: ticketsToUnCheckIn,
+            },
           })
-        )
+        );
       }
 
-      await Promise.all(queries)
+      await Promise.all(queries);
 
       const { data } = await this.$apollo.query({
         query: BoxOfficePerformanceBooking,
         variables: {
           performanceId: this.booking.performance.id,
-          bookingId: this.booking.id
-        }
-      })
+          bookingId: this.booking.id,
+        },
+      });
 
-      this.booking.updateFromAPIData(data.performance.bookings.edges[0].node)
+      this.booking.updateFromAPIData(data.performance.bookings.edges[0].node);
 
-      this.editing = this.saving = false
+      this.editing = this.saving = false;
     },
-    cancelEdits () {
-      this.editing = false
-    }
-  }
-}
+    cancelEdits() {
+      this.editing = false;
+    },
+  },
+};
 </script>

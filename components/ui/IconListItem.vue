@@ -11,13 +11,13 @@
 
 <script>
 export default {
-  name: 'IconListItem',
+  name: "IconListItem",
   props: {
     icon: {
       requried: true,
       type: [Array, String],
-      default: null
-    }
-  }
-}
+      default: null,
+    },
+  },
+};
 </script>

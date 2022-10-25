@@ -29,9 +29,7 @@
         />
       </svg>
     </button>
-    <template
-      v-if="pageDisplay"
-    >
+    <template v-if="pageDisplay">
       <button
         v-for="(page, index) in pageDisplay"
         :key="index"
@@ -81,104 +79,120 @@ export default {
   props: {
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     pageInfo: {
       type: Object,
-      default: null
+      default: null,
     },
     hasNextPage: {
       default: undefined,
-      type: Boolean
+      type: Boolean,
     },
     hasPreviousPage: {
       default: undefined,
-      type: Boolean
+      type: Boolean,
     },
     numberOfPages: {
       default: null,
-      type: Number
+      type: Number,
     },
     currentPage: {
       default: null,
-      type: Number
+      type: Number,
     },
     currentOffset: {
       default: null,
-      type: Number
+      type: Number,
     },
     numberPagesToDisplay: {
       default: 5,
-      type: Number
+      type: Number,
     },
     activeButtonStyle: {
       default:
-        'bg-sta-orange text-gray-700 border border-gray-300 focus:outline-none',
-      type: String
+        "bg-sta-orange text-gray-700 border border-gray-300 focus:outline-none",
+      type: String,
     },
     inactiveButtonStyle: {
       default:
-        'bg-white text-gray-700 border border-gray-300 hover:bg-gray-200 focus:outline-none',
-      type: String
+        "bg-white text-gray-700 border border-gray-300 hover:bg-gray-200 focus:outline-none",
+      type: String,
     },
     disabledButtonStyle: {
       default:
-        'cursor-default bg-opacity-70 text-gray-300 border border-gray-300',
-      type: String
-    }
+        "cursor-default bg-opacity-70 text-gray-300 border border-gray-300",
+      type: String,
+    },
   },
   computed: {
-    canGoBackward () {
+    canGoBackward() {
       return (
         !this.disabled &&
         (this.hasPreviousPage || this.currentPage > 1 || this.currentOffset)
-      )
+      );
     },
-    canGoForward () {
+    canGoForward() {
       return (
         !this.disabled &&
         (this.hasNextPage ||
           this.currentPage !== this.numberOfPages ||
           (this.pageInfo && this.pageInfo.hasNextPage))
-      )
+      );
     },
-    pageDisplay () {
-      if (!this.numberOfPages) { return null }
-      let innerLength = this.numberPagesToDisplay - 2
-      const innerMax = this.numberOfPages - 1
-      const innerMin = 2
-      const current = this.currentPage
+    pageDisplay() {
+      if (!this.numberOfPages) {
+        return null;
+      }
+      let innerLength = this.numberPagesToDisplay - 2;
+      const innerMax = this.numberOfPages - 1;
+      const innerMin = 2;
+      const current = this.currentPage;
 
-      if (innerLength >= innerMax) { innerLength = innerMax - 1 }
-
-      let start = current - Math.floor(innerLength / 2)
-      start = Math.max(start, innerMin)
-      start = Math.min(start, innerMin + innerMax - innerLength - 1)
-      const inner = Array.from({ length: innerLength }, (_, i) => start + i)
-
-      if (inner.length) {
-        if (inner[0] !== 2) { inner[0] = '...' }
-        if (inner[inner.length - 1] !== this.numberOfPages - 1) { inner[inner.length - 1] = '...' }
+      if (innerLength >= innerMax) {
+        innerLength = innerMax - 1;
       }
 
-      inner.unshift(1)
-      if (this.numberOfPages > 1) { inner.push(this.numberOfPages) }
-      return inner
-    }
+      let start = current - Math.floor(innerLength / 2);
+      start = Math.max(start, innerMin);
+      start = Math.min(start, innerMin + innerMax - innerLength - 1);
+      const inner = Array.from({ length: innerLength }, (_, i) => start + i);
+
+      if (inner.length) {
+        if (inner[0] !== 2) {
+          inner[0] = "...";
+        }
+        if (inner[inner.length - 1] !== this.numberOfPages - 1) {
+          inner[inner.length - 1] = "...";
+        }
+      }
+
+      inner.unshift(1);
+      if (this.numberOfPages > 1) {
+        inner.push(this.numberOfPages);
+      }
+      return inner;
+    },
   },
   methods: {
-    previousPage () {
-      if (!this.canGoBackward && !this.disabled) { return }
-      this.$emit('previousPage')
+    previousPage() {
+      if (!this.canGoBackward && !this.disabled) {
+        return;
+      }
+      this.$emit("previousPage");
     },
-    nextPage () {
-      if (!this.canGoForward && !this.disabled) { return }
-      this.$emit('nextPage')
+    nextPage() {
+      if (!this.canGoForward && !this.disabled) {
+        return;
+      }
+      this.$emit("nextPage");
     },
-    gotoPage (page) {
-      if (isNaN(page) || this.currentPage === page) { return }
-      this.$emit('gotoPage', page)
-    }
-  }
-}
+    gotoPage(page) {
+      if (isNaN(page) || this.currentPage === page) {
+        return;
+      }
+      this.$emit("gotoPage", page);
+    },
+  },
+};
 </script>

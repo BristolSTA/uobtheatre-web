@@ -21,110 +21,110 @@
 </template>
 
 <script>
-import Swal from 'sweetalert2'
-import AdminPage from '@/components/admin/AdminPage.vue'
-import PermissionsAssigner from '@/components/admin/permissions/PermissionsAssigner.vue'
-import StaButton from '@/components/ui/StaButton.vue'
+import Swal from "sweetalert2";
+import AdminPage from "@/components/admin/AdminPage.vue";
+import PermissionsAssigner from "@/components/admin/permissions/PermissionsAssigner.vue";
+import StaButton from "@/components/ui/StaButton.vue";
 import {
   getValidationErrors,
   loadingSwal,
   performMutation,
-  successToast
-} from '@/utils'
-import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue'
+  successToast,
+} from "@/utils";
+import AllErrorsDisplay from "@/components/ui/AllErrorsDisplay.vue";
 export default {
   components: { AdminPage, PermissionsAssigner, StaButton, AllErrorsDisplay },
-  async asyncData ({ params, error, app }) {
+  async asyncData({ params, error, app }) {
     // Execute query
     const { data } = await app.apolloProvider.defaultClient.query({
-      query: require('@/graphql/queries/admin/productions/AdminProductionPermissions.gql'),
+      query: require("@/graphql/queries/admin/productions/AdminProductionPermissions.gql"),
       variables: {
-        slug: params.productionSlug
+        slug: params.productionSlug,
       },
-      fetchPolicy: 'no-cache'
-    })
+      fetchPolicy: "no-cache",
+    });
 
-    const production = data.production
+    const production = data.production;
     if (!production) {
       return error({
         statusCode: 404,
-        message: 'This production does not exist'
-      })
+        message: "This production does not exist",
+      });
     }
     if (production.assignedUsers === null) {
       return error({
         statusCode: 401,
-        message: 'You do not have permission to alter permissions'
-      })
+        message: "You do not have permission to alter permissions",
+      });
     }
     return {
-      production
-    }
+      production,
+    };
   },
-  data () {
+  data() {
     return {
       production: null,
-      errors: null
-    }
+      errors: null,
+    };
   },
   methods: {
-    async savePermissions () {
+    async savePermissions() {
       const changedUsers = this.production.assignedUsers.filter(
-        user => user.modified
-      )
+        (user) => user.modified
+      );
       const mutations = changedUsers.map((assignedUser) => {
         return this.setUserPermissions(
           assignedUser.user.email,
           assignedUser.assignedPermissions
-        )
-      })
+        );
+      });
 
-      await Promise.all(mutations)
+      await Promise.all(mutations);
 
       if (!this.errors) {
-        successToast.fire({ title: 'Users updated succesfully' })
-        this.$nuxt.refresh()
+        successToast.fire({ title: "Users updated succesfully" });
+        this.$nuxt.refresh();
       }
     },
-    async addUserPermissions (newUser) {
-      loadingSwal.fire()
+    async addUserPermissions(newUser) {
+      loadingSwal.fire();
       if (
         !(await this.setUserPermissions(newUser.email, newUser.permissions))
       ) {
-        return Swal.close()
+        return Swal.close();
       }
-      successToast.fire({ title: 'User has been added' })
-      this.$nuxt.refresh()
+      successToast.fire({ title: "User has been added" });
+      this.$nuxt.refresh();
     },
-    async removeUserPermissions (assignedUser) {
-      loadingSwal.fire()
+    async removeUserPermissions(assignedUser) {
+      loadingSwal.fire();
       if (!(await this.setUserPermissions(assignedUser.user.email, []))) {
-        return Swal.close()
+        return Swal.close();
       }
-      successToast.fire({ title: 'User has been removed' })
-      this.$nuxt.refresh()
+      successToast.fire({ title: "User has been removed" });
+      this.$nuxt.refresh();
     },
-    async setUserPermissions (email, permissions) {
-      this.errors = null
+    async setUserPermissions(email, permissions) {
+      this.errors = null;
       try {
         await performMutation(
           this.$apollo,
           {
-            mutation: require('@/graphql/mutations/admin/production/ProductionPermissions.gql'),
+            mutation: require("@/graphql/mutations/admin/production/ProductionPermissions.gql"),
             variables: {
               productionId: this.production.id,
               userEmail: email,
-              permissions
-            }
+              permissions,
+            },
           },
-          'productionPermissions'
-        )
-        return true
+          "productionPermissions"
+        );
+        return true;
       } catch (e) {
-        this.errors = getValidationErrors(e)
-        return false
+        this.errors = getValidationErrors(e);
+        return false;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>

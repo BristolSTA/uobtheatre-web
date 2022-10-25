@@ -7,27 +7,29 @@
 </template>
 
 <script>
-import BookingStage from '@/classes/BookingStage'
-import TimeGroupedPerformanceSelector from '@/components/performance/TimeGroupedPerformanceSelector.vue'
+import BookingStage from "@/classes/BookingStage";
+import TimeGroupedPerformanceSelector from "@/components/performance/TimeGroupedPerformanceSelector.vue";
 export default {
   stageInfo: new BookingStage({
-    name: 'Select Performance',
-    routeName: 'production-slug-book',
-    requiresPerformance: false
+    name: "Select Performance",
+    routeName: "production-slug-book",
+    requiresPerformance: false,
   }),
   components: { TimeGroupedPerformanceSelector },
   props: {
     production: {
       required: true,
-      type: Object
-    }
+      type: Object,
+    },
   },
   computed: {
-    availablePerformances () {
+    availablePerformances() {
       return this.production.performances.edges
-        .map(edge => edge.node)
-        .filter(performance => !(performance.disabled || performance.soldOut))
-    }
-  }
-}
+        .map((edge) => edge.node)
+        .filter(
+          (performance) => !(performance.disabled || performance.soldOut)
+        );
+    },
+  },
+};
 </script>

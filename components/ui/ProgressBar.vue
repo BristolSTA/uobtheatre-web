@@ -15,12 +15,12 @@ export default {
   props: {
     percentage: {
       default: 0,
-      type: Number
+      type: Number,
     },
     height: {
       default: 4,
-      type: Number
-    }
-  }
-}
+      type: Number,
+    },
+  },
+};
 </script>

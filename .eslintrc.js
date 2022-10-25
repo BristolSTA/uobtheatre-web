@@ -1,31 +1,34 @@
 module.exports = {
   root: true,
   env: {
-    browser: true
+    browser: true,
+    node: true,
   },
-  ignorePatterns: ['tests/unit/test.spec.example.js'],
-  parserOptions: {
-    ecmaVersion: 12,
-    parser: '@babel/eslint-parser',
-    requireConfigFile: false,
-    sourceType: 'module'
-  },
-  plugins: ['vue'],
+  ignorePatterns: ["tests/unit/test.spec.example.js"],
+  // parserOptions: {
+  //   ecmaVersion: 12,
+  //   parser: "@babel/eslint-parser",
+  //   requireConfigFile: false,
+  //   sourceType: "module",
+  // },
+  plugins: ["prettier", "@typescript-eslint"],
+  // plugins: ["vue", "@typescript-eslint"],
   extends: [
-    'plugin:vue/essential',
-    '@nuxtjs',
-    'prettier',
-    '@nuxtjs/eslint-config-typescript'
+    "@nuxtjs",
+    "@nuxtjs/eslint-config-typescript",
+    "prettier",
+    "plugin:prettier/recommended",
+    "plugin:nuxt/recommended",
   ],
   rules: {
-    'import/no-named-as-default': 'off'
+    "import/no-named-as-default": "off",
   },
   overrides: [
     {
-      files: ['*.test.js', '*.spec.js'],
+      files: ["*.test.js", "*.spec.js"],
       rules: {
-        'no-unused-expressions': 'off'
-      }
-    }
-  ]
-}
+        "no-unused-expressions": "off",
+      },
+    },
+  ],
+};

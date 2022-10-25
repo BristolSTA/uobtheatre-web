@@ -13,7 +13,7 @@
       "
       :expanded="
         selected_location_index == index ||
-          ticketMatrix.ticketOptions.length == 1
+        ticketMatrix.ticketOptions.length == 1
       "
       :current-tickets="booking.tickets"
       :discounts="ticketMatrix.discounts.edges.map((edge) => edge.node)"
@@ -33,66 +33,66 @@
 </template>
 
 <script>
-import lo from 'lodash'
+import lo from "lodash";
 
-import Booking from '@/classes/Booking'
-import Ticket from '@/classes/Ticket'
-import TicketMatrix from '@/classes/TicketsMatrix'
-import SeatGroup from '@/components/booking/SeatGroup.vue'
+import Booking from "@/classes/Booking";
+import Ticket from "@/classes/Ticket";
+import TicketMatrix from "@/classes/TicketsMatrix";
+import SeatGroup from "@/components/booking/SeatGroup.vue";
 
 export default {
   components: { SeatGroup },
   props: {
     booking: {
       required: true,
-      type: Booking
+      type: Booking,
     },
     ticketMatrix: {
       type: TicketMatrix,
-      default: null
+      default: null,
     },
     showCapacities: {
       default: false,
-      type: Boolean
+      type: Boolean,
     },
     maxTickets: {
       default: null,
-      type: Number
-    }
+      type: Number,
+    },
   },
-  data () {
+  data() {
     return {
       expanded: true,
       selected_location_index: null,
 
-      interaction_timer: lo.debounce(this.requestUpdate, 2 * 1000)
-    }
+      interaction_timer: lo.debounce(this.requestUpdate, 2 * 1000),
+    };
   },
   methods: {
-    onAddTicket (seatGroup, concessionType, number = 1) {
+    onAddTicket(seatGroup, concessionType, number = 1) {
       this.booking.addTicket(
         new Ticket(seatGroup.id, concessionType.id),
         this.ticketMatrix,
         number
-      )
-      this.interaction_timer()
+      );
+      this.interaction_timer();
     },
-    onSetTicketNum (seatGroup, concessionType, number) {
+    onSetTicketNum(seatGroup, concessionType, number) {
       this.booking.setTicketCount(
         seatGroup,
         concessionType,
         number,
         this.ticketMatrix
-      )
-      this.interaction_timer()
+      );
+      this.interaction_timer();
     },
-    onRemoveTicket (seatGroup, concessionType) {
-      this.booking.removeTicket(seatGroup, concessionType, this.ticketMatrix)
-      this.interaction_timer()
+    onRemoveTicket(seatGroup, concessionType) {
+      this.booking.removeTicket(seatGroup, concessionType, this.ticketMatrix);
+      this.interaction_timer();
     },
-    requestUpdate () {
-      this.$emit('request-update')
-    }
-  }
-}
+    requestUpdate() {
+      this.$emit("request-update");
+    },
+  },
+};
 </script>

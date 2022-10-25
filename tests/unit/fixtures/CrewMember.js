@@ -1,12 +1,12 @@
-import CrewRole from './CrewRole'
+import CrewRole from "./CrewRole";
 export default (overrides = {}) => {
   return Object.assign(
     {
       id: 1,
-      name: 'Jill Bloggs',
+      name: "Jill Bloggs",
       role: CrewRole(),
-      production: null
+      production: null,
     },
     overrides
-  )
-}
+  );
+};

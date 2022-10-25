@@ -29,67 +29,67 @@
 </template>
 
 <script>
-import AdminPerformancesIndexQuery from '@/graphql/queries/admin/productions/AdminPerformancesIndex.gql'
-import AdminProductionLookupQuery from '@/graphql/queries/admin/productions/AdminProductionLookup.gql'
-import AdminPage from '@/components/admin/AdminPage.vue'
-import PaginationBar from '@/components/ui/PaginationBar.vue'
-import LoadingContainer from '@/components/ui/LoadingContainer.vue'
-import TimeGroupedPerformanceSelector from '@/components/performance/TimeGroupedPerformanceSelector.vue'
+import AdminPerformancesIndexQuery from "@/graphql/queries/admin/productions/AdminPerformancesIndex.gql";
+import AdminProductionLookupQuery from "@/graphql/queries/admin/productions/AdminProductionLookup.gql";
+import AdminPage from "@/components/admin/AdminPage.vue";
+import PaginationBar from "@/components/ui/PaginationBar.vue";
+import LoadingContainer from "@/components/ui/LoadingContainer.vue";
+import TimeGroupedPerformanceSelector from "@/components/performance/TimeGroupedPerformanceSelector.vue";
 export default {
   components: {
     AdminPage,
     PaginationBar,
     LoadingContainer,
-    TimeGroupedPerformanceSelector
+    TimeGroupedPerformanceSelector,
   },
-  async asyncData ({ params, error, app }) {
+  async asyncData({ params, error, app }) {
     // Execute query
     const { data } = await app.apolloProvider.defaultClient.query({
       query: AdminProductionLookupQuery,
       variables: {
-        slug: params.productionSlug
-      }
-    })
+        slug: params.productionSlug,
+      },
+    });
 
-    const production = data.production
+    const production = data.production;
     if (!production) {
       return error({
         statusCode: 404,
-        message: 'This production does not exist'
-      })
+        message: "This production does not exist",
+      });
     }
     return {
-      production
-    }
+      production,
+    };
   },
   apollo: {
     performancesData: {
       query: AdminPerformancesIndexQuery,
-      variables () {
+      variables() {
         return {
           productionSlug: this.production.slug,
           offset: this.performancesOffset,
           soldOut: false,
           disabled: false,
-          take: 8
-        }
+          take: 8,
+        };
       },
-      update: data => data.production.performances
-    }
+      update: (data) => data.production.performances,
+    },
   },
-  data () {
+  data() {
     return {
       production: null,
 
       performancesData: null,
-      performancesOffset: 0
-    }
+      performancesOffset: 0,
+    };
   },
-  head () {
-    const title = `Create booking for ${this.production.name}`
+  head() {
+    const title = `Create booking for ${this.production.name}`;
     return {
-      title
-    }
-  }
-}
+      title,
+    };
+  },
+};
 </script>

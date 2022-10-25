@@ -1,21 +1,15 @@
 <template>
   <div class="mb-10 min-h-full text-white bg-sta-gray">
     <div class="container">
-      <h1 class="pt-2 text-left text-h1">
-        My Details
-      </h1>
+      <h1 class="pt-2 text-left text-h1">My Details</h1>
       <user-details v-if="user" class="pb-4" :user="user" />
     </div>
 
-    <hr class="border-t-2 border-sta-gray-dark">
+    <hr class="border-t-2 border-sta-gray-dark" />
     <div class="container">
-      <h2 id="myBookings" class="px-4 py-2 text-h2">
-        My Bookings
-      </h2>
+      <h2 id="myBookings" class="px-4 py-2 text-h2">My Bookings</h2>
       <div v-if="!activeBookings.edges.length" class="p-6 text-center">
-        <p class="p-2 text-h4">
-          No Upcoming Bookings
-        </p>
+        <p class="p-2 text-h4">No Upcoming Bookings</p>
         <NuxtLink class="btn btn-orange m-2" to="/productions">
           View What's On
         </NuxtLink>
@@ -52,9 +46,7 @@
           ref="prev-bookings"
           :bookings="oldBookings.edges.map((edge) => edge.node)"
         >
-          <template #title>
-            Past Bookings
-          </template>
+          <template #title> Past Bookings </template>
         </bookings-table>
         <div class="flex justify-center">
           <pagination-bar
@@ -75,63 +67,63 @@
 </template>
 
 <script>
-import BookingSummaryOverview from '@/components/booking/overview/BookingSummaryOverview.vue'
-import BookingsTable from '@/components/user/BookingsTable.vue'
-import UserDetails from '@/components/user/UserDetails.vue'
-import PaginationBar from '@/components/ui/PaginationBar.vue'
+import BookingSummaryOverview from "@/components/booking/overview/BookingSummaryOverview.vue";
+import BookingsTable from "@/components/user/BookingsTable.vue";
+import UserDetails from "@/components/user/UserDetails.vue";
+import PaginationBar from "@/components/ui/PaginationBar.vue";
 
 export default {
   components: {
     BookingSummaryOverview,
     UserDetails,
     BookingsTable,
-    PaginationBar
+    PaginationBar,
   },
-  middleware: 'authed',
-  async asyncData ({ app }) {
+  middleware: "authed",
+  async asyncData({ app }) {
     const { data } = await app.apolloProvider.defaultClient.query({
-      query: require('@/graphql/queries/user/MyAccountDetails.gql'),
-      fetchPolicy: 'no-cache'
-    })
+      query: require("@/graphql/queries/user/MyAccountDetails.gql"),
+      fetchPolicy: "no-cache",
+    });
 
     return {
-      user: data.me
-    }
+      user: data.me,
+    };
   },
-  data () {
+  data() {
     return {
       activeBookings: { edges: [] },
       activeBookingsOffset: null,
       oldBookings: { edges: [] },
       oldBookingsOffset: null,
-      user: null
-    }
+      user: null,
+    };
   },
   head: {
-    title: 'My Account'
+    title: "My Account",
   },
   apollo: {
     activeBookings: {
-      query: require('@/graphql/queries/user/CompleteBookings.gql'),
-      variables () {
+      query: require("@/graphql/queries/user/CompleteBookings.gql"),
+      variables() {
         return {
           active: true,
           max: 3,
-          offset: this.activeBookingsOffset
-        }
+          offset: this.activeBookingsOffset,
+        };
       },
-      update: data => data.me.bookings
+      update: (data) => data.me.bookings,
     },
     oldBookings: {
-      query: require('@/graphql/queries/user/CompleteBookings.gql'),
-      variables () {
+      query: require("@/graphql/queries/user/CompleteBookings.gql"),
+      variables() {
         return {
           active: false,
-          offset: this.oldBookingsOffset
-        }
+          offset: this.oldBookingsOffset,
+        };
       },
-      update: data => data.me.bookings
-    }
-  }
-}
+      update: (data) => data.me.bookings,
+    },
+  },
+};
 </script>

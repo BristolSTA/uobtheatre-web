@@ -20,16 +20,11 @@
                 .fullPath
             }}
             <sta-button
-              class="
-                text-sm
-                bg-sta-orange
-                hover:bg-sta-orange-dark
-                transition-colors
-              "
+              class="text-sm bg-sta-orange hover:bg-sta-orange-dark transition-colors"
               @click="
                 () => {
-                  changingSlug = true
-                  manualSlug = computedSlug
+                  changingSlug = true;
+                  manualSlug = computedSlug;
                 }
               "
             >
@@ -46,18 +41,11 @@
                 />
               </form-label>
               <sta-button
-                class="
-                  bg-sta-green
-                  hover:bg-sta-green-dark
-                  transition-colors
-                  lg:mx-8
-                  mx-4
-                  mt-6
-                "
+                class="bg-sta-green hover:bg-sta-green-dark transition-colors lg:mx-8 mx-4 mt-6"
                 @click="
                   () => {
-                    $emit('update:slug', manualSlug)
-                    changingSlug = false
+                    $emit('update:slug', manualSlug);
+                    changingSlug = false;
                   }
                 "
               >
@@ -65,7 +53,7 @@
               </sta-button>
             </div>
           </template>
-          <br>
+          <br />
           <error-helper :errors="errors" field-name="slug" />
         </p>
         <form-label :errors="errors" name="subtitle">
@@ -128,8 +116,8 @@
                         contentWarning.information
                           ? contentWarning.information
                           : contentWarning.warning.longDescription
-                            ? contentWarning.warning.longDescription
-                            : 'You can provide extended information about this content warning here'
+                          ? contentWarning.warning.longDescription
+                          : 'You can provide extended information about this content warning here'
                       "
                     />
                   </td>
@@ -162,7 +150,7 @@
               max="18"
               @input="$emit('update:ageRating', $event)"
               @keypress.stop="
-                if (!/^[0-9]$/i.test($event.key)) $event.preventDefault()
+                if (!/^[0-9]$/i.test($event.key)) $event.preventDefault();
               "
             />
           </form-label>
@@ -197,23 +185,13 @@
 
       <div
         v-if="society"
-        class="
-          flex
-          items-center
-          justify-center
-          p-4
-          bg-sta-gray-dark
-          rounded-lg
-          space-x-8
-        "
+        class="flex items-center justify-center p-4 bg-sta-gray-dark rounded-lg space-x-8"
       >
-        <img :src="society.logo.url" style="max-width: 100px">
+        <img :src="society.logo.url" style="max-width: 100px" />
         <span class="text-xl font-semibold">{{ society.name }}</span>
       </div>
       <div v-else>
-        <h4 class="font-bold text-lg">
-          No Society Selected
-        </h4>
+        <h4 class="font-bold text-lg">No Society Selected</h4>
       </div>
       <error-helper :errors="errors" field-name="society" />
     </card>
@@ -273,18 +251,18 @@
 </template>
 
 <script>
-import { v4 as uuid } from 'uuid'
-import kebabCase from 'lodash/kebabCase'
-import ImageInput from '../../ui/Inputs/ImageInput.vue'
-import FormLabel from '../../ui/FormLabel.vue'
-import Card from '../../ui/Card.vue'
-import RichTextInput from '@/components/ui/Inputs/RichTextInput.vue'
-import Errors from '@/classes/Errors'
+import { v4 as uuid } from "uuid";
+import kebabCase from "lodash/kebabCase";
+import ImageInput from "../../ui/Inputs/ImageInput.vue";
+import FormLabel from "../../ui/FormLabel.vue";
+import Card from "../../ui/Card.vue";
+import RichTextInput from "@/components/ui/Inputs/RichTextInput.vue";
+import Errors from "@/classes/Errors";
 
-import imageUpload from '@/services/imageUploadService'
-import ErrorHelper from '@/components/ui/ErrorHelper.vue'
-import StaButton from '@/components/ui/StaButton.vue'
-import { swal } from '@/utils'
+import imageUpload from "@/services/imageUploadService";
+import ErrorHelper from "@/components/ui/ErrorHelper.vue";
+import StaButton from "@/components/ui/StaButton.vue";
+import { swal } from "@/utils";
 
 export default {
   components: {
@@ -293,171 +271,175 @@ export default {
     Card,
     RichTextInput,
     ErrorHelper,
-    StaButton
+    StaButton,
   },
   props: {
     id: {
       type: String,
-      default: null
+      default: null,
     },
     errors: {
       type: Errors,
-      default: null
+      default: null,
     },
     name: {
       type: String,
-      default: null
+      default: null,
     },
     subtitle: {
       type: String,
-      default: null
+      default: null,
     },
     contactEmail: {
       type: String,
-      default: null
+      default: null,
     },
     description: {
       type: String,
-      default: null
+      default: null,
     },
     contentWarnings: {
       default: () => [],
-      type: Array
+      type: Array,
     },
     society: {
       default: null,
-      type: Object
+      type: Object,
     },
     facebookEvent: {
       default: null,
-      type: String
+      type: String,
     },
     ageRating: {
       default: null,
-      type: [Number, String]
+      type: [Number, String],
     },
     coverImage: {
       default: null,
-      type: Object
+      type: Object,
     },
     posterImage: {
       default: null,
-      type: Object
+      type: Object,
     },
     featuredImage: {
       default: null,
-      type: Object
+      type: Object,
     },
     slug: {
       default: null,
-      type: String
-    }
+      type: String,
+    },
   },
-  data () {
+  data() {
     return {
       availableWarnings: [],
       availableSocieties: [],
 
       slugManuallyEdited: false,
       changingSlug: false,
-      manualSlug: null
-    }
+      manualSlug: null,
+    };
   },
   apollo: {
     availableWarnings: {
-      query: require('@/graphql/queries/Warnings.gql'),
-      update: data => data.warnings.edges.map(edge => edge.node)
+      query: require("@/graphql/queries/Warnings.gql"),
+      update: (data) => data.warnings.edges.map((edge) => edge.node),
     },
     availableSocieties: {
-      query: require('@/graphql/queries/admin/societies/AdminSocietiesIndex.gql'),
-      update: data => data.societies.edges.map(edge => edge.node)
-    }
+      query: require("@/graphql/queries/admin/societies/AdminSocietiesIndex.gql"),
+      update: (data) => data.societies.edges.map((edge) => edge.node),
+    },
   },
   computed: {
-    computedSlug () {
-      return this.slug || kebabCase(this.name)
-    }
+    computedSlug() {
+      return this.slug || kebabCase(this.name);
+    },
   },
   methods: {
     kebabCase,
-    async onAddWarning () {
+    async onAddWarning() {
       const { value: warningId } = await swal.fire({
-        input: 'select',
+        input: "select",
         inputOptions: Object.fromEntries(
           this.availableWarnings
             .filter(
-              warning =>
+              (warning) =>
                 !this.contentWarnings
-                  .map(cw => cw.warning.id)
+                  .map((cw) => cw.warning.id)
                   .includes(warning.id)
             )
-            .map(warning => [warning.id, warning.shortDescription])
+            .map((warning) => [warning.id, warning.shortDescription])
         ),
         showCancelButton: true,
-        confirmButtonText: 'Add'
-      })
+        confirmButtonText: "Add",
+      });
 
-      if (!warningId) { return }
+      if (!warningId) {
+        return;
+      }
 
       const warning = this.availableWarnings.find(
-        warning => warning.id === warningId
-      )
+        (warning) => warning.id === warningId
+      );
 
       const warningDescriptors = [
-        'Contains themes throughout',
-        'Contains references in dialogue',
-        'Contains graphic references in dialogue',
-        'Contains depiction of this trigger'
-      ]
+        "Contains themes throughout",
+        "Contains references in dialogue",
+        "Contains graphic references in dialogue",
+        "Contains depiction of this trigger",
+      ];
 
       const { value: descriptorIndex } = await swal.fire({
         title: `Please choose a description for "<strong>${warning.shortDescription}</strong>"`,
-        text: 'Note that you can provide a custom, more detailed description by clicking the button below',
-        input: 'select',
+        text: "Note that you can provide a custom, more detailed description by clicking the button below",
+        input: "select",
         inputOptions: warningDescriptors,
         showCancelButton: true,
-        cancelButtonText: 'Let me add my own description',
-        inputPlaceholder: 'Select a description',
-        confirmButtonText: 'Finish'
-      })
+        cancelButtonText: "Let me add my own description",
+        inputPlaceholder: "Select a description",
+        confirmButtonText: "Finish",
+      });
 
       this.updateWarnings(
         warning,
         true,
         descriptorIndex ? warningDescriptors[descriptorIndex] : null
-      )
+      );
     },
-    updateWarnings (warning, include, information = null) {
+    updateWarnings(warning, include, information = null) {
       return this.$emit(
-        'update:contentWarnings',
+        "update:contentWarnings",
         include
           ? [...this.contentWarnings, { information, warning }]
           : this.contentWarnings.filter(
-            currentWarning => currentWarning.warning.id !== warning.id
-          )
-      )
+              (currentWarning) => currentWarning.warning.id !== warning.id
+            )
+      );
     },
-    async getInputData () {
+    async getInputData() {
       // Upload any new images
       const images = {
         coverImage: this.coverImage,
         featuredImage: this.featuredImage,
-        posterImage: this.posterImage
-      }
+        posterImage: this.posterImage,
+      };
 
       for (const [key, imageNode] of Object.entries(images)) {
-        if (!imageNode) { continue }
+        if (!imageNode) {
+          continue;
+        }
         if (imageNode.id) {
-          images[key] = imageNode.id
+          images[key] = imageNode.id;
         } else if (imageNode.file) {
           const image = await imageUpload(
             this,
             imageNode.file,
-            key + `_${this.id ?? uuid()}.` + imageNode.file.name.split('.')[1]
-          )
-          images[key] = image.global_id
+            key + `_${this.id ?? uuid()}.` + imageNode.file.name.split(".")[1]
+          );
+          images[key] = image.global_id;
         } else {
-          images[key] = null
+          images[key] = null;
         }
       }
 
@@ -470,20 +452,20 @@ export default {
         ageRating: this.ageRating,
         facebookEvent: this.facebookEvent,
         contactEmail: this.contactEmail,
-        contentWarnings: this.contentWarnings.map(cw => ({
+        contentWarnings: this.contentWarnings.map((cw) => ({
           id: cw.warning.id,
-          information: cw.information
+          information: cw.information,
         })),
         society: this.society?.id,
-        ...images
-      }
+        ...images,
+      };
 
       if (!returnObject.id) {
-        delete returnObject.id
+        delete returnObject.id;
       }
 
-      return returnObject
-    }
-  }
-}
+      return returnObject;
+    },
+  },
+};
 </script>

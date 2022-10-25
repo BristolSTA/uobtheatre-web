@@ -3,9 +3,7 @@
     <all-errors-display :errors="errors" />
     <loading-container :loading="generating">
       <div class="space-y-4">
-        <h2 class="text-h2">
-          Select Report
-        </h2>
+        <h2 class="text-h2">Select Report</h2>
         <t-select
           v-model="currentReport"
           placeholder="Select a report"
@@ -15,9 +13,7 @@
         <template
           v-if="currentReportObject && currentReportObject.requires_times"
         >
-          <h2 class="text-h2">
-            Set report times
-          </h2>
+          <h2 class="text-h2">Set report times</h2>
           <form-label field-name="startTime">
             Start Time
             <template #control>
@@ -51,7 +47,7 @@
         <template
           v-if="
             currentReportObject &&
-              (!currentReportObject.requires_times || (start && end))
+            (!currentReportObject.requires_times || (start && end))
           "
         >
           <button
@@ -67,14 +63,14 @@
 </template>
 
 <script>
-import AdminPage from '@/components/admin/AdminPage.vue'
-import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue'
-import FormLabel from '@/components/ui/FormLabel.vue'
-import { getValidationErrors, performMutation } from '@/utils'
-import LoadingContainer from '@/components/ui/LoadingContainer.vue'
+import AdminPage from "@/components/admin/AdminPage.vue";
+import AllErrorsDisplay from "@/components/ui/AllErrorsDisplay.vue";
+import FormLabel from "@/components/ui/FormLabel.vue";
+import { getValidationErrors, performMutation } from "@/utils";
+import LoadingContainer from "@/components/ui/LoadingContainer.vue";
 export default {
   components: { AdminPage, AllErrorsDisplay, FormLabel, LoadingContainer },
-  data () {
+  data() {
     return {
       errors: null,
       currentReport: null,
@@ -83,43 +79,45 @@ export default {
       generating: false,
 
       reports: [
-        { text: 'Period Totals', value: 'PeriodTotals', requires_times: true },
-        { text: 'Outstanding Payments', value: 'OutstandingPayments' }
-      ]
-    }
+        { text: "Period Totals", value: "PeriodTotals", requires_times: true },
+        { text: "Outstanding Payments", value: "OutstandingPayments" },
+      ],
+    };
   },
   head: {
-    title: 'Finance Reports'
+    title: "Finance Reports",
   },
   computed: {
-    currentReportObject () {
-      if (!this.currentReport) { return }
-      return this.reports.find(report => report.value === this.currentReport)
-    }
+    currentReportObject() {
+      if (!this.currentReport) {
+        return;
+      }
+      return this.reports.find((report) => report.value === this.currentReport);
+    },
   },
   methods: {
-    async generateReport () {
-      this.generating = true
+    async generateReport() {
+      this.generating = true;
       try {
         const data = await performMutation(
           this.$apollo,
           {
-            mutation: require('@/graphql/mutations/admin/GenerateReport.gql'),
+            mutation: require("@/graphql/mutations/admin/GenerateReport.gql"),
             variables: {
               name: this.currentReport,
               start: this.start,
-              end: this.end
-            }
+              end: this.end,
+            },
           },
-          'generateReport'
-        )
-        window.open(data.generateReport.downloadUri)
+          "generateReport"
+        );
+        window.open(data.generateReport.downloadUri);
       } catch (e) {
-        this.errors = getValidationErrors(e)
+        this.errors = getValidationErrors(e);
       } finally {
-        this.generating = false
+        this.generating = false;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>

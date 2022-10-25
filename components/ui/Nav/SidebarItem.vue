@@ -19,25 +19,25 @@ export default {
   props: {
     icon: {
       default: null,
-      type: String
+      type: String,
     },
     href: {
       default: null,
-      type: String
+      type: String,
     },
     isRoot: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
-    isActive () {
-      const currentUrl = this.$nuxt.$route.path
+    isActive() {
+      const currentUrl = this.$nuxt.$route.path;
       if (this.isRoot) {
-        return currentUrl === this.href
+        return currentUrl === this.href;
       }
-      return currentUrl.startsWith(this.href)
-    }
-  }
-}
+      return currentUrl.startsWith(this.href);
+    },
+  },
+};
 </script>

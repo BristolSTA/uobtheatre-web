@@ -3,7 +3,8 @@
     <div class="flex items-end space-x-4">
       <div><t-input v-model="bookingsSearch" placeholder="Search" /></div>
       <div>
-        <label>Status</label><t-select
+        <label>Status</label
+        ><t-select
           v-model="bookingsStatus"
           :options="[
             { text: 'All', value: null },
@@ -58,18 +59,14 @@
           <table-row-item>{{ booking.reference }}</table-row-item>
           <table-row-item>
             {{ booking.tickets.length }} ticket{{
-              booking.tickets.length > 1 ? 's' : ''
+              booking.tickets.length > 1 ? "s" : ""
             }}
           </table-row-item>
           <table-row-item>
-            {{
-              new BookingStatusEnum(booking.status).name
-            }}
+            {{ new BookingStatusEnum(booking.status).name }}
           </table-row-item>
           <table-row-item>
-            {{
-              booking.createdAt | dateFormat('dd/MMM/y HH:mm ZZZZ')
-            }}
+            {{ booking.createdAt | dateFormat("dd/MMM/y HH:mm ZZZZ") }}
           </table-row-item>
         </table-row>
       </paginated-table>
@@ -78,16 +75,16 @@
 </template>
 
 <script>
-import AdminProductionCompleteBookingsQuery from '@/graphql/queries/admin/productions/AdminProductionCompleteBookings.gql'
-import AdminPage from '@/components/admin/AdminPage.vue'
-import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue'
-import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue'
-import TableRow from '@/components/ui/Tables/TableRow.vue'
-import TableRowItem from '@/components/ui/Tables/TableRowItem.vue'
-import Card from '@/components/ui/Card.vue'
-import SortIcon from '@/components/ui/SortIcon.vue'
-import AdminProductionLookupQuery from '@/graphql/queries/admin/productions/AdminProductionLookup.gql'
-import BookingStatusEnum from '@/enums/PayableStatusEnum'
+import AdminProductionCompleteBookingsQuery from "@/graphql/queries/admin/productions/AdminProductionCompleteBookings.gql";
+import AdminPage from "@/components/admin/AdminPage.vue";
+import PaginatedTable from "@/components/ui/Tables/PaginatedTable.vue";
+import TableHeadItem from "@/components/ui/Tables/TableHeadItem.vue";
+import TableRow from "@/components/ui/Tables/TableRow.vue";
+import TableRowItem from "@/components/ui/Tables/TableRowItem.vue";
+import Card from "@/components/ui/Card.vue";
+import SortIcon from "@/components/ui/SortIcon.vue";
+import AdminProductionLookupQuery from "@/graphql/queries/admin/productions/AdminProductionLookup.gql";
+import BookingStatusEnum from "@/enums/PayableStatusEnum";
 export default {
   components: {
     AdminPage,
@@ -96,29 +93,29 @@ export default {
     TableRow,
     TableRowItem,
     Card,
-    SortIcon
+    SortIcon,
   },
-  async asyncData ({ params, error, app }) {
+  async asyncData({ params, error, app }) {
     // Execute query
     const { data } = await app.apolloProvider.defaultClient.query({
       query: AdminProductionLookupQuery,
       variables: {
-        slug: params.productionSlug
-      }
-    })
+        slug: params.productionSlug,
+      },
+    });
 
-    const production = data.production
+    const production = data.production;
     if (!production) {
       return error({
         statusCode: 404,
-        message: 'This production does not exist'
-      })
+        message: "This production does not exist",
+      });
     }
     return {
-      production
-    }
+      production,
+    };
   },
-  data () {
+  data() {
     return {
       bookings: [],
       bookingsPageInfo: {},
@@ -129,41 +126,45 @@ export default {
 
       production: null,
 
-      BookingStatusEnum
-    }
+      BookingStatusEnum,
+    };
   },
-  head () {
-    const title = `Bookings for ${this.production.name}`
+  head() {
+    const title = `Bookings for ${this.production.name}`;
     return {
-      title
-    }
+      title,
+    };
   },
   apollo: {
     bookings: {
       query: AdminProductionCompleteBookingsQuery,
-      variables () {
+      variables() {
         return {
           productionSlug: this.production.slug,
           performanceId: this.$route.query.performanceId,
           offset: this.bookingsOffset,
           search: this.bookingsSearch,
           orderBy: this.bookingsOrderBy,
-          status: this.bookingsStatus
-        }
+          status: this.bookingsStatus,
+        };
       },
-      fetchPolicy: 'cache-and-network',
-      update (data) {
-        const performances = data.production.performances.edges
-        if (!performances.length) { return [] }
-        return performances[0].node.bookings.edges.map(edge => edge.node)
+      fetchPolicy: "cache-and-network",
+      update(data) {
+        const performances = data.production.performances.edges;
+        if (!performances.length) {
+          return [];
+        }
+        return performances[0].node.bookings.edges.map((edge) => edge.node);
       },
       debounce: 600,
-      result (result) {
-        if (!result.data) { return }
+      result(result) {
+        if (!result.data) {
+          return;
+        }
         this.bookingsPageInfo =
-          result.data.production.performances.edges[0].node.bookings.pageInfo
-      }
-    }
-  }
-}
+          result.data.production.performances.edges[0].node.bookings.pageInfo;
+      },
+    },
+  },
+};
 </script>

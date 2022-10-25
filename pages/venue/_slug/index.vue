@@ -19,38 +19,23 @@
           class="p-3 w-full md:p-0"
           :src="venue.image.url"
           :alt="`${venue.name} image`"
-        >
+        />
       </div>
     </div>
     <div class="flex flex-wrap items-center justify-center">
       <div
-        class="
-          flex
-          justify-center
-          p-4
-          w-full
-          bg-sta-gray-dark
-          lg:order-last lg:ml-4 lg:w-1/4
-        "
+        class="flex justify-center p-4 w-full bg-sta-gray-dark lg:order-last lg:ml-4 lg:w-1/4"
       >
         <div>
-          <h2 class="text-sta-orange text-3xl font-semibold">
-            Venue Info:
-          </h2>
+          <h2 class="text-sta-orange text-3xl font-semibold">Venue Info:</h2>
           <table class="table-auto">
             <tbody>
               <tr>
-                <th class="align-top pb-2 pr-2">
-                  Capacity:
-                </th>
-                <td class="align-top">
-                  Max {{ venue.internalCapacity }}
-                </td>
+                <th class="align-top pb-2 pr-2">Capacity:</th>
+                <td class="align-top">Max {{ venue.internalCapacity }}</td>
               </tr>
               <tr>
-                <th class="align-top pr-2">
-                  Address:
-                </th>
+                <th class="align-top pr-2">Address:</th>
                 <td class="align-top">
                   <div v-if="venue.address" ref="address">
                     <p v-if="venue.address.buildingName">
@@ -92,17 +77,17 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
-import L from 'leaflet'
+import gql from "graphql-tag";
+import L from "leaflet";
 
-import IconListItem from '@/components/ui/IconListItem.vue'
-import AddressFragment from '@/graphql/fragments/AddressFragment.gql'
-import TipTapOutput from '@/components/ui/TipTapOutput.vue'
+import IconListItem from "@/components/ui/IconListItem.vue";
+import AddressFragment from "@/graphql/fragments/AddressFragment.gql";
+import TipTapOutput from "@/components/ui/TipTapOutput.vue";
 
 export default {
-  name: 'VenuePage',
+  name: "VenuePage",
   components: { IconListItem, TipTapOutput },
-  async asyncData ({ params, app, error }) {
+  async asyncData({ params, app, error }) {
     const { data } = await app.apolloProvider.defaultClient.query({
       query: gql`
         query venue($slug: String!) {
@@ -121,63 +106,65 @@ export default {
         ${AddressFragment}
       `,
       variables: {
-        slug: params.slug
-      }
-    })
-    const venue = data.venue
+        slug: params.slug,
+      },
+    });
+    const venue = data.venue;
     if (!venue) {
       return error({
         statusCode: 404,
-        message: 'This society does not exists'
-      })
+        message: "This society does not exists",
+      });
     }
 
     return {
-      venue
-    }
+      venue,
+    };
   },
-  data () {
+  data() {
     return {
-      venue: null
-    }
+      venue: null,
+    };
   },
-  head () {
-    const venueName = this.venue ? this.venue.name : 'Loading...'
+  head() {
+    const venueName = this.venue ? this.venue.name : "Loading...";
     return {
-      title: `${venueName}`
-    }
+      title: `${venueName}`,
+    };
   },
   computed: {
-    googleMapsLink () {
+    googleMapsLink() {
       return (
         `https://maps.google.com/?q=${this.venue.name}` +
         (this.venue.address
           ? `,${this.venue.address.street},${this.venue.address.city}`
-          : '')
-      )
-    }
+          : "")
+      );
+    },
   },
-  mounted () {
-    this.createMap()
+  mounted() {
+    this.createMap();
   },
   methods: {
-    createMap () {
-      const venue = this.venue
-      if (!venue?.address?.latitude || !venue?.address?.longitude) { return }
-      const map = L.map(this.$refs['venue-map']).setView(
+    createMap() {
+      const venue = this.venue;
+      if (!venue?.address?.latitude || !venue?.address?.longitude) {
+        return;
+      }
+      const map = L.map(this.$refs["venue-map"]).setView(
         [venue.address.latitude, venue.address.longitude],
         14
-      )
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      );
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map)
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(map);
 
       L.popup({ closeButton: false })
         .setLatLng(L.latLng(venue.address.latitude, venue.address.longitude))
         .setContent(`${venue.name}`)
-        .openOn(map)
-    }
-  }
-}
+        .openOn(map);
+    },
+  },
+};
 </script>

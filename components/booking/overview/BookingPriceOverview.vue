@@ -12,12 +12,8 @@
           </p>
           <small v-if="cost.subtext">{{ cost.subtext }}</small>
         </td>
-        <td class="px-2">
-          :
-        </td>
-        <td class="px-2 font-mono">
-          £{{ cost.cost }}
-        </td>
+        <td class="px-2">:</td>
+        <td class="px-2 font-mono">£{{ cost.cost }}</td>
       </tr>
     </table>
     <div class="p-1 px-2 text-center bg-sta-gray rounded">
@@ -32,37 +28,37 @@
 </template>
 
 <script>
-import OverviewBox from '../../ui/Card.vue'
-import Booking from '@/classes/Booking'
+import OverviewBox from "../../ui/Card.vue";
+import Booking from "@/classes/Booking";
 
 export default {
-  name: 'BookingPriceOverview',
+  name: "BookingPriceOverview",
   components: { OverviewBox },
   props: {
     booking: {
       required: true,
-      type: Booking
-    }
+      type: Booking,
+    },
   },
   computed: {
-    costs () {
+    costs() {
       const costs = [
         {
-          name: 'Tickets',
-          subtext: 'Including any discounts',
-          cost: this.booking.ticketsDiscountedPricePounds
-        }
-      ]
+          name: "Tickets",
+          subtext: "Including any discounts",
+          cost: this.booking.ticketsDiscountedPricePounds,
+        },
+      ];
 
       this.booking.miscCosts.forEach((miscCost) => {
         costs.push({
           name: miscCost.name,
-          cost: (miscCost.value / 100).toFixed(2)
-        })
-      })
+          cost: (miscCost.value / 100).toFixed(2),
+        });
+      });
 
-      return costs
-    }
-  }
-}
+      return costs;
+    },
+  },
+};
 </script>

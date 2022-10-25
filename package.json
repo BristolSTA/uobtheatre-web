@@ -14,7 +14,8 @@
     "pretest:e2e": "yarn generate --devtools && yarn start",
     "pretest:e2e:local": "API_BASE=http://uobtheatre-api:8000 yarn generate --devtools && yarn start",
     "pretest:e2e:ci": "API_BASE=http://localhost:9000 yarn generate --devtools && yarn start",
-    "test:e2e:silent": "cypress run"
+    "test:e2e:silent": "cypress run",
+    "codegen": "graphql-codegen --config codegen.ts"
   },
   "lint-staged": {
     "*.{js,ts,vue}": "eslint",
@@ -62,6 +63,7 @@
     "@fortawesome/free-brands-svg-icons": "^5.15.1",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/vue-fontawesome": "^2.0.0",
+    "@graphql-codegen/cli": "2.13.7",
     "@nuxt/types": "^2.15.8",
     "@nuxt/typescript-build": "^2.1.0",
     "@nuxtjs/eslint-config": "^11.0.0",
@@ -103,6 +105,7 @@
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^22.0.0",
     "stylelint-scss": "^3.20.1",
-    "vue-jest": "^3.0.4"
+    "vue-jest": "^3.0.4",
+    "@graphql-codegen/client-preset": "1.1.1"
   }
 }

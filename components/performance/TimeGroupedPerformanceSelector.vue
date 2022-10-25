@@ -9,15 +9,7 @@
         {{ time }}
       </h2>
       <div
-        class="
-          grid
-          gap-2
-          grid-cols-1
-          sm:grid-cols-2
-          lg:gap-4
-          xl:grid-cols-3
-          2xl:grid-cols-4
-        "
+        class="grid gap-2 grid-cols-1 sm:grid-cols-2 lg:gap-4 xl:grid-cols-3 2xl:grid-cols-4"
       >
         <performance-overview
           v-for="(performance, index) in performanceGroup"
@@ -26,9 +18,7 @@
           :performance="performance"
           @select="$emit('select-performance', performance)"
         >
-          <template #select-button>
-            Select
-          </template>
+          <template #select-button> Select </template>
         </performance-overview>
       </div>
     </div>
@@ -36,30 +26,30 @@
 </template>
 
 <script>
-import lo from 'lodash'
-import { DateTime } from 'luxon'
-import { humanDayTime } from '@/utils'
-import PerformanceOverview from '@/components/performance/PerformanceOverview.vue'
+import lo from "lodash";
+import { DateTime } from "luxon";
+import { humanDayTime } from "@/utils";
+import PerformanceOverview from "@/components/performance/PerformanceOverview.vue";
 export default {
   components: { PerformanceOverview },
   props: {
     performances: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
-    groupedPerformances () {
+    groupedPerformances() {
       return lo
         .chain(this.performances)
         .sortBy((performance) => {
-          return DateTime.fromISO(performance.start)
+          return DateTime.fromISO(performance.start);
         })
         .groupBy((performance) => {
-          return humanDayTime(DateTime.fromISO(performance.start))
+          return humanDayTime(DateTime.fromISO(performance.start));
         })
-        .value()
-    }
-  }
-}
+        .value();
+    },
+  },
+};
 </script>

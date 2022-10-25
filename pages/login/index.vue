@@ -4,7 +4,7 @@
       :login="true"
       @go-signup="
         () => {
-          $router.replace('/signup')
+          $router.replace('/signup');
         }
       "
     />
@@ -12,15 +12,15 @@
 </template>
 
 <script>
-import UserAuthBox from '@/components/auth/UserAuthBox.vue'
+import UserAuthBox from "@/components/auth/UserAuthBox.vue";
 
-import AuthPageTemplate from '@/components/auth/AuthPageTemplate.vue'
+import AuthPageTemplate from "@/components/auth/AuthPageTemplate.vue";
 
 export default {
   components: { UserAuthBox, AuthPageTemplate },
-  middleware: 'not-authed',
+  middleware: "not-authed",
   head: {
-    title: 'Login'
-  }
-}
+    title: "Login",
+  },
+};
 </script>

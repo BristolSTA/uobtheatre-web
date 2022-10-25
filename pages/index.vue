@@ -7,9 +7,7 @@
         style="min-height: 50vh"
       >
         <div class="container px-4 text-white lg:w-2/3">
-          <div class="text-4xl">
-            Welcome to {{ $appName }}
-          </div>
+          <div class="text-4xl">Welcome to {{ $appName }}</div>
           <div class="text-2xl">
             The Home of Bristol Student Performing Arts
           </div>
@@ -33,7 +31,7 @@
                   displayStartEnd(
                     slotProps.carouselItem.text.start,
                     slotProps.carouselItem.text.end,
-                    'd MMMM'
+                    "d MMMM"
                   )
                 }}
               </div>
@@ -44,9 +42,7 @@
     </div>
 
     <div ref="whatson" class="container mt-4 text-white">
-      <h1 class="text-h1">
-        What's On
-      </h1>
+      <h1 class="text-h1">What's On</h1>
       <div
         v-for="(production, index) in upcomingProductionsToShow"
         :key="production.id"
@@ -77,7 +73,7 @@
           </NuxtLink>
           <span v-if="production.subtitle">{{ production.subtitle }}</span>
           <p class="font-semibold text-sta-orange">
-            {{ displayStartEnd(production.start, production.end, 'd MMMM') }}
+            {{ displayStartEnd(production.start, production.end, "d MMMM") }}
           </p>
           <p>
             {{ oneLiner(production.description) | truncate(230) }}
@@ -96,9 +92,7 @@
         style="height: 30vh"
       >
         <div class="w-full">
-          <h2 class="text-h2">
-            There are currently no upcoming productions
-          </h2>
+          <h2 class="text-h2">There are currently no upcoming productions</h2>
           <p>Please be sure to check back soon!</p>
         </div>
       </div>
@@ -117,34 +111,34 @@
 </template>
 
 <script>
-import lo from 'lodash'
+import lo from "lodash";
 
-import Carousel from '@/components/ui/Carousel.vue'
-import { displayStartEnd } from '@/utils'
-import { oneLiner } from '@/utils/lang'
-import PayableStatusEnum from '@/enums/PayableStatusEnum'
-import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue'
+import Carousel from "@/components/ui/Carousel.vue";
+import { displayStartEnd } from "@/utils";
+import { oneLiner } from "@/utils/lang";
+import PayableStatusEnum from "@/enums/PayableStatusEnum";
+import ProductionFeaturedImage from "@/components/production/ProductionFeaturedImage.vue";
 
 export default {
   components: { Carousel, ProductionFeaturedImage },
-  data () {
+  data() {
     return {
       upcomingProductions: [],
-      displayStartEnd
-    }
+      displayStartEnd,
+    };
   },
-  head () {
-    const appName = this.$appName
+  head() {
+    const appName = this.$appName;
     return {
       title: `${appName} | The Home Of Bristol Student Performing Arts`,
-      titleTemplate: null
-    }
+      titleTemplate: null,
+    };
   },
   computed: {
-    bannerProductions () {
+    bannerProductions() {
       return this.upcomingProductionsToShow
         .filter((production) => {
-          return !!production.coverImage
+          return !!production.coverImage;
         })
         .map((production) => {
           return {
@@ -155,38 +149,38 @@ export default {
               name: production.name,
               start: production.start,
               end: production.end,
-              society: production.society
-            }
-          }
-        })
+              society: production.society,
+            },
+          };
+        });
     },
-    upcomingProductionsToShow () {
-      return lo.take(this.upcomingProductions, 4)
+    upcomingProductionsToShow() {
+      return lo.take(this.upcomingProductions, 4);
     },
-    enumTest () {
-      return new PayableStatusEnum('IN_PROGRESS')
-    }
+    enumTest() {
+      return new PayableStatusEnum("IN_PROGRESS");
+    },
   },
   methods: {
-    oneLiner
+    oneLiner,
   },
   apollo: {
     upcomingProductions: {
-      query: require('@/graphql/queries/HomeUpcomingProductions.gql'),
-      update: data => data.productions.edges.map(edge => edge.node),
-      variables () {
+      query: require("@/graphql/queries/HomeUpcomingProductions.gql"),
+      update: (data) => data.productions.edges.map((edge) => edge.node),
+      variables() {
         return {
-          now: new Date()
-        }
-      }
-    }
-  }
-}
+          now: new Date(),
+        };
+      },
+    },
+  },
+};
 </script>
 
 <style>
 #splashscreen {
-  background-image: url('~@/assets/images/placeholder-homepage-splash.jpg');
+  background-image: url("~@/assets/images/placeholder-homepage-splash.jpg");
   background-size: cover;
   background-position: center;
 }

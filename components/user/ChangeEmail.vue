@@ -1,8 +1,6 @@
 <template>
   <div class="text-center">
-    <h3 class="text-h3">
-      Change your email
-    </h3>
+    <h3 class="text-h3">Change your email</h3>
     <loading-container :loading="loading">
       <non-field-error :errors="errors" />
       <form
@@ -24,9 +22,7 @@
           :errors="errors"
           required
         />
-        <button class="btn btn-green">
-          Send Verification Email
-        </button>
+        <button class="btn btn-green">Send Verification Email</button>
       </form>
       <button
         class="btn btn-orange"
@@ -40,31 +36,31 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
+import gql from "graphql-tag";
 
-import LoadingContainer from '../ui/LoadingContainer.vue'
-import NonFieldError from '../ui/NonFieldError.vue'
-import TextInput from '../ui/TextInput.vue'
-import { getValidationErrors, performMutation, swal } from '@/utils'
+import LoadingContainer from "../ui/LoadingContainer.vue";
+import NonFieldError from "../ui/NonFieldError.vue";
+import TextInput from "../ui/TextInput.vue";
+import { getValidationErrors, performMutation, swal } from "@/utils";
 export default {
   components: {
     LoadingContainer,
     TextInput,
-    NonFieldError
+    NonFieldError,
   },
-  data () {
+  data() {
     return {
       email: null,
 
       password: null,
 
       loading: false,
-      errors: null
-    }
+      errors: null,
+    };
   },
   methods: {
-    async addNewEmail () {
-      this.loading = true
+    async addNewEmail() {
+      this.loading = true;
       try {
         await performMutation(
           this.$apollo,
@@ -72,27 +68,27 @@ export default {
             mutation: gql`
           mutation ($email: String!, $password: String!) {
             sendSecondaryEmailActivation(email: $email, password: $password) {
-                ${require('@/graphql/partials/ErrorsPartial').default}
+                ${require("@/graphql/partials/ErrorsPartial").default}
             }
           }
         `,
             variables: {
               email: this.email,
-              password: this.password
-            }
+              password: this.password,
+            },
           },
-          'sendSecondaryEmailActivation'
-        )
+          "sendSecondaryEmailActivation"
+        );
         swal.fire({
-          icon: 'info',
-          title: 'Check your email',
-          text: `We have sent a verification email to ${this.email}`
-        })
+          icon: "info",
+          title: "Check your email",
+          text: `We have sent a verification email to ${this.email}`,
+        });
       } catch (e) {
-        this.errors = getValidationErrors(e)
+        this.errors = getValidationErrors(e);
       }
-      this.loading = false
-    }
-  }
-}
+      this.loading = false;
+    },
+  },
+};
 </script>

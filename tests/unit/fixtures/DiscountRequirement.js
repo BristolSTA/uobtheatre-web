@@ -1,4 +1,4 @@
-import ConcessionType from './ConcessionType'
+import ConcessionType from "./ConcessionType";
 
 export default (overrides = {}) => {
   return Object.assign(
@@ -6,8 +6,8 @@ export default (overrides = {}) => {
       id: 1,
       number: 1,
       discount: null,
-      concessionType: ConcessionType()
+      concessionType: ConcessionType(),
     },
     overrides
-  )
-}
+  );
+};

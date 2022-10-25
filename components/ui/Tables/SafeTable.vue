@@ -11,8 +11,8 @@ export default {
   props: {
     tableClass: {
       default: null,
-      type: [Array, Object, String]
-    }
-  }
-}
+      type: [Array, Object, String],
+    },
+  },
+};
 </script>

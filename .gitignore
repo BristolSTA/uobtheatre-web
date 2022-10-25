@@ -95,3 +95,6 @@ sw.*
 
 # Docker stuff
 .docker
+
+# GQL Codegen
+graphql/codegen

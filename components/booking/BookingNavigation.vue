@@ -16,50 +16,56 @@
 </template>
 
 <script>
-import Booking from '@/classes/Booking'
+import Booking from "@/classes/Booking";
 import Stages, {
-  getStageIndex
-} from '@/pages/production/_slug/book/-bookingStages'
+  getStageIndex,
+} from "@/pages/production/_slug/book/-bookingStages";
 export default {
-  name: 'BookingNavigation',
+  name: "BookingNavigation",
   props: {
     currentStageIndex: {
       required: true,
-      type: Number
+      type: Number,
     },
     production: {
       required: true,
-      type: Object
+      type: Object,
     },
     booking: {
       required: true,
-      type: Booking
-    }
+      type: Booking,
+    },
   },
   computed: {
-    applicableStages () {
+    applicableStages() {
       return Stages.filter((stageComponent) => {
         return stageComponent.stageInfo.shouldBeUsed(
           this.production,
           this.booking
-        )
-      })
-    }
+        );
+      });
+    },
   },
   methods: {
-    stylesForButton (stage) {
-      const stageIndex = getStageIndex(stage)
-      if (this.currentStageIndex === stageIndex) { return 'btn-orange' }
+    stylesForButton(stage) {
+      const stageIndex = getStageIndex(stage);
+      if (this.currentStageIndex === stageIndex) {
+        return "btn-orange";
+      }
       if (
         this.currentStageIndex > stageIndex &&
         stage.eligable(this.production, this.booking)
-      ) { return 'btn-green' }
-      return 'btn-gray-light disabled'
+      ) {
+        return "btn-green";
+      }
+      return "btn-gray-light disabled";
     },
-    onSelectStage (stage) {
-      if (getStageIndex(stage.stageInfo) === this.currentStageIndex) { return }
-      this.$emit('goto-stage', stage)
-    }
-  }
-}
+    onSelectStage(stage) {
+      if (getStageIndex(stage.stageInfo) === this.currentStageIndex) {
+        return;
+      }
+      this.$emit("goto-stage", stage);
+    },
+  },
+};
 </script>

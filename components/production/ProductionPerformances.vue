@@ -9,9 +9,7 @@
     </template>
     <template v-else>
       <div class="text-center">
-        <h1 class="text-h2">
-          Dates and Times
-        </h1>
+        <h1 class="text-h2">Dates and Times</h1>
       </div>
       <div
         v-if="!production.performances.edges.length"
@@ -35,24 +33,24 @@
 </template>
 
 <script>
-import { DateTime } from 'luxon'
-import TimeGroupedPerformanceSelector from '@/components/performance/TimeGroupedPerformanceSelector.vue'
+import { DateTime } from "luxon";
+import TimeGroupedPerformanceSelector from "@/components/performance/TimeGroupedPerformanceSelector.vue";
 
 export default {
-  name: 'ProductionPerformances',
+  name: "ProductionPerformances",
   components: {
-    TimeGroupedPerformanceSelector
+    TimeGroupedPerformanceSelector,
   },
   props: {
     production: {
       required: true,
-      type: Object
-    }
+      type: Object,
+    },
   },
   computed: {
-    prodInPast () {
-      return DateTime.now() > DateTime.fromISO(this.production.end)
-    }
-  }
-}
+    prodInPast() {
+      return DateTime.now() > DateTime.fromISO(this.production.end);
+    },
+  },
+};
 </script>

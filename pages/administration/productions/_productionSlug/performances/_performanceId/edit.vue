@@ -1,12 +1,8 @@
 <template>
   <admin-page title="Edit Performance">
     <template #toolbar>
-      <sta-button colour="green" icon="save" @click="save">
-        Save
-      </sta-button>
-      <sta-button colour="orange" to="../../">
-        Cancel
-      </sta-button>
+      <sta-button colour="green" icon="save" @click="save"> Save </sta-button>
+      <sta-button colour="orange" to="../../"> Cancel </sta-button>
     </template>
     <non-field-error :errors="errors" />
     <performance-editor
@@ -20,86 +16,86 @@
 </template>
 
 <script>
-import Swal from 'sweetalert2'
-import AdminPerformanceDetailQuery from '@/graphql/queries/admin/productions/AdminPerformanceDetail.gql'
-import PerformanceEditor from '@/components/performance/editor/PerformanceEditor.vue'
-import AdminPage from '@/components/admin/AdminPage.vue'
-import StaButton from '@/components/ui/StaButton.vue'
+import Swal from "sweetalert2";
+import AdminPerformanceDetailQuery from "@/graphql/queries/admin/productions/AdminPerformanceDetail.gql";
+import PerformanceEditor from "@/components/performance/editor/PerformanceEditor.vue";
+import AdminPage from "@/components/admin/AdminPage.vue";
+import StaButton from "@/components/ui/StaButton.vue";
 import {
   errorToast,
   getValidationErrors,
   loadingSwal,
   performMutation,
-  successToast
-} from '@/utils'
-import NonFieldError from '@/components/ui/NonFieldError.vue'
+  successToast,
+} from "@/utils";
+import NonFieldError from "@/components/ui/NonFieldError.vue";
 export default {
   components: { PerformanceEditor, AdminPage, StaButton, NonFieldError },
-  async asyncData ({ params, error, app }) {
+  async asyncData({ params, error, app }) {
     // Execute query
     const { data } = await app.apolloProvider.defaultClient.query({
       query: AdminPerformanceDetailQuery,
       variables: {
         productionSlug: params.productionSlug,
-        performanceId: params.performanceId
+        performanceId: params.performanceId,
       },
-      fetchPolicy: 'no-cache'
-    })
+      fetchPolicy: "no-cache",
+    });
 
-    const production = data.production
+    const production = data.production;
     if (!production || !production.performances.edges.length) {
       return error({
-        statusCode: 404
-      })
+        statusCode: 404,
+      });
     }
     return {
       performance: production.performances.edges[0].node,
-      production
-    }
+      production,
+    };
   },
-  data () {
+  data() {
     return {
       performance: null,
       production: null,
-      errors: null
-    }
+      errors: null,
+    };
   },
   methods: {
-    async save () {
-      this.errors = null
-      loadingSwal.fire()
+    async save() {
+      this.errors = null;
+      loadingSwal.fire();
       try {
-        const saveResult = await this.$refs.editor.saveRelated()
+        const saveResult = await this.$refs.editor.saveRelated();
         await performMutation(
           this.$apollo,
           {
-            mutation: require('@/graphql/mutations/admin/performance/PerformanceMutation.gql'),
+            mutation: require("@/graphql/mutations/admin/performance/PerformanceMutation.gql"),
             variables: {
-              input: await this.$refs.editor.getInputData()
-            }
+              input: await this.$refs.editor.getInputData(),
+            },
           },
-          'performance'
-        )
+          "performance"
+        );
         const { data } = await this.$apollo.query({
           query: AdminPerformanceDetailQuery,
           variables: {
             productionSlug: this.$route.params.productionSlug,
-            performanceId: this.performance.id
-          }
-        })
-        this.performance = data.production.performances.edges[0].node
+            performanceId: this.performance.id,
+          },
+        });
+        this.performance = data.production.performances.edges[0].node;
         if (saveResult) {
-          successToast.fire({ title: 'Performance Updated' })
+          successToast.fire({ title: "Performance Updated" });
           return this.$router.push(
             `/administration/productions/${this.production.slug}/performances/${this.performance.id}`
-          )
+          );
         }
-        errorToast.fire({ title: 'Performance saved but with errors' })
+        errorToast.fire({ title: "Performance saved but with errors" });
       } catch (e) {
-        this.errors = getValidationErrors(e)
-        Swal.close()
+        this.errors = getValidationErrors(e);
+        Swal.close();
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>

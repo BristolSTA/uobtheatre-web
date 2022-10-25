@@ -1,7 +1,7 @@
-import { createApolloClient } from 'vue-cli-plugin-apollo/graphql-client'
-import VueApollo from 'vue-apollo'
-import * as Sentry from '@sentry/browser'
-import authService from '@/services/authService'
+import { createApolloClient } from "vue-cli-plugin-apollo/graphql-client";
+import VueApollo from "vue-apollo";
+import * as Sentry from "@sentry/browser";
+import authService from "@/services/authService";
 
 // Config
 const defaultOptions = {
@@ -13,48 +13,50 @@ const defaultOptions = {
   // Cache Options
   inMemoryCacheOptions: {
     fragmentMatcher: {
-      GQLErrorUnion: ['NonFieldError', 'FieldError']
-    }
-  }
-}
+      GQLErrorUnion: ["NonFieldError", "FieldError"],
+    },
+  },
+};
 
 export default (context) => {
   return {
     ...defaultOptions,
     httpEndpoint: context.$config.api.graphql_endpoint,
-    authenticationType: 'JWT',
+    authenticationType: "JWT",
     getAuth: () => {
-      if (authService.currentAuthToken(context)) { return `JWT ${authService.currentAuthToken(context)}` }
-    }
-  }
-}
+      if (authService.currentAuthToken(context)) {
+        return `JWT ${authService.currentAuthToken(context)}`;
+      }
+    },
+  };
+};
 
-export function createClient (options = {}) {
+export function createClient(options = {}) {
   return createApolloClient({
     ...defaultOptions,
-    ...options
-  })
+    ...options,
+  });
 }
 
-export function createProvider (clientOptions = {}, vueApolloOptions = {}) {
+export function createProvider(clientOptions = {}, vueApolloOptions = {}) {
   // Create apollo client
-  const { apolloClient, wsClient } = createClient(clientOptions)
-  apolloClient.wsClient = wsClient
+  const { apolloClient, wsClient } = createClient(clientOptions);
+  apolloClient.wsClient = wsClient;
 
   // Create vue apollo provider
   const apolloProvider = new VueApollo({
     defaultClient: apolloClient,
     defaultOptions: vueApolloOptions,
-    errorHandler (error) {
+    errorHandler(error) {
       // eslint-disable-next-line no-console
       console.log(
-        '%cError',
-        'background: red; color: white; padding: 2px 4px; border-radius: 3px; font-weight: bold;',
+        "%cError",
+        "background: red; color: white; padding: 2px 4px; border-radius: 3px; font-weight: bold;",
         error.message
-      )
-      Sentry.captureException(error)
-    }
-  })
+      );
+      Sentry.captureException(error);
+    },
+  });
 
-  return apolloProvider
+  return apolloProvider;
 }

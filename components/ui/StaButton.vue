@@ -17,44 +17,46 @@ export default {
   props: {
     to: {
       default: null,
-      type: String
+      type: String,
     },
     small: {
       default: false,
-      type: Boolean
+      type: Boolean,
     },
     icon: {
       default: null,
-      type: String
+      type: String,
     },
     colour: {
       default: null,
-      type: [String, Array]
+      type: [String, Array],
     },
     disabled: {
       default: false,
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   computed: {
-    asType () {
-      if (this.to) { return 'nuxt-link' }
-      return 'button'
+    asType() {
+      if (this.to) {
+        return "nuxt-link";
+      }
+      return "button";
     },
-    classes () {
-      const arr = []
-      arr.push(!this.small ? 'p-2' : 'p-1 text-sm')
+    classes() {
+      const arr = [];
+      arr.push(!this.small ? "p-2" : "p-1 text-sm");
       if (this.disabled) {
-        arr.push('cursor-not-allowed bg-gray-600')
+        arr.push("cursor-not-allowed bg-gray-600");
       } else if (this.colour) {
         arr.push(
           Array.isArray(this.colour)
             ? `bg-${this.colour[0]} hover:bg-${this.colour[1]}`
             : `bg-sta-${this.colour} hover:bg-sta-${this.colour}-dark`
-        )
+        );
       }
-      return arr
-    }
-  }
-}
+      return arr;
+    },
+  },
+};
 </script>

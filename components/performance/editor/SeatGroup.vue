@@ -2,7 +2,7 @@
   <div class="flex items-center p-3 bg-sta-gray-dark rounded-lg">
     <p class="font-semibold">
       {{ value.name }}
-      <br>
+      <br />
       <small>
         Max Capacity:
         {{ capacityOverride ? capacityOverride : value.capacity }}
@@ -28,16 +28,16 @@ export default {
   props: {
     value: {
       required: true,
-      type: Object
+      type: Object,
     },
     removable: {
       default: false,
-      type: Boolean
+      type: Boolean,
     },
     capacityOverride: {
       default: null,
-      type: Number
-    }
-  }
-}
+      type: Number,
+    },
+  },
+};
 </script>

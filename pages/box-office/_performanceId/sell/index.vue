@@ -33,42 +33,42 @@
 </template>
 
 <script>
-import lo from 'lodash'
-import Booking from '@/classes/Booking'
-import BookingMutation from '@/graphql/mutations/booking/Booking.gql'
-import { performMutation } from '@/utils'
-import TicketsMatrix from '@/classes/TicketsMatrix'
-import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue'
+import lo from "lodash";
+import Booking from "@/classes/Booking";
+import BookingMutation from "@/graphql/mutations/booking/Booking.gql";
+import { performMutation } from "@/utils";
+import TicketsMatrix from "@/classes/TicketsMatrix";
+import TicketsEditor from "@/components/booking/editor/TicketsEditor.vue";
 
 export default {
   components: {
-    TicketsEditor
+    TicketsEditor,
   },
   props: {
     booking: {
       required: true,
-      type: Booking
+      type: Booking,
     },
     ticketMatrix: {
       required: true,
-      type: TicketsMatrix
+      type: TicketsMatrix,
     },
     performance: {
       required: true,
-      type: Object
-    }
+      type: Object,
+    },
   },
-  data () {
+  data() {
     return {
       selected_location_index: null,
 
       interaction_timer: lo.debounce(this.updateAPI, 2 * 1000),
-      errors: null
-    }
+      errors: null,
+    };
   },
   methods: {
-    async updateAPI () {
-      let bookingResponse
+    async updateAPI() {
+      let bookingResponse;
       try {
         if (!this.booking.id) {
           // We haven't got a booking yet, lets create one
@@ -79,13 +79,13 @@ export default {
               variables: {
                 input: {
                   performance: this.booking.performance.id,
-                  tickets: this.booking.toAPIData().tickets
-                }
-              }
+                  tickets: this.booking.toAPIData().tickets,
+                },
+              },
             },
-            'booking'
-          )
-          bookingResponse = data.booking.booking
+            "booking"
+          );
+          bookingResponse = data.booking.booking;
         } else {
           // We have a booking, lets update it
           const data = await performMutation(
@@ -95,37 +95,37 @@ export default {
               variables: {
                 input: {
                   id: this.booking.id,
-                  tickets: this.booking.toAPIData().tickets
-                }
-              }
+                  tickets: this.booking.toAPIData().tickets,
+                },
+              },
             },
-            'booking'
-          )
-          bookingResponse = data.booking.booking
+            "booking"
+          );
+          bookingResponse = data.booking.booking;
         }
       } catch ({ errors }) {
-        this.errors = errors
-        return
+        this.errors = errors;
+        return;
       }
 
       // Update booking ID in store
       this.$store.commit(
-        'box-office/SET_IN_PROGRESS_BOOKING_ID',
+        "box-office/SET_IN_PROGRESS_BOOKING_ID",
         bookingResponse.id
-      )
+      );
 
       // Check for changes since API called.
       if (this.booking.tickets.length === bookingResponse.tickets.length) {
-        return this.booking.updateFromAPIData(bookingResponse)
+        return this.booking.updateFromAPIData(bookingResponse);
       }
 
       // There has been a change in the selected tickets whilst calling the API. Let's trigger another call...
-      this.interaction_timer()
+      this.interaction_timer();
     },
-    cancel () {
-      this.$store.dispatch('box-office/cancelInProgressBooking')
-      this.$router.push(`/box-office/${this.performance.id}`)
-    }
-  }
-}
+    cancel() {
+      this.$store.dispatch("box-office/cancelInProgressBooking");
+      this.$router.push(`/box-office/${this.performance.id}`);
+    },
+  },
+};
 </script>

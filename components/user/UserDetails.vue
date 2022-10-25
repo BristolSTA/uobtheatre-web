@@ -39,9 +39,7 @@
             </td>
           </tr>
           <tr class="pb-4">
-            <th class="pb-2 pr-6 text-sta-orange">
-              Last Name
-            </th>
+            <th class="pb-2 pr-6 text-sta-orange">Last Name</th>
             <td class="pb-2">
               <p v-if="!editing">
                 {{ user.lastName }}
@@ -58,9 +56,7 @@
             </td>
           </tr>
           <tr class="pb-4">
-            <th class="pb-2 pr-6 text-sta-orange">
-              Email
-            </th>
+            <th class="pb-2 pr-6 text-sta-orange">Email</th>
             <td class="pb-2">
               <p v-if="!editing" class="break-all">
                 {{ user.email }}
@@ -76,13 +72,9 @@
             </td>
           </tr>
           <tr>
-            <th class="pb-2 pr-6 text-sta-orange">
-              Password
-            </th>
+            <th class="pb-2 pr-6 text-sta-orange">Password</th>
             <td class="pb-2">
-              <template v-if="!editing">
-                ************
-              </template>
+              <template v-if="!editing"> ************ </template>
               <button
                 v-else
                 class="btn btn-orange btn-outline px-2 py-1"
@@ -96,9 +88,7 @@
         </table>
         <div v-if="editing" class="m-4 text-center">
           <non-field-error class="pb-2" :errors="errors" />
-          <button class="btn btn-green mr-2">
-            Save Details
-          </button>
+          <button class="btn btn-green mr-2">Save Details</button>
           <button
             class="btn btn-orange"
             @click.prevent="editToggle"
@@ -125,15 +115,15 @@
 </template>
 
 <script>
-import TextInput from '@/components/ui/TextInput.vue'
-import ChangeEmail from './ChangeEmail.vue'
-import ChangePassword from './ChangePassword.vue'
-import LoadingContainer from '../ui/LoadingContainer.vue'
-import gql from 'graphql-tag'
-import { swalToast, performMutation, getValidationErrors } from '@/utils'
-import NonFieldError from '../ui/NonFieldError.vue'
+import TextInput from "@/components/ui/TextInput.vue";
+import ChangeEmail from "./ChangeEmail.vue";
+import ChangePassword from "./ChangePassword.vue";
+import LoadingContainer from "../ui/LoadingContainer.vue";
+import gql from "graphql-tag";
+import { swalToast, performMutation, getValidationErrors } from "@/utils";
+import NonFieldError from "../ui/NonFieldError.vue";
 export default {
-  name: 'UserDetails',
+  name: "UserDetails",
   components: {
     TextInput,
     ChangePassword,
@@ -157,14 +147,14 @@ export default {
 
       loading: false,
       errors: null,
-    }
+    };
   },
   methods: {
     editToggle() {
-      this.editing = !this.editing
+      this.editing = !this.editing;
     },
     async attemptUserUpdate() {
-      this.loading = true
+      this.loading = true;
       try {
         await performMutation(
           this.$apollo,
@@ -172,7 +162,7 @@ export default {
             mutation: gql`
           mutation ($firstName: String!, $lastName: String!) {
             updateAccount(firstName: $firstName, lastName: $lastName) {
-                ${require('@/graphql/partials/ErrorsPartial').default}
+                ${require("@/graphql/partials/ErrorsPartial").default}
             }
           }
         `,
@@ -181,22 +171,22 @@ export default {
               lastName: this.lastName,
             },
           },
-          'updateAccount'
-        )
+          "updateAccount"
+        );
 
         swalToast.fire({
-          icon: 'success',
-          title: 'Details updated!',
-          position: 'bottom-end',
-        })
-        this.user.firstName = this.firstName
-        this.user.lastName = this.lastName
-        this.editing = false
+          icon: "success",
+          title: "Details updated!",
+          position: "bottom-end",
+        });
+        this.user.firstName = this.firstName;
+        this.user.lastName = this.lastName;
+        this.editing = false;
       } catch (e) {
-        this.errors = getValidationErrors(e)
+        this.errors = getValidationErrors(e);
       }
-      this.loading = false
+      this.loading = false;
     },
   },
-}
+};
 </script>

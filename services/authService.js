@@ -1,40 +1,40 @@
-import gql from 'graphql-tag'
-import cookie from 'js-cookie'
-import jwtDecode from 'jwt-decode'
+import gql from "graphql-tag";
+import cookie from "js-cookie";
+import jwtDecode from "jwt-decode";
 
-import Errors from '@/classes/Errors'
-import ErrorsPartial from '@/graphql/partials/ErrorsPartial'
-import ValidationError from '@/errors/ValidationError'
-import UnverifiedLoginError from '@/errors/auth/UnverifiedLoginError'
+import Errors from "@/classes/Errors";
+import ErrorsPartial from "@/graphql/partials/ErrorsPartial";
+import ValidationError from "@/errors/ValidationError";
+import UnverifiedLoginError from "@/errors/auth/UnverifiedLoginError";
 
-let refreshTimer
+let refreshTimer;
 
 export default {
-  currentAuthToken (context) {
+  currentAuthToken(context) {
     return (
       context.store?.state?.auth?.token || context.$store?.state?.auth?.token
-    )
+    );
   },
 
-  isRemembering (context) {
-    return cookie.get(context.$config.auth.rememberKey)
+  isRemembering(context) {
+    return cookie.get(context.$config.auth.rememberKey);
   },
 
   /**
    * @param {object} context Nuxt Context
    * @returns {boolean} Whether or not the user is logged in
    */
-  isLoggedIn (context) {
-    return !!this.currentAuthToken(context) && !!context.store.state.auth.user
+  isLoggedIn(context) {
+    return !!this.currentAuthToken(context) && !!context.store.state.auth.user;
   },
 
-  logout (context, trigger = true) {
-    clearTimeout(refreshTimer)
-    context.store.dispatch('auth/logout') // Remove token
-    cookie.remove(context.$config.auth.refreshTokenKey) // Remove fresh token cookie
-    cookie.remove(context.$config.auth.rememberKey) // Remove remember cookie
+  logout(context, trigger = true) {
+    clearTimeout(refreshTimer);
+    context.store.dispatch("auth/logout"); // Remove token
+    cookie.remove(context.$config.auth.refreshTokenKey); // Remove fresh token cookie
+    cookie.remove(context.$config.auth.rememberKey); // Remove remember cookie
     if (trigger) {
-      window.localStorage.setItem('logout', Date.now())
+      window.localStorage.setItem("logout", Date.now());
     }
   },
 
@@ -42,15 +42,15 @@ export default {
    * @param {object} context Nuxt Context
    * @returns {string|null} API Authentication Token
    */
-  async silentRefresh (context) {
-    const refreshToken = cookie.get(context.$config.auth.refreshTokenKey)
+  async silentRefresh(context) {
+    const refreshToken = cookie.get(context.$config.auth.refreshTokenKey);
     if (!refreshToken) {
-      return this.logout(context)
+      return this.logout(context);
     }
 
     const provider = context.app
       ? context.app.apolloProvider
-      : context.$apolloProvider
+      : context.$apolloProvider;
 
     const { data } = await provider.defaultClient.mutate({
       mutation: gql`
@@ -62,60 +62,60 @@ export default {
         }
       `,
       variables: {
-        refreshToken
-      }
-    })
+        refreshToken,
+      },
+    });
 
     if (!data.refreshToken.token) {
-      return this.logout(context)
+      return this.logout(context);
     }
 
-    this.setToken(context, data.refreshToken.token)
-    this.setRefreshToken(context, data.refreshToken.refreshToken)
-    this.queueRefresh(context, data.refreshToken.token)
+    this.setToken(context, data.refreshToken.token);
+    this.setRefreshToken(context, data.refreshToken.refreshToken);
+    this.queueRefresh(context, data.refreshToken.token);
 
-    return context.store.dispatch('auth/loadUserDetails', {
+    return context.store.dispatch("auth/loadUserDetails", {
       apollo: context.app.apolloProvider.defaultClient,
-      nuxtContext: context
-    })
+      nuxtContext: context,
+    });
   },
 
-  setRefreshToken (context, token, remember = null) {
-    const rememberLengthDays = 365
+  setRefreshToken(context, token, remember = null) {
+    const rememberLengthDays = 365;
     if (remember !== null) {
       if (remember) {
         cookie.set(context.$config.auth.rememberKey, true, {
-          expires: remember ? rememberLengthDays : null
-        })
+          expires: remember ? rememberLengthDays : null,
+        });
       } else if (cookie.get(context.$config.auth.rememberKey)) {
-        cookie.remove(context.$config.auth.rememberKey)
+        cookie.remove(context.$config.auth.rememberKey);
       }
     }
 
     cookie.set(context.$config.auth.refreshTokenKey, token, {
-      expires: this.isRemembering(context) ? rememberLengthDays : null
-    })
+      expires: this.isRemembering(context) ? rememberLengthDays : null,
+    });
   },
 
-  queueRefresh (context) {
+  queueRefresh(context) {
     if (refreshTimer) {
-      clearTimeout(refreshTimer)
+      clearTimeout(refreshTimer);
     }
-    const { exp } = jwtDecode(this.currentAuthToken(context))
-    let timeoutSeconds = exp - Math.round(Date.now() / 1000) - 30
+    const { exp } = jwtDecode(this.currentAuthToken(context));
+    let timeoutSeconds = exp - Math.round(Date.now() / 1000) - 30;
 
     if (timeoutSeconds < 1) {
-      timeoutSeconds = 1
+      timeoutSeconds = 1;
     }
 
     refreshTimer = setTimeout(() => {
-      refreshTimer = null
-      this.silentRefresh(context)
-    }, timeoutSeconds * 1000)
+      refreshTimer = null;
+      this.silentRefresh(context);
+    }, timeoutSeconds * 1000);
   },
 
-  setToken (context, token) {
-    context.store.dispatch('auth/login', token)
+  setToken(context, token) {
+    context.store.dispatch("auth/login", token);
   },
 
   /**
@@ -127,7 +127,7 @@ export default {
    * @param {boolean} remember Whether or not to remember the user on this browser
    * @returns {Promise} API Response Promise
    */
-  login (componentContext, email, password, remember = false) {
+  login(componentContext, email, password, remember = false) {
     return new Promise((resolve, reject) => {
       componentContext.$apollo
         .mutate({
@@ -145,42 +145,42 @@ export default {
           `,
           variables: {
             email,
-            password
-          }
+            password,
+          },
         })
         .then(({ data }) => {
           if (!data.login.success) {
             return reject(
               new ValidationError(Errors.createFromAPI(data.login.errors))
-            )
+            );
           }
 
           if (!data.login.user.verified) {
-            return reject(new UnverifiedLoginError())
+            return reject(new UnverifiedLoginError());
           }
 
           const standardContext = {
             store: componentContext.$store,
             $config: componentContext.$config,
             app: {
-              apolloProvider: componentContext.$apolloProvider
-            }
-          }
+              apolloProvider: componentContext.$apolloProvider,
+            },
+          };
 
-          this.setToken(standardContext, data.login.token)
+          this.setToken(standardContext, data.login.token);
           this.setRefreshToken(
             standardContext,
             data.login.refreshToken,
             remember
-          )
-          this.queueRefresh(standardContext)
+          );
+          this.queueRefresh(standardContext);
           standardContext.store
-            .dispatch('auth/loadUserDetails', {
-              apollo: standardContext.app.apolloProvider.defaultClient
+            .dispatch("auth/loadUserDetails", {
+              apollo: standardContext.app.apolloProvider.defaultClient,
             })
-            .then(() => resolve(data.login))
-        })
-    })
+            .then(() => resolve(data.login));
+        });
+    });
   },
 
   /**
@@ -190,7 +190,7 @@ export default {
    * @param {string} email User's Email
    * @returns {Promise} API Response Promise
    */
-  resendVerificationEmail (componentContext, email) {
+  resendVerificationEmail(componentContext, email) {
     return new Promise((resolve, reject) => {
       componentContext.$apollo
         .mutate({
@@ -202,8 +202,8 @@ export default {
             }
           `,
           variables: {
-            email
-          }
+            email,
+          },
         })
         .then(({ data }) => {
           if (!data.resendActivationEmail.success) {
@@ -211,12 +211,12 @@ export default {
               new ValidationError(
                 Errors.createFromAPI(data.resendActivationEmail.errors)
               )
-            )
+            );
           }
 
-          return resolve()
-        })
-    })
+          return resolve();
+        });
+    });
   },
 
   /**
@@ -231,7 +231,7 @@ export default {
    * @param {string} userDetails.confirmedPassword User's Password (Confirmation)
    * @returns {Promise} API Response Promise
    */
-  register (
+  register(
     componentContext,
     { firstName, lastName, email, password, confirmedPassword }
   ) {
@@ -262,23 +262,23 @@ export default {
             password,
             confirmedPassword,
             firstName,
-            lastName
-          }
+            lastName,
+          },
         })
         .then((result) => {
           if (result.data.register.success) {
-            return resolve(result.data.register)
+            return resolve(result.data.register);
           }
           return reject(
             new ValidationError(
               Errors.createFromAPI(result.data.register.errors)
             )
-          )
-        })
-    })
+          );
+        });
+    });
   },
 
-  requestPasswordReset (componentContext, { email }) {
+  requestPasswordReset(componentContext, { email }) {
     return new Promise((resolve, reject) => {
       componentContext.$apollo
         .mutate({
@@ -290,23 +290,23 @@ export default {
             }
           `,
           variables: {
-            email
-          }
+            email,
+          },
         })
         .then((result) => {
           if (result.data.sendPasswordResetEmail.success) {
-            return resolve(result.data.sendPasswordResetEmail)
+            return resolve(result.data.sendPasswordResetEmail);
           }
           return reject(
             new ValidationError(
               Errors.createFromAPI(result.data.sendPasswordResetEmail.errors)
             )
-          )
-        })
-    })
+          );
+        });
+    });
   },
 
-  resetPassword (componentContext, { token, password, confirmedPassword }) {
+  resetPassword(componentContext, { token, password, confirmedPassword }) {
     return new Promise((resolve, reject) => {
       componentContext.$apollo
         .mutate({
@@ -320,23 +320,23 @@ export default {
           variables: {
             token,
             password,
-            confirmedPassword
-          }
+            confirmedPassword,
+          },
         })
         .then((result) => {
           if (result.data.passwordReset.success) {
-            return resolve(result.data.passwordReset)
+            return resolve(result.data.passwordReset);
           }
           return reject(
             new ValidationError(
               Errors.createFromAPI(result.data.passwordReset.errors)
             )
-          )
-        })
-    })
+          );
+        });
+    });
   },
 
-  activateAccount (componentContext, { token }) {
+  activateAccount(componentContext, { token }) {
     return new Promise((resolve, reject) => {
       componentContext.$apollo
         .mutate({
@@ -348,19 +348,19 @@ export default {
             }
           `,
           variables: {
-            token
-          }
+            token,
+          },
         })
         .then((result) => {
           if (result.data.verifyAccount.success) {
-            return resolve(result.data.verifyAccount)
+            return resolve(result.data.verifyAccount);
           }
           return reject(
             new ValidationError(
               Errors.createFromAPI(result.data.verifyAccount.errors)
             )
-          )
-        })
-    })
-  }
-}
+          );
+        });
+    });
+  },
+};

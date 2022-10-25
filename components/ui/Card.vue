@@ -27,8 +27,8 @@ export default {
   props: {
     title: {
       default: null,
-      type: String
-    }
-  }
-}
+      type: String,
+    },
+  },
+};
 </script>

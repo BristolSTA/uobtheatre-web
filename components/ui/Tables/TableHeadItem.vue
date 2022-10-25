@@ -9,8 +9,8 @@ export default {
   props: {
     textLeft: {
       default: true,
-      type: Boolean
-    }
-  }
-}
+      type: Boolean,
+    },
+  },
+};
 </script>

@@ -1,33 +1,33 @@
-import lo from 'lodash'
-import { v4 as uuidv4 } from 'uuid'
-import { DateTime } from 'luxon'
+import lo from "lodash";
+import { v4 as uuidv4 } from "uuid";
+import { DateTime } from "luxon";
 
-import Ticket from './Ticket'
+import Ticket from "./Ticket";
 
 export default class Booking {
   /** @member {number} */
-  id
+  id;
   /** @member {string} */
-  reference
+  reference;
   /** @member {object} */
-  performance
+  performance;
   /** @member {object} */
-  payments
+  payments;
   /** @member {Ticket} */
-  tickets
+  tickets;
   /** @member {object} */
-  priceBreakdown
+  priceBreakdown;
   /** @member {boolean} dirty Whether the booking class is in sync with the API or not */
-  dirty = true
+  dirty = true;
   /** @member {object} */
-  raw
+  raw;
   /** @member {string} */
-  idempotencyKey
+  idempotencyKey;
 
-  constructor () {
-    this.tickets = []
-    this.transactions = []
-    this.refreshIdempotencyKey()
+  constructor() {
+    this.tickets = [];
+    this.transactions = [];
+    this.refreshIdempotencyKey();
   }
 
   /**
@@ -37,10 +37,10 @@ export default class Booking {
    * @returns {Booking} A Booking Instance
    * @static
    */
-  static fromAPIData (bookingData) {
-    const booking = new this()
-    booking.updateFromAPIData(bookingData)
-    return booking
+  static fromAPIData(bookingData) {
+    const booking = new this();
+    booking.updateFromAPIData(bookingData);
+    return booking;
   }
 
   /**
@@ -48,32 +48,32 @@ export default class Booking {
    *
    * @param {object} bookingData API Booking Data
    */
-  updateFromAPIData (bookingData) {
-    this.raw = bookingData
+  updateFromAPIData(bookingData) {
+    this.raw = bookingData;
     if (bookingData.priceBreakdown) {
-      this.priceBreakdown = bookingData.priceBreakdown
+      this.priceBreakdown = bookingData.priceBreakdown;
     }
     if (bookingData.tickets) {
-      this.tickets = bookingData.tickets.map(ticketAPIData =>
+      this.tickets = bookingData.tickets.map((ticketAPIData) =>
         Ticket.fromAPIData(ticketAPIData)
-      )
+      );
     }
     if (bookingData.performance) {
-      this.performance = bookingData.performance
+      this.performance = bookingData.performance;
     }
     if (bookingData.reference) {
-      this.reference = bookingData.reference
+      this.reference = bookingData.reference;
     }
     if (bookingData.user) {
-      this.user = bookingData.user
+      this.user = bookingData.user;
     }
     if (bookingData.transactions && bookingData.transactions.edges.length) {
       this.transactions = bookingData.transactions.edges.map(
-        edge => edge.node
-      )
+        (edge) => edge.node
+      );
     }
-    this.id = bookingData.id
-    this.dirty = false
+    this.id = bookingData.id;
+    this.dirty = false;
   }
 
   /**
@@ -81,12 +81,12 @@ export default class Booking {
    *
    * @returns {object} Booking Object
    */
-  toAPIData () {
+  toAPIData() {
     return {
       tickets: this.tickets.map((ticket) => {
-        return ticket.apiData
-      })
-    }
+        return ticket.apiData;
+      }),
+    };
   }
 
   /**
@@ -96,17 +96,17 @@ export default class Booking {
    * @param {TicketsMatrix} ticketMatrix TicketMatrix Object
    * @param {number} number Number of tickets to add
    */
-  addTicket (ticket, ticketMatrix, number = 1) {
+  addTicket(ticket, ticketMatrix, number = 1) {
     if (!ticketMatrix.canAddTickets(number, ticket.seatGroup.id)) {
-      return
+      return;
     }
 
     for (let i = 0; i < number; i++) {
-      this.tickets.push(ticket)
-      ticketMatrix.decrementPerformanceCapacity()
-      ticketMatrix.decrementSeatGroupCapacity(ticket.seatGroup.id)
+      this.tickets.push(ticket);
+      ticketMatrix.decrementPerformanceCapacity();
+      ticketMatrix.decrementSeatGroupCapacity(ticket.seatGroup.id);
     }
-    this.dirty = true
+    this.dirty = true;
   }
 
   /**
@@ -117,36 +117,28 @@ export default class Booking {
    * @param {number} count Number of tickets
    * @param {TicketsMatrix} ticketMatrix TicketMatrix Object
    */
-  setTicketCount (
-    seatGroup = null,
-    concessionType = null,
-    count,
-    ticketMatrix
-  ) {
-    let rollingTotal = 0
+  setTicketCount(seatGroup = null, concessionType = null, count, ticketMatrix) {
+    let rollingTotal = 0;
 
     // Step 1 - Check how many matching tickets we have for the criteria. Remove if required (and update TicketMatrix)
     this.tickets = this.tickets.filter((ticket) => {
       if (ticket.matches(seatGroup, concessionType)) {
-        rollingTotal++
+        rollingTotal++;
         if (rollingTotal > count) {
           // Remove this ticket
-          ticketMatrix.incrementPerformanceCapacity()
-          ticketMatrix.incrementSeatGroupCapacity(seatGroup.id)
-          return false
+          ticketMatrix.incrementPerformanceCapacity();
+          ticketMatrix.incrementSeatGroupCapacity(seatGroup.id);
+          return false;
         }
       }
-      return true
-    })
+      return true;
+    });
 
     while (rollingTotal < count) {
-      this.addTicket(
-        new Ticket(seatGroup.id, concessionType.id),
-        ticketMatrix
-      )
-      rollingTotal++
+      this.addTicket(new Ticket(seatGroup.id, concessionType.id), ticketMatrix);
+      rollingTotal++;
     }
-    this.dirty = true
+    this.dirty = true;
   }
 
   /**
@@ -156,10 +148,10 @@ export default class Booking {
    * @param {object|null} concessionType Concession Type Object
    * @returns {Ticket[]} Matching tickets
    */
-  findTickets (seatGroup = null, concessionType = null) {
+  findTickets(seatGroup = null, concessionType = null) {
     return this.tickets.filter((ticket) => {
-      return ticket.matches(seatGroup, concessionType)
-    })
+      return ticket.matches(seatGroup, concessionType);
+    });
   }
 
   /**
@@ -169,14 +161,14 @@ export default class Booking {
    * @param {object} concessionType Concession Type Object
    * @param {TicketsMatrix} ticketMatrix TicketMatrix Object
    */
-  removeTicket (seatGroup, concessionType, ticketMatrix) {
+  removeTicket(seatGroup, concessionType, ticketMatrix) {
     this.setTicketCount(
       seatGroup,
       concessionType,
       this.ticketCount(seatGroup, concessionType) - 1,
       ticketMatrix
-    )
-    this.dirty = true
+    );
+    this.dirty = true;
   }
 
   /**
@@ -186,16 +178,16 @@ export default class Booking {
    * @param {object} concessionType Concession Type Object
    * @returns {number} Number of matching tickets
    */
-  ticketCount (seatGroup = null, concessionType = null) {
-    return this.findTickets(seatGroup, concessionType).length
+  ticketCount(seatGroup = null, concessionType = null) {
+    return this.findTickets(seatGroup, concessionType).length;
   }
 
   /**
    * Clears the booking's tickets
    */
-  clearTickets () {
-    this.tickets = []
-    this.dirty = true
+  clearTickets() {
+    this.tickets = [];
+    this.dirty = true;
   }
 
   /**
@@ -204,10 +196,10 @@ export default class Booking {
    * @param {TicketsMatrix} ticketMatrix Ticket Matrix instance
    * @returns {number} Total price of the tickets (without discounts), in pennies
    */
-  ticketsTotalPriceEstimate (ticketMatrix) {
+  ticketsTotalPriceEstimate(ticketMatrix) {
     return this.tickets
-      .map(ticket => ticket.price(ticketMatrix.ticketOptions))
-      .reduce((a, b) => a + b, 0)
+      .map((ticket) => ticket.price(ticketMatrix.ticketOptions))
+      .reduce((a, b) => a + b, 0);
   }
 
   /**
@@ -216,132 +208,132 @@ export default class Booking {
    * @param {TicketsMatrix} ticketMatrix Ticket Matrix instance
    * @returns {number} Total price of the booking, in pounds to 2 d.p.
    */
-  ticketsTotalPricePoundsEstimate (ticketMatrix) {
-    return (this.ticketsTotalPriceEstimate(ticketMatrix) / 100).toFixed(2)
+  ticketsTotalPricePoundsEstimate(ticketMatrix) {
+    return (this.ticketsTotalPriceEstimate(ticketMatrix) / 100).toFixed(2);
   }
 
-  get allCheckedIn () {
-    return this.tickets.every(ticket => ticket.checkedIn)
+  get allCheckedIn() {
+    return this.tickets.every((ticket) => ticket.checkedIn);
   }
 
-  get numberCheckedIn () {
-    return this.tickets.filter(ticket => ticket.checkedIn).length
+  get numberCheckedIn() {
+    return this.tickets.filter((ticket) => ticket.checkedIn).length;
   }
 
   /**
    * @returns {number} Total cost / price of the booking in pennies
    */
-  get totalPrice () {
+  get totalPrice() {
     if (!this.priceBreakdown) {
-      return 0
+      return 0;
     }
-    return this.priceBreakdown.totalPrice
+    return this.priceBreakdown.totalPrice;
   }
 
   /**
    * @returns {string} Total cost / price of the booking in pounds
    */
-  get totalPricePounds () {
-    return (this.totalPrice / 100).toFixed(2)
+  get totalPricePounds() {
+    return (this.totalPrice / 100).toFixed(2);
   }
 
   /**
    * @returns {string} Price of tickets minus any discounts in pounds
    */
-  get subTotalPricePounds () {
+  get subTotalPricePounds() {
     if (!this.priceBreakdown) {
-      return (0).toFixed(2)
+      return (0).toFixed(2);
     }
-    return (this.priceBreakdown.subtotalPrice / 100).toFixed(2)
+    return (this.priceBreakdown.subtotalPrice / 100).toFixed(2);
   }
 
   /**
    * @returns {string} Total cost / price of the tickets in pounds
    */
-  get ticketsPricePounds () {
+  get ticketsPricePounds() {
     if (!this.priceBreakdown) {
-      return (0).toFixed(2)
+      return (0).toFixed(2);
     }
-    return (this.priceBreakdown.ticketsPrice / 100).toFixed(2)
+    return (this.priceBreakdown.ticketsPrice / 100).toFixed(2);
   }
 
   /**
    * @returns {string} Total cost / price of the tickets in pounds taking into account any discounts
    */
-  get ticketsDiscountedPricePounds () {
+  get ticketsDiscountedPricePounds() {
     if (!this.priceBreakdown) {
-      return (0).toFixed(2)
+      return (0).toFixed(2);
     }
-    return (this.priceBreakdown.ticketsDiscountedPrice / 100).toFixed(2)
+    return (this.priceBreakdown.ticketsDiscountedPrice / 100).toFixed(2);
   }
 
   /**
    * @returns {boolean} True if the booking has discounts applied
    */
-  get hasDiscounts () {
+  get hasDiscounts() {
     if (!this.priceBreakdown) {
-      return false
+      return false;
     }
-    return this.priceBreakdown.discountsValue !== 0
+    return this.priceBreakdown.discountsValue !== 0;
   }
 
   /**
    * @returns {string} Total cost / price of the group discounts in pounds
    */
-  get discountsValuePounds () {
+  get discountsValuePounds() {
     if (!this.priceBreakdown) {
-      return (0).toFixed(2)
+      return (0).toFixed(2);
     }
-    return (this.priceBreakdown.discountsValue / 100).toFixed(2)
+    return (this.priceBreakdown.discountsValue / 100).toFixed(2);
   }
 
   /**
    * @param {TicketsMatrix} ticketMatrix Ticket Matrix instance
    * @returns {Array} List of tickets grouped by seat group & concession type, giving capacity and price
    */
-  ticketOverview (ticketMatrix = null) {
+  ticketOverview(ticketMatrix = null) {
     if (!this.priceBreakdown || this.dirty) {
       if (!ticketMatrix) {
         throw new Error(
-          'A ticket matrix is required to generate the ticket overview'
-        )
+          "A ticket matrix is required to generate the ticket overview"
+        );
       }
-      return this.ticketOverviewEstimate(ticketMatrix)
+      return this.ticketOverviewEstimate(ticketMatrix);
     }
-    return this.priceBreakdown.tickets
+    return this.priceBreakdown.tickets;
   }
 
   /**
    * @param {TicketsMatrix} ticketMatrix Ticket Matrix instance
    * @returns {Array} List of tickets grouped by seat group & concession type, giving capacity and price (based on selected tickets and not API data)
    */
-  ticketOverviewEstimate (ticketMatrix) {
+  ticketOverviewEstimate(ticketMatrix) {
     return lo
       .chain(this.tickets)
-      .groupBy(ticket => [ticket.seatGroup.id, ticket.concessionType.id])
+      .groupBy((ticket) => [ticket.seatGroup.id, ticket.concessionType.id])
       .values()
       .map((groupedTickets) => {
         const option = ticketMatrix.ticketOptions.find(
-          option => option.seatGroup.id === groupedTickets[0].seatGroup.id
-        )
+          (option) => option.seatGroup.id === groupedTickets[0].seatGroup.id
+        );
 
         if (!option) {
           throw new Error(
             `No matching ticket option found for ticket details (Seat Group ID: ${groupedTickets[0].seatGroup.id})`
-          )
+          );
         }
 
-        const seatGroup = option.seatGroup
+        const seatGroup = option.seatGroup;
         const concessionTypeEdge = option.concessionTypes.find(
-          cocnessionTypeEdge =>
+          (cocnessionTypeEdge) =>
             cocnessionTypeEdge.concessionType.id ===
             groupedTickets[0].concessionType.id
-        )
+        );
 
         if (!concessionTypeEdge) {
           throw new Error(
             `No matching concession type found for ticket details (Concession Type ID: ${groupedTickets[0].concessionType.id})`
-          )
+          );
         }
 
         return {
@@ -349,45 +341,45 @@ export default class Booking {
           concessionType: concessionTypeEdge.concessionType,
           seatGroup,
           ticketPrice: concessionTypeEdge.price,
-          totalPrice: concessionTypeEdge.price * groupedTickets.length
-        }
+          totalPrice: concessionTypeEdge.price * groupedTickets.length,
+        };
       })
-      .value()
+      .value();
   }
 
   /**
    * @returns {Array} List of misc costs, giving name, description, an optional perctange value and the additional cost (in pounds)
    */
-  get miscCosts () {
+  get miscCosts() {
     if (!this.priceBreakdown) {
-      return []
+      return [];
     }
     return this.priceBreakdown.miscCosts.map((miscCost) => {
       return Object.assign(miscCost, {
-        valuePounds: (miscCost.value / 100).toFixed(2)
-      })
-    })
+        valuePounds: (miscCost.value / 100).toFixed(2),
+      });
+    });
   }
 
   /**
    * @returns {boolean} True if in the future / current day or false
    */
-  get isActive () {
-    const performanceEndTime = DateTime.fromISO(this.performance.end)
+  get isActive() {
+    const performanceEndTime = DateTime.fromISO(this.performance.end);
     return (
       performanceEndTime > DateTime.local() ||
-      performanceEndTime.hasSame(DateTime.local(), 'day')
-    )
+      performanceEndTime.hasSame(DateTime.local(), "day")
+    );
   }
 
-  get status () {
+  get status() {
     if (!this.raw.status) {
-      return ''
+      return "";
     }
-    return this.raw.status
+    return this.raw.status;
   }
 
-  refreshIdempotencyKey () {
-    this.idempotencyKey = uuidv4()
+  refreshIdempotencyKey() {
+    this.idempotencyKey = uuidv4();
   }
 }

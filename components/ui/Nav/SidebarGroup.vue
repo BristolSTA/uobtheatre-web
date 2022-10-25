@@ -1,13 +1,7 @@
 <template>
   <div>
     <h3
-      class="
-        text-sta-gray-light text-sm
-        font-bold
-        tracking-wide
-        select-none
-        uppercase
-      "
+      class="text-sta-gray-light text-sm font-bold tracking-wide select-none uppercase"
     >
       {{ name }}
     </h3>
@@ -20,8 +14,8 @@ export default {
   props: {
     name: {
       required: true,
-      type: String
-    }
-  }
-}
+      type: String,
+    },
+  },
+};
 </script>
