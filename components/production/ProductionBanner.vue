@@ -85,7 +85,7 @@
               £{{ (production.minSeatPrice / 100).toFixed(2) }}
             </span>
             <br />
-            <small>(exc. concessions and fees)</small>
+            <small>(exc. fees)</small>
           </template>
           <template v-else> Free tickets </template>
         </icon-list-item>
