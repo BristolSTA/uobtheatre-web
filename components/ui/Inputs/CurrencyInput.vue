@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import useCurrencyInput from "vue-currency-input";
+import useCurrencyInput from 'vue-currency-input';
 
 export default {
   props: {
@@ -24,7 +24,7 @@ export default {
     const { formattedValue, inputRef } = useCurrencyInput(
       Object.assign(
         {
-          currency: "GBP",
+          currency: 'GBP',
           precision: 2,
           valueRange: {
             min: props.allowNegative ? undefined : 0,

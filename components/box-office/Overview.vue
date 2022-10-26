@@ -15,16 +15,16 @@
             by {{ production.society.name }}
           </p>
           <p class="text-sta-orange">
-            {{ performance.start | dateFormat("cccc d MMM y") }}
+            {{ performance.start | dateFormat('cccc d MMM y') }}
           </p>
         </div>
         <div v-if="detailed" class="hidden md:block">
           <div>
             <p class="text-sta-green">
-              Doors Open: {{ performance.doorsOpen | dateFormat("t") }}
+              Doors Open: {{ performance.doorsOpen | dateFormat('t') }}
             </p>
             <p class="text-sta-rouge">
-              Performance Starts: {{ performance.start | dateFormat("t") }}
+              Performance Starts: {{ performance.start | dateFormat('t') }}
             </p>
             <icon-list-item icon="clock">
               {{ humanDuration(performance.durationMins) }}
@@ -109,15 +109,15 @@
 </template>
 
 <script>
-import { DateTime } from "luxon";
+import { DateTime } from 'luxon';
 
-import Alert from "../ui/Alert.vue";
-import IconListItem from "@/components/ui/IconListItem.vue";
-import { humanDuration } from "@/utils";
-import Clock from "@/components/ui/Clock.vue";
+import Alert from '../ui/Alert.vue';
+import IconListItem from '@/components/ui/IconListItem.vue';
+import { humanDuration } from '@/utils';
+import Clock from '@/components/ui/Clock.vue';
 
 export default {
-  name: "Overview",
+  name: 'Overview',
   components: {
     IconListItem,
     Clock,
@@ -150,43 +150,43 @@ export default {
     performanceDoorsDiffMinutes() {
       return DateTime.fromISO(this.performance.doorsOpen)
         .diff(this.currentTimeLuxon)
-        .as("minutes");
+        .as('minutes');
     },
     performanceStartDiffMinutes() {
       return DateTime.fromISO(this.performance.start)
         .diff(this.currentTimeLuxon)
-        .as("minutes");
+        .as('minutes');
     },
     performanceEndDiffMinutes() {
       return DateTime.fromISO(this.performance.end)
         .diff(this.currentTimeLuxon)
-        .as("minutes");
+        .as('minutes');
     },
     status() {
       // Performance end is in the past
       if (this.performanceEndDiffMinutes <= 0) {
         return {
           clockClass: null,
-          bannerLevel: "danger",
+          bannerLevel: 'danger',
           bannerText:
-            "This performance is in the past. Are you sure you are viewing the right performance?",
+            'This performance is in the past. Are you sure you are viewing the right performance?',
         };
       }
 
       // Performance has started
       if (this.performanceStartDiffMinutes <= 0) {
         return {
-          clockClass: "text-sta-rouge",
-          bannerLevel: "danger",
-          bannerText: "This performance should now have started",
+          clockClass: 'text-sta-rouge',
+          bannerLevel: 'danger',
+          bannerText: 'This performance should now have started',
         };
       }
 
       // Performance is starting within 5 minutes
       if (this.performanceStartDiffMinutes <= 5) {
         return {
-          clockClass: "text-sta-orange animate-pulse",
-          bannerLevel: "warning",
+          clockClass: 'text-sta-orange animate-pulse',
+          bannerLevel: 'warning',
           bannerText: `This performance is due to start in ${humanDuration(
             this.performanceStartDiffMinutes
           )}`,
@@ -196,18 +196,18 @@ export default {
       // Performance doors are open
       if (this.performanceDoorsDiffMinutes < 0) {
         return {
-          clockClass: "text-sta-green",
-          bannerLevel: "success",
+          clockClass: 'text-sta-green',
+          bannerLevel: 'success',
           bannerText:
-            "The doors should now be open (wait for clearance from your stage team)",
+            'The doors should now be open (wait for clearance from your stage team)',
         };
       }
 
       // Performance doors are opening within 5 minutes
       if (this.performanceDoorsDiffMinutes <= 5) {
         return {
-          clockClass: "animate-pulse",
-          bannerLevel: "warning",
+          clockClass: 'animate-pulse',
+          bannerLevel: 'warning',
           bannerText: `Doors should be opening in ${humanDuration(
             this.performanceDoorsDiffMinutes
           )} (wait for clearance from your stage team)`,
@@ -217,9 +217,9 @@ export default {
       // Performance is within 3 hours
       if (this.performanceDoorsDiffMinutes >= 3 * 60) {
         return {
-          bannerLevel: "danger",
+          bannerLevel: 'danger',
           bannerText:
-            "This performance is over 3 hours away. Are you sure you have the right performance selected?",
+            'This performance is over 3 hours away. Are you sure you have the right performance selected?',
         };
       }
 
@@ -228,8 +228,8 @@ export default {
         bannerText: `Doors opening in ${humanDuration(
           this.performanceDoorsDiffMinutes
         )}`,
-        bannerLevel: "",
-        bannerClass: "border",
+        bannerLevel: '',
+        bannerClass: 'border',
       };
     },
   },
@@ -241,7 +241,7 @@ export default {
   },
   apollo: {
     ticketBreakdown: {
-      query: require("@/graphql/queries/box-office/BoxOfficePerformanceTicketBreakdown.gql"),
+      query: require('@/graphql/queries/box-office/BoxOfficePerformanceTicketBreakdown.gql'),
       variables() {
         return {
           id: this.performance.id,

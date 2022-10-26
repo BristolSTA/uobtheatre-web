@@ -45,7 +45,7 @@
       >
         <template v-if="groupCapacityRemaining != 0">
           Hurry! Only {{ groupCapacityRemaining }} ticket{{
-            groupCapacityRemaining > 1 ? "s" : null
+            groupCapacityRemaining > 1 ? 's' : null
           }}
           remaining in this location
         </template>
@@ -109,12 +109,12 @@
 </template>
 
 <script>
-import lo from "lodash";
-import ConcessionType from "@/components/booking/ConcessionType.vue";
-import GroupTicketButton from "@/components/booking/GroupTicketButton.vue";
+import lo from 'lodash';
+import ConcessionType from '@/components/booking/ConcessionType.vue';
+import GroupTicketButton from '@/components/booking/GroupTicketButton.vue';
 
 export default {
-  name: "SeatGroup",
+  name: 'SeatGroup',
   components: { ConcessionType, GroupTicketButton },
   props: {
     expanded: {
@@ -148,7 +148,7 @@ export default {
   },
   computed: {
     orderedConcessionTypes() {
-      return lo.sortBy(this.ticketOption.concessionTypes, "price").reverse();
+      return lo.sortBy(this.ticketOption.concessionTypes, 'price').reverse();
     },
     available() {
       return (
@@ -166,7 +166,7 @@ export default {
     onAddDiscountTickets(discount) {
       discount.requirements.forEach((requirement) => {
         this.$emit(
-          "add-ticket",
+          'add-ticket',
           this.ticketOption.seatGroup,
           requirement.concessionType,
           requirement.number
@@ -175,7 +175,7 @@ export default {
     },
     onHeaderClick() {
       if (this.available) {
-        this.$emit("select-location");
+        this.$emit('select-location');
       }
     },
   },

@@ -117,10 +117,10 @@
 </template>
 
 <script>
-import DropdownItem from "./DropdownItem.vue";
-import DropdownNavItem from "./DropdownNavItem.vue";
-import ClickableLink from "@/components/ui/ClickableLink.vue";
-import { authService } from "@/services";
+import DropdownItem from './DropdownItem.vue';
+import DropdownNavItem from './DropdownNavItem.vue';
+import ClickableLink from '@/components/ui/ClickableLink.vue';
+import { authService } from '@/services';
 
 export default {
   components: {
@@ -131,8 +131,8 @@ export default {
   data() {
     return {
       navItems: [
-        [{ path: "/productions" }, "Whats On"],
-        [{ path: "/societies" }, "Societies"],
+        [{ path: '/productions' }, 'Whats On'],
+        [{ path: '/societies' }, 'Societies'],
       ],
       open: false,
       authService,
@@ -146,11 +146,11 @@ export default {
   methods: {
     onLogout() {
       this.$auth().logout();
-      this.$router.push("/");
+      this.$router.push('/');
     },
     closeUserMenu() {
-      if (this.$refs["user-dropdown"]) {
-        this.$refs["user-dropdown"].hideMenu();
+      if (this.$refs['user-dropdown']) {
+        this.$refs['user-dropdown'].hideMenu();
       }
     },
   },

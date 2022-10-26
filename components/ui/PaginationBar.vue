@@ -111,17 +111,17 @@ export default {
     },
     activeButtonStyle: {
       default:
-        "bg-sta-orange text-gray-700 border border-gray-300 focus:outline-none",
+        'bg-sta-orange text-gray-700 border border-gray-300 focus:outline-none',
       type: String,
     },
     inactiveButtonStyle: {
       default:
-        "bg-white text-gray-700 border border-gray-300 hover:bg-gray-200 focus:outline-none",
+        'bg-white text-gray-700 border border-gray-300 hover:bg-gray-200 focus:outline-none',
       type: String,
     },
     disabledButtonStyle: {
       default:
-        "cursor-default bg-opacity-70 text-gray-300 border border-gray-300",
+        'cursor-default bg-opacity-70 text-gray-300 border border-gray-300',
       type: String,
     },
   },
@@ -160,10 +160,10 @@ export default {
 
       if (inner.length) {
         if (inner[0] !== 2) {
-          inner[0] = "...";
+          inner[0] = '...';
         }
         if (inner[inner.length - 1] !== this.numberOfPages - 1) {
-          inner[inner.length - 1] = "...";
+          inner[inner.length - 1] = '...';
         }
       }
 
@@ -179,19 +179,19 @@ export default {
       if (!this.canGoBackward && !this.disabled) {
         return;
       }
-      this.$emit("previousPage");
+      this.$emit('previousPage');
     },
     nextPage() {
       if (!this.canGoForward && !this.disabled) {
         return;
       }
-      this.$emit("nextPage");
+      this.$emit('nextPage');
     },
     gotoPage(page) {
       if (isNaN(page) || this.currentPage === page) {
         return;
       }
-      this.$emit("gotoPage", page);
+      this.$emit('gotoPage', page);
     },
   },
 };

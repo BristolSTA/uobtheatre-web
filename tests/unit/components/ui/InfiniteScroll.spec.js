@@ -1,19 +1,19 @@
-import { mount } from "@vue/test-utils";
-import { expect } from "chai";
+import { mount } from '@vue/test-utils';
+import { expect } from 'chai';
 
-import InfiniteScroll from "@/components/ui/InfiniteScroll";
+import InfiniteScroll from '@/components/ui/InfiniteScroll';
 
-jest.mock("@/utils.js", () => ({
-  ...jest.requireActual("@/utils.js"),
+jest.mock('@/utils.js', () => ({
+  ...jest.requireActual('@/utils.js'),
   isInViewport: jest.fn(() => false),
 }));
-describe("Infinite Scroll", () => {
+describe('Infinite Scroll', () => {
   let infiniteScrollComponent, apolloQueryMock, promiseResolve;
   const fakeQuery = {
-    some: "GQL Tag query",
+    some: 'GQL Tag query',
   };
-  jest.spyOn(window, "addEventListener");
-  jest.spyOn(window, "removeEventListener");
+  jest.spyOn(window, 'addEventListener');
+  jest.spyOn(window, 'removeEventListener');
 
   beforeEach(() => {
     // Reset mocks
@@ -36,31 +36,31 @@ describe("Infinite Scroll", () => {
     });
   });
 
-  it("registers scroll callback on mount", () => {
-    expect(window.addEventListener.mock.calls[0][0]).to.eq("scroll");
+  it('registers scroll callback on mount', () => {
+    expect(window.addEventListener.mock.calls[0][0]).to.eq('scroll');
     expect(window.addEventListener.mock.calls[0][1]).to.eq(
       infiniteScrollComponent.vm.handleScroll
     );
   });
 
-  it("removes scroll callback on destory", () => {
+  it('removes scroll callback on destory', () => {
     infiniteScrollComponent.destroy();
-    expect(window.removeEventListener.mock.calls[0][0]).to.eq("scroll");
+    expect(window.removeEventListener.mock.calls[0][0]).to.eq('scroll');
     expect(window.removeEventListener.mock.calls[0][1]).to.eq(
       infiniteScrollComponent.vm.handleScroll
     );
   });
 
-  it("has loader at start", () => {
+  it('has loader at start', () => {
     expect(
-      infiniteScrollComponent.findComponent({ ref: "bottom-loader" }).exists()
+      infiniteScrollComponent.findComponent({ ref: 'bottom-loader' }).exists()
     );
   });
 
-  it("runs first page query on mount and emits events (no next page)", async () => {
+  it('runs first page query on mount and emits events (no next page)', async () => {
     // Should be loading
-    expect(infiniteScrollComponent.emitted("loadingChange").length).to.eq(1);
-    expect(infiniteScrollComponent.emitted("loadingChange")[0][0]).to.be.true;
+    expect(infiniteScrollComponent.emitted('loadingChange').length).to.eq(1);
+    expect(infiniteScrollComponent.emitted('loadingChange')[0][0]).to.be.true;
 
     expect(apolloQueryMock.mock.calls).length(1);
     expect(apolloQueryMock.mock.calls[0][0].query).to.eq(fakeQuery);
@@ -83,27 +83,27 @@ describe("Infinite Scroll", () => {
     await infiniteScrollComponent.vm.$nextTick();
 
     // Shouldnt be loading anymore
-    expect(infiniteScrollComponent.emitted("loadingChange").length).to.eq(2);
-    expect(infiniteScrollComponent.emitted("loadingChange")[1][0]).to.be.false;
+    expect(infiniteScrollComponent.emitted('loadingChange').length).to.eq(2);
+    expect(infiniteScrollComponent.emitted('loadingChange')[1][0]).to.be.false;
 
     // The inner query data should be returned
-    expect(infiniteScrollComponent.emitted("newData").length).to.eq(1);
-    expect(infiniteScrollComponent.emitted("newData")[0][0]).to.eq(
+    expect(infiniteScrollComponent.emitted('newData').length).to.eq(1);
+    expect(infiniteScrollComponent.emitted('newData')[0][0]).to.eq(
       result.data.queryName
     );
 
     expect(
-      infiniteScrollComponent.findComponent({ ref: "bottom-loader" }).exists()
+      infiniteScrollComponent.findComponent({ ref: 'bottom-loader' }).exists()
     ).to.be.false;
   });
 
-  it("runs first page query on mount and emits events (next page)", async () => {
+  it('runs first page query on mount and emits events (next page)', async () => {
     // Resolve the query
     const result = {
       data: {
         queryName: {
           pageInfo: {
-            endCursor: "abcdefg",
+            endCursor: 'abcdefg',
             hasNextPage: true,
           },
         },
@@ -113,27 +113,27 @@ describe("Infinite Scroll", () => {
     await infiniteScrollComponent.vm.$nextTick();
 
     // Shouldnt be loading anymore
-    expect(infiniteScrollComponent.emitted("loadingChange").length).to.eq(2);
-    expect(infiniteScrollComponent.emitted("loadingChange")[1][0]).to.be.false;
+    expect(infiniteScrollComponent.emitted('loadingChange').length).to.eq(2);
+    expect(infiniteScrollComponent.emitted('loadingChange')[1][0]).to.be.false;
 
     // The inner query data should be returned
-    expect(infiniteScrollComponent.emitted("newData").length).to.eq(1);
-    expect(infiniteScrollComponent.emitted("newData")[0][0]).to.eq(
+    expect(infiniteScrollComponent.emitted('newData').length).to.eq(1);
+    expect(infiniteScrollComponent.emitted('newData')[0][0]).to.eq(
       result.data.queryName
     );
 
     expect(
-      infiniteScrollComponent.findComponent({ ref: "bottom-loader" }).exists()
+      infiniteScrollComponent.findComponent({ ref: 'bottom-loader' }).exists()
     ).to.be.true;
   });
 
-  it("runs query with next cursor when loader scrolled into view", async () => {
+  it('runs query with next cursor when loader scrolled into view', async () => {
     // Resolve the query
     const result = {
       data: {
         queryName: {
           pageInfo: {
-            endCursor: "abcdefg",
+            endCursor: 'abcdefg',
             hasNextPage: true,
           },
         },
@@ -144,13 +144,13 @@ describe("Infinite Scroll", () => {
 
     apolloQueryMock.mockClear();
     expect(
-      infiniteScrollComponent.findComponent({ ref: "bottom-loader" }).exists()
+      infiniteScrollComponent.findComponent({ ref: 'bottom-loader' }).exists()
     ).to.be.true;
 
     // Set the bottom loader to have a mock pixel height of 800
     Object.defineProperty(
-      infiniteScrollComponent.vm.$refs["bottom-loader"],
-      "offsetTop",
+      infiniteScrollComponent.vm.$refs['bottom-loader'],
+      'offsetTop',
       {
         writable: false,
         value: 800,
@@ -167,7 +167,7 @@ describe("Infinite Scroll", () => {
     expect(apolloQueryMock.mock.calls).length(1);
     expect(apolloQueryMock.mock.calls[0][0].query).to.eq(fakeQuery);
     expect(apolloQueryMock.mock.calls[0][0].variables).to.include({
-      afterCursor: "abcdefg",
+      afterCursor: 'abcdefg',
     });
 
     result.data.queryName.pageInfo.hasNextPage = false;
@@ -175,14 +175,14 @@ describe("Infinite Scroll", () => {
     await infiniteScrollComponent.vm.$nextTick();
     await infiniteScrollComponent.vm.$nextTick();
 
-    expect(infiniteScrollComponent.emitted("loadingChange").length).to.eq(4);
-    expect(infiniteScrollComponent.emitted("newData").length).to.eq(2);
+    expect(infiniteScrollComponent.emitted('loadingChange').length).to.eq(4);
+    expect(infiniteScrollComponent.emitted('newData').length).to.eq(2);
     expect(
-      infiniteScrollComponent.findComponent({ ref: "bottom-loader" }).exists()
+      infiniteScrollComponent.findComponent({ ref: 'bottom-loader' }).exists()
     ).to.be.false;
   });
 
-  it("does nothing when scrolls with no bottom loader", async () => {
+  it('does nothing when scrolls with no bottom loader', async () => {
     promiseResolve({
       data: {
         queryName: {
@@ -197,7 +197,7 @@ describe("Infinite Scroll", () => {
     await infiniteScrollComponent.vm.$nextTick();
 
     expect(
-      infiniteScrollComponent.findComponent({ ref: "bottom-loader" }).exists()
+      infiniteScrollComponent.findComponent({ ref: 'bottom-loader' }).exists()
     ).to.be.false;
 
     infiniteScrollComponent.vm.handleScroll();

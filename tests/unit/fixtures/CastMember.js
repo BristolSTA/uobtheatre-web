@@ -2,11 +2,11 @@ export default (overrides = {}) => {
   return Object.assign(
     {
       id: 1,
-      name: "Joe Bloggs",
+      name: 'Joe Bloggs',
       profilePicture: {
-        url: "http://pathto.example/profile-pic.png",
+        url: 'http://pathto.example/profile-pic.png',
       },
-      role: "Peter Pan",
+      role: 'Peter Pan',
       production: null,
     },
     overrides

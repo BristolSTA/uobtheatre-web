@@ -39,15 +39,15 @@ export default {
   computed: {
     asType() {
       if (this.to) {
-        return "nuxt-link";
+        return 'nuxt-link';
       }
-      return "button";
+      return 'button';
     },
     classes() {
       const arr = [];
-      arr.push(!this.small ? "p-2" : "p-1 text-sm");
+      arr.push(!this.small ? 'p-2' : 'p-1 text-sm');
       if (this.disabled) {
-        arr.push("cursor-not-allowed bg-gray-600");
+        arr.push('cursor-not-allowed bg-gray-600');
       } else if (this.colour) {
         arr.push(
           Array.isArray(this.colour)

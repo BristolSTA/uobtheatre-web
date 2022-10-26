@@ -18,24 +18,24 @@
 </template>
 
 <script>
-import Swal from "sweetalert2";
-import AdminPage from "@/components/admin/AdminPage.vue";
-import PerformanceEditor from "@/components/performance/editor/PerformanceEditor.vue";
-import StaButton from "@/components/ui/StaButton.vue";
+import Swal from 'sweetalert2';
+import AdminPage from '@/components/admin/AdminPage.vue';
+import PerformanceEditor from '@/components/performance/editor/PerformanceEditor.vue';
+import StaButton from '@/components/ui/StaButton.vue';
 import {
   errorToast,
   getValidationErrors,
   loadingSwal,
   performMutation,
   successToast,
-} from "@/utils";
-import NonFieldError from "@/components/ui/NonFieldError.vue";
+} from '@/utils';
+import NonFieldError from '@/components/ui/NonFieldError.vue';
 export default {
   components: { AdminPage, PerformanceEditor, StaButton, NonFieldError },
   async asyncData({ params, error, app }) {
     // Execute query
     const { data } = await app.apolloProvider.defaultClient.query({
-      query: require("@/graphql/queries/admin/productions/AdminProductionLookup.gql"),
+      query: require('@/graphql/queries/admin/productions/AdminProductionLookup.gql'),
       variables: {
         slug: params.productionSlug,
       },
@@ -45,7 +45,7 @@ export default {
     if (!production) {
       return error({
         statusCode: 404,
-        message: "This production does not exist",
+        message: 'This production does not exist',
       });
     }
     return {
@@ -70,7 +70,7 @@ export default {
         const data = await performMutation(
           this.$apollo,
           {
-            mutation: require("@/graphql/mutations/admin/performance/PerformanceMutation.gql"),
+            mutation: require('@/graphql/mutations/admin/performance/PerformanceMutation.gql'),
             variables: {
               input: {
                 ...this.$refs.editor.getInputData(),
@@ -78,7 +78,7 @@ export default {
               },
             },
           },
-          "performance"
+          'performance'
         );
 
         this.performance.id = data.performance.performance.id;
@@ -86,11 +86,11 @@ export default {
         if (!(await this.$refs.editor.saveRelated())) {
           errorToast.fire({
             title:
-              "Performance created, but there was an issue creating the related objects",
+              'Performance created, but there was an issue creating the related objects',
           });
           return this.$router.push(`${this.performance.id}/edit`);
         }
-        successToast.fire({ title: "Performance Created" });
+        successToast.fire({ title: 'Performance Created' });
         return this.$router.push(`../performances/${this.performance.id}`);
       } catch (e) {
         this.errors = getValidationErrors(e);

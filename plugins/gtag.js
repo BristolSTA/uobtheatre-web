@@ -1,5 +1,5 @@
-import Vue from "vue";
-import VueGtag from "vue-gtag";
+import Vue from 'vue';
+import VueGtag from 'vue-gtag';
 
 export default (context) => {
   Vue.use(VueGtag, {

@@ -1,58 +1,58 @@
-import { expect } from "chai";
+import { expect } from 'chai';
 
-import { generateMountOptions, mountWithRouterMock } from "../../helpers";
-import GenericApolloResponse from "../../fixtures/support/GenericApolloResponse";
-import GenericNodeConnection from "../../fixtures/support/GenericNodeConnection";
-import Production from "../../fixtures/Production";
-import UpcomingProductions from "@/pages/productions";
-import InfiniteScroll from "@/components/ui/InfiniteScroll";
-import ProductionTile from "@/components/production/ProductionTile";
+import { generateMountOptions, mountWithRouterMock } from '../../helpers';
+import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse';
+import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection';
+import Production from '../../fixtures/Production';
+import UpcomingProductions from '@/pages/productions';
+import InfiniteScroll from '@/components/ui/InfiniteScroll';
+import ProductionTile from '@/components/production/ProductionTile';
 
-jest.mock("@/utils.js", () => ({
-  ...jest.requireActual("@/utils.js"),
+jest.mock('@/utils.js', () => ({
+  ...jest.requireActual('@/utils.js'),
   isInViewport: jest.fn(() => false),
 }));
-describe("Upcoming Productions", () => {
+describe('Upcoming Productions', () => {
   let upcomingProductionsComponent;
   beforeEach(async () => {
     upcomingProductionsComponent = await mountWithRouterMock(
       UpcomingProductions,
-      generateMountOptions(["apollo"], {
+      generateMountOptions(['apollo'], {
         apollo: {
           queryCallstack: [
-            GenericApolloResponse("productions", GenericNodeConnection()),
+            GenericApolloResponse('productions', GenericNodeConnection()),
           ],
         },
       })
     );
   });
 
-  it("contains an infinite scroll instance", () => {
+  it('contains an infinite scroll instance', () => {
     expect(upcomingProductionsComponent.findComponent(InfiniteScroll).exists())
       .to.be.true;
   });
 
-  describe("with no productions", () => {
-    it("displays no productions notice", async () => {
+  describe('with no productions', () => {
+    it('displays no productions notice', async () => {
       await upcomingProductionsComponent
         .findComponent(InfiniteScroll)
         .vm.$nextTick();
       expect(upcomingProductionsComponent.text()).to.contain(
-        "There are currently no upcoming productions"
+        'There are currently no upcoming productions'
       );
     });
   });
 
-  describe("with many productions", () => {
+  describe('with many productions', () => {
     let upcomingProductionsComponent;
     beforeEach(async () => {
       upcomingProductionsComponent = await mountWithRouterMock(
         UpcomingProductions,
-        generateMountOptions(["apollo"], {
+        generateMountOptions(['apollo'], {
           apollo: {
             queryCallstack: [
               GenericApolloResponse(
-                "productions",
+                'productions',
                 GenericNodeConnection(Array(9).fill(Production()), {
                   hasNextPage: true,
                 })
@@ -63,7 +63,7 @@ describe("Upcoming Productions", () => {
       );
     });
 
-    it("fetches first 9 performances and displays loader", async () => {
+    it('fetches first 9 performances and displays loader', async () => {
       await upcomingProductionsComponent
         .findComponent(InfiniteScroll)
         .vm.$nextTick();
@@ -73,29 +73,29 @@ describe("Upcoming Productions", () => {
       expect(
         upcomingProductionsComponent
           .findComponent(ProductionTile)
-          .props("production").name
-      ).to.eq("Legally Ginger");
+          .props('production').name
+      ).to.eq('Legally Ginger');
 
       expect(
         upcomingProductionsComponent
           .findComponent(InfiniteScroll)
-          .findComponent({ ref: "bottom-loader" })
+          .findComponent({ ref: 'bottom-loader' })
           .exists()
       ).to.be.true;
     });
   });
 
-  describe("with some productions", () => {
+  describe('with some productions', () => {
     let upcomingProductionsComponent;
 
     beforeEach(async () => {
       upcomingProductionsComponent = await mountWithRouterMock(
         UpcomingProductions,
-        generateMountOptions(["apollo"], {
+        generateMountOptions(['apollo'], {
           apollo: {
             queryCallstack: [
               GenericApolloResponse(
-                "productions",
+                'productions',
                 GenericNodeConnection(Array(3).fill(Production()))
               ),
             ],
@@ -104,7 +104,7 @@ describe("Upcoming Productions", () => {
       );
     });
 
-    it("fetches all the productions and doesnt display loader", async () => {
+    it('fetches all the productions and doesnt display loader', async () => {
       await upcomingProductionsComponent
         .findComponent(InfiniteScroll)
         .vm.$nextTick();
@@ -114,13 +114,13 @@ describe("Upcoming Productions", () => {
       expect(
         upcomingProductionsComponent
           .findComponent(ProductionTile)
-          .props("production").name
-      ).to.eq("Legally Ginger");
+          .props('production').name
+      ).to.eq('Legally Ginger');
 
       expect(
         upcomingProductionsComponent
           .findComponent(InfiniteScroll)
-          .findComponent({ ref: "bottom-loader" })
+          .findComponent({ ref: 'bottom-loader' })
           .exists()
       ).to.be.false;
     });

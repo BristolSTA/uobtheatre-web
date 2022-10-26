@@ -1,8 +1,8 @@
-import AudienceWarningsStage from "@/pages/production/_slug/book/_performanceId/warnings.vue";
-import OverviewStage from "@/pages/production/_slug/book/_performanceId/overview.vue";
-import PaymentStage from "@/pages/production/_slug/book/_performanceId/pay.vue";
-import TicketSelectionStage from "@/pages/production/_slug/book/_performanceId/tickets.vue";
-import PickPerformanceStage from "@/pages/production/_slug/book/index.vue";
+import AudienceWarningsStage from '@/pages/production/_slug/book/_performanceId/warnings.vue';
+import OverviewStage from '@/pages/production/_slug/book/_performanceId/overview.vue';
+import PaymentStage from '@/pages/production/_slug/book/_performanceId/pay.vue';
+import TicketSelectionStage from '@/pages/production/_slug/book/_performanceId/tickets.vue';
+import PickPerformanceStage from '@/pages/production/_slug/book/index.vue';
 
 const stages = [
   PickPerformanceStage,

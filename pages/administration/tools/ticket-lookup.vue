@@ -37,7 +37,7 @@
               <table-row-item>
                 {{ bookingInfo.performance.production.name }} at
                 {{
-                  bookingInfo.performance.start | dateFormat("EEEE d MMMM kkkk")
+                  bookingInfo.performance.start | dateFormat('EEEE d MMMM kkkk')
                 }}
               </table-row-item>
             </table-row>
@@ -74,13 +74,13 @@
 </template>
 
 <script>
-import TicketScanner from "@/components/ui/Inputs/TicketScanner.vue";
-import AdminPage from "@/components/admin/AdminPage.vue";
-import Card from "@/components/ui/Card.vue";
-import { errorToast } from "@/utils";
-import TableRow from "@/components/ui/Tables/TableRow.vue";
-import TableHeadItem from "@/components/ui/Tables/TableHeadItem.vue";
-import TableRowItem from "@/components/ui/Tables/TableRowItem.vue";
+import TicketScanner from '@/components/ui/Inputs/TicketScanner.vue';
+import AdminPage from '@/components/admin/AdminPage.vue';
+import Card from '@/components/ui/Card.vue';
+import { errorToast } from '@/utils';
+import TableRow from '@/components/ui/Tables/TableRow.vue';
+import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
+import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
 export default {
   components: {
     TicketScanner,
@@ -112,14 +112,14 @@ export default {
       this.scannedData = e;
       this.bookingInfo = null;
       const { data } = await this.$apollo.query({
-        query: require("@/graphql/queries/admin/bookings/AdminBookingLookup.gql"),
+        query: require('@/graphql/queries/admin/bookings/AdminBookingLookup.gql'),
         variables: {
           reference: this.scannedData.bookingReference,
         },
       });
       if (!data.bookings.edges.length) {
         return errorToast.fire({
-          title: "A matching booking does not exisit for this reference",
+          title: 'A matching booking does not exisit for this reference',
         });
       }
       this.bookingInfo = data.bookings.edges[0].node;

@@ -102,15 +102,15 @@
 
 <script>
 /* eslint-disable vue/no-unused-components */
-import FormLabel from "@/components/ui/FormLabel.vue";
-import Badge from "@/components/ui/Badge.vue";
-import CurrencyInput from "@/components/ui/Inputs/CurrencyInput.vue";
-import PercentageInput from "@/components/ui/Inputs/PercentageInput.vue";
-import { singleDiscounts as singleDiscountsFn } from "@/utils/performance";
-import TableHeadItem from "@/components/ui/Tables/TableHeadItem.vue";
-import SafeTable from "@/components/ui/Tables/SafeTable.vue";
-import TableRow from "@/components/ui/Tables/TableRow.vue";
-import TableRowItem from "@/components/ui/Tables/TableRowItem.vue";
+import FormLabel from '@/components/ui/FormLabel.vue';
+import Badge from '@/components/ui/Badge.vue';
+import CurrencyInput from '@/components/ui/Inputs/CurrencyInput.vue';
+import PercentageInput from '@/components/ui/Inputs/PercentageInput.vue';
+import { singleDiscounts as singleDiscountsFn } from '@/utils/performance';
+import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
+import SafeTable from '@/components/ui/Tables/SafeTable.vue';
+import TableRow from '@/components/ui/Tables/TableRow.vue';
+import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
 export default {
   components: {
     FormLabel,
@@ -162,7 +162,7 @@ export default {
       if (
         performanceSeatGroup._priceModified ||
         discount._percentageModified ||
-        typeof currentValue !== "number"
+        typeof currentValue !== 'number'
       ) {
         return (
           Math.ceil(performanceSeatGroup.price * (1 - discount.percentage)) /

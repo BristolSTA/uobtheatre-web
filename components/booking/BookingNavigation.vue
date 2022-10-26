@@ -16,12 +16,12 @@
 </template>
 
 <script>
-import Booking from "@/classes/Booking";
+import Booking from '@/classes/Booking';
 import Stages, {
   getStageIndex,
-} from "@/pages/production/_slug/book/-bookingStages";
+} from '@/pages/production/_slug/book/-bookingStages';
 export default {
-  name: "BookingNavigation",
+  name: 'BookingNavigation',
   props: {
     currentStageIndex: {
       required: true,
@@ -50,21 +50,21 @@ export default {
     stylesForButton(stage) {
       const stageIndex = getStageIndex(stage);
       if (this.currentStageIndex === stageIndex) {
-        return "btn-orange";
+        return 'btn-orange';
       }
       if (
         this.currentStageIndex > stageIndex &&
         stage.eligable(this.production, this.booking)
       ) {
-        return "btn-green";
+        return 'btn-green';
       }
-      return "btn-gray-light disabled";
+      return 'btn-gray-light disabled';
     },
     onSelectStage(stage) {
       if (getStageIndex(stage.stageInfo) === this.currentStageIndex) {
         return;
       }
-      this.$emit("goto-stage", stage);
+      this.$emit('goto-stage', stage);
     },
   },
 };

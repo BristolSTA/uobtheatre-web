@@ -4,9 +4,9 @@
       <div class="p-2 bg-sta-gray-light text-center">
         <p class="text-h3">Selected Performance:</p>
         <p class="text-sta-orange">
-          {{ booking.performance.start | dateFormat("cccc d MMM") }}, Starting
+          {{ booking.performance.start | dateFormat('cccc d MMM') }}, Starting
           at
-          {{ booking.performance.start | dateFormat("T") }}
+          {{ booking.performance.start | dateFormat('T') }}
         </p>
       </div>
       <div v-if="performanceMinsAway < 15" class="bg-sta-rouge p-2 text-center">
@@ -43,12 +43,12 @@
 </template>
 
 <script>
-import TicketOptions from "../TicketOptions.vue";
-import SelectedTicketsTable from "../SelectedTicketsTable.vue";
-import Booking from "@/classes/Booking";
-import TicketsMatrix from "@/classes/TicketsMatrix";
-import AllErrorsDisplay from "@/components/ui/AllErrorsDisplay.vue";
-import Errors from "@/classes/Errors";
+import TicketOptions from '../TicketOptions.vue';
+import SelectedTicketsTable from '../SelectedTicketsTable.vue';
+import Booking from '@/classes/Booking';
+import TicketsMatrix from '@/classes/TicketsMatrix';
+import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue';
+import Errors from '@/classes/Errors';
 export default {
   components: { TicketOptions, AllErrorsDisplay, SelectedTicketsTable },
   props: {

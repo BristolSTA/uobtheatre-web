@@ -125,10 +125,10 @@
                 </badge>
               </table-row-item>
               <table-row-item>
-                {{ performance.start | dateFormat("EEEE dd MMMM y") }}
+                {{ performance.start | dateFormat('EEEE dd MMMM y') }}
               </table-row-item>
               <table-row-item>
-                {{ performance.doorsOpen | dateFormat("HH:mm ZZZZ") }}
+                {{ performance.doorsOpen | dateFormat('HH:mm ZZZZ') }}
                 <span class="text-sm">
                   ({{ humanDuration(performance.durationMins)
                   }}<template v-if="performance.intervalDurationMins">
@@ -179,26 +179,26 @@
 </template>
 
 <script>
-import AdminProductionShowQuery from "@/graphql/queries/admin/productions/AdminProductionShow.gql";
-import AdminPerformancesIndexQuery from "@/graphql/queries/admin/productions/AdminPerformancesIndex.gql";
-import AdminPage from "@/components/admin/AdminPage.vue";
-import StaButton from "@/components/ui/StaButton.vue";
-import Card from "@/components/ui/Card.vue";
-import ProgressBar from "@/components/ui/ProgressBar.vue";
-import PerformanceStatusBadge from "@/components/performance/PerformanceStatusBadge.vue";
-import TableRowItem from "@/components/ui/Tables/TableRowItem.vue";
-import TableHeadItem from "@/components/ui/Tables/TableHeadItem.vue";
-import ProductionStatusBadge from "@/components/production/ProductionStatusBadge.vue";
-import PaginatedTable from "@/components/ui/Tables/PaginatedTable.vue";
-import TableRow from "@/components/ui/Tables/TableRow.vue";
-import Badge from "@/components/ui/Badge.vue";
+import AdminProductionShowQuery from '@/graphql/queries/admin/productions/AdminProductionShow.gql';
+import AdminPerformancesIndexQuery from '@/graphql/queries/admin/productions/AdminPerformancesIndex.gql';
+import AdminPage from '@/components/admin/AdminPage.vue';
+import StaButton from '@/components/ui/StaButton.vue';
+import Card from '@/components/ui/Card.vue';
+import ProgressBar from '@/components/ui/ProgressBar.vue';
+import PerformanceStatusBadge from '@/components/performance/PerformanceStatusBadge.vue';
+import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
+import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
+import ProductionStatusBadge from '@/components/production/ProductionStatusBadge.vue';
+import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue';
+import TableRow from '@/components/ui/Tables/TableRow.vue';
+import Badge from '@/components/ui/Badge.vue';
 import {
   getValidationErrors,
   performMutation,
   successToast,
   swal,
   humanDuration,
-} from "@/utils";
+} from '@/utils';
 
 export default {
   components: {
@@ -221,14 +221,14 @@ export default {
       variables: {
         slug: params.productionSlug,
       },
-      fetchPolicy: "no-cache",
+      fetchPolicy: 'no-cache',
     });
 
     const production = data.production;
     if (!production) {
       return error({
         statusCode: 404,
-        message: "This production does not exist",
+        message: 'This production does not exist',
       });
     }
     return {
@@ -253,33 +253,33 @@ export default {
         };
       },
       update: (data) => data.production.performances,
-      fetchPolicy: "cache-and-network",
+      fetchPolicy: 'cache-and-network',
     },
   },
   head() {
     const productionName = this.production
       ? this.production.name
-      : "Loading...";
+      : 'Loading...';
     return {
       title: productionName,
     };
   },
   computed: {
     statusDescription() {
-      if (this.production.status === "DRAFT") {
-        return "This production is private, and not bookable";
+      if (this.production.status === 'DRAFT') {
+        return 'This production is private, and not bookable';
       }
-      if (this.production.status === "PENDING") {
-        return "This production has been submitted for review. You will recieve an email once this has been completed";
+      if (this.production.status === 'PENDING') {
+        return 'This production has been submitted for review. You will recieve an email once this has been completed';
       }
-      if (this.production.status === "PUBLISHED") {
-        return "This production is being displayed publicly";
+      if (this.production.status === 'PUBLISHED') {
+        return 'This production is being displayed publicly';
       }
-      if (this.production.status === "CLOSED") {
-        return "This production has been closed, and it no longer accepting bookings";
+      if (this.production.status === 'CLOSED') {
+        return 'This production has been closed, and it no longer accepting bookings';
       }
-      if (this.production.status === "COMPLETED") {
-        return "This production has been completed, and income has been transfered to the society";
+      if (this.production.status === 'COMPLETED') {
+        return 'This production has been completed, and income has been transfered to the society';
       }
 
       return null;
@@ -287,67 +287,67 @@ export default {
     canEdit() {
       // Returns if the user has any edit permissions, at any point, for this produciton
       return (
-        this.production.permissions.includes("change_production") ||
+        this.production.permissions.includes('change_production') ||
         this.canEditRightNow
       );
     },
     canEditRightNow() {
       // Returns if the user can edit production details right now (i.e. the ability)
-      return this.production.permissions.includes("edit_production");
+      return this.production.permissions.includes('edit_production');
     },
     actions() {
       const list = [];
       if (this.canEdit) {
         list.push({
-          icon: "list-ul",
+          icon: 'list-ul',
           action: () =>
             this.$router.push(
               `/administration/productions/${this.production.slug}/permissions`
             ),
-          text: "Edit Permissions",
+          text: 'Edit Permissions',
         });
 
-        if (this.production.status === "APPROVED") {
+        if (this.production.status === 'APPROVED') {
           list.push({
-            icon: "globe",
-            class: "animate-pulse animate",
-            action: () => this.setStatus("PUBLISHED"),
-            text: "Make Live",
+            icon: 'globe',
+            class: 'animate-pulse animate',
+            action: () => this.setStatus('PUBLISHED'),
+            text: 'Make Live',
           });
         }
       }
       if (
-        this.production.status === "PENDING" &&
-        this.production.permissions.includes("approve_production")
+        this.production.status === 'PENDING' &&
+        this.production.permissions.includes('approve_production')
       ) {
         list.push({
-          icon: "check",
-          action: () => this.setStatus("APPROVED"),
-          text: "Approve",
+          icon: 'check',
+          action: () => this.setStatus('APPROVED'),
+          text: 'Approve',
         });
         list.push({
-          icon: "exclamation",
-          action: () => this.setStatus("DRAFT"),
-          text: "Reject",
+          icon: 'exclamation',
+          action: () => this.setStatus('DRAFT'),
+          text: 'Reject',
         });
       }
       if (
-        this.production.status === "PUBLISHED" &&
+        this.production.status === 'PUBLISHED' &&
         new Date(this.production.end) < new Date() &&
-        this.production.permissions.includes("force_change_production")
+        this.production.permissions.includes('force_change_production')
       ) {
         list.push({
-          icon: "times-circle",
-          action: () => this.setStatus("CLOSED"),
-          text: "Close Production",
+          icon: 'times-circle',
+          action: () => this.setStatus('CLOSED'),
+          text: 'Close Production',
         });
       }
       // Add action button based on status
-      if (this.canEditRightNow && this.production.status === "DRAFT") {
+      if (this.canEditRightNow && this.production.status === 'DRAFT') {
         list.push({
-          icon: "user-check",
-          action: () => this.setStatus("PENDING"),
-          text: "Submit for Review",
+          icon: 'user-check',
+          action: () => this.setStatus('PENDING'),
+          text: 'Submit for Review',
         });
       }
 
@@ -364,17 +364,17 @@ export default {
     humanDuration,
     async setStatus(status) {
       const swalArgs = {
-        title: "Are you sure?",
+        title: 'Are you sure?',
         text: `Are you sure you want to change the status to '${status}'`,
         showCancelButton: true,
         showConfirmButton: true,
       };
-      if (status === "DRAFT" && this.production.status === "PENDING") {
-        swalArgs.input = "text";
-        swalArgs.inputLabel = "Reason";
+      if (status === 'DRAFT' && this.production.status === 'PENDING') {
+        swalArgs.input = 'text';
+        swalArgs.inputLabel = 'Reason';
         swalArgs.inputValidator = (value) => {
           if (!value) {
-            return "You need to write something!";
+            return 'You need to write something!';
           }
         };
       }
@@ -388,27 +388,27 @@ export default {
         await performMutation(
           this.$apollo,
           {
-            mutation: require("@/graphql/mutations/admin/production/SetProductionStatus.gql"),
+            mutation: require('@/graphql/mutations/admin/production/SetProductionStatus.gql'),
             variables: {
               id: this.production.id,
               message: value,
               status,
             },
           },
-          "setProductionStatus"
+          'setProductionStatus'
         );
       } catch (e) {
         const errors = getValidationErrors(e);
         swal.fire({
-          title: "There was an issue",
+          title: 'There was an issue',
           html: errors.allErrors
             .map((error) => `<p>${error.message}</p>`)
-            .join(""),
+            .join(''),
         });
         return;
       }
       await this.$nuxt.refresh();
-      successToast.fire({ title: "Status updated" });
+      successToast.fire({ title: 'Status updated' });
     },
   },
 };

@@ -28,11 +28,11 @@
 </template>
 
 <script>
-import CheckInNotification from "./CheckInNotification.vue";
-import InvalidCodeNotification from "./InvalidCodeNotification.vue";
-import CameraScanner from "./CameraScanner.vue";
-import { successToast } from "@/utils";
-import CheckInScan from "@/graphql/mutations/box-office/CheckInTickets.gql";
+import CheckInNotification from './CheckInNotification.vue';
+import InvalidCodeNotification from './InvalidCodeNotification.vue';
+import CameraScanner from './CameraScanner.vue';
+import { successToast } from '@/utils';
+import CheckInScan from '@/graphql/mutations/box-office/CheckInTickets.gql';
 
 const checkedInDataState = () => {
   return {
@@ -70,7 +70,7 @@ export default {
       this.invalidCode = true;
     },
     async onScan(scannedData) {
-      this.$emit("scanned", scannedData);
+      this.$emit('scanned', scannedData);
       const { bookingReference, ticketId } = scannedData;
       this.checkedInData = checkedInDataState();
       this.invalidCode = false;
@@ -116,7 +116,7 @@ export default {
       }
 
       successToast.fire({
-        title: "All Booking Tickets Checked In",
+        title: 'All Booking Tickets Checked In',
       });
     },
     closeNotificaton() {

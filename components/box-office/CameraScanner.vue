@@ -31,10 +31,10 @@
 </template>
 
 <script>
-import { QrcodeStream } from "vue-qrcode-reader";
-import LoadingIcon from "../ui/LoadingIcon.vue";
-import AudioSingle from "@/assets/audio/beep_single.mp3";
-import Ticket from "@/classes/Ticket";
+import { QrcodeStream } from 'vue-qrcode-reader';
+import LoadingIcon from '../ui/LoadingIcon.vue';
+import AudioSingle from '@/assets/audio/beep_single.mp3';
+import Ticket from '@/classes/Ticket';
 export default {
   components: { QrcodeStream, LoadingIcon },
   props: {
@@ -53,7 +53,7 @@ export default {
     onTrackEvent(detectedCodes, ctx) {
       for (const detectedCode of detectedCodes) {
         const [firstPoint, ...otherPoints] = detectedCode.cornerPoints;
-        ctx.strokeStyle = "red";
+        ctx.strokeStyle = 'red';
         ctx.beginPath();
         ctx.moveTo(firstPoint.x, firstPoint.y);
         for (const { x, y } of otherPoints) {
@@ -68,33 +68,33 @@ export default {
       try {
         await promise;
         this.ready = true;
-        this.$emit("ready");
+        this.$emit('ready');
       } catch (error) {
-        if (error.name === "NotAllowedError") {
+        if (error.name === 'NotAllowedError') {
           // user denied camera access permisson
-          this.error = "Camera access denied due to user permissions";
-        } else if (error.name === "NotFoundError") {
+          this.error = 'Camera access denied due to user permissions';
+        } else if (error.name === 'NotFoundError') {
           // no suitable camera device installed
-          this.error = "No camera available on device";
+          this.error = 'No camera available on device';
         } else if (
-          error.name === "NotSupportedError" ||
-          error.name === "InsecureContextError"
+          error.name === 'NotSupportedError' ||
+          error.name === 'InsecureContextError'
         ) {
           // page is not served over HTTPS (or localhost)
-          this.error = "Camera access denied for security";
-        } else if (error.name === "NotReadableError") {
+          this.error = 'Camera access denied for security';
+        } else if (error.name === 'NotReadableError') {
           // maybe camera is already in use
-          this.error = "Camera is already in use";
-        } else if (error.name === "OverconstrainedError") {
+          this.error = 'Camera is already in use';
+        } else if (error.name === 'OverconstrainedError') {
           // did you requested the front camera although there is none?
-          this.error = "Unable to find supported camera";
-        } else if (error.name === "StreamApiNotSupportedError") {
+          this.error = 'Unable to find supported camera';
+        } else if (error.name === 'StreamApiNotSupportedError') {
           // browser seems to be lacking features
-          this.error = "Browser unsupported";
+          this.error = 'Browser unsupported';
         } else {
           throw error;
         }
-        this.$emit("unable", this.error);
+        this.$emit('unable', this.error);
       }
     },
     onDecode(string) {
@@ -102,15 +102,15 @@ export default {
 
       try {
         const ticketData = Ticket.dataFromQRCode(string);
-        this.$emit("scanned", ticketData);
+        this.$emit('scanned', ticketData);
       } catch (e) {
         const isAllowedSilentException =
           e instanceof SyntaxError ||
           (e instanceof DOMException &&
             e.message.includes(
-              "The string to be decoded is not correctly encoded"
+              'The string to be decoded is not correctly encoded'
             ));
-        this.$emit("invalidCode");
+        this.$emit('invalidCode');
         if (!isAllowedSilentException) {
           throw e;
         }

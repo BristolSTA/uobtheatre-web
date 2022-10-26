@@ -4,15 +4,15 @@
       {{ performance.production.name }}
     </h1>
     <p>
-      {{ performance.start | dateFormat("EEEE d MMMM kkkk") }}
+      {{ performance.start | dateFormat('EEEE d MMMM kkkk') }}
     </p>
     <p>
       <span class="pr-2">
-        Doors: {{ performance.doorsOpen | dateFormat("t") }}
+        Doors: {{ performance.doorsOpen | dateFormat('t') }}
       </span>
       |
       <span class="pl-2">
-        Start: {{ performance.start | dateFormat("t") }}
+        Start: {{ performance.start | dateFormat('t') }}
       </span>
     </p>
     <div
@@ -44,13 +44,13 @@
 </template>
 
 <script>
-import lo from "lodash";
-import QrcodeVue from "qrcode.vue";
+import lo from 'lodash';
+import QrcodeVue from 'qrcode.vue';
 
-import Ticket from "@/classes/Ticket";
+import Ticket from '@/classes/Ticket';
 
 export default {
-  name: "Ticket",
+  name: 'Ticket',
   components: {
     QrcodeVue,
   },
@@ -75,7 +75,7 @@ export default {
   computed: {
     fullName() {
       return this.user
-        ? lo.join([this.user.firstName, this.user.lastName], " ")
+        ? lo.join([this.user.firstName, this.user.lastName], ' ')
         : null;
     },
   },

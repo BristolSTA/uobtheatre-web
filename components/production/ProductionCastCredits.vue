@@ -59,11 +59,11 @@
 </template>
 
 <script>
-import lodash from "lodash";
+import lodash from 'lodash';
 
-import RoleGroup from "./RoleGroup.vue";
+import RoleGroup from './RoleGroup.vue';
 export default {
-  name: "ProductionCastAndCredits",
+  name: 'ProductionCastAndCredits',
   components: {
     RoleGroup,
   },
@@ -82,17 +82,17 @@ export default {
     productionTeamGrouped() {
       return lodash
         .chain(this.production.productionTeam)
-        .groupBy("role")
+        .groupBy('role')
         .value();
     },
     crewGrouped() {
       return lodash
         .chain(this.production.crew)
-        .groupBy("role.department.description")
+        .groupBy('role.department.description')
         .value();
     },
     sortedCast() {
-      return lodash.sortBy(this.production.cast, "profilePicture");
+      return lodash.sortBy(this.production.cast, 'profilePicture');
     },
   },
 };

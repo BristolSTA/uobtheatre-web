@@ -31,7 +31,7 @@
           </div>
           <div v-if="ticket">
             <h3 class="text-lg font-semibold">
-              {{ errors ? "Ticket Information" : "Ticket Checked In" }}
+              {{ errors ? 'Ticket Information' : 'Ticket Checked In' }}
             </h3>
             <p>
               Type: <strong>{{ ticket.concessionType.name }}</strong>
@@ -124,9 +124,9 @@
 </template>
 
 <script>
-import AudioPositive from "@/assets/audio/beep_positive.mp3";
-import AudioNegative from "@/assets/audio/beep_negative.mp3";
-import Booking from "@/classes/Booking";
+import AudioPositive from '@/assets/audio/beep_positive.mp3';
+import AudioNegative from '@/assets/audio/beep_negative.mp3';
+import Booking from '@/classes/Booking';
 export default {
   props: {
     alreadyCheckedIn: {

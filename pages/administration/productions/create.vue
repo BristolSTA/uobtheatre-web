@@ -21,17 +21,17 @@
 </template>
 
 <script>
-import Swal from "sweetalert2";
-import ProductionEditor from "@/components/production/editor/ProductionEditor.vue";
-import AdminPage from "@/components/admin/AdminPage.vue";
-import StaButton from "@/components/ui/StaButton.vue";
+import Swal from 'sweetalert2';
+import ProductionEditor from '@/components/production/editor/ProductionEditor.vue';
+import AdminPage from '@/components/admin/AdminPage.vue';
+import StaButton from '@/components/ui/StaButton.vue';
 import {
   getValidationErrors,
   loadingSwal,
   performMutation,
   successToast,
-} from "@/utils";
-import NonFieldError from "@/components/ui/NonFieldError.vue";
+} from '@/utils';
+import NonFieldError from '@/components/ui/NonFieldError.vue';
 export default {
   components: {
     ProductionEditor,
@@ -56,14 +56,14 @@ export default {
         const data = await performMutation(
           this.$apollo,
           {
-            mutation: require("@/graphql/mutations/admin/production/ProductionMutation.gql"),
+            mutation: require('@/graphql/mutations/admin/production/ProductionMutation.gql'),
             variables: {
               input: await this.$refs.editor.getInputData(),
             },
           },
-          "production"
+          'production'
         );
-        successToast.fire({ title: "Production Created" });
+        successToast.fire({ title: 'Production Created' });
         this.$router.push(`${data.production.production.slug}`);
       } catch (e) {
         this.errors = getValidationErrors(e);

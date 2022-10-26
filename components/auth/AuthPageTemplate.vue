@@ -8,7 +8,7 @@
 
 <style scoped lang="scss">
 .auth-background {
-  background-image: url("~@/assets/images/pros-arch-lit.jpg");
+  background-image: url('~@/assets/images/pros-arch-lit.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: top center;

@@ -1,19 +1,19 @@
-import { mount } from "@vue/test-utils";
-import { expect } from "chai";
+import { mount } from '@vue/test-utils';
+import { expect } from 'chai';
 
-import { generateMountOptions } from "../../../helpers";
-import Booking from "@/classes/Booking";
-import Ticket from "@/classes/Ticket";
-import TicketsMatrix from "@/classes/TicketsMatrix";
-import TicketSelectionStage from "@/pages/production/_slug/book/_performanceId/tickets.vue";
-import SelectedTicketsTable from "@/components/booking/SelectedTicketsTable.vue";
-import TicketOptions from "@/components/booking/TicketOptions.vue";
+import { generateMountOptions } from '../../../helpers';
+import Booking from '@/classes/Booking';
+import Ticket from '@/classes/Ticket';
+import TicketsMatrix from '@/classes/TicketsMatrix';
+import TicketSelectionStage from '@/pages/production/_slug/book/_performanceId/tickets.vue';
+import SelectedTicketsTable from '@/components/booking/SelectedTicketsTable.vue';
+import TicketOptions from '@/components/booking/TicketOptions.vue';
 
-import FullBooking from "@/tests/unit/fixtures/instances/FullBooking";
-import GenericApolloResponse from "@/tests/unit/fixtures/support/GenericApolloResponse";
-import GenericMutationResponse from "@/tests/unit/fixtures/support/GenericMutationResponse";
+import FullBooking from '@/tests/unit/fixtures/instances/FullBooking';
+import GenericApolloResponse from '@/tests/unit/fixtures/support/GenericApolloResponse';
+import GenericMutationResponse from '@/tests/unit/fixtures/support/GenericMutationResponse';
 
-describe("Ticket Selection Stage", () => {
+describe('Ticket Selection Stage', () => {
   let stageComponent;
   let ticketTypes;
   let production;
@@ -30,7 +30,7 @@ describe("Ticket Selection Stage", () => {
 
     stageComponent = mount(
       TicketSelectionStage,
-      generateMountOptions(["apollo"], {
+      generateMountOptions(['apollo'], {
         propsData: {
           production,
           booking,
@@ -40,33 +40,33 @@ describe("Ticket Selection Stage", () => {
     );
   });
 
-  it("displays the available seat locations", () => {
+  it('displays the available seat locations', () => {
     expect(stageComponent.findComponent(TicketOptions).exists()).to.be.true;
     expect(
-      stageComponent.findComponent(TicketOptions).props("ticketMatrix")
+      stageComponent.findComponent(TicketOptions).props('ticketMatrix')
     ).to.eq(stageComponent.vm.ticketMatrix);
-    expect(stageComponent.findComponent(TicketOptions).props("booking")).to.eq(
+    expect(stageComponent.findComponent(TicketOptions).props('booking')).to.eq(
       stageComponent.vm.booking
     );
   });
 
-  it("reacts to request update event", async () => {
+  it('reacts to request update event', async () => {
     expect(stageComponent.vm.booking.dirty).to.be.true;
     stageComponent.vm.$apollo.mock.mutationCallstack.push(
       GenericApolloResponse(
-        "booking",
+        'booking',
         GenericMutationResponse({ booking: FullBooking({ tickets: [] }) })
       )
     );
     await stageComponent
       .findComponent(TicketOptions)
-      .vm.$emit("request-update");
+      .vm.$emit('request-update');
     await stageComponent.vm.$nextTick();
 
     expect(stageComponent.vm.booking.dirty).to.be.false;
   });
 
-  describe("with selected tickets", () => {
+  describe('with selected tickets', () => {
     beforeEach(async () => {
       const booking = new Booking();
       booking.performance = performance;
@@ -93,14 +93,14 @@ describe("Ticket Selection Stage", () => {
       });
     });
 
-    it("displays selected tickets", () => {
+    it('displays selected tickets', () => {
       expect(stageComponent.findComponent(SelectedTicketsTable).exists()).to.be
         .true;
       expect(
-        stageComponent.findComponent(SelectedTicketsTable).props("booking")
+        stageComponent.findComponent(SelectedTicketsTable).props('booking')
       ).to.eq(stageComponent.vm.booking);
       expect(
-        stageComponent.findComponent(SelectedTicketsTable).props("ticketMatrix")
+        stageComponent.findComponent(SelectedTicketsTable).props('ticketMatrix')
       ).to.eq(stageComponent.vm.ticketMatrix);
     });
   });

@@ -37,17 +37,17 @@
 </template>
 
 <script>
-import FullPerformanceAndTicketOptionsQuery from "@/graphql/queries/FullPerformanceAndTicketOptions.gql";
-import BookingMutation from "@/graphql/mutations/booking/Booking.gql";
-import PayBookingMutation from "@/graphql/mutations/booking/PayBooking.gql";
-import TicketsMatrix from "@/classes/TicketsMatrix";
-import Booking from "@/classes/Booking";
-import TicketsEditor from "@/components/booking/editor/TicketsEditor.vue";
-import Card from "@/components/ui/Card.vue";
-import FormLabel from "@/components/ui/FormLabel.vue";
-import StaButton from "@/components/ui/StaButton.vue";
-import { getValidationErrors, performMutation, successToast } from "@/utils";
-import LoadingContainer from "@/components/ui/LoadingContainer.vue";
+import FullPerformanceAndTicketOptionsQuery from '@/graphql/queries/FullPerformanceAndTicketOptions.gql';
+import BookingMutation from '@/graphql/mutations/booking/Booking.gql';
+import PayBookingMutation from '@/graphql/mutations/booking/PayBooking.gql';
+import TicketsMatrix from '@/classes/TicketsMatrix';
+import Booking from '@/classes/Booking';
+import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue';
+import Card from '@/components/ui/Card.vue';
+import FormLabel from '@/components/ui/FormLabel.vue';
+import StaButton from '@/components/ui/StaButton.vue';
+import { getValidationErrors, performMutation, successToast } from '@/utils';
+import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 export default {
   components: {
     TicketsEditor,
@@ -62,14 +62,14 @@ export default {
       variables: {
         id: params.performanceId,
       },
-      fetchPolicy: "no-cache",
+      fetchPolicy: 'no-cache',
     });
 
     const performance = data.performance;
     if (!performance) {
       return error({
         statusCode: 404,
-        message: "This performance does not exist",
+        message: 'This performance does not exist',
       });
     }
 
@@ -96,7 +96,7 @@ export default {
     };
   },
   head: {
-    title: "Create Complimentary Booking",
+    title: 'Create Complimentary Booking',
   },
   methods: {
     async create() {
@@ -116,7 +116,7 @@ export default {
               },
             },
           },
-          "booking"
+          'booking'
         );
         this.booking.updateFromAPIData(data.booking.booking);
 
@@ -130,11 +130,11 @@ export default {
               totalPence: this.booking.totalPrice,
             },
           },
-          "payBooking"
+          'payBooking'
         );
 
         successToast.fire({
-          title: "Booking created!",
+          title: 'Booking created!',
         });
 
         this.$router.replace(`../${this.booking.reference}`);

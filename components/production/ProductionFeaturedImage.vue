@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import PlaceholderImage from "@/assets/images/placeholder-feature-image.png";
+import PlaceholderImage from '@/assets/images/placeholder-feature-image.png';
 
 export default {
   props: {

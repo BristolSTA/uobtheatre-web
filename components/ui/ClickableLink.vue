@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: "ClickableLink",
+  name: 'ClickableLink',
   props: {
     disabled: {
       default: false,

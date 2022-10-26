@@ -17,13 +17,13 @@
 </template>
 
 <script>
-import Sidebar from "../ui/Nav/Sidebar.vue";
-import SidebarItem from "../ui/Nav/SidebarItem.vue";
+import Sidebar from '../ui/Nav/Sidebar.vue';
+import SidebarItem from '../ui/Nav/SidebarItem.vue';
 export default {
   components: { Sidebar, SidebarItem },
   watch: {
     $route() {
-      this.$emit("close");
+      this.$emit('close');
     },
   },
 };

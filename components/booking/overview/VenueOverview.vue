@@ -41,16 +41,16 @@
 </template>
 
 <script>
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
-import IconListItem from "../../ui/IconListItem.vue";
-import OverviewBox from "../../ui/Card.vue";
-import AddressFragments from "@/graphql/fragments/AddressFragment.gql";
+import IconListItem from '../../ui/IconListItem.vue';
+import OverviewBox from '../../ui/Card.vue';
+import AddressFragments from '@/graphql/fragments/AddressFragment.gql';
 
-import LoadingIcon from "@/components/ui/LoadingIcon.vue";
+import LoadingIcon from '@/components/ui/LoadingIcon.vue';
 
 export default {
-  name: "VenueOverview",
+  name: 'VenueOverview',
   components: { OverviewBox, IconListItem, LoadingIcon },
   props: {
     venueData: {
@@ -88,7 +88,7 @@ export default {
         };
       },
       skip() {
-        if (typeof this.venueData !== "string") {
+        if (typeof this.venueData !== 'string') {
           this.venue = this.venueData;
           return true;
         }

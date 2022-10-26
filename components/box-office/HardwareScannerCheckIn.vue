@@ -20,10 +20,10 @@
 </template>
 
 <script>
-import CheckInNotification from "./CheckInNotification.vue";
-import HardwareScanner from "./HardwareScanner.vue";
-import CheckInScan from "@/graphql/mutations/box-office/CheckInTickets.gql";
-import { successToast } from "@/utils";
+import CheckInNotification from './CheckInNotification.vue';
+import HardwareScanner from './HardwareScanner.vue';
+import CheckInScan from '@/graphql/mutations/box-office/CheckInTickets.gql';
+import { successToast } from '@/utils';
 
 const checkedInDataState = () => {
   return {
@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     async checkTicket(scannedData) {
-      this.$emit("scanned", scannedData);
+      this.$emit('scanned', scannedData);
       const { bookingReference, ticketId } = scannedData;
       this.checkedInData = checkedInDataState();
       this.scannedCode = null;
@@ -98,7 +98,7 @@ export default {
       }
 
       successToast.fire({
-        title: "All Booking Tickets Checked In",
+        title: 'All Booking Tickets Checked In',
       });
 
       this.$refs.scanInput.focus();

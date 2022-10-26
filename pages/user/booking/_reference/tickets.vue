@@ -23,23 +23,23 @@
 </template>
 
 <script>
-import TicketClass from "@/classes/Ticket";
-import Ticket from "@/components/booking/Ticket.vue";
+import TicketClass from '@/classes/Ticket';
+import Ticket from '@/components/booking/Ticket.vue';
 export default {
   components: { Ticket },
   async asyncData({ app, params, query, redirect }) {
     if (!query.ticketID || !query.performanceID) {
-      return redirect("./");
+      return redirect('./');
     }
     const { data } = await app.apolloProvider.defaultClient.query({
-      query: require("@/graphql/queries/performance/PerformanceById.gql"),
+      query: require('@/graphql/queries/performance/PerformanceById.gql'),
       variables: {
         id: query.performanceID,
       },
     });
 
     if (!data.performance) {
-      return redirect("./");
+      return redirect('./');
     }
     const tickets = (
       Array.isArray(query.ticketID) ? query.ticketID : [query.ticketID]

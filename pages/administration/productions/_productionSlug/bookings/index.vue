@@ -59,14 +59,14 @@
           <table-row-item>{{ booking.reference }}</table-row-item>
           <table-row-item>
             {{ booking.tickets.length }} ticket{{
-              booking.tickets.length > 1 ? "s" : ""
+              booking.tickets.length > 1 ? 's' : ''
             }}
           </table-row-item>
           <table-row-item>
             {{ new BookingStatusEnum(booking.status).name }}
           </table-row-item>
           <table-row-item>
-            {{ booking.createdAt | dateFormat("dd/MMM/y HH:mm ZZZZ") }}
+            {{ booking.createdAt | dateFormat('dd/MMM/y HH:mm ZZZZ') }}
           </table-row-item>
         </table-row>
       </paginated-table>
@@ -75,16 +75,16 @@
 </template>
 
 <script>
-import AdminProductionCompleteBookingsQuery from "@/graphql/queries/admin/productions/AdminProductionCompleteBookings.gql";
-import AdminPage from "@/components/admin/AdminPage.vue";
-import PaginatedTable from "@/components/ui/Tables/PaginatedTable.vue";
-import TableHeadItem from "@/components/ui/Tables/TableHeadItem.vue";
-import TableRow from "@/components/ui/Tables/TableRow.vue";
-import TableRowItem from "@/components/ui/Tables/TableRowItem.vue";
-import Card from "@/components/ui/Card.vue";
-import SortIcon from "@/components/ui/SortIcon.vue";
-import AdminProductionLookupQuery from "@/graphql/queries/admin/productions/AdminProductionLookup.gql";
-import BookingStatusEnum from "@/enums/PayableStatusEnum";
+import AdminProductionCompleteBookingsQuery from '@/graphql/queries/admin/productions/AdminProductionCompleteBookings.gql';
+import AdminPage from '@/components/admin/AdminPage.vue';
+import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue';
+import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
+import TableRow from '@/components/ui/Tables/TableRow.vue';
+import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
+import Card from '@/components/ui/Card.vue';
+import SortIcon from '@/components/ui/SortIcon.vue';
+import AdminProductionLookupQuery from '@/graphql/queries/admin/productions/AdminProductionLookup.gql';
+import BookingStatusEnum from '@/enums/PayableStatusEnum';
 export default {
   components: {
     AdminPage,
@@ -108,7 +108,7 @@ export default {
     if (!production) {
       return error({
         statusCode: 404,
-        message: "This production does not exist",
+        message: 'This production does not exist',
       });
     }
     return {
@@ -148,7 +148,7 @@ export default {
           status: this.bookingsStatus,
         };
       },
-      fetchPolicy: "cache-and-network",
+      fetchPolicy: 'cache-and-network',
       update(data) {
         const performances = data.production.performances.edges;
         if (!performances.length) {

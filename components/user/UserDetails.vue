@@ -115,15 +115,15 @@
 </template>
 
 <script>
-import TextInput from "@/components/ui/TextInput.vue";
-import ChangeEmail from "./ChangeEmail.vue";
-import ChangePassword from "./ChangePassword.vue";
-import LoadingContainer from "../ui/LoadingContainer.vue";
-import gql from "graphql-tag";
-import { swalToast, performMutation, getValidationErrors } from "@/utils";
-import NonFieldError from "../ui/NonFieldError.vue";
+import TextInput from '@/components/ui/TextInput.vue';
+import ChangeEmail from './ChangeEmail.vue';
+import ChangePassword from './ChangePassword.vue';
+import LoadingContainer from '../ui/LoadingContainer.vue';
+import gql from 'graphql-tag';
+import { swalToast, performMutation, getValidationErrors } from '@/utils';
+import NonFieldError from '../ui/NonFieldError.vue';
 export default {
-  name: "UserDetails",
+  name: 'UserDetails',
   components: {
     TextInput,
     ChangePassword,
@@ -162,7 +162,7 @@ export default {
             mutation: gql`
           mutation ($firstName: String!, $lastName: String!) {
             updateAccount(firstName: $firstName, lastName: $lastName) {
-                ${require("@/graphql/partials/ErrorsPartial").default}
+                ${require('@/graphql/partials/ErrorsPartial').default}
             }
           }
         `,
@@ -171,13 +171,13 @@ export default {
               lastName: this.lastName,
             },
           },
-          "updateAccount"
+          'updateAccount'
         );
 
         swalToast.fire({
-          icon: "success",
-          title: "Details updated!",
-          position: "bottom-end",
+          icon: 'success',
+          title: 'Details updated!',
+          position: 'bottom-end',
         });
         this.user.firstName = this.firstName;
         this.user.lastName = this.lastName;

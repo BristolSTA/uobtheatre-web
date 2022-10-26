@@ -72,14 +72,14 @@
 </template>
 
 <script>
-import Booking from "@/classes/Booking";
-import PaymentOverview from "@/components/booking/overview/PaymentOverview.vue";
-import PerformanceOverview from "@/components/booking/overview/PerformanceOverview.vue";
-import TicketsOverview from "@/components/booking/overview/TicketsOverview.vue";
-import VenueOverview from "@/components/booking/overview/VenueOverview.vue";
-import Ticket from "@/components/booking/Ticket.vue";
-import ProductionBanner from "@/components/production/ProductionBanner.vue";
-import Alert from "@/components/ui/Alert.vue";
+import Booking from '@/classes/Booking';
+import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue';
+import PerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue';
+import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
+import VenueOverview from '@/components/booking/overview/VenueOverview.vue';
+import Ticket from '@/components/booking/Ticket.vue';
+import ProductionBanner from '@/components/production/ProductionBanner.vue';
+import Alert from '@/components/ui/Alert.vue';
 
 export default {
   components: {
@@ -91,10 +91,10 @@ export default {
     Ticket,
     Alert,
   },
-  middleware: "authed",
+  middleware: 'authed',
   async asyncData({ app, params, error }) {
     const { data } = await app.apolloProvider.defaultClient.query({
-      query: require("@/graphql/queries/UserCompletedBooking.gql"),
+      query: require('@/graphql/queries/UserCompletedBooking.gql'),
       variables: {
         bookingRef: params.reference,
       },
@@ -103,7 +103,7 @@ export default {
     if (!data.me.bookings.edges[0]) {
       return error({
         statusCode: 404,
-        message: "This booking does not exist",
+        message: 'This booking does not exist',
       });
     }
 
@@ -121,7 +121,7 @@ export default {
   head() {
     const production = this.production;
     return {
-      title: production ? `Booking for ${production.name}` : "Loading...",
+      title: production ? `Booking for ${production.name}` : 'Loading...',
     };
   },
   computed: {
@@ -132,8 +132,8 @@ export default {
     },
     crumbs() {
       return [
-        { text: "My Account", path: "/user" },
-        { text: "Booking Details" },
+        { text: 'My Account', path: '/user' },
+        { text: 'Booking Details' },
       ];
     },
   },

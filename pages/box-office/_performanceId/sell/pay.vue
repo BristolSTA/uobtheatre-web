@@ -41,7 +41,7 @@
                 >
                   <font-awesome-icon icon="money-bill" />
                   Pay with Card
-                  {{ terminalDevice ? `(${terminalDevice.name})` : "" }}
+                  {{ terminalDevice ? `(${terminalDevice.name})` : '' }}
                 </button>
                 <button
                   v-else-if="enabledMethods.manualCard"
@@ -118,20 +118,20 @@
 </template>
 
 <script>
-import TextInput from "@/components/ui/TextInput.vue";
-import Booking from "@/classes/Booking";
-import BookingPriceOverview from "@/components/booking/overview/BookingPriceOverview.vue";
-import TicketsOverview from "@/components/booking/overview/TicketsOverview.vue";
-import PayBooking from "@/graphql/mutations/booking/PayBooking.gql";
-import SetBookingUser from "@/graphql/mutations/booking/SetBookingUser.gql";
+import TextInput from '@/components/ui/TextInput.vue';
+import Booking from '@/classes/Booking';
+import BookingPriceOverview from '@/components/booking/overview/BookingPriceOverview.vue';
+import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
+import PayBooking from '@/graphql/mutations/booking/PayBooking.gql';
+import SetBookingUser from '@/graphql/mutations/booking/SetBookingUser.gql';
 import {
   getValidationErrors,
   performMutation,
   silentErrorHandler,
   swal,
-} from "@/utils";
-import AllErrorsDisplay from "@/components/ui/AllErrorsDisplay.vue";
-import LoadingContainer from "@/components/ui/LoadingContainer.vue";
+} from '@/utils';
+import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue';
+import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 
 const enabledMethods = {
   cash: true,
@@ -177,21 +177,21 @@ export default {
     },
     cashChange() {
       if (!this.tendered || this.tendered < this.booking.totalPricePounds) {
-        return "";
+        return '';
       }
       return (this.tendered - this.booking.totalPricePounds).toFixed(2);
     },
     terminalDevice() {
-      return this.$store.state["box-office"].terminalDevice;
+      return this.$store.state['box-office'].terminalDevice;
     },
   },
   async mounted() {
     if (!this.booking.tickets.length) {
-      return this.$router.replace("./");
+      return this.$router.replace('./');
     }
     try {
       this.availableTerminals = await this.$store.dispatch(
-        "box-office/retrieveAvailableTerminalDevices"
+        'box-office/retrieveAvailableTerminalDevices'
       );
       // If we already have a device, let's check it's still good
       if (
@@ -200,7 +200,7 @@ export default {
           (device) => device.id === this.terminalDevice.id
         )
       ) {
-        this.$store.commit("box-office/SET_TERMINAL_DEVICE", null);
+        this.$store.commit('box-office/SET_TERMINAL_DEVICE', null);
       }
     } catch (e) {
       silentErrorHandler(e);
@@ -208,7 +208,7 @@ export default {
   },
   apollo: {
     refreshedBooking: {
-      query: require("@/graphql/queries/box-office/BoxOfficePerformanceBooking.gql"),
+      query: require('@/graphql/queries/box-office/BoxOfficePerformanceBooking.gql'),
       variables() {
         return {
           bookingId: this.booking.id,
@@ -216,14 +216,14 @@ export default {
         };
       },
       skip() {
-        return !this.paying || this.paymentMode !== "SQUARE_POS";
+        return !this.paying || this.paymentMode !== 'SQUARE_POS';
       },
       update: (data) =>
         data.performance.bookings.edges.length
           ? data.performance.bookings.edges[0].node
           : null,
       result() {
-        if (this.refreshedBooking.status === "PAID") {
+        if (this.refreshedBooking.status === 'PAID') {
           this.bookingCompleted(this.refreshedBooking);
         }
       },
@@ -240,12 +240,12 @@ export default {
           performMutation(
             this.$apollo,
             {
-              mutation: require("@/graphql/mutations/booking/CancelPayment.gql"),
+              mutation: require('@/graphql/mutations/booking/CancelPayment.gql'),
               variables: {
                 paymentId: this.paymentId,
               },
             },
-            "cancelPayment"
+            'cancelPayment'
           );
         } catch (e) {
           this.errors = getValidationErrors(e);
@@ -259,14 +259,14 @@ export default {
         this.availableTerminals.map((device, index) => [index, device.name])
       );
       const { value } = await swal.fire({
-        title: "Select a payment device",
-        input: "select",
+        title: 'Select a payment device',
+        input: 'select',
         inputOptions: terminalOptions,
         showCancelButton: true,
       });
       const device = value !== null ? this.availableTerminals[value] : null;
       if (device) {
-        this.$store.commit("box-office/SET_TERMINAL_DEVICE", device);
+        this.$store.commit('box-office/SET_TERMINAL_DEVICE', device);
       }
     },
     async pay(method) {
@@ -287,7 +287,7 @@ export default {
               email: this.user.email,
             },
           },
-          "booking"
+          'booking'
         );
 
         const data = await performMutation(
@@ -302,12 +302,12 @@ export default {
               deviceId: this.terminalDevice?.deviceId,
             },
           },
-          "payBooking"
+          'payBooking'
         );
 
         this.paymentId = data.payBooking.payment.id;
 
-        if (method === "SQUARE_POS") {
+        if (method === 'SQUARE_POS') {
           return;
         }
 

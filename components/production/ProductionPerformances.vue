@@ -33,11 +33,11 @@
 </template>
 
 <script>
-import { DateTime } from "luxon";
-import TimeGroupedPerformanceSelector from "@/components/performance/TimeGroupedPerformanceSelector.vue";
+import { DateTime } from 'luxon';
+import TimeGroupedPerformanceSelector from '@/components/performance/TimeGroupedPerformanceSelector.vue';
 
 export default {
-  name: "ProductionPerformances",
+  name: 'ProductionPerformances',
   components: {
     TimeGroupedPerformanceSelector,
   },

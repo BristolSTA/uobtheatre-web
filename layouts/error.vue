@@ -32,11 +32,11 @@
 export default {
   props: {
     buttonText: {
-      default: "Return Home",
+      default: 'Return Home',
       type: String,
     },
     buttonTo: {
-      default: "/",
+      default: '/',
       type: String,
     },
     error: {
@@ -48,12 +48,12 @@ export default {
   computed: {
     message() {
       if (this.error.statusCode === 404) {
-        return "404 - Page Not found";
+        return '404 - Page Not found';
       }
       if (this.error.statusCode === 401) {
-        return "401 - Unauthorized";
+        return '401 - Unauthorized';
       }
-      return "There was an issue.";
+      return 'There was an issue.';
     },
   },
 };

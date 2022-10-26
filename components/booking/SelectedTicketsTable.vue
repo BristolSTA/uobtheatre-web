@@ -63,9 +63,9 @@
 </template>
 
 <script>
-import LoadingIcon from "../ui/LoadingIcon.vue";
-import Booking from "@/classes/Booking";
-import TicketMatrix from "@/classes/TicketsMatrix";
+import LoadingIcon from '../ui/LoadingIcon.vue';
+import Booking from '@/classes/Booking';
+import TicketMatrix from '@/classes/TicketsMatrix';
 
 export default {
   components: { LoadingIcon },

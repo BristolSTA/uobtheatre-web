@@ -55,7 +55,7 @@
                   </NuxtLink>
                 </td>
                 <td v-else class="px-4 text-right">
-                  {{ production.end | dateFormat("MMMM y") }}
+                  {{ production.end | dateFormat('MMMM y') }}
                 </td>
               </tr>
             </tbody>
@@ -95,8 +95,8 @@
 </template>
 
 <script>
-import SocietyDetailQuery from "@/graphql/queries/SocietyDetail.gql";
-import TipTapOutput from "@/components/ui/TipTapOutput.vue";
+import SocietyDetailQuery from '@/graphql/queries/SocietyDetail.gql';
+import TipTapOutput from '@/components/ui/TipTapOutput.vue';
 
 export default {
   components: { TipTapOutput },
@@ -112,7 +112,7 @@ export default {
     if (!society) {
       return error({
         statusCode: 404,
-        message: "This society does not exists",
+        message: 'This society does not exists',
       });
     }
     return {
@@ -125,7 +125,7 @@ export default {
     };
   },
   head() {
-    const societyName = this.society ? this.society.name : "Loading...";
+    const societyName = this.society ? this.society.name : 'Loading...';
     return {
       title: `${societyName}`,
     };

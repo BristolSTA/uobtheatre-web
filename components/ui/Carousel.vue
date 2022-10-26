@@ -152,14 +152,14 @@ export default {
     },
     handleMouseOver(element) {
       if (this.autoplay) {
-        if (element === "carousel" && this.pauseOnHover) {
+        if (element === 'carousel' && this.pauseOnHover) {
           this.disableAutoPlay();
         }
       }
     },
     handleMouseOut(element) {
       if (this.autoplay) {
-        if (element === "carousel" && this.pauseOnHover) {
+        if (element === 'carousel' && this.pauseOnHover) {
           this.enableAutoPlay();
         }
       }

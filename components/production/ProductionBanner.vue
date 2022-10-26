@@ -57,7 +57,7 @@
           <template v-else> View Online </template>
         </p>
         <p>
-          {{ displayStartEnd(production.start, production.end, "d MMM") }}
+          {{ displayStartEnd(production.start, production.end, 'd MMM') }}
         </p>
         <icon-list-item v-if="duration" icon="clock">
           {{ duration }}
@@ -96,15 +96,15 @@
 </template>
 
 <script>
-import humanizeDuration from "humanize-duration";
-import lo from "lodash";
+import humanizeDuration from 'humanize-duration';
+import lo from 'lodash';
 
-import ProductionFeaturedImage from "./ProductionFeaturedImage.vue";
-import IconListItem from "@/components/ui/IconListItem.vue";
-import { displayStartEnd } from "@/utils";
+import ProductionFeaturedImage from './ProductionFeaturedImage.vue';
+import IconListItem from '@/components/ui/IconListItem.vue';
+import { displayStartEnd } from '@/utils';
 
 export default {
-  name: "ProductionBanner",
+  name: 'ProductionBanner',
   components: { IconListItem, ProductionFeaturedImage },
   props: {
     production: {
@@ -133,7 +133,7 @@ export default {
           this.production.performances.edges.map((edge) => {
             return edge.node.venue;
           }),
-          "name"
+          'name'
         );
       }
       lo.take(venues, this.venueOverflow + 1);
@@ -156,7 +156,7 @@ export default {
       return humanizeDuration(
         lo
           .chain(this.production.performances.edges.map((edge) => edge.node))
-          .minBy("durationMins")
+          .minBy('durationMins')
           .value().durationMins *
           60 *
           1000

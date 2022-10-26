@@ -58,16 +58,16 @@
 </template>
 
 <script>
-import NonFieldError from "@/components/ui/NonFieldError";
-import TextInput from "@/components/ui/TextInput";
-import { authService } from "@/services";
-import { getValidationErrors, swal, swalToast } from "@/utils";
+import NonFieldError from '@/components/ui/NonFieldError';
+import TextInput from '@/components/ui/TextInput';
+import { authService } from '@/services';
+import { getValidationErrors, swal, swalToast } from '@/utils';
 
-import AuthPageTemplate from "@/components/auth/AuthPageTemplate.vue";
-import LoadingIcon from "@/components/ui/LoadingIcon.vue";
+import AuthPageTemplate from '@/components/auth/AuthPageTemplate.vue';
+import LoadingIcon from '@/components/ui/LoadingIcon.vue';
 export default {
   components: { AuthPageTemplate, TextInput, NonFieldError, LoadingIcon },
-  middleware: ["not-authed"],
+  middleware: ['not-authed'],
   data() {
     return {
       email: null,
@@ -79,7 +79,7 @@ export default {
     };
   },
   head: {
-    title: "Reset Password",
+    title: 'Reset Password',
   },
   computed: {
     resetToken() {
@@ -94,9 +94,9 @@ export default {
           email: this.email,
         });
         swal.fire({
-          icon: "info",
-          title: "Check your email",
-          text: "A link to reset your password has been sent by email if we have an account with this email",
+          icon: 'info',
+          title: 'Check your email',
+          text: 'A link to reset your password has been sent by email if we have an account with this email',
         });
       } catch (e) {
         this.errors = getValidationErrors(e);
@@ -112,11 +112,11 @@ export default {
           confirmedPassword: this.confirmedPassword,
         });
         swalToast.fire({
-          icon: "success",
-          title: "Password Reset Succesfully",
-          position: "bottom-end",
+          icon: 'success',
+          title: 'Password Reset Succesfully',
+          position: 'bottom-end',
         });
-        return this.$router.push("/login");
+        return this.$router.push('/login');
       } catch (e) {
         this.errors = getValidationErrors(e);
       }

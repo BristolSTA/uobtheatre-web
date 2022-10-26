@@ -46,10 +46,10 @@ export default {
     },
   },
   mounted() {
-    document.addEventListener("click", this.hideMenu);
+    document.addEventListener('click', this.hideMenu);
   },
   destroyed() {
-    document.removeEventListener("click", this.hideMenu);
+    document.removeEventListener('click', this.hideMenu);
   },
   methods: {
     hideMenu() {

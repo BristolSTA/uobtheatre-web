@@ -1,9 +1,9 @@
-import { expect } from "chai";
+import { expect } from 'chai';
 
-import Performance from "../fixtures/Performance";
-import TicketsMatrix from "@/classes/TicketsMatrix";
+import Performance from '../fixtures/Performance';
+import TicketsMatrix from '@/classes/TicketsMatrix';
 
-describe("TicketsMatrix", () => {
+describe('TicketsMatrix', () => {
   let matrix;
   let apiData;
   beforeEach(() => {
@@ -11,25 +11,25 @@ describe("TicketsMatrix", () => {
     matrix = new TicketsMatrix(apiData);
   });
 
-  it("can get ticket options", () => {
+  it('can get ticket options', () => {
     expect(matrix.ticketOptions).to.include(apiData.ticketOptions[0]);
   });
-  it("can get performance capacity remaining", () => {
+  it('can get performance capacity remaining', () => {
     expect(matrix.performanceCapacityRemaining).to.eq(69);
   });
-  it("can set performance capacity remaining", () => {
+  it('can set performance capacity remaining', () => {
     matrix.performanceCapacityRemaining = 10;
     expect(matrix.performanceCapacityRemaining).to.eq(10);
   });
-  it("can decrement performance capacity remaining", () => {
+  it('can decrement performance capacity remaining', () => {
     matrix.decrementPerformanceCapacity();
     expect(matrix.performanceCapacityRemaining).to.eq(68);
   });
-  it("can increment performance capacity remaining", () => {
+  it('can increment performance capacity remaining', () => {
     matrix.incrementPerformanceCapacity();
     expect(matrix.performanceCapacityRemaining).to.eq(70);
   });
-  it("can get capacity remaining for a seat group", () => {
+  it('can get capacity remaining for a seat group', () => {
     expect(matrix.capacityRemainingForSeatGroup(1)).to.eq(30);
 
     // Test that is uses minimum between performance and seat group
@@ -37,15 +37,15 @@ describe("TicketsMatrix", () => {
 
     expect(matrix.capacityRemainingForSeatGroup(1)).to.eq(5);
   });
-  it("can decrement capacity remaining for a seat group", () => {
+  it('can decrement capacity remaining for a seat group', () => {
     matrix.decrementSeatGroupCapacity(1);
     expect(matrix.capacityRemainingForSeatGroup(1)).to.eq(29);
   });
-  it("can increment capacity remaining for a seat group", () => {
+  it('can increment capacity remaining for a seat group', () => {
     matrix.incrementSeatGroupCapacity(1);
     expect(matrix.capacityRemainingForSeatGroup(1)).to.eq(31);
   });
-  it("can check if it can add tickets", () => {
+  it('can check if it can add tickets', () => {
     expect(matrix.canAddTickets(1)).to.be.true;
     expect(matrix.canAddTickets(69)).to.be.true;
     expect(matrix.canAddTickets(70)).to.be.false;

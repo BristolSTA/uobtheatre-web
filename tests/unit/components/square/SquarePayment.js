@@ -1,9 +1,9 @@
-import { mount } from "@vue/test-utils";
-import { expect } from "chai";
-import { generateMountOptions } from "../../helpers";
-import SquarePayment from "@/components/square/SquarePayment.vue";
+import { mount } from '@vue/test-utils';
+import { expect } from 'chai';
+import { generateMountOptions } from '../../helpers';
+import SquarePayment from '@/components/square/SquarePayment.vue';
 
-describe("Card Payment", () => {
+describe('Card Payment', () => {
   let squarePaymentsMock, component, cardMock, gpayMock, applePayMock;
   beforeEach(() => {
     window.Square = {
@@ -31,19 +31,19 @@ describe("Card Payment", () => {
 
     component = mount(
       SquarePayment,
-      generateMountOptions(["config"], {
+      generateMountOptions(['config'], {
         propsData: {
-          price: "10.00",
+          price: '10.00',
         },
       })
     );
   });
 
-  it("sets up payment form on load", () => {
+  it('sets up payment form on load', () => {
     expect(squarePaymentsMock.mock.calls).length(1);
     expect(squarePaymentsMock.mock.calls).length(1);
-    expect(squarePaymentsMock.mock.calls[0][0]).to.eq("square_app_id");
-    expect(squarePaymentsMock.mock.calls[0][0]).to.eq("square_loc_id");
+    expect(squarePaymentsMock.mock.calls[0][0]).to.eq('square_app_id');
+    expect(squarePaymentsMock.mock.calls[0][0]).to.eq('square_loc_id');
 
     // Check it tries to init card
     expect(cardMock.mock.calls).length(1);
@@ -53,11 +53,11 @@ describe("Card Payment", () => {
     expect(applePayMock.mock.calls).length(1);
   });
 
-  it("requests card nonce on pay click", async () => {
+  it('requests card nonce on pay click', async () => {
     await component.setData({
       ready: true,
     });
-    component.find("button#card-button").trigger("click");
+    component.find('button#card-button').trigger('click');
     expect(component.vm.square.card.tokenize.mock.calls).length(1);
   });
 });

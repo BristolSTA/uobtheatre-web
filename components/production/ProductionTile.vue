@@ -14,15 +14,15 @@
         {{ production.name }}
       </h2>
       <h2 class="text-2xl transition-colors">
-        {{ displayStartEnd(production.start, production.end, "d MMM") }}
+        {{ displayStartEnd(production.start, production.end, 'd MMM') }}
       </h2>
     </NuxtLink>
   </div>
 </template>
 
 <script>
-import ProductionFeaturedImage from "./ProductionFeaturedImage.vue";
-import { displayStartEnd } from "@/utils";
+import ProductionFeaturedImage from './ProductionFeaturedImage.vue';
+import { displayStartEnd } from '@/utils';
 export default {
   components: { ProductionFeaturedImage },
   props: {

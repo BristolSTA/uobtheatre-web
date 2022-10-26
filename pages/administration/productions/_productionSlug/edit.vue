@@ -15,18 +15,18 @@
 </template>
 
 <script>
-import Swal from "sweetalert2";
-import AdminProductionEditQuery from "@/graphql/queries/admin/productions/AdminProductionEdit.gql";
-import ProductionEditor from "@/components/production/editor/ProductionEditor.vue";
-import AdminPage from "@/components/admin/AdminPage.vue";
-import StaButton from "@/components/ui/StaButton.vue";
-import NonFieldError from "@/components/ui/NonFieldError.vue";
+import Swal from 'sweetalert2';
+import AdminProductionEditQuery from '@/graphql/queries/admin/productions/AdminProductionEdit.gql';
+import ProductionEditor from '@/components/production/editor/ProductionEditor.vue';
+import AdminPage from '@/components/admin/AdminPage.vue';
+import StaButton from '@/components/ui/StaButton.vue';
+import NonFieldError from '@/components/ui/NonFieldError.vue';
 import {
   getValidationErrors,
   loadingSwal,
   performMutation,
   successToast,
-} from "@/utils";
+} from '@/utils';
 export default {
   components: { ProductionEditor, AdminPage, StaButton, NonFieldError },
   async asyncData({ params, error, app }) {
@@ -42,7 +42,7 @@ export default {
     if (!production) {
       return error({
         statusCode: 404,
-        message: "This production does not exist",
+        message: 'This production does not exist',
       });
     }
     return {
@@ -59,7 +59,7 @@ export default {
   head() {
     const title = this.production
       ? `Edit ${this.production.name}`
-      : "Loading...";
+      : 'Loading...';
     return {
       title,
     };
@@ -72,12 +72,12 @@ export default {
         await performMutation(
           this.$apollo,
           {
-            mutation: require("@/graphql/mutations/admin/production/ProductionMutation.gql"),
+            mutation: require('@/graphql/mutations/admin/production/ProductionMutation.gql'),
             variables: {
               input: await this.$refs.editor.getInputData(),
             },
           },
-          "production"
+          'production'
         );
         const { data } = await this.$apollo.query({
           query: AdminProductionEditQuery,
@@ -87,7 +87,7 @@ export default {
         });
         this.production = data.production;
         this.$router.replace(`../${this.production.slug}`);
-        successToast.fire({ title: "Production Updated" });
+        successToast.fire({ title: 'Production Updated' });
       } catch (e) {
         this.errors = getValidationErrors(e);
         Swal.close();

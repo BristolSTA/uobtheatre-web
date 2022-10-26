@@ -1,8 +1,8 @@
-import lo from "lodash";
-import { v4 as uuidv4 } from "uuid";
-import { DateTime } from "luxon";
+import lo from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
+import { DateTime } from 'luxon';
 
-import Ticket from "./Ticket";
+import Ticket from './Ticket';
 
 export default class Booking {
   /** @member {number} */
@@ -295,7 +295,7 @@ export default class Booking {
     if (!this.priceBreakdown || this.dirty) {
       if (!ticketMatrix) {
         throw new Error(
-          "A ticket matrix is required to generate the ticket overview"
+          'A ticket matrix is required to generate the ticket overview'
         );
       }
       return this.ticketOverviewEstimate(ticketMatrix);
@@ -368,13 +368,13 @@ export default class Booking {
     const performanceEndTime = DateTime.fromISO(this.performance.end);
     return (
       performanceEndTime > DateTime.local() ||
-      performanceEndTime.hasSame(DateTime.local(), "day")
+      performanceEndTime.hasSame(DateTime.local(), 'day')
     );
   }
 
   get status() {
     if (!this.raw.status) {
-      return "";
+      return '';
     }
     return this.raw.status;
   }

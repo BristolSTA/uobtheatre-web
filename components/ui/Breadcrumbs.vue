@@ -30,9 +30,9 @@
 </template>
 
 <script>
-import { startCase } from "lodash";
+import { startCase } from 'lodash';
 export default {
-  name: "Breadcrumbs",
+  name: 'Breadcrumbs',
   props: {
     crumbs: {
       default: null,
@@ -52,18 +52,18 @@ export default {
       return this.crumbs || (this.useAuto ? this.routeCrumbs : []);
     },
     routeCrumbs() {
-      const fullPath = this.$route.fullPath.split("?")[0];
-      const params = fullPath.startsWith("/")
-        ? fullPath.substring(1).split("/")
-        : fullPath.split("/");
+      const fullPath = this.$route.fullPath.split('?')[0];
+      const params = fullPath.startsWith('/')
+        ? fullPath.substring(1).split('/')
+        : fullPath.split('/');
       const crumbs = [];
-      let path = "";
+      let path = '';
       params.forEach((param) => {
         path = `${path}/${param}`;
         const match = this.$router.match(path);
-        if (match.name !== null && !param.endsWith("=")) {
+        if (match.name !== null && !param.endsWith('=')) {
           crumbs.push({
-            title: startCase(param.replace(/-/g, " ").toLowerCase()),
+            title: startCase(param.replace(/-/g, ' ').toLowerCase()),
             ...match,
           });
         }

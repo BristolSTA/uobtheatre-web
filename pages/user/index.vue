@@ -67,10 +67,10 @@
 </template>
 
 <script>
-import BookingSummaryOverview from "@/components/booking/overview/BookingSummaryOverview.vue";
-import BookingsTable from "@/components/user/BookingsTable.vue";
-import UserDetails from "@/components/user/UserDetails.vue";
-import PaginationBar from "@/components/ui/PaginationBar.vue";
+import BookingSummaryOverview from '@/components/booking/overview/BookingSummaryOverview.vue';
+import BookingsTable from '@/components/user/BookingsTable.vue';
+import UserDetails from '@/components/user/UserDetails.vue';
+import PaginationBar from '@/components/ui/PaginationBar.vue';
 
 export default {
   components: {
@@ -79,11 +79,11 @@ export default {
     BookingsTable,
     PaginationBar,
   },
-  middleware: "authed",
+  middleware: 'authed',
   async asyncData({ app }) {
     const { data } = await app.apolloProvider.defaultClient.query({
-      query: require("@/graphql/queries/user/MyAccountDetails.gql"),
-      fetchPolicy: "no-cache",
+      query: require('@/graphql/queries/user/MyAccountDetails.gql'),
+      fetchPolicy: 'no-cache',
     });
 
     return {
@@ -100,11 +100,11 @@ export default {
     };
   },
   head: {
-    title: "My Account",
+    title: 'My Account',
   },
   apollo: {
     activeBookings: {
-      query: require("@/graphql/queries/user/CompleteBookings.gql"),
+      query: require('@/graphql/queries/user/CompleteBookings.gql'),
       variables() {
         return {
           active: true,
@@ -115,7 +115,7 @@ export default {
       update: (data) => data.me.bookings,
     },
     oldBookings: {
-      query: require("@/graphql/queries/user/CompleteBookings.gql"),
+      query: require('@/graphql/queries/user/CompleteBookings.gql'),
       variables() {
         return {
           active: false,

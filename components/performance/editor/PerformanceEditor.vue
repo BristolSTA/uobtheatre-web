@@ -273,17 +273,17 @@
 </template>
 
 <script>
-import Card from "../../ui/Card.vue";
-import FormLabel from "../../ui/FormLabel.vue";
-import SeatGroup from "./SeatGroup.vue";
-import ConcessionType from "./ConcessionType.vue";
-import PriceMatrix from "./PriceMatrix.vue";
-import ErrorHelper from "@/components/ui/ErrorHelper.vue";
-import Errors from "@/classes/Errors";
-import { getValidationErrors, performMutation, swal } from "@/utils";
-import StaButton from "@/components/ui/StaButton.vue";
-import Alert from "@/components/ui/Alert.vue";
-import { singleDiscounts as singleDiscountsFn } from "@/utils/performance";
+import Card from '../../ui/Card.vue';
+import FormLabel from '../../ui/FormLabel.vue';
+import SeatGroup from './SeatGroup.vue';
+import ConcessionType from './ConcessionType.vue';
+import PriceMatrix from './PriceMatrix.vue';
+import ErrorHelper from '@/components/ui/ErrorHelper.vue';
+import Errors from '@/classes/Errors';
+import { getValidationErrors, performMutation, swal } from '@/utils';
+import StaButton from '@/components/ui/StaButton.vue';
+import Alert from '@/components/ui/Alert.vue';
+import { singleDiscounts as singleDiscountsFn } from '@/utils/performance';
 
 export default {
   components: {
@@ -368,11 +368,11 @@ export default {
   },
   apollo: {
     availableVenues: {
-      query: require("@/graphql/queries/Venues.gql"),
+      query: require('@/graphql/queries/Venues.gql'),
       update: (data) => data.venues.edges.map((edge) => edge.node),
     },
     availableSeatGroups: {
-      query: require("@/graphql/queries/admin/venue/AdminVenueDetailed.gql"),
+      query: require('@/graphql/queries/admin/venue/AdminVenueDetailed.gql'),
       update: (data) => data.venue.seatGroups.edges.map((edge) => edge.node),
       variables() {
         return {
@@ -384,7 +384,7 @@ export default {
       },
     },
     otherPerformances: {
-      query: require("@/graphql/queries/admin/productions/AdminPerformancesIndex.gql"),
+      query: require('@/graphql/queries/admin/productions/AdminPerformancesIndex.gql'),
       update: (data) =>
         data.production.performances.edges.map((edge) => edge.node),
       variables() {
@@ -392,7 +392,7 @@ export default {
           productionId: this.production.id,
         };
       },
-      fetchPolicy: "cache-and-network",
+      fetchPolicy: 'cache-and-network',
     },
   },
   computed: {
@@ -448,7 +448,7 @@ export default {
           (performance) => performance.intervalDurationMins
         )?.intervalDurationMins;
         if (this.intervalDurationMins === null && intervalLength) {
-          this.$emit("update:intervalDurationMins", intervalLength);
+          this.$emit('update:intervalDurationMins', intervalLength);
         }
       }
     },
@@ -459,13 +459,13 @@ export default {
         id: this.id,
         doorsOpen: this.doorsOpen,
         intervalDurationMins:
-          this.intervalDurationMins === "" ? null : this.intervalDurationMins,
+          this.intervalDurationMins === '' ? null : this.intervalDurationMins,
         start: this.start,
         end: this.end,
         venue: this.venue?.id,
         disabled: this.disabled,
         description: this.description,
-        capacity: this.capacity === "" ? null : this.capacity,
+        capacity: this.capacity === '' ? null : this.capacity,
       };
 
       if (!returnObject.id) {
@@ -476,19 +476,19 @@ export default {
     },
     async loadTicketOptions() {
       const { value } = await swal.fire({
-        input: "select",
+        input: 'select',
         inputOptions: Object.fromEntries(
           this.similarPerformances.map((performance) => [
             performance.id,
-            "Performance at " +
+            'Performance at ' +
               this.$options.filters.dateFormat(
                 performance.start,
-                "EEEE dd MMMM y HH:mm ZZZZ"
+                'EEEE dd MMMM y HH:mm ZZZZ'
               ),
           ])
         ),
         showCancelButton: true,
-        confirmButtonText: "Load",
+        confirmButtonText: 'Load',
       });
       if (!value) {
         return;
@@ -496,12 +496,12 @@ export default {
 
       // Load the details
       const { data } = await this.$apollo.query({
-        query: require("@/graphql/queries/admin/productions/AdminPerformanceDetail.gql"),
+        query: require('@/graphql/queries/admin/productions/AdminPerformanceDetail.gql'),
         variables: {
           productionSlug: this.production.slug,
           performanceId: value,
         },
-        fetchPolicy: "no-cache",
+        fetchPolicy: 'no-cache',
       });
 
       // Delete exisiting performance seat groups
@@ -556,12 +556,12 @@ export default {
             performMutation(
               this.$apollo,
               {
-                mutation: require("@/graphql/mutations/admin/performance/DeletePerformanceSeatGroup.gql"),
+                mutation: require('@/graphql/mutations/admin/performance/DeletePerformanceSeatGroup.gql'),
                 variables: {
                   id: currentId,
                 },
               },
-              "deletePerformanceSeatGroup"
+              'deletePerformanceSeatGroup'
             )
           );
         });
@@ -580,12 +580,12 @@ export default {
           performMutation(
             this.$apollo,
             {
-              mutation: require("@/graphql/mutations/admin/performance/PerformanceSeatGroupMutation.gql"),
+              mutation: require('@/graphql/mutations/admin/performance/PerformanceSeatGroupMutation.gql'),
               variables: {
                 input,
               },
             },
-            "performanceSeatGroup"
+            'performanceSeatGroup'
           )
         );
       });
@@ -600,7 +600,7 @@ export default {
               performMutation(
                 this.$apollo,
                 {
-                  mutation: require("@/graphql/mutations/admin/performance/DiscountMutation.gql"),
+                  mutation: require('@/graphql/mutations/admin/performance/DiscountMutation.gql'),
                   variables: {
                     input: {
                       id: discount.id,
@@ -610,7 +610,7 @@ export default {
                     },
                   },
                 },
-                "discount"
+                'discount'
               )
             );
           }
@@ -620,10 +620,10 @@ export default {
             performMutation(
               this.$apollo,
               {
-                mutation: require("@/graphql/mutations/admin/performance/DeleteDiscount.gql"),
+                mutation: require('@/graphql/mutations/admin/performance/DeleteDiscount.gql'),
                 variables: { id: discount.id },
               },
-              "deleteDiscount"
+              'deleteDiscount'
             )
           );
         });
@@ -649,12 +649,12 @@ export default {
                 performMutation(
                   this.$apollo,
                   {
-                    mutation: require("@/graphql/mutations/admin/performance/DiscountMutation.gql"),
+                    mutation: require('@/graphql/mutations/admin/performance/DiscountMutation.gql'),
                     variables: {
                       input,
                     },
                   },
-                  "discount"
+                  'discount'
                 ).then((data) => {
                   discount.id = data.discount.discount.id;
                   // Create or update the discount requirement & concession
@@ -672,12 +672,12 @@ export default {
                     performMutation(
                       this.$apollo,
                       {
-                        mutation: require("@/graphql/mutations/admin/performance/ConcessionTypeMutation.gql"),
+                        mutation: require('@/graphql/mutations/admin/performance/ConcessionTypeMutation.gql'),
                         variables: {
                           input,
                         },
                       },
-                      "concessionType"
+                      'concessionType'
                     )
                       .then((data) => {
                         requirement.concessionType.id =
@@ -696,12 +696,12 @@ export default {
                         performMutation(
                           this.$apollo,
                           {
-                            mutation: require("@/graphql/mutations/admin/performance/DiscountRequirementMutation.gql"),
+                            mutation: require('@/graphql/mutations/admin/performance/DiscountRequirementMutation.gql'),
                             variables: {
                               input,
                             },
                           },
-                          "discountRequirement"
+                          'discountRequirement'
                         )
                           .then(resolve())
                           .catch((e) => reject(e));
@@ -718,15 +718,15 @@ export default {
         await Promise.all(mutations);
         return true;
       } catch (e) {
-        this.$emit("update:errors", getValidationErrors(e));
+        this.$emit('update:errors', getValidationErrors(e));
         return false;
       }
     },
     async addSeatGroup(sg = null, price = 0) {
       if (!sg) {
         const { value } = await swal.fire({
-          text: "Select seat group:",
-          input: "select",
+          text: 'Select seat group:',
+          input: 'select',
           inputOptions: Object.fromEntries(
             this.remainingSeatGroups.map((seatGroup) => [
               seatGroup.id,
@@ -734,7 +734,7 @@ export default {
             ])
           ),
           showCancelButton: true,
-          confirmButtonText: "Add",
+          confirmButtonText: 'Add',
         });
         if (!value) {
           return;
@@ -759,7 +759,7 @@ export default {
       const currentNum = this.discounts?.edges
         ? this.discounts.edges.length
         : 0;
-      await this.$emit("update:discounts", {
+      await this.$emit('update:discounts', {
         edges: [
           ...(this.discounts?.edges || []),
           {
@@ -783,7 +783,7 @@ export default {
     },
     async deleteConcession(discount) {
       // Remove from array
-      await this.$emit("update:discounts", {
+      await this.$emit('update:discounts', {
         edges: this.discounts.edges.filter((edge) => edge.node !== discount),
       });
 

@@ -63,11 +63,11 @@ export default {
   data() {
     return {
       navItems: [
-        ["/privacy", "Privacy Policy"],
-        ["/terms", "Terms & Conditions"],
+        ['/privacy', 'Privacy Policy'],
+        ['/terms', 'Terms & Conditions'],
         [
-          "mailto:support@uobtheatre.com?subject=Request For Support",
-          "Contact Us",
+          'mailto:support@uobtheatre.com?subject=Request For Support',
+          'Contact Us',
         ],
       ],
     };

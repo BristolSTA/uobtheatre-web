@@ -4,7 +4,7 @@
     :class="[performance.isBookable ? 'bg-sta-green' : 'bg-sta-gray-dark']"
   >
     <h2 class="text-h2">
-      {{ performance.start | dateFormat("cccc d MMM") }}
+      {{ performance.start | dateFormat('cccc d MMM') }}
     </h2>
     <div>
       <NuxtLink
@@ -19,7 +19,7 @@
       </template>
       <template v-if="performance.isOnline"> Online </template>
     </div>
-    <div>Doors open at {{ performance.doorsOpen | dateFormat("T") }}</div>
+    <div>Doors open at {{ performance.doorsOpen | dateFormat('T') }}</div>
     <div v-if="performance.durationMins">
       {{ humanDuration(performance.durationMins) }}
       <template v-if="performance.intervalDurationMins">
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { humanDuration } from "@/utils";
+import { humanDuration } from '@/utils';
 
 export default {
   props: {
@@ -68,14 +68,14 @@ export default {
   computed: {
     disabledReason() {
       if (this.performance.soldOut) {
-        return "SOLD OUT";
+        return 'SOLD OUT';
       }
-      return "Unavailable";
+      return 'Unavailable';
     },
   },
   methods: {
     onAction() {
-      this.$emit("select");
+      this.$emit('select');
     },
     humanDuration,
   },

@@ -6,14 +6,14 @@
             round: true,
             largest: 1,
           })
-        : ""
+        : ''
     }}
   </span>
 </template>
 
 <script>
-import { DateTime, Duration } from "luxon";
-import humanizeDuration from "humanize-duration";
+import { DateTime, Duration } from 'luxon';
+import humanizeDuration from 'humanize-duration';
 export default {
   props: {
     expiresAt: {
@@ -49,10 +49,10 @@ export default {
   methods: {
     humanizeDuration,
     calculateRemainingSeconds() {
-      this.remainingDuration = this.expiresAtDate.diffNow("minutes");
+      this.remainingDuration = this.expiresAtDate.diffNow('minutes');
       if (this.remainingDuration.toMillis() <= 0) {
         this.remainingDuration = Duration.fromMillis(0);
-        this.$emit("finished");
+        this.$emit('finished');
       }
     },
   },

@@ -1,4 +1,4 @@
-import GenericMutationResponse from "./GenericMutationResponse";
+import GenericMutationResponse from './GenericMutationResponse';
 
 export default (errors = [], overrides = {}) => {
   return Object.assign(

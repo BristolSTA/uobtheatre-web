@@ -1,5 +1,5 @@
-import GenericNodeConnection from "./support/GenericNodeConnection";
-import Venue from "./Venue";
+import GenericNodeConnection from './support/GenericNodeConnection';
+import Venue from './Venue';
 
 export default (
   overrides = {},
@@ -9,8 +9,8 @@ export default (
   return Object.assign(
     {
       id: 1,
-      name: "Best seats in the house",
-      description: "The best seats obviously",
+      name: 'Best seats in the house',
+      description: 'The best seats obviously',
       venue: includeVenue ? Venue() : null,
       capacity: 100,
       seats: null,

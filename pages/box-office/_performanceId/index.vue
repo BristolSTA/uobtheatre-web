@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import Overview from "@/components/box-office/Overview.vue";
-import BoxOfficeNavigation from "@/components/box-office/BoxOfficeNavigation.vue";
+import Overview from '@/components/box-office/Overview.vue';
+import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue';
 
 export default {
   components: { Overview, BoxOfficeNavigation },
@@ -31,13 +31,13 @@ export default {
   computed: {
     crumbs() {
       return [
-        { text: "Box Office", path: "/box-office" },
+        { text: 'Box Office', path: '/box-office' },
         {
           text: `${
             this.performance.production.name
           } on ${this.$options.filters.dateFormat(
             this.performance.start,
-            "ccc dd MMM T"
+            'ccc dd MMM T'
           )}`,
         },
       ];

@@ -15,10 +15,10 @@
 </template>
 
 <script>
-import OverviewBox from "../../ui/Card.vue";
+import OverviewBox from '../../ui/Card.vue';
 
 export default {
-  name: "UserOverview",
+  name: 'UserOverview',
   components: { OverviewBox },
 };
 </script>

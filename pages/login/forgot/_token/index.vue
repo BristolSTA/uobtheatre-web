@@ -35,15 +35,15 @@
   </auth-page-template>
 </template>
 <script>
-import { getValidationErrors, performMutation, successToast } from "@/utils";
+import { getValidationErrors, performMutation, successToast } from '@/utils';
 
-import AuthPageTemplate from "@/components/auth/AuthPageTemplate.vue";
-import NonFieldError from "@/components/ui/NonFieldError.vue";
-import TextInput from "@/components/ui/TextInput.vue";
+import AuthPageTemplate from '@/components/auth/AuthPageTemplate.vue';
+import NonFieldError from '@/components/ui/NonFieldError.vue';
+import TextInput from '@/components/ui/TextInput.vue';
 
 export default {
   components: { AuthPageTemplate, NonFieldError, TextInput },
-  middleware: "not-authed",
+  middleware: 'not-authed',
   data() {
     return {
       errors: null,
@@ -52,7 +52,7 @@ export default {
     };
   },
   head: {
-    title: "Reset your password",
+    title: 'Reset your password',
   },
   methods: {
     async attemptReset() {
@@ -60,17 +60,17 @@ export default {
         await performMutation(
           this.$apollo,
           {
-            mutation: require("@/graphql/mutations/user/AttemptPasswordReset.gql"),
+            mutation: require('@/graphql/mutations/user/AttemptPasswordReset.gql'),
             variables: {
               token: this.$route.params.token,
               newPassword: this.newPassword,
               confirmedNewPassword: this.confirmedNewPassword,
             },
           },
-          "passwordReset"
+          'passwordReset'
         );
-        successToast.fire({ title: "Password Changed!" });
-        return this.$router.replace("/login");
+        successToast.fire({ title: 'Password Changed!' });
+        return this.$router.replace('/login');
       } catch (e) {
         this.errors = getValidationErrors(e);
       }

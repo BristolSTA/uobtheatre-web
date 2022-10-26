@@ -11,7 +11,7 @@ export default {
   props: {
     sizeClass: {
       type: String,
-      default: "fa-2x",
+      default: 'fa-2x',
     },
   },
 };

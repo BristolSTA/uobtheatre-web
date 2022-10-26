@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import ProductionTile from "@/components/production/ProductionTile.vue";
-import InfiniteScroll from "@/components/ui/InfiniteScroll.vue";
+import ProductionTile from '@/components/production/ProductionTile.vue';
+import InfiniteScroll from '@/components/ui/InfiniteScroll.vue';
 export default {
   components: { ProductionTile, InfiniteScroll },
   data() {
@@ -42,7 +42,7 @@ export default {
     };
   },
   head: {
-    title: "Upcoming Productions",
+    title: 'Upcoming Productions',
   },
   methods: {
     handleNewData(data) {

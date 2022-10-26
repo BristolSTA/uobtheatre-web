@@ -1,45 +1,45 @@
-import { expect } from "chai";
+import { expect } from 'chai';
 
-import Errors from "@/classes/Errors";
+import Errors from '@/classes/Errors';
 
-describe("Errors", () => {
+describe('Errors', () => {
   let errors;
   beforeEach(() => {
     errors = new Errors([
       {
-        message: "An general issue",
-        __typename: "NonFieldError",
+        message: 'An general issue',
+        __typename: 'NonFieldError',
       },
       {
-        message: "An issue with a field",
-        field: "myfield",
-        __typename: "FieldError",
+        message: 'An issue with a field',
+        field: 'myfield',
+        __typename: 'FieldError',
       },
       {
-        message: "Another issue with a field",
-        field: "myfield",
-        __typename: "FieldError",
+        message: 'Another issue with a field',
+        field: 'myfield',
+        __typename: 'FieldError',
       },
       {
-        message: "An issue with a code",
-        field: "anotherfieldthesecond",
-        code: "something_wrong",
-        __typename: "FieldError",
+        message: 'An issue with a code',
+        field: 'anotherfieldthesecond',
+        code: 'something_wrong',
+        __typename: 'FieldError',
       },
     ]);
   });
 
-  it("can be constructed empty", () => {
+  it('can be constructed empty', () => {
     const errors = new Errors();
     expect(errors.hasNonFieldErrors()).to.be.false;
     expect(errors.nonFieldErrors).to.be.empty;
   });
 
-  it("can be constructed statically", () => {
+  it('can be constructed statically', () => {
     const errors = Errors.createFromAPI([
       {
-        message: "My Error",
-        __typename: "NonFieldError",
+        message: 'My Error',
+        __typename: 'NonFieldError',
       },
     ]);
 
@@ -47,19 +47,19 @@ describe("Errors", () => {
     expect(errors.nonFieldErrors).length(1);
   });
 
-  it("can be reset", () => {
+  it('can be reset', () => {
     errors.reset();
 
     expect(errors.any()).to.be.false;
     expect(errors.nonFieldErrors).to.be.empty;
   });
 
-  it("can report if it has at least one error for a given field", () => {
-    expect(errors.has("myfield")).to.be.true;
-    expect(errors.has("anotherfield")).to.be.false;
+  it('can report if it has at least one error for a given field', () => {
+    expect(errors.has('myfield')).to.be.true;
+    expect(errors.has('anotherfield')).to.be.false;
   });
 
-  it("can report if it has any errors", () => {
+  it('can report if it has any errors', () => {
     expect(errors.any()).to.be.true;
 
     errors.clear();
@@ -67,102 +67,102 @@ describe("Errors", () => {
     expect(errors.any()).to.be.false;
   });
 
-  it("can report if it has a error by code", () => {
-    expect(errors.hasCode("something_wrong")).to.be.true;
-    expect(errors.hasCode("something_wrong_again")).to.be.false;
+  it('can report if it has a error by code', () => {
+    expect(errors.hasCode('something_wrong')).to.be.true;
+    expect(errors.hasCode('something_wrong_again')).to.be.false;
   });
 
-  it("can get a fields first error", () => {
-    expect(errors.first("myfield")).to.include({
-      message: "An issue with a field",
+  it('can get a fields first error', () => {
+    expect(errors.first('myfield')).to.include({
+      message: 'An issue with a field',
     });
   });
 
-  it("can get all errors for a field", () => {
-    const fieldErrors = errors.get("myfield");
+  it('can get all errors for a field', () => {
+    const fieldErrors = errors.get('myfield');
     expect(fieldErrors).length(2);
-    expect(fieldErrors[0].message).to.eq("An issue with a field");
-    expect(fieldErrors[1].message).to.eq("Another issue with a field");
+    expect(fieldErrors[0].message).to.eq('An issue with a field');
+    expect(fieldErrors[1].message).to.eq('Another issue with a field');
   });
 
-  it("can report if it has non-field errors", () => {
+  it('can report if it has non-field errors', () => {
     expect(errors.hasNonFieldErrors()).to.be.true;
     errors.errors.non_field_errors = [];
     expect(errors.hasNonFieldErrors()).to.be.false;
   });
 
-  it("can get non-field errors", () => {
+  it('can get non-field errors', () => {
     const nonFieldErrors = errors.nonFieldErrors;
     expect(nonFieldErrors).length(1);
-    expect(nonFieldErrors[0].message).to.eq("An general issue");
+    expect(nonFieldErrors[0].message).to.eq('An general issue');
   });
 
-  it("can get field errors", () => {
+  it('can get field errors', () => {
     const fieldErrors = errors.fieldErrors;
     expect(fieldErrors).length(3);
-    expect(fieldErrors[0].message).to.eq("An issue with a field");
+    expect(fieldErrors[0].message).to.eq('An issue with a field');
   });
 
-  it("can get all errors", () => {
+  it('can get all errors', () => {
     expect(errors.allErrors).length(4);
     expect(errors.allErrors).to.include.members(errors.nonFieldErrors);
     expect(errors.allErrors).to.include.members(errors.fieldErrors);
   });
 
-  it("can record new errors", () => {
+  it('can record new errors', () => {
     errors.record([
       {
-        message: "A new error for an amazingfield",
-        field: "amazingfield",
-        __typename: "FieldError",
+        message: 'A new error for an amazingfield',
+        field: 'amazingfield',
+        __typename: 'FieldError',
       },
       {
-        message: "A new general error",
-        __typename: "NonFieldError",
+        message: 'A new general error',
+        __typename: 'NonFieldError',
       },
     ]);
 
     expect(errors.nonFieldErrors).length(1);
-    expect(errors.nonFieldErrors[0].message).to.eq("A new general error");
+    expect(errors.nonFieldErrors[0].message).to.eq('A new general error');
 
-    expect(errors.has("myfield")).to.be.false;
+    expect(errors.has('myfield')).to.be.false;
 
-    expect(errors.has("amazingfield")).to.be.true;
-    expect(errors.first("amazingfield").message).to.eq(
-      "A new error for an amazingfield"
+    expect(errors.has('amazingfield')).to.be.true;
+    expect(errors.first('amazingfield').message).to.eq(
+      'A new error for an amazingfield'
     );
   });
 
-  it("can push an error", () => {
+  it('can push an error', () => {
     expect(errors.nonFieldErrors.length).to.eq(1);
     expect(errors.fieldErrors.length).to.eq(3);
 
     errors.push({
-      message: "My Message",
-      code: "my-code",
+      message: 'My Message',
+      code: 'my-code',
     });
     expect(errors.nonFieldErrors.length).to.eq(2);
-    expect(errors.nonFieldErrors[1].code).to.eq("my-code");
+    expect(errors.nonFieldErrors[1].code).to.eq('my-code');
 
     errors.push({
-      message: "My Second Message",
-      code: "my-second-code",
-      field: "my-field",
+      message: 'My Second Message',
+      code: 'my-second-code',
+      field: 'my-field',
     });
     expect(errors.fieldErrors.length).to.eq(4);
-    expect(errors.fieldErrors[3].code).to.eq("my-second-code");
+    expect(errors.fieldErrors[3].code).to.eq('my-second-code');
   });
 
-  it("can clear all current errors", () => {
+  it('can clear all current errors', () => {
     errors.clear();
 
     expect(errors.any()).to.be.false;
   });
 
-  it("can clear errors for a given field", () => {
-    errors.clear("myfield");
+  it('can clear errors for a given field', () => {
+    errors.clear('myfield');
 
-    expect(errors.has("myfield")).to.be.false;
+    expect(errors.has('myfield')).to.be.false;
     expect(errors.nonFieldErrors).length(1);
   });
 });

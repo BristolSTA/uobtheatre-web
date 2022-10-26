@@ -46,7 +46,7 @@
 <script>
 export default {
   head: {
-    title: "Dashboard",
+    title: 'Dashboard',
   },
 };
 </script>

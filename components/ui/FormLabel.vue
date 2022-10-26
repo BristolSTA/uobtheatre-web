@@ -13,9 +13,9 @@
 </template>
 
 <script>
-import ErrorHelper from "./ErrorHelper.vue";
-import RequiredStar from "./Form/RequiredStar.vue";
-import Errors from "@/classes/Errors";
+import ErrorHelper from './ErrorHelper.vue';
+import RequiredStar from './Form/RequiredStar.vue';
+import Errors from '@/classes/Errors';
 export default {
   components: { ErrorHelper, RequiredStar },
   props: {
@@ -28,7 +28,7 @@ export default {
       type: String,
     },
     labelClass: {
-      default: "text-white text-xs font-semibold",
+      default: 'text-white text-xs font-semibold',
       type: [String, Array, Object],
     },
     underline: {

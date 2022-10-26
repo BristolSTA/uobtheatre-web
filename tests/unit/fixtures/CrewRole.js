@@ -1,12 +1,12 @@
-import GenericConnection from "./support/GenericNodeConnection";
+import GenericConnection from './support/GenericNodeConnection';
 export default (overrides = {}) => {
   return Object.assign(
     {
       id: 1,
-      name: "CLX",
+      name: 'CLX',
       department: {
-        value: "LIGHTING",
-        description: "Lighting",
+        value: 'LIGHTING',
+        description: 'Lighting',
       },
       crewMembers: GenericConnection(),
     },

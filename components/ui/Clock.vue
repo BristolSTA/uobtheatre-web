@@ -4,7 +4,7 @@
 
 <script>
 export function getZeroPad(n) {
-  return (parseInt(n, 10) >= 10 ? "" : "0") + n;
+  return (parseInt(n, 10) >= 10 ? '' : '0') + n;
 }
 
 export default {
@@ -29,7 +29,7 @@ export default {
       this.hours = getZeroPad(now.getHours());
       this.minutes = getZeroPad(now.getMinutes());
       this.seconds = getZeroPad(now.getSeconds());
-      this.$emit("time", now);
+      this.$emit('time', now);
     },
   },
 };

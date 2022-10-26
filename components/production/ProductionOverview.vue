@@ -82,11 +82,11 @@
 </template>
 
 <script>
-import Modal from "../ui/Modal.vue";
-import ContentWarningsDisplay from "./content-warnings/ContentWarningsDisplay.vue";
-import ProductionPosterImage from "./ProductionPosterImage.vue";
-import TipTapOutput from "@/components/ui/TipTapOutput.vue";
-import IconListItem from "@/components/ui/IconListItem.vue";
+import Modal from '../ui/Modal.vue';
+import ContentWarningsDisplay from './content-warnings/ContentWarningsDisplay.vue';
+import ProductionPosterImage from './ProductionPosterImage.vue';
+import TipTapOutput from '@/components/ui/TipTapOutput.vue';
+import IconListItem from '@/components/ui/IconListItem.vue';
 export default {
   components: {
     IconListItem,
@@ -109,12 +109,12 @@ export default {
         return null;
       }
       if (this.hasOnlinePerformances && this.hasInPersonPerformances) {
-        return "In Person + Online";
+        return 'In Person + Online';
       }
       if (this.hasOnlinePerformances) {
-        return "Online Only";
+        return 'Online Only';
       }
-      return "In Person Only";
+      return 'In Person Only';
     },
     hasOnlinePerformances() {
       return !!this.production.performances.edges.find(

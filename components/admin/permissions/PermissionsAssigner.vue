@@ -99,13 +99,13 @@
 </template>
 
 <script>
-import SafeTable from "@/components/ui/Tables/SafeTable.vue";
-import BooleanInput from "@/components/ui/Inputs/BooleanInput.vue";
-import TableHeadItem from "@/components/ui/Tables/TableHeadItem.vue";
-import TableRowItem from "@/components/ui/Tables/TableRowItem.vue";
-import TableRow from "@/components/ui/Tables/TableRow.vue";
-import StaButton from "@/components/ui/StaButton.vue";
-import FormLabel from "@/components/ui/FormLabel.vue";
+import SafeTable from '@/components/ui/Tables/SafeTable.vue';
+import BooleanInput from '@/components/ui/Inputs/BooleanInput.vue';
+import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
+import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
+import TableRow from '@/components/ui/Tables/TableRow.vue';
+import StaButton from '@/components/ui/StaButton.vue';
+import FormLabel from '@/components/ui/FormLabel.vue';
 export default {
   components: {
     SafeTable,
@@ -151,10 +151,10 @@ export default {
       }
     },
     addNewUser() {
-      this.$emit("add", this.newUser);
+      this.$emit('add', this.newUser);
     },
     removeUser(user) {
-      this.$emit("remove", user);
+      this.$emit('remove', user);
     },
   },
 };

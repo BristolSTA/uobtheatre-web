@@ -26,9 +26,9 @@
 </template>
 
 <script>
-import TextInput from "../ui/TextInput.vue";
-import InvalidCodeNotification from "./InvalidCodeNotification.vue";
-import Ticket from "@/classes/Ticket";
+import TextInput from '../ui/TextInput.vue';
+import InvalidCodeNotification from './InvalidCodeNotification.vue';
+import Ticket from '@/classes/Ticket';
 export default {
   components: { TextInput, InvalidCodeNotification },
   props: {
@@ -39,7 +39,7 @@ export default {
   },
   data() {
     return {
-      placeholder: "Scan a Ticket...",
+      placeholder: 'Scan a Ticket...',
       invalidCode: false,
       focused: true,
     };
@@ -47,9 +47,9 @@ export default {
   watch: {
     focused(newVal) {
       if (newVal) {
-        this.placeholder = "Scan a Ticket...";
+        this.placeholder = 'Scan a Ticket...';
       } else {
-        this.placeholder = "Click here to scan";
+        this.placeholder = 'Click here to scan';
       }
     },
     value() {
@@ -57,7 +57,7 @@ export default {
     },
     invalidCode(newVal) {
       if (newVal) {
-        this.$emit("invalidCode");
+        this.$emit('invalidCode');
       }
     },
   },
@@ -72,13 +72,13 @@ export default {
       }
       try {
         const { bookingReference, ticketId } = Ticket.dataFromQRCode(code);
-        this.$emit("scanned", { bookingReference, ticketId });
+        this.$emit('scanned', { bookingReference, ticketId });
       } catch (e) {
         const isAllowedSilentException =
           e instanceof SyntaxError ||
           (e instanceof DOMException &&
             e.message.includes(
-              "The string to be decoded is not correctly encoded"
+              'The string to be decoded is not correctly encoded'
             ));
         this.invalidCode = true;
         if (!isAllowedSilentException) {

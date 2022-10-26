@@ -115,16 +115,16 @@
 </template>
 
 <script>
-import Booking from "@/classes/Booking.js";
+import Booking from '@/classes/Booking.js';
 
-import Overview from "@/components/box-office/Overview.vue";
-import BookingRow from "@/components/box-office/BookingRow.vue";
-import SortIcon from "@/components/ui/SortIcon.vue";
-import BoxOfficePerformanceBookings from "@/graphql/queries/box-office/BoxOfficePerformanceBookings.gql";
-import BookingDetailsRow from "@/components/box-office/BookingDetailsRow.vue";
-import TicketScanner from "@/components/ui/Inputs/TicketScanner.vue";
-import PaginatedTable from "@/components/ui/Tables/PaginatedTable.vue";
-import BoxOfficeNavigation from "@/components/box-office/BoxOfficeNavigation.vue";
+import Overview from '@/components/box-office/Overview.vue';
+import BookingRow from '@/components/box-office/BookingRow.vue';
+import SortIcon from '@/components/ui/SortIcon.vue';
+import BoxOfficePerformanceBookings from '@/graphql/queries/box-office/BoxOfficePerformanceBookings.gql';
+import BookingDetailsRow from '@/components/box-office/BookingDetailsRow.vue';
+import TicketScanner from '@/components/ui/Inputs/TicketScanner.vue';
+import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue';
+import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue';
 
 export default {
   components: {
@@ -160,18 +160,18 @@ export default {
   computed: {
     crumbs() {
       return [
-        { text: "Box Office", path: "/box-office" },
+        { text: 'Box Office', path: '/box-office' },
         {
           text: `${
             this.performance.production.name
           } on ${this.$options.filters.dateFormat(
             this.performance.start,
-            "ccc dd MMM T"
+            'ccc dd MMM T'
           )}`,
           path: `/box-office/${this.performance.id}`,
         },
         {
-          text: "All Bookings",
+          text: 'All Bookings',
         },
       ];
     },
@@ -196,8 +196,8 @@ export default {
             this.checkedInSort !== null
               ? `${this.checkedInSort}checked_in`
               : null,
-          checkedIn: this.bookingFilter === "NOCHECKIN" ? false : null,
-          discount: this.bookingFilter === "COMPS" ? 1 : null,
+          checkedIn: this.bookingFilter === 'NOCHECKIN' ? false : null,
+          discount: this.bookingFilter === 'COMPS' ? 1 : null,
         };
       },
       debounce: 100,
@@ -212,7 +212,7 @@ export default {
 
         this.selected_booking_index = this.bookings.length === 1 ? 0 : null;
       },
-      fetchPolicy: "cache-and-network",
+      fetchPolicy: 'cache-and-network',
     },
   },
 };

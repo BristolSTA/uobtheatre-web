@@ -55,14 +55,14 @@
 </template>
 
 <script>
-import ProductionCastCredits from "@/components/production/ProductionCastCredits.vue";
-import ProductionPerformances from "@/components/production/ProductionPerformances.vue";
-import ProductionPageQuery from "@/graphql/queries/ProductionBySlug.gql";
-import ProductionOverview from "@/components/production/ProductionOverview.vue";
-import ClickableLink from "@/components/ui/ClickableLink.vue";
+import ProductionCastCredits from '@/components/production/ProductionCastCredits.vue';
+import ProductionPerformances from '@/components/production/ProductionPerformances.vue';
+import ProductionPageQuery from '@/graphql/queries/ProductionBySlug.gql';
+import ProductionOverview from '@/components/production/ProductionOverview.vue';
+import ClickableLink from '@/components/ui/ClickableLink.vue';
 
-import { oneLiner } from "@/utils/lang.js";
-import ProductionBanner from "@/components/production/ProductionBanner.vue";
+import { oneLiner } from '@/utils/lang.js';
+import ProductionBanner from '@/components/production/ProductionBanner.vue';
 
 export default {
   components: {
@@ -85,7 +85,7 @@ export default {
     if (!production) {
       return error({
         statusCode: 404,
-        message: "This production does not exist",
+        message: 'This production does not exist',
       });
     }
     return {
@@ -100,7 +100,7 @@ export default {
   head() {
     const productionName = this.production
       ? this.production.name
-      : "Loading...";
+      : 'Loading...';
     const meta = [];
     if (this.production) {
       const description = oneLiner(
@@ -108,25 +108,25 @@ export default {
       );
       meta.push(
         {
-          hid: "description",
-          name: "description",
+          hid: 'description',
+          name: 'description',
           content: description,
         },
         {
-          hid: "og:title",
-          name: "og:title",
+          hid: 'og:title',
+          name: 'og:title',
           content: productionName,
         },
         {
-          hid: "og:description",
-          name: "og:description",
+          hid: 'og:description',
+          name: 'og:description',
           content: description,
         }
       );
       if (this.production.featuredImage) {
         meta.push({
-          hid: "og:image",
-          name: "og:image",
+          hid: 'og:image',
+          name: 'og:image',
           content: this.production.featuredImage.url,
         });
       }
@@ -142,7 +142,7 @@ export default {
     },
     crumbs() {
       return [
-        { text: "Whats On", path: "/productions" },
+        { text: 'Whats On', path: '/productions' },
         { text: this.production.name },
       ];
     },

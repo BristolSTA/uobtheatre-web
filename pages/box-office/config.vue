@@ -21,22 +21,22 @@
 </template>
 
 <script>
-import AdminPage from "@/components/admin/AdminPage.vue";
-import FormLabel from "@/components/ui/FormLabel.vue";
-import { successToast } from "@/utils";
+import AdminPage from '@/components/admin/AdminPage.vue';
+import FormLabel from '@/components/ui/FormLabel.vue';
+import { successToast } from '@/utils';
 export default {
   components: { FormLabel, AdminPage },
-  middleware: ["authed", "can-boxoffice"],
+  middleware: ['authed', 'can-boxoffice'],
   data() {
     return {
-      locationId: this.$store.state["box-office"].locationId,
+      locationId: this.$store.state['box-office'].locationId,
     };
   },
   methods: {
     save() {
-      this.$store.dispatch("box-office/setDeviceLocation", this.locationId);
+      this.$store.dispatch('box-office/setDeviceLocation', this.locationId);
 
-      successToast.fire({ title: "Saved" });
+      successToast.fire({ title: 'Saved' });
     },
   },
 };

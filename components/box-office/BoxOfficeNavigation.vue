@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import MenuTile from "../ui/MenuTile.vue";
+import MenuTile from '../ui/MenuTile.vue';
 export default {
   components: { MenuTile },
   props: {
@@ -36,18 +36,18 @@ export default {
     return {
       navItems: [
         {
-          name: "Check or Collect Tickets",
-          icon: "user-check",
+          name: 'Check or Collect Tickets',
+          icon: 'user-check',
           path: `/box-office/${this.performance.id}/collect`,
         },
         {
-          name: "Sell Tickets",
-          icon: "cash-register",
+          name: 'Sell Tickets',
+          icon: 'cash-register',
           path: `/box-office/${this.performance.id}/sell`,
         },
         {
-          name: "View Bookings",
-          icon: "clipboard-list",
+          name: 'View Bookings',
+          icon: 'clipboard-list',
           path: `/box-office/${this.performance.id}/bookings`,
         },
       ],
@@ -58,8 +58,8 @@ export default {
       const items = [];
       if (this.showHome) {
         items.push({
-          name: "Dashboard",
-          icon: "home",
+          name: 'Dashboard',
+          icon: 'home',
           path: `/box-office/${this.performance.id}`,
         });
       }

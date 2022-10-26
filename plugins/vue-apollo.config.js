@@ -1,7 +1,7 @@
-import { createApolloClient } from "vue-cli-plugin-apollo/graphql-client";
-import VueApollo from "vue-apollo";
-import * as Sentry from "@sentry/browser";
-import authService from "@/services/authService";
+import { createApolloClient } from 'vue-cli-plugin-apollo/graphql-client';
+import VueApollo from 'vue-apollo';
+import * as Sentry from '@sentry/browser';
+import authService from '@/services/authService';
 
 // Config
 const defaultOptions = {
@@ -13,7 +13,7 @@ const defaultOptions = {
   // Cache Options
   inMemoryCacheOptions: {
     fragmentMatcher: {
-      GQLErrorUnion: ["NonFieldError", "FieldError"],
+      GQLErrorUnion: ['NonFieldError', 'FieldError'],
     },
   },
 };
@@ -22,7 +22,7 @@ export default (context) => {
   return {
     ...defaultOptions,
     httpEndpoint: context.$config.api.graphql_endpoint,
-    authenticationType: "JWT",
+    authenticationType: 'JWT',
     getAuth: () => {
       if (authService.currentAuthToken(context)) {
         return `JWT ${authService.currentAuthToken(context)}`;
@@ -50,8 +50,8 @@ export function createProvider(clientOptions = {}, vueApolloOptions = {}) {
     errorHandler(error) {
       // eslint-disable-next-line no-console
       console.log(
-        "%cError",
-        "background: red; color: white; padding: 2px 4px; border-radius: 3px; font-weight: bold;",
+        '%cError',
+        'background: red; color: white; padding: 2px 4px; border-radius: 3px; font-weight: bold;',
         error.message
       );
       Sentry.captureException(error);

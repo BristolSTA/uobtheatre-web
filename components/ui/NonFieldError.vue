@@ -8,9 +8,9 @@
 </template>
 
 <script>
-import Errors from "@/classes/Errors";
+import Errors from '@/classes/Errors';
 export default {
-  name: "NonFieldError",
+  name: 'NonFieldError',
   props: {
     errors: {
       required: false,

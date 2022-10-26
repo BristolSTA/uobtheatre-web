@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import BoxOfficePerformance from "@/graphql/queries/box-office/BoxOfficePerformance.gql";
+import BoxOfficePerformance from '@/graphql/queries/box-office/BoxOfficePerformance.gql';
 export default {
-  middleware: "authed",
+  middleware: 'authed',
   async asyncData({ params, error, app }) {
     // Execute query
     const { data } = await app.apolloProvider.defaultClient.query({
@@ -23,7 +23,7 @@ export default {
     if (!performance) {
       return error({
         statusCode: 404,
-        message: "This performance does not exist",
+        message: 'This performance does not exist',
       });
     }
     return {

@@ -115,10 +115,10 @@ export default class {
   record(errors) {
     this.errors = {
       field_errors: errors.filter((error) => {
-        return error.__typename === "FieldError";
+        return error.__typename === 'FieldError';
       }),
       non_field_errors: errors.filter((error) => {
-        return error.__typename === "NonFieldError" || !error.__typename;
+        return error.__typename === 'NonFieldError' || !error.__typename;
       }),
     };
   }

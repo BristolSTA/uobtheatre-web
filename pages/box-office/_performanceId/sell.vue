@@ -19,28 +19,28 @@
 </template>
 
 <script>
-import TicketsMatrix from "@/classes/TicketsMatrix";
-import FullPerformanceAndTicketOptions from "@/graphql/queries/FullPerformanceAndTicketOptions.gql";
-import BoxOfficePerformanceBooking from "@/graphql/queries/box-office/BoxOfficePerformanceBooking.gql";
-import Booking from "@/classes/Booking";
-import Overview from "@/components/box-office/Overview.vue";
+import TicketsMatrix from '@/classes/TicketsMatrix';
+import FullPerformanceAndTicketOptions from '@/graphql/queries/FullPerformanceAndTicketOptions.gql';
+import BoxOfficePerformanceBooking from '@/graphql/queries/box-office/BoxOfficePerformanceBooking.gql';
+import Booking from '@/classes/Booking';
+import Overview from '@/components/box-office/Overview.vue';
 export default {
   components: { Overview },
-  middleware: "authed",
+  middleware: 'authed',
   async asyncData({ params, app, error }) {
     const { data } = await app.apolloProvider.defaultClient.query({
       query: FullPerformanceAndTicketOptions,
       variables: {
         id: params.performanceId,
       },
-      fetchPolicy: "no-cache",
+      fetchPolicy: 'no-cache',
     });
 
     const performance = data.performance;
     if (!performance) {
       return error({
         statusCode: 404,
-        message: "This performance does not exist",
+        message: 'This performance does not exist',
       });
     }
 
@@ -62,22 +62,22 @@ export default {
   },
   computed: {
     inProgressID() {
-      return this.$store.state["box-office"].inProgressBookingID;
+      return this.$store.state['box-office'].inProgressBookingID;
     },
     crumbs() {
       return [
-        { text: "Box Office", path: "/box-office" },
+        { text: 'Box Office', path: '/box-office' },
         {
           text: `${
             this.performance.production.name
           } on ${this.$options.filters.dateFormat(
             this.performance.start,
-            "ccc dd MMM T"
+            'ccc dd MMM T'
           )}`,
           path: `/box-office/${this.performance.id}`,
         },
         {
-          text: "Sell Tickets",
+          text: 'Sell Tickets',
         },
       ];
     },
@@ -106,17 +106,17 @@ export default {
           performanceId: this.performance.id,
           bookingId: this.inProgressID,
         },
-        fetchPolicy: "no-cache",
+        fetchPolicy: 'no-cache',
       });
       if (
         data.performance.bookings.edges.length &&
         !data.performance.bookings.edges[0].node.expired &&
-        data.performance.bookings.edges[0].node.status === "IN_PROGRESS"
+        data.performance.bookings.edges[0].node.status === 'IN_PROGRESS'
       ) {
         this.booking.updateFromAPIData(data.performance.bookings.edges[0].node);
       } else {
         // Remove stored booking ID
-        this.$store.commit("box-office/SET_IN_PROGRESS_BOOKING_ID", null);
+        this.$store.commit('box-office/SET_IN_PROGRESS_BOOKING_ID', null);
       }
     },
     onNextStage() {

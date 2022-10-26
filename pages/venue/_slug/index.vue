@@ -77,15 +77,15 @@
 </template>
 
 <script>
-import gql from "graphql-tag";
-import L from "leaflet";
+import gql from 'graphql-tag';
+import L from 'leaflet';
 
-import IconListItem from "@/components/ui/IconListItem.vue";
-import AddressFragment from "@/graphql/fragments/AddressFragment.gql";
-import TipTapOutput from "@/components/ui/TipTapOutput.vue";
+import IconListItem from '@/components/ui/IconListItem.vue';
+import AddressFragment from '@/graphql/fragments/AddressFragment.gql';
+import TipTapOutput from '@/components/ui/TipTapOutput.vue';
 
 export default {
-  name: "VenuePage",
+  name: 'VenuePage',
   components: { IconListItem, TipTapOutput },
   async asyncData({ params, app, error }) {
     const { data } = await app.apolloProvider.defaultClient.query({
@@ -113,7 +113,7 @@ export default {
     if (!venue) {
       return error({
         statusCode: 404,
-        message: "This society does not exists",
+        message: 'This society does not exists',
       });
     }
 
@@ -127,7 +127,7 @@ export default {
     };
   },
   head() {
-    const venueName = this.venue ? this.venue.name : "Loading...";
+    const venueName = this.venue ? this.venue.name : 'Loading...';
     return {
       title: `${venueName}`,
     };
@@ -138,7 +138,7 @@ export default {
         `https://maps.google.com/?q=${this.venue.name}` +
         (this.venue.address
           ? `,${this.venue.address.street},${this.venue.address.city}`
-          : "")
+          : '')
       );
     },
   },
@@ -151,11 +151,11 @@ export default {
       if (!venue?.address?.latitude || !venue?.address?.longitude) {
         return;
       }
-      const map = L.map(this.$refs["venue-map"]).setView(
+      const map = L.map(this.$refs['venue-map']).setView(
         [venue.address.latitude, venue.address.longitude],
         14
       );
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution:
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(map);

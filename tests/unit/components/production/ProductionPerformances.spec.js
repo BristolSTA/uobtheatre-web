@@ -1,15 +1,15 @@
-import { mount } from "@vue/test-utils";
-import { expect } from "chai";
-import { DateTime } from "luxon";
+import { mount } from '@vue/test-utils';
+import { expect } from 'chai';
+import { DateTime } from 'luxon';
 
-import { fixTextSpacing, generateMountOptions } from "../../helpers.js";
-import GenericNodeConnection from "../../fixtures/support/GenericNodeConnection.js";
-import Production from "../../fixtures/Production.js";
-import Performance from "../../fixtures/Performance.js";
-import ProductionPerformances from "@/components/production/ProductionPerformances.vue";
-import PerformanceOverview from "@/components/performance/PerformanceOverview.vue";
+import { fixTextSpacing, generateMountOptions } from '../../helpers.js';
+import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection.js';
+import Production from '../../fixtures/Production.js';
+import Performance from '../../fixtures/Performance.js';
+import ProductionPerformances from '@/components/production/ProductionPerformances.vue';
+import PerformanceOverview from '@/components/performance/PerformanceOverview.vue';
 
-describe("Production Performances", function () {
+describe('Production Performances', function () {
   let performancesContainer;
   let fakeJestPush;
   beforeEach(() => {
@@ -22,27 +22,27 @@ describe("Production Performances", function () {
     jest.useRealTimers();
   });
 
-  it("shows no performances available if none returned", () => {
+  it('shows no performances available if none returned', () => {
     createWithPerformances([]);
-    expect(performancesContainer.text()).to.contain("No Upcoming Performances");
+    expect(performancesContainer.text()).to.contain('No Upcoming Performances');
   });
 
-  it("shows no performances available if none returned", () => {
+  it('shows no performances available if none returned', () => {
     Date.now = jest.fn(() => new Date(Date.UTC(2021, 1, 1)).valueOf());
     createWithPerformances([]);
     expect(performancesContainer.text()).to.contain(
-      "You are currently viewing archive details of an event in the past."
+      'You are currently viewing archive details of an event in the past.'
     );
   });
 
-  describe("With performances", () => {
+  describe('With performances', () => {
     beforeEach(() => {
       createWithPerformances([
         // An available in-person & online performance
         {
-          doorsOpen: DateTime.fromISO("2020-11-28T15:00:00"),
-          start: DateTime.fromISO("2020-11-28T16:00:00"),
-          end: DateTime.fromISO("2020-11-28T18:00:00"),
+          doorsOpen: DateTime.fromISO('2020-11-28T15:00:00'),
+          start: DateTime.fromISO('2020-11-28T16:00:00'),
+          end: DateTime.fromISO('2020-11-28T18:00:00'),
           soldOut: false,
           disabled: false,
           isOnline: true,
@@ -51,9 +51,9 @@ describe("Production Performances", function () {
         // A sold out performance
         {
           id: 2,
-          doorsOpen: DateTime.fromISO("2020-11-28T17:00:00"),
-          start: DateTime.fromISO("2020-11-30T18:00:00"),
-          end: DateTime.fromISO("2020-11-30T20:00:00"),
+          doorsOpen: DateTime.fromISO('2020-11-28T17:00:00'),
+          start: DateTime.fromISO('2020-11-30T18:00:00'),
+          end: DateTime.fromISO('2020-11-30T20:00:00'),
           soldOut: true,
           isBookable: false,
           disabled: false,
@@ -63,39 +63,39 @@ describe("Production Performances", function () {
       ]);
     });
 
-    it("displays two performances", () => {
-      expect(performancesContainer.findAll(".performance").length).to.eq(2);
+    it('displays two performances', () => {
+      expect(performancesContainer.findAll('.performance').length).to.eq(2);
     });
 
-    it("displays the correct number of performance overviews", () => {
+    it('displays the correct number of performance overviews', () => {
       const overviews =
         performancesContainer.findAllComponents(PerformanceOverview);
       const production = performancesContainer.vm.production;
       expect(overviews.length).to.eq(2);
-      expect(overviews.at(0).props("performance")).to.eq(
+      expect(overviews.at(0).props('performance')).to.eq(
         production.performances.edges[0].node
       );
-      expect(overviews.at(1).props("performance")).to.eq(
+      expect(overviews.at(1).props('performance')).to.eq(
         production.performances.edges[1].node
       );
     });
 
-    it("second performance is sold out and correct", () => {
-      const performance = performancesContainer.findAll(".performance").at(1);
+    it('second performance is sold out and correct', () => {
+      const performance = performancesContainer.findAll('.performance').at(1);
 
-      expect(performance.text()).to.contain("Monday 30 Nov");
-      expect(performance.find("div.bg-sta-green").exists()).to.be.false;
-      expect(performance.find("div.bg-sta-gray-dark").exists()).to.be.true;
-      expect(fixTextSpacing(performance.text())).to.contain("Online");
-      expect(performance.text()).to.contain("Doors open at 17:00");
-      expect(performance.text()).to.contain("No Tickets Available");
-      expect(performance.find("button").text()).to.eq("SOLD OUT");
+      expect(performance.text()).to.contain('Monday 30 Nov');
+      expect(performance.find('div.bg-sta-green').exists()).to.be.false;
+      expect(performance.find('div.bg-sta-gray-dark').exists()).to.be.true;
+      expect(fixTextSpacing(performance.text())).to.contain('Online');
+      expect(performance.text()).to.contain('Doors open at 17:00');
+      expect(performance.text()).to.contain('No Tickets Available');
+      expect(performance.find('button').text()).to.eq('SOLD OUT');
     });
 
-    it("sends user to warnings stage when they click book", async () => {
+    it('sends user to warnings stage when they click book', async () => {
       await performancesContainer
         .findComponent(PerformanceOverview)
-        .vm.$emit("select");
+        .vm.$emit('select');
       expect(fakeJestPush.mock.calls.length).to.eq(1);
       expect(fakeJestPush.mock.calls[0][0]).to.eq(
         `/production/legally-ginger/book/${performancesContainer.vm.production.performances.edges[0].node.id}`
@@ -111,7 +111,7 @@ describe("Production Performances", function () {
 
     performancesContainer = mount(
       ProductionPerformances,
-      generateMountOptions(["router"], {
+      generateMountOptions(['router'], {
         propsData: {
           production,
         },

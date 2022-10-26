@@ -27,7 +27,7 @@ export default {
       type: String,
     },
     textSize: {
-      default: "text-h2",
+      default: 'text-h2',
       type: String,
     },
   },
@@ -36,7 +36,7 @@ export default {
       if (this.to) {
         this.$router.push(this.to);
       } else {
-        this.$emit("click");
+        this.$emit('click');
       }
     },
   },

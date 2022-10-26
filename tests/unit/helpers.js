@@ -1,6 +1,6 @@
-import { mount, RouterLinkStub } from "@vue/test-utils";
-import { expect } from "chai";
-import config from "@/config";
+import { mount, RouterLinkStub } from '@vue/test-utils';
+import { expect } from 'chai';
+import config from '@/config';
 
 /**
  * Fixes test "contains" issues caused by content being spread over new lines.
@@ -10,7 +10,7 @@ import config from "@/config";
  * @returns {string} Fixed text
  */
 const fixTextSpacing = function (text) {
-  return text.replace(/\s\s+/g, " ");
+  return text.replace(/\s\s+/g, ' ');
 };
 
 /**
@@ -55,7 +55,7 @@ const mountWithRouterMock = async function (
   // Mount the component
   const mountedComponent = mount(
     component,
-    generateMountOptions(["router"], mountOptions)
+    generateMountOptions(['router'], mountOptions)
   );
 
   return mountedComponent;
@@ -75,17 +75,17 @@ const generateMountOptions = function (types = [], options = {}) {
   if (!options.mocks) {
     options.mocks = {};
   }
-  if (types.includes("config")) {
+  if (types.includes('config')) {
     options.mocks.$config = config();
   }
-  if (types.includes("apollo")) {
+  if (types.includes('apollo')) {
     options.mocks.$apollo = generateApolloMock(options.apollo);
     options.mocks.$apolloProvider = {
       defaultClient: options.mocks.$apollo,
     };
     delete options.apollo;
   }
-  if (types.includes("router")) {
+  if (types.includes('router')) {
     options.stubs.NuxtLink = RouterLinkStub;
   }
   return options;

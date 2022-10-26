@@ -7,12 +7,12 @@
 </template>
 
 <script>
-import BookingStage from "@/classes/BookingStage";
-import TimeGroupedPerformanceSelector from "@/components/performance/TimeGroupedPerformanceSelector.vue";
+import BookingStage from '@/classes/BookingStage';
+import TimeGroupedPerformanceSelector from '@/components/performance/TimeGroupedPerformanceSelector.vue';
 export default {
   stageInfo: new BookingStage({
-    name: "Select Performance",
-    routeName: "production-slug-book",
+    name: 'Select Performance',
+    routeName: 'production-slug-book',
     requiresPerformance: false,
   }),
   components: { TimeGroupedPerformanceSelector },

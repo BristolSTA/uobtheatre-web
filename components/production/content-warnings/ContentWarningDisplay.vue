@@ -69,7 +69,7 @@ export default {
       this.expanded = newVal;
     },
     expanded(newVal) {
-      this.$emit("update:open", newVal);
+      this.$emit('update:open', newVal);
     },
   },
 };

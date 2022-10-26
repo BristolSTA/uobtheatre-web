@@ -88,7 +88,7 @@
 /* eslint-disable vue/no-v-html */
 export default {
   head: {
-    title: "Terms and Conditions",
+    title: 'Terms and Conditions',
   },
 };
 </script>

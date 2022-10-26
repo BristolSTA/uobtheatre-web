@@ -28,11 +28,11 @@
 </template>
 
 <script>
-import OverviewBox from "../../ui/Card.vue";
-import Booking from "@/classes/Booking";
+import OverviewBox from '../../ui/Card.vue';
+import Booking from '@/classes/Booking';
 
 export default {
-  name: "BookingPriceOverview",
+  name: 'BookingPriceOverview',
   components: { OverviewBox },
   props: {
     booking: {
@@ -44,8 +44,8 @@ export default {
     costs() {
       const costs = [
         {
-          name: "Tickets",
-          subtext: "Including any discounts",
+          name: 'Tickets',
+          subtext: 'Including any discounts',
           cost: this.booking.ticketsDiscountedPricePounds,
         },
       ];

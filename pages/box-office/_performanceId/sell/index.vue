@@ -33,12 +33,12 @@
 </template>
 
 <script>
-import lo from "lodash";
-import Booking from "@/classes/Booking";
-import BookingMutation from "@/graphql/mutations/booking/Booking.gql";
-import { performMutation } from "@/utils";
-import TicketsMatrix from "@/classes/TicketsMatrix";
-import TicketsEditor from "@/components/booking/editor/TicketsEditor.vue";
+import lo from 'lodash';
+import Booking from '@/classes/Booking';
+import BookingMutation from '@/graphql/mutations/booking/Booking.gql';
+import { performMutation } from '@/utils';
+import TicketsMatrix from '@/classes/TicketsMatrix';
+import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue';
 
 export default {
   components: {
@@ -83,7 +83,7 @@ export default {
                 },
               },
             },
-            "booking"
+            'booking'
           );
           bookingResponse = data.booking.booking;
         } else {
@@ -99,7 +99,7 @@ export default {
                 },
               },
             },
-            "booking"
+            'booking'
           );
           bookingResponse = data.booking.booking;
         }
@@ -110,7 +110,7 @@ export default {
 
       // Update booking ID in store
       this.$store.commit(
-        "box-office/SET_IN_PROGRESS_BOOKING_ID",
+        'box-office/SET_IN_PROGRESS_BOOKING_ID',
         bookingResponse.id
       );
 
@@ -123,7 +123,7 @@ export default {
       this.interaction_timer();
     },
     cancel() {
-      this.$store.dispatch("box-office/cancelInProgressBooking");
+      this.$store.dispatch('box-office/cancelInProgressBooking');
       this.$router.push(`/box-office/${this.performance.id}`);
     },
   },

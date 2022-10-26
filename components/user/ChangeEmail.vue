@@ -36,12 +36,12 @@
 </template>
 
 <script>
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
-import LoadingContainer from "../ui/LoadingContainer.vue";
-import NonFieldError from "../ui/NonFieldError.vue";
-import TextInput from "../ui/TextInput.vue";
-import { getValidationErrors, performMutation, swal } from "@/utils";
+import LoadingContainer from '../ui/LoadingContainer.vue';
+import NonFieldError from '../ui/NonFieldError.vue';
+import TextInput from '../ui/TextInput.vue';
+import { getValidationErrors, performMutation, swal } from '@/utils';
 export default {
   components: {
     LoadingContainer,
@@ -68,7 +68,7 @@ export default {
             mutation: gql`
           mutation ($email: String!, $password: String!) {
             sendSecondaryEmailActivation(email: $email, password: $password) {
-                ${require("@/graphql/partials/ErrorsPartial").default}
+                ${require('@/graphql/partials/ErrorsPartial').default}
             }
           }
         `,
@@ -77,11 +77,11 @@ export default {
               password: this.password,
             },
           },
-          "sendSecondaryEmailActivation"
+          'sendSecondaryEmailActivation'
         );
         swal.fire({
-          icon: "info",
-          title: "Check your email",
+          icon: 'info',
+          title: 'Check your email',
           text: `We have sent a verification email to ${this.email}`,
         });
       } catch (e) {

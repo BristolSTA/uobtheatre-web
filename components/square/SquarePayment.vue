@@ -48,8 +48,8 @@
 </template>
 
 <script>
-import LoadingContainer from "@/components/ui/LoadingContainer.vue";
-import { silentErrorHandler } from "@/utils";
+import LoadingContainer from '@/components/ui/LoadingContainer.vue';
+import { silentErrorHandler } from '@/utils';
 
 export default {
   components: { LoadingContainer },
@@ -80,15 +80,15 @@ export default {
   watch: {
     paying(newVal) {
       if (newVal) {
-        this.$emit("paying");
+        this.$emit('paying');
       } else {
-        this.$emit("cancelled");
+        this.$emit('cancelled');
       }
     },
   },
   mounted() {
     const checkToInit = () => {
-      if (typeof Square !== "undefined") {
+      if (typeof Square !== 'undefined') {
         clearInterval(this.timer);
         this.initSquare();
       }
@@ -115,37 +115,37 @@ export default {
 
       // Init the payment request
       this.square.request = this.square.payments.paymentRequest({
-        countryCode: "GB",
-        currencyCode: "GBP",
+        countryCode: 'GB',
+        currencyCode: 'GBP',
         total: {
           amount: this.price,
-          label: "Total",
+          label: 'Total',
         },
       });
 
       // Init card payment
       this.square.methods.card = await this.square.payments.card({
         style: {
-          ".message-icon": {
-            color: "white",
+          '.message-icon': {
+            color: 'white',
           },
-          ".message-text": {
-            color: "white",
+          '.message-text': {
+            color: 'white',
           },
         },
       });
-      await this.square.methods.card.attach("#card-container");
+      await this.square.methods.card.attach('#card-container');
 
       try {
         // Init GPay
         this.square.methods.gpay = await this.square.payments.googlePay(
           this.square.request
         );
-        await this.square.methods.gpay.attach("#sq-gpay-button", {
-          buttonColor: "white",
+        await this.square.methods.gpay.attach('#sq-gpay-button', {
+          buttonColor: 'white',
         });
       } catch (e) {
-        if (e.name !== "PaymentMethodUnsupportedError") {
+        if (e.name !== 'PaymentMethodUnsupportedError') {
           silentErrorHandler(e);
         }
       }
@@ -156,20 +156,20 @@ export default {
           this.square.request
         );
       } catch (e) {
-        if (e.name !== "PaymentMethodUnsupportedError") {
+        if (e.name !== 'PaymentMethodUnsupportedError') {
           silentErrorHandler(e);
         }
       }
 
-      this.$emit("ready");
+      this.$emit('ready');
       this.ready = true;
     },
     async verifyBuyer(token) {
       const details = {
         amount: this.price,
         billingContact: {},
-        currencyCode: "GBP",
-        intent: "CHARGE",
+        currencyCode: 'GBP',
+        intent: 'CHARGE',
       };
       const results = await this.square.payments.verifyBuyer(token, details);
       return results.token;
@@ -180,26 +180,26 @@ export default {
 
       try {
         const result = await provider.tokenize();
-        if (result.status === "OK") {
+        if (result.status === 'OK') {
           const paymentData = { nonce: result.token };
           if (verify) {
             paymentData.verifyToken = await this.verifyBuyer(result.token);
           }
-          return this.$emit("nonceRecieved", paymentData);
+          return this.$emit('nonceRecieved', paymentData);
         }
 
         this.paying = false;
-        if (result.status !== "Cancel") {
+        if (result.status !== 'Cancel') {
           this.squareErrors = result.errors.map((error) => error.message);
-          this.$emit("nonceError", this.squareErrors);
+          this.$emit('nonceError', this.squareErrors);
         }
       } catch (e) {
         this.paying = false;
         this.squareErrors = [
-          "An unexpected error was encountered whilst trying to process your payment. No charge has been made.",
+          'An unexpected error was encountered whilst trying to process your payment. No charge has been made.',
         ];
         silentErrorHandler(e);
-        this.$emit("nonceError", this.squareErrors);
+        this.$emit('nonceError', this.squareErrors);
       }
     },
     payCard() {

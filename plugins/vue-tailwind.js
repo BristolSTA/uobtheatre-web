@@ -1,5 +1,5 @@
-import Vue from "vue";
-import VueTailwind from "vue-tailwind";
+import Vue from 'vue';
+import VueTailwind from 'vue-tailwind';
 
 // https://www.vue-tailwind.com/docs
 
@@ -24,7 +24,7 @@ import {
   TDatepicker,
   TToggle,
   TDialog,
-} from "vue-tailwind/dist/components";
+} from 'vue-tailwind/dist/components';
 
 const settings = {
   // Use the following syntax

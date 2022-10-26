@@ -40,13 +40,13 @@
           <tr>
             <table-head-item :text-left="false"> Doors Open </table-head-item>
             <table-row-item>
-              {{ performance.doorsOpen | dateFormat("dd MM y T ZZZZ") }}
+              {{ performance.doorsOpen | dateFormat('dd MM y T ZZZZ') }}
             </table-row-item>
           </tr>
           <tr>
             <table-head-item :text-left="false"> Starts </table-head-item>
             <table-row-item>
-              {{ performance.start | dateFormat("dd MM y T ZZZZ") }}
+              {{ performance.start | dateFormat('dd MM y T ZZZZ') }}
             </table-row-item>
           </tr>
           <tr v-if="performance.intervalDurationMins">
@@ -60,7 +60,7 @@
           <tr>
             <table-head-item :text-left="false"> Ends </table-head-item>
             <table-row-item>
-              {{ performance.end | dateFormat("dd MM y T ZZZZ") }}
+              {{ performance.end | dateFormat('dd MM y T ZZZZ') }}
             </table-row-item>
           </tr>
         </table>
@@ -211,19 +211,19 @@
 </template>
 
 <script>
-import AdminPerformanceDetailQuery from "@/graphql/queries/admin/productions/AdminPerformanceDetail.gql";
-import Card from "@/components/ui/Card.vue";
-import AdminPage from "@/components/admin/AdminPage.vue";
-import StaButton from "@/components/ui/StaButton.vue";
-import ProgressBar from "@/components/ui/ProgressBar.vue";
-import TableHeadItem from "@/components/ui/Tables/TableHeadItem.vue";
-import TableRowItem from "@/components/ui/Tables/TableRowItem.vue";
-import MenuTile from "@/components/ui/MenuTile.vue";
-import PerformanceStatusBadge from "@/components/performance/PerformanceStatusBadge.vue";
-import TicketsMatrix from "@/classes/TicketsMatrix";
-import TableRow from "@/components/ui/Tables/TableRow.vue";
-import { performMutation } from "@/utils";
-import PriceMatrix from "@/components/performance/editor/PriceMatrix.vue";
+import AdminPerformanceDetailQuery from '@/graphql/queries/admin/productions/AdminPerformanceDetail.gql';
+import Card from '@/components/ui/Card.vue';
+import AdminPage from '@/components/admin/AdminPage.vue';
+import StaButton from '@/components/ui/StaButton.vue';
+import ProgressBar from '@/components/ui/ProgressBar.vue';
+import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
+import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
+import MenuTile from '@/components/ui/MenuTile.vue';
+import PerformanceStatusBadge from '@/components/performance/PerformanceStatusBadge.vue';
+import TicketsMatrix from '@/classes/TicketsMatrix';
+import TableRow from '@/components/ui/Tables/TableRow.vue';
+import { performMutation } from '@/utils';
+import PriceMatrix from '@/components/performance/editor/PriceMatrix.vue';
 export default {
   components: {
     Card,
@@ -245,7 +245,7 @@ export default {
         productionSlug: params.productionSlug,
         performanceId: params.performanceId,
       },
-      fetchPolicy: "no-cache",
+      fetchPolicy: 'no-cache',
     });
 
     const production = data.production;
@@ -277,13 +277,13 @@ export default {
       const data = await performMutation(
         this.$apollo,
         {
-          mutation: require("@/graphql/mutations/admin/GenerateReport.gql"),
+          mutation: require('@/graphql/mutations/admin/GenerateReport.gql'),
           variables: {
-            name: "PerformanceBookings",
-            options: [{ name: "id", value: this.performance.id }],
+            name: 'PerformanceBookings',
+            options: [{ name: 'id', value: this.performance.id }],
           },
         },
-        "generateReport"
+        'generateReport'
       );
 
       window.open(data.generateReport.downloadUri);

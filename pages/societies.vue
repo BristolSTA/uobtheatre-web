@@ -29,8 +29,8 @@
 </template>
 
 <script>
-import SocietyTile from "@/components/society/SocietyTile.vue";
-import InfiniteScroll from "@/components/ui/InfiniteScroll.vue";
+import SocietyTile from '@/components/society/SocietyTile.vue';
+import InfiniteScroll from '@/components/ui/InfiniteScroll.vue';
 export default {
   components: { SocietyTile, InfiniteScroll },
   data() {
@@ -39,7 +39,7 @@ export default {
     };
   },
   head: {
-    title: "Societies",
+    title: 'Societies',
   },
   methods: {
     handleNewData(data) {

@@ -63,11 +63,11 @@
 </template>
 
 <script>
-import AdminPage from "@/components/admin/AdminPage.vue";
-import AllErrorsDisplay from "@/components/ui/AllErrorsDisplay.vue";
-import FormLabel from "@/components/ui/FormLabel.vue";
-import { getValidationErrors, performMutation } from "@/utils";
-import LoadingContainer from "@/components/ui/LoadingContainer.vue";
+import AdminPage from '@/components/admin/AdminPage.vue';
+import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue';
+import FormLabel from '@/components/ui/FormLabel.vue';
+import { getValidationErrors, performMutation } from '@/utils';
+import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 export default {
   components: { AdminPage, AllErrorsDisplay, FormLabel, LoadingContainer },
   data() {
@@ -79,13 +79,13 @@ export default {
       generating: false,
 
       reports: [
-        { text: "Period Totals", value: "PeriodTotals", requires_times: true },
-        { text: "Outstanding Payments", value: "OutstandingPayments" },
+        { text: 'Period Totals', value: 'PeriodTotals', requires_times: true },
+        { text: 'Outstanding Payments', value: 'OutstandingPayments' },
       ],
     };
   },
   head: {
-    title: "Finance Reports",
+    title: 'Finance Reports',
   },
   computed: {
     currentReportObject() {
@@ -102,14 +102,14 @@ export default {
         const data = await performMutation(
           this.$apollo,
           {
-            mutation: require("@/graphql/mutations/admin/GenerateReport.gql"),
+            mutation: require('@/graphql/mutations/admin/GenerateReport.gql'),
             variables: {
               name: this.currentReport,
               start: this.start,
               end: this.end,
             },
           },
-          "generateReport"
+          'generateReport'
         );
         window.open(data.generateReport.downloadUri);
       } catch (e) {

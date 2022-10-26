@@ -45,15 +45,15 @@
 </template>
 
 <script>
-import BookingStage from "@/classes/BookingStage";
-import Booking from "@/classes/Booking";
-import Card from "@/components/ui/Card.vue";
-import ContentWarningsDisplay from "@/components/production/content-warnings/ContentWarningsDisplay.vue";
+import BookingStage from '@/classes/BookingStage';
+import Booking from '@/classes/Booking';
+import Card from '@/components/ui/Card.vue';
+import ContentWarningsDisplay from '@/components/production/content-warnings/ContentWarningsDisplay.vue';
 
 export default {
   stageInfo: new BookingStage({
-    name: "Content Warnings",
-    routeName: "production-slug-book-performanceId-warnings",
+    name: 'Content Warnings',
+    routeName: 'production-slug-book-performanceId-warnings',
     shouldBeUsed: (production, booking) => {
       return (
         production.contentWarnings.length > 0 ||
@@ -77,7 +77,7 @@ export default {
   },
   methods: {
     onUnderstood() {
-      this.$emit("next-stage");
+      this.$emit('next-stage');
     },
   },
 };

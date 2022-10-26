@@ -26,10 +26,10 @@
 </template>
 
 <script>
-import lo from "lodash";
-import { DateTime } from "luxon";
-import { humanDayTime } from "@/utils";
-import PerformanceOverview from "@/components/performance/PerformanceOverview.vue";
+import lo from 'lodash';
+import { DateTime } from 'luxon';
+import { humanDayTime } from '@/utils';
+import PerformanceOverview from '@/components/performance/PerformanceOverview.vue';
 export default {
   components: { PerformanceOverview },
   props: {

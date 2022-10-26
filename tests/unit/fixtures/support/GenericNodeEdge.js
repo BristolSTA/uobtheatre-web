@@ -1,6 +1,6 @@
 export default (node) => {
   return {
-    cursor: "mt2pnU4iOkKI",
+    cursor: 'mt2pnU4iOkKI',
     node,
   };
 };

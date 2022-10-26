@@ -63,7 +63,7 @@
 
 <script>
 export default {
-  name: "ConcessionType",
+  name: 'ConcessionType',
   props: {
     concessionTypeEdge: {
       required: true,
@@ -91,10 +91,10 @@ export default {
   },
   methods: {
     addTicket() {
-      this.$emit("add-ticket");
+      this.$emit('add-ticket');
     },
     minusTicket() {
-      this.$emit("remove-ticket");
+      this.$emit('remove-ticket');
     },
   },
 };

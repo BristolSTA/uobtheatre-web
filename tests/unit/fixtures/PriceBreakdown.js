@@ -1,5 +1,5 @@
-import MiscCost from "./MiscCost";
-import PriceBreakdownTicket from "./PriceBreakdownTicket";
+import MiscCost from './MiscCost';
+import PriceBreakdownTicket from './PriceBreakdownTicket';
 
 export default (overrides = {}) => {
   return Object.assign(

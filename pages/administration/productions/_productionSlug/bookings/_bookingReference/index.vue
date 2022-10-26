@@ -35,18 +35,18 @@
 </template>
 
 <script>
-import AdminPage from "@/components/admin/AdminPage.vue";
-import ProductionBanner from "@/components/production/ProductionBanner.vue";
-import PerformanceOverview from "@/components/booking/overview/PerformanceOverview.vue";
-import VenueOverview from "@/components/booking/overview/VenueOverview.vue";
-import PaymentOverview from "@/components/booking/overview/PaymentOverview.vue";
-import TicketsOverview from "@/components/booking/overview/TicketsOverview.vue";
-import Booking from "@/classes/Booking";
-import Card from "@/components/ui/Card.vue";
-import TableRow from "@/components/ui/Tables/TableRow.vue";
-import TableHeadItem from "@/components/ui/Tables/TableHeadItem.vue";
-import TableRowItem from "@/components/ui/Tables/TableRowItem.vue";
-import BookingStatusEnum from "@/enums/PayableStatusEnum";
+import AdminPage from '@/components/admin/AdminPage.vue';
+import ProductionBanner from '@/components/production/ProductionBanner.vue';
+import PerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue';
+import VenueOverview from '@/components/booking/overview/VenueOverview.vue';
+import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue';
+import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
+import Booking from '@/classes/Booking';
+import Card from '@/components/ui/Card.vue';
+import TableRow from '@/components/ui/Tables/TableRow.vue';
+import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
+import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
+import BookingStatusEnum from '@/enums/PayableStatusEnum';
 export default {
   components: {
     AdminPage,
@@ -62,7 +62,7 @@ export default {
   },
   async asyncData({ app, params, error }) {
     const { data } = await app.apolloProvider.defaultClient.query({
-      query: require("@/graphql/queries/admin/productions/AdminBookingDetail.gql"),
+      query: require('@/graphql/queries/admin/productions/AdminBookingDetail.gql'),
       variables: {
         bookingReference: params.bookingReference,
       },
@@ -71,7 +71,7 @@ export default {
     if (!data.bookings.edges[0]) {
       return error({
         statusCode: 404,
-        message: "This booking does not exist",
+        message: 'This booking does not exist',
       });
     }
 
@@ -92,30 +92,30 @@ export default {
     },
     adminInfo() {
       return [
-        ["Status", new BookingStatusEnum(this.rawBooking.status).name],
+        ['Status', new BookingStatusEnum(this.rawBooking.status).name],
         [
-          "Created At",
+          'Created At',
           this.$options.filters.dateFormat(
             this.rawBooking.createdAt,
-            "dd/MMM/y HH:mm ZZZZ"
+            'dd/MMM/y HH:mm ZZZZ'
           ),
         ],
         [
-          "Updated At",
+          'Updated At',
           this.$options.filters.dateFormat(
             this.rawBooking.updatedAt,
-            "dd/MMM/y HH:mm ZZZZ"
+            'dd/MMM/y HH:mm ZZZZ'
           ),
         ],
         [
-          "Created By",
+          'Created By',
           `${this.rawBooking.creator.firstName} ${this.rawBooking.creator.lastName} (Email: ${this.rawBooking.creator.email})`,
         ],
         [
-          "Owned By",
+          'Owned By',
           `${this.rawBooking.user.firstName} ${this.rawBooking.user.lastName} (Email: ${this.rawBooking.user.email})`,
         ],
-        ["Admin Discount", this.rawBooking.adminDiscountPercentage * 100 + "%"],
+        ['Admin Discount', this.rawBooking.adminDiscountPercentage * 100 + '%'],
       ];
     },
   },

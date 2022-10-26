@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import LoadingIcon from "./LoadingIcon.vue";
+import LoadingIcon from './LoadingIcon.vue';
 export default {
   components: { LoadingIcon },
   props: {
@@ -27,7 +27,7 @@ export default {
       type: Boolean,
     },
     loaderIconSize: {
-      default: "",
+      default: '',
       type: String,
     },
   },

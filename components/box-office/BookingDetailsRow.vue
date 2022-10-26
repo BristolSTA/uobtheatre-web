@@ -94,7 +94,7 @@
                       class="flex-none p-1 bg-sta-orange hover:bg-sta-orange-dark rounded focus:outline-none transition-colors"
                       @click="editingData[ticket.id] = !editingData[ticket.id]"
                     >
-                      {{ editingData[ticket.id] ? "Un-Check In" : "Check In" }}
+                      {{ editingData[ticket.id] ? 'Un-Check In' : 'Check In' }}
                     </button>
                   </div>
                 </td>
@@ -108,13 +108,13 @@
 </template>
 
 <script>
-import lo from "lodash";
-import LoadingIcon from "../ui/LoadingIcon.vue";
-import Booking from "@/classes/Booking";
+import lo from 'lodash';
+import LoadingIcon from '../ui/LoadingIcon.vue';
+import Booking from '@/classes/Booking';
 
-import CheckInMutation from "@/graphql/mutations/box-office/CheckInTickets.gql";
-import UnCheckInMutation from "@/graphql/mutations/box-office/UnCheckInTickets.gql";
-import BoxOfficePerformanceBooking from "@/graphql/queries/box-office/BoxOfficePerformanceBooking.gql";
+import CheckInMutation from '@/graphql/mutations/box-office/CheckInTickets.gql';
+import UnCheckInMutation from '@/graphql/mutations/box-office/UnCheckInTickets.gql';
+import BoxOfficePerformanceBooking from '@/graphql/queries/box-office/BoxOfficePerformanceBooking.gql';
 
 export default {
   components: { LoadingIcon },

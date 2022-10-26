@@ -1,11 +1,11 @@
-import { DateTime } from "luxon";
-import Swal from "sweetalert2";
-import resolveConfig from "tailwindcss/resolveConfig";
-import humanizeDuration from "humanize-duration";
-import * as Sentry from "@sentry/browser";
-import ValidationError from "@/errors/ValidationError";
+import { DateTime } from 'luxon';
+import Swal from 'sweetalert2';
+import resolveConfig from 'tailwindcss/resolveConfig';
+import humanizeDuration from 'humanize-duration';
+import * as Sentry from '@sentry/browser';
+import ValidationError from '@/errors/ValidationError';
 
-import Errors from "@/classes/Errors";
+import Errors from '@/classes/Errors';
 
 /**
  * Joins a list together with commas, but uses "and" for the final pair
@@ -15,7 +15,7 @@ import Errors from "@/classes/Errors";
  * @returns {string} Joined string
  */
 const joinWithAnd = (array) => {
-  return array.join(", ").replace(/, ([^,]*)$/, " and $1");
+  return array.join(', ').replace(/, ([^,]*)$/, ' and $1');
 };
 
 /**
@@ -43,13 +43,13 @@ const displayStartEnd = (start, end, format) => {
   start = DateTime.fromISO(start);
   end = DateTime.fromISO(end);
 
-  let result = "";
+  let result = '';
   if (start.month !== end.month || start.day !== end.day) {
     result =
-      start.toFormat(start.year === end.year ? format : format + " y") + " - ";
+      start.toFormat(start.year === end.year ? format : format + ' y') + ' - ';
   }
 
-  result += `${end.toFormat(format + " y")}`;
+  result += `${end.toFormat(format + ' y')}`;
   return result;
 };
 
@@ -72,18 +72,18 @@ const humanDuration = (durationMins, options) => {
  */
 const humanDayTime = (date) => {
   if (date.hour < 12) {
-    return "Morning";
+    return 'Morning';
   }
   if (date.hour < 17) {
-    return "Afternoon";
+    return 'Afternoon';
   }
-  return "Evening";
+  return 'Evening';
 };
 
 /**
  * Merged Tailwind Config Object
  */
-const tailwindConfig = resolveConfig(require("./tailwind.config"));
+const tailwindConfig = resolveConfig(require('./tailwind.config'));
 
 const errorHandler = (e) => {
   // eslint-disable-next-line no-console
@@ -151,32 +151,32 @@ const performMutation = (apollo, options, mutationName) => {
  */
 
 const swal = Swal.mixin({
-  background: tailwindConfig.theme.colors["sta-gray"].DEFAULT,
+  background: tailwindConfig.theme.colors['sta-gray'].DEFAULT,
   customClass: {
-    title: "text-white",
-    content: "text-white",
-    htmlContainer: "text-white",
-    input: "bg-white",
+    title: 'text-white',
+    content: 'text-white',
+    htmlContainer: 'text-white',
+    input: 'bg-white',
   },
-  confirmButtonColor: tailwindConfig.theme.colors["sta-orange"].DEFAULT,
-  denyButtonColor: tailwindConfig.theme.colors["sta-rouge"].DEFAULT,
+  confirmButtonColor: tailwindConfig.theme.colors['sta-orange'].DEFAULT,
+  denyButtonColor: tailwindConfig.theme.colors['sta-rouge'].DEFAULT,
 });
 const swalToast = swal.mixin({
   toast: true,
   showConfirmButton: false,
-  position: "bottom-end",
+  position: 'bottom-end',
 });
 const errorToast = swalToast.mixin({
-  icon: "error",
+  icon: 'error',
 });
 const successToast = swalToast.mixin({
-  icon: "success",
+  icon: 'success',
   timer: 8000,
   timerProgressBar: true,
 });
 const apiErrorToast = errorToast.mixin({
-  icon: "error",
-  title: "There was a server error while executing your request",
+  icon: 'error',
+  title: 'There was a server error while executing your request',
   timerProgressBar: true,
   timer: 4000,
 });

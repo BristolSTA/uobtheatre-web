@@ -10,7 +10,7 @@
         <template v-if="mainPayment && booking.status == 'PAID'">
           using
           <template v-if="mainPayment.cardBrand && mainPayment.last4">
-            {{ mainPayment.cardBrand.replace("_", " ") }} ending
+            {{ mainPayment.cardBrand.replace('_', ' ') }} ending
             {{ mainPayment.last4 }}
           </template>
           <template v-else>
@@ -29,7 +29,7 @@
         <td class="pr-2">On</td>
         <td class="">:</td>
         <td class="px-2">
-          {{ datePaid | dateFormat("EEE d MMM kkkk") }}
+          {{ datePaid | dateFormat('EEE d MMM kkkk') }}
         </td>
       </tr>
     </table>
@@ -38,15 +38,15 @@
 </template>
 
 <script>
-import { DateTime } from "luxon";
+import { DateTime } from 'luxon';
 
-import OverviewBox from "../../ui/Card.vue";
-import Booking from "@/classes/Booking";
-import BookingStatusEnum from "@/enums/PayableStatusEnum";
-import ProviderNameEnum from "@/enums/TransactionProviderNameEnum";
+import OverviewBox from '../../ui/Card.vue';
+import Booking from '@/classes/Booking';
+import BookingStatusEnum from '@/enums/PayableStatusEnum';
+import ProviderNameEnum from '@/enums/TransactionProviderNameEnum';
 
 export default {
-  name: "PaymentOverview",
+  name: 'PaymentOverview',
   components: { OverviewBox },
   props: {
     booking: {

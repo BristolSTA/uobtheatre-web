@@ -29,12 +29,12 @@
 </template>
 
 <script>
-import AdminPerformancesIndexQuery from "@/graphql/queries/admin/productions/AdminPerformancesIndex.gql";
-import AdminProductionLookupQuery from "@/graphql/queries/admin/productions/AdminProductionLookup.gql";
-import AdminPage from "@/components/admin/AdminPage.vue";
-import PaginationBar from "@/components/ui/PaginationBar.vue";
-import LoadingContainer from "@/components/ui/LoadingContainer.vue";
-import TimeGroupedPerformanceSelector from "@/components/performance/TimeGroupedPerformanceSelector.vue";
+import AdminPerformancesIndexQuery from '@/graphql/queries/admin/productions/AdminPerformancesIndex.gql';
+import AdminProductionLookupQuery from '@/graphql/queries/admin/productions/AdminProductionLookup.gql';
+import AdminPage from '@/components/admin/AdminPage.vue';
+import PaginationBar from '@/components/ui/PaginationBar.vue';
+import LoadingContainer from '@/components/ui/LoadingContainer.vue';
+import TimeGroupedPerformanceSelector from '@/components/performance/TimeGroupedPerformanceSelector.vue';
 export default {
   components: {
     AdminPage,
@@ -55,7 +55,7 @@ export default {
     if (!production) {
       return error({
         statusCode: 404,
-        message: "This production does not exist",
+        message: 'This production does not exist',
       });
     }
     return {

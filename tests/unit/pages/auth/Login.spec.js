@@ -1,12 +1,12 @@
-import { expect } from "chai";
+import { expect } from 'chai';
 
-import { mountWithRouterMock } from "../../helpers";
-import AuthBox from "@/components/auth/UserAuthBox.vue";
-import Login from "@/pages/login/index";
+import { mountWithRouterMock } from '../../helpers';
+import AuthBox from '@/components/auth/UserAuthBox.vue';
+import Login from '@/pages/login/index';
 
-jest.mock("@/services");
+jest.mock('@/services');
 
-describe("Login", function () {
+describe('Login', function () {
   let loginComponent, authBoxComponent;
   let fakeReplace;
 
@@ -18,7 +18,7 @@ describe("Login", function () {
         },
         $store: {
           state: {
-            "box-office": {
+            'box-office': {
               locationId: null,
             },
           },
@@ -28,22 +28,22 @@ describe("Login", function () {
     authBoxComponent = loginComponent.findComponent(AuthBox);
   });
 
-  it("contains an auth box", () => {
+  it('contains an auth box', () => {
     expect(authBoxComponent.exists()).to.be.true;
-    expect(authBoxComponent.props("login")).to.be.true;
+    expect(authBoxComponent.props('login')).to.be.true;
   });
 
-  it("doesnt react to switch to login if already on login", async () => {
-    await authBoxComponent.vm.$emit("go-login");
+  it('doesnt react to switch to login if already on login', async () => {
+    await authBoxComponent.vm.$emit('go-login');
     expect(fakeReplace.mock.calls).to.be.empty;
   });
 
-  it("reacts to switch to signup", async () => {
-    await authBoxComponent.vm.$emit("go-signup");
-    expect(fakeReplace.mock.calls[0][0]).to.eq("/signup");
+  it('reacts to switch to signup', async () => {
+    await authBoxComponent.vm.$emit('go-signup');
+    expect(fakeReplace.mock.calls[0][0]).to.eq('/signup');
   });
 
-  it("redirects if user is already authenticated", () => {
-    expect(Login.middleware).to.include("not-authed");
+  it('redirects if user is already authenticated', () => {
+    expect(Login.middleware).to.include('not-authed');
   });
 });

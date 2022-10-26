@@ -34,8 +34,8 @@
 </template>
 
 <script>
-import LoadingContainer from "../LoadingContainer.vue";
-import PaginationBar from "../PaginationBar.vue";
+import LoadingContainer from '../LoadingContainer.vue';
+import PaginationBar from '../PaginationBar.vue';
 export default {
   components: { PaginationBar, LoadingContainer },
   props: {
@@ -56,7 +56,7 @@ export default {
       type: Number,
     },
     emptyText: {
-      default: "No matching data found",
+      default: 'No matching data found',
       type: String,
     },
     loading: {
@@ -77,13 +77,13 @@ export default {
   },
   methods: {
     nextPage() {
-      this.$emit("nextPage");
-      this.$emit("update:offset", this.offset + this.items.length);
+      this.$emit('nextPage');
+      this.$emit('update:offset', this.offset + this.items.length);
     },
     previousPage() {
-      this.$emit("previousPage");
+      this.$emit('previousPage');
       this.$emit(
-        "update:offset",
+        'update:offset',
         Math.max(0, this.offset - (this.maxPerPage ?? this.items.length))
       );
     },

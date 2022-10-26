@@ -31,7 +31,7 @@
                   displayStartEnd(
                     slotProps.carouselItem.text.start,
                     slotProps.carouselItem.text.end,
-                    "d MMMM"
+                    'd MMMM'
                   )
                 }}
               </div>
@@ -73,7 +73,7 @@
           </NuxtLink>
           <span v-if="production.subtitle">{{ production.subtitle }}</span>
           <p class="font-semibold text-sta-orange">
-            {{ displayStartEnd(production.start, production.end, "d MMMM") }}
+            {{ displayStartEnd(production.start, production.end, 'd MMMM') }}
           </p>
           <p>
             {{ oneLiner(production.description) | truncate(230) }}
@@ -111,13 +111,12 @@
 </template>
 
 <script>
-import lo from "lodash";
-
-import Carousel from "@/components/ui/Carousel.vue";
-import { displayStartEnd } from "@/utils";
-import { oneLiner } from "@/utils/lang";
-import PayableStatusEnum from "@/enums/PayableStatusEnum";
-import ProductionFeaturedImage from "@/components/production/ProductionFeaturedImage.vue";
+import lo from 'lodash';
+import Carousel from '@/components/ui/Carousel.vue';
+import { displayStartEnd } from '@/utils';
+import { oneLiner } from '@/utils/lang';
+import PayableStatusEnum from '@/enums/PayableStatusEnum';
+import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue';
 
 export default {
   components: { Carousel, ProductionFeaturedImage },
@@ -158,7 +157,7 @@ export default {
       return lo.take(this.upcomingProductions, 4);
     },
     enumTest() {
-      return new PayableStatusEnum("IN_PROGRESS");
+      return new PayableStatusEnum('IN_PROGRESS');
     },
   },
   methods: {
@@ -166,7 +165,7 @@ export default {
   },
   apollo: {
     upcomingProductions: {
-      query: require("@/graphql/queries/HomeUpcomingProductions.gql"),
+      query: require('@/graphql/queries/HomeUpcomingProductions.gql'),
       update: (data) => data.productions.edges.map((edge) => edge.node),
       variables() {
         return {
@@ -180,7 +179,7 @@ export default {
 
 <style>
 #splashscreen {
-  background-image: url("~@/assets/images/placeholder-homepage-splash.jpg");
+  background-image: url('~@/assets/images/placeholder-homepage-splash.jpg');
   background-size: cover;
   background-position: center;
 }

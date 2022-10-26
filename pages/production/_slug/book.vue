@@ -70,23 +70,23 @@
 </template>
 
 <script>
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 import {
   getNextStage,
   getPreviousStage,
   getStageIndex,
-} from "./book/-bookingStages";
-import Booking from "@/classes/Booking";
-import TicketsMatrix from "@/classes/TicketsMatrix";
-import BookingNavigation from "@/components/booking/BookingNavigation.vue";
-import ProductionBanner from "@/components/production/ProductionBanner.vue";
-import ClickableLink from "@/components/ui/ClickableLink.vue";
-import DeleteBookingMutation from "@/graphql/mutations/booking/DeleteBooking.gql";
-import { swal } from "@/utils";
+} from './book/-bookingStages';
+import Booking from '@/classes/Booking';
+import TicketsMatrix from '@/classes/TicketsMatrix';
+import BookingNavigation from '@/components/booking/BookingNavigation.vue';
+import ProductionBanner from '@/components/production/ProductionBanner.vue';
+import ClickableLink from '@/components/ui/ClickableLink.vue';
+import DeleteBookingMutation from '@/graphql/mutations/booking/DeleteBooking.gql';
+import { swal } from '@/utils';
 
-import ProductionBasicInfoFragment from "@/graphql/fragments/production/ProductionBasicInfoFragment.gql";
-import ProductionPerformancesFragment from "@/graphql/fragments/production/ProductionPerformancesFragment.gql";
-import TimeRemainingCountdown from "@/components/ui/Formatters/TimeRemainingCountdown.vue";
+import ProductionBasicInfoFragment from '@/graphql/fragments/production/ProductionBasicInfoFragment.gql';
+import ProductionPerformancesFragment from '@/graphql/fragments/production/ProductionPerformancesFragment.gql';
+import TimeRemainingCountdown from '@/components/ui/Formatters/TimeRemainingCountdown.vue';
 export default {
   components: {
     BookingNavigation,
@@ -104,9 +104,9 @@ export default {
       text: "You haven't yet paid for your booking. If you leave now, your reserved tickets will be released back for sale. Are you sure you want to leave?",
       showConfirmButton: true,
       showCancelButton: true,
-      confirmButtonText: "Abandon Booking",
-      confirmButtonColor: "#d94519",
-      cancelButtonText: "Keep editing",
+      confirmButtonText: 'Abandon Booking',
+      confirmButtonColor: '#d94519',
+      cancelButtonText: 'Keep editing',
     });
 
     if (isDismissed) {
@@ -123,7 +123,7 @@ export default {
 
     return next();
   },
-  middleware: "authed",
+  middleware: 'authed',
   async asyncData({ params, app, error }) {
     const { data } = await app.apolloProvider.defaultClient.query({
       query: gql`
@@ -145,7 +145,7 @@ export default {
     if (!production) {
       return error({
         statusCode: 404,
-        message: "This production does not exist",
+        message: 'This production does not exist',
       });
     }
     return {
@@ -173,12 +173,12 @@ export default {
     },
     crumbs() {
       return [
-        { text: "Whats On", path: "/productions" },
+        { text: 'Whats On', path: '/productions' },
         {
           text: this.production.name,
           path: `/production/${this.production.slug}`,
         },
-        { text: "Book" },
+        { text: 'Book' },
       ];
     },
   },
@@ -189,16 +189,16 @@ export default {
       this.booking = new Booking();
       swal
         .fire({
-          title: "Booking Expired",
+          title: 'Booking Expired',
           text: "Sorry! Your booking has expired. We do this to ensure that tickets aren't reserved for too long.",
-          confirmButtonText: "Create a new booking",
-          cancelButtonText: "Return to home",
+          confirmButtonText: 'Create a new booking',
+          cancelButtonText: 'Return to home',
           showCancelButton: true,
           showConfirmButton: true,
         })
         .then(({ isDismissed }) => {
           if (isDismissed) {
-            return this.$router.push("/");
+            return this.$router.push('/');
           }
           return this.$router.push(`/production/${production.slug}/book`);
         });
@@ -228,9 +228,9 @@ export default {
         );
       }
 
-      this.$router[replace ? "replace" : "push"]({
+      this.$router[replace ? 'replace' : 'push']({
         name: stage.stageInfo.routeName,
-        hash: "#booking-view",
+        hash: '#booking-view',
         params: {
           slug: this.production.slug,
           performanceId: this.booking.performance
@@ -245,11 +245,11 @@ export default {
         if (this.previousBooking === null) {
           this.$apollo
             .query({
-              query: require("@/graphql/queries/DraftBookingForPerformance.gql"),
+              query: require('@/graphql/queries/DraftBookingForPerformance.gql'),
               variables: {
                 performanceID: this.$route.params.performanceId,
               },
-              fetchPolicy: "no-cache",
+              fetchPolicy: 'no-cache',
             })
             .then(({ data }) => {
               this.previousBooking = data.me.bookings.edges.length
@@ -259,11 +259,11 @@ export default {
               if (this.previousBooking) {
                 swal
                   .fire({
-                    title: "Resume previous booking?",
-                    text: "You previously started a booking for this performance. Would you like to resume it?",
+                    title: 'Resume previous booking?',
+                    text: 'You previously started a booking for this performance. Would you like to resume it?',
                     showCancelButton: true,
-                    confirmButtonText: "Resume",
-                    cancelButtonText: "No, start fresh",
+                    confirmButtonText: 'Resume',
+                    cancelButtonText: 'No, start fresh',
                   })
                   .then((result) => {
                     if (result.isConfirmed) {
@@ -286,7 +286,7 @@ export default {
         if (!this.ticketMatrix) {
           this.$apollo
             .query({
-              query: require("@/graphql/queries/PerformanceTicketOptions.gql"),
+              query: require('@/graphql/queries/PerformanceTicketOptions.gql'),
               variables: {
                 id: this.booking.performance.id,
               },

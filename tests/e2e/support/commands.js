@@ -11,8 +11,8 @@
 //
 
 // -- This is a parent command --
-Cypress.Commands.add("login", () => {
-  cy.setCookie("uobtheatre-auth", "36c86c19f8f8d73aa59c3a00814137bdee0ab8de");
+Cypress.Commands.add('login', () => {
+  cy.setCookie('uobtheatre-auth', '36c86c19f8f8d73aa59c3a00814137bdee0ab8de');
 });
 //
 //

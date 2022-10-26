@@ -232,43 +232,43 @@
 </template>
 
 <script>
-import TableHeadItem from "@/components/ui/Tables/TableHeadItem.vue";
-import TableRow from "@/components/ui/Tables/TableRow.vue";
-import TableRowItem from "@/components/ui/Tables/TableRowItem.vue";
+import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
+import TableRow from '@/components/ui/Tables/TableRow.vue';
+import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
 export default {
   components: { TableRowItem, TableRow, TableHeadItem },
   data() {
     return {
       collectedData: [
         {
-          title: "Account Details",
+          title: 'Account Details',
           items: [
             {
               purpose:
-                "Provision of a personalised experience and to enable us to provide a better service (e.g. fetching your tickets by taking your name, instead of a booking reference)",
-              basis: "Legitimate interests",
-              data: ["Full Name"],
+                'Provision of a personalised experience and to enable us to provide a better service (e.g. fetching your tickets by taking your name, instead of a booking reference)',
+              basis: 'Legitimate interests',
+              data: ['Full Name'],
             },
             {
-              purpose: "Password reset functionality",
-              basis: "Legitimate interests",
-              data: ["Email Address"],
+              purpose: 'Password reset functionality',
+              basis: 'Legitimate interests',
+              data: ['Email Address'],
             },
           ],
         },
         {
-          title: "Tickets and Bookings",
+          title: 'Tickets and Bookings',
           items: [
             {
-              purpose: "Provision of payment receipt, and booking confirmation",
-              basis: "Legitimate interests",
-              data: ["Email Address"],
+              purpose: 'Provision of payment receipt, and booking confirmation',
+              basis: 'Legitimate interests',
+              data: ['Email Address'],
             },
             {
               purpose:
-                "Operational statistics to indicate the number of remaining tickets to be checked in or collected",
-              basis: "Legitimate interests",
-              data: ["Ticket Check In State"],
+                'Operational statistics to indicate the number of remaining tickets to be checked in or collected',
+              basis: 'Legitimate interests',
+              data: ['Ticket Check In State'],
             },
           ],
         },
@@ -276,7 +276,7 @@ export default {
     };
   },
   head: {
-    title: "Privacy Policy",
+    title: 'Privacy Policy',
   },
 };
 </script>

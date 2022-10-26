@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import FooterBar from "@/components/layout/FooterBar.vue";
-import NavBar from "@/components/layout/NavBar.vue";
-import Breadcrumbs from "@/components/ui/Breadcrumbs.vue";
+import FooterBar from '@/components/layout/FooterBar.vue';
+import NavBar from '@/components/layout/NavBar.vue';
+import Breadcrumbs from '@/components/ui/Breadcrumbs.vue';
 export default {
   components: { NavBar, FooterBar, Breadcrumbs },
   computed: {

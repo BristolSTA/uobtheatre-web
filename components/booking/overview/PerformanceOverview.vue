@@ -7,16 +7,16 @@
     <template #subtitle>
       <p class="text-h3">
         {{ humanDayTime(startTime) }} of
-        {{ performance.start | dateFormat("EEEE d MMMM kkkk") }}
+        {{ performance.start | dateFormat('EEEE d MMMM kkkk') }}
       </p>
     </template>
     <div>
       <div class="font-semibold">
         <p class="py-1 text-sta-green">
-          Doors Open: {{ performance.doorsOpen | dateFormat("T") }}
+          Doors Open: {{ performance.doorsOpen | dateFormat('T') }}
         </p>
         <p class="pb-0.5 text-sta-rouge">
-          Performance Starts: {{ performance.start | dateFormat("T") }}
+          Performance Starts: {{ performance.start | dateFormat('T') }}
         </p>
       </div>
       <icon-list-item icon="clock">
@@ -30,14 +30,14 @@
 </template>
 
 <script>
-import { DateTime } from "luxon";
-import OverviewBox from "../../ui/Card.vue";
-import IconListItem from "@/components/ui/IconListItem.vue";
+import { DateTime } from 'luxon';
+import OverviewBox from '../../ui/Card.vue';
+import IconListItem from '@/components/ui/IconListItem.vue';
 
-import { humanDuration, humanDayTime } from "@/utils";
+import { humanDuration, humanDayTime } from '@/utils';
 
 export default {
-  name: "PerformanceOverviewBox",
+  name: 'PerformanceOverviewBox',
   components: { OverviewBox, IconListItem },
   props: {
     production: {

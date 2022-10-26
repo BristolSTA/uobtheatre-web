@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import Booking from "@/classes/Booking";
+import Booking from '@/classes/Booking';
 
 export default {
   props: {

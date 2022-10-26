@@ -14,7 +14,7 @@
           <option selected disabled>Select one...</option>
           <option v-for="(performance, index) in performances" :key="index">
             {{ performance.production.name }} -
-            {{ performance.start | dateFormat("cccc dd MMMM T") }}
+            {{ performance.start | dateFormat('cccc dd MMMM T') }}
           </option>
         </select>
         <div class="grid gap-2 grid-cols-2 mt-2 md:grid-cols-4">
@@ -35,8 +35,8 @@
               {{ performance.venue.name }}
             </h4>
             <span
-              >{{ performance.start | dateFormat("cccc dd MMMM T") }} (Doors
-              {{ performance.doorsOpen | dateFormat("T") }})</span
+              >{{ performance.start | dateFormat('cccc dd MMMM T') }} (Doors
+              {{ performance.doorsOpen | dateFormat('T') }})</span
             >
           </div>
         </div>
@@ -67,13 +67,13 @@
 </template>
 
 <script>
-import { DateTime } from "luxon";
-import BoxOfficePerformancesAvailable from "@/graphql/queries/box-office/BoxOfficePerformancesAvailable.gql";
-import LoadingContainer from "@/components/ui/LoadingContainer.vue";
-import ProductionFeaturedImage from "@/components/production/ProductionFeaturedImage.vue";
+import { DateTime } from 'luxon';
+import BoxOfficePerformancesAvailable from '@/graphql/queries/box-office/BoxOfficePerformancesAvailable.gql';
+import LoadingContainer from '@/components/ui/LoadingContainer.vue';
+import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue';
 export default {
   components: { LoadingContainer, ProductionFeaturedImage },
-  middleware: ["authed", "can-boxoffice"],
+  middleware: ['authed', 'can-boxoffice'],
   data() {
     return {
       selectedPerformance: null,
@@ -85,11 +85,11 @@ export default {
     };
   },
   head: {
-    title: "Box Office Select",
+    title: 'Box Office Select',
   },
   computed: {
     dateToSearch() {
-      return this.selectedDate !== "" ? this.selectedDate : this.datePickerDate;
+      return this.selectedDate !== '' ? this.selectedDate : this.datePickerDate;
     },
   },
   watch: {
@@ -113,15 +113,15 @@ export default {
         };
       },
       skip() {
-        return !this.dateToSearch || this.dateToSeach === "";
+        return !this.dateToSearch || this.dateToSeach === '';
       },
-      fetchPolicy: "cache-and-network",
+      fetchPolicy: 'cache-and-network',
 
       update: (data) =>
         data.performances.edges
           .map((edge) => edge.node)
           .filter(
-            (performance) => performance.production.status === "PUBLISHED"
+            (performance) => performance.production.status === 'PUBLISHED'
           ),
     },
   },
@@ -130,12 +130,12 @@ export default {
       this.selectedDate = DateTime.now().toISODate();
       this.datePickerDate = DateTime.now().toISODate();
       this.dateOptions = [
-        { value: DateTime.now().toISODate(), text: "Today" },
+        { value: DateTime.now().toISODate(), text: 'Today' },
         {
           value: DateTime.now().plus({ days: 1 }).toISODate(),
-          text: "Tomorrow",
+          text: 'Tomorrow',
         },
-        { value: null, text: "Custom" },
+        { value: null, text: 'Custom' },
       ];
     },
   },

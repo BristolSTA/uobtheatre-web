@@ -20,10 +20,10 @@ export default {
     classes() {
       const classes = [];
       if (this.striped) {
-        classes.push("odd:bg-sta-gray even:bg-sta-gray-dark");
+        classes.push('odd:bg-sta-gray even:bg-sta-gray-dark');
       }
       if (this.clickable) {
-        classes.push("hover:bg-sta-orange transition-colors cursor-pointer");
+        classes.push('hover:bg-sta-orange transition-colors cursor-pointer');
       }
       return classes;
     },

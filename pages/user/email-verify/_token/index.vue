@@ -18,10 +18,10 @@
   </div>
 </template>
 <script>
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
-import { getValidationErrors, performMutation, swalToast } from "@/utils";
-import LoadingIcon from "@/components/ui/LoadingIcon.vue";
+import { getValidationErrors, performMutation, swalToast } from '@/utils';
+import LoadingIcon from '@/components/ui/LoadingIcon.vue';
 
 export default {
   components: {
@@ -34,7 +34,7 @@ export default {
     };
   },
   head: {
-    title: "Verify Email",
+    title: 'Verify Email',
   },
   async mounted() {
     try {
@@ -44,7 +44,7 @@ export default {
           mutation: gql`
           mutation ($token: String!) {
             verifyAccount(token: $token) {
-                ${require("@/graphql/partials/ErrorsPartial").default}
+                ${require('@/graphql/partials/ErrorsPartial').default}
             }
           }
         `,
@@ -52,14 +52,14 @@ export default {
             token: this.$route.params.token,
           },
         },
-        "verifyAccount"
+        'verifyAccount'
       );
       swalToast.fire({
-        position: "bottom-end",
-        icon: "success",
-        title: "Email verified!",
+        position: 'bottom-end',
+        icon: 'success',
+        title: 'Email verified!',
       });
-      return this.$router.replace("/login");
+      return this.$router.replace('/login');
     } catch (e) {
       this.errors = getValidationErrors(e);
     }

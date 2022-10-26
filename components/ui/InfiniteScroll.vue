@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import LoadingIcon from "./LoadingIcon.vue";
-import { isInViewport } from "@/utils";
+import LoadingIcon from './LoadingIcon.vue';
+import { isInViewport } from '@/utils';
 export default {
   components: { LoadingIcon },
   props: {
@@ -24,7 +24,7 @@ export default {
     },
     apolloAfterCursorVariableKey: {
       required: false,
-      default: "afterCursor",
+      default: 'afterCursor',
       type: String,
     },
   },
@@ -41,15 +41,15 @@ export default {
   },
   watch: {
     loading(newValue) {
-      this.$emit("loadingChange", newValue);
+      this.$emit('loadingChange', newValue);
     },
   },
   mounted() {
-    window.addEventListener("scroll", this.handleScroll);
+    window.addEventListener('scroll', this.handleScroll);
     this.runQuery();
   },
   destroyed() {
-    window.removeEventListener("scroll", this.handleScroll);
+    window.removeEventListener('scroll', this.handleScroll);
   },
   methods: {
     async runQuery() {
@@ -83,10 +83,10 @@ export default {
         : null;
 
       // Emit with the new data
-      this.$emit("newData", result.data[root]);
+      this.$emit('newData', result.data[root]);
 
       // Check if loader on screen
-      if (this.hasMore && isInViewport(this.$refs["bottom-loader"])) {
+      if (this.hasMore && isInViewport(this.$refs['bottom-loader'])) {
         this.runQuery();
       }
     },
@@ -94,7 +94,7 @@ export default {
       if (this.loading) {
         return;
       }
-      const bottomLoaderEl = this.$refs["bottom-loader"];
+      const bottomLoaderEl = this.$refs['bottom-loader'];
       if (
         bottomLoaderEl &&
         bottomLoaderEl.offsetTop <= window.scrollY + window.innerHeight

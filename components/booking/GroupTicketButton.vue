@@ -23,7 +23,7 @@
 
 <script>
 export default {
-  name: "GroupTicketButton",
+  name: 'GroupTicketButton',
   props: {
     discount: {
       required: true,
@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     addTickets() {
-      this.$emit("add-discount-tickets");
+      this.$emit('add-discount-tickets');
     },
   },
 };

@@ -1,16 +1,16 @@
-import { expect } from "chai";
-import { DateTime } from "luxon";
+import { expect } from 'chai';
+import { DateTime } from 'luxon';
 
-import PerformanceFixture from "../fixtures/Performance";
+import PerformanceFixture from '../fixtures/Performance';
 
-import { assertNoVisualDifference } from "../helpers";
-import ConcessionTypeBookingType from "../fixtures/ConcessionTypeBookingType";
-import BookingFixture from "../fixtures/Booking";
-import ConcessionType from "../fixtures/ConcessionType";
-import TicketsMatrix from "@/classes/TicketsMatrix";
-import Ticket from "@/classes/Ticket";
-import Booking from "@/classes/Booking";
-describe("Booking Class", () => {
+import { assertNoVisualDifference } from '../helpers';
+import ConcessionTypeBookingType from '../fixtures/ConcessionTypeBookingType';
+import BookingFixture from '../fixtures/Booking';
+import ConcessionType from '../fixtures/ConcessionType';
+import TicketsMatrix from '@/classes/TicketsMatrix';
+import Ticket from '@/classes/Ticket';
+import Booking from '@/classes/Booking';
+describe('Booking Class', () => {
   /** @member {Booking} */
   let booking;
   let seatGroup;
@@ -20,24 +20,24 @@ describe("Booking Class", () => {
   let ticketsMatrix;
   let bookingAPIData;
 
-  jest.spyOn(DateTime, "local");
+  jest.spyOn(DateTime, 'local');
 
   beforeAll(() => {
     const performance = PerformanceFixture();
     seatGroup = performance.ticketOptions[0].seatGroup;
     concession100Edge = ConcessionTypeBookingType({
       price: 100,
-      pricePounds: "1.00",
+      pricePounds: '1.00',
     });
     concession1000Edge = ConcessionTypeBookingType({
       concessionType: ConcessionType({ id: 2 }),
       price: 1000,
-      pricePounds: "10.00",
+      pricePounds: '10.00',
     });
     concession500Edge = ConcessionTypeBookingType({
       concessionType: ConcessionType({ id: 3 }),
       price: 500,
-      pricePounds: "5.00",
+      pricePounds: '5.00',
     });
     performance.ticketOptions[0].concessionTypes = [
       concession100Edge,
@@ -64,7 +64,7 @@ describe("Booking Class", () => {
     );
   };
 
-  it("can be constructed from booking data", () => {
+  it('can be constructed from booking data', () => {
     booking = Booking.fromAPIData(bookingAPIData);
     expect(booking).to.be.instanceOf(Booking);
     expect(booking.priceBreakdown).to.eq(bookingAPIData.priceBreakdown);
@@ -72,15 +72,15 @@ describe("Booking Class", () => {
     expect(booking.performance).to.eq(bookingAPIData.performance);
     expect(booking.dirty).to.be.false;
   });
-  it("can get tickets", () => {
+  it('can get tickets', () => {
     expect(booking.tickets).to.be.instanceOf(Array);
     expect(booking.tickets).to.be.empty;
 
-    booking.tickets.push(["An Item"]);
+    booking.tickets.push(['An Item']);
 
     expect(booking.tickets.length).to.eq(1);
   });
-  it("can add a ticket", () => {
+  it('can add a ticket', () => {
     const ticket = fakeTicket();
     booking.addTicket(ticket, ticketsMatrix);
 
@@ -88,16 +88,16 @@ describe("Booking Class", () => {
     expect(booking.dirty).to.be.true;
   });
 
-  it("cant add a ticket if matrix doesnt allow", () => {
+  it('cant add a ticket if matrix doesnt allow', () => {
     const ticket = fakeTicket();
-    jest.spyOn(ticketsMatrix, "canAddTickets").mockReturnValueOnce(false);
+    jest.spyOn(ticketsMatrix, 'canAddTickets').mockReturnValueOnce(false);
     booking.addTicket(ticket, ticketsMatrix);
 
     expect(booking.tickets).not.to.include(ticket);
     expect(booking.dirty).to.be.false;
   });
 
-  it("can set number of tickets", () => {
+  it('can set number of tickets', () => {
     booking.setTicketCount(seatGroup, concession100Edge, 10, ticketsMatrix);
     expect(booking.ticketCount(seatGroup, concession100Edge)).to.eq(10);
 
@@ -113,7 +113,7 @@ describe("Booking Class", () => {
     expect(booking.dirty).to.be.true;
   });
 
-  describe("Matching Tickets", () => {
+  describe('Matching Tickets', () => {
     let ticket1;
     let ticket2;
     let ticket3;
@@ -126,7 +126,7 @@ describe("Booking Class", () => {
       booking.tickets = [ticket1, ticket2, ticket3, ticket4];
     });
 
-    it("can find matching tickets", () => {
+    it('can find matching tickets', () => {
       expect(booking.findTickets()).to.include(
         ticket1,
         ticket2,
@@ -141,7 +141,7 @@ describe("Booking Class", () => {
       expect(booking.findTickets({ id: 4 }, { id: 100 })).to.be.empty;
     });
 
-    it("can find number of matching tickets", () => {
+    it('can find number of matching tickets', () => {
       expect(booking.ticketCount()).to.eq(4);
 
       expect(booking.ticketCount({ id: 2 })).to.eq(1);
@@ -152,7 +152,7 @@ describe("Booking Class", () => {
     });
   });
 
-  it("can remove a single ticket", () => {
+  it('can remove a single ticket', () => {
     const t1 = fakeTicket();
     const t2 = fakeTicket();
     const t3 = fakeTicket(concession1000Edge);
@@ -169,7 +169,7 @@ describe("Booking Class", () => {
     expect(booking.dirty).to.be.true;
   });
 
-  it("can clear tickets", () => {
+  it('can clear tickets', () => {
     booking.tickets = [1, 2, 3];
 
     booking.clearTickets();
@@ -177,7 +177,7 @@ describe("Booking Class", () => {
     expect(booking.tickets.length).to.eq(0);
     expect(booking.dirty).to.be.true;
   });
-  it("can get tickets total price estimate in pennies", () => {
+  it('can get tickets total price estimate in pennies', () => {
     expect(booking.ticketsTotalPriceEstimate(ticketsMatrix)).to.eq(0);
 
     booking.tickets = [
@@ -187,9 +187,9 @@ describe("Booking Class", () => {
     ];
     expect(booking.ticketsTotalPriceEstimate(ticketsMatrix)).to.eq(1600);
   });
-  it("can get tickets total price estimate in pounds", () => {
+  it('can get tickets total price estimate in pounds', () => {
     expect(booking.ticketsTotalPricePoundsEstimate(ticketsMatrix)).to.eq(
-      "0.00"
+      '0.00'
     );
 
     booking.tickets = [
@@ -199,59 +199,59 @@ describe("Booking Class", () => {
     ];
 
     expect(booking.ticketsTotalPricePoundsEstimate(ticketsMatrix)).to.eq(
-      "16.00"
+      '16.00'
     );
   });
-  it("can get total booking price in pounds", () => {
+  it('can get total booking price in pounds', () => {
     expect(booking.totalPrice).to.eq(0);
 
     booking.priceBreakdown = bookingAPIData.priceBreakdown;
 
     expect(booking.totalPrice).to.eq(495);
   });
-  it("can get total booking price in pounds", () => {
-    expect(booking.totalPricePounds).to.eq("0.00");
+  it('can get total booking price in pounds', () => {
+    expect(booking.totalPricePounds).to.eq('0.00');
 
     booking.priceBreakdown = bookingAPIData.priceBreakdown;
 
-    expect(booking.totalPricePounds).to.eq("4.95");
+    expect(booking.totalPricePounds).to.eq('4.95');
   });
-  it("can get sub total booking price in pounds", () => {
-    expect(booking.subTotalPricePounds).to.eq("0.00");
+  it('can get sub total booking price in pounds', () => {
+    expect(booking.subTotalPricePounds).to.eq('0.00');
 
     booking.priceBreakdown = bookingAPIData.priceBreakdown;
 
-    expect(booking.subTotalPricePounds).to.eq("4.90");
+    expect(booking.subTotalPricePounds).to.eq('4.90');
   });
-  it("can get tickets price in pounds", () => {
-    expect(booking.ticketsPricePounds).to.eq("0.00");
+  it('can get tickets price in pounds', () => {
+    expect(booking.ticketsPricePounds).to.eq('0.00');
 
     booking.priceBreakdown = bookingAPIData.priceBreakdown;
 
-    expect(booking.ticketsPricePounds).to.eq("5.00");
+    expect(booking.ticketsPricePounds).to.eq('5.00');
   });
-  it("can get tickets discounted price in pounds", () => {
-    expect(booking.ticketsDiscountedPricePounds).to.eq("0.00");
+  it('can get tickets discounted price in pounds', () => {
+    expect(booking.ticketsDiscountedPricePounds).to.eq('0.00');
 
     booking.priceBreakdown = bookingAPIData.priceBreakdown;
 
-    expect(booking.ticketsDiscountedPricePounds).to.eq("4.90");
+    expect(booking.ticketsDiscountedPricePounds).to.eq('4.90');
   });
-  it("can tell if booking has discounts applied", () => {
+  it('can tell if booking has discounts applied', () => {
     expect(booking.hasDiscounts).to.be.false;
 
     booking.priceBreakdown = bookingAPIData.priceBreakdown;
 
     expect(booking.hasDiscounts).to.be.true;
   });
-  it("can get discounts value in pounds", () => {
-    expect(booking.discountsValuePounds).to.eq("0.00");
+  it('can get discounts value in pounds', () => {
+    expect(booking.discountsValuePounds).to.eq('0.00');
 
     booking.priceBreakdown = bookingAPIData.priceBreakdown;
 
-    expect(booking.discountsValuePounds).to.eq("0.10");
+    expect(booking.discountsValuePounds).to.eq('0.10');
   });
-  it("can get ticket overview", () => {
+  it('can get ticket overview', () => {
     expect(booking.ticketOverview(ticketsMatrix)).to.be.empty;
 
     booking.priceBreakdown = bookingAPIData.priceBreakdown;
@@ -268,7 +268,7 @@ describe("Booking Class", () => {
       bookingAPIData.priceBreakdown.tickets
     );
   });
-  it("can generate ticket overview estimate", () => {
+  it('can generate ticket overview estimate', () => {
     expect(booking.ticketOverviewEstimate(ticketsMatrix)).to.be.empty;
 
     booking.tickets = [
@@ -295,7 +295,7 @@ describe("Booking Class", () => {
       ticketPrice: 1000,
     });
   });
-  it("can get misc costs", () => {
+  it('can get misc costs', () => {
     expect(booking.miscCosts).to.be.empty;
 
     booking.priceBreakdown = bookingAPIData.priceBreakdown;
@@ -305,36 +305,36 @@ describe("Booking Class", () => {
       bookingAPIData.priceBreakdown.miscCosts
     );
   });
-  it("can tell if a booking is active", () => {
+  it('can tell if a booking is active', () => {
     booking.updateFromAPIData(bookingAPIData);
     // Day before
-    DateTime.local.mockReturnValue(DateTime.fromISO("2020-03-08T10:00:00"));
+    DateTime.local.mockReturnValue(DateTime.fromISO('2020-03-08T10:00:00'));
     expect(booking.isActive).to.be.true;
 
     // 6 Hours before start
-    DateTime.local.mockReturnValue(DateTime.fromISO("2020-03-09T10:00:00"));
+    DateTime.local.mockReturnValue(DateTime.fromISO('2020-03-09T10:00:00'));
     expect(booking.isActive).to.be.true;
 
     // 40 minutes in
-    DateTime.local.mockReturnValue(DateTime.fromISO("2020-03-09T16:40:00"));
+    DateTime.local.mockReturnValue(DateTime.fromISO('2020-03-09T16:40:00'));
     expect(booking.isActive).to.be.true;
 
     // At end time
-    DateTime.local.mockReturnValue(DateTime.fromISO("2020-03-09T18:00:00"));
+    DateTime.local.mockReturnValue(DateTime.fromISO('2020-03-09T18:00:00'));
     expect(booking.isActive).to.be.true;
 
     // 1 Hour After Finish
-    DateTime.local.mockReturnValue(DateTime.fromISO("2020-03-09T19:00:00"));
+    DateTime.local.mockReturnValue(DateTime.fromISO('2020-03-09T19:00:00'));
     expect(booking.isActive).to.be.true;
   });
-  it("can tell if a booking is inactive", () => {
+  it('can tell if a booking is inactive', () => {
     booking.updateFromAPIData(bookingAPIData);
     // Midnight next day
-    DateTime.local.mockReturnValue(DateTime.fromISO("2020-03-10T00:00:00"));
+    DateTime.local.mockReturnValue(DateTime.fromISO('2020-03-10T00:00:00'));
     expect(booking.isActive).to.be.false;
 
     // 10AM Next Day
-    DateTime.local.mockReturnValue(DateTime.fromISO("2020-03-10T10:00:00"));
+    DateTime.local.mockReturnValue(DateTime.fromISO('2020-03-10T10:00:00'));
     expect(booking.isActive).to.be.false;
   });
 });

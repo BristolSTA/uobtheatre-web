@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     onInput(event) {
-      this.$emit("input", event);
+      this.$emit('input', event);
     },
     onBlur(event) {
       let newVal = event.target.value;
@@ -40,8 +40,8 @@ export default {
       if (newVal < 0) {
         newVal = 0;
       }
-      this.$emit("input", newVal);
-      this.$emit("blur", newVal);
+      this.$emit('input', newVal);
+      this.$emit('blur', newVal);
     },
   },
 };

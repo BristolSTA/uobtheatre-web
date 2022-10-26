@@ -48,12 +48,12 @@
 </template>
 
 <script>
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
-import LoadingContainer from "@/components/ui/LoadingContainer.vue";
-import NonFieldError from "@/components/ui/NonFieldError.vue";
-import TextInput from "@/components/ui/TextInput.vue";
-import { getValidationErrors, performMutation, swalToast } from "@/utils";
+import LoadingContainer from '@/components/ui/LoadingContainer.vue';
+import NonFieldError from '@/components/ui/NonFieldError.vue';
+import TextInput from '@/components/ui/TextInput.vue';
+import { getValidationErrors, performMutation, swalToast } from '@/utils';
 export default {
   components: {
     LoadingContainer,
@@ -79,7 +79,7 @@ export default {
             mutation: gql`
           mutation ($currentPassword: String!, $newPassword: String!, $confirmedNewPassword: String!) {
             passwordChange(oldPassword: $currentPassword, newPassword1: $newPassword, newPassword2: $confirmedNewPassword) {
-                ${require("@/graphql/partials/ErrorsPartial").default}
+                ${require('@/graphql/partials/ErrorsPartial').default}
             }
           }
         `,
@@ -89,14 +89,14 @@ export default {
               confirmedNewPassword: this.confirmedNewPassword,
             },
           },
-          "passwordChange"
+          'passwordChange'
         );
         swalToast.fire({
-          icon: "success",
-          title: "Password Changed",
-          position: "bottom-end",
+          icon: 'success',
+          title: 'Password Changed',
+          position: 'bottom-end',
         });
-        this.$emit("cancel");
+        this.$emit('cancel');
       } catch (e) {
         this.errors = getValidationErrors(e);
       }

@@ -1,17 +1,17 @@
-import { shallowMount } from "@vue/test-utils";
-import { expect } from "chai";
+import { shallowMount } from '@vue/test-utils';
+import { expect } from 'chai';
 
-import FakeBooking from "../../../fixtures/Booking.js";
-import { generateMountOptions } from "../../../helpers";
-import Booking from "@/classes/Booking";
-import BookingPriceOverview from "@/components/booking/overview/BookingPriceOverview.vue";
-import PerformanceOverview from "@/components/booking/overview/PerformanceOverview.vue";
-import TicketsOverview from "@/components/booking/overview/TicketsOverview.vue";
-import UserOverview from "@/components/booking/overview/UserOverview.vue";
-import VenueOverview from "@/components/booking/overview/VenueOverview.vue";
-import OverviewStage from "@/pages/production/_slug/book/_performanceId/overview.vue";
+import FakeBooking from '../../../fixtures/Booking.js';
+import { generateMountOptions } from '../../../helpers';
+import Booking from '@/classes/Booking';
+import BookingPriceOverview from '@/components/booking/overview/BookingPriceOverview.vue';
+import PerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue';
+import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
+import UserOverview from '@/components/booking/overview/UserOverview.vue';
+import VenueOverview from '@/components/booking/overview/VenueOverview.vue';
+import OverviewStage from '@/pages/production/_slug/book/_performanceId/overview.vue';
 
-describe("Overview Stage", () => {
+describe('Overview Stage', () => {
   let overviewComponent;
   let production;
   const booking = new Booking();
@@ -21,7 +21,7 @@ describe("Overview Stage", () => {
     production = FakeBooking().performance.production;
     overviewComponent = shallowMount(
       OverviewStage,
-      generateMountOptions(["router"], {
+      generateMountOptions(['router'], {
         propsData: {
           production,
           booking,
@@ -30,7 +30,7 @@ describe("Overview Stage", () => {
     );
   });
 
-  it("contains correct overview components", () => {
+  it('contains correct overview components', () => {
     expect(overviewComponent.findComponent(PerformanceOverview).exists()).to.be
       .true;
     expect(overviewComponent.findComponent(VenueOverview).exists()).to.be.true;
@@ -41,8 +41,8 @@ describe("Overview Stage", () => {
       .true;
   });
 
-  it("emits next stage when button clicked", () => {
-    overviewComponent.find("button:last-of-type").trigger("click");
-    expect(overviewComponent.emitted("next-stage")).to.be.ok;
+  it('emits next stage when button clicked', () => {
+    overviewComponent.find('button:last-of-type').trigger('click');
+    expect(overviewComponent.emitted('next-stage')).to.be.ok;
   });
 });

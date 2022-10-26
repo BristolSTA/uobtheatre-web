@@ -21,19 +21,19 @@
 </template>
 
 <script>
-import lo from "lodash";
+import lo from 'lodash';
 
-import Booking from "@/classes/Booking";
-import TicketMatrix from "@/classes/TicketsMatrix";
-import BookingMutation from "@/graphql/mutations/booking/Booking.gql";
-import { getValidationErrors, performMutation } from "@/utils";
+import Booking from '@/classes/Booking';
+import TicketMatrix from '@/classes/TicketsMatrix';
+import BookingMutation from '@/graphql/mutations/booking/Booking.gql';
+import { getValidationErrors, performMutation } from '@/utils';
 
-import BookingStage from "@/classes/BookingStage";
-import TicketsEditor from "@/components/booking/editor/TicketsEditor.vue";
+import BookingStage from '@/classes/BookingStage';
+import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue';
 export default {
   stageInfo: new BookingStage({
-    name: "Ticket Selection",
-    routeName: "production-slug-book-performanceId-tickets",
+    name: 'Ticket Selection',
+    routeName: 'production-slug-book-performanceId-tickets',
   }),
   components: {
     TicketsEditor,
@@ -75,7 +75,7 @@ export default {
                 },
               },
             },
-            "booking"
+            'booking'
           );
           bookingResponse = data.booking.booking;
         } else {
@@ -91,7 +91,7 @@ export default {
                 },
               },
             },
-            "booking"
+            'booking'
           );
           bookingResponse = data.booking.booking;
         }

@@ -31,7 +31,7 @@ export default {
       );
     },
     currentlySortedUp() {
-      return this.currentlySorted && this.value.startsWith("-");
+      return this.currentlySorted && this.value.startsWith('-');
     },
     currentlySortedDown() {
       return this.currentlySorted && !this.currentlySortedUp;
@@ -49,13 +49,13 @@ export default {
 
       if (this.currentlySorted) {
         // Exisiting sort
-        if (this.value.startsWith("-")) {
-          this.$emit("input", this.mustSort ? "" + this.sortField : null);
+        if (this.value.startsWith('-')) {
+          this.$emit('input', this.mustSort ? '' + this.sortField : null);
         } else {
-          this.$emit("input", "-" + this.sortField);
+          this.$emit('input', '-' + this.sortField);
         }
       } else {
-        this.$emit("input", "" + this.sortField);
+        this.$emit('input', '' + this.sortField);
       }
 
       // if (this.value === '-') {

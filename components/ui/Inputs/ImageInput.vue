@@ -59,8 +59,8 @@
 </template>
 
 <script>
-import ErrorHelper from "../ErrorHelper.vue";
-import { swal } from "@/utils";
+import ErrorHelper from '../ErrorHelper.vue';
+import { swal } from '@/utils';
 export default {
   components: { ErrorHelper },
   props: {
@@ -98,7 +98,7 @@ export default {
   },
   watch: {
     file(newFile, oldFile) {
-      this.$emit("change", newFile);
+      this.$emit('change', newFile);
 
       if (!newFile) {
         return (this.fileDataUrl = null);
@@ -124,7 +124,7 @@ export default {
       return new Promise((resolve) => {
         if (file.size / 1000000 > this.maxFileSizeMb) {
           swal.fire({
-            title: "Sorry, this image is too large",
+            title: 'Sorry, this image is too large',
             text: `Please ensure your file is under ${this.maxFileSizeMb}MB`,
           });
           return resolve(false);
@@ -166,12 +166,12 @@ export default {
       this.draggingOver = false;
 
       const files = Array.from(event.dataTransfer.files).filter((file) =>
-        file.type.startsWith("image")
+        file.type.startsWith('image')
       );
       if (event && files.length) {
         this.file = files[0];
       } else {
-        this.error = "Unsupported file type";
+        this.error = 'Unsupported file type';
       }
     },
     handleFileSelection(e) {

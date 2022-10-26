@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import FormLabel from "@/components/ui/FormLabel.vue";
+import FormLabel from '@/components/ui/FormLabel.vue';
 
 export default {
   components: { FormLabel },

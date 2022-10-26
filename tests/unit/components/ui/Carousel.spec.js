@@ -1,10 +1,10 @@
-import { expect } from "chai";
+import { expect } from 'chai';
 
-import { mountWithRouterMock } from "../../helpers";
-import Society from "../../fixtures/Society";
-import Carousel from "@/components/ui/Carousel.vue";
+import { mountWithRouterMock } from '../../helpers';
+import Society from '../../fixtures/Society';
+import Carousel from '@/components/ui/Carousel.vue';
 
-describe("Carousel", function () {
+describe('Carousel', function () {
   let carouselComponent;
   let carouselItems;
 
@@ -13,42 +13,42 @@ describe("Carousel", function () {
       {
         id: 1,
         displayImage: {
-          url: "http://pathto.example/my-image0.png",
+          url: 'http://pathto.example/my-image0.png',
         },
         text: {
-          name: "My production without a picture",
-          slug: "my-production-without-a-picture",
-          society: Society({ name: "Dramatic Pause", slug: "dramatic-pause" }),
-          start: "2020-11-13T00:00:00.000",
-          end: "2020-11-14T00:00:00.000",
+          name: 'My production without a picture',
+          slug: 'my-production-without-a-picture',
+          society: Society({ name: 'Dramatic Pause', slug: 'dramatic-pause' }),
+          start: '2020-11-13T00:00:00.000',
+          end: '2020-11-14T00:00:00.000',
         },
       },
       {
         id: 2,
         displayImage: {
-          url: "http://pathto.example/my-image.png",
+          url: 'http://pathto.example/my-image.png',
         },
         text: {
-          name: "Upside Down Cake",
-          slug: "upside-down-cake",
+          name: 'Upside Down Cake',
+          slug: 'upside-down-cake',
           society: Society({
-            name: "Joe Bloggs Productions",
-            slug: "joe-bloggs-productions",
+            name: 'Joe Bloggs Productions',
+            slug: 'joe-bloggs-productions',
           }),
-          start: "2020-11-14T00:00:00.000",
-          end: "2020-11-18T00:00:00.000",
+          start: '2020-11-14T00:00:00.000',
+          end: '2020-11-18T00:00:00.000',
         },
       },
       {
         id: 3,
         displayImage: {
-          url: "http://pathto.example/my-image2.png",
+          url: 'http://pathto.example/my-image2.png',
         },
         text: {
-          name: "Legally Ginger",
-          society: Society({ name: "MTB", slug: "mtb" }),
-          start: "2019-11-14T00:00:00.000",
-          end: "2019-11-18T00:00:00.000",
+          name: 'Legally Ginger',
+          society: Society({ name: 'MTB', slug: 'mtb' }),
+          start: '2019-11-14T00:00:00.000',
+          end: '2019-11-18T00:00:00.000',
         },
       },
     ];
@@ -67,83 +67,83 @@ describe("Carousel", function () {
     jest.useRealTimers();
   });
 
-  describe("carousel functions as a carousel", () => {
-    it("has 3 slides", () => {
-      expect(carouselComponent.findAll("li").length).equals(3);
+  describe('carousel functions as a carousel', () => {
+    it('has 3 slides', () => {
+      expect(carouselComponent.findAll('li').length).equals(3);
     });
 
-    it("next button increments slide", () => {
-      const nextButton = carouselComponent.find("#nextBtn");
+    it('next button increments slide', () => {
+      const nextButton = carouselComponent.find('#nextBtn');
 
-      nextButton.trigger("click");
+      nextButton.trigger('click');
       expect(carouselComponent.vm.currentItem).equals(1);
-      nextButton.trigger("click");
+      nextButton.trigger('click');
       expect(carouselComponent.vm.currentItem).equals(2);
-      nextButton.trigger("click");
+      nextButton.trigger('click');
       expect(carouselComponent.vm.currentItem).equals(0);
-      nextButton.trigger("click");
+      nextButton.trigger('click');
       expect(carouselComponent.vm.currentItem).equals(1);
     });
 
-    it("prev button decrements slide", async () => {
-      const prevButton = carouselComponent.find("#prevBtn");
+    it('prev button decrements slide', async () => {
+      const prevButton = carouselComponent.find('#prevBtn');
       await carouselComponent.setData({
         currentItem: 1,
       });
 
-      prevButton.trigger("click");
+      prevButton.trigger('click');
       expect(carouselComponent.vm.currentItem).equals(0);
-      prevButton.trigger("click");
+      prevButton.trigger('click');
       expect(carouselComponent.vm.currentItem).equals(2);
-      prevButton.trigger("click");
+      prevButton.trigger('click');
       expect(carouselComponent.vm.currentItem).equals(1);
-      prevButton.trigger("click");
+      prevButton.trigger('click');
       expect(carouselComponent.vm.currentItem).equals(0);
     });
 
-    it("buttons go to correct slide", () => {
-      const buttons = carouselComponent.findAll(".carousel-indicator");
+    it('buttons go to correct slide', () => {
+      const buttons = carouselComponent.findAll('.carousel-indicator');
 
-      buttons.at(1).trigger("click");
+      buttons.at(1).trigger('click');
       expect(carouselComponent.vm.currentItem).equals(1);
-      buttons.at(0).trigger("click");
+      buttons.at(0).trigger('click');
       expect(carouselComponent.vm.currentItem).equals(0);
-      buttons.at(2).trigger("click");
+      buttons.at(2).trigger('click');
       expect(carouselComponent.vm.currentItem).equals(2);
       jest.advanceTimersByTime(5000);
       expect(carouselComponent.vm.currentItem).equals(0);
     });
   });
 
-  describe("autoplay and pausing functionality", () => {
-    it("mouseover pauses autoplay", () => {
+  describe('autoplay and pausing functionality', () => {
+    it('mouseover pauses autoplay', () => {
       expect(carouselComponent.vm.autoplayInterval).to.not.equal(null);
-      carouselComponent.find("#carousel").trigger("mouseover");
+      carouselComponent.find('#carousel').trigger('mouseover');
       expect(carouselComponent.vm.autoplayInterval).equals(null);
-      carouselComponent.find("#carousel").trigger("mouseout");
+      carouselComponent.find('#carousel').trigger('mouseout');
       expect(carouselComponent.vm.autoplayInterval).to.not.equal(null);
       jest.advanceTimersByTime(5000);
       expect(carouselComponent.vm.currentItem).equals(1);
     });
-    it("mouseover does nothing when disabed", async () => {
+    it('mouseover does nothing when disabed', async () => {
       await carouselComponent.setProps({
         pauseOnHover: false,
       });
       expect(carouselComponent.vm.autoplayInterval).to.not.equal(null);
-      carouselComponent.find("#carousel").trigger("mouseover");
+      carouselComponent.find('#carousel').trigger('mouseover');
       expect(carouselComponent.vm.autoplayInterval).to.not.equal(null);
-      carouselComponent.find("#carousel").trigger("mouseout");
+      carouselComponent.find('#carousel').trigger('mouseout');
       expect(carouselComponent.vm.autoplayInterval).to.not.equal(null);
     });
 
-    it("autoplays after interval", () => {
+    it('autoplays after interval', () => {
       jest.advanceTimersByTime(4000);
       expect(carouselComponent.vm.currentItem).equals(0);
       jest.advanceTimersByTime(1000);
       expect(carouselComponent.vm.currentItem).equals(1);
     });
 
-    it("autoplays with non default interval", async () => {
+    it('autoplays with non default interval', async () => {
       carouselComponent = await mountWithRouterMock(Carousel, {
         propsData: {
           carouselItems,
@@ -159,14 +159,14 @@ describe("Carousel", function () {
       expect(carouselComponent.vm.currentItem).equals(1);
     });
 
-    it("disable autoplay when destroyed", () => {
+    it('disable autoplay when destroyed', () => {
       expect(carouselComponent.vm.autoplayInterval).to.not.equal(null);
       carouselComponent.destroy();
       expect(carouselComponent.vm.autoplayInterval).equals(null);
     });
   });
 
-  describe("with no autoplay", () => {
+  describe('with no autoplay', () => {
     beforeEach(async () => {
       carouselComponent = await mountWithRouterMock(Carousel, {
         propsData: {
@@ -177,20 +177,20 @@ describe("Carousel", function () {
       });
     });
 
-    it("doesnt autoplay", () => {
+    it('doesnt autoplay', () => {
       expect(carouselComponent.vm.autoplayInterval).equals(null);
     });
 
-    it("mouseover does nothing when no autoplay", () => {
+    it('mouseover does nothing when no autoplay', () => {
       expect(carouselComponent.vm.autoplayInterval).equals(null);
-      carouselComponent.find("#carousel").trigger("mouseover");
+      carouselComponent.find('#carousel').trigger('mouseover');
       expect(carouselComponent.vm.autoplayInterval).equals(null);
-      carouselComponent.find("#carousel").trigger("mouseout");
+      carouselComponent.find('#carousel').trigger('mouseout');
       expect(carouselComponent.vm.autoplayInterval).equals(null);
     });
   });
 
-  describe("with only one banner production", () => {
+  describe('with only one banner production', () => {
     beforeEach(async () => {
       carouselComponent = await mountWithRouterMock(Carousel, {
         propsData: {
@@ -201,10 +201,10 @@ describe("Carousel", function () {
       });
     });
 
-    it("has no buttons, arrows, or autoplay", () => {
-      expect(carouselComponent.find("#nextBtn").exists()).to.be.false;
-      expect(carouselComponent.find("#prevBtn").exists()).to.be.false;
-      expect(carouselComponent.find(".carousel-indicator").exists()).to.be
+    it('has no buttons, arrows, or autoplay', () => {
+      expect(carouselComponent.find('#nextBtn').exists()).to.be.false;
+      expect(carouselComponent.find('#prevBtn').exists()).to.be.false;
+      expect(carouselComponent.find('.carousel-indicator').exists()).to.be
         .false;
       expect(carouselComponent.vm.autoplayInterval).equals(null);
     });

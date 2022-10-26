@@ -33,7 +33,7 @@
               displayStartEnd(
                 currentDisplayedProduction.start,
                 currentDisplayedProduction.end,
-                "d MMM"
+                'd MMM'
               )
             }}
           </icon-list-item>
@@ -41,7 +41,7 @@
             {{
               currentDisplayedProduction.venues
                 .map((venue) => venue.name)
-                .join(", ")
+                .join(', ')
             }}
           </icon-list-item>
         </div>
@@ -70,7 +70,7 @@
     <div v-else class="flex items-center h-screen justify-center">
       <div class="px-4 text-white text-center space-y-10">
         <div class="text-rxl font-bold">
-          Welcome to {{ venues.map((venue) => venue.name).join(" & ") }}
+          Welcome to {{ venues.map((venue) => venue.name).join(' & ') }}
         </div>
         <div class="text-2xl">
           Check out
@@ -83,17 +83,17 @@
 </template>
 
 <script>
-import { DateTime } from "luxon";
-import QrcodeVue from "qrcode.vue";
-import VenueUpcomingProductionsQuery from "@/graphql/queries/publicity-screen/VenueUpcomingProductions.gql";
-import UpcomingProductionsQuery from "@/graphql/queries/publicity-screen/AllUpcomingProductions.gql";
-import { displayStartEnd } from "@/utils";
-import IconListItem from "@/components/ui/IconListItem.vue";
-import HaveTicketsReadyScreen from "@/components/publicity-screens/HaveTicketsReadyScreen.vue";
-import SoldOutScreen from "@/components/publicity-screens/SoldOutScreen.vue";
-import WelcomeScreen from "@/components/publicity-screens/WelcomeScreen.vue";
-import PleaseWaitScreen from "@/components/publicity-screens/PleaseWaitScreen.vue";
-import ProductionFeaturedImage from "@/components/production/ProductionFeaturedImage.vue";
+import { DateTime } from 'luxon';
+import QrcodeVue from 'qrcode.vue';
+import VenueUpcomingProductionsQuery from '@/graphql/queries/publicity-screen/VenueUpcomingProductions.gql';
+import UpcomingProductionsQuery from '@/graphql/queries/publicity-screen/AllUpcomingProductions.gql';
+import { displayStartEnd } from '@/utils';
+import IconListItem from '@/components/ui/IconListItem.vue';
+import HaveTicketsReadyScreen from '@/components/publicity-screens/HaveTicketsReadyScreen.vue';
+import SoldOutScreen from '@/components/publicity-screens/SoldOutScreen.vue';
+import WelcomeScreen from '@/components/publicity-screens/WelcomeScreen.vue';
+import PleaseWaitScreen from '@/components/publicity-screens/PleaseWaitScreen.vue';
+import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue';
 
 export default {
   components: {
@@ -103,7 +103,7 @@ export default {
     SoldOutScreen,
     ProductionFeaturedImage,
   },
-  layout: "publicityScreen",
+  layout: 'publicityScreen',
   data() {
     return {
       now: null,
@@ -136,7 +136,7 @@ export default {
             this.$router.resolve({
               path: `/production/${this.currentDisplayedProduction.slug}`,
             }).href
-        : "";
+        : '';
     },
     productionsOnNow() {
       if (!this.now) {
@@ -243,7 +243,7 @@ export default {
       return screens;
     },
     async fetchData() {
-      const slugs = this.$route.params.venueSlugs.split(",");
+      const slugs = this.$route.params.venueSlugs.split(',');
       const showAllUpcoming =
         this.$route.query.onlyTheseVenues === undefined
           ? true
@@ -259,7 +259,7 @@ export default {
               now: new Date(),
               nowDate: DateTime.now().toISODate(),
             },
-            fetchPolicy: "no-cache",
+            fetchPolicy: 'no-cache',
           })
         );
       }

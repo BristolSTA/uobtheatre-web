@@ -202,26 +202,26 @@
 </template>
 
 <script>
-import lo from "lodash";
+import lo from 'lodash';
 
-import LoadingIcon from "../ui/LoadingIcon.vue";
-import ClickableLink from "@/components/ui/ClickableLink.vue";
-import ErrorHelper from "@/components/ui/ErrorHelper.vue";
-import NonFieldError from "@/components/ui/NonFieldError.vue";
-import TextInput from "@/components/ui/TextInput.vue";
-import { authService } from "@/services";
+import LoadingIcon from '../ui/LoadingIcon.vue';
+import ClickableLink from '@/components/ui/ClickableLink.vue';
+import ErrorHelper from '@/components/ui/ErrorHelper.vue';
+import NonFieldError from '@/components/ui/NonFieldError.vue';
+import TextInput from '@/components/ui/TextInput.vue';
+import { authService } from '@/services';
 import {
   catchOnly,
   getValidationErrors,
   swalToast,
   successToast,
-} from "@/utils";
-import ValidationError from "@/errors/ValidationError";
-import UnverifiedLoginError from "@/errors/auth/UnverifiedLoginError";
-import Errors from "@/classes/Errors";
+} from '@/utils';
+import ValidationError from '@/errors/ValidationError';
+import UnverifiedLoginError from '@/errors/auth/UnverifiedLoginError';
+import Errors from '@/classes/Errors';
 
 export default {
-  name: "UserAuthBox",
+  name: 'UserAuthBox',
   components: {
     ClickableLink,
     TextInput,
@@ -268,20 +268,20 @@ export default {
         // Redirect to intended if has
         if (this.$route.query.redirect) {
           return this.$router.replace(this.$route.query.redirect).catch((e) => {
-            if (!e.message.includes("Redirected when going from")) {
+            if (!e.message.includes('Redirected when going from')) {
               throw e;
             }
           });
         }
 
-        return this.$router.replace("/");
+        return this.$router.replace('/');
       } catch (e) {
         catchOnly([ValidationError, UnverifiedLoginError], e, () => {
           this.login_errors = getValidationErrors(e);
           if (e instanceof UnverifiedLoginError) {
             this.login_errors.push({
-              message: "Your account has not been verified yet.",
-              code: "not_verified",
+              message: 'Your account has not been verified yet.',
+              code: 'not_verified',
             });
           }
         });
@@ -293,13 +293,13 @@ export default {
       this.loading = true;
       this.signup_errors = null;
 
-      if (!this.lastName || this.lastName === "") {
+      if (!this.lastName || this.lastName === '') {
         this.signup_errors = new Errors();
         this.signup_errors.record([
           {
-            message: "Please provider a last name",
-            field: "lastName",
-            __typename: "FieldError",
+            message: 'Please provider a last name',
+            field: 'lastName',
+            __typename: 'FieldError',
           },
         ]);
         return (this.loading = false);
@@ -315,13 +315,13 @@ export default {
         });
 
         swalToast.fire({
-          icon: "success",
-          title: "Account Created",
-          text: "Please check your emails to verify your account",
+          icon: 'success',
+          title: 'Account Created',
+          text: 'Please check your emails to verify your account',
           showConfirmButton: true,
-          position: "bottom-end",
+          position: 'bottom-end',
         });
-        return this.$router.push("/");
+        return this.$router.push('/');
       } catch (e) {
         this.signup_errors = getValidationErrors(e);
       }
@@ -334,7 +334,7 @@ export default {
       try {
         await authService.resendVerificationEmail(this, this.email);
         successToast.fire({
-          title: "Verfication email sent!",
+          title: 'Verfication email sent!',
         });
       } catch (e) {
         this.login_errors = getValidationErrors(e);
@@ -342,9 +342,9 @@ export default {
       this.loading = false;
     },
     guessNameParts() {
-      const components = lo.trim(this.fullName).split(" ");
+      const components = lo.trim(this.fullName).split(' ');
       this.firstName = components.shift();
-      this.lastName = components.join(" ");
+      this.lastName = components.join(' ');
     },
   },
 };

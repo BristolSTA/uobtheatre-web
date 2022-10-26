@@ -18,22 +18,22 @@
   </auth-page-template>
 </template>
 <script>
-import { authService } from "@/services";
-import { getValidationErrors, swalToast } from "@/utils";
+import { authService } from '@/services';
+import { getValidationErrors, swalToast } from '@/utils';
 
-import AuthPageTemplate from "@/components/auth/AuthPageTemplate.vue";
-import LoadingIcon from "@/components/ui/LoadingIcon.vue";
+import AuthPageTemplate from '@/components/auth/AuthPageTemplate.vue';
+import LoadingIcon from '@/components/ui/LoadingIcon.vue';
 
 export default {
   components: { AuthPageTemplate, LoadingIcon },
-  middleware: "not-authed",
+  middleware: 'not-authed',
   data() {
     return {
       error: false,
     };
   },
   head: {
-    title: "Verify Account",
+    title: 'Verify Account',
   },
   async mounted() {
     try {
@@ -41,12 +41,12 @@ export default {
         token: this.$route.params.token,
       });
       swalToast.fire({
-        icon: "success",
-        position: "bottom-end",
-        title: "Account Verified",
-        text: "You may now login",
+        icon: 'success',
+        position: 'bottom-end',
+        title: 'Account Verified',
+        text: 'You may now login',
       });
-      return this.$router.push("/login");
+      return this.$router.push('/login');
     } catch (e) {
       this.error = getValidationErrors(e);
     }

@@ -1,6 +1,6 @@
-import gql from "graphql-tag";
-import { authService } from "@/services";
-import AuthUserDetailsFragment from "@/graphql/fragments/user/AuthUserDetailsFragment.gql";
+import gql from 'graphql-tag';
+import { authService } from '@/services';
+import AuthUserDetailsFragment from '@/graphql/fragments/user/AuthUserDetailsFragment.gql';
 
 export const state = () => ({
   token: null,
@@ -28,7 +28,7 @@ export const actions = {
           }
           ${AuthUserDetailsFragment}
         `,
-        fetchPolicy: "no-cache",
+        fetchPolicy: 'no-cache',
       });
       userInfo = data.me;
     }
@@ -36,13 +36,13 @@ export const actions = {
       return authService.logout(nuxtContext);
     }
 
-    context.commit("SET_AUTH_USER", userInfo);
+    context.commit('SET_AUTH_USER', userInfo);
   },
   login(context, token) {
-    context.commit("SET_TOKEN", token);
+    context.commit('SET_TOKEN', token);
   },
   logout(context) {
-    context.commit("SET_AUTH_USER", null);
-    context.commit("SET_TOKEN", null);
+    context.commit('SET_AUTH_USER', null);
+    context.commit('SET_TOKEN', null);
   },
 };

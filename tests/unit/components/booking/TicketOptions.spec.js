@@ -1,15 +1,15 @@
 // Copy and rename this file to <testname>.spec.js
-import { mount } from "@vue/test-utils";
-import { expect } from "chai";
-import lo from "lodash";
-import FullBooking from "../../fixtures/instances/FullBooking";
-import TicketOptions from "@/components/booking/TicketOptions.vue";
-import SeatGroup from "@/components/booking/SeatGroup.vue";
-import Booking from "@/classes/Booking";
-import TicketsMatrix from "@/classes/TicketsMatrix";
-import Ticket from "@/classes/Ticket";
+import { mount } from '@vue/test-utils';
+import { expect } from 'chai';
+import lo from 'lodash';
+import FullBooking from '../../fixtures/instances/FullBooking';
+import TicketOptions from '@/components/booking/TicketOptions.vue';
+import SeatGroup from '@/components/booking/SeatGroup.vue';
+import Booking from '@/classes/Booking';
+import TicketsMatrix from '@/classes/TicketsMatrix';
+import Ticket from '@/classes/Ticket';
 
-describe("Ticket Options", () => {
+describe('Ticket Options', () => {
   let component;
   beforeEach(() => {
     component = mount(TicketOptions, {
@@ -20,26 +20,26 @@ describe("Ticket Options", () => {
     });
   });
 
-  it("displays available seat locations", async () => {
+  it('displays available seat locations', async () => {
     const seatGroupComponents = component.findAllComponents(SeatGroup);
     expect(seatGroupComponents.length).to.eq(2);
     expect(
-      seatGroupComponents.at(0).props("ticketOption").seatGroup.name
-    ).to.eq("Best seats in the house");
+      seatGroupComponents.at(0).props('ticketOption').seatGroup.name
+    ).to.eq('Best seats in the house');
     expect(
-      seatGroupComponents.at(1).props("ticketOption").seatGroup.name
-    ).to.eq("The Meh Seats");
-    expect(seatGroupComponents.at(1).props("discounts").length).to.eq(1);
+      seatGroupComponents.at(1).props('ticketOption').seatGroup.name
+    ).to.eq('The Meh Seats');
+    expect(seatGroupComponents.at(1).props('discounts').length).to.eq(1);
 
     // NB: Current tickets == all the tickets in the booking
-    expect(seatGroupComponents.at(1).props("currentTickets").length).to.eq(4);
+    expect(seatGroupComponents.at(1).props('currentTickets').length).to.eq(4);
 
-    expect(seatGroupComponents.at(1).props("groupCapacityRemaining")).to.eq(11);
+    expect(seatGroupComponents.at(1).props('groupCapacityRemaining')).to.eq(11);
 
     component.vm.ticketMatrix.performanceCapacityRemaining = 5;
     await component.vm.$forceUpdate();
 
-    expect(seatGroupComponents.at(1).props("groupCapacityRemaining")).to.eq(5);
+    expect(seatGroupComponents.at(1).props('groupCapacityRemaining')).to.eq(5);
 
     await component.vm.booking.tickets.push(
       new Ticket(
@@ -48,37 +48,37 @@ describe("Ticket Options", () => {
       )
     );
 
-    expect(seatGroupComponents.at(1).props("currentTickets").length).to.eq(5);
+    expect(seatGroupComponents.at(1).props('currentTickets').length).to.eq(5);
   });
 
-  it("reacts to select location event and toggles accordion", async () => {
+  it('reacts to select location event and toggles accordion', async () => {
     // By default, all should be collpased
     const seatGroupComponents = component.findAllComponents(SeatGroup);
     expect(
-      !seatGroupComponents.at(0).props("expanded") &&
-        !seatGroupComponents.at(0).props("expanded")
+      !seatGroupComponents.at(0).props('expanded') &&
+        !seatGroupComponents.at(0).props('expanded')
     ).to.be.true;
 
-    await seatGroupComponents.at(0).vm.$emit("select-location");
+    await seatGroupComponents.at(0).vm.$emit('select-location');
 
-    expect(seatGroupComponents.at(0).props("expanded")).to.be.true;
-    expect(seatGroupComponents.at(1).props("expanded")).to.be.false;
+    expect(seatGroupComponents.at(0).props('expanded')).to.be.true;
+    expect(seatGroupComponents.at(1).props('expanded')).to.be.false;
 
-    await seatGroupComponents.at(1).vm.$emit("select-location");
-    expect(seatGroupComponents.at(0).props("expanded")).to.be.false;
-    expect(seatGroupComponents.at(1).props("expanded")).to.be.true;
+    await seatGroupComponents.at(1).vm.$emit('select-location');
+    expect(seatGroupComponents.at(0).props('expanded')).to.be.false;
+    expect(seatGroupComponents.at(1).props('expanded')).to.be.true;
 
-    await seatGroupComponents.at(1).vm.$emit("select-location");
-    expect(seatGroupComponents.at(0).props("expanded")).to.be.false;
-    expect(seatGroupComponents.at(1).props("expanded")).to.be.false;
+    await seatGroupComponents.at(1).vm.$emit('select-location');
+    expect(seatGroupComponents.at(0).props('expanded')).to.be.false;
+    expect(seatGroupComponents.at(1).props('expanded')).to.be.false;
   });
 
-  it("reacts to add ticket event", async () => {
+  it('reacts to add ticket event', async () => {
     component.vm.interaction_timer = jest.fn();
     await component
       .findComponent(SeatGroup)
       .vm.$emit(
-        "add-ticket",
+        'add-ticket',
         component.vm.ticketMatrix.ticketOptions[0].seatGroup,
         component.vm.ticketMatrix.ticketOptions[0].concessionTypes[0]
           .concessionType
@@ -89,12 +89,12 @@ describe("Ticket Options", () => {
     expect(component.vm.interaction_timer.mock.calls.length).to.eq(1);
   });
 
-  it("reacts to add ticket event (multiple)", async () => {
+  it('reacts to add ticket event (multiple)', async () => {
     component.vm.interaction_timer = jest.fn();
     await component
       .findComponent(SeatGroup)
       .vm.$emit(
-        "add-ticket",
+        'add-ticket',
         component.vm.ticketMatrix.ticketOptions[0].seatGroup,
         component.vm.ticketMatrix.ticketOptions[0].concessionTypes[0]
           .concessionType,
@@ -106,14 +106,14 @@ describe("Ticket Options", () => {
     expect(component.vm.interaction_timer.mock.calls.length).to.eq(1);
   });
 
-  it("reacts to set ticket number event", async () => {
+  it('reacts to set ticket number event', async () => {
     component.vm.interaction_timer = jest.fn();
 
     // Set to have 3 Best Seat Adults (from 2)
     await component
       .findComponent(SeatGroup)
       .vm.$emit(
-        "set-tickets",
+        'set-tickets',
         component.vm.ticketMatrix.ticketOptions[0].seatGroup,
         component.vm.ticketMatrix.ticketOptions[0].concessionTypes[0]
           .concessionType,
@@ -125,7 +125,7 @@ describe("Ticket Options", () => {
     expect(component.vm.interaction_timer.mock.calls.length).to.eq(1);
   });
 
-  it("reacts to remove ticket event", async () => {
+  it('reacts to remove ticket event', async () => {
     component.vm.interaction_timer = jest.fn();
     component.vm.booking.tickets = [
       new Ticket(
@@ -136,7 +136,7 @@ describe("Ticket Options", () => {
     await component
       .findComponent(SeatGroup)
       .vm.$emit(
-        "remove-ticket",
+        'remove-ticket',
         component.vm.ticketMatrix.ticketOptions[0].seatGroup,
         component.vm.ticketMatrix.ticketOptions[0].concessionTypes[0]
           .concessionType
@@ -145,8 +145,8 @@ describe("Ticket Options", () => {
     expect(component.vm.interaction_timer.mock.calls.length).to.eq(1);
   });
 
-  it("calls update API once interaction timer debounced", () => {
-    jest.spyOn(lo, "debounce");
+  it('calls update API once interaction timer debounced', () => {
+    jest.spyOn(lo, 'debounce');
 
     component = mount(TicketOptions, {
       propsData: {
@@ -161,8 +161,8 @@ describe("Ticket Options", () => {
     lo.debounce.mockReset();
   });
 
-  it("emits request update event when triggered", () => {
+  it('emits request update event when triggered', () => {
     component.vm.requestUpdate();
-    expect(component.emitted()["request-update"].length).to.eq(1);
+    expect(component.emitted()['request-update'].length).to.eq(1);
   });
 });

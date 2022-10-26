@@ -21,12 +21,12 @@
 </template>
 
 <script>
-import AdminSidebar from "@/components/admin/AdminSidebar.vue";
-import Breadcrumbs from "@/components/ui/Breadcrumbs.vue";
+import AdminSidebar from '@/components/admin/AdminSidebar.vue';
+import Breadcrumbs from '@/components/ui/Breadcrumbs.vue';
 export default {
   components: { AdminSidebar, Breadcrumbs },
-  layout: "admin",
-  middleware: ["authed", "admin"],
+  layout: 'admin',
+  middleware: ['authed', 'admin'],
   data() {
     return {
       showSidebar: false,
@@ -34,7 +34,7 @@ export default {
   },
   head: {
     titleTemplate: (chunk) =>
-      chunk ? `${chunk} | Admin | UOB Theatre` : "Administration | UOB Theatre",
+      chunk ? `${chunk} | Admin | UOB Theatre` : 'Administration | UOB Theatre',
   },
 };
 </script>

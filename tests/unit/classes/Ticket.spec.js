@@ -1,31 +1,31 @@
-import { expect } from "chai";
+import { expect } from 'chai';
 
-import Ticket from "@/classes/Ticket";
-describe("Ticket Class", () => {
+import Ticket from '@/classes/Ticket';
+describe('Ticket Class', () => {
   /** @member {Ticket} */
   let ticket;
 
   const incorrectSeatGroup = {
     id: 1,
-    name: "Front Row",
+    name: 'Front Row',
   };
   const incorrectConcessionTypeEdge = {
     price: 200,
     concessionType: {
       id: 5,
-      name: "Child",
+      name: 'Child',
     },
   };
 
   const correctSeatGroup = {
     id: 2,
-    name: "Back Row",
+    name: 'Back Row',
   };
   const correctConcessionTypeEdge = {
     price: 100,
     concessionType: {
       id: 4,
-      name: "Adult",
+      name: 'Adult',
     },
   };
 
@@ -47,7 +47,7 @@ describe("Ticket Class", () => {
     );
   });
 
-  it("can create from API data", () => {
+  it('can create from API data', () => {
     const ticket = Ticket.fromAPIData({
       id: 4,
       seatGroup: {
@@ -63,7 +63,7 @@ describe("Ticket Class", () => {
     expect(ticket.concessionType.id).to.eq(2);
   });
 
-  it("can report if it matches", () => {
+  it('can report if it matches', () => {
     expect(ticket.matches(incorrectSeatGroup)).to.be.false;
     expect(ticket.matches(null, incorrectConcessionTypeEdge)).to.be.false;
     expect(ticket.matches(incorrectSeatGroup, incorrectConcessionTypeEdge)).to
@@ -77,11 +77,11 @@ describe("Ticket Class", () => {
     ).to.be.true;
   });
 
-  it("can give the price in pennies", () => {
+  it('can give the price in pennies', () => {
     expect(ticket.price(ticketOptionsData) === 100);
   });
 
-  it("can convert to API data", () => {
+  it('can convert to API data', () => {
     expect(ticket.apiData).to.include({
       seatGroupId: 2,
       concessionTypeId: 4,
@@ -96,16 +96,16 @@ describe("Ticket Class", () => {
     });
   });
 
-  it("can generate a QR code string", () => {
+  it('can generate a QR code string', () => {
     ticket.id = 2;
-    expect(ticket.generateQRCodeString("abcd1234")).to.eq(
-      "WyJhYmNkMTIzNCIsMl0="
+    expect(ticket.generateQRCodeString('abcd1234')).to.eq(
+      'WyJhYmNkMTIzNCIsMl0='
     );
   });
 
-  it("can get data from a QR code", () => {
-    expect(Ticket.dataFromQRCode("WyJhYmNkMTIzNCIsMl0")).to.include({
-      bookingReference: "abcd1234",
+  it('can get data from a QR code', () => {
+    expect(Ticket.dataFromQRCode('WyJhYmNkMTIzNCIsMl0')).to.include({
+      bookingReference: 'abcd1234',
       ticketId: 2,
     });
   });

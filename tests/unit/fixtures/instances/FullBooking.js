@@ -1,10 +1,10 @@
-import PriceBreakdownTicket from "../PriceBreakdownTicket";
-import bookingFixture from "@/tests/unit/fixtures/Booking";
-import PerformanceSeatGroup from "@/tests/unit/fixtures/PerformanceSeatGroup";
-import ConcessionTypeBookingType from "@/tests/unit/fixtures/ConcessionTypeBookingType";
-import SeatGroup from "@/tests/unit/fixtures/SeatGroup";
-import ConcessionType from "@/tests/unit/fixtures/ConcessionType";
-import Ticket from "@/tests/unit/fixtures/Ticket";
+import PriceBreakdownTicket from '../PriceBreakdownTicket';
+import bookingFixture from '@/tests/unit/fixtures/Booking';
+import PerformanceSeatGroup from '@/tests/unit/fixtures/PerformanceSeatGroup';
+import ConcessionTypeBookingType from '@/tests/unit/fixtures/ConcessionTypeBookingType';
+import SeatGroup from '@/tests/unit/fixtures/SeatGroup';
+import ConcessionType from '@/tests/unit/fixtures/ConcessionType';
+import Ticket from '@/tests/unit/fixtures/Ticket';
 
 /**
  * Has
@@ -17,25 +17,25 @@ export default (overrides = {}) => {
   const bookingdata = bookingFixture();
 
   const adult = ConcessionType({
-    name: "Adult",
+    name: 'Adult',
     description: null,
   });
   const adultBookingType = ConcessionTypeBookingType({
     concessionType: adult,
   });
   const student = ConcessionType({
-    name: "Student",
+    name: 'Student',
     id: 2,
-    description: "Valid ID NOT required",
+    description: 'Valid ID NOT required',
   });
   const studentBookingType = ConcessionTypeBookingType({
     concessionType: student,
     price: 800,
-    pricePounds: "8.00",
+    pricePounds: '8.00',
   });
 
   const mehSeatGroup = SeatGroup({
-    name: "The Meh Seats",
+    name: 'The Meh Seats',
     id: 2,
     description: null,
   });

@@ -1,11 +1,11 @@
-import gql from "graphql-tag";
-import cookie from "js-cookie";
-import jwtDecode from "jwt-decode";
+import gql from 'graphql-tag';
+import cookie from 'js-cookie';
+import jwtDecode from 'jwt-decode';
 
-import Errors from "@/classes/Errors";
-import ErrorsPartial from "@/graphql/partials/ErrorsPartial";
-import ValidationError from "@/errors/ValidationError";
-import UnverifiedLoginError from "@/errors/auth/UnverifiedLoginError";
+import Errors from '@/classes/Errors';
+import ErrorsPartial from '@/graphql/partials/ErrorsPartial';
+import ValidationError from '@/errors/ValidationError';
+import UnverifiedLoginError from '@/errors/auth/UnverifiedLoginError';
 
 let refreshTimer;
 
@@ -30,11 +30,11 @@ export default {
 
   logout(context, trigger = true) {
     clearTimeout(refreshTimer);
-    context.store.dispatch("auth/logout"); // Remove token
+    context.store.dispatch('auth/logout'); // Remove token
     cookie.remove(context.$config.auth.refreshTokenKey); // Remove fresh token cookie
     cookie.remove(context.$config.auth.rememberKey); // Remove remember cookie
     if (trigger) {
-      window.localStorage.setItem("logout", Date.now());
+      window.localStorage.setItem('logout', Date.now());
     }
   },
 
@@ -74,7 +74,7 @@ export default {
     this.setRefreshToken(context, data.refreshToken.refreshToken);
     this.queueRefresh(context, data.refreshToken.token);
 
-    return context.store.dispatch("auth/loadUserDetails", {
+    return context.store.dispatch('auth/loadUserDetails', {
       apollo: context.app.apolloProvider.defaultClient,
       nuxtContext: context,
     });
@@ -115,7 +115,7 @@ export default {
   },
 
   setToken(context, token) {
-    context.store.dispatch("auth/login", token);
+    context.store.dispatch('auth/login', token);
   },
 
   /**
@@ -175,7 +175,7 @@ export default {
           );
           this.queueRefresh(standardContext);
           standardContext.store
-            .dispatch("auth/loadUserDetails", {
+            .dispatch('auth/loadUserDetails', {
               apollo: standardContext.app.apolloProvider.defaultClient,
             })
             .then(() => resolve(data.login));

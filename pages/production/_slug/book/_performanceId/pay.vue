@@ -8,13 +8,13 @@
         {{ booking.performance.production.name }}
       </p>
       <p class="text-sta-orange">
-        {{ booking.performance.start | dateFormat("cccc d MMM y") }}, Starting
+        {{ booking.performance.start | dateFormat('cccc d MMM y') }}, Starting
         at
-        {{ booking.performance.start | dateFormat("T") }}
+        {{ booking.performance.start | dateFormat('T') }}
       </p>
       <p class="text-sta-orange">
         {{ booking.tickets.length }} Ticket{{
-          booking.tickets.length > 1 ? "s" : ""
+          booking.tickets.length > 1 ? 's' : ''
         }}
       </p>
     </div>
@@ -63,18 +63,18 @@
 </template>
 
 <script>
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2';
 
-import Booking from "@/classes/Booking";
-import AllErrorsDisplay from "@/components/ui/AllErrorsDisplay.vue";
-import { getValidationErrors, performMutation, swal } from "@/utils";
-import BookingStage from "@/classes/BookingStage";
-import SquarePayment from "@/components/square/SquarePayment.vue";
-import LoadingContainer from "@/components/ui/LoadingContainer.vue";
+import Booking from '@/classes/Booking';
+import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue';
+import { getValidationErrors, performMutation, swal } from '@/utils';
+import BookingStage from '@/classes/BookingStage';
+import SquarePayment from '@/components/square/SquarePayment.vue';
+import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 export default {
   stageInfo: new BookingStage({
-    name: "Payment",
-    routeName: "production-slug-book-performanceId-pay",
+    name: 'Payment',
+    routeName: 'production-slug-book-performanceId-pay',
     eligable: (_, booking) => !booking.dirty,
   }),
   components: { AllErrorsDisplay, SquarePayment, LoadingContainer },
@@ -100,7 +100,7 @@ export default {
   methods: {
     onPaying() {
       this.progressPopup = swal.fire({
-        title: "Confirming your booking...",
+        title: 'Confirming your booking...',
         allowOutsideClick: false,
         allowEscapeKey: false,
         allowEnterKey: false,
@@ -118,14 +118,14 @@ export default {
         const data = await performMutation(
           this.$apollo,
           {
-            mutation: require("@/graphql/mutations/booking/PayBooking.gql"),
+            mutation: require('@/graphql/mutations/booking/PayBooking.gql'),
             variables: {
               id: this.booking.id,
               totalPence: this.booking.totalPrice,
               idempotencyKey: this.booking.idempotencyKey,
             },
           },
-          "payBooking"
+          'payBooking'
         );
         this.onBookingComplete(data.payBooking.booking.reference);
       } catch (e) {
@@ -139,7 +139,7 @@ export default {
         const data = await performMutation(
           this.$apollo,
           {
-            mutation: require("@/graphql/mutations/booking/PayBooking.gql"),
+            mutation: require('@/graphql/mutations/booking/PayBooking.gql'),
             variables: {
               id: this.booking.id,
               nonce: paymentData.nonce,
@@ -148,7 +148,7 @@ export default {
               verifyToken: paymentData.verifyToken,
             },
           },
-          "payBooking"
+          'payBooking'
         );
 
         this.onBookingComplete(data.payBooking.booking.reference);
@@ -159,12 +159,12 @@ export default {
       this.progressPopup.close();
     },
     onBookingComplete(reference) {
-      this.$emit("paid");
+      this.$emit('paid');
       swal
         .fire({
-          icon: "success",
-          title: "Payment Confirmed!",
-          text: "Taking you to your booking...",
+          icon: 'success',
+          title: 'Payment Confirmed!',
+          text: 'Taking you to your booking...',
           timer: 2000,
           timerProgressBar: true,
           showConfirmButton: false,

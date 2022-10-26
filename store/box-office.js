@@ -1,7 +1,7 @@
-import Cookie from "js-cookie";
-import DeleteBookingMutation from "@/graphql/mutations/booking/DeleteBooking.gql";
+import Cookie from 'js-cookie';
+import DeleteBookingMutation from '@/graphql/mutations/booking/DeleteBooking.gql';
 
-const locationCookieKey = "uobtheatre-boxoffice-location";
+const locationCookieKey = 'uobtheatre-boxoffice-location';
 
 export const state = () => ({
   locationId: null,
@@ -23,7 +23,7 @@ export const mutations = {
 
 export const actions = {
   rememberState(context) {
-    context.commit("SET_LOCATION", Cookie.get(locationCookieKey));
+    context.commit('SET_LOCATION', Cookie.get(locationCookieKey));
   },
   async cancelInProgressBooking(context) {
     await this.app.apolloProvider.defaultClient.mutate({
@@ -32,7 +32,7 @@ export const actions = {
         bookingId: context.state.inProgressBookingID,
       },
     });
-    context.commit("SET_IN_PROGRESS_BOOKING_ID", null);
+    context.commit('SET_IN_PROGRESS_BOOKING_ID', null);
   },
   setDeviceLocation(context, locationId, temporary = false) {
     if (!locationId) {
@@ -42,14 +42,14 @@ export const actions = {
         expires: temporary ? null : 365 * 1000,
       });
     }
-    context.commit("SET_LOCATION", locationId);
+    context.commit('SET_LOCATION', locationId);
   },
   async retrieveAvailableTerminalDevices(context) {
     if (!context.state.locationId) {
       return [];
     }
     const { data } = await this.app.apolloProvider.defaultClient.query({
-      query: require("@/graphql/queries/box-office/BoxOfficePaymentDevices.gql"),
+      query: require('@/graphql/queries/box-office/BoxOfficePaymentDevices.gql'),
     });
     return data.paymentDevices.filter(
       (device) => device.locationId === context.state.locationId
