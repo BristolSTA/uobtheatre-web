@@ -12,7 +12,9 @@ export default () => {
       graphql_endpoint:
         (process.env.API_BASE || 'http://localhost:9000') + '/graphql/',
       graphql_endpoint_internal:
-        (process.env.API_BASE || 'http://uobtheatre-api:8000') + '/graphql/',
+        (process.env.API_BASE_INTERNAL ||
+          process.env.API_BASE ||
+          'http://uobtheatre-api:8000') + '/graphql/',
       upload_endpoint:
         (process.env.API_BASE || 'http://localhost:9000') + '/upload/',
     },
@@ -25,7 +27,7 @@ export default () => {
       square: {
         script:
           process.env.NODE_ENV !== 'production' ||
-          process.env.SQUARE_APP_ID.startsWith('sandbox')
+            process.env.SQUARE_APP_ID.startsWith('sandbox')
             ? 'https://sandbox.web.squarecdn.com/v1/square.js'
             : 'https://web.squarecdn.com/v1/square.js',
         application_id: process.env.SQUARE_APP_ID,

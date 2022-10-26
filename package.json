@@ -13,7 +13,7 @@
     "test:unit": "jest",
     "pretest:e2e": "yarn generate --devtools && yarn start",
     "pretest:e2e:local": "API_BASE=http://uobtheatre-api:8000 yarn generate --devtools && yarn start",
-    "pretest:e2e:ci": "API_BASE=http://localhost:9000 yarn codegen && yarn generate --devtools && yarn start",
+    "pretest:e2e:ci": "API_BASE=http://localhost:9000 API_BASE_INTERNAL=http://uobtheatre-api:9000 yarn codegen && yarn generate --devtools && yarn start",
     "test:e2e:silent": "cypress run",
     "codegen": "graphql-codegen --config codegen.ts"
   },
@@ -56,6 +56,7 @@
   "devDependencies": {
     "@babel/core": "^7.19.6",
     "@babel/eslint-parser": "^7.19.1",
+    "@babel/preset-typescript": "^7.18.6",
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^12.1.4",
     "@cypress/vue": "^2.2.3",
