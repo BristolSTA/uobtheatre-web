@@ -110,27 +110,31 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import lo from 'lodash';
+import { defineComponent } from 'vue';
+import { MetaInfo } from 'vue-meta';
+import { ProductionNode } from '@/graphql/codegen/graphql';
+import { useHomepageUpcomingProductionsQuery } from '@/graphql/codegen/operations';
 import Carousel from '@/components/ui/Carousel.vue';
 import { displayStartEnd } from '@/utils';
 import { oneLiner } from '@/utils/lang';
 import PayableStatusEnum from '@/enums/PayableStatusEnum';
 import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue';
 
-export default {
+export default defineComponent({
   components: { Carousel, ProductionFeaturedImage },
   data() {
     return {
-      upcomingProductions: [],
+      upcomingProductions: [] as ProductionNode[],
       displayStartEnd,
     };
   },
-  head() {
+  head(): MetaInfo {
     const appName = this.$appName;
     return {
       title: `${appName} | The Home Of Bristol Student Performing Arts`,
-      titleTemplate: null,
+      titleTemplate: undefined,
     };
   },
   computed: {
@@ -164,17 +168,16 @@ export default {
     oneLiner,
   },
   apollo: {
-    upcomingProductions: {
-      query: require('@/graphql/queries/HomeUpcomingProductions.gql'),
-      update: (data) => data.productions.edges.map((edge) => edge.node),
+    upcomingProductions: useHomepageUpcomingProductionsQuery({
+      update: (data) => data?.productions?.edges.map((edge) => edge?.node),
       variables() {
         return {
           now: new Date(),
         };
       },
-    },
+    }),
   },
-};
+});
 </script>
 
 <style>

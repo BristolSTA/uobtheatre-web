@@ -11,7 +11,13 @@ const config: CodegenConfig = {
   generates: {
     './graphql/codegen/': {
       preset: 'client',
+      config: {
+        useTypeImports: true,
+      },
       plugins: [],
+    },
+    './graphql/codegen/operations.ts': {
+      plugins: ['typescript-vue-apollo-smart-ops'],
     },
   },
 };

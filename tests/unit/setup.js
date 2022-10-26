@@ -1,7 +1,7 @@
 import 'regenerator-runtime/runtime';
 import path from 'path';
 import Vue from 'vue';
-import FiltersPlugin from '@/plugins/vue-filters';
+import FiltersPlugin from '~/plugins/vue-filters';
 import config from '@/config';
 global.fetch = require('cross-fetch');
 
