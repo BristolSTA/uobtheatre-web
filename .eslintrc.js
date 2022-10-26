@@ -17,6 +17,13 @@ module.exports = {
     'import/no-named-as-default': 'off',
     'prettier/prettier': ['error', { singleQuote: true }],
   },
+  settings: {
+    'import/resolved': {
+      node: {
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
+      },
+    },
+  },
   overrides: [
     {
       files: ['*.test.js', '*.spec.js'],
