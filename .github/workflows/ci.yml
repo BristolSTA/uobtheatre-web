@@ -101,6 +101,14 @@ jobs:
       - name: Start Real API ⭐
         run: docker-compose -f .devcontainer/docker-compose.yml up -d postgres uobtheatre-api
 
+      - name: Wait for API to boot 💫
+        uses: cygnetdigital/wait_for_response@v2.0.0
+        with:
+          url: 'http://localhost:9000/'
+          responseCode: '200,500'
+          timeout: 10000
+          interval: 500
+
       - name: Load GraphQL Codegen 🕸
         run: API_BASE=http://localhost:9000 yarn codegen
 

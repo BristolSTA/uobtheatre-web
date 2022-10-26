@@ -12,6 +12,7 @@ services:
       - ..:/workspace/uobtheatre-web:cached
 
   uobtheatre-api:
+    name: uobtheatre-api
     image: 'ghcr.io/bristolsta/api-dev:latest'
     ports:
       - '9000:8000'
