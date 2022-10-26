@@ -101,6 +101,9 @@ jobs:
       - name: Start Real API ⭐
         run: docker-compose -f .devcontainer/docker-compose.yml up -d postgres uobtheatre-api
 
+      - name: TEST
+        run: docker ps
+
       - name: Run End-to-End Tests 🧪
         uses: cypress-io/github-action@v2
         with:
