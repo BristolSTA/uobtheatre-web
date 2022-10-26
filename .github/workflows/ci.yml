@@ -48,6 +48,9 @@ jobs:
       - name: Run linter 👀
         run: yarn lint
 
+      - name: Load GraphQL 🕸
+        run: API_BASE=https://staging.api.uobtheatre.com yarn codegen
+
       - name: Run tests 🧪
         run: yarn test:unit --coverage
 
