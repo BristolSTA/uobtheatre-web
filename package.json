@@ -13,7 +13,7 @@
     "test:unit": "jest",
     "pretest:e2e": "yarn generate --devtools && yarn start",
     "pretest:e2e:local": "API_BASE=http://uobtheatre-api:8000 yarn generate --devtools && yarn start",
-    "pretest:e2e:ci": "API_BASE=http://localhost:9000 API_BASE_INTERNAL=http://uobtheatre-api:9000 yarn codegen && yarn generate --devtools && yarn start",
+    "pretest:e2e:ci": "API_BASE=http://localhost:9000 API_BASE_INTERNAL=http://uobtheatre-api:8000 yarn codegen && yarn generate --devtools && yarn start",
     "test:e2e:silent": "cypress run",
     "codegen": "graphql-codegen --config codegen.ts"
   },
