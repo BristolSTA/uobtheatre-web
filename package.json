@@ -75,6 +75,7 @@
     "@nuxtjs/stylelint-module": "^4.0.0",
     "@nuxtjs/tailwindcss": "^4.2.1",
     "@types/lodash": "^4.14.186",
+    "@types/lodash.startcase": "^4.4.7",
     "@types/luxon": "^3.0.2",
     "@vue/runtime-dom": "^3.2.41",
     "@vue/test-utils": "^1.2.2",
