@@ -181,12 +181,4 @@ export default {
       // https://docs.sentry.io/platforms/javascript/guides/vue/configuration/options/
     },
   },
-
-  typescript: {
-    typeCheck: {
-      eslint: {
-        files: './**/*.{ts,js,vue}',
-      },
-    },
-  },
 };

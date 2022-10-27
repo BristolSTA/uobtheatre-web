@@ -159,7 +159,7 @@ export default defineComponent({
           };
         });
     },
-    upcomingProductionsToShow() {
+    upcomingProductionsToShow(): ProductionNode[] {
       return lo.take(this.upcomingProductions, 4);
     },
   },
