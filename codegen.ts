@@ -9,13 +9,9 @@ const config: CodegenConfig = {
   schema: configData.api.graphql_endpoint_internal,
   documents: './graphql/**/*.gql',
   generates: {
-    './graphql/codegen/': {
-      preset: 'client',
-      plugins: [],
+    './graphql/codegen/operations.ts': {
+      plugins: ['typescript','typescript-operations', 'typescript-vue-apollo-smart-ops'],
     },
-    // './graphql/codegen/operations.ts': {
-    //   plugins: ['typescript-vue-apollo-smart-ops'],
-    // },
   },
 };
 

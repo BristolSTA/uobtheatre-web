@@ -1,7 +1,6 @@
 module.exports = {
   root: true,
   env: {
-    browser: true,
     node: true,
   },
   ignorePatterns: ['tests/unit/test.spec.example.js'],
@@ -30,6 +29,13 @@ module.exports = {
       rules: {
         'no-unused-expressions': 'off',
       },
-    },
+    }, {
+      "files": ["*.graphql"],
+      "parser": "@graphql-eslint/eslint-plugin",
+      "plugins": ["@graphql-eslint"],
+      "rules": {
+        "@graphql-eslint/known-type-names": "error"
+      }
+    }
   ],
 };
