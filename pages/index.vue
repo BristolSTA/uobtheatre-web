@@ -117,11 +117,26 @@ import { MetaInfo } from 'vue-meta';
 import {
   useHomepageUpcomingProductionsQuery,
   ProductionNode,
+  ImageNode,
+  SocietyNode,
+  Maybe,
 } from '@/graphql/codegen/operations';
 import Carousel from '@/components/ui/Carousel.vue';
 import { displayStartEnd } from '@/utils';
 import { oneLiner } from '@/utils/lang';
 import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue';
+
+interface BannerInfo {
+  id: string;
+  displayImage: Maybe<ImageNode> | undefined;
+  text: {
+    slug: string;
+    name: string;
+    start: string;
+    end: string;
+    society: Maybe<SocietyNode> | undefined;
+  };
+}
 
 export default defineComponent({
   components: { Carousel, ProductionFeaturedImage },
@@ -140,7 +155,7 @@ export default defineComponent({
     };
   },
   computed: {
-    bannerProductions() {
+    bannerProductions(): BannerInfo[] {
       return this.upcomingProductionsToShow
         .filter((production) => {
           return !!production.coverImage;
