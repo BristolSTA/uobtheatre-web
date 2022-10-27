@@ -10,7 +10,11 @@ const config: CodegenConfig = {
   documents: './graphql/**/*.gql',
   generates: {
     './graphql/codegen/operations.ts': {
-      plugins: ['typescript','typescript-operations', 'typescript-vue-apollo-smart-ops'],
+      plugins: [
+        'typescript',
+        'typescript-operations',
+        'typescript-vue-apollo-smart-ops',
+      ],
     },
   },
 };

@@ -114,7 +114,10 @@
 import lo from 'lodash';
 import { defineComponent } from 'vue';
 import { MetaInfo } from 'vue-meta';
-import { useHomepageUpcomingProductionsQuery, ProductionNode } from '@/graphql/codegen/operations';
+import {
+  useHomepageUpcomingProductionsQuery,
+  ProductionNode,
+} from '@/graphql/codegen/operations';
 import Carousel from '@/components/ui/Carousel.vue';
 import { displayStartEnd } from '@/utils';
 import { oneLiner } from '@/utils/lang';
