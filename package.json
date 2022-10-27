@@ -69,6 +69,7 @@
     "@graphql-codegen/gql-tag-operations-preset": "^1.7.0",
     "@graphql-codegen/typescript-vue-apollo-smart-ops": "^2.3.5",
     "@graphql-eslint/eslint-plugin": "^3.12.0",
+    "@nuxt/test-utils": "^3.0.0-rc.12",
     "@nuxt/types": "^2.15.8",
     "@nuxt/typescript-build": "^2.1.0",
     "@nuxtjs/eslint-config-typescript": "^11.0.0",
