@@ -121,14 +121,14 @@ import {
 import Carousel from '@/components/ui/Carousel.vue';
 import { displayStartEnd } from '@/utils';
 import { oneLiner } from '@/utils/lang';
-import PayableStatusEnum from '@/enums/PayableStatusEnum';
 import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue';
 
 export default defineComponent({
   components: { Carousel, ProductionFeaturedImage },
   data() {
+    const upcomingProductions: ProductionNode[] = [];
     return {
-      upcomingProductions: [] as ProductionNode[],
+      upcomingProductions,
       displayStartEnd,
     };
   },
@@ -161,9 +161,6 @@ export default defineComponent({
     },
     upcomingProductionsToShow() {
       return lo.take(this.upcomingProductions, 4);
-    },
-    enumTest() {
-      return new PayableStatusEnum('IN_PROGRESS');
     },
   },
   methods: {

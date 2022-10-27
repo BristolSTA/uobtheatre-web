@@ -18,6 +18,7 @@
     while (continuePolling) {
         var req = http.request(url, { method: 'HEAD' }, function (r) {
             continuePolling = false;
+            console.log("Positive connection made to API :)")
             process.exit(0)
         }).on('error', err => {
             console.log('Error: ', err.message);
