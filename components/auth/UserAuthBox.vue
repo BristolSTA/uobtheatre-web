@@ -29,18 +29,7 @@
     <div
       v-if="loading"
       ref="loading-overlay"
-      class="
-        absolute
-        z-10
-        top-0
-        flex
-        items-center
-        justify-center
-        w-full
-        h-full
-        text-white text-3xl
-        bg-sta-gray-dark bg-opacity-95
-      "
+      class="absolute z-10 top-0 flex items-center justify-center w-full h-full text-white text-3xl bg-sta-gray-dark bg-opacity-95"
     >
       <loading-icon size-class="" />
     </div>
@@ -53,13 +42,7 @@
       <span
         v-if="login_errors && login_errors.hasCode('not_verified')"
         ref="resendEmail"
-        class="
-          cursor-point
-          hover:text-gray-200
-          underline
-          text-sm
-          cursor-pointer
-        "
+        class="cursor-point hover:text-gray-200 underline text-sm cursor-pointer"
         @click="resendVerificationEmail"
       >
         Resend Verification Email?
@@ -91,13 +74,7 @@
       </label>
 
       <button
-        class="
-          btn btn-orange btn-outline
-          mt-2
-          w-full
-          text-center text-xl
-          font-semibold
-        "
+        class="btn btn-orange btn-outline mt-2 w-full text-center text-xl font-semibold"
         :disabled="!email || !password"
         type="submit"
       >
@@ -162,14 +139,7 @@
       <NuxtLink
         v-if="signup_errors && signup_errors.hasCode('unique')"
         to="/login/forgot"
-        class="
-          cursor-point
-          text-center text-sta-orange
-          hover:text-sta-orange-dark
-          underline
-          text-sm
-          cursor-pointer
-        "
+        class="cursor-point text-center text-sta-orange hover:text-sta-orange-dark underline text-sm cursor-pointer"
       >
         Request password reset?
       </NuxtLink>
@@ -216,12 +186,7 @@
         <error-helper :errors="signup_errors" field-name="acceptedTerms" />
       </label>
       <button
-        class="
-          btn btn-orange btn-outline
-          w-full
-          text-center text-xl
-          font-semibold
-        "
+        class="btn btn-orange btn-outline w-full text-center text-xl font-semibold"
         :disabled="!accepted_terms"
       >
         Sign Up
@@ -237,23 +202,23 @@
 </template>
 
 <script>
-import lo from 'lodash'
+import lo from 'lodash';
 
-import ClickableLink from '@/components/ui/ClickableLink.vue'
-import ErrorHelper from '@/components/ui/ErrorHelper.vue'
-import NonFieldError from '@/components/ui/NonFieldError.vue'
-import TextInput from '@/components/ui/TextInput.vue'
-import { authService } from '@/services'
+import LoadingIcon from '../ui/LoadingIcon.vue';
+import ClickableLink from '@/components/ui/ClickableLink.vue';
+import ErrorHelper from '@/components/ui/ErrorHelper.vue';
+import NonFieldError from '@/components/ui/NonFieldError.vue';
+import TextInput from '@/components/ui/TextInput.vue';
+import { authService } from '@/services';
 import {
   catchOnly,
   getValidationErrors,
   swalToast,
   successToast,
-} from '@/utils'
-import ValidationError from '@/errors/ValidationError'
-import UnverifiedLoginError from '@/errors/auth/UnverifiedLoginError'
-import Errors from '@/classes/Errors'
-import LoadingIcon from '../ui/LoadingIcon.vue'
+} from '@/utils';
+import ValidationError from '@/errors/ValidationError';
+import UnverifiedLoginError from '@/errors/auth/UnverifiedLoginError';
+import Errors from '@/classes/Errors';
 
 export default {
   name: 'UserAuthBox',
@@ -285,12 +250,12 @@ export default {
 
       login_errors: null,
       signup_errors: null,
-    }
+    };
   },
   methods: {
     async attemptLogin() {
-      this.loading = true
-      this.login_errors = null
+      this.loading = true;
+      this.login_errors = null;
 
       try {
         await authService.login(
@@ -298,44 +263,46 @@ export default {
           this.email,
           this.password,
           this.remember_me
-        )
+        );
 
         // Redirect to intended if has
         if (this.$route.query.redirect) {
           return this.$router.replace(this.$route.query.redirect).catch((e) => {
-            if (!e.message.includes('Redirected when going from')) throw e
-          })
+            if (!e.message.includes('Redirected when going from')) {
+              throw e;
+            }
+          });
         }
 
-        return this.$router.replace('/')
+        return this.$router.replace('/');
       } catch (e) {
         catchOnly([ValidationError, UnverifiedLoginError], e, () => {
-          this.login_errors = getValidationErrors(e)
+          this.login_errors = getValidationErrors(e);
           if (e instanceof UnverifiedLoginError) {
             this.login_errors.push({
               message: 'Your account has not been verified yet.',
               code: 'not_verified',
-            })
+            });
           }
-        })
+        });
       }
 
-      this.loading = false
+      this.loading = false;
     },
     async attemptSignup() {
-      this.loading = true
-      this.signup_errors = null
+      this.loading = true;
+      this.signup_errors = null;
 
       if (!this.lastName || this.lastName === '') {
-        this.signup_errors = new Errors()
+        this.signup_errors = new Errors();
         this.signup_errors.record([
           {
             message: 'Please provider a last name',
             field: 'lastName',
             __typename: 'FieldError',
           },
-        ])
-        return (this.loading = false)
+        ]);
+        return (this.loading = false);
       }
 
       try {
@@ -345,7 +312,7 @@ export default {
           email: this.email,
           password: this.password,
           confirmedPassword: this.confirmedPassword,
-        })
+        });
 
         swalToast.fire({
           icon: 'success',
@@ -353,32 +320,32 @@ export default {
           text: 'Please check your emails to verify your account',
           showConfirmButton: true,
           position: 'bottom-end',
-        })
-        return this.$router.push('/')
+        });
+        return this.$router.push('/');
       } catch (e) {
-        this.signup_errors = getValidationErrors(e)
+        this.signup_errors = getValidationErrors(e);
       }
 
-      this.loading = false
+      this.loading = false;
     },
     async resendVerificationEmail() {
-      this.loading = true
-      this.login_errors = null
+      this.loading = true;
+      this.login_errors = null;
       try {
-        await authService.resendVerificationEmail(this, this.email)
+        await authService.resendVerificationEmail(this, this.email);
         successToast.fire({
           title: 'Verfication email sent!',
-        })
+        });
       } catch (e) {
-        this.login_errors = getValidationErrors(e)
+        this.login_errors = getValidationErrors(e);
       }
-      this.loading = false
+      this.loading = false;
     },
     guessNameParts() {
-      const components = lo.trim(this.fullName).split(' ')
-      this.firstName = components.shift()
-      this.lastName = components.join(' ')
+      const components = lo.trim(this.fullName).split(' ');
+      this.firstName = components.shift();
+      this.lastName = components.join(' ');
     },
   },
-}
+};
 </script>

@@ -1,4 +1,4 @@
-import authService from '@/services/authService'
+import authService from '@/services/authService';
 
 /**
  * @param {object} context Nuxt Context
@@ -8,6 +8,6 @@ export default function (context) {
   if (authService.isLoggedIn(context)) {
     return context.redirect({
       path: '/',
-    })
+    });
   }
 }

@@ -1,4 +1,4 @@
-mutation productionPermissions(
+mutation productionPermissionsMutations(
   $productionId: IdInputField!
   $permissions: [String]!
   $userEmail: String!

@@ -15,9 +15,9 @@
 </template>
 
 <script>
-import Overview from '@/components/box-office/Overview.vue'
-import TicketScanner from '@/components/ui/Inputs/TicketScanner.vue'
-import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue'
+import Overview from '@/components/box-office/Overview.vue';
+import TicketScanner from '@/components/ui/Inputs/TicketScanner.vue';
+import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue';
 
 export default {
   components: { Overview, TicketScanner, BoxOfficeNavigation },
@@ -43,8 +43,8 @@ export default {
         {
           text: 'Collect or Check',
         },
-      ]
+      ];
     },
   },
-}
+};
 </script>

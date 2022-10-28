@@ -1,6 +1,6 @@
-import { mount, RouterLinkStub } from '@vue/test-utils'
-import { expect } from 'chai'
-import config from '@/config'
+import { mount, RouterLinkStub } from '@vue/test-utils';
+import { expect } from 'chai';
+import config from '@/config';
 
 /**
  * Fixes test "contains" issues caused by content being spread over new lines.
@@ -10,8 +10,8 @@ import config from '@/config'
  * @returns {string} Fixed text
  */
 const fixTextSpacing = function (text) {
-  return text.replace(/\s\s+/g, ' ')
-}
+  return text.replace(/\s\s+/g, ' ');
+};
 
 /**
  * Mounts a vue component, mocking Vue Router funcitons including stubbing router-links and simulating beforeRouteEnter navigiation guards
@@ -38,28 +38,28 @@ const mountWithRouterMock = async function (
       },
     },
     contextOptions
-  )
+  );
 
   if (component.asyncData) {
-    const dataObject = await component.asyncData.call(null, contextOptions)
+    const dataObject = await component.asyncData.call(null, contextOptions);
 
     // If the error handler has been called, abort
     if (contextOptions.error.mock.calls.length) {
-      return
+      return;
     }
     mountOptions.data = () => {
-      return dataObject
-    }
+      return dataObject;
+    };
   }
 
   // Mount the component
   const mountedComponent = mount(
     component,
     generateMountOptions(['router'], mountOptions)
-  )
+  );
 
-  return mountedComponent
-}
+  return mountedComponent;
+};
 
 /**
  * Generates Vue mount options based on a request list of pre-built option sets
@@ -69,29 +69,33 @@ const mountWithRouterMock = async function (
  * @returns {object} Vue mounting options
  */
 const generateMountOptions = function (types = [], options = {}) {
-  if (!options.stubs) options.stubs = {}
-  if (!options.mocks) options.mocks = {}
+  if (!options.stubs) {
+    options.stubs = {};
+  }
+  if (!options.mocks) {
+    options.mocks = {};
+  }
   if (types.includes('config')) {
-    options.mocks.$config = config()
+    options.mocks.$config = config();
   }
   if (types.includes('apollo')) {
-    options.mocks.$apollo = generateApolloMock(options.apollo)
+    options.mocks.$apollo = generateApolloMock(options.apollo);
     options.mocks.$apolloProvider = {
       defaultClient: options.mocks.$apollo,
-    }
-    delete options.apollo
+    };
+    delete options.apollo;
   }
   if (types.includes('router')) {
-    options.stubs.NuxtLink = RouterLinkStub
+    options.stubs.NuxtLink = RouterLinkStub;
   }
-  return options
-}
+  return options;
+};
 
 const generateApolloMock = function (options) {
-  const queryCallstack = options ? options.queryCallstack : []
-  const mutationCallstack = options ? options.mutationCallstack : []
-  const queryCalls = []
-  const mutationCalls = []
+  const queryCallstack = options ? options.queryCallstack : [];
+  const mutationCallstack = options ? options.mutationCallstack : [];
+  const queryCalls = [];
+  const mutationCalls = [];
 
   return {
     mock: {
@@ -103,9 +107,10 @@ const generateApolloMock = function (options) {
       handledMutations: () => mutationCalls.length,
     },
     query: jest.fn((options) => {
-      queryCalls.push(options)
-      if (queryCallstack[queryCalls.length - 1])
-        return Promise.resolve(queryCallstack[queryCalls.length - 1])
+      queryCalls.push(options);
+      if (queryCallstack[queryCalls.length - 1]) {
+        return Promise.resolve(queryCallstack[queryCalls.length - 1]);
+      }
 
       // eslint-disable-next-line no-console
       console.warn(
@@ -113,13 +118,14 @@ const generateApolloMock = function (options) {
           queryCalls.length - 1
         } previous calls, but only ${queryCallstack.length} in stack`,
         options.query
-      )
-      return Promise.resolve()
+      );
+      return Promise.resolve();
     }),
     mutate: jest.fn(() => {
-      mutationCalls.push(options)
-      if (mutationCallstack[mutationCalls.length - 1])
-        return Promise.resolve(mutationCallstack[mutationCalls.length - 1])
+      mutationCalls.push(options);
+      if (mutationCallstack[mutationCalls.length - 1]) {
+        return Promise.resolve(mutationCallstack[mutationCalls.length - 1]);
+      }
 
       // eslint-disable-next-line no-console
       console.warn(
@@ -127,11 +133,11 @@ const generateApolloMock = function (options) {
           mutationCalls.length - 1
         } previous calls, but only ${mutationCallstack.length} in stack`,
         options.mutation
-      )
-      return Promise.resolve()
+      );
+      return Promise.resolve();
     }),
-  }
-}
+  };
+};
 
 /**
  * Asserts no visual differnce between recieved and expected objects
@@ -140,8 +146,8 @@ const generateApolloMock = function (options) {
  * @param {object|Array|string} expected Expected object
  */
 const assertNoVisualDifference = (recieved, expected) => {
-  expect(JSON.stringify(recieved)).to.eq(JSON.stringify(expected))
-}
+  expect(JSON.stringify(recieved)).to.eq(JSON.stringify(expected));
+};
 
 export {
   assertNoVisualDifference,
@@ -150,4 +156,4 @@ export {
   generateApolloMock,
   mountWithRouterMock,
   RouterLinkStub,
-}
+};

@@ -11,12 +11,7 @@
       />
     </div>
     <div
-      class="
-        flex flex-col
-        justify-evenly
-        text-center
-        md:flex-row md:text-left md:space-x-6
-      "
+      class="flex flex-col justify-evenly text-center md:flex-row md:text-left md:space-x-6"
     >
       <div class="w-full text-center md:w-16">
         <font-awesome-icon
@@ -26,11 +21,7 @@
       </div>
       <div class="flex-grow">
         <div
-          class="
-            flex flex-col
-            justify-between
-            md:flex-row md:mr-10 md:space-x-6
-          "
+          class="flex flex-col justify-between md:flex-row md:mr-10 md:space-x-6"
         >
           <div v-if="errors">
             <strong>There was an issue with this ticket</strong>
@@ -57,14 +48,7 @@
                 booking.tickets.length &&
                 booking.tickets.some((ticket) => !ticket.checkedIn)
               "
-              class="
-                block
-                px-2
-                py-1
-                bg-sta-orange
-                hover:bg-sta-orange-dark
-                transition-colors
-              "
+              class="block px-2 py-1 bg-sta-orange hover:bg-sta-orange-dark transition-colors"
               @click="$emit('checkInAll')"
             >
               Check in all tickets in booking
@@ -76,9 +60,9 @@
               <div class="flex justify-between space-x-2 md:mb-2">
                 <h3 class="text-lg font-semibold">
                   Booking Information
-                  <template v-if="booking"
-                    >({{ booking.tickets.length }} tickets)</template
-                  >
+                  <template v-if="booking">
+                    ({{ booking.tickets.length }} tickets)
+                  </template>
                 </h3>
                 <nuxt-link
                   :to="`bookings?q=${scanData.bookingReference}&qTicket=${scanData.ticketId}`"
@@ -121,7 +105,9 @@
                     <td class="pb-1 px-1">
                       {{ ticketGroup.concessionType.name }},
                     </td>
-                    <td class="pb-1 px-1">{{ ticketGroup.seatGroup.name }}</td>
+                    <td class="pb-1 px-1">
+                      {{ ticketGroup.seatGroup.name }}
+                    </td>
                   </tr>
                 </table>
               </div>
@@ -138,9 +124,9 @@
 </template>
 
 <script>
-import AudioPositive from '@/assets/audio/beep_positive.mp3'
-import AudioNegative from '@/assets/audio/beep_negative.mp3'
-import Booking from '@/classes/Booking'
+import AudioPositive from '@/assets/audio/beep_positive.mp3';
+import AudioNegative from '@/assets/audio/beep_negative.mp3';
+import Booking from '@/classes/Booking';
 export default {
   props: {
     alreadyCheckedIn: {
@@ -166,11 +152,11 @@ export default {
   },
   computed: {
     bookingInstance() {
-      return Booking.fromAPIData(this.booking)
+      return Booking.fromAPIData(this.booking);
     },
   },
   mounted() {
-    new Audio(this.errors ? AudioNegative : AudioPositive).play()
+    new Audio(this.errors ? AudioNegative : AudioPositive).play();
   },
-}
+};
 </script>

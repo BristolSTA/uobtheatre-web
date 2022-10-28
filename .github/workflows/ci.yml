@@ -48,6 +48,9 @@ jobs:
       - name: Run linter 👀
         run: yarn lint
 
+      - name: Load GraphQL 🕸
+        run: API_BASE=https://staging.api.uobtheatre.com yarn codegen
+
       - name: Run tests 🧪
         run: yarn test:unit --coverage
 
@@ -97,6 +100,12 @@ jobs:
 
       - name: Start Real API ⭐
         run: docker-compose -f .devcontainer/docker-compose.yml up -d postgres uobtheatre-api
+
+      - name: Wait for API to boot 💫
+        run: node .github/scripts/waiton-api.js http://localhost:9000
+
+      - name: Load GraphQL Codegen 🕸
+        run: API_BASE=http://localhost:9000 yarn codegen
 
       - name: Run End-to-End Tests 🧪
         uses: cypress-io/github-action@v2

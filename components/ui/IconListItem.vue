@@ -4,7 +4,7 @@
       <font-awesome-icon :icon="icon" />
     </div>
     <div>
-      <slot></slot>
+      <slot />
     </div>
   </div>
 </template>
@@ -19,5 +19,5 @@ export default {
       default: null,
     },
   },
-}
+};
 </script>

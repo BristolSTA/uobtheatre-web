@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2018",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "lib": ["ESNext", "ESNext.AsyncIterable", "DOM"],
+    "esModuleInterop": true,
+    "allowJs": true,
+    "sourceMap": true,
+    "strict": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./*"],
+      "@/*": ["./*"]
+    },
+    "types": ["@types/node", "@nuxt/types"]
+  },
+  "vueCompilerOptions": {
+    "target": 2.7
+    // "target": 2, // For Vue version <= 2.6.14
+  },
+  "exclude": ["node_modules"]
+}

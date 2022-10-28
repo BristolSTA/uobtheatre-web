@@ -23,7 +23,7 @@
           'background-image': bannerBackgorund(carouselItems[index]),
         }"
       >
-        <slot :carouselItem="carouselItems[index]"></slot>
+        <slot :carouselItem="carouselItems[index]" />
       </div>
     </transition-group>
     <template v-if="carouselLength > 1">
@@ -31,50 +31,21 @@
         <ul class="flex items-center p-0 space-x-3 whitespace-nowrap">
           <li v-for="n in carouselLength" :key="n">
             <button
-              class="
-                carousel-indicator
-                w-2.5
-                h-2.5
-                hover:bg-white
-                border border-white
-                rounded-full
-                focus:outline-none
-                cursor-pointer
-                transition-colors
-                duration-500
-              "
+              class="carousel-indicator w-2.5 h-2.5 hover:bg-white border border-white rounded-full focus:outline-none cursor-pointer transition-colors duration-500"
               :class="[n - 1 == currentItem ? 'bg-white' : 'bg-transparent']"
               @click="goTo(n - 1), enableAutoPlay()"
               @keypress="goTo(n - 1)"
-            ></button>
+            />
           </li>
         </ul>
       </div>
       <div
         v-if="navArrows"
-        class="
-          absolute
-          top-0
-          left-0
-          invisible
-          w-32
-          h-full
-          md:w-24 md:visible
-          lg:w-32
-        "
+        class="absolute top-0 left-0 invisible w-32 h-full md:w-24 md:visible lg:w-32"
       >
         <button
           id="prevBtn"
-          class="
-            w-full
-            h-full
-            text-4xl
-            transition-colors
-            duration-300
-            cursor-pointer
-            hover:bg-black hover:bg-opacity-30
-            focus:outline-none
-          "
+          class="w-full h-full text-4xl transition-colors duration-300 cursor-pointer hover:bg-black hover:bg-opacity-30 focus:outline-none"
           @click="goToPrev()"
           @keypress="goToPrev()"
         >
@@ -83,29 +54,11 @@
       </div>
       <div
         v-if="navArrows"
-        class="
-          absolute
-          top-0
-          right-0
-          invisible
-          w-32
-          h-full
-          md:w-24 md:visible
-          lg:w-32
-        "
+        class="absolute top-0 right-0 invisible w-32 h-full md:w-24 md:visible lg:w-32"
       >
         <button
           id="nextBtn"
-          class="
-            w-full
-            h-full
-            text-4xl
-            transition-colors
-            duration-300
-            cursor-pointer
-            hover:bg-black hover:bg-opacity-30
-            focus:outline-none
-          "
+          class="w-full h-full text-4xl transition-colors duration-300 cursor-pointer hover:bg-black hover:bg-opacity-30 focus:outline-none"
           @click="goToNext()"
           @keypress="goToNext()"
         >
@@ -148,67 +101,71 @@ export default {
     return {
       currentItem: 0,
       autoplayInterval: null,
-    }
+    };
   },
   computed: {
     carouselLength() {
-      return this.carouselItems.length
+      return this.carouselItems.length;
     },
   },
   mounted() {
-    this.enableAutoPlay()
+    this.enableAutoPlay();
   },
   beforeDestroy() {
-    this.disableAutoPlay()
+    this.disableAutoPlay();
   },
   methods: {
     bannerBackgorund(carouselItem) {
-      return `url("${carouselItem.displayImage.url}")`
+      return `url("${carouselItem.displayImage.url}")`;
     },
     goTo(currentItem) {
-      this.currentItem = currentItem
+      this.currentItem = currentItem;
     },
     goToPrev() {
       if (this.currentItem === 0) {
-        this.goTo(this.carouselLength - 1)
-      } else this.goTo(this.currentItem - 1)
+        this.goTo(this.carouselLength - 1);
+      } else {
+        this.goTo(this.currentItem - 1);
+      }
     },
     goToNext() {
       if (this.currentItem === this.carouselLength - 1) {
-        this.goTo(0)
-      } else this.goTo(this.currentItem + 1)
+        this.goTo(0);
+      } else {
+        this.goTo(this.currentItem + 1);
+      }
     },
     disableAutoPlay() {
-      clearInterval(this.autoplayInterval)
-      this.autoplayInterval = null
+      clearInterval(this.autoplayInterval);
+      this.autoplayInterval = null;
     },
     enableAutoPlay() {
       if (this.autoplayInterval) {
-        clearInterval(this.autoplayInterval)
-        this.autoplayInterval = null
+        clearInterval(this.autoplayInterval);
+        this.autoplayInterval = null;
       }
       if (this.carouselLength > 1 && this.autoplay) {
         this.autoplayInterval = setInterval(() => {
-          this.goToNext()
-        }, this.autoplaySpeed)
+          this.goToNext();
+        }, this.autoplaySpeed);
       }
     },
     handleMouseOver(element) {
       if (this.autoplay) {
         if (element === 'carousel' && this.pauseOnHover) {
-          this.disableAutoPlay()
+          this.disableAutoPlay();
         }
       }
     },
     handleMouseOut(element) {
       if (this.autoplay) {
         if (element === 'carousel' && this.pauseOnHover) {
-          this.enableAutoPlay()
+          this.enableAutoPlay();
         }
       }
     },
   },
-}
+};
 </script>
 
 <style scoped lang="scss">

@@ -28,11 +28,11 @@
 </template>
 
 <script>
-import CheckInScan from '@/graphql/mutations/box-office/CheckInTickets.gql'
-import { successToast } from '@/utils'
-import CheckInNotification from './CheckInNotification.vue'
-import InvalidCodeNotification from './InvalidCodeNotification.vue'
-import CameraScanner from './CameraScanner.vue'
+import CheckInNotification from './CheckInNotification.vue';
+import InvalidCodeNotification from './InvalidCodeNotification.vue';
+import CameraScanner from './CameraScanner.vue';
+import { successToast } from '@/utils';
+import CheckInScan from '@/graphql/mutations/box-office/CheckInTickets.gql';
 
 const checkedInDataState = () => {
   return {
@@ -41,8 +41,8 @@ const checkedInDataState = () => {
     booking: null,
     ticket: null,
     scanData: {},
-  }
-}
+  };
+};
 
 export default {
   components: {
@@ -62,19 +62,19 @@ export default {
       cameraOff: false,
       invalidCode: false,
       checkedInData: checkedInDataState(),
-    }
+    };
   },
   methods: {
     onInvalidCode() {
-      this.checkedInData = checkedInDataState()
-      this.invalidCode = true
+      this.checkedInData = checkedInDataState();
+      this.invalidCode = true;
     },
     async onScan(scannedData) {
-      this.$emit('scanned', scannedData)
-      const { bookingReference, ticketId } = scannedData
-      this.checkedInData = checkedInDataState()
-      this.invalidCode = false
-      this.cameraOff = true
+      this.$emit('scanned', scannedData);
+      const { bookingReference, ticketId } = scannedData;
+      this.checkedInData = checkedInDataState();
+      this.invalidCode = false;
+      this.cameraOff = true;
 
       const { data } = await this.$apollo.mutate({
         mutation: CheckInScan,
@@ -83,16 +83,17 @@ export default {
           performanceId: this.performanceId,
           tickets: [{ ticketId }],
         },
-      })
-      this.checkedInData.success = data.checkInBooking.success
-      this.checkedInData.booking = data.checkInBooking.booking
-      this.checkedInData.scanData = { bookingReference, ticketId }
-      if (data.checkInBooking.booking)
+      });
+      this.checkedInData.success = data.checkInBooking.success;
+      this.checkedInData.booking = data.checkInBooking.booking;
+      this.checkedInData.scanData = { bookingReference, ticketId };
+      if (data.checkInBooking.booking) {
         this.checkedInData.ticket = data.checkInBooking.booking.tickets.find(
           (ticket) => ticket.id === ticketId
-        )
-      this.checkedInData.errors = data.checkInBooking.errors
-      this.cameraOff = false
+        );
+      }
+      this.checkedInData.errors = data.checkInBooking.errors;
+      this.cameraOff = false;
     },
     async checkInAll() {
       const ticketIdsToCheckin = this.checkedInData.booking.tickets
@@ -100,8 +101,8 @@ export default {
         .map((ticket) => {
           return {
             ticketId: ticket.id,
-          }
-        })
+          };
+        });
       if (ticketIdsToCheckin.length) {
         const { data } = await this.$apollo.mutate({
           mutation: CheckInScan,
@@ -110,17 +111,17 @@ export default {
             performanceId: this.performanceId,
             tickets: ticketIdsToCheckin,
           },
-        })
-        this.checkedInData.booking = data.checkInBooking.booking
+        });
+        this.checkedInData.booking = data.checkInBooking.booking;
       }
 
       successToast.fire({
         title: 'All Booking Tickets Checked In',
-      })
+      });
     },
     closeNotificaton() {
-      this.checkedInData = checkedInDataState()
+      this.checkedInData = checkedInDataState();
     },
   },
-}
+};
 </script>

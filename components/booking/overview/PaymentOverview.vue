@@ -9,13 +9,13 @@
         {{ new BookingStatusEnum(booking.status).name }}
         <template v-if="mainPayment && booking.status == 'PAID'">
           using
-          <template v-if="mainPayment.cardBrand && mainPayment.last4"
-            >{{ mainPayment.cardBrand.replace('_', ' ') }} ending
-            {{ mainPayment.last4 }}</template
-          >
-          <template v-else>{{
-            new ProviderNameEnum(mainPayment.providerName).name
-          }}</template>
+          <template v-if="mainPayment.cardBrand && mainPayment.last4">
+            {{ mainPayment.cardBrand.replace('_', ' ') }} ending
+            {{ mainPayment.last4 }}
+          </template>
+          <template v-else>
+            {{ new ProviderNameEnum(mainPayment.providerName).name }}
+          </template>
         </template>
       </p>
     </template>
@@ -38,13 +38,13 @@
 </template>
 
 <script>
-import { DateTime } from 'luxon'
+import { DateTime } from 'luxon';
 
-import Booking from '@/classes/Booking'
-import BookingStatusEnum from '@/enums/PayableStatusEnum'
-import ProviderNameEnum from '@/enums/TransactionProviderNameEnum'
+import OverviewBox from '../../ui/Card.vue';
+import Booking from '@/classes/Booking';
+import BookingStatusEnum from '@/enums/PayableStatusEnum';
+import ProviderNameEnum from '@/enums/TransactionProviderNameEnum';
 
-import OverviewBox from '../../ui/Card.vue'
 export default {
   name: 'PaymentOverview',
   components: { OverviewBox },
@@ -58,31 +58,33 @@ export default {
     return {
       BookingStatusEnum,
       ProviderNameEnum,
-    }
+    };
   },
   computed: {
     mainPayment() {
-      return this.booking.transactions[0]
+      return this.booking.transactions[0];
     },
     pricePaidPounds() {
       return (
         this.booking.transactions
           .map((payment) => payment.value)
           .reduce((value1, value2) => value1 + value2, 0) / 100
-      ).toFixed(2)
+      ).toFixed(2);
     },
     datePaid() {
       const newestDate = new Date(
         this.booking.transactions.reduce((payment1, payment2) => {
-          if (!payment1) return payment2
-          const date1 = new Date(payment1.createdAt)
-          const date2 = new Date(payment2.createdAt)
-          return date1 < date2 ? payment2 : payment1
+          if (!payment1) {
+            return payment2;
+          }
+          const date1 = new Date(payment1.createdAt);
+          const date2 = new Date(payment2.createdAt);
+          return date1 < date2 ? payment2 : payment1;
         }, null).createdAt
-      )
+      );
 
-      return newestDate ? DateTime.fromJSDate(newestDate) : null
+      return newestDate ? DateTime.fromJSDate(newestDate) : null;
     },
   },
-}
+};
 </script>

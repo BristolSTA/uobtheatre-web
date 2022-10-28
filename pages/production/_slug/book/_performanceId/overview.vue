@@ -29,19 +29,19 @@
 </template>
 
 <script>
-import Booking from '@/classes/Booking'
-import BookingPriceOverview from '@/components/booking/overview/BookingPriceOverview.vue'
-import PerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue'
-import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue'
-import UserOverview from '@/components/booking/overview/UserOverview.vue'
-import VenueOverview from '@/components/booking/overview/VenueOverview.vue'
+import Booking from '@/classes/Booking';
+import BookingPriceOverview from '@/components/booking/overview/BookingPriceOverview.vue';
+import PerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue';
+import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
+import UserOverview from '@/components/booking/overview/UserOverview.vue';
+import VenueOverview from '@/components/booking/overview/VenueOverview.vue';
 
-import BookingStage from '@/classes/BookingStage'
+import BookingStage from '@/classes/BookingStage';
 export default {
   stageInfo: new BookingStage({
     name: 'Overview',
     routeName: 'production-slug-book-performanceId-overview',
-    eligable: (production, booking) => !booking.dirty,
+    eligable: (_, booking) => !booking.dirty,
   }),
   components: {
     VenueOverview,
@@ -56,5 +56,5 @@ export default {
       type: Booking,
     },
   },
-}
+};
 </script>

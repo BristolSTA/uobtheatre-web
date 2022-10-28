@@ -1,14 +1,14 @@
-import { mount } from '@vue/test-utils'
-import { expect } from 'chai'
+import { mount } from '@vue/test-utils';
+import { expect } from 'chai';
 
-import EmailChangeActivate from '@/pages/user/email-change/_token/index.vue'
-import { generateMountOptions } from '../../helpers'
-import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
-import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse'
-import GenericErrorsResponse from '../../fixtures/support/GenericErrorsResponse'
+import { generateMountOptions } from '../../helpers';
+import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse';
+import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse';
+import GenericErrorsResponse from '../../fixtures/support/GenericErrorsResponse';
+import EmailChangeActivate from '@/pages/user/email-change/_token/index.vue';
 
 describe('Email Change Activate', function () {
-  let component
+  let component;
 
   it('adds secondary email with valid token', async () => {
     component = mount(
@@ -30,17 +30,17 @@ describe('Email Change Activate', function () {
           },
         },
       })
-    )
+    );
 
-    expect(component.text()).to.contain('Adding email')
+    expect(component.text()).to.contain('Adding email');
 
-    await component.vm.$nextTick()
-    await component.vm.$nextTick()
-    await component.vm.$nextTick()
+    await component.vm.$nextTick();
+    await component.vm.$nextTick();
+    await component.vm.$nextTick();
 
-    expect(component.text()).to.contain('Complete email change')
-    expect(component.findAll('input')).length(1)
-  })
+    expect(component.text()).to.contain('Complete email change');
+    expect(component.findAll('input')).length(1);
+  });
 
   it('shows error with invalid token', async () => {
     component = mount(
@@ -62,17 +62,17 @@ describe('Email Change Activate', function () {
           },
         },
       })
-    )
+    );
 
-    await component.vm.$nextTick()
-    await component.vm.$nextTick()
-    await component.vm.$nextTick()
+    await component.vm.$nextTick();
+    await component.vm.$nextTick();
+    await component.vm.$nextTick();
 
-    expect(component.text()).to.contain('There was an error')
-  })
+    expect(component.text()).to.contain('There was an error');
+  });
 
   describe('with added secondary email', () => {
-    let replaceStub
+    let replaceStub;
     beforeEach(async () => {
       component = mount(
         EmailChangeActivate,
@@ -104,22 +104,22 @@ describe('Email Change Activate', function () {
             },
           },
         })
-      )
-      await component.vm.$nextTick()
-      await component.vm.$nextTick()
-      await component.vm.$nextTick()
-    })
+      );
+      await component.vm.$nextTick();
+      await component.vm.$nextTick();
+      await component.vm.$nextTick();
+    });
 
     it('can enter password to swap', async () => {
-      component.find('input').setValue('mypassword')
-      component.find('form').trigger('submit')
+      component.find('input').setValue('mypassword');
+      component.find('form').trigger('submit');
 
-      await component.vm.$nextTick()
-      await component.vm.$nextTick()
-      await component.vm.$nextTick()
+      await component.vm.$nextTick();
+      await component.vm.$nextTick();
+      await component.vm.$nextTick();
 
-      expect(replaceStub.mock.calls).length(1)
-      expect(replaceStub.mock.calls[0][0]).to.eq('/user')
-    })
-  })
-})
+      expect(replaceStub.mock.calls).length(1);
+      expect(replaceStub.mock.calls[0][0]).to.eq('/user');
+    });
+  });
+});

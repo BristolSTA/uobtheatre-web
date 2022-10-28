@@ -16,7 +16,7 @@
         :editor="editor"
         @click="$event.focus().toggleItalic().run()"
       />
-      <div class="w-6 bg-white"></div>
+      <div class="w-6 bg-white" />
       <editor-button
         active-key="paragraph"
         icon="paragraph"
@@ -30,17 +30,19 @@
         class="font-bold"
         :editor="editor"
         @click="$event.focus().toggleHeading({ level: 1 }).run()"
-        >H1</editor-button
       >
+        H1
+      </editor-button>
       <editor-button
         :active-key="['heading', { level: 2 }]"
         title="Heading 2"
         class="font-bold"
         :editor="editor"
         @click="$event.focus().toggleHeading({ level: 2 }).run()"
-        >H2</editor-button
       >
-      <div class="w-6 bg-white"></div>
+        H2
+      </editor-button>
+      <div class="w-6 bg-white" />
       <editor-button
         active-key="bulletList"
         icon="list-ul"
@@ -62,7 +64,7 @@
         :editor="editor"
         @click="$event.focus().toggleBlockquote().run()"
       />
-      <div class="w-6 bg-white"></div>
+      <div class="w-6 bg-white" />
       <editor-button
         icon="undo"
         title="Undo"
@@ -84,9 +86,9 @@
 </template>
 
 <script>
-import { Editor, EditorContent } from '@tiptap/vue-2'
-import StarterKit from '@tiptap/starter-kit'
-import EditorButton from './EditorButton.vue'
+import { Editor, EditorContent } from '@tiptap/vue-2';
+import StarterKit from '@tiptap/starter-kit';
+import EditorButton from './EditorButton.vue';
 
 export default {
   components: {
@@ -104,18 +106,18 @@ export default {
   data() {
     return {
       editor: null,
-    }
+    };
   },
 
   watch: {
     value(value) {
-      const isSame = this.editor.getHTML() === value
+      const isSame = this.editor.getHTML() === value;
 
       if (isSame) {
-        return
+        return;
       }
 
-      this.editor.commands.setContent(this.value, false)
+      this.editor.commands.setContent(this.value, false);
     },
   },
 
@@ -130,13 +132,13 @@ export default {
       },
       onUpdate: () => {
         // HTML
-        this.$emit('input', this.editor.getHTML())
+        this.$emit('input', this.editor.getHTML());
       },
-    })
+    });
   },
 
   beforeDestroy() {
-    this.editor.destroy()
+    this.editor.destroy();
   },
-}
+};
 </script>

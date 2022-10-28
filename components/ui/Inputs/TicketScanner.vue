@@ -42,17 +42,19 @@
             Switch to Camera-based Scanner
           </div>
         </div>
-        <template v-if="showCamera">Switch to Hardware-based Scanner</template>
+        <template v-if="showCamera">
+          Switch to Hardware-based Scanner
+        </template>
       </button>
     </div>
   </div>
 </template>
 
 <script>
-import CameraCheckIn from '@/components/box-office/CameraCheckIn.vue'
-import HardwareScannerCheckIn from '@/components/box-office/HardwareScannerCheckIn.vue'
-import CameraScanner from '@/components/box-office/CameraScanner.vue'
-import HardwareScanner from '@/components/box-office/HardwareScanner.vue'
+import CameraCheckIn from '@/components/box-office/CameraCheckIn.vue';
+import HardwareScannerCheckIn from '@/components/box-office/HardwareScannerCheckIn.vue';
+import CameraScanner from '@/components/box-office/CameraScanner.vue';
+import HardwareScanner from '@/components/box-office/HardwareScanner.vue';
 export default {
   components: {
     CameraCheckIn,
@@ -73,12 +75,12 @@ export default {
   data() {
     return {
       showCamera: false,
-    }
+    };
   },
   mounted() {
     if (this.checkInMode && !this.performanceId) {
-      throw new Error('Performance ID must be supplied in check in mode')
+      throw new Error('Performance ID must be supplied in check in mode');
     }
   },
-}
+};
 </script>

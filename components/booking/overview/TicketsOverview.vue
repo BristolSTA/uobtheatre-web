@@ -42,11 +42,10 @@
 </template>
 
 <script>
-import lo from 'lodash'
+import lo from 'lodash';
 
-import Booking from '@/classes/Booking'
-
-import OverviewBox from '../../ui/Card.vue'
+import OverviewBox from '../../ui/Card.vue';
+import Booking from '@/classes/Booking';
 
 export default {
   name: 'TicketsOverview',
@@ -62,8 +61,8 @@ export default {
       return lo.groupBy(
         this.booking.ticketOverview(),
         (concessionTickets) => concessionTickets.seatGroup.id
-      )
+      );
     },
   },
-}
+};
 </script>

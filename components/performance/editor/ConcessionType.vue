@@ -46,13 +46,13 @@
           />
         </template>
       </form-label>
-      <slot name="editor-footer"></slot>
+      <slot name="editor-footer" />
     </div>
   </div>
 </template>
 
 <script>
-import FormLabel from '@/components/ui/FormLabel.vue'
+import FormLabel from '@/components/ui/FormLabel.vue';
 
 export default {
   components: { FormLabel },
@@ -77,7 +77,7 @@ export default {
   data() {
     return {
       editing: false,
-    }
+    };
   },
-}
+};
 </script>

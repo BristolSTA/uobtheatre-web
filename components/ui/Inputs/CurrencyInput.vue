@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import useCurrencyInput from 'vue-currency-input'
+import useCurrencyInput from 'vue-currency-input';
 
 export default {
   props: {
@@ -32,9 +32,9 @@ export default {
         },
         props.options
       )
-    )
+    );
 
-    return { inputRef, formattedValue }
+    return { inputRef, formattedValue };
   },
-}
+};
 </script>

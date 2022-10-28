@@ -1,15 +1,7 @@
 <template>
   <auth-page-template>
     <div
-      class="
-        w-100
-        relative
-        p-6
-        max-w-xs
-        text-center text-white
-        bg-sta-gray
-        shadow-2xl
-      "
+      class="w-100 relative p-6 max-w-xs text-center text-white bg-sta-gray shadow-2xl"
     >
       <h1 class="text-h3">Reset your password</h1>
       <form
@@ -43,11 +35,11 @@
   </auth-page-template>
 </template>
 <script>
-import { getValidationErrors, performMutation, successToast } from '@/utils'
+import { getValidationErrors, performMutation, successToast } from '@/utils';
 
-import AuthPageTemplate from '@/components/auth/AuthPageTemplate.vue'
-import NonFieldError from '@/components/ui/NonFieldError.vue'
-import TextInput from '@/components/ui/TextInput.vue'
+import AuthPageTemplate from '@/components/auth/AuthPageTemplate.vue';
+import NonFieldError from '@/components/ui/NonFieldError.vue';
+import TextInput from '@/components/ui/TextInput.vue';
 
 export default {
   components: { AuthPageTemplate, NonFieldError, TextInput },
@@ -57,7 +49,7 @@ export default {
       errors: null,
       newPassword: null,
       confirmedNewPassword: null,
-    }
+    };
   },
   head: {
     title: 'Reset your password',
@@ -76,13 +68,13 @@ export default {
             },
           },
           'passwordReset'
-        )
-        successToast.fire({ title: 'Password Changed!' })
-        return this.$router.replace('/login')
+        );
+        successToast.fire({ title: 'Password Changed!' });
+        return this.$router.replace('/login');
       } catch (e) {
-        this.errors = getValidationErrors(e)
+        this.errors = getValidationErrors(e);
       }
     },
   },
-}
+};
 </script>

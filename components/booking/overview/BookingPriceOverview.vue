@@ -7,7 +7,9 @@
     <table class="my-2">
       <tr v-for="(cost, index) in costs" :key="index">
         <td class="pr-4">
-          <p class="font-semibold">{{ cost.name }}</p>
+          <p class="font-semibold">
+            {{ cost.name }}
+          </p>
           <small v-if="cost.subtext">{{ cost.subtext }}</small>
         </td>
         <td class="px-2">:</td>
@@ -26,9 +28,9 @@
 </template>
 
 <script>
-import Booking from '@/classes/Booking'
+import OverviewBox from '../../ui/Card.vue';
+import Booking from '@/classes/Booking';
 
-import OverviewBox from '../../ui/Card.vue'
 export default {
   name: 'BookingPriceOverview',
   components: { OverviewBox },
@@ -46,17 +48,17 @@ export default {
           subtext: 'Including any discounts',
           cost: this.booking.ticketsDiscountedPricePounds,
         },
-      ]
+      ];
 
       this.booking.miscCosts.forEach((miscCost) => {
         costs.push({
           name: miscCost.name,
           cost: (miscCost.value / 100).toFixed(2),
-        })
-      })
+        });
+      });
 
-      return costs
+      return costs;
     },
   },
-}
+};
 </script>

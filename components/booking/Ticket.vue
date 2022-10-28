@@ -20,7 +20,9 @@
       class="flex justify-between w-full font-semibold"
     >
       <p class="pr-1">1x {{ ticket.concessionType.name }}</p>
-      <p class="pl-1 text-right">{{ ticket.seatGroup.name }}</p>
+      <p class="pl-1 text-right">
+        {{ ticket.seatGroup.name }}
+      </p>
     </div>
     <div class="flex flex-grow items-center justify-center py-2 w-full">
       <qrcode-vue
@@ -42,10 +44,10 @@
 </template>
 
 <script>
-import lo from 'lodash'
-import QrcodeVue from 'qrcode.vue'
+import lo from 'lodash';
+import QrcodeVue from 'qrcode.vue';
 
-import Ticket from '@/classes/Ticket'
+import Ticket from '@/classes/Ticket';
 
 export default {
   name: 'Ticket',
@@ -74,8 +76,8 @@ export default {
     fullName() {
       return this.user
         ? lo.join([this.user.firstName, this.user.lastName], ' ')
-        : null
+        : null;
     },
   },
-}
+};
 </script>

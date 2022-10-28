@@ -32,7 +32,7 @@
             >
               {{ currentStage.name }}
             </h1>
-            <div class="flex-1"></div>
+            <div class="flex-1" />
           </div>
           <div
             v-if="booking.raw && booking.raw.expiresAt"
@@ -70,23 +70,23 @@
 </template>
 
 <script>
-import Booking from '@/classes/Booking'
-import TicketsMatrix from '@/classes/TicketsMatrix'
-import BookingNavigation from '@/components/booking/BookingNavigation.vue'
-import ProductionBanner from '@/components/production/ProductionBanner.vue'
-import ClickableLink from '@/components/ui/ClickableLink.vue'
-import DeleteBookingMutation from '@/graphql/mutations/booking/DeleteBooking.gql'
-import { swal } from '@/utils'
-
-import ProductionBasicInfoFragment from '@/graphql/fragments/production/ProductionBasicInfoFragment.gql'
-import ProductionPerformancesFragment from '@/graphql/fragments/production/ProductionPerformancesFragment.gql'
-import gql from 'graphql-tag'
-import TimeRemainingCountdown from '@/components/ui/Formatters/TimeRemainingCountdown.vue'
+import gql from 'graphql-tag';
 import {
   getNextStage,
   getPreviousStage,
   getStageIndex,
-} from './book/-bookingStages'
+} from './book/-bookingStages';
+import Booking from '@/classes/Booking';
+import TicketsMatrix from '@/classes/TicketsMatrix';
+import BookingNavigation from '@/components/booking/BookingNavigation.vue';
+import ProductionBanner from '@/components/production/ProductionBanner.vue';
+import ClickableLink from '@/components/ui/ClickableLink.vue';
+import DeleteBookingMutation from '@/graphql/mutations/booking/DeleteBooking.gql';
+import { swal } from '@/utils';
+
+import ProductionBasicInfoFragment from '@/graphql/fragments/production/ProductionBasicInfoFragment.gql';
+import ProductionPerformancesFragment from '@/graphql/fragments/production/ProductionPerformancesFragment.gql';
+import TimeRemainingCountdown from '@/components/ui/Formatters/TimeRemainingCountdown.vue';
 export default {
   components: {
     BookingNavigation,
@@ -94,8 +94,10 @@ export default {
     ClickableLink,
     TimeRemainingCountdown,
   },
-  async beforeRouteLeave(to, from, next) {
-    if (!this.booking.id || this.paid) return next()
+  async beforeRouteLeave(_, __, next) {
+    if (!this.booking.id || this.paid) {
+      return next();
+    }
 
     const { isDismissed } = await swal.fire({
       title: "You haven't finished your booking!",
@@ -105,9 +107,11 @@ export default {
       confirmButtonText: 'Abandon Booking',
       confirmButtonColor: '#d94519',
       cancelButtonText: 'Keep editing',
-    })
+    });
 
-    if (isDismissed) return next(false)
+    if (isDismissed) {
+      return next(false);
+    }
 
     // Delete their booking
     this.$apollo.mutate({
@@ -115,9 +119,9 @@ export default {
       variables: {
         bookingId: this.booking.id,
       },
-    })
+    });
 
-    return next()
+    return next();
   },
   middleware: 'authed',
   async asyncData({ params, app, error }) {
@@ -135,17 +139,18 @@ export default {
       variables: {
         slug: params.slug,
       },
-    })
+    });
 
-    const production = data.production
-    if (!production)
+    const production = data.production;
+    if (!production) {
       return error({
         statusCode: 404,
         message: 'This production does not exist',
-      })
+      });
+    }
     return {
       production,
-    }
+    };
   },
   data() {
     return {
@@ -154,17 +159,17 @@ export default {
       previousBooking: null,
       currentStage: null,
       paid: false,
-    }
+    };
   },
   head() {
     return {
       title: `Book ${this.production.name}`,
       script: [{ src: this.$config.services.square.script, defer: true }],
-    }
+    };
   },
   computed: {
     currentStageIndex() {
-      return getStageIndex(this.currentStage)
+      return getStageIndex(this.currentStage);
     },
     crumbs() {
       return [
@@ -174,14 +179,14 @@ export default {
           path: `/production/${this.production.slug}`,
         },
         { text: 'Book' },
-      ]
+      ];
     },
   },
   methods: {
     bookingExpired() {
-      const production = this.production
-      this.loadDataForStage()
-      this.booking = new Booking()
+      const production = this.production;
+      this.loadDataForStage();
+      this.booking = new Booking();
       swal
         .fire({
           title: 'Booking Expired',
@@ -191,34 +196,37 @@ export default {
           showCancelButton: true,
           showConfirmButton: true,
         })
-        .then(({ isConfirmed, isDismissed }) => {
-          if (isDismissed) return this.$router.push('/')
-          return this.$router.push(`/production/${production.slug}/book`)
-        })
+        .then(({ isDismissed }) => {
+          if (isDismissed) {
+            return this.$router.push('/');
+          }
+          return this.$router.push(`/production/${production.slug}/book`);
+        });
     },
     onChildMount() {
-      this.currentStage = this.$refs.stageComponent.$options.stageInfo
+      this.currentStage = this.$refs.stageComponent.$options.stageInfo;
 
-      this.loadDataForStage()
+      this.loadDataForStage();
       if (!this.currentStage.shouldBeUsed(this.production, this.booking)) {
-        return this.navigateToStage(null, true)
+        return this.navigateToStage(null, true);
       }
       if (!this.currentStage.eligable(this.production, this.booking)) {
-        return this.gotoPreviousStage()
+        return this.gotoPreviousStage();
       }
     },
     gotoPreviousStage() {
       this.navigateToStage(
         getPreviousStage(this.currentStageIndex, this.production, this.booking)
-      )
+      );
     },
     navigateToStage(stage = null, replace = false) {
-      if (!stage)
+      if (!stage) {
         stage = getNextStage(
           this.currentStageIndex,
           this.production,
           this.booking
-        )
+        );
+      }
 
       this.$router[replace ? 'replace' : 'push']({
         name: stage.stageInfo.routeName,
@@ -229,7 +237,7 @@ export default {
             ? this.booking.performance.id
             : null,
         },
-      })
+      });
     },
     loadDataForStage() {
       if (this.$route.params.performanceId) {
@@ -246,7 +254,7 @@ export default {
             .then(({ data }) => {
               this.previousBooking = data.me.bookings.edges.length
                 ? data.me.bookings.edges[0].node
-                : false
+                : false;
 
               if (this.previousBooking) {
                 swal
@@ -259,11 +267,11 @@ export default {
                   })
                   .then((result) => {
                     if (result.isConfirmed) {
-                      this.booking.updateFromAPIData(this.previousBooking)
+                      this.booking.updateFromAPIData(this.previousBooking);
                     }
-                  })
+                  });
               }
-            })
+            });
         }
 
         if (!this.booking.performance) {
@@ -272,7 +280,7 @@ export default {
             .find(
               (performance) =>
                 performance.id === this.$route.params.performanceId
-            )
+            );
         }
 
         if (!this.ticketMatrix) {
@@ -284,17 +292,17 @@ export default {
               },
             })
             .then((result) => {
-              this.ticketMatrix = new TicketsMatrix(result.data.performance)
-            })
+              this.ticketMatrix = new TicketsMatrix(result.data.performance);
+            });
         }
       }
     },
     onSelectPerformance(performance) {
-      this.booking.performance = performance
-      this.booking.tickets = []
-      this.ticketMatrix = null
-      this.navigateToStage()
+      this.booking.performance = performance;
+      this.booking.tickets = [];
+      this.ticketMatrix = null;
+      this.navigateToStage();
     },
   },
-}
+};
 </script>

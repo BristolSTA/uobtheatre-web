@@ -1,21 +1,21 @@
 <template>
   <div>
     <label>
-      <span :class="[labelClass, { underline: underline }]"><slot></slot></span>
+      <span :class="[labelClass, { underline: underline }]"><slot /></span>
       <required-star v-if="required" />
       <p v-if="$slots.helper" class="text-gray-400 text-sm">
-        <slot name="helper"></slot>
+        <slot name="helper" />
       </p>
     </label>
-    <slot name="control"></slot>
+    <slot name="control" />
     <div><error-helper v-if="name" :errors="errors" :field-name="name" /></div>
   </div>
 </template>
 
 <script>
-import Errors from '@/classes/Errors'
-import ErrorHelper from './ErrorHelper.vue'
-import RequiredStar from './Form/RequiredStar.vue'
+import ErrorHelper from './ErrorHelper.vue';
+import RequiredStar from './Form/RequiredStar.vue';
+import Errors from '@/classes/Errors';
 export default {
   components: { ErrorHelper, RequiredStar },
   props: {
@@ -40,5 +40,5 @@ export default {
       type: Boolean,
     },
   },
-}
+};
 </script>

@@ -17,12 +17,14 @@
       data we collect, along with its purpose (our legitimate interest).
     </p>
     <div v-for="section in collectedData" :key="section.title" class="mb-6">
-      <h3 class="text-xl">{{ section.title }}</h3>
+      <h3 class="text-xl">
+        {{ section.title }}
+      </h3>
       <table class="w-full">
         <thead>
-          <table-head-item :text-left="false">Purpose</table-head-item>
-          <table-head-item :text-left="false">Legal Basis</table-head-item>
-          <table-head-item :text-left="false">Collected Data</table-head-item>
+          <table-head-item :text-left="false"> Purpose </table-head-item>
+          <table-head-item :text-left="false"> Legal Basis </table-head-item>
+          <table-head-item :text-left="false"> Collected Data </table-head-item>
         </thead>
         <tbody>
           <table-row v-for="(row, index) in section.items" :key="index">
@@ -230,9 +232,9 @@
 </template>
 
 <script>
-import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue'
-import TableRow from '@/components/ui/Tables/TableRow.vue'
-import TableRowItem from '@/components/ui/Tables/TableRowItem.vue'
+import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
+import TableRow from '@/components/ui/Tables/TableRow.vue';
+import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
 export default {
   components: { TableRowItem, TableRow, TableHeadItem },
   data() {
@@ -271,12 +273,12 @@ export default {
           ],
         },
       ],
-    }
+    };
   },
   head: {
-    title: `Privacy Policy`,
+    title: 'Privacy Policy',
   },
-}
+};
 </script>
 
 <style lang="scss">

@@ -33,9 +33,9 @@
 </template>
 
 <script>
-import TimeGroupedPerformanceSelector from '@/components/performance/TimeGroupedPerformanceSelector.vue'
+import { DateTime } from 'luxon';
+import TimeGroupedPerformanceSelector from '@/components/performance/TimeGroupedPerformanceSelector.vue';
 
-import { DateTime } from 'luxon'
 export default {
   name: 'ProductionPerformances',
   components: {
@@ -49,8 +49,8 @@ export default {
   },
   computed: {
     prodInPast() {
-      return DateTime.now() > DateTime.fromISO(this.production.end)
+      return DateTime.now() > DateTime.fromISO(this.production.end);
     },
   },
-}
+};
 </script>

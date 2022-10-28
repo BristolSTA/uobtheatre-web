@@ -29,23 +29,25 @@
 </template>
 
 <script>
-import SocietyTile from '@/components/society/SocietyTile.vue'
-import InfiniteScroll from '@/components/ui/InfiniteScroll.vue'
+import SocietyTile from '@/components/society/SocietyTile.vue';
+import InfiniteScroll from '@/components/ui/InfiniteScroll.vue';
 export default {
   components: { SocietyTile, InfiniteScroll },
   data() {
     return {
       societies: null,
-    }
+    };
   },
   head: {
     title: 'Societies',
   },
   methods: {
     handleNewData(data) {
-      if (!this.societies) this.societies = []
-      this.societies.push(...data.edges.map((edge) => edge.node))
+      if (!this.societies) {
+        this.societies = [];
+      }
+      this.societies.push(...data.edges.map((edge) => edge.node));
     },
   },
-}
+};
 </script>

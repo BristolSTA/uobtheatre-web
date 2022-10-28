@@ -16,14 +16,16 @@
             :disabled="!!booking.id"
             type="text"
             placeholder="joe.bloggs@example.org"
-        /></template>
+          />
+        </template>
       </form-label>
       <sta-button
         colour="orange"
         :disabled="!bookingEmail || !booking.tickets.length"
         @click="create"
-        >Create Booking</sta-button
       >
+        Create Booking
+      </sta-button>
       <p>
         <strong>Note:</strong> Only complimentary bookings (100% discount) can
         be created here. Once you click create, booking confirmation will be
@@ -35,17 +37,17 @@
 </template>
 
 <script>
-import FullPerformanceAndTicketOptionsQuery from '@/graphql/queries/FullPerformanceAndTicketOptions.gql'
-import BookingMutation from '@/graphql/mutations/booking/Booking.gql'
-import PayBookingMutation from '@/graphql/mutations/booking/PayBooking.gql'
-import TicketsMatrix from '@/classes/TicketsMatrix'
-import Booking from '@/classes/Booking'
-import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue'
-import Card from '@/components/ui/Card.vue'
-import FormLabel from '@/components/ui/FormLabel.vue'
-import StaButton from '@/components/ui/StaButton.vue'
-import { getValidationErrors, performMutation, successToast } from '@/utils'
-import LoadingContainer from '@/components/ui/LoadingContainer.vue'
+import FullPerformanceAndTicketOptionsQuery from '@/graphql/queries/FullPerformanceAndTicketOptions.gql';
+import BookingMutation from '@/graphql/mutations/booking/Booking.gql';
+import PayBookingMutation from '@/graphql/mutations/booking/PayBooking.gql';
+import TicketsMatrix from '@/classes/TicketsMatrix';
+import Booking from '@/classes/Booking';
+import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue';
+import Card from '@/components/ui/Card.vue';
+import FormLabel from '@/components/ui/FormLabel.vue';
+import StaButton from '@/components/ui/StaButton.vue';
+import { getValidationErrors, performMutation, successToast } from '@/utils';
+import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 export default {
   components: {
     TicketsEditor,
@@ -61,25 +63,26 @@ export default {
         id: params.performanceId,
       },
       fetchPolicy: 'no-cache',
-    })
+    });
 
-    const performance = data.performance
-    if (!performance)
+    const performance = data.performance;
+    if (!performance) {
       return error({
         statusCode: 404,
         message: 'This performance does not exist',
-      })
+      });
+    }
 
-    const ticketsMatrix = new TicketsMatrix(performance)
+    const ticketsMatrix = new TicketsMatrix(performance);
 
-    const booking = new Booking()
-    booking.performance = performance
+    const booking = new Booking();
+    booking.performance = performance;
 
     return {
       ticketsMatrix,
       performance,
       booking,
-    }
+    };
   },
   data() {
     return {
@@ -90,14 +93,14 @@ export default {
       booking: null,
       bookingEmail: null,
       errors: null,
-    }
+    };
   },
   head: {
     title: 'Create Complimentary Booking',
   },
   methods: {
     async create() {
-      this.loading = true
+      this.loading = true;
       try {
         // Make the booking
         const data = await performMutation(
@@ -114,8 +117,8 @@ export default {
             },
           },
           'booking'
-        )
-        this.booking.updateFromAPIData(data.booking.booking)
+        );
+        this.booking.updateFromAPIData(data.booking.booking);
 
         // Pay the booking
         await performMutation(
@@ -128,19 +131,19 @@ export default {
             },
           },
           'payBooking'
-        )
+        );
 
         successToast.fire({
           title: 'Booking created!',
-        })
+        });
 
-        this.$router.replace(`../${this.booking.reference}`)
+        this.$router.replace(`../${this.booking.reference}`);
       } catch (e) {
-        this.errors = getValidationErrors(e)
+        this.errors = getValidationErrors(e);
       } finally {
-        this.loading = false
+        this.loading = false;
       }
     },
   },
-}
+};
 </script>

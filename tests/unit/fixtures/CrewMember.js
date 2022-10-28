@@ -1,4 +1,4 @@
-import CrewRole from './CrewRole'
+import CrewRole from './CrewRole';
 export default (overrides = {}) => {
   return Object.assign(
     {
@@ -8,5 +8,5 @@ export default (overrides = {}) => {
       production: null,
     },
     overrides
-  )
-}
+  );
+};

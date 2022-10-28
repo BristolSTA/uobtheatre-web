@@ -19,11 +19,11 @@ export default class {
     eligable = null,
     requiresPerformance = true,
   }) {
-    this.name = name
-    this.routeName = routeName
-    this.shouldBeUsedFn = shouldBeUsed
-    this.eligableFn = eligable
-    this.requiresPerformance = requiresPerformance
+    this.name = name;
+    this.routeName = routeName;
+    this.shouldBeUsedFn = shouldBeUsed;
+    this.eligableFn = eligable;
+    this.requiresPerformance = requiresPerformance;
   }
 
   /**
@@ -32,7 +32,9 @@ export default class {
    * @returns {boolean} Whether the stage should be used in the booking process
    */
   shouldBeUsed(production, booking = null) {
-    return this.shouldBeUsedFn ? this.shouldBeUsedFn(production, booking) : true
+    return this.shouldBeUsedFn
+      ? this.shouldBeUsedFn(production, booking)
+      : true;
   }
 
   /**
@@ -44,6 +46,6 @@ export default class {
     return (
       (this.eligableFn ? this.eligableFn(production, booking) : true) &&
       !(this.requiresPerformance && !booking.performance)
-    )
+    );
   }
 }

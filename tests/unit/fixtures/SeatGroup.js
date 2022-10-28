@@ -1,5 +1,5 @@
-import GenericNodeConnection from './support/GenericNodeConnection'
-import Venue from './Venue'
+import GenericNodeConnection from './support/GenericNodeConnection';
+import Venue from './Venue';
 
 export default (
   overrides = {},
@@ -18,5 +18,5 @@ export default (
       tickets: includeTickets ? GenericNodeConnection() : null,
     },
     overrides
-  )
-}
+  );
+};

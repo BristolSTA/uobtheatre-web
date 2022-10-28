@@ -10,53 +10,55 @@
         colour="green"
         icon="link"
         :to="`/box-office/${performance.id}`"
-        >Goto Box Office</sta-button
       >
+        Goto Box Office
+      </sta-button>
       <sta-button
         v-if="production.permissions.includes('edit_production')"
         colour="orange"
         icon="edit"
         :to="`${performance.id}/edit`"
-        >Edit</sta-button
       >
+        Edit
+      </sta-button>
     </template>
     <div class="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
       <card title="Summary" class="max-w-2xl">
         <table class="table-auto w-full">
           <tr>
-            <table-head-item :text-left="false">Status</table-head-item>
+            <table-head-item :text-left="false"> Status </table-head-item>
             <table-row-item>
               <performance-status-badge :performance="performance" />
             </table-row-item>
           </tr>
           <tr>
-            <table-head-item :text-left="false">Venue</table-head-item>
+            <table-head-item :text-left="false"> Venue </table-head-item>
             <table-row-item>
               {{ performance.venue.name }}
             </table-row-item>
           </tr>
           <tr>
-            <table-head-item :text-left="false">Doors Open</table-head-item>
+            <table-head-item :text-left="false"> Doors Open </table-head-item>
             <table-row-item>
               {{ performance.doorsOpen | dateFormat('dd MM y T ZZZZ') }}
             </table-row-item>
           </tr>
           <tr>
-            <table-head-item :text-left="false">Starts</table-head-item>
+            <table-head-item :text-left="false"> Starts </table-head-item>
             <table-row-item>
               {{ performance.start | dateFormat('dd MM y T ZZZZ') }}
             </table-row-item>
           </tr>
           <tr v-if="performance.intervalDurationMins">
-            <table-head-item :text-left="false"
-              >Interval Length</table-head-item
-            >
+            <table-head-item :text-left="false">
+              Interval Length
+            </table-head-item>
             <table-row-item>
               {{ performance.intervalDurationMins }} minutes
             </table-row-item>
           </tr>
           <tr>
-            <table-head-item :text-left="false">Ends</table-head-item>
+            <table-head-item :text-left="false"> Ends </table-head-item>
             <table-row-item>
               {{ performance.end | dateFormat('dd MM y T ZZZZ') }}
             </table-row-item>
@@ -73,7 +75,7 @@
             <table-row-item>100 TODO</table-row-item>
           </tr> -->
           <tr>
-            <table-head-item :text-left="false">Ticket Sales</table-head-item>
+            <table-head-item :text-left="false"> Ticket Sales </table-head-item>
             <table-row-item>
               {{ performance.ticketsBreakdown.totalTicketsSold }} tickets sold |
               {{
@@ -99,14 +101,14 @@
             </table-row-item>
           </tr>
           <tr v-if="performance.salesBreakdown">
-            <table-head-item :text-left="false"
-              >Performance Net Society Revenue</table-head-item
-            >
-            <table-row-item
-              >£{{
+            <table-head-item :text-left="false">
+              Performance Net Society Revenue
+            </table-head-item>
+            <table-row-item>
+              £{{
                 (performance.salesBreakdown.societyRevenue / 100).toFixed(2)
-              }}</table-row-item
-            >
+              }}
+            </table-row-item>
           </tr>
         </table>
       </card>
@@ -118,13 +120,13 @@
             <table>
               <thead>
                 <tr>
-                  <table-head-item :text-left="false"
-                    >Seat Group</table-head-item
-                  >
-                  <table-head-item :text-left="false">Sold</table-head-item>
-                  <table-head-item :text-left="false"
-                    >Remaining Capacity</table-head-item
-                  >
+                  <table-head-item :text-left="false">
+                    Seat Group
+                  </table-head-item>
+                  <table-head-item :text-left="false"> Sold </table-head-item>
+                  <table-head-item :text-left="false">
+                    Remaining Capacity
+                  </table-head-item>
                 </tr>
               </thead>
               <tbody>
@@ -135,15 +137,15 @@
                   :key="index"
                   class="text-center"
                 >
-                  <table-row-item>{{
-                    performanceSeatGroup.seatGroup.name
-                  }}</table-row-item>
-                  <table-row-item>{{
-                    performanceSeatGroup.numberTicketsSold
-                  }}</table-row-item>
-                  <table-row-item>{{
-                    performanceSeatGroup.capacityRemaining
-                  }}</table-row-item>
+                  <table-row-item>
+                    {{ performanceSeatGroup.seatGroup.name }}
+                  </table-row-item>
+                  <table-row-item>
+                    {{ performanceSeatGroup.numberTicketsSold }}
+                  </table-row-item>
+                  <table-row-item>
+                    {{ performanceSeatGroup.capacityRemaining }}
+                  </table-row-item>
                 </table-row>
               </tbody>
             </table>
@@ -180,52 +182,48 @@
     <div class="mt-6">
       <h2 class="text-h2">Tools</h2>
       <div
-        class="
-          grid
-          gap-6
-          grid-cols-1
-          sm:grid-cols-2
-          lg:grid-cols-3
-          xl:grid-cols-4
-        "
+        class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       >
         <menu-tile
           class="bg-sta-green hover:bg-sta-green-dark"
           icon="clipboard-list"
           :to="`../bookings?performanceId=${performance.id}`"
-          >View Bookings</menu-tile
         >
+          View Bookings
+        </menu-tile>
         <menu-tile
           class="bg-sta-green hover:bg-sta-green-dark"
           :to="`../bookings/create/${performance.id}`"
           icon="plus-circle"
-          >Create Comp Booking</menu-tile
         >
+          Create Comp Booking
+        </menu-tile>
         <menu-tile
           class="bg-sta-green hover:bg-sta-green-dark"
           icon="file-export"
           @click="downloadBookings"
-          >Download Bookings</menu-tile
         >
+          Download Bookings
+        </menu-tile>
       </div>
     </div>
   </admin-page>
 </template>
 
 <script>
-import AdminPerformanceDetailQuery from '@/graphql/queries/admin/productions/AdminPerformanceDetail.gql'
-import Card from '@/components/ui/Card.vue'
-import AdminPage from '@/components/admin/AdminPage.vue'
-import StaButton from '@/components/ui/StaButton.vue'
-import ProgressBar from '@/components/ui/ProgressBar.vue'
-import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue'
-import TableRowItem from '@/components/ui/Tables/TableRowItem.vue'
-import MenuTile from '@/components/ui/MenuTile.vue'
-import PerformanceStatusBadge from '@/components/performance/PerformanceStatusBadge.vue'
-import TicketsMatrix from '@/classes/TicketsMatrix'
-import TableRow from '@/components/ui/Tables/TableRow.vue'
-import { performMutation } from '@/utils'
-import PriceMatrix from '@/components/performance/editor/PriceMatrix.vue'
+import AdminPerformanceDetailQuery from '@/graphql/queries/admin/productions/AdminPerformanceDetail.gql';
+import Card from '@/components/ui/Card.vue';
+import AdminPage from '@/components/admin/AdminPage.vue';
+import StaButton from '@/components/ui/StaButton.vue';
+import ProgressBar from '@/components/ui/ProgressBar.vue';
+import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
+import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
+import MenuTile from '@/components/ui/MenuTile.vue';
+import PerformanceStatusBadge from '@/components/performance/PerformanceStatusBadge.vue';
+import TicketsMatrix from '@/classes/TicketsMatrix';
+import TableRow from '@/components/ui/Tables/TableRow.vue';
+import { performMutation } from '@/utils';
+import PriceMatrix from '@/components/performance/editor/PriceMatrix.vue';
 export default {
   components: {
     Card,
@@ -248,30 +246,31 @@ export default {
         performanceId: params.performanceId,
       },
       fetchPolicy: 'no-cache',
-    })
+    });
 
-    const production = data.production
-    if (!production || !production.performances.edges.length)
+    const production = data.production;
+    if (!production || !production.performances.edges.length) {
       return error({
         statusCode: 404,
-      })
-    const performance = production.performances.edges[0].node
+      });
+    }
+    const performance = production.performances.edges[0].node;
     return {
       performance,
       production,
       ticketsMatrix: new TicketsMatrix(performance),
-    }
+    };
   },
   data() {
     return {
       production: null,
       performance: null,
       ticketsMatrix: null,
-    }
+    };
   },
   head() {
-    const title = `Performance of ${this.production.name}`
-    return { title }
+    const title = `Performance of ${this.production.name}`;
+    return { title };
   },
   methods: {
     async downloadBookings() {
@@ -285,10 +284,10 @@ export default {
           },
         },
         'generateReport'
-      )
+      );
 
-      window.open(data.generateReport.downloadUri)
+      window.open(data.generateReport.downloadUri);
     },
   },
-}
+};
 </script>

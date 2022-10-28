@@ -1,4 +1,4 @@
-import authService from '@/services/authService'
+import authService from '@/services/authService';
 
 /**
  * @param {object} context Nuxt Context
@@ -9,6 +9,6 @@ export default function (context) {
     return context.redirect({
       path: '/login',
       query: { redirect: context.route.fullPath },
-    })
+    });
   }
 }

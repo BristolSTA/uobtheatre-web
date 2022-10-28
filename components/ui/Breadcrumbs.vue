@@ -21,8 +21,8 @@
             />
           </NuxtLink>
           <template v-else>
-            {{ crumb.text ? crumb.text : crumb.title }}</template
-          >
+            {{ crumb.text ? crumb.text : crumb.title }}
+          </template>
         </div>
       </div>
     </div>
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { startCase } from 'lodash'
+import startCase from 'lodash/startCase';
 export default {
   name: 'Breadcrumbs',
   props: {
@@ -49,27 +49,27 @@ export default {
   },
   computed: {
     crumbsToUse() {
-      return this.crumbs || (this.useAuto ? this.routeCrumbs : [])
+      return this.crumbs || (this.useAuto ? this.routeCrumbs : []);
     },
     routeCrumbs() {
-      const fullPath = this.$route.fullPath.split('?')[0]
+      const fullPath = this.$route.fullPath.split('?')[0];
       const params = fullPath.startsWith('/')
         ? fullPath.substring(1).split('/')
-        : fullPath.split('/')
-      const crumbs = []
-      let path = ''
-      params.forEach((param, index) => {
-        path = `${path}/${param}`
-        const match = this.$router.match(path)
+        : fullPath.split('/');
+      const crumbs = [];
+      let path = '';
+      params.forEach((param) => {
+        path = `${path}/${param}`;
+        const match = this.$router.match(path);
         if (match.name !== null && !param.endsWith('=')) {
           crumbs.push({
             title: startCase(param.replace(/-/g, ' ').toLowerCase()),
             ...match,
-          })
+          });
         }
-      })
-      return crumbs
+      });
+      return crumbs;
     },
   },
-}
+};
 </script>

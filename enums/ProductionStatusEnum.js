@@ -1,4 +1,4 @@
-import BaseEnum from './BaseEnum'
+import BaseEnum from './BaseEnum';
 
 export default class extends BaseEnum {
   nameMap = {
@@ -8,5 +8,5 @@ export default class extends BaseEnum {
     PUBLISHED: 'Published',
     CLOSED: 'Closed',
     COMPLETE: 'Complete',
-  }
+  };
 }

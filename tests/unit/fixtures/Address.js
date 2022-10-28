@@ -11,5 +11,5 @@ export default (overrides = {}) => {
       longitude: '987.654',
     },
     overrides
-  )
-}
+  );
+};

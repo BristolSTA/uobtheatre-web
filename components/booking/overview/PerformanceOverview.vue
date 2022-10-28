@@ -21,20 +21,20 @@
       </div>
       <icon-list-item icon="clock">
         {{ humanDuration(performance.durationMins) }}
-        <template v-if="performance.intervalDurationMins"
-          >inc. {{ performance.intervalDurationMins }} min interval</template
-        >
+        <template v-if="performance.intervalDurationMins">
+          inc. {{ performance.intervalDurationMins }} min interval
+        </template>
       </icon-list-item>
     </div>
   </overview-box>
 </template>
 
 <script>
-import IconListItem from '@/components/ui/IconListItem.vue'
+import { DateTime } from 'luxon';
+import OverviewBox from '../../ui/Card.vue';
+import IconListItem from '@/components/ui/IconListItem.vue';
 
-import { humanDuration, humanDayTime } from '@/utils'
-import { DateTime } from 'luxon'
-import OverviewBox from '../../ui/Card.vue'
+import { humanDuration, humanDayTime } from '@/utils';
 
 export default {
   name: 'PerformanceOverviewBox',
@@ -51,12 +51,12 @@ export default {
   },
   computed: {
     startTime() {
-      return DateTime.fromISO(this.performance.start)
+      return DateTime.fromISO(this.performance.start);
     },
   },
   methods: {
     humanDuration,
     humanDayTime,
   },
-}
+};
 </script>

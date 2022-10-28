@@ -4,22 +4,15 @@
     <div class="flex justify-center text-sm">
       <table class="table-auto text-left">
         <tr v-for="(requirement, index) in discount.requirements" :key="index">
-          <td class="pr-2">{{ requirement.concessionType.name }}</td>
+          <td class="pr-2">
+            {{ requirement.concessionType.name }}
+          </td>
           <td>x {{ requirement.number }}</td>
         </tr>
       </table>
     </div>
     <button
-      class="
-        btn btn-orange
-        mt-1
-        px-2.5
-        py-1
-        w-full
-        text-sm
-        font-semibold
-        rounded-sm
-      "
+      class="btn btn-orange mt-1 px-2.5 py-1 w-full text-sm font-semibold rounded-sm"
       @click="addTickets"
       @keypress="addTickets"
     >
@@ -39,8 +32,8 @@ export default {
   },
   methods: {
     addTickets() {
-      this.$emit('add-discount-tickets')
+      this.$emit('add-discount-tickets');
     },
   },
-}
+};
 </script>

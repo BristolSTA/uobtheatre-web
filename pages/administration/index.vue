@@ -48,5 +48,5 @@ export default {
   head: {
     title: 'Dashboard',
   },
-}
+};
 </script>

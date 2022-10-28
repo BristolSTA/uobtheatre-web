@@ -15,5 +15,8 @@
   "vetur.validation.template": false,
   "vetur.validation.script": false,
   "vetur.validation.style": false,
-  "vetur.format.enable": false
+  "vetur.format.enable": false,
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  }
 }

@@ -1,14 +1,6 @@
 <template>
   <div
-    class="
-      flex
-      items-center
-      justify-center
-      p-6
-      min-h-full
-      text-white
-      bg-sta-gray
-    "
+    class="flex items-center justify-center p-6 min-h-full text-white bg-sta-gray"
   >
     <div class="relative text-center">
       <template v-if="loading">
@@ -26,10 +18,10 @@
   </div>
 </template>
 <script>
-import gql from 'graphql-tag'
+import gql from 'graphql-tag';
 
-import { getValidationErrors, performMutation, swalToast } from '@/utils'
-import LoadingIcon from '@/components/ui/LoadingIcon.vue'
+import { getValidationErrors, performMutation, swalToast } from '@/utils';
+import LoadingIcon from '@/components/ui/LoadingIcon.vue';
 
 export default {
   components: {
@@ -39,7 +31,7 @@ export default {
     return {
       password: null,
       loading: true,
-    }
+    };
   },
   head: {
     title: 'Verify Email',
@@ -61,17 +53,17 @@ export default {
           },
         },
         'verifyAccount'
-      )
+      );
       swalToast.fire({
         position: 'bottom-end',
         icon: 'success',
         title: 'Email verified!',
-      })
-      return this.$router.replace('/login')
+      });
+      return this.$router.replace('/login');
     } catch (e) {
-      this.errors = getValidationErrors(e)
+      this.errors = getValidationErrors(e);
     }
-    this.loading = false
+    this.loading = false;
   },
-}
+};
 </script>

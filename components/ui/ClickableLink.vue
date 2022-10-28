@@ -4,11 +4,11 @@
     @click="$emit('click')"
     @keypress="
       (e) => {
-        e.target.click()
+        e.target.click();
       }
     "
   >
-    <slot></slot>
+    <slot />
   </a>
 </template>
 
@@ -21,5 +21,5 @@ export default {
       type: Boolean,
     },
   },
-}
+};
 </script>

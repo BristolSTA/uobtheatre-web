@@ -3,7 +3,7 @@
     <h4 class="text-sta-green font-semibold uppercase">
       {{ name }}
     </h4>
-    <slot></slot>
+    <slot />
   </div>
 </template>
 
@@ -15,5 +15,5 @@ export default {
       type: String,
     },
   },
-}
+};
 </script>

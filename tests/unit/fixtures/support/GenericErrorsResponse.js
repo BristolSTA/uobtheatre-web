@@ -1,4 +1,4 @@
-import GenericMutationResponse from './GenericMutationResponse'
+import GenericMutationResponse from './GenericMutationResponse';
 
 export default (errors = [], overrides = {}) => {
   return Object.assign(
@@ -8,5 +8,5 @@ export default (errors = [], overrides = {}) => {
       errors: Array.isArray(errors) ? errors : [errors],
     },
     overrides
-  )
-}
+  );
+};

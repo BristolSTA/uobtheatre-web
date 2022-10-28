@@ -1,8 +1,8 @@
-import Discount from './Discount'
-import PerformanceSeatGroup from './PerformanceSeatGroup'
-import Production from './Production'
-import GenericNodeConnection from './support/GenericNodeConnection'
-import Venue from './Venue'
+import Discount from './Discount';
+import PerformanceSeatGroup from './PerformanceSeatGroup';
+import Production from './Production';
+import GenericNodeConnection from './support/GenericNodeConnection';
+import Venue from './Venue';
 
 export default (overrides = {}) => {
   return Object.assign(
@@ -36,5 +36,5 @@ export default (overrides = {}) => {
       },
     },
     overrides
-  )
-}
+  );
+};

@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import ContentWarningDisplay from './ContentWarningDisplay.vue'
+import ContentWarningDisplay from './ContentWarningDisplay.vue';
 export default {
   components: { ContentWarningDisplay },
   props: {
@@ -16,5 +16,5 @@ export default {
       type: Array,
     },
   },
-}
+};
 </script>

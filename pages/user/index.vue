@@ -46,7 +46,7 @@
           ref="prev-bookings"
           :bookings="oldBookings.edges.map((edge) => edge.node)"
         >
-          <template #title>Past Bookings</template>
+          <template #title> Past Bookings </template>
         </bookings-table>
         <div class="flex justify-center">
           <pagination-bar
@@ -67,10 +67,10 @@
 </template>
 
 <script>
-import BookingSummaryOverview from '@/components/booking/overview/BookingSummaryOverview.vue'
-import BookingsTable from '@/components/user/BookingsTable.vue'
-import UserDetails from '@/components/user/UserDetails.vue'
-import PaginationBar from '@/components/ui/PaginationBar.vue'
+import BookingSummaryOverview from '@/components/booking/overview/BookingSummaryOverview.vue';
+import BookingsTable from '@/components/user/BookingsTable.vue';
+import UserDetails from '@/components/user/UserDetails.vue';
+import PaginationBar from '@/components/ui/PaginationBar.vue';
 
 export default {
   components: {
@@ -84,11 +84,11 @@ export default {
     const { data } = await app.apolloProvider.defaultClient.query({
       query: require('@/graphql/queries/user/MyAccountDetails.gql'),
       fetchPolicy: 'no-cache',
-    })
+    });
 
     return {
       user: data.me,
-    }
+    };
   },
   data() {
     return {
@@ -97,7 +97,7 @@ export default {
       oldBookings: { edges: [] },
       oldBookingsOffset: null,
       user: null,
-    }
+    };
   },
   head: {
     title: 'My Account',
@@ -110,7 +110,7 @@ export default {
           active: true,
           max: 3,
           offset: this.activeBookingsOffset,
-        }
+        };
       },
       update: (data) => data.me.bookings,
     },
@@ -120,10 +120,10 @@ export default {
         return {
           active: false,
           offset: this.oldBookingsOffset,
-        }
+        };
       },
       update: (data) => data.me.bookings,
     },
   },
-}
+};
 </script>

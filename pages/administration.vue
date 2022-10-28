@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import AdminSidebar from '@/components/admin/AdminSidebar.vue'
-import Breadcrumbs from '@/components/ui/Breadcrumbs.vue'
+import AdminSidebar from '@/components/admin/AdminSidebar.vue';
+import Breadcrumbs from '@/components/ui/Breadcrumbs.vue';
 export default {
   components: { AdminSidebar, Breadcrumbs },
   layout: 'admin',
@@ -30,11 +30,11 @@ export default {
   data() {
     return {
       showSidebar: false,
-    }
+    };
   },
   head: {
     titleTemplate: (chunk) =>
       chunk ? `${chunk} | Admin | UOB Theatre` : 'Administration | UOB Theatre',
   },
-}
+};
 </script>

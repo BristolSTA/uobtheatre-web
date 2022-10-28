@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import ProductionFeaturedImage from '../production/ProductionFeaturedImage.vue'
+import ProductionFeaturedImage from '../production/ProductionFeaturedImage.vue';
 export default {
   components: { ProductionFeaturedImage },
   props: {
@@ -29,5 +29,5 @@ export default {
       type: Object,
     },
   },
-}
+};
 </script>

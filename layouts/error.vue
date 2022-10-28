@@ -7,7 +7,9 @@
             <slot name="title"> Oops! </slot>
           </h1>
           <h2 class="text-h2">
-            <slot name="subtitle"> {{ message }}</slot>
+            <slot name="subtitle">
+              {{ message }}
+            </slot>
           </h2>
           <p v-if="error.message">
             {{ error.message }}
@@ -45,10 +47,14 @@ export default {
   },
   computed: {
     message() {
-      if (this.error.statusCode === 404) return '404 - Page Not found'
-      if (this.error.statusCode === 401) return '401 - Unauthorized'
-      return 'There was an issue.'
+      if (this.error.statusCode === 404) {
+        return '404 - Page Not found';
+      }
+      if (this.error.statusCode === 401) {
+        return '401 - Unauthorized';
+      }
+      return 'There was an issue.';
     },
   },
-}
+};
 </script>

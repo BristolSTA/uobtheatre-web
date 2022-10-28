@@ -1,7 +1,7 @@
-import { createApolloClient } from 'vue-cli-plugin-apollo/graphql-client'
-import VueApollo from 'vue-apollo'
-import authService from '@/services/authService'
-import * as Sentry from '@sentry/browser'
+import { createApolloClient } from 'vue-cli-plugin-apollo/graphql-client';
+import VueApollo from 'vue-apollo';
+import * as Sentry from '@sentry/browser';
+import authService from '@/services/authService';
 
 // Config
 const defaultOptions = {
@@ -16,7 +16,7 @@ const defaultOptions = {
       GQLErrorUnion: ['NonFieldError', 'FieldError'],
     },
   },
-}
+};
 
 export default (context) => {
   return {
@@ -24,23 +24,24 @@ export default (context) => {
     httpEndpoint: context.$config.api.graphql_endpoint,
     authenticationType: 'JWT',
     getAuth: () => {
-      if (authService.currentAuthToken(context))
-        return `JWT ${authService.currentAuthToken(context)}`
+      if (authService.currentAuthToken(context)) {
+        return `JWT ${authService.currentAuthToken(context)}`;
+      }
     },
-  }
-}
+  };
+};
 
 export function createClient(options = {}) {
   return createApolloClient({
     ...defaultOptions,
     ...options,
-  })
+  });
 }
 
 export function createProvider(clientOptions = {}, vueApolloOptions = {}) {
   // Create apollo client
-  const { apolloClient, wsClient } = createClient(clientOptions)
-  apolloClient.wsClient = wsClient
+  const { apolloClient, wsClient } = createClient(clientOptions);
+  apolloClient.wsClient = wsClient;
 
   // Create vue apollo provider
   const apolloProvider = new VueApollo({
@@ -52,10 +53,10 @@ export function createProvider(clientOptions = {}, vueApolloOptions = {}) {
         '%cError',
         'background: red; color: white; padding: 2px 4px; border-radius: 3px; font-weight: bold;',
         error.message
-      )
-      Sentry.captureException(error)
+      );
+      Sentry.captureException(error);
     },
-  })
+  });
 
-  return apolloProvider
+  return apolloProvider;
 }

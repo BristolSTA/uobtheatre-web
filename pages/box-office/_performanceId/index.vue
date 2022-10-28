@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import Overview from '@/components/box-office/Overview.vue'
-import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue'
+import Overview from '@/components/box-office/Overview.vue';
+import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue';
 
 export default {
   components: { Overview, BoxOfficeNavigation },
@@ -26,7 +26,7 @@ export default {
   head() {
     return {
       title: `${this.performance.production.name} Box Office`,
-    }
+    };
   },
   computed: {
     crumbs() {
@@ -40,8 +40,8 @@ export default {
             'ccc dd MMM T'
           )}`,
         },
-      ]
+      ];
     },
   },
-}
+};
 </script>

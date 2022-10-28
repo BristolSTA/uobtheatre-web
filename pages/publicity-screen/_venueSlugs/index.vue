@@ -35,15 +35,15 @@
                 currentDisplayedProduction.end,
                 'd MMM'
               )
-            }}</icon-list-item
-          >
+            }}
+          </icon-list-item>
           <icon-list-item icon="map-marker">
             {{
               currentDisplayedProduction.venues
                 .map((venue) => venue.name)
                 .join(', ')
-            }}</icon-list-item
-          >
+            }}
+          </icon-list-item>
         </div>
       </div>
       <div class="flex flex-grow items-center justify-between gap-x-20">
@@ -83,17 +83,17 @@
 </template>
 
 <script>
-import VenueUpcomingProductionsQuery from '@/graphql/queries/publicity-screen/VenueUpcomingProductions.gql'
-import UpcomingProductionsQuery from '@/graphql/queries/publicity-screen/AllUpcomingProductions.gql'
-import { DateTime } from 'luxon'
-import QrcodeVue from 'qrcode.vue'
-import { displayStartEnd } from '@/utils'
-import IconListItem from '@/components/ui/IconListItem.vue'
-import HaveTicketsReadyScreen from '@/components/publicity-screens/HaveTicketsReadyScreen.vue'
-import SoldOutScreen from '@/components/publicity-screens/SoldOutScreen.vue'
-import WelcomeScreen from '@/components/publicity-screens/WelcomeScreen.vue'
-import PleaseWaitScreen from '@/components/publicity-screens/PleaseWaitScreen.vue'
-import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue'
+import { DateTime } from 'luxon';
+import QrcodeVue from 'qrcode.vue';
+import VenueUpcomingProductionsQuery from '@/graphql/queries/publicity-screen/VenueUpcomingProductions.gql';
+import UpcomingProductionsQuery from '@/graphql/queries/publicity-screen/AllUpcomingProductions.gql';
+import { displayStartEnd } from '@/utils';
+import IconListItem from '@/components/ui/IconListItem.vue';
+import HaveTicketsReadyScreen from '@/components/publicity-screens/HaveTicketsReadyScreen.vue';
+import SoldOutScreen from '@/components/publicity-screens/SoldOutScreen.vue';
+import WelcomeScreen from '@/components/publicity-screens/WelcomeScreen.vue';
+import PleaseWaitScreen from '@/components/publicity-screens/PleaseWaitScreen.vue';
+import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue';
 
 export default {
   components: {
@@ -119,16 +119,16 @@ export default {
       onNowScreenIndex: 0,
       onNowProductionIndex: 0,
       paused: false,
-    }
+    };
   },
   computed: {
     marketableProductions() {
-      return this.productions.filter((production) => production.isBookable)
+      return this.productions.filter((production) => production.isBookable);
     },
     currentDisplayedProduction() {
       return this.marketableProductions
         ? this.marketableProductions[this.currentProductionIndex]
-        : null
+        : null;
     },
     currentDisplayedProductionUrl() {
       return this.currentDisplayedProduction
@@ -136,26 +136,28 @@ export default {
             this.$router.resolve({
               path: `/production/${this.currentDisplayedProduction.slug}`,
             }).href
-        : ''
+        : '';
     },
     productionsOnNow() {
-      if (!this.now) return []
+      if (!this.now) {
+        return [];
+      }
       return this.productions.filter((production) => {
         if (!production?.performances?.edges?.length) {
-          return false
+          return false;
         }
         const doorsOpenTime = DateTime.fromISO(
           production.performances.edges[0].node.doorsOpen
-        )
+        );
         const startTime = DateTime.fromISO(
           production.performances.edges[0].node.start
-        )
+        );
         return (
           production.performances.edges.length &&
           doorsOpenTime.minus({ minutes: 20 }) <= this.now &&
           startTime > this.now
-        )
-      })
+        );
+      });
     },
     currentScreen() {
       return this.productionsOnNow.length
@@ -163,35 +165,37 @@ export default {
             this.productionsOnNow[this.onNowProductionIndex].performances
               .edges[0].node
           )[this.onNowScreenIndex]
-        : null
+        : null;
     },
   },
   watch: {
     productionsOnNow(newVal, oldVal) {
       if (newVal.length === 0 && oldVal.length !== 0) {
-        this.fetchData()
+        this.fetchData();
       }
     },
   },
   mounted() {
-    this.fetchData()
+    this.fetchData();
 
-    this.dataFetchTimer = setInterval(this.fetchData, 2 * 60 * 60 * 1000) // Every 2 hours
+    this.dataFetchTimer = setInterval(this.fetchData, 2 * 60 * 60 * 1000); // Every 2 hours
 
     this.slideTimer = setInterval(() => {
-      this.now = DateTime.now()
-      this.refreshPageIfRequired()
+      this.now = DateTime.now();
+      this.refreshPageIfRequired();
 
-      if (this.paused) return
+      if (this.paused) {
+        return;
+      }
 
       // General promotion
       if (
         this.currentProductionIndex + 1 >=
         this.marketableProductions.length
       ) {
-        this.currentProductionIndex = 0
+        this.currentProductionIndex = 0;
       } else {
-        this.currentProductionIndex += 1
+        this.currentProductionIndex += 1;
       }
 
       // Active productions
@@ -201,50 +205,50 @@ export default {
           this.screensForPerformance(
             this.productionsOnNow[this.onNowProductionIndex].performances
               .edges[0].node
-          ).length
+          ).length;
 
       if (!this.productionsOnNow.length || reset) {
-        this.onNowScreenIndex = 0
+        this.onNowScreenIndex = 0;
         if (
           reset &&
           this.onNowProductionIndex + 1 < this.productionsOnNow.length
         ) {
-          this.onNowProductionIndex += 1
+          this.onNowProductionIndex += 1;
         } else {
-          this.onNowProductionIndex = 0
+          this.onNowProductionIndex = 0;
         }
       } else {
-        this.onNowScreenIndex += 1
+        this.onNowScreenIndex += 1;
       }
-    }, 1000 * 10)
+    }, 1000 * 10);
   },
   destroyed() {
-    clearInterval(this.dataFetchTimer)
-    clearInterval(this.slideTimer)
+    clearInterval(this.dataFetchTimer);
+    clearInterval(this.slideTimer);
   },
   methods: {
     displayStartEnd,
     screensForPerformance(performance) {
-      const screens = []
+      const screens = [];
       if (this.now < DateTime.fromISO(performance.doorsOpen)) {
-        screens.push(PleaseWaitScreen)
+        screens.push(PleaseWaitScreen);
       } else if (this.now < DateTime.fromISO(performance.start)) {
-        screens.push(WelcomeScreen, HaveTicketsReadyScreen)
+        screens.push(WelcomeScreen, HaveTicketsReadyScreen);
 
         if (performance.soldOut) {
-          screens.push(SoldOutScreen)
+          screens.push(SoldOutScreen);
         }
       }
 
-      return screens
+      return screens;
     },
     async fetchData() {
-      const slugs = this.$route.params.venueSlugs.split(',')
+      const slugs = this.$route.params.venueSlugs.split(',');
       const showAllUpcoming =
         this.$route.query.onlyTheseVenues === undefined
           ? true
-          : !this.$route.query.onlyTheseVenues
-      const queries = []
+          : !this.$route.query.onlyTheseVenues;
+      const queries = [];
 
       for (const slug of slugs) {
         queries.push(
@@ -257,45 +261,45 @@ export default {
             },
             fetchPolicy: 'no-cache',
           })
-        )
+        );
       }
 
-      const queryData = await Promise.all(queries)
-      this.productions = []
-      this.venues = []
-      this.currentProductionIndex = 0
+      const queryData = await Promise.all(queries);
+      this.productions = [];
+      this.venues = [];
+      this.currentProductionIndex = 0;
       queryData.forEach((queryResult) => {
         if (queryResult.data.venue) {
-          this.venues.push(queryResult.data.venue)
+          this.venues.push(queryResult.data.venue);
           this.productions.push(
             ...queryResult.data.venue.productions.edges.map((edge) => edge.node)
-          )
+          );
         }
-      })
+      });
 
       if (showAllUpcoming) {
         const { data } = await this.$apollo.query({
           query: UpcomingProductionsQuery,
           variables: { now: new Date() },
-        })
+        });
         data.productions.edges.forEach((edge) => {
           if (
             this.productions
               .map((production) => production.id)
               .includes(edge.node.id)
           ) {
-            return
+            return;
           }
-          this.productions.push(edge.node)
-        })
+          this.productions.push(edge.node);
+        });
       }
     },
     refreshPageIfRequired() {
       // Every 12 hours, do a full refresh of the page to load new code
       if (this.now - this.pageOpenTime > 12 * 60 * 60 && this.now.hour === 0) {
-        window.location.reload()
+        window.location.reload();
       }
     },
   },
-}
+};
 </script>

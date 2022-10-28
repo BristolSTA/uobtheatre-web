@@ -1,4 +1,4 @@
-fragment PerformanceTicketOptions on PerformanceSeatGroupNode {
+fragment PerformanceTicketOptionsFragment on PerformanceSeatGroupNode {
   id
   capacityRemaining
   price

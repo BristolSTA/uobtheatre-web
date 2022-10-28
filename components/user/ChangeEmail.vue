@@ -36,13 +36,12 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
+import gql from 'graphql-tag';
 
-import { getValidationErrors, performMutation, swal } from '@/utils'
-
-import LoadingContainer from '../ui/LoadingContainer.vue'
-import NonFieldError from '../ui/NonFieldError.vue'
-import TextInput from '../ui/TextInput.vue'
+import LoadingContainer from '../ui/LoadingContainer.vue';
+import NonFieldError from '../ui/NonFieldError.vue';
+import TextInput from '../ui/TextInput.vue';
+import { getValidationErrors, performMutation, swal } from '@/utils';
 export default {
   components: {
     LoadingContainer,
@@ -57,11 +56,11 @@ export default {
 
       loading: false,
       errors: null,
-    }
+    };
   },
   methods: {
     async addNewEmail() {
-      this.loading = true
+      this.loading = true;
       try {
         await performMutation(
           this.$apollo,
@@ -79,17 +78,17 @@ export default {
             },
           },
           'sendSecondaryEmailActivation'
-        )
+        );
         swal.fire({
           icon: 'info',
           title: 'Check your email',
           text: `We have sent a verification email to ${this.email}`,
-        })
+        });
       } catch (e) {
-        this.errors = getValidationErrors(e)
+        this.errors = getValidationErrors(e);
       }
-      this.loading = false
+      this.loading = false;
     },
   },
-}
+};
 </script>

@@ -1,4 +1,4 @@
-import GenericNodeEdge from './GenericNodeEdge'
+import GenericNodeEdge from './GenericNodeEdge';
 
 export default (edges = [], pageInfoOverrides = {}) => {
   return {
@@ -12,5 +12,5 @@ export default (edges = [], pageInfoOverrides = {}) => {
       pageInfoOverrides
     ),
     edges: edges.map((edge) => GenericNodeEdge(edge)),
-  }
-}
+  };
+};

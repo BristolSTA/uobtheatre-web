@@ -1,10 +1,10 @@
-import CastMember from './CastMember'
-import CrewMember from './CrewMember'
-import Performance from './Performance'
-import ProductionTeamMember from './ProductionTeamMember'
-import Society from './Society'
-import GenericNodeConnection from './support/GenericNodeConnection'
-import Venue from './Venue'
+import CastMember from './CastMember';
+import CrewMember from './CrewMember';
+import Performance from './Performance';
+import ProductionTeamMember from './ProductionTeamMember';
+import Society from './Society';
+import GenericNodeConnection from './support/GenericNodeConnection';
+import Venue from './Venue';
 
 export default (overrides = {}, includePerformance = false) => {
   return Object.assign(
@@ -45,5 +45,5 @@ export default (overrides = {}, includePerformance = false) => {
         : GenericNodeConnection(),
     },
     overrides
-  )
-}
+  );
+};

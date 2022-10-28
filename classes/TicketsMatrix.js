@@ -1,32 +1,32 @@
 export default class {
   constructor(rawPerformance) {
-    this.raw_ticket_options = rawPerformance.ticketOptions
-    this._performanceCapacityRemaining = rawPerformance.capacityRemaining
-    this.raw_discounts = rawPerformance.discounts
+    this.raw_ticket_options = rawPerformance.ticketOptions;
+    this._performanceCapacityRemaining = rawPerformance.capacityRemaining;
+    this.raw_discounts = rawPerformance.discounts;
   }
 
   get discounts() {
-    return this.raw_discounts
+    return this.raw_discounts;
   }
 
   get ticketOptions() {
-    return this.raw_ticket_options
+    return this.raw_ticket_options;
   }
 
   get performanceCapacityRemaining() {
-    return this._performanceCapacityRemaining
+    return this._performanceCapacityRemaining;
   }
 
   set performanceCapacityRemaining(number) {
-    return (this._performanceCapacityRemaining = number)
+    return (this._performanceCapacityRemaining = number);
   }
 
   decrementPerformanceCapacity() {
-    this.performanceCapacityRemaining--
+    this.performanceCapacityRemaining--;
   }
 
   incrementPerformanceCapacity() {
-    this.performanceCapacityRemaining++
+    this.performanceCapacityRemaining++;
   }
 
   /**
@@ -38,7 +38,7 @@ export default class {
       this.ticketOptions.find((option) => option.seatGroup.id === seatGroupId)
         .capacityRemaining,
       this.performanceCapacityRemaining
-    )
+    );
   }
 
   /**
@@ -46,7 +46,7 @@ export default class {
    */
   decrementSeatGroupCapacity(seatGroupId) {
     this.ticketOptions.find((option) => option.seatGroup.id === seatGroupId)
-      .capacityRemaining--
+      .capacityRemaining--;
   }
 
   /**
@@ -54,7 +54,7 @@ export default class {
    */
   incrementSeatGroupCapacity(seatGroupId) {
     this.ticketOptions.find((option) => option.seatGroup.id === seatGroupId)
-      .capacityRemaining++
+      .capacityRemaining++;
   }
 
   /**
@@ -64,14 +64,18 @@ export default class {
    */
   canAddTickets(number, seatGroupId = null) {
     // 1st check if performance can have this many tickets added
-    if (number > this.performanceCapacityRemaining) return false
+    if (number > this.performanceCapacityRemaining) {
+      return false;
+    }
 
     // 2nd, if has a seat_group, check that has enough remaining capacity
     if (seatGroupId != null) {
-      const seatGroupCapacity = this.capacityRemainingForSeatGroup(seatGroupId)
-      if (number > seatGroupCapacity) return false
+      const seatGroupCapacity = this.capacityRemainingForSeatGroup(seatGroupId);
+      if (number > seatGroupCapacity) {
+        return false;
+      }
     }
 
-    return true
+    return true;
   }
 }

@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import BookingStage from '@/classes/BookingStage'
-import TimeGroupedPerformanceSelector from '@/components/performance/TimeGroupedPerformanceSelector.vue'
+import BookingStage from '@/classes/BookingStage';
+import TimeGroupedPerformanceSelector from '@/components/performance/TimeGroupedPerformanceSelector.vue';
 export default {
   stageInfo: new BookingStage({
     name: 'Select Performance',
@@ -26,8 +26,10 @@ export default {
     availablePerformances() {
       return this.production.performances.edges
         .map((edge) => edge.node)
-        .filter((performance) => !(performance.disabled || performance.soldOut))
+        .filter(
+          (performance) => !(performance.disabled || performance.soldOut)
+        );
     },
   },
-}
+};
 </script>

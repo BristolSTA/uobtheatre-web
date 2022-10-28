@@ -1,7 +1,7 @@
 <template>
   <div class="my-2 px-1 py-2 bg-sta-gray-dark md:p-2">
     <h2 class="flex justify-center mb-2 text-2xl">
-      <slot name="title"></slot>
+      <slot name="title" />
     </h2>
     <table v-if="bookings.length" class="table-auto w-full">
       <tbody>
@@ -55,5 +55,5 @@ export default {
       type: Boolean,
     },
   },
-}
+};
 </script>

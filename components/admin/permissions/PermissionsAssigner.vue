@@ -6,7 +6,7 @@
     >
       <thead>
         <table-row>
-          <table-head-item :text-left="false">User</table-head-item>
+          <table-head-item :text-left="false"> User </table-head-item>
           <table-head-item
             v-for="(permission, index) in assignablePermissions"
             :key="index"
@@ -27,12 +27,7 @@
             <br />
             <sta-button
               :small="true"
-              class="
-                bg-sta-rouge
-                hover:bg-sta-rouge-dark
-                transition-colors
-                mt-2
-              "
+              class="bg-sta-rouge hover:bg-sta-rouge-dark transition-colors mt-2"
               @click="removeUser(assignedUser)"
             >
               Remove
@@ -104,13 +99,13 @@
 </template>
 
 <script>
-import SafeTable from '@/components/ui/Tables/SafeTable.vue'
-import BooleanInput from '@/components/ui/Inputs/BooleanInput.vue'
-import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue'
-import TableRowItem from '@/components/ui/Tables/TableRowItem.vue'
-import TableRow from '@/components/ui/Tables/TableRow.vue'
-import StaButton from '@/components/ui/StaButton.vue'
-import FormLabel from '@/components/ui/FormLabel.vue'
+import SafeTable from '@/components/ui/Tables/SafeTable.vue';
+import BooleanInput from '@/components/ui/Inputs/BooleanInput.vue';
+import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
+import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
+import TableRow from '@/components/ui/Tables/TableRow.vue';
+import StaButton from '@/components/ui/StaButton.vue';
+import FormLabel from '@/components/ui/FormLabel.vue';
 export default {
   components: {
     SafeTable,
@@ -137,30 +132,30 @@ export default {
         email: null,
         permissions: [],
       },
-    }
+    };
   },
   computed: {
     userAssignablePermissions() {
-      return this.assignablePermissions.filter((ap) => ap.userCanAssign)
+      return this.assignablePermissions.filter((ap) => ap.userCanAssign);
     },
   },
   methods: {
     togglePermission(user, permission) {
-      user.modified = true
+      user.modified = true;
       if (user.assignedPermissions.includes(permission.name)) {
         user.assignedPermissions = user.assignedPermissions.filter(
           (permissionName) => permissionName !== permission.name
-        )
+        );
       } else {
-        user.assignedPermissions.push(permission.name)
+        user.assignedPermissions.push(permission.name);
       }
     },
     addNewUser() {
-      this.$emit('add', this.newUser)
+      this.$emit('add', this.newUser);
     },
     removeUser(user) {
-      this.$emit('remove', user)
+      this.$emit('remove', user);
     },
   },
-}
+};
 </script>

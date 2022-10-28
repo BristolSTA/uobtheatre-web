@@ -14,5 +14,5 @@ export default {
       default: 'fa-2x',
     },
   },
-}
+};
 </script>

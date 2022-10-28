@@ -1,4 +1,4 @@
-import GenericConnection from './support/GenericNodeConnection'
+import GenericConnection from './support/GenericNodeConnection';
 export default (overrides = {}) => {
   return Object.assign(
     {
@@ -11,5 +11,5 @@ export default (overrides = {}) => {
       crewMembers: GenericConnection(),
     },
     overrides
-  )
-}
+  );
+};

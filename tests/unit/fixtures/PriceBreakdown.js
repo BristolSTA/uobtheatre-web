@@ -1,5 +1,5 @@
-import MiscCost from './MiscCost'
-import PriceBreakdownTicket from './PriceBreakdownTicket'
+import MiscCost from './MiscCost';
+import PriceBreakdownTicket from './PriceBreakdownTicket';
 
 export default (overrides = {}) => {
   return Object.assign(
@@ -15,5 +15,5 @@ export default (overrides = {}) => {
       ticketsDiscountedPrice: 490,
     },
     overrides
-  )
-}
+  );
+};

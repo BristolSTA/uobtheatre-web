@@ -14,15 +14,15 @@
           <table>
             <table-row>
               <table-head-item>Seat Group</table-head-item>
-              <table-row-item>{{
-                ticketDetails.seatGroup.name
-              }}</table-row-item>
+              <table-row-item>
+                {{ ticketDetails.seatGroup.name }}
+              </table-row-item>
             </table-row>
             <table-row>
               <table-head-item>Concession Type</table-head-item>
-              <table-row-item>{{
-                ticketDetails.concessionType.name
-              }}</table-row-item>
+              <table-row-item>
+                {{ ticketDetails.concessionType.name }}
+              </table-row-item>
             </table-row>
             <table-row>
               <table-head-item>Checked In</table-head-item>
@@ -34,44 +34,37 @@
           <table>
             <table-row>
               <table-head-item>Performance</table-head-item>
-              <table-row-item
-                >{{ bookingInfo.performance.production.name }} at
+              <table-row-item>
+                {{ bookingInfo.performance.production.name }} at
                 {{
                   bookingInfo.performance.start | dateFormat('EEEE d MMMM kkkk')
-                }}</table-row-item
-              >
+                }}
+              </table-row-item>
             </table-row>
             <table-row>
               <table-head-item>User</table-head-item>
-              <table-row-item
-                >{{ bookingInfo.user.firstName }}
-                {{ bookingInfo.user.lastName }}</table-row-item
-              >
+              <table-row-item>
+                {{ bookingInfo.user.firstName }}
+                {{ bookingInfo.user.lastName }}
+              </table-row-item>
             </table-row>
             <table-row v-if="bookingInfo.creator">
               <table-head-item>Creator</table-head-item>
-              <table-row-item
-                >{{ bookingInfo.creator.firstName }}
-                {{ bookingInfo.creator.lastName }}</table-row-item
-              >
+              <table-row-item>
+                {{ bookingInfo.creator.firstName }}
+                {{ bookingInfo.creator.lastName }}
+              </table-row-item>
             </table-row>
             <table-row>
               <table-head-item>View Booking</table-head-item>
-              <table-row-item
-                ><nuxt-link
-                  class="
-                    inline-block
-                    m-2
-                    ml-0
-                    p-2
-                    bg-sta-green
-                    hover:bg-sta-green-dark
-                    transition-colors
-                  "
+              <table-row-item>
+                <nuxt-link
+                  class="inline-block m-2 ml-0 p-2 bg-sta-green hover:bg-sta-green-dark transition-colors"
                   :to="`/administration/productions/${bookingInfo.performance.production.slug}/bookings/${bookingInfo.reference}`"
-                  >View Booking</nuxt-link
-                ></table-row-item
-              >
+                >
+                  View Booking
+                </nuxt-link>
+              </table-row-item>
             </table-row>
           </table>
         </card>
@@ -81,13 +74,13 @@
 </template>
 
 <script>
-import TicketScanner from '@/components/ui/Inputs/TicketScanner.vue'
-import AdminPage from '@/components/admin/AdminPage.vue'
-import Card from '@/components/ui/Card.vue'
-import { errorToast } from '@/utils'
-import TableRow from '@/components/ui/Tables/TableRow.vue'
-import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue'
-import TableRowItem from '@/components/ui/Tables/TableRowItem.vue'
+import TicketScanner from '@/components/ui/Inputs/TicketScanner.vue';
+import AdminPage from '@/components/admin/AdminPage.vue';
+import Card from '@/components/ui/Card.vue';
+import { errorToast } from '@/utils';
+import TableRow from '@/components/ui/Tables/TableRow.vue';
+import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
+import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
 export default {
   components: {
     TicketScanner,
@@ -102,33 +95,35 @@ export default {
       ticket: null,
       scannedData: null,
       bookingInfo: null,
-    }
+    };
   },
   computed: {
     ticketDetails() {
-      if (!this.bookingInfo) return
+      if (!this.bookingInfo) {
+        return;
+      }
       return this.bookingInfo.tickets.find(
         (ticket) => ticket.id === this.scannedData.ticketId
-      )
+      );
     },
   },
   methods: {
     async onScan(e) {
-      this.scannedData = e
-      this.bookingInfo = null
+      this.scannedData = e;
+      this.bookingInfo = null;
       const { data } = await this.$apollo.query({
         query: require('@/graphql/queries/admin/bookings/AdminBookingLookup.gql'),
         variables: {
           reference: this.scannedData.bookingReference,
         },
-      })
+      });
       if (!data.bookings.edges.length) {
         return errorToast.fire({
           title: 'A matching booking does not exisit for this reference',
-        })
+        });
       }
-      this.bookingInfo = data.bookings.edges[0].node
+      this.bookingInfo = data.bookings.edges[0].node;
     },
   },
-}
+};
 </script>

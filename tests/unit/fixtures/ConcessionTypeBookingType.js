@@ -1,4 +1,4 @@
-import ConcessionType from './ConcessionType'
+import ConcessionType from './ConcessionType';
 
 export default (overrides = {}) => {
   return Object.assign(
@@ -8,5 +8,5 @@ export default (overrides = {}) => {
       pricePounds: '10.00',
     },
     overrides
-  )
-}
+  );
+};

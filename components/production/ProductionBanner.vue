@@ -18,14 +18,7 @@
       />
     </div>
     <div
-      class="
-        flex flex-col
-        items-center
-        px-10
-        w-full
-        text-center text-white
-        md:block md:w-auto md:max-w-md md:text-left
-      "
+      class="flex flex-col items-center px-10 w-full text-center text-white md:block md:w-auto md:max-w-md md:text-left"
     >
       <span class="font-semibold">
         <span class="text-h2">{{ production.name }}</span>
@@ -61,7 +54,7 @@
             </span>
             <template v-if="hasOnlinePerformances"> and Online </template>
           </template>
-          <template v-else>View Online</template>
+          <template v-else> View Online </template>
         </p>
         <p>
           {{ displayStartEnd(production.start, production.end, 'd MMM') }}
@@ -103,12 +96,12 @@
 </template>
 
 <script>
-import humanizeDuration from 'humanize-duration'
-import lo from 'lodash'
+import humanizeDuration from 'humanize-duration';
+import lo from 'lodash';
 
-import IconListItem from '@/components/ui/IconListItem.vue'
-import { displayStartEnd } from '@/utils'
-import ProductionFeaturedImage from './ProductionFeaturedImage.vue'
+import ProductionFeaturedImage from './ProductionFeaturedImage.vue';
+import IconListItem from '@/components/ui/IconListItem.vue';
+import { displayStartEnd } from '@/utils';
 
 export default {
   name: 'ProductionBanner',
@@ -130,34 +123,36 @@ export default {
   data() {
     return {
       venueOverflow: 3,
-    }
+    };
   },
   computed: {
     venues() {
-      let venues = []
+      let venues = [];
       if (this.hasInPersonPerformances) {
         venues = lo.uniqBy(
           this.production.performances.edges.map((edge) => {
-            return edge.node.venue
+            return edge.node.venue;
           }),
           'name'
-        )
+        );
       }
-      lo.take(venues, this.venueOverflow + 1)
-      return venues
+      lo.take(venues, this.venueOverflow + 1);
+      return venues;
     },
     hasOnlinePerformances() {
       return !!this.production.performances.edges.find(
         (edge) => edge.node.isOnline
-      )
+      );
     },
     hasInPersonPerformances() {
       return !!this.production.performances.edges.find(
         (edge) => edge.node.isInperson
-      )
+      );
     },
     duration() {
-      if (!this.production.performances.edges.length) return
+      if (!this.production.performances.edges.length) {
+        return;
+      }
       return humanizeDuration(
         lo
           .chain(this.production.performances.edges.map((edge) => edge.node))
@@ -165,11 +160,11 @@ export default {
           .value().durationMins *
           60 *
           1000
-      )
+      );
     },
   },
   methods: {
     displayStartEnd,
   },
-}
+};
 </script>

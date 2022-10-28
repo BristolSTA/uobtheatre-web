@@ -1,4 +1,4 @@
-import BaseEnum from './BaseEnum'
+import BaseEnum from './BaseEnum';
 
 export default class extends BaseEnum {
   nameMap = {
@@ -8,5 +8,5 @@ export default class extends BaseEnum {
     SQUARE_ONLINE: 'Square Online',
     MANUAL_CARD_REFUND: 'Manual Card Refund',
     SQUARE_REFUND: 'Square Refund',
-  }
+  };
 }

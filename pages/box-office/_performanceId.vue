@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import BoxOfficePerformance from '@/graphql/queries/box-office/BoxOfficePerformance.gql'
+import BoxOfficePerformance from '@/graphql/queries/box-office/BoxOfficePerformance.gql';
 export default {
   middleware: 'authed',
   async asyncData({ params, error, app }) {
@@ -17,28 +17,29 @@ export default {
       variables: {
         id: params.performanceId,
       },
-    })
+    });
 
-    const performance = data.performance
-    if (!performance)
+    const performance = data.performance;
+    if (!performance) {
       return error({
         statusCode: 404,
         message: 'This performance does not exist',
-      })
+      });
+    }
     return {
       performance,
-    }
+    };
   },
   computed: {
     crumbs() {
-      return this.$refs.child.crumbs
+      return this.$refs.child.crumbs;
     },
   },
   methods: {
     regenerateCrumbsLink() {
-      this._computedWatchers.crumbs.run()
-      this.$forceUpdate()
+      this._computedWatchers.crumbs.run();
+      this.$forceUpdate();
     },
   },
-}
+};
 </script>

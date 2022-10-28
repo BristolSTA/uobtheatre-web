@@ -1,13 +1,12 @@
-import { RouterLinkStub } from '@vue/test-utils'
-import { expect } from 'chai'
+import { RouterLinkStub } from '@vue/test-utils';
+import { expect } from 'chai';
 
-import PerformanceOverview from '@/components/performance/PerformanceOverview.vue'
-
-import { mountWithRouterMock, fixTextSpacing } from '../../helpers'
-import Performance from '../../fixtures/Performance'
+import { mountWithRouterMock, fixTextSpacing } from '../../helpers';
+import Performance from '../../fixtures/Performance';
+import PerformanceOverview from '@/components/performance/PerformanceOverview.vue';
 
 describe('Performance Overview', () => {
-  let performanceOverviewComponent
+  let performanceOverviewComponent;
 
   beforeEach(async () => {
     performanceOverviewComponent = await mountWithRouterMock(
@@ -19,24 +18,26 @@ describe('Performance Overview', () => {
           }),
         },
       }
-    )
-  })
+    );
+  });
 
   it('An available in-person & online performance', () => {
-    expect(performanceOverviewComponent.text()).to.contain('Monday 9 Mar')
+    expect(performanceOverviewComponent.text()).to.contain('Monday 9 Mar');
     expect(performanceOverviewComponent.find('div.bg-sta-green').exists()).to.be
-      .true
+      .true;
     expect(fixTextSpacing(performanceOverviewComponent.text())).to.contain(
       'Anson Theatre and Online'
-    )
-    expect(performanceOverviewComponent.find('a').text()).to.eq('Anson Theatre')
+    );
+    expect(performanceOverviewComponent.find('a').text()).to.eq(
+      'Anson Theatre'
+    );
     expect(performanceOverviewComponent.text()).to.contain(
       'Doors open at 15:00'
-    )
-    expect(performanceOverviewComponent.text()).to.contain('2 hours')
-    expect(performanceOverviewComponent.text()).to.contain('Tickets Available')
-    expect(performanceOverviewComponent.find('button').text()).to.eq('Book')
-  })
+    );
+    expect(performanceOverviewComponent.text()).to.contain('2 hours');
+    expect(performanceOverviewComponent.text()).to.contain('Tickets Available');
+    expect(performanceOverviewComponent.find('button').text()).to.eq('Book');
+  });
 
   it('has working venue link', () => {
     expect(
@@ -44,14 +45,14 @@ describe('Performance Overview', () => {
         .findAllComponents(RouterLinkStub)
         .at(0)
         .props('to')
-    ).to.equal('/venue/anson-theatre')
-  })
+    ).to.equal('/venue/anson-theatre');
+  });
 
   it('has correct booking link', async () => {
-    await performanceOverviewComponent.find('button').trigger('click')
+    await performanceOverviewComponent.find('button').trigger('click');
 
-    expect(performanceOverviewComponent.emitted('select').length).to.eq(1)
-  })
+    expect(performanceOverviewComponent.emitted('select').length).to.eq(1);
+  });
 
   it('A disabled, in-person performance', async () => {
     await performanceOverviewComponent.setProps({
@@ -61,22 +62,24 @@ describe('Performance Overview', () => {
         isOnline: false,
         isInperson: true,
       }),
-    })
+    });
     expect(performanceOverviewComponent.find('div.bg-sta-green').exists()).to.be
-      .false
+      .false;
     expect(performanceOverviewComponent.find('div.bg-sta-gray-dark').exists())
-      .to.be.true
-    expect(performanceOverviewComponent.find('a').text()).to.eq('Anson Theatre')
+      .to.be.true;
+    expect(performanceOverviewComponent.find('a').text()).to.eq(
+      'Anson Theatre'
+    );
     expect(performanceOverviewComponent.text()).to.contain(
       'No Tickets Available'
-    )
+    );
     expect(performanceOverviewComponent.find('button').text()).to.eq(
       'Unavailable'
-    )
+    );
     expect(
       performanceOverviewComponent.find('button').attributes('disabled')
-    ).to.eq('disabled')
-  })
+    ).to.eq('disabled');
+  });
 
   it('A disabled, soldout, in-person performance', async () => {
     await performanceOverviewComponent.setProps({
@@ -87,34 +90,36 @@ describe('Performance Overview', () => {
         isOnline: true,
         isInperson: false,
       }),
-    })
+    });
 
     expect(performanceOverviewComponent.find('div.bg-sta-green').exists()).to.be
-      .false
+      .false;
     expect(performanceOverviewComponent.find('div.bg-sta-gray-dark').exists())
-      .to.be.true
+      .to.be.true;
     expect(fixTextSpacing(performanceOverviewComponent.text())).to.contain(
       'Online'
-    )
+    );
     expect(
       performanceOverviewComponent.findAllComponents(RouterLinkStub).length
-    ).to.eq(0)
+    ).to.eq(0);
     expect(performanceOverviewComponent.text()).to.contain(
       'No Tickets Available'
-    )
-    expect(performanceOverviewComponent.find('button').text()).to.eq('SOLD OUT')
+    );
+    expect(performanceOverviewComponent.find('button').text()).to.eq(
+      'SOLD OUT'
+    );
     expect(
       performanceOverviewComponent.find('button').attributes('disabled')
-    ).to.eq('disabled')
-  })
+    ).to.eq('disabled');
+  });
 
   it.each([null, 10])('shows interval length when able', async (duration) => {
     await performanceOverviewComponent.setProps({
       performance: Performance({ intervalDurationMins: duration }),
-    })
+    });
 
     expect(fixTextSpacing(performanceOverviewComponent.text())).to.contain(
-      duration ? `2 hours inc. interval` : '2 hours'
-    )
-  })
-})
+      duration ? '2 hours inc. interval' : '2 hours'
+    );
+  });
+});
