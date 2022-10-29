@@ -1,6 +1,6 @@
 <template>
-  <auth-page-template>
-    <user-auth-box
+  <AuthPageTemplate>
+    <AuthBox
       :login="true"
       @go-signup="
         () => {
@@ -8,19 +8,15 @@
         }
       "
     />
-  </auth-page-template>
+  </AuthPageTemplate>
 </template>
 
-<script>
-import UserAuthBox from '@/components/auth/UserAuthBox.vue';
+<script setup>
+definePageMeta({
+  middleware: 'not-authed'
+});
 
-import AuthPageTemplate from '@/components/auth/AuthPageTemplate.vue';
-
-export default {
-  components: { UserAuthBox, AuthPageTemplate },
-  middleware: 'not-authed',
-  head: {
-    title: 'Login',
-  },
-};
+useHead({
+  title: 'Login'
+});
 </script>

@@ -51,14 +51,14 @@
 import gql from 'graphql-tag';
 
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
-import NonFieldError from '@/components/ui/NonFieldError.vue';
-import TextInput from '@/components/ui/TextInput.vue';
+import NonFieldError from '~~/components/ui/UiNonFieldError.vue';
+import TextInput from '~~/components/ui/UiTextInput.vue';
 import { getValidationErrors, performMutation, swalToast } from '@/utils';
 export default {
   components: {
     LoadingContainer,
     NonFieldError,
-    TextInput,
+    TextInput
   },
   data() {
     return {
@@ -66,7 +66,7 @@ export default {
       currentPassword: null,
       newPassword: null,
       confirmedNewPassword: null,
-      errors: null,
+      errors: null
     };
   },
   methods: {
@@ -86,22 +86,22 @@ export default {
             variables: {
               currentPassword: this.currentPassword,
               newPassword: this.newPassword,
-              confirmedNewPassword: this.confirmedNewPassword,
-            },
+              confirmedNewPassword: this.confirmedNewPassword
+            }
           },
           'passwordChange'
         );
         swalToast.fire({
           icon: 'success',
           title: 'Password Changed',
-          position: 'bottom-end',
+          position: 'bottom-end'
         });
         this.$emit('cancel');
       } catch (e) {
         this.errors = getValidationErrors(e);
       }
       this.loading = false;
-    },
-  },
+    }
+  }
 };
 </script>

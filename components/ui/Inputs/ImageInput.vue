@@ -66,26 +66,26 @@ export default {
   props: {
     value: {
       default: null,
-      type: [String],
+      type: [String]
     },
     maxFileSizeMb: {
       default: 2,
-      type: Number,
+      type: Number
     },
     requiredRatio: {
       default: null,
-      type: Number,
+      type: Number
     },
     minWidth: {
       default: null,
-      type: Number,
+      type: Number
     },
 
     ratioFlexability: {
       // How flexiable we can be on accepting perfect ratio
       default: 0.05,
-      type: Number,
-    },
+      type: Number
+    }
   },
   data() {
     return {
@@ -93,7 +93,7 @@ export default {
 
       file: this.value,
       fileDataUrl: this.value,
-      error: null,
+      error: null
     };
   },
   watch: {
@@ -117,7 +117,7 @@ export default {
         });
       };
       fr.readAsDataURL(newFile);
-    },
+    }
   },
   methods: {
     validateFile(file, fileReaderResult) {
@@ -125,7 +125,7 @@ export default {
         if (file.size / 1000000 > this.maxFileSizeMb) {
           swal.fire({
             title: 'Sorry, this image is too large',
-            text: `Please ensure your file is under ${this.maxFileSizeMb}MB`,
+            text: `Please ensure your file is under ${this.maxFileSizeMb}MB`
           });
           return resolve(false);
         }
@@ -142,7 +142,7 @@ export default {
             if ((ratio > maxAllowableRatio) | (ratio < minAllowableRatio)) {
               swal.fire({
                 title: "Sorry, this image doesn't have the correct ratio",
-                text: `Please ensure your image has a ratio of ${this.requiredRatio}:1`,
+                text: `Please ensure your image has a ratio of ${this.requiredRatio}:1`
               });
               return resolve(false);
             }
@@ -151,7 +151,7 @@ export default {
             if (image.width < this.minWidth) {
               swal.fire({
                 title: "Sorry, this image doesn't have the correct width",
-                text: `Please ensure your image has width of atleast ${this.minWidth}px`,
+                text: `Please ensure your image has width of atleast ${this.minWidth}px`
               });
               return resolve(false);
             }
@@ -182,7 +182,7 @@ export default {
     },
     onDragLeave() {
       this.draggingOver = false;
-    },
-  },
+    }
+  }
 };
 </script>

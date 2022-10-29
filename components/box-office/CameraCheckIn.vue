@@ -40,7 +40,7 @@ const checkedInDataState = () => {
     errors: null,
     booking: null,
     ticket: null,
-    scanData: {},
+    scanData: {}
   };
 };
 
@@ -48,20 +48,20 @@ export default {
   components: {
     CheckInNotification,
     InvalidCodeNotification,
-    CameraScanner,
+    CameraScanner
   },
 
   props: {
     performanceId: {
       type: [String, Number],
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
       cameraOff: false,
       invalidCode: false,
-      checkedInData: checkedInDataState(),
+      checkedInData: checkedInDataState()
     };
   },
   methods: {
@@ -81,8 +81,8 @@ export default {
         variables: {
           reference: bookingReference,
           performanceId: this.performanceId,
-          tickets: [{ ticketId }],
-        },
+          tickets: [{ ticketId }]
+        }
       });
       this.checkedInData.success = data.checkInBooking.success;
       this.checkedInData.booking = data.checkInBooking.booking;
@@ -100,7 +100,7 @@ export default {
         .filter((ticket) => !ticket.checkedIn)
         .map((ticket) => {
           return {
-            ticketId: ticket.id,
+            ticketId: ticket.id
           };
         });
       if (ticketIdsToCheckin.length) {
@@ -109,19 +109,19 @@ export default {
           variables: {
             reference: this.checkedInData.booking.reference,
             performanceId: this.performanceId,
-            tickets: ticketIdsToCheckin,
-          },
+            tickets: ticketIdsToCheckin
+          }
         });
         this.checkedInData.booking = data.checkInBooking.booking;
       }
 
       successToast.fire({
-        title: 'All Booking Tickets Checked In',
+        title: 'All Booking Tickets Checked In'
       });
     },
     closeNotificaton() {
       this.checkedInData = checkedInDataState();
-    },
-  },
+    }
+  }
 };
 </script>

@@ -51,13 +51,13 @@ export default {
   props: {
     booking: {
       required: true,
-      type: Booking,
-    },
+      type: Booking
+    }
   },
   data() {
     return {
       BookingStatusEnum,
-      ProviderNameEnum,
+      ProviderNameEnum
     };
   },
   computed: {
@@ -84,7 +84,7 @@ export default {
       );
 
       return newestDate ? DateTime.fromJSDate(newestDate) : null;
-    },
-  },
+    }
+  }
 };
 </script>

@@ -1,7 +1,3 @@
-<script>
-/* eslint-disable vue/no-v-html */
-</script>
-
 <template>
   <div
     class="flex flex-col flex-wrap items-center justify-center lg:space-x-10"
@@ -98,6 +94,7 @@
           </button>
           <p class="mt-2">
             Want to delete your account? Get in touch at
+            <!-- eslint-disable-next-line vue/no-v-html -->
             <span v-html="$config.application.support_email" />
           </p>
         </div>
@@ -115,13 +112,13 @@
 </template>
 
 <script>
-import TextInput from '@/components/ui/TextInput.vue';
+import gql from 'graphql-tag';
+import LoadingContainer from '../ui/LoadingContainer.vue';
+import NonFieldError from '../ui/UiNonFieldError.vue';
 import ChangeEmail from './ChangeEmail.vue';
 import ChangePassword from './ChangePassword.vue';
-import LoadingContainer from '../ui/LoadingContainer.vue';
-import gql from 'graphql-tag';
+import TextInput from '~~/components/ui/UiTextInput.vue';
 import { swalToast, performMutation, getValidationErrors } from '@/utils';
-import NonFieldError from '../ui/NonFieldError.vue';
 export default {
   name: 'UserDetails',
   components: {
@@ -129,13 +126,13 @@ export default {
     ChangePassword,
     ChangeEmail,
     LoadingContainer,
-    NonFieldError,
+    NonFieldError
   },
   props: {
     user: {
       required: true,
-      type: Object,
-    },
+      type: Object
+    }
   },
   data() {
     return {
@@ -146,7 +143,7 @@ export default {
       lastName: this.user.lastName,
 
       loading: false,
-      errors: null,
+      errors: null
     };
   },
   methods: {
@@ -168,8 +165,8 @@ export default {
         `,
             variables: {
               firstName: this.firstName,
-              lastName: this.lastName,
-            },
+              lastName: this.lastName
+            }
           },
           'updateAccount'
         );
@@ -177,7 +174,7 @@ export default {
         swalToast.fire({
           icon: 'success',
           title: 'Details updated!',
-          position: 'bottom-end',
+          position: 'bottom-end'
         });
         this.user.firstName = this.firstName;
         this.user.lastName = this.lastName;
@@ -186,7 +183,7 @@ export default {
         this.errors = getValidationErrors(e);
       }
       this.loading = false;
-    },
-  },
+    }
+  }
 };
 </script>

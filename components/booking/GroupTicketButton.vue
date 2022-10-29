@@ -27,13 +27,13 @@ export default {
   props: {
     discount: {
       required: true,
-      type: Object,
-    },
+      type: Object
+    }
   },
   methods: {
     addTickets() {
       this.$emit('add-discount-tickets');
-    },
-  },
+    }
+  }
 };
 </script>

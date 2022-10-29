@@ -13,16 +13,16 @@ export default {
   props: {
     value: {
       type: String,
-      default: null,
+      default: null
     },
     mustSort: {
       type: Boolean,
-      default: false,
+      default: false
     },
     sortField: {
       type: String,
-      default: null,
-    },
+      default: null
+    }
   },
   computed: {
     currentlySorted() {
@@ -35,7 +35,7 @@ export default {
     },
     currentlySortedDown() {
       return this.currentlySorted && !this.currentlySortedUp;
-    },
+    }
   },
   mounted() {
     if (this.mustSort && !this.currentlySorted) {
@@ -65,7 +65,7 @@ export default {
       // } else {
       //   this.$emit('input', '-')
       // }
-    },
-  },
+    }
+  }
 };
 </script>

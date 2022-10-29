@@ -109,20 +109,20 @@ export default {
   props: {
     production: {
       required: true,
-      type: Object,
+      type: Object
     },
     showBuyTicketsButton: {
       default: true,
-      type: Boolean,
+      type: Boolean
     },
     showDetailedInfo: {
       default: true,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
   data() {
     return {
-      venueOverflow: 3,
+      venueOverflow: 3
     };
   },
   computed: {
@@ -161,10 +161,10 @@ export default {
           60 *
           1000
       );
-    },
+    }
   },
   methods: {
-    displayStartEnd,
-  },
+    displayStartEnd
+  }
 };
 </script>

@@ -60,27 +60,27 @@ export default {
     CameraCheckIn,
     HardwareScannerCheckIn,
     CameraScanner,
-    HardwareScanner,
+    HardwareScanner
   },
   props: {
     checkInMode: {
       default: false,
-      type: Boolean,
+      type: Boolean
     },
     performanceId: {
       default: null,
-      type: [Number, String],
-    },
+      type: [Number, String]
+    }
   },
   data() {
     return {
-      showCamera: false,
+      showCamera: false
     };
   },
   mounted() {
     if (this.checkInMode && !this.performanceId) {
       throw new Error('Performance ID must be supplied in check in mode');
     }
-  },
+  }
 };
 </script>

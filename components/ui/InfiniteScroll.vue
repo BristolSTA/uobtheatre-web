@@ -8,41 +8,41 @@
 </template>
 
 <script>
-import LoadingIcon from './LoadingIcon.vue';
+import LoadingIcon from './UiLoadingIcon.vue';
 import { isInViewport } from '@/utils';
 export default {
   components: { LoadingIcon },
   props: {
     apolloQuery: {
       required: true,
-      type: Object,
+      type: Object
     },
     apolloVariables: {
       required: false,
       type: Object,
-      default: () => {},
+      default: () => {}
     },
     apolloAfterCursorVariableKey: {
       required: false,
       default: 'afterCursor',
-      type: String,
-    },
+      type: String
+    }
   },
   data() {
     return {
       loading: false,
-      endCursor: null,
+      endCursor: null
     };
   },
   computed: {
     hasMore() {
       return this.endCursor || this.loading;
-    },
+    }
   },
   watch: {
     loading(newValue) {
       this.$emit('loadingChange', newValue);
-    },
+    }
   },
   mounted() {
     window.addEventListener('scroll', this.handleScroll);
@@ -61,7 +61,7 @@ export default {
       const variables = Object.assign(defaultVariables, this.apolloVariables);
       const result = await this.$apollo.query({
         query: this.apolloQuery,
-        variables,
+        variables
       });
       this.loading = false;
 
@@ -101,7 +101,7 @@ export default {
       ) {
         this.runQuery();
       }
-    },
-  },
+    }
+  }
 };
 </script>

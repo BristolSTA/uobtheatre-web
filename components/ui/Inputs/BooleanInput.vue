@@ -19,12 +19,12 @@ export default {
   props: {
     checked: {
       type: Boolean,
-      required: true,
+      required: true
     },
     disabled: {
       type: Boolean,
-      default: false,
-    },
-  },
+      default: false
+    }
+  }
 };
 </script>

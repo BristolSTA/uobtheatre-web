@@ -1,43 +1,43 @@
 <template>
   <div class="flex flex-col h-screen font-body">
-    <nav-bar />
-    <breadcrumbs v-if="crumbs" :crumbs="crumbs" />
+    <LayoutNavBar />
+    <UiBreadcrumbs v-if="crumbs" :crumbs="crumbs" />
     <main class="flex-1 pb-2 text-white bg-sta-gray">
-      <Nuxt ref="page" @hook:mounted="getCrumbs" />
+      <slot ref="pageComponent" />
     </main>
-    <footer-bar />
+    <LayoutFooterBar />
   </div>
 </template>
 
-<script>
-import FooterBar from '@/components/layout/FooterBar.vue';
-import NavBar from '@/components/layout/NavBar.vue';
-import Breadcrumbs from '@/components/ui/Breadcrumbs.vue';
-export default {
-  components: { NavBar, FooterBar, Breadcrumbs },
-  computed: {
-    crumbs() {
-      if (!this.$refs.page) {
-        return null;
-      }
-      return this.$refs.page.$children[0].crumbs;
-    },
-  },
-  watch: {
-    $route() {
-      const timer = setInterval(() => {
-        if (this.$refs.page.$children.length > 0) {
-          this.getCrumbs();
-          clearInterval(timer);
-        }
-      }, 100);
-    },
-  },
-  methods: {
-    getCrumbs() {
-      this._computedWatchers.crumbs.run();
-      this.$forceUpdate();
-    },
-  },
-};
+<script setup lang="ts">
+import { ref, computed } from 'vue';
+
+// Load the "pageComponent" ref from the template
+const pageComponent = ref(null);
+
+// Declare the "crumbs" computed property
+const crumbs = computed(() => {
+  if (!pageComponent.value) {
+    return null;
+  }
+
+  return [];
+  // return pageComponent.$children[0].crumbs;
+});
+
+// const getCrumbs = () => {
+//   crumbs.run();
+//   this.$forceUpdate();
+// };
+
+// // Watch route for change. If it changes, we'll reset the breadcrumbs
+// const route = useRoute();
+// watch(route, () => {
+//   const timer = setInterval(() => {
+//     if (pageComponent.$children.length > 0) {
+//       getCrumbs();
+//       clearInterval(timer);
+//     }
+//   }, 100);
+// });
 </script>

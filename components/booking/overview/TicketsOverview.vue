@@ -53,8 +53,8 @@ export default {
   props: {
     booking: {
       required: true,
-      type: Booking,
-    },
+      type: Booking
+    }
   },
   computed: {
     seatGroupedTickets() {
@@ -62,7 +62,7 @@ export default {
         this.booking.ticketOverview(),
         (concessionTickets) => concessionTickets.seatGroup.id
       );
-    },
-  },
+    }
+  }
 };
 </script>

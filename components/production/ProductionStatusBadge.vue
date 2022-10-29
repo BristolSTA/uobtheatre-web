@@ -12,8 +12,8 @@ export default {
   props: {
     production: {
       required: true,
-      type: Object,
-    },
+      type: Object
+    }
   },
   computed: {
     colours() {
@@ -39,7 +39,7 @@ export default {
         return 'Not Bookable';
       }
       return new ProductionStatusEnum(this.production.status).name;
-    },
-  },
+    }
+  }
 };
 </script>

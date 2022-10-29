@@ -41,28 +41,28 @@ export default {
   props: {
     pageInfo: {
       default: () => {},
-      type: Object,
+      type: Object
     },
     items: {
       required: true,
-      type: Array,
+      type: Array
     },
     offset: {
       required: true,
-      type: Number,
+      type: Number
     },
     maxPerPage: {
       default: null,
-      type: Number,
+      type: Number
     },
     emptyText: {
       default: 'No matching data found',
-      type: String,
+      type: String
     },
     loading: {
       default: false,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
   computed: {
     hasNextPage() {
@@ -73,7 +73,7 @@ export default {
     },
     empty() {
       return !this.items.length;
-    },
+    }
   },
   methods: {
     nextPage() {
@@ -86,7 +86,7 @@ export default {
         'update:offset',
         Math.max(0, this.offset - (this.maxPerPage ?? this.items.length))
       );
-    },
-  },
+    }
+  }
 };
 </script>

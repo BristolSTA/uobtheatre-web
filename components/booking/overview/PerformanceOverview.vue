@@ -42,21 +42,21 @@ export default {
   props: {
     production: {
       required: true,
-      type: Object,
+      type: Object
     },
     performance: {
       required: true,
-      type: Object,
-    },
+      type: Object
+    }
   },
   computed: {
     startTime() {
       return DateTime.fromISO(this.performance.start);
-    },
+    }
   },
   methods: {
     humanDuration,
-    humanDayTime,
-  },
+    humanDayTime
+  }
 };
 </script>

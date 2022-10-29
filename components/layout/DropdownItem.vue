@@ -26,20 +26,20 @@ export default {
   props: {
     title: {
       required: true,
-      type: String,
+      type: String
     },
     subtitle: {
       default: null,
-      type: String,
+      type: String
     },
     icon: {
       default: null,
-      type: String,
+      type: String
     },
     route: {
       required: true,
-      type: [Object, String],
-    },
-  },
+      type: [Object, String]
+    }
+  }
 };
 </script>

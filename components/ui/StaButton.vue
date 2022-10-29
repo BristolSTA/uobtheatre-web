@@ -17,24 +17,24 @@ export default {
   props: {
     to: {
       default: null,
-      type: String,
+      type: String
     },
     small: {
       default: false,
-      type: Boolean,
+      type: Boolean
     },
     icon: {
       default: null,
-      type: String,
+      type: String
     },
     colour: {
       default: null,
-      type: [String, Array],
+      type: [String, Array]
     },
     disabled: {
       default: false,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
   computed: {
     asType() {
@@ -56,7 +56,7 @@ export default {
         );
       }
       return arr;
-    },
-  },
+    }
+  }
 };
 </script>

@@ -11,8 +11,8 @@ export default {
   props: {
     performance: {
       required: true,
-      type: Object,
-    },
+      type: Object
+    }
   },
   computed: {
     colours() {
@@ -35,7 +35,7 @@ export default {
         return 'Unavailable';
       }
       return 'Bookable';
-    },
-  },
+    }
+  }
 };
 </script>

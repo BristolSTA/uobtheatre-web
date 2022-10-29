@@ -1,6 +1,3 @@
-<script>
-/* eslint-disable vue/no-v-html */
-</script>
 <template>
   <div class="tiptap-output" v-html="html" />
 </template>
@@ -10,8 +7,8 @@ export default {
   props: {
     html: {
       required: true,
-      type: String,
-    },
-  },
+      type: String
+    }
+  }
 };
 </script>

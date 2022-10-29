@@ -1,3 +1,2 @@
-graphql/codegen/operations.ts
-.nuxt
-static/sw.js
+nuxt2
+graphql/codegen

@@ -20,16 +20,16 @@ export default {
   props: {
     to: {
       default: null,
-      type: [Object, String],
+      type: [Object, String]
     },
     icon: {
       default: null,
-      type: String,
+      type: String
     },
     textSize: {
       default: 'text-h2',
-      type: String,
-    },
+      type: String
+    }
   },
   methods: {
     go() {
@@ -38,7 +38,7 @@ export default {
       } else {
         this.$emit('click');
       }
-    },
-  },
+    }
+  }
 };
 </script>

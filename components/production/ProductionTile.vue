@@ -28,16 +28,16 @@ export default {
   props: {
     production: {
       required: true,
-      type: Object,
-    },
+      type: Object
+    }
   },
   methods: {
-    displayStartEnd,
-  },
+    displayStartEnd
+  }
 };
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .production-tile:hover .production-title {
   @apply text-sta-green;
 }

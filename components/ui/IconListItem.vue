@@ -16,8 +16,8 @@ export default {
     icon: {
       requried: true,
       type: [Array, String],
-      default: null,
-    },
-  },
+      default: null
+    }
+  }
 };
 </script>

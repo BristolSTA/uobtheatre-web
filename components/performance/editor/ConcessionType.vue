@@ -4,7 +4,7 @@
       <p
         class="font-semibold"
         :class="{
-          'hover:text-sta-orange transition-colors cursor-pointer': editable,
+          'hover:text-sta-orange transition-colors cursor-pointer': editable
         }"
         @click="editable ? (editing = !editing) : null"
       >
@@ -59,25 +59,25 @@ export default {
   props: {
     name: {
       required: true,
-      type: String,
+      type: String
     },
     description: {
       default: null,
-      type: String,
+      type: String
     },
     editable: {
       default: false,
-      type: Boolean,
+      type: Boolean
     },
     removable: {
       default: false,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
   data() {
     return {
-      editing: false,
+      editing: false
     };
-  },
+  }
 };
 </script>

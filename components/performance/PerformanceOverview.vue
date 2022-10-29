@@ -58,12 +58,12 @@ export default {
   props: {
     performance: {
       required: true,
-      type: Object,
+      type: Object
     },
     actionPath: {
       default: null,
-      type: String,
-    },
+      type: String
+    }
   },
   computed: {
     disabledReason() {
@@ -71,13 +71,13 @@ export default {
         return 'SOLD OUT';
       }
       return 'Unavailable';
-    },
+    }
   },
   methods: {
     onAction() {
       this.$emit('select');
     },
-    humanDuration,
-  },
+    humanDuration
+  }
 };
 </script>

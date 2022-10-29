@@ -7,13 +7,13 @@
         style="min-height: 50vh"
       >
         <div class="container px-4 text-white lg:w-2/3">
-          <div class="text-4xl">Welcome to {{ $appName }}</div>
+          <div class="text-4xl">Welcome to {{ appConfig.name }}</div>
           <div class="text-2xl">
             The Home of Bristol Student Performing Arts
           </div>
         </div>
       </div>
-      <carousel v-else :carousel-items="bannerProductions">
+      <UiCarousel v-else :carousel-items="bannerProductions">
         <template #default="slotProps">
           <div class="flex items-center h-full bg-black bg-opacity-40">
             <NuxtLink
@@ -38,13 +38,13 @@
             </NuxtLink>
           </div>
         </template>
-      </carousel>
+      </UiCarousel>
     </div>
 
     <div ref="whatson" class="container mt-4 text-white">
       <h1 class="text-h1">What's On</h1>
       <div
-        v-for="(production, index) in upcomingProductionsToShow"
+        v-for="(production, index) in upcomingProductionsToDisplay"
         :key="production.id"
         class="flex flex-wrap items-center py-4 production-feature"
         :class="{ 'flex-row-reverse': index % 2 == 1 }"
@@ -76,7 +76,7 @@
             {{ displayStartEnd(production.start, production.end, 'd MMMM') }}
           </p>
           <p>
-            {{ oneLiner(production.description) | truncate(230) }}
+            {{ truncate(oneLiner(production.description), 230) }}
           </p>
           <NuxtLink
             :to="`/production/${production.slug}`"
@@ -97,7 +97,7 @@
         </div>
       </div>
       <div
-        v-if="upcomingProductions.length > upcomingProductionsToShow.length"
+        v-if="upcomingProductions.length > upcomingProductionsToDisplay.length"
         class="flex items-center py-10 text-center"
       >
         <div class="w-full">
@@ -110,93 +110,54 @@
   </div>
 </template>
 
-<script lang="ts">
-import lo from 'lodash';
-import { defineComponent } from 'vue';
-import { MetaInfo } from 'vue-meta';
-import {
-  useHomepageUpcomingProductionsQuery,
-  ProductionNode,
-  ImageNode,
-  SocietyNode,
-  Maybe,
-} from '@/graphql/codegen/operations';
-import Carousel from '@/components/ui/Carousel.vue';
-import { displayStartEnd } from '@/utils';
-import { oneLiner } from '@/utils/lang';
-import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue';
+<script setup lang="ts">
+import take from 'lodash/take';
+import { useHomepageUpcomingProductionsQuery } from '@/graphql/codegen/operations';
+import { oneLiner, truncate, displayStartEnd } from '@/utils/lang';
 
-interface BannerInfo {
-  id: string;
-  displayImage: Maybe<ImageNode> | undefined;
-  text: {
-    slug: string;
-    name: string;
-    start: string;
-    end: string;
-    society: Maybe<SocietyNode> | undefined;
-  };
-}
-
-export default defineComponent({
-  components: { Carousel, ProductionFeaturedImage },
-  data() {
-    const upcomingProductions: ProductionNode[] = [];
-    return {
-      upcomingProductions,
-      displayStartEnd,
-    };
-  },
-  head(): MetaInfo {
-    const appName = this.$appName;
-    return {
-      title: `${appName} | The Home Of Bristol Student Performing Arts`,
-      titleTemplate: undefined,
-    };
-  },
-  computed: {
-    bannerProductions(): BannerInfo[] {
-      return this.upcomingProductionsToShow
-        .filter((production) => {
-          return !!production.coverImage;
-        })
-        .map((production) => {
-          return {
-            id: production.id,
-            displayImage: production.coverImage,
-            text: {
-              slug: production.slug,
-              name: production.name,
-              start: production.start,
-              end: production.end,
-              society: production.society,
-            },
-          };
-        });
-    },
-    upcomingProductionsToShow(): ProductionNode[] {
-      return lo.take(this.upcomingProductions, 4);
-    },
-  },
-  methods: {
-    oneLiner,
-  },
-  apollo: {
-    upcomingProductions: useHomepageUpcomingProductionsQuery({
-      update: (data) => data?.productions?.edges.map((edge) => edge?.node),
-      variables() {
-        return {
-          now: new Date(),
-        };
-      },
-    }),
-  },
+// Set SEO data
+const appConfig = useAppConfig();
+useHead({
+  title: `${appConfig.name} | The Home Of Bristol Student Performing Arts`,
+  titleTemplate: undefined
 });
+
+// Fetch upcoming productions (without blocking)
+const { result } = useHomepageUpcomingProductionsQuery({
+  now: new Date()
+});
+
+const upcomingProductions = computed(() =>
+  !result?.value ? [] : result.value.productions.edges.map((edge) => edge.node)
+);
+
+const upcomingProductionsToDisplay = computed(() =>
+  take(upcomingProductions.value, 4)
+);
+
+// Define banner productions
+const bannerProductions = computed(() =>
+  upcomingProductionsToDisplay.value
+    .filter((production) => !!production.coverImage)
+    .map((production) => {
+      return {
+        id: production.id,
+        displayImage: production.coverImage,
+        text: {
+          slug: production.slug,
+          name: production.name,
+          start: production.start,
+          end: production.end,
+          society: production.society
+        }
+      };
+    })
+);
 </script>
 
 <style>
 #splashscreen {
-  background-image: url('~@/assets/images/placeholder-homepage-splash.jpg');
+  background-image: url('~/assets/images/placeholder-homepage-splash.jpg');
   background-size: cover;
   background-position: center;
 }

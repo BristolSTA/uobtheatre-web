@@ -120,34 +120,34 @@ export default {
     TableHeadItem,
     SafeTable,
     TableRow,
-    TableRowItem,
+    TableRowItem
   },
   props: {
     editing: {
       default: false,
-      type: Boolean,
+      type: Boolean
     },
     performanceSeatGroups: {
       type: Array,
-      required: true,
+      required: true
     },
     discounts: {
       required: true,
-      type: Array,
-    },
+      type: Array
+    }
   },
   computed: {
     singleDiscounts() {
       return singleDiscountsFn(this.discounts);
-    },
+    }
   },
   watch: {
     performanceSeatGroups: {
       deep: true,
       handler() {
         this.$forceUpdate();
-      },
-    },
+      }
+    }
   },
   methods: {
     displayPrice(performanceSeatGroup, discount) {
@@ -170,7 +170,7 @@ export default {
         ).toFixed(2);
       }
       return (currentValue / 100).toFixed(2);
-    },
-  },
+    }
+  }
 };
 </script>

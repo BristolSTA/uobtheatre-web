@@ -13,7 +13,7 @@ export default {
       timer: null,
       hours: 0,
       minutes: 0,
-      seconds: 0,
+      seconds: 0
     };
   },
   mounted() {
@@ -30,7 +30,7 @@ export default {
       this.minutes = getZeroPad(now.getMinutes());
       this.seconds = getZeroPad(now.getSeconds());
       this.$emit('time', now);
-    },
-  },
+    }
+  }
 };
 </script>

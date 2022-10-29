@@ -32,7 +32,7 @@
 
 <script>
 import { QrcodeStream } from 'vue-qrcode-reader';
-import LoadingIcon from '../ui/LoadingIcon.vue';
+import LoadingIcon from '../ui/UiLoadingIcon.vue';
 import AudioSingle from '@/assets/audio/beep_single.mp3';
 import Ticket from '@/classes/Ticket';
 export default {
@@ -40,13 +40,13 @@ export default {
   props: {
     on: {
       type: Boolean,
-      default: true,
-    },
+      default: true
+    }
   },
   data() {
     return {
       error: null,
-      ready: false,
+      ready: false
     };
   },
   methods: {
@@ -115,7 +115,7 @@ export default {
           throw e;
         }
       }
-    },
-  },
+    }
+  }
 };
 </script>

@@ -172,7 +172,7 @@
         :options="
           availableSocieties.map((society) => ({
             value: society.id,
-            text: society.name,
+            text: society.name
           }))
         "
         @input="
@@ -271,65 +271,65 @@ export default {
     Card,
     RichTextInput,
     ErrorHelper,
-    StaButton,
+    StaButton
   },
   props: {
     id: {
       type: String,
-      default: null,
+      default: null
     },
     errors: {
       type: Errors,
-      default: null,
+      default: null
     },
     name: {
       type: String,
-      default: null,
+      default: null
     },
     subtitle: {
       type: String,
-      default: null,
+      default: null
     },
     contactEmail: {
       type: String,
-      default: null,
+      default: null
     },
     description: {
       type: String,
-      default: null,
+      default: null
     },
     contentWarnings: {
       default: () => [],
-      type: Array,
+      type: Array
     },
     society: {
       default: null,
-      type: Object,
+      type: Object
     },
     facebookEvent: {
       default: null,
-      type: String,
+      type: String
     },
     ageRating: {
       default: null,
-      type: [Number, String],
+      type: [Number, String]
     },
     coverImage: {
       default: null,
-      type: Object,
+      type: Object
     },
     posterImage: {
       default: null,
-      type: Object,
+      type: Object
     },
     featuredImage: {
       default: null,
-      type: Object,
+      type: Object
     },
     slug: {
       default: null,
-      type: String,
-    },
+      type: String
+    }
   },
   data() {
     return {
@@ -338,23 +338,23 @@ export default {
 
       slugManuallyEdited: false,
       changingSlug: false,
-      manualSlug: null,
+      manualSlug: null
     };
   },
   apollo: {
     availableWarnings: {
       query: require('@/graphql/queries/Warnings.gql'),
-      update: (data) => data.warnings.edges.map((edge) => edge.node),
+      update: (data) => data.warnings.edges.map((edge) => edge.node)
     },
     availableSocieties: {
       query: require('@/graphql/queries/admin/societies/AdminSocietiesIndex.gql'),
-      update: (data) => data.societies.edges.map((edge) => edge.node),
-    },
+      update: (data) => data.societies.edges.map((edge) => edge.node)
+    }
   },
   computed: {
     computedSlug() {
       return this.slug || kebabCase(this.name);
-    },
+    }
   },
   methods: {
     kebabCase,
@@ -372,7 +372,7 @@ export default {
             .map((warning) => [warning.id, warning.shortDescription])
         ),
         showCancelButton: true,
-        confirmButtonText: 'Add',
+        confirmButtonText: 'Add'
       });
 
       if (!warningId) {
@@ -387,7 +387,7 @@ export default {
         'Contains themes throughout',
         'Contains references in dialogue',
         'Contains graphic references in dialogue',
-        'Contains depiction of this trigger',
+        'Contains depiction of this trigger'
       ];
 
       const { value: descriptorIndex } = await swal.fire({
@@ -398,7 +398,7 @@ export default {
         showCancelButton: true,
         cancelButtonText: 'Let me add my own description',
         inputPlaceholder: 'Select a description',
-        confirmButtonText: 'Finish',
+        confirmButtonText: 'Finish'
       });
 
       this.updateWarnings(
@@ -422,7 +422,7 @@ export default {
       const images = {
         coverImage: this.coverImage,
         featuredImage: this.featuredImage,
-        posterImage: this.posterImage,
+        posterImage: this.posterImage
       };
 
       for (const [key, imageNode] of Object.entries(images)) {
@@ -454,10 +454,10 @@ export default {
         contactEmail: this.contactEmail,
         contentWarnings: this.contentWarnings.map((cw) => ({
           id: cw.warning.id,
-          information: cw.information,
+          information: cw.information
         })),
         society: this.society?.id,
-        ...images,
+        ...images
       };
 
       if (!returnObject.id) {
@@ -465,7 +465,7 @@ export default {
       }
 
       return returnObject;
-    },
-  },
+    }
+  }
 };
 </script>

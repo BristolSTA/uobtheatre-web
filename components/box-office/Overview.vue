@@ -121,26 +121,26 @@ export default {
   components: {
     IconListItem,
     Clock,
-    Alert,
+    Alert
   },
   props: {
     production: {
       required: true,
-      type: Object,
+      type: Object
     },
     performance: {
       required: true,
-      type: Object,
+      type: Object
     },
     detailed: {
       default: true,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
   data() {
     return {
       ticketBreakdown: {},
-      currentTime: new Date(),
+      currentTime: new Date()
     };
   },
   computed: {
@@ -169,7 +169,7 @@ export default {
           clockClass: null,
           bannerLevel: 'danger',
           bannerText:
-            'This performance is in the past. Are you sure you are viewing the right performance?',
+            'This performance is in the past. Are you sure you are viewing the right performance?'
         };
       }
 
@@ -178,7 +178,7 @@ export default {
         return {
           clockClass: 'text-sta-rouge',
           bannerLevel: 'danger',
-          bannerText: 'This performance should now have started',
+          bannerText: 'This performance should now have started'
         };
       }
 
@@ -189,7 +189,7 @@ export default {
           bannerLevel: 'warning',
           bannerText: `This performance is due to start in ${humanDuration(
             this.performanceStartDiffMinutes
-          )}`,
+          )}`
         };
       }
 
@@ -199,7 +199,7 @@ export default {
           clockClass: 'text-sta-green',
           bannerLevel: 'success',
           bannerText:
-            'The doors should now be open (wait for clearance from your stage team)',
+            'The doors should now be open (wait for clearance from your stage team)'
         };
       }
 
@@ -210,7 +210,7 @@ export default {
           bannerLevel: 'warning',
           bannerText: `Doors should be opening in ${humanDuration(
             this.performanceDoorsDiffMinutes
-          )} (wait for clearance from your stage team)`,
+          )} (wait for clearance from your stage team)`
         };
       }
 
@@ -219,7 +219,7 @@ export default {
         return {
           bannerLevel: 'danger',
           bannerText:
-            'This performance is over 3 hours away. Are you sure you have the right performance selected?',
+            'This performance is over 3 hours away. Are you sure you have the right performance selected?'
         };
       }
 
@@ -229,30 +229,30 @@ export default {
           this.performanceDoorsDiffMinutes
         )}`,
         bannerLevel: '',
-        bannerClass: 'border',
+        bannerClass: 'border'
       };
-    },
+    }
   },
   mounted() {
     this.$apollo.queries.ticketBreakdown.refetch();
   },
   methods: {
-    humanDuration,
+    humanDuration
   },
   apollo: {
     ticketBreakdown: {
       query: require('@/graphql/queries/box-office/BoxOfficePerformanceTicketBreakdown.gql'),
       variables() {
         return {
-          id: this.performance.id,
+          id: this.performance.id
         };
       },
       skip() {
         return !this.detailed;
       },
       pollInterval: 5000,
-      update: (data) => data.performance.ticketsBreakdown,
-    },
-  },
+      update: (data) => data.performance.ticketsBreakdown
+    }
+  }
 };
 </script>

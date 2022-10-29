@@ -18,23 +18,23 @@
 <script>
 import Booking from '@/classes/Booking';
 import Stages, {
-  getStageIndex,
+  getStageIndex
 } from '@/pages/production/_slug/book/-bookingStages';
 export default {
   name: 'BookingNavigation',
   props: {
     currentStageIndex: {
       required: true,
-      type: Number,
+      type: Number
     },
     production: {
       required: true,
-      type: Object,
+      type: Object
     },
     booking: {
       required: true,
-      type: Booking,
-    },
+      type: Booking
+    }
   },
   computed: {
     applicableStages() {
@@ -44,7 +44,7 @@ export default {
           this.booking
         );
       });
-    },
+    }
   },
   methods: {
     stylesForButton(stage) {
@@ -65,7 +65,7 @@ export default {
         return;
       }
       this.$emit('goto-stage', stage);
-    },
-  },
+    }
+  }
 };
 </script>

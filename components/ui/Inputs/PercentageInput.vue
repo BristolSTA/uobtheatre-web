@@ -21,12 +21,12 @@ export default {
   props: {
     value: {
       type: Number,
-      default: null,
+      default: null
     },
     options: {
       default: null,
-      type: Object,
-    },
+      type: Object
+    }
   },
   methods: {
     onInput(event) {
@@ -42,7 +42,7 @@ export default {
       }
       this.$emit('input', newVal);
       this.$emit('blur', newVal);
-    },
-  },
+    }
+  }
 };
 </script>

@@ -86,26 +86,26 @@
 </template>
 
 <script>
-import { Editor, EditorContent } from '@tiptap/vue-2';
+import { Editor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
 import EditorButton from './EditorButton.vue';
 
 export default {
   components: {
     EditorContent,
-    EditorButton,
+    EditorButton
   },
 
   props: {
     value: {
       type: String,
-      default: '',
-    },
+      default: ''
+    }
   },
 
   data() {
     return {
-      editor: null,
+      editor: null
     };
   },
 
@@ -118,7 +118,7 @@ export default {
       }
 
       this.editor.commands.setContent(this.value, false);
-    },
+    }
   },
 
   mounted() {
@@ -127,18 +127,18 @@ export default {
       content: this.value,
       editorProps: {
         attributes: {
-          class: 'tiptap-output',
-        },
+          class: 'tiptap-output'
+        }
       },
       onUpdate: () => {
         // HTML
         this.$emit('input', this.editor.getHTML());
-      },
+      }
     });
   },
 
   beforeDestroy() {
     this.editor.destroy();
-  },
+  }
 };
 </script>

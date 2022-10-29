@@ -56,12 +56,12 @@ export default {
   props: {
     useWallets: {
       default: true,
-      type: Boolean,
+      type: Boolean
     },
     price: {
       required: true,
-      type: String,
-    },
+      type: String
+    }
   },
   data() {
     return {
@@ -73,8 +73,8 @@ export default {
       square: {
         payments: null,
         request: null,
-        methods: null,
-      },
+        methods: null
+      }
     };
   },
   watch: {
@@ -84,7 +84,7 @@ export default {
       } else {
         this.$emit('cancelled');
       }
-    },
+    }
   },
   mounted() {
     const checkToInit = () => {
@@ -119,20 +119,20 @@ export default {
         currencyCode: 'GBP',
         total: {
           amount: this.price,
-          label: 'Total',
-        },
+          label: 'Total'
+        }
       });
 
       // Init card payment
       this.square.methods.card = await this.square.payments.card({
         style: {
           '.message-icon': {
-            color: 'white',
+            color: 'white'
           },
           '.message-text': {
-            color: 'white',
-          },
-        },
+            color: 'white'
+          }
+        }
       });
       await this.square.methods.card.attach('#card-container');
 
@@ -142,7 +142,7 @@ export default {
           this.square.request
         );
         await this.square.methods.gpay.attach('#sq-gpay-button', {
-          buttonColor: 'white',
+          buttonColor: 'white'
         });
       } catch (e) {
         if (e.name !== 'PaymentMethodUnsupportedError') {
@@ -169,7 +169,7 @@ export default {
         amount: this.price,
         billingContact: {},
         currencyCode: 'GBP',
-        intent: 'CHARGE',
+        intent: 'CHARGE'
       };
       const results = await this.square.payments.verifyBuyer(token, details);
       return results.token;
@@ -196,7 +196,7 @@ export default {
       } catch (e) {
         this.paying = false;
         this.squareErrors = [
-          'An unexpected error was encountered whilst trying to process your payment. No charge has been made.',
+          'An unexpected error was encountered whilst trying to process your payment. No charge has been made.'
         ];
         silentErrorHandler(e);
         this.$emit('nonceError', this.squareErrors);
@@ -210,8 +210,8 @@ export default {
     },
     payApplePay() {
       return this.pay(this.square.methods.applepay);
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -37,8 +37,8 @@ export default {
   props: {
     booking: {
       required: true,
-      type: Booking,
-    },
+      type: Booking
+    }
   },
   computed: {
     costs() {
@@ -46,19 +46,19 @@ export default {
         {
           name: 'Tickets',
           subtext: 'Including any discounts',
-          cost: this.booking.ticketsDiscountedPricePounds,
-        },
+          cost: this.booking.ticketsDiscountedPricePounds
+        }
       ];
 
       this.booking.miscCosts.forEach((miscCost) => {
         costs.push({
           name: miscCost.name,
-          cost: (miscCost.value / 100).toFixed(2),
+          cost: (miscCost.value / 100).toFixed(2)
         });
       });
 
       return costs;
-    },
-  },
+    }
+  }
 };
 </script>

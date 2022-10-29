@@ -1,13 +1,8 @@
-import authService from '@/services/authService';
+import { useStore } from '@/store/auth';
 
-/**
- * @param {object} context Nuxt Context
- * @returns {any} Middleware Resolver
- */
-export default function (context) {
-  if (authService.isLoggedIn(context)) {
-    return context.redirect({
-      path: '/',
-    });
+export default defineNuxtRouteMiddleware(() => {
+  const authStore = useStore();
+  if (authStore.isLoggedIn) {
+    return navigateTo('/');
   }
-}
+});

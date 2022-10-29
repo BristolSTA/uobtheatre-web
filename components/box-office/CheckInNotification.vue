@@ -70,7 +70,7 @@
                   :class="[
                     errors
                       ? 'bg-sta-green hover:bg-sta-green-dark'
-                      : 'bg-sta-orange hover:bg-sta-orange-dark',
+                      : 'bg-sta-orange hover:bg-sta-orange-dark'
                   ]"
                 >
                   View Booking
@@ -131,32 +131,32 @@ export default {
   props: {
     alreadyCheckedIn: {
       type: Boolean,
-      default: false,
+      default: false
     },
     scanData: {
       type: Object,
-      required: true,
+      required: true
     },
     errors: {
       type: Array,
-      default: null,
+      default: null
     },
     ticket: {
       type: Object,
-      default: null,
+      default: null
     },
     booking: {
       type: Object,
-      default: null,
-    },
+      default: null
+    }
   },
   computed: {
     bookingInstance() {
       return Booking.fromAPIData(this.booking);
-    },
+    }
   },
   mounted() {
     new Audio(this.errors ? AudioNegative : AudioPositive).play();
-  },
+  }
 };
 </script>

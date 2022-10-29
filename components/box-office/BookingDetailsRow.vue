@@ -53,7 +53,7 @@
                 v-for="(ticket, n) in sortedTicketArray[i]"
                 :key="i.toString() + n.toString()"
                 :class="{
-                  'bg-sta-orange-dark': highlightTicketId === ticket.id,
+                  'bg-sta-orange-dark': highlightTicketId === ticket.id
                 }"
               >
                 <td class="hidden sm:table-cell pr-4">
@@ -86,7 +86,7 @@
                       :class="[
                         (editing ? editingData[ticket.id] : ticket.checkedIn)
                           ? 'text-sta-green'
-                          : 'text-sta-rouge',
+                          : 'text-sta-rouge'
                       ]"
                     />
                     <button
@@ -109,7 +109,7 @@
 
 <script>
 import lo from 'lodash';
-import LoadingIcon from '../ui/LoadingIcon.vue';
+import LoadingIcon from '../ui/UiLoadingIcon.vue';
 import Booking from '@/classes/Booking';
 
 import CheckInMutation from '@/graphql/mutations/box-office/CheckInTickets.gql';
@@ -121,22 +121,22 @@ export default {
   props: {
     booking: {
       required: true,
-      type: Booking,
+      type: Booking
     },
     index: {
       required: true,
-      type: Number,
+      type: Number
     },
     highlightTicketId: {
       default: null,
-      type: [String, Number],
-    },
+      type: [String, Number]
+    }
   },
   data() {
     return {
       editing: false,
       editingData: null,
-      saving: false,
+      saving: false
     };
   },
   computed: {
@@ -149,7 +149,7 @@ export default {
       return Object.values(
         lo.groupBy(this.booking.tickets, (ticket) => ticket.seatGroup.id)
       );
-    },
+    }
   },
   methods: {
     startEditing() {
@@ -182,8 +182,8 @@ export default {
             variables: {
               reference: this.booking.reference,
               performanceId: this.booking.performance.id,
-              tickets: ticketsToCheckIn,
-            },
+              tickets: ticketsToCheckIn
+            }
           })
         );
       }
@@ -195,8 +195,8 @@ export default {
             variables: {
               reference: this.booking.reference,
               performanceId: this.booking.performance.id,
-              tickets: ticketsToUnCheckIn,
-            },
+              tickets: ticketsToUnCheckIn
+            }
           })
         );
       }
@@ -207,8 +207,8 @@ export default {
         query: BoxOfficePerformanceBooking,
         variables: {
           performanceId: this.booking.performance.id,
-          bookingId: this.booking.id,
-        },
+          bookingId: this.booking.id
+        }
       });
 
       this.booking.updateFromAPIData(data.performance.bookings.edges[0].node);
@@ -217,7 +217,7 @@ export default {
     },
     cancelEdits() {
       this.editing = false;
-    },
-  },
+    }
+  }
 };
 </script>

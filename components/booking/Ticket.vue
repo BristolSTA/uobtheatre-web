@@ -52,32 +52,32 @@ import Ticket from '@/classes/Ticket';
 export default {
   name: 'Ticket',
   components: {
-    QrcodeVue,
+    QrcodeVue
   },
   props: {
     performance: {
       required: true,
-      type: Object,
+      type: Object
     },
     reference: {
       required: true,
-      type: String,
+      type: String
     },
     ticket: {
       required: true,
-      type: Ticket,
+      type: Ticket
     },
     user: {
       default: null,
-      type: Object,
-    },
+      type: Object
+    }
   },
   computed: {
     fullName() {
       return this.user
         ? lo.join([this.user.firstName, this.user.lastName], ' ')
         : null;
-    },
-  },
+    }
+  }
 };
 </script>

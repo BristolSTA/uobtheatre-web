@@ -39,14 +39,14 @@
 import gql from 'graphql-tag';
 
 import LoadingContainer from '../ui/LoadingContainer.vue';
-import NonFieldError from '../ui/NonFieldError.vue';
-import TextInput from '../ui/TextInput.vue';
+import NonFieldError from '../ui/UiNonFieldError.vue';
+import TextInput from '../ui/UiTextInput.vue';
 import { getValidationErrors, performMutation, swal } from '@/utils';
 export default {
   components: {
     LoadingContainer,
     TextInput,
-    NonFieldError,
+    NonFieldError
   },
   data() {
     return {
@@ -55,7 +55,7 @@ export default {
       password: null,
 
       loading: false,
-      errors: null,
+      errors: null
     };
   },
   methods: {
@@ -74,21 +74,21 @@ export default {
         `,
             variables: {
               email: this.email,
-              password: this.password,
-            },
+              password: this.password
+            }
           },
           'sendSecondaryEmailActivation'
         );
         swal.fire({
           icon: 'info',
           title: 'Check your email',
-          text: `We have sent a verification email to ${this.email}`,
+          text: `We have sent a verification email to ${this.email}`
         });
       } catch (e) {
         this.errors = getValidationErrors(e);
       }
       this.loading = false;
-    },
-  },
+    }
+  }
 };
 </script>

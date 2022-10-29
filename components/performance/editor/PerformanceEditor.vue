@@ -9,7 +9,7 @@
         :options="
           availableVenues.map((venue) => ({
             value: venue.id,
-            text: venue.name,
+            text: venue.name
           }))
         "
         @input="
@@ -294,65 +294,65 @@ export default {
     ErrorHelper,
     StaButton,
     Alert,
-    PriceMatrix,
+    PriceMatrix
   },
   props: {
     performance: {
       default: null,
-      type: Object,
+      type: Object
     },
     id: {
       type: String,
-      default: null,
+      default: null
     },
     capacity: {
       type: [Number, String],
-      default: null,
+      default: null
     },
     doorsOpen: {
       type: String,
-      default: null,
+      default: null
     },
     start: {
       type: String,
-      default: null,
+      default: null
     },
     production: {
       type: Object,
-      default: null,
+      default: null
     },
     end: {
       type: String,
-      default: null,
+      default: null
     },
     venue: {
       type: Object,
-      default: null,
+      default: null
     },
     errors: {
       type: Errors,
-      default: null,
+      default: null
     },
     discounts: {
       type: Object,
-      default: () => {},
+      default: () => {}
     },
     ticketOptions: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     disabled: {
       type: Boolean,
-      default: false,
+      default: false
     },
     description: {
       type: String,
-      default: null,
+      default: null
     },
     intervalDurationMins: {
       type: [Number],
-      default: null,
-    },
+      default: null
+    }
   },
   data() {
     return {
@@ -363,25 +363,25 @@ export default {
 
       performanceSeatGroups: [],
 
-      deletedDiscounts: [],
+      deletedDiscounts: []
     };
   },
   apollo: {
     availableVenues: {
       query: require('@/graphql/queries/Venues.gql'),
-      update: (data) => data.venues.edges.map((edge) => edge.node),
+      update: (data) => data.venues.edges.map((edge) => edge.node)
     },
     availableSeatGroups: {
       query: require('@/graphql/queries/admin/venue/AdminVenueDetailed.gql'),
       update: (data) => data.venue.seatGroups.edges.map((edge) => edge.node),
       variables() {
         return {
-          slug: this.venue.slug,
+          slug: this.venue.slug
         };
       },
       skip() {
         return !this.venue;
-      },
+      }
     },
     otherPerformances: {
       query: require('@/graphql/queries/admin/productions/AdminPerformancesIndex.gql'),
@@ -389,11 +389,11 @@ export default {
         data.production.performances.edges.map((edge) => edge.node),
       variables() {
         return {
-          productionId: this.production.id,
+          productionId: this.production.id
         };
       },
-      fetchPolicy: 'cache-and-network',
-    },
+      fetchPolicy: 'cache-and-network'
+    }
   },
   computed: {
     remainingSeatGroups() {
@@ -431,14 +431,14 @@ export default {
         this.ignoredExisitingPerformances ||
         !this.similarPerformances.length
       );
-    },
+    }
   },
   watch: {
     ticketOptions: {
       handler(newValue) {
         this.performanceSeatGroups = [...newValue];
       },
-      immediate: true,
+      immediate: true
     },
     similarPerformances(newVal) {
       // If this is a create operation, and there are similar performances
@@ -451,7 +451,7 @@ export default {
           this.$emit('update:intervalDurationMins', intervalLength);
         }
       }
-    },
+    }
   },
   methods: {
     getInputData() {
@@ -465,7 +465,7 @@ export default {
         venue: this.venue?.id,
         disabled: this.disabled,
         description: this.description,
-        capacity: this.capacity === '' ? null : this.capacity,
+        capacity: this.capacity === '' ? null : this.capacity
       };
 
       if (!returnObject.id) {
@@ -484,11 +484,11 @@ export default {
               this.$options.filters.dateFormat(
                 performance.start,
                 'EEEE dd MMMM y HH:mm ZZZZ'
-              ),
+              )
           ])
         ),
         showCancelButton: true,
-        confirmButtonText: 'Load',
+        confirmButtonText: 'Load'
       });
       if (!value) {
         return;
@@ -499,9 +499,9 @@ export default {
         query: require('@/graphql/queries/admin/productions/AdminPerformanceDetail.gql'),
         variables: {
           productionSlug: this.production.slug,
-          performanceId: value,
+          performanceId: value
         },
-        fetchPolicy: 'no-cache',
+        fetchPolicy: 'no-cache'
       });
 
       // Delete exisiting performance seat groups
@@ -558,8 +558,8 @@ export default {
               {
                 mutation: require('@/graphql/mutations/admin/performance/DeletePerformanceSeatGroup.gql'),
                 variables: {
-                  id: currentId,
-                },
+                  id: currentId
+                }
               },
               'deletePerformanceSeatGroup'
             )
@@ -571,7 +571,7 @@ export default {
         const input = {
           seatGroup: performanceSeatGroup.seatGroup.id,
           performance: this.performance.id,
-          price: performanceSeatGroup.price,
+          price: performanceSeatGroup.price
         };
         if (performanceSeatGroup.id) {
           input.id = performanceSeatGroup.id;
@@ -582,8 +582,8 @@ export default {
             {
               mutation: require('@/graphql/mutations/admin/performance/PerformanceSeatGroupMutation.gql'),
               variables: {
-                input,
-              },
+                input
+              }
             },
             'performanceSeatGroup'
           )
@@ -606,9 +606,9 @@ export default {
                       id: discount.id,
                       performances: discount.performances.edges
                         .map((edge) => edge.node.id)
-                        .filter((id) => id !== this.performance.id),
-                    },
-                  },
+                        .filter((id) => id !== this.performance.id)
+                    }
+                  }
                 },
                 'discount'
               )
@@ -621,7 +621,7 @@ export default {
               this.$apollo,
               {
                 mutation: require('@/graphql/mutations/admin/performance/DeleteDiscount.gql'),
-                variables: { id: discount.id },
+                variables: { id: discount.id }
               },
               'deleteDiscount'
             )
@@ -641,7 +641,7 @@ export default {
                   percentage: discount.percentage,
                   performances: discount.performances.edges.map(
                     (edge) => edge.node.id
-                  ),
+                  )
                 };
                 if (discount.id) {
                   input.id = discount.id;
@@ -651,8 +651,8 @@ export default {
                   {
                     mutation: require('@/graphql/mutations/admin/performance/DiscountMutation.gql'),
                     variables: {
-                      input,
-                    },
+                      input
+                    }
                   },
                   'discount'
                 ).then((data) => {
@@ -662,7 +662,7 @@ export default {
                     // Step #1: Concession Type
                     let input = {
                       name: requirement.concessionType.name,
-                      description: requirement.concessionType.description,
+                      description: requirement.concessionType.description
                     };
 
                     if (requirement.concessionType.id) {
@@ -674,8 +674,8 @@ export default {
                       {
                         mutation: require('@/graphql/mutations/admin/performance/ConcessionTypeMutation.gql'),
                         variables: {
-                          input,
-                        },
+                          input
+                        }
                       },
                       'concessionType'
                     )
@@ -687,7 +687,7 @@ export default {
                         input = {
                           number: requirement.number,
                           concessionType: requirement.concessionType.id,
-                          discount: discount.id,
+                          discount: discount.id
                         };
                         if (requirement.id) {
                           input.id = requirement.id;
@@ -698,8 +698,8 @@ export default {
                           {
                             mutation: require('@/graphql/mutations/admin/performance/DiscountRequirementMutation.gql'),
                             variables: {
-                              input,
-                            },
+                              input
+                            }
                           },
                           'discountRequirement'
                         )
@@ -730,11 +730,11 @@ export default {
           inputOptions: Object.fromEntries(
             this.remainingSeatGroups.map((seatGroup) => [
               seatGroup.id,
-              seatGroup.name,
+              seatGroup.name
             ])
           ),
           showCancelButton: true,
-          confirmButtonText: 'Add',
+          confirmButtonText: 'Add'
         });
         if (!value) {
           return;
@@ -747,7 +747,7 @@ export default {
       this.performanceSeatGroups.push({
         seatGroup: sg,
         price,
-        capacity: sg.capacity,
+        capacity: sg.capacity
       });
     },
     async addNewConcession(
@@ -772,23 +772,23 @@ export default {
                   concessionType: {
                     id,
                     name: name || `New Concession Type ${currentNum + 1}`,
-                    description,
-                  },
-                },
-              ],
-            },
-          },
-        ],
+                    description
+                  }
+                }
+              ]
+            }
+          }
+        ]
       });
     },
     async deleteConcession(discount) {
       // Remove from array
       await this.$emit('update:discounts', {
-        edges: this.discounts.edges.filter((edge) => edge.node !== discount),
+        edges: this.discounts.edges.filter((edge) => edge.node !== discount)
       });
 
       this.deletedDiscounts.push(discount);
-    },
-  },
+    }
+  }
 };
 </script>

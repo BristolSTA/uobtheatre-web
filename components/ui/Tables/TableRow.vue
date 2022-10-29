@@ -9,12 +9,12 @@ export default {
   props: {
     striped: {
       default: true,
-      type: Boolean,
+      type: Boolean
     },
     clickable: {
       default: false,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
   computed: {
     classes() {
@@ -26,7 +26,7 @@ export default {
         classes.push('hover:bg-sta-orange transition-colors cursor-pointer');
       }
       return classes;
-    },
-  },
+    }
+  }
 };
 </script>

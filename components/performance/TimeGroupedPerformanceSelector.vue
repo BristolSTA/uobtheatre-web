@@ -35,8 +35,8 @@ export default {
   props: {
     performances: {
       type: Array,
-      required: true,
-    },
+      required: true
+    }
   },
   computed: {
     groupedPerformances() {
@@ -49,7 +49,7 @@ export default {
           return humanDayTime(DateTime.fromISO(performance.start));
         })
         .value();
-    },
-  },
+    }
+  }
 };
 </script>

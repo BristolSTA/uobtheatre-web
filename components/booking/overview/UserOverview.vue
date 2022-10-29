@@ -19,6 +19,6 @@ import OverviewBox from '../../ui/Card.vue';
 
 export default {
   name: 'UserOverview',
-  components: { OverviewBox },
+  components: { OverviewBox }
 };
 </script>

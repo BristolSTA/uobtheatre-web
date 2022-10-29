@@ -54,28 +54,28 @@ export default {
   props: {
     booking: {
       required: true,
-      type: Booking,
+      type: Booking
     },
     ticketsMatrix: {
       required: true,
-      type: TicketsMatrix,
+      type: TicketsMatrix
     },
     showCapacities: {
       default: false,
-      type: Boolean,
+      type: Boolean
     },
     errors: {
       default: null,
-      type: Errors,
+      type: Errors
     },
     showPrices: {
       default: true,
-      type: Boolean,
+      type: Boolean
     },
     maxTickets: {
       default: null,
-      type: Number,
-    },
+      type: Number
+    }
   },
   computed: {
     performanceMinsAway() {
@@ -84,7 +84,7 @@ export default {
     },
     performanceStarted() {
       return this.performanceMinsAway < 0;
-    },
-  },
+    }
+  }
 };
 </script>

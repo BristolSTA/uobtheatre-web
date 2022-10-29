@@ -1,5 +1,5 @@
 <template>
-  <auth-page-template>
+  <AuthPageTemplate>
     <div
       class="w-100 relative p-6 max-w-xs text-center text-white bg-sta-gray shadow-2xl"
     >
@@ -8,8 +8,8 @@
         class="flex flex-col p-6 pt-0 space-y-2"
         @submit.prevent="attemptReset"
       >
-        <non-field-error :errors="errors" />
-        <text-input
+        <UiNonFieldError :errors="errors" />
+        <UiTextInput
           v-model="newPassword"
           name="New Password"
           type="password"
@@ -18,7 +18,7 @@
           autocomplete="new-password"
           required
         />
-        <text-input
+        <UiTextInput
           v-model="confirmedNewPassword"
           name="Confirm New Password"
           type="password"
@@ -32,49 +32,44 @@
         </div>
       </form>
     </div>
-  </auth-page-template>
+  </AuthPageTemplate>
 </template>
-<script>
-import { getValidationErrors, performMutation, successToast } from '@/utils';
+<script setup lang="ts">
+import { Ref } from 'vue';
+import { getValidationErrors } from '~~/utils/api';
+import { successToast } from '~~/utils/alerts';
 
-import AuthPageTemplate from '@/components/auth/AuthPageTemplate.vue';
-import NonFieldError from '@/components/ui/NonFieldError.vue';
-import TextInput from '@/components/ui/TextInput.vue';
+import Errors from '~~/classes/Errors';
+import { useStore } from '~~/store/auth';
 
-export default {
-  components: { AuthPageTemplate, NonFieldError, TextInput },
-  middleware: 'not-authed',
-  data() {
-    return {
-      errors: null,
-      newPassword: null,
-      confirmedNewPassword: null,
-    };
-  },
-  head: {
-    title: 'Reset your password',
-  },
-  methods: {
-    async attemptReset() {
-      try {
-        await performMutation(
-          this.$apollo,
-          {
-            mutation: require('@/graphql/mutations/user/AttemptPasswordReset.gql'),
-            variables: {
-              token: this.$route.params.token,
-              newPassword: this.newPassword,
-              confirmedNewPassword: this.confirmedNewPassword,
-            },
-          },
-          'passwordReset'
-        );
-        successToast.fire({ title: 'Password Changed!' });
-        return this.$router.replace('/login');
-      } catch (e) {
-        this.errors = getValidationErrors(e);
-      }
-    },
-  },
-};
+definePageMeta({
+  middleware: 'not-authed'
+});
+
+useHead({
+  title: 'Reset your password'
+});
+
+const errors: Ref<Errors> = ref(null);
+const newPassword: Ref<string> = ref(null);
+const confirmedNewPassword: Ref<string> = ref(null);
+
+async function attemptReset() {
+  const authStore = useStore();
+  const route = useRoute();
+
+  if (Array.isArray(route.params.token)) return;
+
+  try {
+    await authStore.resetPassword(
+      route.params.token,
+      newPassword.value,
+      confirmedNewPassword.value
+    );
+    successToast.fire({ title: 'Password Changed!' });
+    return useRouter().replace('/login');
+  } catch (e) {
+    errors.value = getValidationErrors(e);
+  }
+}
 </script>

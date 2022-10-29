@@ -114,30 +114,30 @@ export default {
     TableRowItem,
     TableRow,
     StaButton,
-    FormLabel,
+    FormLabel
   },
   props: {
     assignablePermissions: {
       type: Array,
-      required: true,
+      required: true
     },
     assignedUsers: {
       type: Array,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
       newUser: {
         email: null,
-        permissions: [],
-      },
+        permissions: []
+      }
     };
   },
   computed: {
     userAssignablePermissions() {
       return this.assignablePermissions.filter((ap) => ap.userCanAssign);
-    },
+    }
   },
   methods: {
     togglePermission(user, permission) {
@@ -155,7 +155,7 @@ export default {
     },
     removeUser(user) {
       this.$emit('remove', user);
-    },
-  },
+    }
+  }
 };
 </script>

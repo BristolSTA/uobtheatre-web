@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <button
-      class="focus:shadow-outline flex flex-row items-center mt-2 px-4 py-2 w-full text-left hover:text-gray-900 text-white font-semibold hover:bg-gray-200 bg-sta-gray-light bg-transparent rounded-lg focus:outline-none md:inline md:ml-4 md:mt-0 md:w-auto"
+      class="focus:shadow-outline flex flex-row items-center mt-2 px-4 py-2 w-full text-left hover:text-gray-900 text-white font-semibold hover:bg-gray-200 bg-sta-gray-light rounded-lg focus:outline-none md:inline md:ml-4 md:mt-0 md:w-auto"
       @click.stop="open = !open"
       @keypress.stop="open = !open"
     >
@@ -37,13 +37,13 @@
 export default {
   data() {
     return {
-      open: false,
+      open: false
     };
   },
   watch: {
     $route() {
       this.open = false;
-    },
+    }
   },
   mounted() {
     document.addEventListener('click', this.hideMenu);
@@ -54,7 +54,7 @@ export default {
   methods: {
     hideMenu() {
       this.open = false;
-    },
-  },
+    }
+  }
 };
 </script>

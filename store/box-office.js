@@ -6,7 +6,7 @@ const locationCookieKey = 'uobtheatre-boxoffice-location';
 export const state = () => ({
   locationId: null,
   terminalDevice: null,
-  inProgressBookingID: null,
+  inProgressBookingID: null
 });
 
 export const mutations = {
@@ -18,7 +18,7 @@ export const mutations = {
   },
   SET_IN_PROGRESS_BOOKING_ID(state, id) {
     state.inProgressBookingID = id;
-  },
+  }
 };
 
 export const actions = {
@@ -29,8 +29,8 @@ export const actions = {
     await this.app.apolloProvider.defaultClient.mutate({
       mutation: DeleteBookingMutation,
       variables: {
-        bookingId: context.state.inProgressBookingID,
-      },
+        bookingId: context.state.inProgressBookingID
+      }
     });
     context.commit('SET_IN_PROGRESS_BOOKING_ID', null);
   },
@@ -39,7 +39,7 @@ export const actions = {
       Cookie.remove(locationCookieKey);
     } else {
       Cookie.set(locationCookieKey, locationId, {
-        expires: temporary ? null : 365 * 1000,
+        expires: temporary ? null : 365 * 1000
       });
     }
     context.commit('SET_LOCATION', locationId);
@@ -49,10 +49,10 @@ export const actions = {
       return [];
     }
     const { data } = await this.app.apolloProvider.defaultClient.query({
-      query: require('@/graphql/queries/box-office/BoxOfficePaymentDevices.gql'),
+      query: require('@/graphql/queries/box-office/BoxOfficePaymentDevices.gql')
     });
     return data.paymentDevices.filter(
       (device) => device.locationId === context.state.locationId
     );
-  },
+  }
 };

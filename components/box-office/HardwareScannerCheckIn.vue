@@ -31,24 +31,24 @@ const checkedInDataState = () => {
     errors: null,
     booking: null,
     ticket: null,
-    scanData: {},
+    scanData: {}
   };
 };
 export default {
   components: {
     CheckInNotification,
-    HardwareScanner,
+    HardwareScanner
   },
   props: {
     performanceId: {
       required: true,
-      type: [Number, String],
-    },
+      type: [Number, String]
+    }
   },
   data() {
     return {
       scannedCode: null,
-      checkedInData: checkedInDataState(),
+      checkedInData: checkedInDataState()
     };
   },
   methods: {
@@ -63,8 +63,8 @@ export default {
         variables: {
           reference: bookingReference,
           performanceId: this.performanceId,
-          tickets: [{ ticketId }],
-        },
+          tickets: [{ ticketId }]
+        }
       });
       this.checkedInData.success = data.checkInBooking.success;
       this.checkedInData.booking = data.checkInBooking.booking;
@@ -81,7 +81,7 @@ export default {
         .filter((ticket) => !ticket.checkedIn)
         .map((ticket) => {
           return {
-            ticketId: ticket.id,
+            ticketId: ticket.id
           };
         });
       if (ticketIdsToCheckin.length) {
@@ -90,22 +90,22 @@ export default {
           variables: {
             reference: this.checkedInData.booking.reference,
             performanceId: this.performanceId,
-            tickets: ticketIdsToCheckin,
-          },
+            tickets: ticketIdsToCheckin
+          }
         });
 
         this.checkedInData.booking = data.checkInBooking.booking;
       }
 
       successToast.fire({
-        title: 'All Booking Tickets Checked In',
+        title: 'All Booking Tickets Checked In'
       });
 
       this.$refs.scanInput.focus();
     },
     closeNotificaton() {
       this.checkedInData = checkedInDataState();
-    },
-  },
+    }
+  }
 };
 </script>

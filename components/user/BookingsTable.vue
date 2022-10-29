@@ -48,12 +48,12 @@ export default {
   props: {
     bookings: {
       required: true,
-      type: Array,
+      type: Array
     },
     canLoadMore: {
       default: false,
-      type: Boolean,
-    },
-  },
+      type: Boolean
+    }
+  }
 };
 </script>

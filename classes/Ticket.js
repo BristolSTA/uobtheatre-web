@@ -33,7 +33,7 @@ export default class {
     const result = JSON.parse(atob(rawQRCode));
     return {
       bookingReference: result[0],
-      ticketId: result[1],
+      ticketId: result[1]
     };
   }
 
@@ -85,7 +85,7 @@ export default class {
   get apiData() {
     const ticketData = {
       seatGroupId: this.seatGroup.id,
-      concessionTypeId: this.concessionType.id,
+      concessionTypeId: this.concessionType.id
     };
     if (this.id) {
       ticketData.id = this.id;

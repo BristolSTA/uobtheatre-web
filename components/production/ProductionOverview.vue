@@ -93,14 +93,14 @@ export default {
     TipTapOutput,
     Modal,
     ContentWarningsDisplay,
-    ProductionPosterImage,
+    ProductionPosterImage
   },
   props: {
-    production: { required: true, type: Object },
+    production: { required: true, type: Object }
   },
   data() {
     return {
-      showContentWarningsDetail: false,
+      showContentWarningsDetail: false
     };
   },
   computed: {
@@ -125,7 +125,7 @@ export default {
       return !!this.production.performances.edges.find(
         (edge) => edge.node.isInperson
       );
-    },
-  },
+    }
+  }
 };
 </script>

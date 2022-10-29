@@ -1,12 +1,12 @@
 <template>
-  <auth-page-template>
+  <AuthPageTemplate>
     <div
       class="w-100 relative p-6 text-center text-white bg-sta-gray shadow-2xl"
     >
       <template v-if="!error">
         <h1 class="text-h3">Activating your account...</h1>
         <div>
-          <loading-icon size-class="text-h1" />
+          <UiLoadingIcon size-class="text-h1" />
         </div>
       </template>
       <template v-else>
@@ -15,41 +15,42 @@
         <p>This activation has either expired or doesn't exist!</p>
       </template>
     </div>
-  </auth-page-template>
+  </AuthPageTemplate>
 </template>
-<script>
-import { authService } from '@/services';
-import { getValidationErrors, swalToast } from '@/utils';
+<script setup lang="ts">
+import { Ref } from 'vue';
+import { getValidationErrors } from '~/utils/api';
+import { swalToast } from '~/utils/alerts';
 
-import AuthPageTemplate from '@/components/auth/AuthPageTemplate.vue';
-import LoadingIcon from '@/components/ui/LoadingIcon.vue';
+import { useStore } from '~~/store/auth';
+import Errors from '~~/classes/Errors';
 
-export default {
-  components: { AuthPageTemplate, LoadingIcon },
-  middleware: 'not-authed',
-  data() {
-    return {
-      error: false,
-    };
-  },
-  head: {
-    title: 'Verify Account',
-  },
-  async mounted() {
-    try {
-      await authService.activateAccount(this, {
-        token: this.$route.params.token,
-      });
-      swalToast.fire({
-        icon: 'success',
-        position: 'bottom-end',
-        title: 'Account Verified',
-        text: 'You may now login',
-      });
-      return this.$router.push('/login');
-    } catch (e) {
-      this.error = getValidationErrors(e);
-    }
-  },
-};
+definePageMeta({
+  middleware: 'not-authed'
+});
+
+useHead({
+  title: 'Active your account'
+});
+
+const errors: Ref<Errors> = ref(null);
+
+onMounted(async () => {
+  const authStore = useStore();
+  const token = useRoute().params.tokens;
+
+  if (Array.isArray(token)) return;
+  try {
+    await authStore.activateAccount(token);
+    swalToast.fire({
+      icon: 'success',
+      position: 'bottom-end',
+      title: 'Account Verified',
+      text: 'You may now login'
+    });
+    return useRouter().push('/login');
+  } catch (e) {
+    errors.value = getValidationErrors(e);
+  }
+});
 </script>

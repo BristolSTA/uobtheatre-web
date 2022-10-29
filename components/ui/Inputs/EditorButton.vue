@@ -4,7 +4,7 @@
     :class="[
       isActive
         ? 'text-sta-orange'
-        : 'text-sta-gray-dark hover:text-sta-orange-dark',
+        : 'text-sta-gray-dark hover:text-sta-orange-dark'
     ]"
     @click="$emit('click', editor.chain())"
   >
@@ -18,16 +18,16 @@ export default {
   props: {
     editor: {
       required: true,
-      type: Object,
+      type: Object
     },
     activeKey: {
       default: null,
-      type: [String, Array],
+      type: [String, Array]
     },
     icon: {
       default: null,
-      type: String,
-    },
+      type: String
+    }
   },
   computed: {
     isActive() {
@@ -39,7 +39,7 @@ export default {
         return this.editor.isActive(...this.activeKey);
       }
       return this.editor.isActive(this.activeKey);
-    },
-  },
+    }
+  }
 };
 </script>

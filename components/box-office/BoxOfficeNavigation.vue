@@ -21,16 +21,16 @@ export default {
   props: {
     performance: {
       required: true,
-      type: Object,
+      type: Object
     },
     showHome: {
       default: true,
-      type: Boolean,
+      type: Boolean
     },
     compact: {
       default: false,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
   data() {
     return {
@@ -38,19 +38,19 @@ export default {
         {
           name: 'Check or Collect Tickets',
           icon: 'user-check',
-          path: `/box-office/${this.performance.id}/collect`,
+          path: `/box-office/${this.performance.id}/collect`
         },
         {
           name: 'Sell Tickets',
           icon: 'cash-register',
-          path: `/box-office/${this.performance.id}/sell`,
+          path: `/box-office/${this.performance.id}/sell`
         },
         {
           name: 'View Bookings',
           icon: 'clipboard-list',
-          path: `/box-office/${this.performance.id}/bookings`,
-        },
-      ],
+          path: `/box-office/${this.performance.id}/bookings`
+        }
+      ]
     };
   },
   computed: {
@@ -60,13 +60,13 @@ export default {
         items.push({
           name: 'Dashboard',
           icon: 'home',
-          path: `/box-office/${this.performance.id}`,
+          path: `/box-office/${this.performance.id}`
         });
       }
 
       items.push(...this.navItems);
       return items;
-    },
-  },
+    }
+  }
 };
 </script>

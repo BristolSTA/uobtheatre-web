@@ -33,17 +33,17 @@ export default {
   props: {
     buttonText: {
       default: 'Return Home',
-      type: String,
+      type: String
     },
     buttonTo: {
       default: '/',
-      type: String,
+      type: String
     },
     error: {
       required: false,
       type: Object,
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   computed: {
     message() {
@@ -54,7 +54,7 @@ export default {
         return '401 - Unauthorized';
       }
       return 'There was an issue.';
-    },
-  },
+    }
+  }
 };
 </script>

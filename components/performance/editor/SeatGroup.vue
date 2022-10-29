@@ -28,16 +28,16 @@ export default {
   props: {
     value: {
       required: true,
-      type: Object,
+      type: Object
     },
     removable: {
       default: false,
-      type: Boolean,
+      type: Boolean
     },
     capacityOverride: {
       default: null,
-      type: Number,
-    },
-  },
+      type: Number
+    }
+  }
 };
 </script>

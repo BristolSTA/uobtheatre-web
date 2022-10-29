@@ -14,27 +14,27 @@
 </template>
 
 <script>
-import LoadingIcon from './LoadingIcon.vue';
+import LoadingIcon from './UiLoadingIcon.vue';
 export default {
   components: { LoadingIcon },
   props: {
     loading: {
       default: false,
-      type: Boolean,
+      type: Boolean
     },
     hideContentWhenLoading: {
       default: false,
-      type: Boolean,
+      type: Boolean
     },
     loaderIconSize: {
       default: '',
-      type: String,
-    },
+      type: String
+    }
   },
   computed: {
     showContent() {
       return !this.loading || !this.hideContentWhenLoading;
-    },
-  },
+    }
+  }
 };
 </script>
