@@ -14,7 +14,7 @@
         <button class="md:hidden" @click="showSidebar = true">
           <font-awesome-icon icon="caret-square-right" class="fa-2x" />
         </button>
-        <nuxt-child />
+        <NuxtPage />
       </div>
     </div>
   </div>

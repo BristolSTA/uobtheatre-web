@@ -52,7 +52,7 @@ export default {
       return this.crumbs || (this.useAuto ? this.routeCrumbs : []);
     },
     routeCrumbs() {
-      const fullPath = this.$route.fullPath.split('?')[0];
+      const fullPath = useRoute().fullPath.split('?')[0];
       const params = fullPath.startsWith('/')
         ? fullPath.substring(1).split('/')
         : fullPath.split('/');
@@ -60,7 +60,7 @@ export default {
       let path = '';
       params.forEach((param) => {
         path = `${path}/${param}`;
-        const match = this.$router.match(path);
+        const match = useRouter().resolve(path);
         if (match.name !== null && !param.endsWith('=')) {
           crumbs.push({
             title: startCase(param.replace(/-/g, ' ').toLowerCase()),

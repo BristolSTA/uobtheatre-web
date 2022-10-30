@@ -1,5 +1,5 @@
 <template>
-  <admin-page :title="production.name">
+  <admin-page :title="production?.name">
     <template #toolbar>
       <sta-button
         colour="green"
@@ -98,7 +98,7 @@
           "
           empty-text="This production currently has no performances"
           :max-per-page="10"
-          :loading="$apollo.queries.performancesData.loading"
+          :loading="$apollo.queries.performancesData?.loading"
           :page-info="performancesData ? performancesData.pageInfo : {}"
           v-model:offset="performancesOffset"
         >
@@ -125,10 +125,10 @@
                 </badge>
               </table-row-item>
               <table-row-item>
-                {{ performance.start | dateFormat('EEEE dd MMMM y') }}
+                {{ dateFormat(performance.start, 'EEEE dd MMMM y') }}
               </table-row-item>
               <table-row-item>
-                {{ performance.doorsOpen | dateFormat('HH:mm ZZZZ') }}
+                {{ dateFormat(performance.doorsOpen, 'HH:mm ZZZZ') }}
                 <span class="text-sm">
                   ({{ humanDuration(performance.durationMins)
                   }}<template v-if="performance.intervalDurationMins">
@@ -194,10 +194,10 @@ import TableRow from '@/components/ui/Tables/TableRow.vue';
 import Badge from '@/components/ui/Badge.vue';
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import { successToast, swal } from '~~/utils/alerts';
-import { humanDuration } from '~~/utils/datetime';
+import { humanDuration, dateFormat } from '~~/utils/datetime';
 import { SetProductionStatusDocument } from '@/graphql/codegen/operations';
 
-export default {
+export default defineNuxtComponent({
   components: {
     AdminPage,
     StaButton,
@@ -211,17 +211,18 @@ export default {
     TableRow,
     Badge
   },
-  async asyncData({ params, error, app }) {
+  async asyncData() {
     // Execute query
-    const { data } = await app.apolloProvider.defaultClient.query({
+    console.log('Here');
+    const { data } = await useAsyncQuery({
       query: AdminProductionShowQuery,
       variables: {
-        slug: params.productionSlug
+        slug: useRoute().params.productionSlug
       },
       fetchPolicy: 'no-cache'
     });
 
-    const production = data.production;
+    const production = data.value.production;
     if (!production) {
       return error({
         statusCode: 404,
@@ -245,7 +246,7 @@ export default {
       query: AdminPerformancesIndexQuery,
       variables() {
         return {
-          productionSlug: this.production.slug,
+          productionSlug: this.production?.slug,
           offset: this.performancesOffset
         };
       },
@@ -352,6 +353,7 @@ export default {
     }
   },
   methods: {
+    dateFormat,
     salesPercentage(performance) {
       return Math.floor(
         (100 * performance.ticketsBreakdown.totalTicketsSold) /
@@ -408,5 +410,5 @@ export default {
       successToast.fire({ title: 'Status updated' });
     }
   }
-};
+});
 </script>

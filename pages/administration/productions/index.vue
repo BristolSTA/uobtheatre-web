@@ -38,8 +38,8 @@
         :items="
           productionsData ? productionsData.edges.map((edge) => edge.node) : []
         "
+        :loading="$apollo.queries.productionsData?.loading"
         :max-per-page="10"
-        :loading="$apollo.queries.productionsData.loading"
         v-model:offset="productionsOffset"
         :page-info="productionsData ? productionsData.pageInfo : {}"
       >

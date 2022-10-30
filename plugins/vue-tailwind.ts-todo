@@ -1,0 +1,56 @@
+// import VueTailwind from 'vue-tailwind';
+
+// // https://www.vue-tailwind.com/docs
+
+// import {
+//   TInput,
+//   TTextarea,
+//   TSelect,
+//   TRadio,
+//   TCheckbox,
+//   TButton,
+//   TInputGroup,
+//   TCard,
+//   TAlert,
+//   TModal,
+//   TDropdown,
+//   TRichSelect,
+//   TPagination,
+//   TTag,
+//   TRadioGroup,
+//   TCheckboxGroup,
+//   TTable,
+//   TDatepicker,
+//   TToggle,
+//   TDialog
+// } from 'vue-tailwind/dist/components';
+
+// const settings = {
+//   TInput,
+//   TTextarea,
+//   TSelect,
+//   TRadio,
+//   TCheckbox,
+//   TButton,
+//   TInputGroup,
+//   TCard,
+//   TAlert,
+//   TModal,
+//   TDropdown,
+//   TRichSelect,
+//   TPagination,
+//   TTag,
+//   TRadioGroup,
+//   TCheckboxGroup,
+//   TTable,
+//   TDatepicker,
+//   TToggle,
+//   TDialog
+// };
+
+// // Add the font-awesome-icon component into nuxt
+// export default defineNuxtPlugin((nuxtApp) => {
+//   nuxtApp.vueApp.use(VueTailwind, settings);
+// });
+
+//TODO: Vue-tailwind doesn't seem to support Vue 3 - https://github.com/variantjs/vue
