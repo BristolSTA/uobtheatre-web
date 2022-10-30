@@ -262,7 +262,11 @@ import Errors from '@/classes/Errors';
 import imageUpload from '@/services/imageUploadService';
 import ErrorHelper from '@/components/ui/ErrorHelper.vue';
 import StaButton from '@/components/ui/StaButton.vue';
-import { swal } from '@/utils';
+import { swal } from '@/utils/alerts';
+import {
+  WarningsDocument,
+  AdminSocietiesIndexDocument
+} from '@/graphql/codegen/operations';
 
 export default {
   components: {
@@ -343,11 +347,11 @@ export default {
   },
   apollo: {
     availableWarnings: {
-      query: require('@/graphql/queries/Warnings.gql'),
+      query: WarningsDocument,
       update: (data) => data.warnings.edges.map((edge) => edge.node)
     },
     availableSocieties: {
-      query: require('@/graphql/queries/admin/societies/AdminSocietiesIndex.gql'),
+      query: AdminSocietiesIndexDocument,
       update: (data) => data.societies.edges.map((edge) => edge.node)
     }
   },

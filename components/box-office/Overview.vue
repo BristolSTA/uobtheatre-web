@@ -113,11 +113,11 @@ import { DateTime } from 'luxon';
 
 import Alert from '../ui/Alert.vue';
 import IconListItem from '@/components/ui/IconListItem.vue';
-import { humanDuration } from '@/utils';
+import { humanDuration } from '@/utils/datetime';
 import Clock from '@/components/ui/Clock.vue';
+import { BoxOfficePerformanceTicketBreakdownDocument } from '~~/graphql/codegen/operations';
 
 export default {
-  name: 'Overview',
   components: {
     IconListItem,
     Clock,
@@ -241,7 +241,7 @@ export default {
   },
   apollo: {
     ticketBreakdown: {
-      query: require('@/graphql/queries/box-office/BoxOfficePerformanceTicketBreakdown.gql'),
+      query: BoxOfficePerformanceTicketBreakdownDocument,
       variables() {
         return {
           id: this.performance.id

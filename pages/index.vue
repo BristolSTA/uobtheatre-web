@@ -54,7 +54,7 @@
           :class="[index % 2 == 0 ? 'md:text-right' : 'md:text-left']"
         >
           <NuxtLink :to="`/production/${production.slug}`">
-            <production-featured-image
+            <ProductionFeaturedImage
               :image-object="production.featuredImage"
               :alt="`${production.name} feature image`"
               class="inline-block"
@@ -113,7 +113,8 @@
 <script setup lang="ts">
 import take from 'lodash/take';
 import { useHomepageUpcomingProductionsQuery } from '@/graphql/codegen/operations';
-import { oneLiner, truncate, displayStartEnd } from '@/utils/lang';
+import { oneLiner, truncate } from '@/utils/lang';
+import { displayStartEnd } from '@/utils/datetime';
 
 // Set SEO data
 const appConfig = useAppConfig();

@@ -34,3 +34,22 @@ export function getValidationErrors(error, throwExp = true): Errors {
   }
   return error.errors;
 }
+
+export const performMutation = (apollo, options, mutationName) => {
+  return new Promise((resolve, reject) => {
+    apollo
+      .mutate(options)
+      .then(({ data }) => {
+        if (!data[mutationName].success) {
+          return reject(
+            new ValidationError(Errors.createFromAPI(data[mutationName].errors))
+          );
+        }
+        resolve(data);
+      })
+      .catch((e) => {
+        errorHandler(e);
+        reject(e);
+      });
+  });
+};

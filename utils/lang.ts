@@ -1,5 +1,3 @@
-import { DateTime } from 'luxon';
-
 /**
  * Cleans multi-line, HTML text into a simple string
  *
@@ -25,32 +23,16 @@ export function truncate(
   clamp: string = undefined
 ): string {
   clamp = clamp || '...';
-  const node = document.createElement('div');
-  node.innerHTML = text;
-  const content = node.textContent;
-  return content && content.length > length
-    ? content.slice(0, length) + clamp
-    : content;
+  return text.length < length ? text : text.substring(0, length) + clamp;
 }
 
 /**
- * Generates a start to end date string given a start and end date
+ * Joins a list together with commas, but uses "and" for the final pair
+ * e.g. The Winston Theatre, The Pegg Theatre and The Anson Rooms
  *
- * @param {string} start ISO format start datetime
- * @param {string} end ISO format end datetime
- * @param {string} format Luxon datetime format string (excluding year)
- * @returns {string} Formatted start to end datetime string
+ * @param {Array<string>} array List of strings to join
+ * @returns {string} Joined string
  */
-export function displayStartEnd(start, end, format): string {
-  start = DateTime.fromISO(start);
-  end = DateTime.fromISO(end);
-
-  let result = '';
-  if (start.month !== end.month || start.day !== end.day) {
-    result =
-      start.toFormat(start.year === end.year ? format : format + ' y') + ' - ';
-  }
-
-  result += `${end.toFormat(format + ' y')}`;
-  return result;
-}
+export const joinWithAnd = (array) => {
+  return array.join(', ').replace(/, ([^,]*)$/, ' and $1');
+};

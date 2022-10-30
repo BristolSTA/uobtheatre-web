@@ -280,10 +280,24 @@ import ConcessionType from './ConcessionType.vue';
 import PriceMatrix from './PriceMatrix.vue';
 import ErrorHelper from '@/components/ui/ErrorHelper.vue';
 import Errors from '@/classes/Errors';
-import { getValidationErrors, performMutation, swal } from '@/utils';
+import { getValidationErrors, performMutation } from '@/utils/api';
+import { swal } from '@/utils/alerts';
 import StaButton from '@/components/ui/StaButton.vue';
 import Alert from '@/components/ui/Alert.vue';
 import { singleDiscounts as singleDiscountsFn } from '@/utils/performance';
+
+import {
+  AdminPerformanceDetailDocument,
+  AdminPerformancesIndexDocument,
+  AdminVenueDetailedDocument,
+  ConcessionTypeMutationDocument,
+  DeleteDiscountMutationDocument,
+  DeletePerformanceSeatGroupMutationDocument,
+  DiscountMutationDocument,
+  DiscountRequirementMutationDocument,
+  PerformanceSeatGroupDocument,
+  VenuesDocument
+} from '@/graphql/codegen/operations';
 
 export default {
   components: {
@@ -368,11 +382,11 @@ export default {
   },
   apollo: {
     availableVenues: {
-      query: require('@/graphql/queries/Venues.gql'),
+      query: VenuesDocument,
       update: (data) => data.venues.edges.map((edge) => edge.node)
     },
     availableSeatGroups: {
-      query: require('@/graphql/queries/admin/venue/AdminVenueDetailed.gql'),
+      query: AdminVenueDetailedDocument,
       update: (data) => data.venue.seatGroups.edges.map((edge) => edge.node),
       variables() {
         return {
@@ -384,7 +398,7 @@ export default {
       }
     },
     otherPerformances: {
-      query: require('@/graphql/queries/admin/productions/AdminPerformancesIndex.gql'),
+      query: AdminPerformancesIndexDocument,
       update: (data) =>
         data.production.performances.edges.map((edge) => edge.node),
       variables() {
@@ -496,7 +510,7 @@ export default {
 
       // Load the details
       const { data } = await this.$apollo.query({
-        query: require('@/graphql/queries/admin/productions/AdminPerformanceDetail.gql'),
+        query: AdminPerformanceDetailDocument,
         variables: {
           productionSlug: this.production.slug,
           performanceId: value
@@ -556,7 +570,7 @@ export default {
             performMutation(
               this.$apollo,
               {
-                mutation: require('@/graphql/mutations/admin/performance/DeletePerformanceSeatGroup.gql'),
+                mutation: DeletePerformanceSeatGroupMutationDocument,
                 variables: {
                   id: currentId
                 }
@@ -580,7 +594,7 @@ export default {
           performMutation(
             this.$apollo,
             {
-              mutation: require('@/graphql/mutations/admin/performance/PerformanceSeatGroupMutation.gql'),
+              mutation: PerformanceSeatGroupDocument,
               variables: {
                 input
               }
@@ -600,7 +614,7 @@ export default {
               performMutation(
                 this.$apollo,
                 {
-                  mutation: require('@/graphql/mutations/admin/performance/DiscountMutation.gql'),
+                  mutation: DiscountMutationDocument,
                   variables: {
                     input: {
                       id: discount.id,
@@ -620,7 +634,7 @@ export default {
             performMutation(
               this.$apollo,
               {
-                mutation: require('@/graphql/mutations/admin/performance/DeleteDiscount.gql'),
+                mutation: DeleteDiscountMutationDocument,
                 variables: { id: discount.id }
               },
               'deleteDiscount'
@@ -649,7 +663,7 @@ export default {
                 performMutation(
                   this.$apollo,
                   {
-                    mutation: require('@/graphql/mutations/admin/performance/DiscountMutation.gql'),
+                    mutation: DiscountMutationDocument,
                     variables: {
                       input
                     }
@@ -672,7 +686,7 @@ export default {
                     performMutation(
                       this.$apollo,
                       {
-                        mutation: require('@/graphql/mutations/admin/performance/ConcessionTypeMutation.gql'),
+                        mutation: ConcessionTypeMutationDocument,
                         variables: {
                           input
                         }
@@ -696,7 +710,7 @@ export default {
                         performMutation(
                           this.$apollo,
                           {
-                            mutation: require('@/graphql/mutations/admin/performance/DiscountRequirementMutation.gql'),
+                            mutation: DiscountRequirementMutationDocument,
                             variables: {
                               input
                             }

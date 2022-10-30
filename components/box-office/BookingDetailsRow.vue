@@ -38,8 +38,8 @@
               <th class="pr-3 sm:pr-4">Ticket ID</th>
               <th class="text-center">Checked In?</th>
             </tr>
-            <template v-for="(seatGroup, i) in seatGroupList">
-              <tr :key="i" class="sm:hidden">
+            <template v-for="(seatGroup, i) in seatGroupList" :key="i">
+              <tr class="sm:hidden">
                 <td colspan="3" class="py-2">
                   <u>
                     <div class="text-center">

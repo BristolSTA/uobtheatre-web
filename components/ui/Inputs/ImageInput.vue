@@ -60,7 +60,7 @@
 
 <script>
 import ErrorHelper from '../ErrorHelper.vue';
-import { swal } from '@/utils';
+import { swal } from '@/utils/alerts';
 export default {
   components: { ErrorHelper },
   props: {

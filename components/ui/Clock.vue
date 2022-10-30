@@ -20,7 +20,7 @@ export default {
     this.updateDateTime();
     this.timer = setInterval(this.updateDateTime, 1000);
   },
-  beforeDestroy() {
+  beforeUnmount() {
     clearInterval(this.timer);
   },
   methods: {

@@ -101,7 +101,7 @@ import lo from 'lodash';
 
 import ProductionFeaturedImage from './ProductionFeaturedImage.vue';
 import IconListItem from '@/components/ui/IconListItem.vue';
-import { displayStartEnd } from '@/utils';
+import { displayStartEnd } from '@/utils/datetime';
 
 export default {
   name: 'ProductionBanner',

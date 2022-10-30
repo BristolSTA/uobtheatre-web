@@ -9,7 +9,7 @@
 
 <script>
 import LoadingIcon from './UiLoadingIcon.vue';
-import { isInViewport } from '@/utils';
+import { isInViewport } from '@/utils/misc';
 export default {
   components: { LoadingIcon },
   props: {
@@ -48,7 +48,7 @@ export default {
     window.addEventListener('scroll', this.handleScroll);
     this.runQuery();
   },
-  destroyed() {
+  unmounted() {
     window.removeEventListener('scroll', this.handleScroll);
   },
   methods: {
@@ -59,31 +59,33 @@ export default {
       defaultVariables[this.apolloAfterCursorVariableKey] = this.endCursor;
 
       const variables = Object.assign(defaultVariables, this.apolloVariables);
-      const result = await this.$apollo.query({
+
+      const client = useDefaultApolloClient();
+      const { data } = await client.query({
         query: this.apolloQuery,
         variables
       });
-      this.loading = false;
 
+      this.loading = false;
       // Find root query
-      const root = Object.keys(result.data)[0];
+      const root = Object.keys(data)[0];
 
       // Check for pageInfo
       if (
-        !result.data[root].pageInfo ||
-        result.data[root].pageInfo.endCursor === undefined ||
-        result.data[root].pageInfo.hasNextPage === undefined
+        !data[root].pageInfo ||
+        data[root].pageInfo.endCursor === undefined ||
+        data[root].pageInfo.hasNextPage === undefined
       ) {
         throw new Error(
           `endCursor or hasNextPage was not returned for the query "${root}"`
         );
       }
-      this.endCursor = result.data[root].pageInfo.hasNextPage
-        ? result.data[root].pageInfo.endCursor
+      this.endCursor = data[root].pageInfo.hasNextPage
+        ? data[root].pageInfo.endCursor
         : null;
 
       // Emit with the new data
-      this.$emit('newData', result.data[root]);
+      this.$emit('newData', data[root]);
 
       // Check if loader on screen
       if (this.hasMore && isInViewport(this.$refs['bottom-loader'])) {

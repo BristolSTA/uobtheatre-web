@@ -68,7 +68,7 @@
               <dropdown-item
                 title="Your Account"
                 subtitle="Edit your details"
-                icon="user-edit"
+                icon="user-pen"
                 route="/user"
                 @click="closeUserMenu"
               />
@@ -97,14 +97,14 @@
               <dropdown-item
                 title="Login"
                 subtitle="With an exisiting account"
-                icon="sign-in-alt"
+                icon="fa-right-to-bracket"
                 route="/login"
                 @click="closeUserMenu"
               />
               <dropdown-item
                 title="Register"
                 subtitle="Create a new account"
-                icon="user-edit"
+                icon="fa-solid fa-user-pen"
                 route="/signup"
                 @click="closeUserMenu"
               />

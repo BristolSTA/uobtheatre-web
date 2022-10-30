@@ -7,7 +7,7 @@
     @focusin="() => null"
     @focusout="() => null"
   >
-    <transition-group
+    <TransitionGroup
       tag="div"
       class="relative w-full overflow-hidden"
       :style="{ height: vheight + 'vh' }"
@@ -25,7 +25,7 @@
       >
         <slot :carousel-item="carouselItems[index]" />
       </div>
-    </transition-group>
+    </TransitionGroup>
     <template v-if="carouselLength > 1">
       <div class="absolute flex justify-center w-full bottom-2">
         <ul class="flex items-center p-0 space-x-3 whitespace-nowrap">
@@ -111,7 +111,7 @@ export default {
   mounted() {
     this.enableAutoPlay();
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.disableAutoPlay();
   },
   methods: {
@@ -168,7 +168,7 @@ export default {
 };
 </script>
 
-<style scoped lang="postcss">
+<style scoped>
 .slide-enter-active {
   transition: opacity 0.8s cubic-bezier(0.5, 0, 0.5, 1);
 }
@@ -177,7 +177,7 @@ export default {
   transition: opacity 0.8s cubic-bezier(0.5, 0, 0.5, 1) 0.9s;
 }
 
-.slide-enter,
+.slide-enter-from,
 .slide-leave-to {
   opacity: 0;
 }

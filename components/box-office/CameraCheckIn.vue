@@ -1,6 +1,6 @@
 <template>
   <div class="fixed bottom-0 left-0 right-0 top-0 md:static">
-    <camera-scanner
+    <BoxOfficeCameraScanner
       :on="!cameraOff"
       class="bg-gray-800"
       @invalidCode="onInvalidCode"
@@ -30,8 +30,7 @@
 <script>
 import CheckInNotification from './CheckInNotification.vue';
 import InvalidCodeNotification from './InvalidCodeNotification.vue';
-import CameraScanner from './CameraScanner.vue';
-import { successToast } from '@/utils';
+import { successToast } from '@/utils/alerts';
 import CheckInScan from '@/graphql/mutations/box-office/CheckInTickets.gql';
 
 const checkedInDataState = () => {
@@ -47,8 +46,7 @@ const checkedInDataState = () => {
 export default {
   components: {
     CheckInNotification,
-    InvalidCodeNotification,
-    CameraScanner
+    InvalidCodeNotification
   },
 
   props: {

@@ -9,4 +9,8 @@ export default defineNuxtPlugin((nuxtApp) => {
     sampleRate: 1,
     tracesSampleRate: 1
   });
+
+  nuxtApp.hook('apollo:error', (error) => {
+    Sentry.captureException(error);
+  });
 });

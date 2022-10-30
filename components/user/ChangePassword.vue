@@ -53,7 +53,8 @@ import gql from 'graphql-tag';
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 import NonFieldError from '~~/components/ui/UiNonFieldError.vue';
 import TextInput from '~~/components/ui/UiTextInput.vue';
-import { getValidationErrors, performMutation, swalToast } from '@/utils';
+import { getValidationErrors, performMutation } from '@/utils/api';
+import { swalToast } from '@/utils/alerts';
 export default {
   components: {
     LoadingContainer,

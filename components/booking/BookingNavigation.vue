@@ -19,7 +19,7 @@
 import Booking from '@/classes/Booking';
 import Stages, {
   getStageIndex
-} from '@/pages/production/_slug/book/-bookingStages';
+} from '@/pages/production/[slug]/book/-bookingStages';
 export default {
   name: 'BookingNavigation',
   props: {

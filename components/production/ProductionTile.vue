@@ -22,7 +22,7 @@
 
 <script>
 import ProductionFeaturedImage from './ProductionFeaturedImage.vue';
-import { displayStartEnd } from '@/utils';
+import { displayStartEnd } from '@/utils/datetime';
 export default {
   components: { ProductionFeaturedImage },
   props: {

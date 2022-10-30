@@ -17,13 +17,11 @@ import {
   faMapMarkedAlt,
   faMoneyCheckAlt,
   faMoneyBill,
-  faSignInAlt,
   faTheaterMasks,
   faTicketAlt,
   faHome,
   faTimesCircle,
   faCheckCircle,
-  faUserEdit,
   faEdit,
   faClipboardList,
   faCashRegister,
@@ -54,7 +52,9 @@ import {
   faImage,
   faTrash,
   faMobileAlt,
-  faFileExport
+  faFileExport,
+  faRightToBracket,
+  faUserPen
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
@@ -79,13 +79,13 @@ export default {
     faMapMarkedAlt,
     faMoneyCheckAlt,
     faMoneyBill,
-    faSignInAlt,
+    faRightToBracket,
     faTheaterMasks,
     faTicketAlt,
     faHome,
     faTimesCircle,
     faCheckCircle,
-    faUserEdit,
+    faUserPen,
     faEdit,
     faClipboardList,
     faCashRegister,

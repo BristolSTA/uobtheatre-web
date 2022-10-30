@@ -43,7 +43,7 @@ export default {
     this.calculateRemainingSeconds();
     this.intervalTimer = setInterval(this.calculateRemainingSeconds, 500);
   },
-  beforeDestroy() {
+  beforeUnmount() {
     clearInterval(this.intervalTimer);
   },
   methods: {

@@ -23,7 +23,7 @@
 import CheckInNotification from './CheckInNotification.vue';
 import HardwareScanner from './HardwareScanner.vue';
 import CheckInScan from '@/graphql/mutations/box-office/CheckInTickets.gql';
-import { successToast } from '@/utils';
+import { successToast } from '@/utils/alerts';
 
 const checkedInDataState = () => {
   return {

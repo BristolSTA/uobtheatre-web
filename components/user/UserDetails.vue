@@ -118,7 +118,8 @@ import NonFieldError from '../ui/UiNonFieldError.vue';
 import ChangeEmail from './ChangeEmail.vue';
 import ChangePassword from './ChangePassword.vue';
 import TextInput from '~~/components/ui/UiTextInput.vue';
-import { swalToast, performMutation, getValidationErrors } from '@/utils';
+import { swalToast } from '@/utils/alerts';
+import { performMutation, getValidationErrors } from '@/utils/api';
 export default {
   name: 'UserDetails',
   components: {

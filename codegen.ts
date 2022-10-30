@@ -5,7 +5,7 @@ require('dotenv').config();
 const config: CodegenConfig = {
   overwrite: true,
   schema: publicConfig().api.graphqlEndpointInternal,
-  documents: './graphql/**/*.gql',
+  documents: './graphql/**/*.(gql|graphql)',
   generates: {
     './graphql/codegen/operations.ts': {
       // preset: 'client',

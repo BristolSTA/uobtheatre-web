@@ -49,7 +49,7 @@
 
 <script>
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
-import { silentErrorHandler } from '@/utils';
+import { silentErrorHandler } from '@/utils/misc';
 
 export default {
   components: { LoadingContainer },
@@ -96,7 +96,7 @@ export default {
     checkToInit();
     this.timer = setInterval(checkToInit, 100);
   },
-  beforeDestroy() {
+  beforeUnmount() {
     clearInterval(this.timer);
   },
   methods: {

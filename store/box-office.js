@@ -1,8 +1,9 @@
 import Cookie from 'js-cookie';
 import DeleteBookingMutation from '@/graphql/mutations/booking/DeleteBooking.gql';
+import { BoxOfficePaymentDevicesDocument } from '~~/graphql/codegen/operations';
 
 const locationCookieKey = 'uobtheatre-boxoffice-location';
-
+// TODO: Convert to Pinia
 export const state = () => ({
   locationId: null,
   terminalDevice: null,
@@ -49,7 +50,7 @@ export const actions = {
       return [];
     }
     const { data } = await this.app.apolloProvider.defaultClient.query({
-      query: require('@/graphql/queries/box-office/BoxOfficePaymentDevices.gql')
+      query: BoxOfficePaymentDevicesDocument
     });
     return data.paymentDevices.filter(
       (device) => device.locationId === context.state.locationId

@@ -34,7 +34,7 @@ import { DateTime } from 'luxon';
 import OverviewBox from '../../ui/Card.vue';
 import IconListItem from '@/components/ui/IconListItem.vue';
 
-import { humanDuration, humanDayTime } from '@/utils';
+import { humanDuration, humanDayTime } from '@/utils/datetime';
 
 export default {
   name: 'PerformanceOverviewBox',

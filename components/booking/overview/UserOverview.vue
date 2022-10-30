@@ -1,7 +1,7 @@
 <template>
   <overview-box>
     <template #title>
-      <font-awesome-icon icon="user-edit" class="mr-2" />
+      <font-awesome-icon icon="user-pen" class="mr-2" />
       Your Details
     </template>
     <template #subtitle>

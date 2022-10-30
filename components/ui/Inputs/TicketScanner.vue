@@ -7,7 +7,7 @@
         @scanned="$emit('scanned', $event)"
         @close="showCamera = false"
       />
-      <camera-scanner
+      <BoxOfficeCameraScanner
         v-else
         @scanned="$emit('scanned', $event)"
         @invalidCode="$emit('invalidCode')"
@@ -53,13 +53,11 @@
 <script>
 import CameraCheckIn from '@/components/box-office/CameraCheckIn.vue';
 import HardwareScannerCheckIn from '@/components/box-office/HardwareScannerCheckIn.vue';
-import CameraScanner from '@/components/box-office/CameraScanner.vue';
 import HardwareScanner from '@/components/box-office/HardwareScanner.vue';
 export default {
   components: {
     CameraCheckIn,
     HardwareScannerCheckIn,
-    CameraScanner,
     HardwareScanner
   },
   props: {

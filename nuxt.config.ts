@@ -1,5 +1,6 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 import publicConfig from './config.public';
+// import eslintPlugin from 'vite-plugin-eslint';
 export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss', '@nuxtjs/apollo', '@pinia/nuxt'],
 
@@ -64,14 +65,26 @@ export default defineNuxtConfig({
   tailwindcss: {
     exposeConfig: true
   },
-  // vite: {
-  //   plugins: [eslintPlugin()]
-  // },
+
+  vite: {
+    // plugins: [graphqlPlugin()]
+    // eslintPlugin(),
+  },
+
+  build: {
+    transpile: [
+      '@fortawesome/vue-fontawesome',
+      '@fortawesome/fontawesome-svg-core',
+      '@fortawesome/free-regular-svg-icons',
+      '@fortawesome/free-brands-svg-icons'
+    ]
+  },
 
   apollo: {
     clients: {
       default: {
-        httpEndpoint: publicConfig().api.graphqlEndpoint,
+        httpEndpoint: publicConfig().api.graphqlEndpointInternal,
+        browserHttpEndpoint: publicConfig().api.graphqlEndpoint,
         authType: 'JWT',
         tokenName: publicConfig().auth.cookieName
       }

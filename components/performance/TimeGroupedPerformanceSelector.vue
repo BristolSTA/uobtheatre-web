@@ -28,7 +28,7 @@
 <script>
 import lo from 'lodash';
 import { DateTime } from 'luxon';
-import { humanDayTime } from '@/utils';
+import { humanDayTime } from '@/utils/datetime';
 import PerformanceOverview from '@/components/performance/PerformanceOverview.vue';
 export default {
   components: { PerformanceOverview },
