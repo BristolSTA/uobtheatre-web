@@ -40,7 +40,7 @@ import { performMutation } from '~~/utils/api';
 import TicketsMatrix from '@/classes/TicketsMatrix';
 import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue';
 
-export default {
+export default defineNuxtComponent({
   components: {
     TicketsEditor
   },
@@ -127,5 +127,5 @@ export default {
       this.$router.push(`/box-office/${this.performance.id}`);
     }
   }
-};
+});
 </script>

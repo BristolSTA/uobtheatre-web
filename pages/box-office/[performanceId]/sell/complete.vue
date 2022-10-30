@@ -55,7 +55,7 @@ import UnCheckInTickets from '@/graphql/mutations/box-office/UnCheckInTickets.gq
 import { performMutation } from '~~/utils/api';
 import { successToast, errorToast } from '~~/utils/alerts';
 import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue';
-export default {
+export default defineNuxtComponent({
   components: { TicketsOverview, PaymentOverview, BoxOfficeNavigation },
   props: {
     booking: {
@@ -130,5 +130,5 @@ export default {
       this.$router.push(`/box-office/${this.booking.performance.id}`);
     }
   }
-};
+});
 </script>

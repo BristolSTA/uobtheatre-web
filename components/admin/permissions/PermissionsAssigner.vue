@@ -106,7 +106,7 @@ import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
 import TableRow from '@/components/ui/Tables/TableRow.vue';
 import StaButton from '@/components/ui/StaButton.vue';
 import FormLabel from '@/components/ui/FormLabel.vue';
-export default {
+export default defineNuxtComponent({
   components: {
     SafeTable,
     BooleanInput,
@@ -157,5 +157,5 @@ export default {
       this.$emit('remove', user);
     }
   }
-};
+});
 </script>

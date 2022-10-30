@@ -29,7 +29,7 @@
 import SocietyTile from '@/components/society/SocietyTile.vue';
 import InfiniteScroll from '@/components/ui/InfiniteScroll.vue';
 import { AllSocietiesDocument } from '~~/graphql/codegen/operations';
-export default {
+export default defineNuxtComponent({
   components: { SocietyTile, InfiniteScroll },
   data() {
     return {
@@ -48,5 +48,5 @@ export default {
       this.societies.push(...data.edges.map((edge) => edge.node));
     }
   }
-};
+});
 </script>

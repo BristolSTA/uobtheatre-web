@@ -120,7 +120,7 @@ import ChangePassword from './ChangePassword.vue';
 import TextInput from '~~/components/ui/UiTextInput.vue';
 import { swalToast } from '@/utils/alerts';
 import { performMutation, getValidationErrors } from '@/utils/api';
-export default {
+export default defineNuxtComponent({
   name: 'UserDetails',
   components: {
     TextInput,
@@ -186,5 +186,5 @@ export default {
       this.loading = false;
     }
   }
-};
+});
 </script>

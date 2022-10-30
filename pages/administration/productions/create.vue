@@ -29,7 +29,7 @@ import NonFieldError from '~~/components/ui/UiNonFieldError.vue';
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import { loadingSwal, successToast } from '~~/utils/alerts';
 import { ProductionMutationDocument } from '~~/graphql/codegen/operations';
-export default {
+export default defineNuxtComponent({
   components: {
     ProductionEditor,
     AdminPage,
@@ -68,5 +68,5 @@ export default {
       Swal.close();
     }
   }
-};
+});
 </script>

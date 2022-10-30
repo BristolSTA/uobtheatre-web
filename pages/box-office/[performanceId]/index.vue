@@ -14,7 +14,7 @@
 import Overview from '@/components/box-office/Overview.vue';
 import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue';
 
-export default {
+export default defineNuxtComponent({
   components: { Overview, BoxOfficeNavigation },
   props: {
     performance: {
@@ -43,5 +43,5 @@ export default {
       ];
     }
   }
-};
+});
 </script>

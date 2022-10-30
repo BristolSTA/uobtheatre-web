@@ -24,7 +24,7 @@ import NonFieldError from '~~/components/ui/UiNonFieldError.vue';
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import { loadingSwal, successToast } from '~~/utils/alerts';
 import { ProductionMutationDocument } from '~~/graphql/codegen/operations';
-export default {
+export default defineNuxtComponent({
   components: { ProductionEditor, AdminPage, StaButton, NonFieldError },
   async asyncData({ params, error, app }) {
     // Execute query
@@ -91,5 +91,5 @@ export default {
       }
     }
   }
-};
+});
 </script>

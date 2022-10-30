@@ -16,7 +16,7 @@
 
 <script>
 import MenuTile from '../ui/MenuTile.vue';
-export default {
+export default defineNuxtComponent({
   components: { MenuTile },
   props: {
     performance: {
@@ -68,5 +68,5 @@ export default {
       return items;
     }
   }
-};
+});
 </script>

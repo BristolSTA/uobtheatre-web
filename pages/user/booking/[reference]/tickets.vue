@@ -26,7 +26,7 @@
 import TicketClass from '@/classes/Ticket';
 import Ticket from '@/components/booking/Ticket.vue';
 import { PerformanceByIdDocument } from '~~/graphql/codegen/operations';
-export default {
+export default defineNuxtComponent({
   components: { Ticket },
   async asyncData({ app, params, query, redirect }) {
     if (!query.ticketID || !query.performanceID) {
@@ -52,5 +52,5 @@ export default {
       tickets
     };
   }
-};
+});
 </script>

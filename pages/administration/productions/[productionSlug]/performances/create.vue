@@ -30,7 +30,7 @@ import {
 
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import { loadingSwal, successToast, errorToast } from '~~/utils/alerts';
-export default {
+export default defineNuxtComponent({
   components: { AdminPage, PerformanceEditor, StaButton, NonFieldError },
   async asyncData({ params, error, app }) {
     // Execute query
@@ -98,5 +98,5 @@ export default {
       }
     }
   }
-};
+});
 </script>

@@ -32,7 +32,7 @@ import {
   AdminProductionPermissionsDocument,
   ProductionPermissionsMutationsDocument
 } from '~~/graphql/codegen/operations';
-export default {
+export default defineNuxtComponent({
   components: { AdminPage, PermissionsAssigner, StaButton, AllErrorsDisplay },
   async asyncData({ params, error, app }) {
     // Execute query
@@ -126,5 +126,5 @@ export default {
       }
     }
   }
-};
+});
 </script>

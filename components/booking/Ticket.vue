@@ -49,7 +49,7 @@ import QrcodeVue from 'qrcode.vue';
 
 import Ticket from '@/classes/Ticket';
 
-export default {
+export default defineNuxtComponent({
   name: 'Ticket',
   components: {
     QrcodeVue
@@ -79,5 +79,5 @@ export default {
         : null;
     }
   }
-};
+});
 </script>

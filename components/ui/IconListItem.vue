@@ -10,7 +10,7 @@
 </template>
 
 <script>
-export default {
+export default defineNuxtComponent({
   name: 'IconListItem',
   props: {
     icon: {
@@ -19,5 +19,5 @@ export default {
       default: null
     }
   }
-};
+});
 </script>

@@ -24,7 +24,7 @@ import FullPerformanceAndTicketOptions from '@/graphql/queries/FullPerformanceAn
 import BoxOfficePerformanceBooking from '@/graphql/queries/box-office/BoxOfficePerformanceBooking.gql';
 import Booking from '@/classes/Booking';
 import Overview from '@/components/box-office/Overview.vue';
-export default {
+export default defineNuxtComponent({
   components: { Overview },
   middleware: 'authed',
   async asyncData({ params, app, error }) {
@@ -124,5 +124,5 @@ export default {
       this.$router.push(`/box-office/${this.performance.id}/sell/pay`);
     }
   }
-};
+});
 </script>

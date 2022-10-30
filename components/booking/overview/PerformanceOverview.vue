@@ -36,7 +36,7 @@ import IconListItem from '@/components/ui/IconListItem.vue';
 
 import { humanDuration, humanDayTime } from '@/utils/datetime';
 
-export default {
+export default defineNuxtComponent({
   name: 'PerformanceOverviewBox',
   components: { OverviewBox, IconListItem },
   props: {
@@ -58,5 +58,5 @@ export default {
     humanDuration,
     humanDayTime
   }
-};
+});
 </script>

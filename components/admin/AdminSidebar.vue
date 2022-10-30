@@ -19,12 +19,12 @@
 <script>
 import Sidebar from '../ui/Nav/Sidebar.vue';
 import SidebarItem from '../ui/Nav/SidebarItem.vue';
-export default {
+export default defineNuxtComponent({
   components: { Sidebar, SidebarItem },
   watch: {
     $route() {
       this.$emit('close');
     }
   }
-};
+});
 </script>

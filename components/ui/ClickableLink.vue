@@ -13,7 +13,7 @@
 </template>
 
 <script>
-export default {
+export default defineNuxtComponent({
   name: 'ClickableLink',
   props: {
     disabled: {
@@ -21,5 +21,5 @@ export default {
       type: Boolean
     }
   }
-};
+});
 </script>

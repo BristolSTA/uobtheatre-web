@@ -82,7 +82,7 @@ import TableRow from '@/components/ui/Tables/TableRow.vue';
 import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
 import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
 import { AdminBookingLookupDocument } from '@/graphql/codegen/operations';
-export default {
+export default defineNuxtComponent({
   components: {
     TicketScanner,
     AdminPage,
@@ -126,5 +126,5 @@ export default {
       this.bookingInfo = data.bookings.edges[0].node;
     }
   }
-};
+});
 </script>

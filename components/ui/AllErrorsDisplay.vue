@@ -14,7 +14,7 @@
 
 <script>
 import Errors from '@/classes/Errors';
-export default {
+export default defineNuxtComponent({
   props: {
     errors: {
       required: false,
@@ -22,5 +22,5 @@ export default {
       type: Errors
     }
   }
-};
+});
 </script>

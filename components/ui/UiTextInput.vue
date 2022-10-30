@@ -29,7 +29,7 @@ import lo from 'lodash';
 import ErrorHelper from './ErrorHelper.vue';
 import Errors from '@/classes/Errors';
 
-export default {
+export default defineNuxtComponent({
   name: 'TextInput',
   components: { ErrorHelper },
   inheritAttrs: false,
@@ -93,5 +93,5 @@ export default {
       this.$refs.input.focus();
     }
   }
-};
+});
 </script>

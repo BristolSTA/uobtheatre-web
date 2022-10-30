@@ -43,7 +43,7 @@
 </template>
 
 <script>
-export default {
+export default defineNuxtComponent({
   name: 'BookingsTable',
   props: {
     bookings: {
@@ -55,5 +55,5 @@ export default {
       type: Boolean
     }
   }
-};
+});
 </script>

@@ -140,7 +140,7 @@ const enabledMethods = {
   squarePOS: true
 };
 
-export default {
+export default defineNuxtComponent({
   components: {
     TextInput,
     BookingPriceOverview,
@@ -327,5 +327,5 @@ export default {
       );
     }
   }
-};
+});
 </script>

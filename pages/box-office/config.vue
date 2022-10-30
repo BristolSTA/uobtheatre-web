@@ -24,7 +24,7 @@
 import AdminPage from '@/components/admin/AdminPage.vue';
 import FormLabel from '@/components/ui/FormLabel.vue';
 import { successToast } from '~~/utils/alerts';
-export default {
+export default defineNuxtComponent({
   components: { FormLabel, AdminPage },
   middleware: ['authed', 'can-boxoffice'],
   data() {
@@ -39,5 +39,5 @@ export default {
       successToast.fire({ title: 'Saved' });
     }
   }
-};
+});
 </script>

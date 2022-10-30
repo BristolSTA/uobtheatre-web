@@ -19,7 +19,7 @@ import Overview from '@/components/box-office/Overview.vue';
 import TicketScanner from '@/components/ui/Inputs/TicketScanner.vue';
 import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue';
 
-export default {
+export default defineNuxtComponent({
   components: { Overview, TicketScanner, BoxOfficeNavigation },
   props: {
     performance: {
@@ -46,5 +46,5 @@ export default {
       ];
     }
   }
-};
+});
 </script>

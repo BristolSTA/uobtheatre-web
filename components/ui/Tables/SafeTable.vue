@@ -7,12 +7,12 @@
 </template>
 
 <script>
-export default {
+export default defineNuxtComponent({
   props: {
     tableClass: {
       default: null,
       type: [Array, Object, String]
     }
   }
-};
+});
 </script>

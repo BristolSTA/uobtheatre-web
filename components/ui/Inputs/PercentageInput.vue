@@ -17,7 +17,7 @@
 </template>
 
 <script>
-export default {
+export default defineNuxtComponent({
   props: {
     value: {
       type: Number,
@@ -44,5 +44,5 @@ export default {
       this.$emit('blur', newVal);
     }
   }
-};
+});
 </script>

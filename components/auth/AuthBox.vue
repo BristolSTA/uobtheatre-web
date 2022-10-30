@@ -336,7 +336,7 @@ function resendVerificationEmail() {
   //       this.loading = false;
 }
 
-// export default {
+// export default defineNuxtComponent({
 //   methods: {
 //     async attemptSignup() {
 //       this.loading = true;
@@ -396,5 +396,5 @@ function resendVerificationEmail() {
 //       this.lastName = components.join(' ');
 //     },
 //   },
-// };
+// });
 </script>

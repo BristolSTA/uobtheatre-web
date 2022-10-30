@@ -71,7 +71,7 @@ import { DateTime } from 'luxon';
 import BoxOfficePerformancesAvailable from '@/graphql/queries/box-office/BoxOfficePerformancesAvailable.gql';
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue';
-export default {
+export default defineNuxtComponent({
   components: { LoadingContainer, ProductionFeaturedImage },
   middleware: ['authed', 'can-boxoffice'],
   data() {
@@ -139,5 +139,5 @@ export default {
       ];
     }
   }
-};
+});
 </script>

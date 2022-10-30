@@ -49,7 +49,7 @@ import Booking from '@/classes/Booking';
 import TicketsMatrix from '@/classes/TicketsMatrix';
 import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue';
 import Errors from '@/classes/Errors';
-export default {
+export default defineNuxtComponent({
   components: { TicketOptions, AllErrorsDisplay, SelectedTicketsTable },
   props: {
     booking: {
@@ -86,5 +86,5 @@ export default {
       return this.performanceMinsAway < 0;
     }
   }
-};
+});
 </script>

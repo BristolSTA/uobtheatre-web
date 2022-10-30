@@ -16,7 +16,7 @@
 import ErrorHelper from './ErrorHelper.vue';
 import RequiredStar from './Form/RequiredStar.vue';
 import Errors from '@/classes/Errors';
-export default {
+export default defineNuxtComponent({
   components: { ErrorHelper, RequiredStar },
   props: {
     errors: {
@@ -40,5 +40,5 @@ export default {
       type: Boolean
     }
   }
-};
+});
 </script>

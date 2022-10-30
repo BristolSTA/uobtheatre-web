@@ -225,7 +225,7 @@ import TableRow from '@/components/ui/Tables/TableRow.vue';
 import { performMutation } from '~~/utils/api';
 import PriceMatrix from '@/components/performance/editor/PriceMatrix.vue';
 import { GenerateReportDocument } from '~~/graphql/codegen/operations';
-export default {
+export default defineNuxtComponent({
   components: {
     Card,
     AdminPage,
@@ -290,5 +290,5 @@ export default {
       window.open(data.generateReport.downloadUri);
     }
   }
-};
+});
 </script>

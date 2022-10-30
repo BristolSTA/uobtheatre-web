@@ -74,7 +74,7 @@ import BookingStage from '@/classes/BookingStage';
 import SquarePayment from '@/components/square/SquarePayment.vue';
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 import { PayBookingDocument } from '~~/graphql/codegen/operations';
-export default {
+export default defineNuxtComponent({
   stageInfo: new BookingStage({
     name: 'Payment',
     routeName: 'production-slug-book-performanceId-pay',
@@ -179,5 +179,5 @@ export default {
         });
     }
   }
-};
+});
 </script>

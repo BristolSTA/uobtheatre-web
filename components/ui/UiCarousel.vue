@@ -70,7 +70,7 @@
 </template>
 
 <script>
-export default {
+export default defineNuxtComponent({
   props: {
     carouselItems: {
       required: true,
@@ -165,7 +165,7 @@ export default {
       }
     }
   }
-};
+});
 </script>
 
 <style scoped>

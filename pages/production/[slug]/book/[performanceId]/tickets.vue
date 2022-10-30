@@ -30,7 +30,7 @@ import { getValidationErrors, performMutation } from '~~/utils/api';
 
 import BookingStage from '@/classes/BookingStage';
 import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue';
-export default {
+export default defineNuxtComponent({
   stageInfo: new BookingStage({
     name: 'Ticket Selection',
     routeName: 'production-slug-book-performanceId-tickets'
@@ -109,5 +109,5 @@ export default {
       this.interaction_timer();
     }
   }
-};
+});
 </script>

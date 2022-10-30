@@ -7,7 +7,7 @@
 <script>
 import Badge from '../ui/Badge.vue';
 import ProductionStatusEnum from '@/enums/ProductionStatusEnum';
-export default {
+export default defineNuxtComponent({
   components: { Badge },
   props: {
     production: {
@@ -41,5 +41,5 @@ export default {
       return new ProductionStatusEnum(this.production.status).name;
     }
   }
-};
+});
 </script>

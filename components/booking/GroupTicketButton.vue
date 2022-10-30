@@ -22,7 +22,7 @@
 </template>
 
 <script>
-export default {
+export default defineNuxtComponent({
   name: 'GroupTicketButton',
   props: {
     discount: {
@@ -35,5 +35,5 @@ export default {
       this.$emit('add-discount-tickets');
     }
   }
-};
+});
 </script>

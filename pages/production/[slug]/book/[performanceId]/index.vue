@@ -4,7 +4,7 @@
 
 <script>
 import stages from '../-bookingStages';
-export default {
+export default defineNuxtComponent({
   beforeRouteEnter(to, _, next) {
     next({
       name: stages[1].stageInfo.routeName,
@@ -15,5 +15,5 @@ export default {
       }
     });
   }
-};
+});
 </script>

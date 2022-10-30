@@ -35,7 +35,7 @@
 import ProductionTile from '@/components/production/ProductionTile.vue';
 import InfiniteScroll from '@/components/ui/InfiniteScroll.vue';
 import { UpcomingProductionsDocument } from '~~/graphql/codegen/operations';
-export default {
+export default defineNuxtComponent({
   components: { ProductionTile, InfiniteScroll },
   data() {
     return {
@@ -54,5 +54,5 @@ export default {
       this.productions.push(...data.edges.map((edge) => edge.node));
     }
   }
-};
+});
 </script>

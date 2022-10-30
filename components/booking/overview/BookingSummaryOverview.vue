@@ -29,7 +29,7 @@
 import OverviewBox from '../../ui/Card.vue';
 import Booking from '@/classes/Booking';
 
-export default {
+export default defineNuxtComponent({
   name: 'BookingSumamryOverview',
   components: { OverviewBox },
   props: {
@@ -38,5 +38,5 @@ export default {
       type: [Booking, Object]
     }
   }
-};
+});
 </script>

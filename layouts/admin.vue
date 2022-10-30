@@ -11,7 +11,7 @@
 <script>
 import FooterBar from '@/components/layout/FooterBar.vue';
 import NavBar from '@/components/layout/NavBar.vue';
-export default {
+export default defineNuxtComponent({
   components: { NavBar, FooterBar }
-};
+});
 </script>

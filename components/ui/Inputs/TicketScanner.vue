@@ -54,7 +54,7 @@
 import CameraCheckIn from '@/components/box-office/CameraCheckIn.vue';
 import HardwareScannerCheckIn from '@/components/box-office/HardwareScannerCheckIn.vue';
 import HardwareScanner from '@/components/box-office/HardwareScanner.vue';
-export default {
+export default defineNuxtComponent({
   components: {
     CameraCheckIn,
     HardwareScannerCheckIn,
@@ -80,5 +80,5 @@ export default {
       throw new Error('Performance ID must be supplied in check in mode');
     }
   }
-};
+});
 </script>

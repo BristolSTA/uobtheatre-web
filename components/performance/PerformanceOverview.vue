@@ -54,7 +54,7 @@
 <script>
 import { humanDuration, dateFormat } from '@/utils/datetime';
 
-export default {
+export default defineNuxtComponent({
   props: {
     performance: {
       required: true,
@@ -80,5 +80,5 @@ export default {
     humanDuration,
     dateFormat
   }
-};
+});
 </script>

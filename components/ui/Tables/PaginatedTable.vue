@@ -36,7 +36,7 @@
 <script>
 import LoadingContainer from '../LoadingContainer.vue';
 import PaginationBar from '../PaginationBar.vue';
-export default {
+export default defineNuxtComponent({
   components: { PaginationBar, LoadingContainer },
   props: {
     pageInfo: {
@@ -88,5 +88,5 @@ export default {
       );
     }
   }
-};
+});
 </script>

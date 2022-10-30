@@ -6,7 +6,7 @@
 
 <script>
 import Badge from '../ui/Badge.vue';
-export default {
+export default defineNuxtComponent({
   components: { Badge },
   props: {
     performance: {
@@ -37,5 +37,5 @@ export default {
       return 'Bookable';
     }
   }
-};
+});
 </script>

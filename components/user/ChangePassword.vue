@@ -55,7 +55,7 @@ import NonFieldError from '~~/components/ui/UiNonFieldError.vue';
 import TextInput from '~~/components/ui/UiTextInput.vue';
 import { getValidationErrors, performMutation } from '@/utils/api';
 import { swalToast } from '@/utils/alerts';
-export default {
+export default defineNuxtComponent({
   components: {
     LoadingContainer,
     NonFieldError,
@@ -104,5 +104,5 @@ export default {
       this.loading = false;
     }
   }
-};
+});
 </script>

@@ -268,7 +268,7 @@ import {
   AdminSocietiesIndexDocument
 } from '@/graphql/codegen/operations';
 
-export default {
+export default defineNuxtComponent({
   components: {
     FormLabel,
     ImageInput,
@@ -471,5 +471,5 @@ export default {
       return returnObject;
     }
   }
-};
+});
 </script>

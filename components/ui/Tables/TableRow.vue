@@ -5,7 +5,7 @@
 </template>
 
 <script>
-export default {
+export default defineNuxtComponent({
   props: {
     striped: {
       default: true,
@@ -28,5 +28,5 @@ export default {
       return classes;
     }
   }
-};
+});
 </script>

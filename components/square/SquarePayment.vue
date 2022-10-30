@@ -51,7 +51,7 @@
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 import { silentErrorHandler } from '@/utils/misc';
 
-export default {
+export default defineNuxtComponent({
   components: { LoadingContainer },
   props: {
     useWallets: {
@@ -212,7 +212,7 @@ export default {
       return this.pay(this.square.methods.applepay);
     }
   }
-};
+});
 </script>
 
 <style>

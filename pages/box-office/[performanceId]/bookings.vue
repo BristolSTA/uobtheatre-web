@@ -128,7 +128,7 @@ import TicketScanner from '@/components/ui/Inputs/TicketScanner.vue';
 import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue';
 import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue';
 
-export default {
+export default defineNuxtComponent({
   components: {
     Overview,
     BookingRow,
@@ -217,5 +217,5 @@ export default {
       fetchPolicy: 'cache-and-network'
     }
   }
-};
+});
 </script>

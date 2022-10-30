@@ -85,7 +85,7 @@ import Card from '@/components/ui/Card.vue';
 import SortIcon from '@/components/ui/SortIcon.vue';
 import AdminProductionLookupQuery from '@/graphql/queries/admin/productions/AdminProductionLookup.gql';
 import BookingStatusEnum from '@/enums/PayableStatusEnum';
-export default {
+export default defineNuxtComponent({
   components: {
     AdminPage,
     PaginatedTable,
@@ -166,5 +166,5 @@ export default {
       }
     }
   }
-};
+});
 </script>

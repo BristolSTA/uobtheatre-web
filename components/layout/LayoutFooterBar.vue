@@ -59,7 +59,7 @@
 </template>
 
 <script>
-export default {
+export default defineNuxtComponent({
   data() {
     return {
       navItems: [
@@ -72,5 +72,5 @@ export default {
       ]
     };
   }
-};
+});
 </script>

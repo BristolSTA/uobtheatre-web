@@ -86,11 +86,11 @@
 
 <script>
 /* eslint-disable vue/no-v-html */
-export default {
+export default defineNuxtComponent({
   head: {
     title: 'Terms and Conditions'
   }
-};
+});
 </script>
 
 <style lang="scss">

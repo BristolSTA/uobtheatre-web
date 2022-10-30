@@ -84,7 +84,7 @@ import IconListItem from '@/components/ui/IconListItem.vue';
 import AddressFragment from '@/graphql/fragments/AddressFragment.gql';
 import TipTapOutput from '@/components/ui/TipTapOutput.vue';
 
-export default {
+export default defineNuxtComponent({
   name: 'VenuePage',
   components: { IconListItem, TipTapOutput },
   async asyncData({ params, app, error }) {
@@ -166,5 +166,5 @@ export default {
       //   .openOn(map);
     }
   }
-};
+});
 </script>

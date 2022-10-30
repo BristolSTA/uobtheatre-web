@@ -50,7 +50,7 @@ import StaButton from '@/components/ui/StaButton.vue';
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import { successToast } from '~~/utils/alerts';
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
-export default {
+export default defineNuxtComponent({
   components: {
     TicketsEditor,
     Card,
@@ -147,5 +147,5 @@ export default {
       }
     }
   }
-};
+});
 </script>

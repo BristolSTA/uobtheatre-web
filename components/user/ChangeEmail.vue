@@ -43,7 +43,7 @@ import NonFieldError from '../ui/UiNonFieldError.vue';
 import TextInput from '../ui/UiTextInput.vue';
 import { getValidationErrors, performMutation } from '@/utils/api';
 import { swal } from '@/utils/alerts';
-export default {
+export default defineNuxtComponent({
   components: {
     LoadingContainer,
     TextInput,
@@ -91,5 +91,5 @@ export default {
       this.loading = false;
     }
   }
-};
+});
 </script>

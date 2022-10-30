@@ -299,7 +299,7 @@ import {
   VenuesDocument
 } from '@/graphql/codegen/operations';
 
-export default {
+export default defineNuxtComponent({
   components: {
     FormLabel,
     Card,
@@ -804,5 +804,5 @@ export default {
       this.deletedDiscounts.push(discount);
     }
   }
-};
+});
 </script>

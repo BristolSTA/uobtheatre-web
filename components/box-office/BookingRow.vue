@@ -36,7 +36,7 @@
 <script>
 import Booking from '@/classes/Booking';
 
-export default {
+export default defineNuxtComponent({
   props: {
     booking: {
       required: true,
@@ -51,5 +51,5 @@ export default {
       type: Number
     }
   }
-};
+});
 </script>

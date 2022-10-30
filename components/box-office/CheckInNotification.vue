@@ -127,7 +127,7 @@
 import AudioPositive from '@/assets/audio/beep_positive.mp3';
 import AudioNegative from '@/assets/audio/beep_negative.mp3';
 import Booking from '@/classes/Booking';
-export default {
+export default defineNuxtComponent({
   props: {
     alreadyCheckedIn: {
       type: Boolean,
@@ -158,5 +158,5 @@ export default {
   mounted() {
     new Audio(this.errors ? AudioNegative : AudioPositive).play();
   }
-};
+});
 </script>

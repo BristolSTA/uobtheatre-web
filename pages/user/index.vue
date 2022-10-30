@@ -76,7 +76,7 @@ import {
   MyAccountDetailsDocument
 } from '~~/graphql/codegen/operations';
 
-export default {
+export default defineNuxtComponent({
   components: {
     BookingSummaryOverview,
     UserDetails,
@@ -129,5 +129,5 @@ export default {
       update: (data) => data.me.bookings
     }
   }
-};
+});
 </script>

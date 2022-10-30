@@ -9,7 +9,7 @@
 <script>
 import BookingStage from '@/classes/BookingStage';
 import TimeGroupedPerformanceSelector from '@/components/performance/TimeGroupedPerformanceSelector.vue';
-export default {
+export default defineNuxtComponent({
   stageInfo: new BookingStage({
     name: 'Select Performance',
     routeName: 'production-slug-book',
@@ -31,5 +31,5 @@ export default {
         );
     }
   }
-};
+});
 </script>

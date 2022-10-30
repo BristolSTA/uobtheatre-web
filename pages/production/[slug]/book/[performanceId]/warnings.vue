@@ -50,7 +50,7 @@ import Booking from '@/classes/Booking';
 import Card from '@/components/ui/Card.vue';
 import ContentWarningsDisplay from '@/components/production/content-warnings/ContentWarningsDisplay.vue';
 
-export default {
+export default defineNuxtComponent({
   stageInfo: new BookingStage({
     name: 'Content Warnings',
     routeName: 'production-slug-book-performanceId-warnings',
@@ -80,5 +80,5 @@ export default {
       this.$emit('next-stage');
     }
   }
-};
+});
 </script>

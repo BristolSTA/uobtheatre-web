@@ -9,7 +9,7 @@
 </template>
 
 <script>
-export default {
+export default defineNuxtComponent({
   props: {
     value: {
       type: String,
@@ -67,5 +67,5 @@ export default {
       // }
     }
   }
-};
+});
 </script>

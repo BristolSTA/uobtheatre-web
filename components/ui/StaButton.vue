@@ -13,7 +13,7 @@
 </template>
 
 <script>
-export default {
+export default defineNuxtComponent({
   props: {
     to: {
       default: null,
@@ -39,7 +39,7 @@ export default {
   computed: {
     asType() {
       if (this.to) {
-        return 'nuxt-link';
+        return 'NuxtLink';
       }
       return 'button';
     },
@@ -58,5 +58,5 @@ export default {
       return arr;
     }
   }
-};
+});
 </script>

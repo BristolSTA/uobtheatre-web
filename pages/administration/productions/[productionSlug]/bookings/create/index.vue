@@ -35,7 +35,7 @@ import AdminPage from '@/components/admin/AdminPage.vue';
 import PaginationBar from '@/components/ui/PaginationBar.vue';
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 import TimeGroupedPerformanceSelector from '@/components/performance/TimeGroupedPerformanceSelector.vue';
-export default {
+export default defineNuxtComponent({
   components: {
     AdminPage,
     PaginationBar,
@@ -91,5 +91,5 @@ export default {
       title
     };
   }
-};
+});
 </script>

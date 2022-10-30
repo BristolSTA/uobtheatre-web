@@ -95,7 +95,7 @@ import WelcomeScreen from '@/components/publicity-screens/WelcomeScreen.vue';
 import PleaseWaitScreen from '@/components/publicity-screens/PleaseWaitScreen.vue';
 import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue';
 
-export default {
+export default defineNuxtComponent({
   components: {
     QrcodeVue,
     IconListItem,
@@ -301,5 +301,5 @@ export default {
       }
     }
   }
-};
+});
 </script>

@@ -17,8 +17,8 @@
 <script>
 import OverviewBox from '../../ui/Card.vue';
 
-export default {
+export default defineNuxtComponent({
   name: 'UserOverview',
   components: { OverviewBox }
-};
+});
 </script>

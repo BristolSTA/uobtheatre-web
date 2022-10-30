@@ -49,7 +49,7 @@ import AddressFragments from '@/graphql/fragments/AddressFragment.gql';
 
 import LoadingIcon from '~~/components/ui/UiLoadingIcon.vue';
 
-export default {
+export default defineNuxtComponent({
   name: 'VenueOverview',
   components: { OverviewBox, IconListItem, LoadingIcon },
   props: {
@@ -96,5 +96,5 @@ export default {
       }
     }
   }
-};
+});
 </script>

@@ -69,7 +69,7 @@ import FormLabel from '@/components/ui/FormLabel.vue';
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 import { GenerateReportDocument } from '~~/graphql/codegen/operations';
-export default {
+export default defineNuxtComponent({
   components: { AdminPage, AllErrorsDisplay, FormLabel, LoadingContainer },
   data() {
     return {
@@ -120,5 +120,5 @@ export default {
       }
     }
   }
-};
+});
 </script>

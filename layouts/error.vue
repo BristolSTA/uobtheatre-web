@@ -29,7 +29,7 @@
 </template>
 
 <script>
-export default {
+export default defineNuxtComponent({
   props: {
     buttonText: {
       default: 'Return Home',
@@ -56,5 +56,5 @@ export default {
       return 'There was an issue.';
     }
   }
-};
+});
 </script>

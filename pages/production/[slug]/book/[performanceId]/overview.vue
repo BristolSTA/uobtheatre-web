@@ -37,7 +37,7 @@ import UserOverview from '@/components/booking/overview/UserOverview.vue';
 import VenueOverview from '@/components/booking/overview/VenueOverview.vue';
 
 import BookingStage from '@/classes/BookingStage';
-export default {
+export default defineNuxtComponent({
   stageInfo: new BookingStage({
     name: 'Overview',
     routeName: 'production-slug-book-performanceId-overview',
@@ -56,5 +56,5 @@ export default {
       type: Booking
     }
   }
-};
+});
 </script>

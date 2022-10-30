@@ -8,7 +8,7 @@
 
 <script>
 import ContentWarningDisplay from './ContentWarningDisplay.vue';
-export default {
+export default defineNuxtComponent({
   components: { ContentWarningDisplay },
   props: {
     contentWarnings: {
@@ -16,5 +16,5 @@ export default {
       type: Array
     }
   }
-};
+});
 </script>

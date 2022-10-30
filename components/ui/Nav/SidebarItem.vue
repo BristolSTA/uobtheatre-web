@@ -17,7 +17,7 @@
 </template>
 
 <script>
-export default {
+export default defineNuxtComponent({
   props: {
     icon: {
       default: null,
@@ -41,5 +41,5 @@ export default {
       return currentUrl.startsWith(this.href);
     }
   }
-};
+});
 </script>

@@ -19,9 +19,9 @@
 
 <script>
 import AudioNegative from '@/assets/audio/beep_negative.mp3';
-export default {
+export default defineNuxtComponent({
   mounted() {
     new Audio(AudioNegative).play();
   }
-};
+});
 </script>

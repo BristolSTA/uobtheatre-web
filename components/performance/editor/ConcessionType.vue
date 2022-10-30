@@ -54,7 +54,7 @@
 <script>
 import FormLabel from '@/components/ui/FormLabel.vue';
 
-export default {
+export default defineNuxtComponent({
   components: { FormLabel },
   props: {
     name: {
@@ -79,5 +79,5 @@ export default {
       editing: false
     };
   }
-};
+});
 </script>

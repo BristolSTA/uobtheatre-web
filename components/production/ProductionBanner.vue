@@ -103,7 +103,7 @@ import ProductionFeaturedImage from './ProductionFeaturedImage.vue';
 import IconListItem from '@/components/ui/IconListItem.vue';
 import { displayStartEnd } from '@/utils/datetime';
 
-export default {
+export default defineNuxtComponent({
   name: 'ProductionBanner',
   components: { IconListItem, ProductionFeaturedImage },
   props: {
@@ -166,5 +166,5 @@ export default {
   methods: {
     displayStartEnd
   }
-};
+});
 </script>

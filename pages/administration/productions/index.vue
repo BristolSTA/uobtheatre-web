@@ -91,7 +91,7 @@ import Card from '@/components/ui/Card.vue';
 import ProductionStatusBadge from '@/components/production/ProductionStatusBadge.vue';
 import AdminPage from '@/components/admin/AdminPage.vue';
 import StaButton from '@/components/ui/StaButton.vue';
-export default {
+export default defineNuxtComponent({
   components: {
     PaginatedTable,
     TableHeadItem,
@@ -136,5 +136,5 @@ export default {
       update: (data) => data.productions
     }
   }
-};
+});
 </script>

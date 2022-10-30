@@ -82,7 +82,7 @@ import ProductionBanner from '@/components/production/ProductionBanner.vue';
 import Alert from '@/components/ui/Alert.vue';
 import { UserCompletedBookingDocument } from '~~/graphql/codegen/operations';
 
-export default {
+export default defineNuxtComponent({
   components: {
     VenueOverview,
     PerformanceOverview,
@@ -147,5 +147,5 @@ export default {
       this.$refs.tickets.scrollIntoView();
     }
   }
-};
+});
 </script>

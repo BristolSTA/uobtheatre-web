@@ -23,7 +23,7 @@
 <script>
 import AdminSidebar from '@/components/admin/AdminSidebar.vue';
 import Breadcrumbs from '@/components/ui/UiBreadcrumbs.vue';
-export default {
+export default defineNuxtComponent({
   components: { AdminSidebar, Breadcrumbs },
   layout: 'admin',
   middleware: ['authed', 'admin'],
@@ -36,5 +36,5 @@ export default {
     titleTemplate: (chunk) =>
       chunk ? `${chunk} | Admin | UOB Theatre` : 'Administration | UOB Theatre'
   }
-};
+});
 </script>

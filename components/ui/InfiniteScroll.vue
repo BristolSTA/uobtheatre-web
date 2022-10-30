@@ -10,7 +10,7 @@
 <script>
 import LoadingIcon from './UiLoadingIcon.vue';
 import { isInViewport } from '@/utils/misc';
-export default {
+export default defineNuxtComponent({
   components: { LoadingIcon },
   props: {
     apolloQuery: {
@@ -105,5 +105,5 @@ export default {
       }
     }
   }
-};
+});
 </script>

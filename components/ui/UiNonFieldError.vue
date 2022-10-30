@@ -9,7 +9,7 @@
 
 <script>
 import Errors from '@/classes/Errors';
-export default {
+export default defineNuxtComponent({
   name: 'NonFieldError',
   props: {
     errors: {
@@ -18,5 +18,5 @@ export default {
       type: Errors
     }
   }
-};
+});
 </script>

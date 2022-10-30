@@ -10,12 +10,12 @@
 </template>
 
 <script>
-export default {
+export default defineNuxtComponent({
   props: {
     name: {
       required: true,
       type: String
     }
   }
-};
+});
 </script>

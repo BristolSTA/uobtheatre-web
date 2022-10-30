@@ -30,7 +30,7 @@ import lo from 'lodash';
 import { DateTime } from 'luxon';
 import { humanDayTime } from '@/utils/datetime';
 import PerformanceOverview from '@/components/performance/PerformanceOverview.vue';
-export default {
+export default defineNuxtComponent({
   components: { PerformanceOverview },
   props: {
     performances: {
@@ -51,5 +51,5 @@ export default {
         .value();
     }
   }
-};
+});
 </script>

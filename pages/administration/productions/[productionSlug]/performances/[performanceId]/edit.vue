@@ -26,7 +26,7 @@ import NonFieldError from '~~/components/ui/UiNonFieldError.vue';
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import { loadingSwal, successToast, errorToast } from '~~/utils/alerts';
 import { PerformanceMutationDocument } from '~~/graphql/codegen/operations';
-export default {
+export default defineNuxtComponent({
   components: { PerformanceEditor, AdminPage, StaButton, NonFieldError },
   async asyncData({ params, error, app }) {
     // Execute query
@@ -94,5 +94,5 @@ export default {
       }
     }
   }
-};
+});
 </script>

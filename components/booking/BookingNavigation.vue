@@ -20,7 +20,7 @@ import Booking from '@/classes/Booking';
 import Stages, {
   getStageIndex
 } from '@/pages/production/[slug]/book/-bookingStages';
-export default {
+export default defineNuxtComponent({
   name: 'BookingNavigation',
   props: {
     currentStageIndex: {
@@ -67,5 +67,5 @@ export default {
       this.$emit('goto-stage', stage);
     }
   }
-};
+});
 </script>

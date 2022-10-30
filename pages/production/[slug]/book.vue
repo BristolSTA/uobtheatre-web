@@ -91,7 +91,7 @@ import {
   PerformanceTicketOptionsDocument,
   UserDraftBookingForPerformanceDocument
 } from '~~/graphql/codegen/operations';
-export default {
+export default defineNuxtComponent({
   components: {
     BookingNavigation,
     ProductionBanner,
@@ -308,5 +308,5 @@ export default {
       this.navigateToStage();
     }
   }
-};
+});
 </script>

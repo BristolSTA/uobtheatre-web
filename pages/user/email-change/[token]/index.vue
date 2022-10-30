@@ -51,7 +51,7 @@ import LoadingIcon from '~~/components/ui/UiLoadingIcon.vue';
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import { swalToast } from '~~/utils/alerts';
 
-export default {
+export default defineNuxtComponent({
   components: {
     NonFieldError,
     TextInput,
@@ -143,5 +143,5 @@ export default {
       this.loading = false;
     }
   }
-};
+});
 </script>

@@ -8,7 +8,7 @@
 
 <script>
 import BoxOfficePerformance from '@/graphql/queries/box-office/BoxOfficePerformance.gql';
-export default {
+export default defineNuxtComponent({
   middleware: 'authed',
   async asyncData({ params, error, app }) {
     // Execute query
@@ -41,5 +41,5 @@ export default {
       this.$forceUpdate();
     }
   }
-};
+});
 </script>

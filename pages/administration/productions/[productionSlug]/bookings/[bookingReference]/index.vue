@@ -47,7 +47,7 @@ import TableRow from '@/components/ui/Tables/TableRow.vue';
 import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
 import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
 import BookingStatusEnum from '@/enums/PayableStatusEnum';
-export default {
+export default defineNuxtComponent({
   components: {
     AdminPage,
     ProductionBanner,
@@ -119,5 +119,5 @@ export default {
       ];
     }
   }
-};
+});
 </script>

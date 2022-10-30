@@ -3,12 +3,12 @@
 </template>
 
 <script>
-export default {
+export default defineNuxtComponent({
   props: {
     html: {
       required: true,
       type: String
     }
   }
-};
+});
 </script>

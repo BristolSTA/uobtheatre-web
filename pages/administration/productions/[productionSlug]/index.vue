@@ -213,7 +213,6 @@ export default defineNuxtComponent({
   },
   async asyncData() {
     // Execute query
-    console.log('Here');
     const { data } = await useAsyncQuery({
       query: AdminProductionShowQuery,
       variables: {

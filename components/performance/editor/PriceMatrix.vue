@@ -111,7 +111,7 @@ import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
 import SafeTable from '@/components/ui/Tables/SafeTable.vue';
 import TableRow from '@/components/ui/Tables/TableRow.vue';
 import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
-export default {
+export default defineNuxtComponent({
   components: {
     FormLabel,
     Badge,
@@ -172,5 +172,5 @@ export default {
       return (currentValue / 100).toFixed(2);
     }
   }
-};
+});
 </script>

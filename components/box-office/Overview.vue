@@ -117,7 +117,7 @@ import { humanDuration } from '@/utils/datetime';
 import Clock from '@/components/ui/Clock.vue';
 import { BoxOfficePerformanceTicketBreakdownDocument } from '~~/graphql/codegen/operations';
 
-export default {
+export default defineNuxtComponent({
   components: {
     IconListItem,
     Clock,
@@ -254,5 +254,5 @@ export default {
       update: (data) => data.performance.ticketsBreakdown
     }
   }
-};
+});
 </script>

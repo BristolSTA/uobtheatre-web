@@ -5,7 +5,7 @@
 <script>
 import { useCurrencyInput } from 'vue-currency-input';
 
-export default {
+export default defineNuxtComponent({
   props: {
     value: {
       type: Number,
@@ -36,5 +36,5 @@ export default {
 
     return { inputRef, formattedValue };
   }
-};
+});
 </script>

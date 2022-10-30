@@ -20,11 +20,11 @@
 </template>
 
 <script>
-export default {
+export default defineNuxtComponent({
   methods: {
     close() {
       this.$emit('close');
     }
   }
-};
+});
 </script>

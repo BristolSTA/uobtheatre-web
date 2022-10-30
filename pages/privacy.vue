@@ -235,7 +235,7 @@
 import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
 import TableRow from '@/components/ui/Tables/TableRow.vue';
 import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
-export default {
+export default defineNuxtComponent({
   components: { TableRowItem, TableRow, TableHeadItem },
   data() {
     return {
@@ -278,7 +278,7 @@ export default {
   head: {
     title: 'Privacy Policy'
   }
-};
+});
 </script>
 
 <style lang="scss">
