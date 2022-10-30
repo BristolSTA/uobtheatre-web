@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-full text-white bg-sta-gray">
     <Head
-      ><Title>{{ this.society?.name ?? 'Loading...' }}</Title></Head
+      ><Title>{{ society?.name ?? 'Loading...' }}</Title></Head
     >
     <div
       v-if="banner"

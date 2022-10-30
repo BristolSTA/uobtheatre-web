@@ -9,13 +9,9 @@
               :key="index"
               class="flex mt-2 text-center text-white md:block md:text-left underline"
             >
-              <component
-                :is="item[0].startsWith('/') ? 'NuxtLink' : 'a'"
-                :to="item[0]"
-                :href="item[0]"
-              >
+              <NuxtLink :href="item[0]">
                 <span class="hover:text-sta-orange">{{ item[1] }}</span>
-              </component>
+              </NuxtLink>
             </li>
           </ul>
         </nav>

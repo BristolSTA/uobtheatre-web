@@ -1,7 +1,7 @@
 <template>
   <component
     :is="asType"
-    :to="to"
+    :href="to"
     class="inline-block rounded transition-colors"
     :class="classes"
     :disabled="disabled"
@@ -39,7 +39,7 @@ export default defineNuxtComponent({
   computed: {
     asType() {
       if (this.to) {
-        return 'NuxtLink';
+        return resolveComponent('NuxtLink');
       }
       return 'button';
     },

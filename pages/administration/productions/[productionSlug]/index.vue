@@ -1,5 +1,8 @@
 <template>
-  <admin-page :title="production?.name">
+  <admin-page :title="production.name">
+    <Head>
+      <Title>{{ production ? production.name : 'Loading...' }}</Title>
+    </Head>
     <template #toolbar>
       <sta-button
         colour="green"
@@ -252,14 +255,6 @@ export default defineNuxtComponent({
       update: (data) => data.production.performances,
       fetchPolicy: 'cache-and-network'
     }
-  },
-  head() {
-    const productionName = this.production
-      ? this.production.name
-      : 'Loading...';
-    return {
-      title: productionName
-    };
   },
   computed: {
     statusDescription() {
