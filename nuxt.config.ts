@@ -67,8 +67,7 @@ export default defineNuxtConfig({
   },
 
   vite: {
-    // plugins: [graphqlPlugin()]
-    // eslintPlugin(),
+    // plugins: [eslintPlugin()]
   },
 
   build: {
