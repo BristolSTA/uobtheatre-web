@@ -80,7 +80,6 @@
 </template>
 
 <script setup lang="ts">
-// import gql from 'graphql-tag';
 import {
   VenuePageDetailsDocument,
   VenuePageDetailsQuery,
@@ -88,10 +87,6 @@ import {
 } from '@/graphql/codegen/operations';
 import { Ref } from 'vue';
 
-// import { UiMap } from '#components';
-// import IconListItem from '@/components/ui/IconListItem.vue';
-// import AddressFragment from '@/graphql/fragments/AddressFragment.gql';
-// import TipTapOutput from '@/components/ui/TipTapOutput.vue';
 import L from 'leaflet';
 
 const { data } = await useAsyncQuery<VenuePageDetailsQuery>(
