@@ -1,8 +1,5 @@
 <template>
   <admin-page :title="production.name">
-    <Head>
-      <Title>{{ production ? production.name : 'Loading...' }}</Title>
-    </Head>
     <template #toolbar>
       <sta-button
         colour="green"
