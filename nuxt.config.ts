@@ -70,6 +70,8 @@ export default defineNuxtConfig({
     // plugins: [eslintPlugin()]
   },
 
+  ssr: false,
+
   build: {
     transpile: [
       '@fortawesome/vue-fontawesome',
