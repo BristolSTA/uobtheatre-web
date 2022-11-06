@@ -10,18 +10,18 @@
 import BoxOfficePerformance from '@/graphql/queries/box-office/BoxOfficePerformance.gql';
 export default defineNuxtComponent({
   middleware: 'authed',
-  async asyncData({ params, error, app }) {
+  async asyncData() {
     // Execute query
-    const { data } = await app.apolloProvider.defaultClient.query({
+    const { data } = await useDefaultApolloClient().query({
       query: BoxOfficePerformance,
       variables: {
-        id: params.performanceId
+        id: useRoute().params.performanceId
       }
     });
 
     const performance = data.performance;
     if (!performance) {
-      return error({
+      throw createError(rror({
         statusCode: 404,
         message: 'This performance does not exist'
       });

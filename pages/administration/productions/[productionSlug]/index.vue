@@ -94,6 +94,7 @@
           </div>
         </template>
         <paginated-table
+          v-model:offset="performancesOffset"
           :items="
             performancesData
               ? performancesData.edges.map((edge) => edge.node)
@@ -103,7 +104,6 @@
           :max-per-page="10"
           :loading="$apollo.queries.performancesData?.loading"
           :page-info="performancesData ? performancesData.pageInfo : {}"
-          v-model:offset="performancesOffset"
         >
           <template #head>
             <table-head-item />
@@ -226,7 +226,7 @@ export default defineNuxtComponent({
 
     const production = data.value.production;
     if (!production) {
-      return error({
+      throw createError(rror({
         statusCode: 404,
         message: 'This production does not exist'
       });

@@ -105,10 +105,11 @@ export default defineNuxtComponent({
         return;
       }
 
+      const config = useRuntimeConfig();
       // eslint-disable-next-line no-undef
       this.square.payments = Square.payments(
-        this.$config.services.square.application_id,
-        this.$config.services.square.location_id
+        config.public.services.square.application_id,
+        config.public.services.square.location_id
       );
 
       this.square.methods = {};

@@ -8,7 +8,7 @@
     </template>
     <template #subtitle>
       <p class="font-semibold sm:text-h3">
-        {{ booking.performance.start | dateFormat('EEEE d MMMM kkkk') }}
+        {{ dateFormat(booking.performance.start, 'EEEE d MMMM kkkk') }}
       </p>
     </template>
     <div>
@@ -28,6 +28,7 @@
 <script>
 import OverviewBox from '../../ui/Card.vue';
 import Booking from '@/classes/Booking';
+import { dateFormat } from '@/utils/datetime';
 
 export default defineNuxtComponent({
   name: 'BookingSumamryOverview',
@@ -37,6 +38,9 @@ export default defineNuxtComponent({
       required: true,
       type: [Booking, Object]
     }
+  },
+  methods: {
+    dateFormat
   }
 });
 </script>

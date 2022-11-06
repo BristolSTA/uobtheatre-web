@@ -84,12 +84,11 @@ export default defineNuxtComponent({
     PaginationBar
   },
   middleware: 'authed',
-  async asyncData({ app }) {
-    const { data } = await app.apolloProvider.defaultClient.query({
+  async asyncData() {
+    const { data } = await useDefaultApolloClient().query({
       query: MyAccountDetailsDocument,
       fetchPolicy: 'no-cache'
     });
-
     return {
       user: data.me
     };

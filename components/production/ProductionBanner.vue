@@ -71,7 +71,7 @@
             <small>inc. interval</small>
           </template>
         </icon-list-item>
-        <icon-list-item v-if="production.isBookable" icon="ticket-alt">
+        <icon-list-item v-if="production.isBookable" icon="ticket">
           <template v-if="production.minSeatPrice">
             Tickets from
             <span class="font-semibold">

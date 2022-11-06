@@ -24,6 +24,7 @@ import LoadingIcon from '~~/components/ui/UiLoadingIcon.vue';
 
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import { swalToast } from '~~/utils/alerts';
+import ErrorsPartial from '@/graphql/partials/ErrorsPartial';
 
 export default defineNuxtComponent({
   components: {
@@ -46,7 +47,7 @@ export default defineNuxtComponent({
           mutation: gql`
           mutation ($token: String!) {
             verifyAccount(token: $token) {
-                ${require('@/graphql/partials/ErrorsPartial').default}
+                ${ErrorsPartial}
             }
           }
         `,

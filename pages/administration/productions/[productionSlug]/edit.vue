@@ -26,18 +26,18 @@ import { loadingSwal, successToast } from '~~/utils/alerts';
 import { ProductionMutationDocument } from '~~/graphql/codegen/operations';
 export default defineNuxtComponent({
   components: { ProductionEditor, AdminPage, StaButton, NonFieldError },
-  async asyncData({ params, error, app }) {
+  async asyncData() {
     // Execute query
-    const { data } = await app.apolloProvider.defaultClient.query({
+    const { data } = await useDefaultApolloClient().query({
       query: AdminProductionEditQuery,
       variables: {
-        slug: params.productionSlug
+        slug: useRoute().params.productionSlug
       }
     });
 
     const production = data.production;
     if (!production) {
-      return error({
+      throw createError({
         statusCode: 404,
         message: 'This production does not exist'
       });
@@ -50,15 +50,6 @@ export default defineNuxtComponent({
     return {
       production: null,
       errors: null
-    };
-  },
-
-  head() {
-    const title = this.production
-      ? `Edit ${this.production.name}`
-      : 'Loading...';
-    return {
-      title
     };
   },
   methods: {

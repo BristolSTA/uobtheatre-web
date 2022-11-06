@@ -37,7 +37,7 @@
               <table-row-item>
                 {{ bookingInfo.performance.production.name }} at
                 {{
-                  bookingInfo.performance.start | dateFormat('EEEE d MMMM kkkk')
+                  dateFormat(bookingInfo.performance.start, 'EEEE d MMMM kkkk')
                 }}
               </table-row-item>
             </table-row>
@@ -78,6 +78,7 @@ import TicketScanner from '@/components/ui/Inputs/TicketScanner.vue';
 import AdminPage from '@/components/admin/AdminPage.vue';
 import Card from '@/components/ui/Card.vue';
 import { errorToast } from '~~/utils/alerts';
+import { dateFormat } from '@/utils/datetime';
 import TableRow from '@/components/ui/Tables/TableRow.vue';
 import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
 import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
@@ -109,6 +110,7 @@ export default defineNuxtComponent({
     }
   },
   methods: {
+    dateFormat,
     async onScan(e) {
       this.scannedData = e;
       this.bookingInfo = null;

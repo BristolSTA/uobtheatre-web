@@ -51,6 +51,7 @@ import LoadingIcon from '~~/components/ui/UiLoadingIcon.vue';
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import { swalToast } from '~~/utils/alerts';
 
+import ErrorsPartial from '@/graphql/partials/ErrorsPartial';
 export default defineNuxtComponent({
   components: {
     NonFieldError,
@@ -77,7 +78,7 @@ export default defineNuxtComponent({
           mutation: gql`
           mutation ($token: String!) {
             verifySecondaryEmail(token: $token) {
-                ${require('@/graphql/partials/ErrorsPartial').default}
+                ${ErrorsPartial}
             }
           }
         `,
@@ -103,7 +104,7 @@ export default defineNuxtComponent({
             mutation: gql`
             mutation ($password: String!) {
               swapEmails(password: $password) {
-                  ${require('@/graphql/partials/ErrorsPartial').default}
+                  ${ErrorsPartial}
               }
             }
           `,
@@ -120,7 +121,7 @@ export default defineNuxtComponent({
             mutation: gql`
             mutation ($password: String!) {
               removeSecondaryEmail(password: $password) {
-                  ${require('@/graphql/partials/ErrorsPartial').default}
+                  ${ErrorsPartial}
               }
             }
           `,

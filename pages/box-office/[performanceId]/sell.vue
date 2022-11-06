@@ -9,8 +9,8 @@
         />
       </div>
       <nuxt-child
-        :performance="performance"
         v-model:booking="booking"
+        :performance="performance"
         :ticket-matrix="ticketMatrix"
         @next-stage="onNextStage"
       />
@@ -24,21 +24,22 @@ import FullPerformanceAndTicketOptions from '@/graphql/queries/FullPerformanceAn
 import BoxOfficePerformanceBooking from '@/graphql/queries/box-office/BoxOfficePerformanceBooking.gql';
 import Booking from '@/classes/Booking';
 import Overview from '@/components/box-office/Overview.vue';
+import { dateFormat } from '~~/utils/datetime';
 export default defineNuxtComponent({
   components: { Overview },
   middleware: 'authed',
-  async asyncData({ params, app, error }) {
-    const { data } = await app.apolloProvider.defaultClient.query({
+  async asyncData() {
+    const { data } = await useDefaultApolloClient().query({
       query: FullPerformanceAndTicketOptions,
       variables: {
-        id: params.performanceId
+        id: useRoute().params.performanceId
       },
       fetchPolicy: 'no-cache'
     });
 
     const performance = data.performance;
     if (!performance) {
-      return error({
+      throw createError({
         statusCode: 404,
         message: 'This performance does not exist'
       });
@@ -68,9 +69,7 @@ export default defineNuxtComponent({
       return [
         { text: 'Box Office', path: '/box-office' },
         {
-          text: `${
-            this.performance.production.name
-          } on ${this.$options.filters.dateFormat(
+          text: `${this.performance.production.name} on ${dateFormat(
             this.performance.start,
             'ccc dd MMM T'
           )}`,

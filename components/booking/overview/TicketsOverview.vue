@@ -1,7 +1,7 @@
 <template>
   <overview-box>
     <template #title>
-      <font-awesome-icon icon="ticket-alt" class="mr-2" />
+      <font-awesome-icon icon="ticket" class="mr-2" />
       Tickets
     </template>
     <template #messageBox>

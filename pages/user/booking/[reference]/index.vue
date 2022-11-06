@@ -1,5 +1,8 @@
 <template>
   <div class="mb-10 min-h-full text-white bg-sta-gray">
+    <Head>
+      <Title>Booking for {{ production.name }}</Title>
+    </Head>
     <div v-if="booking.performance" class="container">
       <alert v-if="booking.status == 'CANCELLED'" level="danger">
         This booking has been cancelled, and is no longer valid
@@ -26,7 +29,7 @@
       </div>
 
       <div class="grid gap-4 grid-cols-1 lg:grid-cols-3">
-        <performance-overview
+        <BookingPerformanceOverview
           class="lg:col-span-2"
           :production="production"
           :performance="booking.performance"
@@ -63,7 +66,7 @@
             :performance="booking.performance"
             :reference="booking.reference"
             :ticket="ticket"
-            :user="$store.state.auth.user"
+            :user="authStore.user"
           />
         </div>
       </div>
@@ -74,18 +77,19 @@
 <script>
 import Booking from '@/classes/Booking';
 import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue';
-import PerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue';
+import BookingPerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue';
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
 import VenueOverview from '@/components/booking/overview/VenueOverview.vue';
 import Ticket from '@/components/booking/Ticket.vue';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
 import Alert from '@/components/ui/Alert.vue';
 import { UserCompletedBookingDocument } from '~~/graphql/codegen/operations';
+import { useStore } from '~~/store/auth';
 
 export default defineNuxtComponent({
   components: {
     VenueOverview,
-    PerformanceOverview,
+    BookingPerformanceOverview,
     TicketsOverview,
     ProductionBanner,
     PaymentOverview,
@@ -93,16 +97,16 @@ export default defineNuxtComponent({
     Alert
   },
   middleware: 'authed',
-  async asyncData({ app, params, error }) {
-    const { data } = await app.apolloProvider.defaultClient.query({
+  async asyncData() {
+    const { data } = await useDefaultApolloClient().query({
       query: UserCompletedBookingDocument,
       variables: {
-        bookingRef: params.reference
+        bookingRef: useRoute().params.reference
       }
     });
 
     if (!data.me.bookings.edges[0]) {
-      return error({
+      throw createError({
         statusCode: 404,
         message: 'This booking does not exist'
       });
@@ -116,13 +120,8 @@ export default defineNuxtComponent({
     return {
       booking: null,
       user: null,
-      expanded: false
-    };
-  },
-  head() {
-    const production = this.production;
-    return {
-      title: production ? `Booking for ${production.name}` : 'Loading...'
+      expanded: false,
+      authStore: useStore()
     };
   },
   computed: {

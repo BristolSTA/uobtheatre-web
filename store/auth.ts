@@ -16,12 +16,12 @@ import Errors from '~~/classes/Errors';
 import ValidationError from '~~/errors/ValidationError';
 import UnverifiedLoginError from '~~/errors/auth/UnverifiedLoginError';
 
-let refreshTimer;
+let refreshTimer: NodeJS.Timeout | null;
 
 export const useStore = defineStore('auth', {
   state: () => ({
-    token: null as string,
-    user: null as AuthUserDetailsFragment
+    token: null as string | null,
+    user: null as AuthUserDetailsFragment | null
   }),
   getters: {
     isLoggedIn: (state) => !!state.token && !!state.user
@@ -30,7 +30,7 @@ export const useStore = defineStore('auth', {
     setAuthUser(userDetails: AuthUserDetailsFragment) {
       this.user.value = userDetails;
     },
-    async loadUserDetails(userDetails: AuthUserDetailsFragment = undefined) {
+    async loadUserDetails(userDetails: AuthUserDetailsFragment | null = null) {
       if (!userDetails) {
         const { data } = await useAsyncQuery<LoadUserDetailsQuery>(
           LoadUserDetailsDocument,
@@ -38,7 +38,7 @@ export const useStore = defineStore('auth', {
             fetchPolicy: 'no-cache'
           }
         );
-        userDetails = data.value.me;
+        if (data.value?.me) userDetails = data.value.me;
       }
       if (!userDetails) {
         return this.logout();
@@ -96,7 +96,7 @@ export const useStore = defineStore('auth', {
 
       this.token = data.refreshToken.token;
       this.setRefreshToken(data.refreshToken.refreshToken);
-      this.queueRefresh(data.refreshToken.token);
+      this.queueRefresh();
 
       return this.loadUserDetails();
     },
@@ -122,7 +122,10 @@ export const useStore = defineStore('auth', {
      * @param refreshToken The refresh token
      * @param remember Whether the user should be remembered on thsi device
      */
-    setRefreshToken(refreshToken: string, remember: boolean = undefined) {
+    setRefreshToken(
+      refreshToken: string,
+      remember: boolean | undefined = undefined
+    ) {
       const runtimeConfig = useRuntimeConfig();
       const rememberLengthDays = 365;
       if (remember) {

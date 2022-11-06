@@ -9,9 +9,9 @@
     <non-field-error :errors="errors" />
     <performance-editor
       ref="editor"
+      v-model:errors="errors"
       :performance="performance"
       :production="production"
-      v-model:errors="errors"
       v-bind.sync="performance"
     />
   </admin-page>
@@ -32,18 +32,18 @@ import { getValidationErrors, performMutation } from '~~/utils/api';
 import { loadingSwal, successToast, errorToast } from '~~/utils/alerts';
 export default defineNuxtComponent({
   components: { AdminPage, PerformanceEditor, StaButton, NonFieldError },
-  async asyncData({ params, error, app }) {
+  async asyncData() {
     // Execute query
-    const { data } = await app.apolloProvider.defaultClient.query({
+    const { data } = await useDefaultApolloClient().query({
       query: AdminProductionLookupDocument,
       variables: {
-        slug: params.productionSlug
+        slug: useRoute().params.productionSlug
       }
     });
 
     const production = data.production;
     if (!production) {
-      return error({
+      throw createError({
         statusCode: 404,
         message: 'This production does not exist'
       });

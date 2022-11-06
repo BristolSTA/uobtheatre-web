@@ -20,8 +20,8 @@
     </div>
     <card class="mt-4">
       <paginated-table
-        :page-info="bookingsPageInfo"
         v-model:offset="bookingsOffset"
+        :page-info="bookingsPageInfo"
         :items="bookings"
         :max-per-page="10"
         :loading="$apollo.queries.bookings.loading"
@@ -66,7 +66,7 @@
             {{ new BookingStatusEnum(booking.status).name }}
           </table-row-item>
           <table-row-item>
-            {{ booking.createdAt | dateFormat('dd/MMM/y HH:mm ZZZZ') }}
+            {{ dateFormat(booking.createdAt, 'dd/MMM/y HH:mm ZZZZ') }}
           </table-row-item>
         </table-row>
       </paginated-table>
@@ -85,6 +85,7 @@ import Card from '@/components/ui/Card.vue';
 import SortIcon from '@/components/ui/SortIcon.vue';
 import AdminProductionLookupQuery from '@/graphql/queries/admin/productions/AdminProductionLookup.gql';
 import BookingStatusEnum from '@/enums/PayableStatusEnum';
+import { dateFormat } from '@/utils/datetime';
 export default defineNuxtComponent({
   components: {
     AdminPage,
@@ -95,18 +96,18 @@ export default defineNuxtComponent({
     Card,
     SortIcon
   },
-  async asyncData({ params, error, app }) {
+  async asyncData() {
     // Execute query
-    const { data } = await app.apolloProvider.defaultClient.query({
+    const { data } = await useDefaultApolloClient().query({
       query: AdminProductionLookupQuery,
       variables: {
-        slug: params.productionSlug
+        slug: useRoute().params.productionSlug
       }
     });
 
     const production = data.production;
     if (!production) {
-      return error({
+      throw createError({
         statusCode: 404,
         message: 'This production does not exist'
       });
@@ -127,12 +128,6 @@ export default defineNuxtComponent({
       production: null,
 
       BookingStatusEnum
-    };
-  },
-  head() {
-    const title = `Bookings for ${this.production.name}`;
-    return {
-      title
     };
   },
   apollo: {
@@ -165,6 +160,9 @@ export default defineNuxtComponent({
           result.data.production.performances.edges[0].node.bookings.pageInfo;
       }
     }
+  },
+  methods: {
+    dateFormat
   }
 });
 </script>

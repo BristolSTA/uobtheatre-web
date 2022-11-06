@@ -8,9 +8,8 @@
         {{ booking.performance.production.name }}
       </p>
       <p class="text-sta-orange">
-        {{ booking.performance.start | dateFormat('cccc d MMM y') }}, Starting
-        at
-        {{ booking.performance.start | dateFormat('T') }}
+        {{ dateFormat(booking.performance.start, 'cccc d MMM y') }}, Starting at
+        {{ dateFormat(booking.performance.start, 'T') }}
       </p>
       <p class="text-sta-orange">
         {{ booking.tickets.length }} Ticket{{
@@ -69,6 +68,7 @@ import Booking from '@/classes/Booking';
 import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue';
 
 import { getValidationErrors, performMutation } from '~~/utils/api';
+import { dateFormat } from '@/utils/datetime';
 import { swal } from '~~/utils/alerts';
 import BookingStage from '@/classes/BookingStage';
 import SquarePayment from '@/components/square/SquarePayment.vue';
@@ -101,6 +101,7 @@ export default defineNuxtComponent({
     };
   },
   methods: {
+    dateFormat,
     onPaying() {
       this.progressPopup = swal.fire({
         title: 'Confirming your booking...',

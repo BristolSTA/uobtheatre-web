@@ -32,7 +32,7 @@ export default defineNuxtComponent({
     if (!query.ticketID || !query.performanceID) {
       return redirect('./');
     }
-    const { data } = await app.apolloProvider.defaultClient.query({
+    const { data } = await useDefaultApolloClient().query({
       query: PerformanceByIdDocument,
       variables: {
         id: query.performanceID
@@ -48,7 +48,7 @@ export default defineNuxtComponent({
 
     return {
       performance: data.performance,
-      reference: params.reference,
+      reference: useRoute().params.reference,
       tickets
     };
   }

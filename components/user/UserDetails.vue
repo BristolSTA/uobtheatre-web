@@ -95,7 +95,7 @@
           <p class="mt-2">
             Want to delete your account? Get in touch at
             <!-- eslint-disable-next-line vue/no-v-html -->
-            <span v-html="$config.application.support_email" />
+            <span v-html="useAppConfig().support_email" />
           </p>
         </div>
       </form>
@@ -120,6 +120,7 @@ import ChangePassword from './ChangePassword.vue';
 import TextInput from '~~/components/ui/UiTextInput.vue';
 import { swalToast } from '@/utils/alerts';
 import { performMutation, getValidationErrors } from '@/utils/api';
+import ErrorsPartial from '@/graphql/partials/ErrorsPartial';
 export default defineNuxtComponent({
   name: 'UserDetails',
   components: {
@@ -160,7 +161,7 @@ export default defineNuxtComponent({
             mutation: gql`
           mutation ($firstName: String!, $lastName: String!) {
             updateAccount(firstName: $firstName, lastName: $lastName) {
-                ${require('@/graphql/partials/ErrorsPartial').default}
+                ${ErrorsPartial}
             }
           }
         `,

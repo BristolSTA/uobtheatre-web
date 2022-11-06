@@ -43,6 +43,7 @@ import NonFieldError from '../ui/UiNonFieldError.vue';
 import TextInput from '../ui/UiTextInput.vue';
 import { getValidationErrors, performMutation } from '@/utils/api';
 import { swal } from '@/utils/alerts';
+import ErrorsPartial from '@/graphql/partials/ErrorsPartial';
 export default defineNuxtComponent({
   components: {
     LoadingContainer,
@@ -69,7 +70,7 @@ export default defineNuxtComponent({
             mutation: gql`
           mutation ($email: String!, $password: String!) {
             sendSecondaryEmailActivation(email: $email, password: $password) {
-                ${require('@/graphql/partials/ErrorsPartial').default}
+                ${ErrorsPartial}
             }
           }
         `,

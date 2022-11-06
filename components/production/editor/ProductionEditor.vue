@@ -259,7 +259,7 @@ import Card from '../../ui/Card.vue';
 import RichTextInput from '@/components/ui/Inputs/RichTextInput.vue';
 import Errors from '@/classes/Errors';
 
-import imageUpload from '@/services/imageUploadService';
+import imageUpload from '~~/services/imageUploadService';
 import ErrorHelper from '@/components/ui/ErrorHelper.vue';
 import StaButton from '@/components/ui/StaButton.vue';
 import { swal } from '@/utils/alerts';

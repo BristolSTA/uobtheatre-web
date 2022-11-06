@@ -27,7 +27,7 @@ export const actions = {
     context.commit('SET_LOCATION', Cookie.get(locationCookieKey));
   },
   async cancelInProgressBooking(context) {
-    await this.app.apolloProvider.defaultClient.mutate({
+    await this.useDefaultApolloClient().mutate({
       mutation: DeleteBookingMutation,
       variables: {
         bookingId: context.state.inProgressBookingID
@@ -49,7 +49,7 @@ export const actions = {
     if (!context.state.locationId) {
       return [];
     }
-    const { data } = await this.app.apolloProvider.defaultClient.query({
+    const { data } = await this.useDefaultApolloClient().query({
       query: BoxOfficePaymentDevicesDocument
     });
     return data.paymentDevices.filter(

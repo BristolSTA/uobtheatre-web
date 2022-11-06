@@ -1,5 +1,8 @@
 <template>
   <div class="sm:container">
+    <Head>
+      <Title>{{ performance.production.name }} Box Office</Title>
+    </Head>
     <div class="py-1 sm:py-10">
       <overview
         :production="performance.production"
@@ -13,6 +16,7 @@
 <script>
 import Overview from '@/components/box-office/Overview.vue';
 import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue';
+import { dateFormat } from '~~/utils/datetime';
 
 export default defineNuxtComponent({
   components: { Overview, BoxOfficeNavigation },
@@ -22,20 +26,12 @@ export default defineNuxtComponent({
       type: Object
     }
   },
-
-  head() {
-    return {
-      title: `${this.performance.production.name} Box Office`
-    };
-  },
   computed: {
     crumbs() {
       return [
         { text: 'Box Office', path: '/box-office' },
         {
-          text: `${
-            this.performance.production.name
-          } on ${this.$options.filters.dateFormat(
+          text: `${this.performance.production.name} on ${dateFormat(
             this.performance.start,
             'ccc dd MMM T'
           )}`

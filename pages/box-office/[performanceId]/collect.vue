@@ -18,6 +18,7 @@
 import Overview from '@/components/box-office/Overview.vue';
 import TicketScanner from '@/components/ui/Inputs/TicketScanner.vue';
 import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue';
+import { dateFormat } from '~~/utils/datetime';
 
 export default defineNuxtComponent({
   components: { Overview, TicketScanner, BoxOfficeNavigation },
@@ -32,9 +33,7 @@ export default defineNuxtComponent({
       return [
         { text: 'Box Office', path: '/box-office' },
         {
-          text: `${
-            this.performance.production.name
-          } on ${this.$options.filters.dateFormat(
+          text: `${this.performance.production.name} on ${dateFormat(
             this.performance.start,
             'ccc dd MMM T'
           )}`,

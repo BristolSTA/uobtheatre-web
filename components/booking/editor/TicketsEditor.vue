@@ -4,9 +4,8 @@
       <div class="p-2 bg-sta-gray-light text-center">
         <p class="text-h3">Selected Performance:</p>
         <p class="text-sta-orange">
-          {{ booking.performance.start | dateFormat('cccc d MMM') }}, Starting
-          at
-          {{ booking.performance.start | dateFormat('T') }}
+          {{ dateFormat(booking.performance.start, 'cccc d MMM') }}, Starting at
+          {{ dateFormat(booking.performance.start, 'T') }}
         </p>
       </div>
       <div v-if="performanceMinsAway < 15" class="bg-sta-rouge p-2 text-center">

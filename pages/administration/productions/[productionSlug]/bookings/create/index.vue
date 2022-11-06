@@ -42,18 +42,18 @@ export default defineNuxtComponent({
     LoadingContainer,
     TimeGroupedPerformanceSelector
   },
-  async asyncData({ params, error, app }) {
+  async asyncData() {
     // Execute query
-    const { data } = await app.apolloProvider.defaultClient.query({
+    const { data } = await useDefaultApolloClient().query({
       query: AdminProductionLookupQuery,
       variables: {
-        slug: params.productionSlug
+        slug: useRoute().params.productionSlug
       }
     });
 
     const production = data.production;
     if (!production) {
-      return error({
+      throw createError({
         statusCode: 404,
         message: 'This production does not exist'
       });
@@ -83,12 +83,6 @@ export default defineNuxtComponent({
 
       performancesData: null,
       performancesOffset: 0
-    };
-  },
-  head() {
-    const title = `Create booking for ${this.production.name}`;
-    return {
-      title
     };
   }
 });

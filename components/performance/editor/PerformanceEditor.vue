@@ -282,6 +282,7 @@ import ErrorHelper from '@/components/ui/ErrorHelper.vue';
 import Errors from '@/classes/Errors';
 import { getValidationErrors, performMutation } from '@/utils/api';
 import { swal } from '@/utils/alerts';
+import {dateFormat} from '@/utils/datetime'
 import StaButton from '@/components/ui/StaButton.vue';
 import Alert from '@/components/ui/Alert.vue';
 import { singleDiscounts as singleDiscountsFn } from '@/utils/performance';
@@ -495,7 +496,7 @@ export default defineNuxtComponent({
           this.similarPerformances.map((performance) => [
             performance.id,
             'Performance at ' +
-              this.$options.filters.dateFormat(
+              dateFormat(
                 performance.start,
                 'EEEE dd MMMM y HH:mm ZZZZ'
               )

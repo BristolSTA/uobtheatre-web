@@ -55,6 +55,7 @@ import NonFieldError from '~~/components/ui/UiNonFieldError.vue';
 import TextInput from '~~/components/ui/UiTextInput.vue';
 import { getValidationErrors, performMutation } from '@/utils/api';
 import { swalToast } from '@/utils/alerts';
+import ErrorsPartial from '@/graphql/partials/ErrorsPartial';
 export default defineNuxtComponent({
   components: {
     LoadingContainer,
@@ -80,7 +81,7 @@ export default defineNuxtComponent({
             mutation: gql`
           mutation ($currentPassword: String!, $newPassword: String!, $confirmedNewPassword: String!) {
             passwordChange(oldPassword: $currentPassword, newPassword1: $newPassword, newPassword2: $confirmedNewPassword) {
-                ${require('@/graphql/partials/ErrorsPartial').default}
+                ${ErrorsPartial}
             }
           }
         `,

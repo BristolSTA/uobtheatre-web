@@ -15,16 +15,16 @@
             by {{ production.society.name }}
           </p>
           <p class="text-sta-orange">
-            {{ performance.start | dateFormat('cccc d MMM y') }}
+            {{ dateFormat(performance.start, 'cccc d MMM y') }}
           </p>
         </div>
         <div v-if="detailed" class="hidden md:block">
           <div>
             <p class="text-sta-green">
-              Doors Open: {{ performance.doorsOpen | dateFormat('t') }}
+              Doors Open: {{ dateFormat(performance.doorsOpen, 't') }}
             </p>
             <p class="text-sta-rouge">
-              Performance Starts: {{ performance.start | dateFormat('t') }}
+              Performance Starts: {{ dateFormat(performance.start, 't') }}
             </p>
             <icon-list-item icon="clock">
               {{ humanDuration(performance.durationMins) }}
@@ -113,7 +113,7 @@ import { DateTime } from 'luxon';
 
 import Alert from '../ui/Alert.vue';
 import IconListItem from '@/components/ui/IconListItem.vue';
-import { humanDuration } from '@/utils/datetime';
+import { humanDuration, dateFormat } from '@/utils/datetime';
 import Clock from '@/components/ui/Clock.vue';
 import { BoxOfficePerformanceTicketBreakdownDocument } from '~~/graphql/codegen/operations';
 
@@ -237,7 +237,8 @@ export default defineNuxtComponent({
     this.$apollo.queries.ticketBreakdown.refetch();
   },
   methods: {
-    humanDuration
+    humanDuration,
+    dateFormat
   },
   apollo: {
     ticketBreakdown: {

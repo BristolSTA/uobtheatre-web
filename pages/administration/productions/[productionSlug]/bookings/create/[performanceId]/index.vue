@@ -58,18 +58,18 @@ export default defineNuxtComponent({
     StaButton,
     LoadingContainer
   },
-  async asyncData({ params, app, error }) {
-    const { data } = await app.apolloProvider.defaultClient.query({
+  async asyncData() {
+    const { data } = await useDefaultApolloClient().query({
       query: FullPerformanceAndTicketOptionsQuery,
       variables: {
-        id: params.performanceId
+        id: useRoute().params.performanceId
       },
       fetchPolicy: 'no-cache'
     });
 
     const performance = data.performance;
     if (!performance) {
-      return error({
+      throw createError({
         statusCode: 404,
         message: 'This performance does not exist'
       });

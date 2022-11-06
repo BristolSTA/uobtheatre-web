@@ -47,6 +47,8 @@ import TableRow from '@/components/ui/Tables/TableRow.vue';
 import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
 import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
 import BookingStatusEnum from '@/enums/PayableStatusEnum';
+
+import { dateFormat } from '@/utils/datetime';
 export default defineNuxtComponent({
   components: {
     AdminPage,
@@ -60,16 +62,16 @@ export default defineNuxtComponent({
     TableRow,
     Card
   },
-  async asyncData({ app, params, error }) {
-    const { data } = await app.apolloProvider.defaultClient.query({
+  async asyncData() {
+    const { data } = await useDefaultApolloClient().query({
       query: AdminBookingDetailDocument,
       variables: {
-        bookingReference: params.bookingReference
+        bookingReference: useRoute().params.bookingReference
       }
     });
 
     if (!data.bookings.edges[0]) {
-      return error({
+      throw createError({
         statusCode: 404,
         message: 'This booking does not exist'
       });
@@ -82,10 +84,6 @@ export default defineNuxtComponent({
       rawBooking
     };
   },
-  head() {
-    const title = `Booking ${this.booking.reference}`;
-    return { title };
-  },
   computed: {
     production() {
       return this.booking.performance.production;
@@ -95,17 +93,11 @@ export default defineNuxtComponent({
         ['Status', new BookingStatusEnum(this.rawBooking.status).name],
         [
           'Created At',
-          this.$options.filters.dateFormat(
-            this.rawBooking.createdAt,
-            'dd/MMM/y HH:mm ZZZZ'
-          )
+          dateFormat(this.rawBooking.createdAt, 'dd/MMM/y HH:mm ZZZZ')
         ],
         [
           'Updated At',
-          this.$options.filters.dateFormat(
-            this.rawBooking.updatedAt,
-            'dd/MMM/y HH:mm ZZZZ'
-          )
+          dateFormat(this.rawBooking.updatedAt, 'dd/MMM/y HH:mm ZZZZ')
         ],
         [
           'Created By',

@@ -14,7 +14,7 @@
           <option selected disabled>Select one...</option>
           <option v-for="(performance, index) in performances" :key="index">
             {{ performance.production.name }} -
-            {{ performance.start | dateFormat('cccc dd MMMM T') }}
+            {{ dateFormat(performance.start, 'cccc dd MMMM T') }}
           </option>
         </select>
         <div class="grid gap-2 grid-cols-2 mt-2 md:grid-cols-4">
@@ -35,8 +35,8 @@
               {{ performance.venue.name }}
             </h4>
             <span
-              >{{ performance.start | dateFormat('cccc dd MMMM T') }} (Doors
-              {{ performance.doorsOpen | dateFormat('T') }})</span
+              >{{ dateFormat(performance.start, 'cccc dd MMMM T') }} (Doors
+              {{ dateFormat(performance.doorsOpen, 'T') }})</span
             >
           </div>
         </div>
@@ -68,6 +68,7 @@
 
 <script>
 import { DateTime } from 'luxon';
+import { dateFormat } from '@/utils/datetime';
 import BoxOfficePerformancesAvailable from '@/graphql/queries/box-office/BoxOfficePerformancesAvailable.gql';
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue';
@@ -126,6 +127,7 @@ export default defineNuxtComponent({
     }
   },
   methods: {
+    dateFormat,
     updateDateOptions() {
       this.selectedDate = DateTime.now().toISODate();
       this.datePickerDate = DateTime.now().toISODate();

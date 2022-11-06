@@ -61,7 +61,7 @@
                 v-if="authStore.hasPermission('boxoffice_open')"
                 title="Box Office"
                 subtitle="Check in and sell tickets"
-                icon="ticket-alt"
+                icon="ticket"
                 route="/box-office"
                 @click="closeUserMenu"
               />

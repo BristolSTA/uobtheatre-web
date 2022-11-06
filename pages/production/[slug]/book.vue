@@ -1,5 +1,12 @@
 <template>
   <div class="min-h-full bg-sta-gray">
+    <Head>
+      <Title>Book {{ production.name }}</Title>
+      <Script
+        :src="useRuntimeConfig().public.services.square.script"
+        defer="true"
+      ></Script>
+    </Head>
     <div class="container">
       <production-banner
         class="pb-2 md:pb-8"
@@ -128,8 +135,8 @@ export default defineNuxtComponent({
     return next();
   },
   middleware: 'authed',
-  async asyncData({ params, app, error }) {
-    const { data } = await app.apolloProvider.defaultClient.query({
+  async asyncData() {
+    const { data } = await useDefaultApolloClient().query({
       query: gql`
         query production($slug: String!) {
           production(slug: $slug) {
@@ -141,13 +148,13 @@ export default defineNuxtComponent({
         ${ProductionPerformancesFragment}
       `,
       variables: {
-        slug: params.slug
+        slug: useRoute().params.slug
       }
     });
 
     const production = data.production;
     if (!production) {
-      return error({
+      throw createError({
         statusCode: 404,
         message: 'This production does not exist'
       });
@@ -163,12 +170,6 @@ export default defineNuxtComponent({
       previousBooking: null,
       currentStage: null,
       paid: false
-    };
-  },
-  head() {
-    return {
-      title: `Book ${this.production.name}`,
-      script: [{ src: this.$config.services.square.script, defer: true }]
     };
   },
   computed: {

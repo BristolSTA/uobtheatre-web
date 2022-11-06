@@ -34,25 +34,25 @@ import {
 } from '~~/graphql/codegen/operations';
 export default defineNuxtComponent({
   components: { AdminPage, PermissionsAssigner, StaButton, AllErrorsDisplay },
-  async asyncData({ params, error, app }) {
+  async asyncData() {
     // Execute query
-    const { data } = await app.apolloProvider.defaultClient.query({
+    const { data } = await useDefaultApolloClient().query({
       query: AdminProductionPermissionsDocument,
       variables: {
-        slug: params.productionSlug
+        slug: useRoute().params.productionSlug
       },
       fetchPolicy: 'no-cache'
     });
 
     const production = data.production;
     if (!production) {
-      return error({
+      throw createError({
         statusCode: 404,
         message: 'This production does not exist'
       });
     }
     if (production.assignedUsers === null) {
-      return error({
+      throw createError({
         statusCode: 401,
         message: 'You do not have permission to alter permissions'
       });

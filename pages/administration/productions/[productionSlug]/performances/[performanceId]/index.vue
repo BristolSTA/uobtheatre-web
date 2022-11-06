@@ -1,6 +1,6 @@
 <template>
   <admin-page
-    :title="`${production.name} at ${$options.filters.dateFormat(
+    :title="`${production.name} at ${dateFormat(
       performance.start,
       'd MMM yy HH:mm ZZZZ'
     )}`"
@@ -40,13 +40,13 @@
           <tr>
             <table-head-item :text-left="false"> Doors Open </table-head-item>
             <table-row-item>
-              {{ performance.doorsOpen | dateFormat('dd MM y T ZZZZ') }}
+              {{ dateFormat(performance.doorsOpen, 'dd MM y T ZZZZ') }}
             </table-row-item>
           </tr>
           <tr>
             <table-head-item :text-left="false"> Starts </table-head-item>
             <table-row-item>
-              {{ performance.start | dateFormat('dd MM y T ZZZZ') }}
+              {{ dateFormat(performance.start, 'dd MM y T ZZZZ') }}
             </table-row-item>
           </tr>
           <tr v-if="performance.intervalDurationMins">
@@ -60,7 +60,7 @@
           <tr>
             <table-head-item :text-left="false"> Ends </table-head-item>
             <table-row-item>
-              {{ performance.end | dateFormat('dd MM y T ZZZZ') }}
+              {{ dateFormat(performance.end, 'dd MM y T ZZZZ') }}
             </table-row-item>
           </tr>
         </table>
@@ -223,6 +223,7 @@ import PerformanceStatusBadge from '@/components/performance/PerformanceStatusBa
 import TicketsMatrix from '@/classes/TicketsMatrix';
 import TableRow from '@/components/ui/Tables/TableRow.vue';
 import { performMutation } from '~~/utils/api';
+import { dateFormat } from '@/utils/datetime';
 import PriceMatrix from '@/components/performance/editor/PriceMatrix.vue';
 import { GenerateReportDocument } from '~~/graphql/codegen/operations';
 export default defineNuxtComponent({
@@ -238,20 +239,20 @@ export default defineNuxtComponent({
     TableRow,
     PriceMatrix
   },
-  async asyncData({ params, error, app }) {
+  async asyncData() {
     // Execute query
-    const { data } = await app.apolloProvider.defaultClient.query({
+    const { data } = await useDefaultApolloClient().query({
       query: AdminPerformanceDetailQuery,
       variables: {
-        productionSlug: params.productionSlug,
-        performanceId: params.performanceId
+        productionSlug: useRoute().params.productionSlug,
+        performanceId: useRoute().params.performanceId
       },
       fetchPolicy: 'no-cache'
     });
 
     const production = data.production;
     if (!production || !production.performances.edges.length) {
-      return error({
+      throw createError({
         statusCode: 404
       });
     }
@@ -269,11 +270,8 @@ export default defineNuxtComponent({
       ticketsMatrix: null
     };
   },
-  head() {
-    const title = `Performance of ${this.production.name}`;
-    return { title };
-  },
   methods: {
+    dateFormat,
     async downloadBookings() {
       const data = await performMutation(
         this.$apollo,

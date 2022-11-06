@@ -44,8 +44,8 @@
           </div>
           <div class="px-1 py-2 bg-sta-gray-dark sm:p-2">
             <paginated-table
-              :page-info="pageInfo"
               v-model:offset="offset"
+              :page-info="pageInfo"
               :items="bookings"
               :max-per-page="10"
               :loading="$apollo.queries.bookings.loading"
@@ -127,6 +127,7 @@ import BookingDetailsRow from '@/components/box-office/BookingDetailsRow.vue';
 import TicketScanner from '@/components/ui/Inputs/TicketScanner.vue';
 import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue';
 import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue';
+import { dateFormat } from '~~/utils/datetime';
 
 export default defineNuxtComponent({
   components: {
@@ -164,9 +165,7 @@ export default defineNuxtComponent({
       return [
         { text: 'Box Office', path: '/box-office' },
         {
-          text: `${
-            this.performance.production.name
-          } on ${this.$options.filters.dateFormat(
+          text: `${this.performance.production.name} on ${dateFormat(
             this.performance.start,
             'ccc dd MMM T'
           )}`,

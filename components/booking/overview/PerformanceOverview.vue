@@ -7,16 +7,16 @@
     <template #subtitle>
       <p class="text-h3">
         {{ humanDayTime(startTime) }} of
-        {{ performance.start | dateFormat('EEEE d MMMM kkkk') }}
+        {{ dateFormat(performance.start, 'EEEE d MMMM kkkk') }}
       </p>
     </template>
     <div>
       <div class="font-semibold">
         <p class="py-1 text-sta-green">
-          Doors Open: {{ performance.doorsOpen | dateFormat('T') }}
+          Doors Open: {{ dateFormat(performance.doorsOpen, 'T') }}
         </p>
         <p class="pb-0.5 text-sta-rouge">
-          Performance Starts: {{ performance.start | dateFormat('T') }}
+          Performance Starts: {{ dateFormat(performance.start, 'T') }}
         </p>
       </div>
       <icon-list-item icon="clock">
@@ -34,7 +34,7 @@ import { DateTime } from 'luxon';
 import OverviewBox from '../../ui/Card.vue';
 import IconListItem from '@/components/ui/IconListItem.vue';
 
-import { humanDuration, humanDayTime } from '@/utils/datetime';
+import { humanDuration, humanDayTime, dateFormat } from '@/utils/datetime';
 
 export default defineNuxtComponent({
   name: 'PerformanceOverviewBox',
@@ -55,6 +55,7 @@ export default defineNuxtComponent({
     }
   },
   methods: {
+    dateFormat,
     humanDuration,
     humanDayTime
   }

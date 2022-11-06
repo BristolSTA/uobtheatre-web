@@ -4,9 +4,9 @@ export default defineNuxtPlugin((nuxtApp) => {
   const authStore = useStore();
 
   // Define how Apollo should get the token
-  nuxtApp.hook('apollo:auth', ({ token }) => {
-    token.value = authStore.token;
-  });
+  // nuxtApp.hook('apollo:auth', ({ token }) => {
+  //   token.value = authStore.token;
+  // });
 
   // Attempt a silent refresh on load
   authStore.refreshUsingToken();

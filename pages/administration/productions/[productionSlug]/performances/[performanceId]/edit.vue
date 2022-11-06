@@ -7,9 +7,9 @@
     <non-field-error :errors="errors" />
     <performance-editor
       ref="editor"
+      v-model:errors="errors"
       :performance="performance"
       :production="production"
-      v-model:errors="errors"
       v-bind.sync="performance"
     />
   </admin-page>
@@ -28,20 +28,20 @@ import { loadingSwal, successToast, errorToast } from '~~/utils/alerts';
 import { PerformanceMutationDocument } from '~~/graphql/codegen/operations';
 export default defineNuxtComponent({
   components: { PerformanceEditor, AdminPage, StaButton, NonFieldError },
-  async asyncData({ params, error, app }) {
+  async asyncData() {
     // Execute query
-    const { data } = await app.apolloProvider.defaultClient.query({
+    const { data } = await useDefaultApolloClient().query({
       query: AdminPerformanceDetailQuery,
       variables: {
-        productionSlug: params.productionSlug,
-        performanceId: params.performanceId
+        productionSlug: useRoute().params.e().params.productionSlug,
+        performanceId: useRoute().params.performanceId
       },
       fetchPolicy: 'no-cache'
     });
 
     const production = data.production;
     if (!production || !production.performances.edges.length) {
-      return error({
+      throw createError({
         statusCode: 404
       });
     }

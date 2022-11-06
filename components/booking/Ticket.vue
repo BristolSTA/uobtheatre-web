@@ -4,15 +4,15 @@
       {{ performance.production.name }}
     </h1>
     <p>
-      {{ performance.start | dateFormat('EEEE d MMMM kkkk') }}
+      {{ dateFormat(performance.start, 'EEEE d MMMM kkkk') }}
     </p>
     <p>
       <span class="pr-2">
-        Doors: {{ performance.doorsOpen | dateFormat('t') }}
+        Doors: {{ dateFormat(performance.doorsOpen, 't') }}
       </span>
       |
       <span class="pl-2">
-        Start: {{ performance.start | dateFormat('t') }}
+        Start: {{ dateFormat(performance.start, 't') }}
       </span>
     </p>
     <div
@@ -28,7 +28,7 @@
       <qrcode-vue
         :value="ticket.generateQRCodeString(reference)"
         level="L"
-        size="240"
+        :size="240"
       />
     </div>
     <p>
@@ -48,6 +48,7 @@ import lo from 'lodash';
 import QrcodeVue from 'qrcode.vue';
 
 import Ticket from '@/classes/Ticket';
+import { dateFormat } from '@/utils/datetime';
 
 export default defineNuxtComponent({
   name: 'Ticket',
@@ -71,6 +72,9 @@ export default defineNuxtComponent({
       default: null,
       type: Object
     }
+  },
+  methods: {
+    dateFormat
   },
   computed: {
     fullName() {
