@@ -46,7 +46,7 @@
         <button
           v-if="production.contentWarnings.length"
           ref="warnings"
-          class="p-3 bg-sta-rouge rounded-md hover:bg-sta-rouge-dark transition-colors scale-110 flex gap-2 items-center flex-wrap lg:flex-nowrap justify-center"
+          class="p-3 bg-sta-rouge rounded-md hover:bg-sta-rouge-dark transition-colors flex gap-2 items-center flex-wrap lg:flex-nowrap justify-center"
           @click="showContentWarningsDetail = true"
         >
           This production has content warnings.

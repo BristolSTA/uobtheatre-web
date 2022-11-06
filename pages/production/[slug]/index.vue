@@ -7,9 +7,9 @@
         <Meta name="og:title" :content="production.name" />
         <Meta name="og:description" :content="shortDescription" />
         <Meta
+          v-if="production.featuredImage"
           name="og:image"
           :content="production.featuredImage.url"
-          v-if="production.featuredImage"
         />
       </template>
     </Head>
