@@ -35,17 +35,18 @@
 </template>
 
 <script>
-import AdminPage from '@/components/admin/AdminPage.vue'
-import ProductionBanner from '@/components/production/ProductionBanner.vue'
-import PerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue'
-import VenueOverview from '@/components/booking/overview/VenueOverview.vue'
-import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue'
-import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue'
-import Booking from '@/classes/Booking'
-import Card from '@/components/ui/Card.vue'
-import TableRow from '@/components/ui/Tables/TableRow.vue'
-import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue'
-import TableRowItem from '@/components/ui/Tables/TableRowItem.vue'
+import AdminPage from '@/components/admin/AdminPage.vue';
+import ProductionBanner from '@/components/production/ProductionBanner.vue';
+import PerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue';
+import VenueOverview from '@/components/booking/overview/VenueOverview.vue';
+import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue';
+import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
+import Booking from '@/classes/Booking';
+import Card from '@/components/ui/Card.vue';
+import TableRow from '@/components/ui/Tables/TableRow.vue';
+import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
+import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
+import BookingStatusEnum from '@/enums/PayableStatusEnum';
 export default {
   components: {
     AdminPage,
@@ -65,32 +66,33 @@ export default {
       variables: {
         bookingReference: params.bookingReference,
       },
-    })
+    });
 
-    if (!data.bookings.edges[0])
+    if (!data.bookings.edges[0]) {
       return error({
         statusCode: 404,
         message: 'This booking does not exist',
-      })
+      });
+    }
 
-    const rawBooking = data.bookings.edges[0].node
+    const rawBooking = data.bookings.edges[0].node;
 
     return {
       booking: Booking.fromAPIData(rawBooking),
       rawBooking,
-    }
+    };
   },
   head() {
-    const title = `Booking ${this.booking.reference}`
-    return { title }
+    const title = `Booking ${this.booking.reference}`;
+    return { title };
   },
   computed: {
     production() {
-      return this.booking.performance.production
+      return this.booking.performance.production;
     },
     adminInfo() {
       return [
-        ['Status', this.rawBooking.status.description],
+        ['Status', new BookingStatusEnum(this.rawBooking.status).name],
         [
           'Created At',
           this.$options.filters.dateFormat(
@@ -114,8 +116,8 @@ export default {
           `${this.rawBooking.user.firstName} ${this.rawBooking.user.lastName} (Email: ${this.rawBooking.user.email})`,
         ],
         ['Admin Discount', this.rawBooking.adminDiscountPercentage * 100 + '%'],
-      ]
+      ];
     },
   },
-}
+};
 </script>

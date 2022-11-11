@@ -11,6 +11,10 @@ export default () => {
     api: {
       graphql_endpoint:
         (process.env.API_BASE || 'http://localhost:9000') + '/graphql/',
+      graphql_endpoint_internal:
+        (process.env.API_BASE_INTERNAL ||
+          process.env.API_BASE ||
+          'http://uobtheatre-api:8000') + '/graphql/',
       upload_endpoint:
         (process.env.API_BASE || 'http://localhost:9000') + '/upload/',
     },
@@ -36,5 +40,5 @@ export default () => {
         dsn: process.env.SENTRY_DSN,
       },
     },
-  }
-}
+  };
+};

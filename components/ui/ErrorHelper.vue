@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import Errors from '@/classes/Errors'
+import Errors from '@/classes/Errors';
 export default {
   props: {
     errors: {
@@ -21,5 +21,5 @@ export default {
       type: String,
     },
   },
-}
+};
 </script>

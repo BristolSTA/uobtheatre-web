@@ -29,8 +29,8 @@
         />
       </svg>
     </button>
-    <template v-if="pageDisplay"
-      ><button
+    <template v-if="pageDisplay">
+      <button
         v-for="(page, index) in pageDisplay"
         :key="index"
         :disabled="isNaN(page)"
@@ -43,8 +43,8 @@
         @keypress="gotoPage(page)"
       >
         {{ page }}
-      </button></template
-    >
+      </button>
+    </template>
 
     <button
       class="relative inline-flex items-center px-2 py-2 text-sm font-medium"
@@ -130,7 +130,7 @@ export default {
       return (
         !this.disabled &&
         (this.hasPreviousPage || this.currentPage > 1 || this.currentOffset)
-      )
+      );
     },
     canGoForward() {
       return (
@@ -138,46 +138,61 @@ export default {
         (this.hasNextPage ||
           this.currentPage !== this.numberOfPages ||
           (this.pageInfo && this.pageInfo.hasNextPage))
-      )
+      );
     },
     pageDisplay() {
-      if (!this.numberOfPages) return null
-      let innerLength = this.numberPagesToDisplay - 2
-      const innerMax = this.numberOfPages - 1
-      const innerMin = 2
-      const current = this.currentPage
+      if (!this.numberOfPages) {
+        return null;
+      }
+      let innerLength = this.numberPagesToDisplay - 2;
+      const innerMax = this.numberOfPages - 1;
+      const innerMin = 2;
+      const current = this.currentPage;
 
-      if (innerLength >= innerMax) innerLength = innerMax - 1
-
-      let start = current - Math.floor(innerLength / 2)
-      start = Math.max(start, innerMin)
-      start = Math.min(start, innerMin + innerMax - innerLength - 1)
-      const inner = Array.from({ length: innerLength }, (el, i) => start + i)
-
-      if (inner.length) {
-        if (inner[0] !== 2) inner[0] = '...'
-        if (inner[inner.length - 1] !== this.numberOfPages - 1)
-          inner[inner.length - 1] = '...'
+      if (innerLength >= innerMax) {
+        innerLength = innerMax - 1;
       }
 
-      inner.unshift(1)
-      if (this.numberOfPages > 1) inner.push(this.numberOfPages)
-      return inner
+      let start = current - Math.floor(innerLength / 2);
+      start = Math.max(start, innerMin);
+      start = Math.min(start, innerMin + innerMax - innerLength - 1);
+      const inner = Array.from({ length: innerLength }, (_, i) => start + i);
+
+      if (inner.length) {
+        if (inner[0] !== 2) {
+          inner[0] = '...';
+        }
+        if (inner[inner.length - 1] !== this.numberOfPages - 1) {
+          inner[inner.length - 1] = '...';
+        }
+      }
+
+      inner.unshift(1);
+      if (this.numberOfPages > 1) {
+        inner.push(this.numberOfPages);
+      }
+      return inner;
     },
   },
   methods: {
     previousPage() {
-      if (!this.canGoBackward && !this.disabled) return
-      this.$emit('previousPage')
+      if (!this.canGoBackward && !this.disabled) {
+        return;
+      }
+      this.$emit('previousPage');
     },
     nextPage() {
-      if (!this.canGoForward && !this.disabled) return
-      this.$emit('nextPage')
+      if (!this.canGoForward && !this.disabled) {
+        return;
+      }
+      this.$emit('nextPage');
     },
     gotoPage(page) {
-      if (isNaN(page) || this.currentPage === page) return
-      this.$emit('gotoPage', page)
+      if (isNaN(page) || this.currentPage === page) {
+        return;
+      }
+      this.$emit('gotoPage', page);
     },
   },
-}
+};
 </script>

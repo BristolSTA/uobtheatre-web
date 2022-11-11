@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import { DateTime, Duration } from 'luxon'
-import humanizeDuration from 'humanize-duration'
+import { DateTime, Duration } from 'luxon';
+import humanizeDuration from 'humanize-duration';
 export default {
   props: {
     expiresAt: {
@@ -25,34 +25,36 @@ export default {
     return {
       remainingDuration: null,
       intervalTimer: null,
-    }
+    };
   },
   computed: {
     expiresAtDate() {
-      return DateTime.fromISO(this.expiresAt)
+      return DateTime.fromISO(this.expiresAt);
     },
     countdownToShow() {
-      if (!this.remainingDuration) return null
+      if (!this.remainingDuration) {
+        return null;
+      }
 
-      return this.remainingDuration
+      return this.remainingDuration;
     },
   },
   mounted() {
-    this.calculateRemainingSeconds()
-    this.intervalTimer = setInterval(this.calculateRemainingSeconds, 500)
+    this.calculateRemainingSeconds();
+    this.intervalTimer = setInterval(this.calculateRemainingSeconds, 500);
   },
   beforeDestroy() {
-    clearInterval(this.intervalTimer)
+    clearInterval(this.intervalTimer);
   },
   methods: {
     humanizeDuration,
     calculateRemainingSeconds() {
-      this.remainingDuration = this.expiresAtDate.diffNow('minutes')
+      this.remainingDuration = this.expiresAtDate.diffNow('minutes');
       if (this.remainingDuration.toMillis() <= 0) {
-        this.remainingDuration = Duration.fromMillis(0)
-        this.$emit('finished')
+        this.remainingDuration = Duration.fromMillis(0);
+        this.$emit('finished');
       }
     },
   },
-}
+};
 </script>

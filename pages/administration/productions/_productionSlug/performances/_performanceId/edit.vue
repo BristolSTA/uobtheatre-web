@@ -1,8 +1,8 @@
 <template>
   <admin-page title="Edit Performance">
     <template #toolbar>
-      <sta-button colour="green" icon="save" @click="save">Save</sta-button>
-      <sta-button colour="orange" to="../../">Cancel</sta-button>
+      <sta-button colour="green" icon="save" @click="save"> Save </sta-button>
+      <sta-button colour="orange" to="../../"> Cancel </sta-button>
     </template>
     <non-field-error :errors="errors" />
     <performance-editor
@@ -16,19 +16,19 @@
 </template>
 
 <script>
-import AdminPerformanceDetailQuery from '@/graphql/queries/admin/productions/AdminPerformanceDetail.gql'
-import PerformanceEditor from '@/components/performance/editor/PerformanceEditor.vue'
-import AdminPage from '@/components/admin/AdminPage.vue'
-import StaButton from '@/components/ui/StaButton.vue'
+import Swal from 'sweetalert2';
+import AdminPerformanceDetailQuery from '@/graphql/queries/admin/productions/AdminPerformanceDetail.gql';
+import PerformanceEditor from '@/components/performance/editor/PerformanceEditor.vue';
+import AdminPage from '@/components/admin/AdminPage.vue';
+import StaButton from '@/components/ui/StaButton.vue';
 import {
   errorToast,
   getValidationErrors,
   loadingSwal,
   performMutation,
   successToast,
-} from '@/utils'
-import Swal from 'sweetalert2'
-import NonFieldError from '@/components/ui/NonFieldError.vue'
+} from '@/utils';
+import NonFieldError from '@/components/ui/NonFieldError.vue';
 export default {
   components: { PerformanceEditor, AdminPage, StaButton, NonFieldError },
   async asyncData({ params, error, app }) {
@@ -40,31 +40,32 @@ export default {
         performanceId: params.performanceId,
       },
       fetchPolicy: 'no-cache',
-    })
+    });
 
-    const production = data.production
-    if (!production || !production.performances.edges.length)
+    const production = data.production;
+    if (!production || !production.performances.edges.length) {
       return error({
         statusCode: 404,
-      })
+      });
+    }
     return {
       performance: production.performances.edges[0].node,
       production,
-    }
+    };
   },
   data() {
     return {
       performance: null,
       production: null,
       errors: null,
-    }
+    };
   },
   methods: {
     async save() {
-      this.errors = null
-      loadingSwal.fire()
+      this.errors = null;
+      loadingSwal.fire();
       try {
-        const saveResult = await this.$refs.editor.saveRelated()
+        const saveResult = await this.$refs.editor.saveRelated();
         await performMutation(
           this.$apollo,
           {
@@ -74,27 +75,27 @@ export default {
             },
           },
           'performance'
-        )
+        );
         const { data } = await this.$apollo.query({
           query: AdminPerformanceDetailQuery,
           variables: {
             productionSlug: this.$route.params.productionSlug,
             performanceId: this.performance.id,
           },
-        })
-        this.performance = data.production.performances.edges[0].node
+        });
+        this.performance = data.production.performances.edges[0].node;
         if (saveResult) {
-          successToast.fire({ title: 'Performance Updated' })
+          successToast.fire({ title: 'Performance Updated' });
           return this.$router.push(
             `/administration/productions/${this.production.slug}/performances/${this.performance.id}`
-          )
+          );
         }
-        errorToast.fire({ title: 'Performance saved but with errors' })
+        errorToast.fire({ title: 'Performance saved but with errors' });
       } catch (e) {
-        this.errors = getValidationErrors(e)
-        Swal.close()
+        this.errors = getValidationErrors(e);
+        Swal.close();
       }
     },
   },
-}
+};
 </script>

@@ -63,11 +63,11 @@
 </template>
 
 <script>
-import AdminPage from '@/components/admin/AdminPage.vue'
-import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue'
-import FormLabel from '@/components/ui/FormLabel.vue'
-import { getValidationErrors, performMutation } from '@/utils'
-import LoadingContainer from '@/components/ui/LoadingContainer.vue'
+import AdminPage from '@/components/admin/AdminPage.vue';
+import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue';
+import FormLabel from '@/components/ui/FormLabel.vue';
+import { getValidationErrors, performMutation } from '@/utils';
+import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 export default {
   components: { AdminPage, AllErrorsDisplay, FormLabel, LoadingContainer },
   data() {
@@ -82,20 +82,22 @@ export default {
         { text: 'Period Totals', value: 'PeriodTotals', requires_times: true },
         { text: 'Outstanding Payments', value: 'OutstandingPayments' },
       ],
-    }
+    };
   },
   head: {
     title: 'Finance Reports',
   },
   computed: {
     currentReportObject() {
-      if (!this.currentReport) return
-      return this.reports.find((report) => report.value === this.currentReport)
+      if (!this.currentReport) {
+        return;
+      }
+      return this.reports.find((report) => report.value === this.currentReport);
     },
   },
   methods: {
     async generateReport() {
-      this.generating = true
+      this.generating = true;
       try {
         const data = await performMutation(
           this.$apollo,
@@ -108,14 +110,14 @@ export default {
             },
           },
           'generateReport'
-        )
-        window.open(data.generateReport.downloadUri)
+        );
+        window.open(data.generateReport.downloadUri);
       } catch (e) {
-        this.errors = getValidationErrors(e)
+        this.errors = getValidationErrors(e);
       } finally {
-        this.generating = false
+        this.generating = false;
       }
     },
   },
-}
+};
 </script>

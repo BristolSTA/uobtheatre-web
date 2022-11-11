@@ -1,12 +1,11 @@
-import { mount } from '@vue/test-utils'
-import { expect } from 'chai'
+import { mount } from '@vue/test-utils';
+import { expect } from 'chai';
 
-import ProductionTile from '@/components/production/ProductionTile'
-
-import { generateMountOptions, RouterLinkStub } from '../../helpers'
+import { generateMountOptions, RouterLinkStub } from '../../helpers';
+import ProductionTile from '@/components/production/ProductionTile';
 
 describe('Production Tile', () => {
-  let productionTileComponent
+  let productionTileComponent;
   beforeAll(() => {
     productionTileComponent = mount(
       ProductionTile,
@@ -23,22 +22,22 @@ describe('Production Tile', () => {
           },
         },
       })
-    )
-  })
+    );
+  });
 
   it('links to production page', () => {
-    const link = productionTileComponent.findComponent(RouterLinkStub)
-    expect(link.props('to')).to.eq('/production/legally-ginger')
-  })
+    const link = productionTileComponent.findComponent(RouterLinkStub);
+    expect(link.props('to')).to.eq('/production/legally-ginger');
+  });
   it('has feature image', () => {
     expect(productionTileComponent.find('img').attributes('src')).to.eq(
       'example.org/feature-image.png'
-    )
-  })
+    );
+  });
   it('has show name', () => {
-    expect(productionTileComponent.text()).to.contain('Legally Ginger')
-  })
+    expect(productionTileComponent.text()).to.contain('Legally Ginger');
+  });
   it('has show dates', () => {
-    expect(productionTileComponent.text()).to.contain('3 Mar - 6 Mar 2021')
-  })
-})
+    expect(productionTileComponent.text()).to.contain('3 Mar - 6 Mar 2021');
+  });
+});

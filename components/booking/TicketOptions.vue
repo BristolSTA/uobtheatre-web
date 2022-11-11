@@ -33,12 +33,12 @@
 </template>
 
 <script>
-import lo from 'lodash'
+import lo from 'lodash';
 
-import Booking from '@/classes/Booking'
-import Ticket from '@/classes/Ticket'
-import TicketMatrix from '@/classes/TicketsMatrix'
-import SeatGroup from '@/components/booking/SeatGroup.vue'
+import Booking from '@/classes/Booking';
+import Ticket from '@/classes/Ticket';
+import TicketMatrix from '@/classes/TicketsMatrix';
+import SeatGroup from '@/components/booking/SeatGroup.vue';
 
 export default {
   components: { SeatGroup },
@@ -66,7 +66,7 @@ export default {
       selected_location_index: null,
 
       interaction_timer: lo.debounce(this.requestUpdate, 2 * 1000),
-    }
+    };
   },
   methods: {
     onAddTicket(seatGroup, concessionType, number = 1) {
@@ -74,8 +74,8 @@ export default {
         new Ticket(seatGroup.id, concessionType.id),
         this.ticketMatrix,
         number
-      )
-      this.interaction_timer()
+      );
+      this.interaction_timer();
     },
     onSetTicketNum(seatGroup, concessionType, number) {
       this.booking.setTicketCount(
@@ -83,16 +83,16 @@ export default {
         concessionType,
         number,
         this.ticketMatrix
-      )
-      this.interaction_timer()
+      );
+      this.interaction_timer();
     },
     onRemoveTicket(seatGroup, concessionType) {
-      this.booking.removeTicket(seatGroup, concessionType, this.ticketMatrix)
-      this.interaction_timer()
+      this.booking.removeTicket(seatGroup, concessionType, this.ticketMatrix);
+      this.interaction_timer();
     },
     requestUpdate() {
-      this.$emit('request-update')
+      this.$emit('request-update');
     },
   },
-}
+};
 </script>

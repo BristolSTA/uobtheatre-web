@@ -6,9 +6,10 @@ module.exports = {
     '^~/(.*)$': '<rootDir>/$1',
     '^vue$': 'vue/dist/vue.common.js',
   },
-  moduleFileExtensions: ['js', 'vue', 'json'],
+  moduleFileExtensions: ['ts', 'js', 'vue', 'json'],
   transform: {
     '^.+\\.js$': 'babel-jest',
+    '^.+\\.ts$': 'babel-jest',
     '.*\\.(vue)$': 'vue-jest',
     '\\.(gql|graphql)$': 'jest-transform-graphql',
   },
@@ -22,5 +23,5 @@ module.exports = {
     'jest-watch-typeahead/filename',
     'jest-watch-typeahead/testname',
   ],
-  setupFilesAfterEnv: ['<rootDir>tests/unit/setup.js'],
-}
+  setupFilesAfterEnv: ['<rootDir>tests/unit/setup.ts'],
+};

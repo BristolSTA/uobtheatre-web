@@ -9,7 +9,7 @@
       }"
       @click="
         if (expandable) {
-          expanded = !expanded
+          expanded = !expanded;
         }
       "
     >
@@ -51,26 +51,26 @@ export default {
   data() {
     return {
       expanded: this.open,
-    }
+    };
   },
   computed: {
     expandable() {
-      return !!this.description
+      return !!this.description;
     },
     description() {
       return (
         this.contentWarning.information ??
         this.contentWarning.warning.longDescription
-      )
+      );
     },
   },
   watch: {
     open(newVal) {
-      this.expanded = newVal
+      this.expanded = newVal;
     },
     expanded(newVal) {
-      this.$emit('update:open', newVal)
+      this.$emit('update:open', newVal);
     },
   },
-}
+};
 </script>

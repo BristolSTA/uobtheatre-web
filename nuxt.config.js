@@ -1,5 +1,5 @@
-import config from './config'
-import FaIconSet from './plugins/fontawesome.config'
+import config from './config';
+import FaIconSet from './plugins/fontawesome.config';
 
 export default {
   server: {
@@ -71,7 +71,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '~/plugins/vue-filters.js',
+    '~/plugins/vue-filters.ts',
     '~/plugins/vue-tailwind.js',
     '~/plugins/initial-auth.js',
     '~/plugins/auth-helpers.js',
@@ -94,6 +94,9 @@ export default {
 
     // Font Awesome
     '@nuxtjs/fontawesome',
+
+    // Typescript
+    '@nuxt/typescript-build',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -140,14 +143,14 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    extend(config, ctx) {
+    extend(config) {
       config.module.rules.push({
         test: /\.(ogg|mp3|wav|mpe?g)$/i,
         loader: 'file-loader',
         options: {
           name: '[path][name].[ext]',
         },
-      })
+      });
     },
   },
 
@@ -178,4 +181,4 @@ export default {
       // https://docs.sentry.io/platforms/javascript/guides/vue/configuration/options/
     },
   },
-}
+};

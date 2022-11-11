@@ -1,8 +1,8 @@
 export default class {
-  seatGroup = {}
-  concessionType = {}
-  checkedIn = false
-  id = null
+  seatGroup = {};
+  concessionType = {};
+  checkedIn = false;
+  id = null;
 
   /**
    * @param {object} seatGroupId Seat Group / Location ID
@@ -10,9 +10,9 @@ export default class {
    * @param {string} id Optional ID of ticket in database
    */
   constructor(seatGroupId, concessionTypeId, id = null) {
-    this.seatGroup.id = seatGroupId
-    this.concessionType.id = concessionTypeId
-    this.id = id
+    this.seatGroup.id = seatGroupId;
+    this.concessionType.id = concessionTypeId;
+    this.id = id;
   }
 
   static fromAPIData(ticketAPIData) {
@@ -20,19 +20,21 @@ export default class {
       ticketAPIData.seatGroup.id,
       ticketAPIData.concessionType.id,
       ticketAPIData.id
-    )
-    ticket.seatGroup = ticketAPIData.seatGroup
-    ticket.concessionType = ticketAPIData.concessionType
-    if (ticketAPIData.checkedIn) ticket.checkedIn = ticketAPIData.checkedIn
-    return ticket
+    );
+    ticket.seatGroup = ticketAPIData.seatGroup;
+    ticket.concessionType = ticketAPIData.concessionType;
+    if (ticketAPIData.checkedIn) {
+      ticket.checkedIn = ticketAPIData.checkedIn;
+    }
+    return ticket;
   }
 
   static dataFromQRCode(rawQRCode) {
-    const result = JSON.parse(atob(rawQRCode))
+    const result = JSON.parse(atob(rawQRCode));
     return {
       bookingReference: result[0],
       ticketId: result[1],
-    }
+    };
   }
 
   /**
@@ -45,11 +47,11 @@ export default class {
   matches(seatGroup, concessionType) {
     const matchesSeatGroup = seatGroup
       ? this.seatGroup.id === seatGroup.id
-      : true
+      : true;
     const matchesConcessionType = concessionType
       ? this.concessionType.id === concessionType.id
-      : true
-    return matchesSeatGroup && matchesConcessionType
+      : true;
+    return matchesSeatGroup && matchesConcessionType;
   }
 
   /**
@@ -64,7 +66,7 @@ export default class {
       .concessionTypes.find(
         (concessionEdge) =>
           concessionEdge.concessionType.id === this.concessionType.id
-      ).price
+      ).price;
   }
 
   /**
@@ -74,7 +76,7 @@ export default class {
    * @returns {string} Base 64 encoded string
    */
   generateQRCodeString(bookingReference) {
-    return btoa(JSON.stringify([bookingReference, this.id]))
+    return btoa(JSON.stringify([bookingReference, this.id]));
   }
 
   /**
@@ -84,9 +86,11 @@ export default class {
     const ticketData = {
       seatGroupId: this.seatGroup.id,
       concessionTypeId: this.concessionType.id,
+    };
+    if (this.id) {
+      ticketData.id = this.id;
     }
-    if (this.id) ticketData.id = this.id
 
-    return ticketData
+    return ticketData;
   }
 }

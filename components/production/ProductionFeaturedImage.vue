@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import PlaceholderImage from '@/assets/images/placeholder-feature-image.png'
+import PlaceholderImage from '@/assets/images/placeholder-feature-image.png';
 
 export default {
   props: {
@@ -14,8 +14,8 @@ export default {
   },
   computed: {
     imageUrl() {
-      return this.imageObject ? this.imageObject.url : PlaceholderImage
+      return this.imageObject ? this.imageObject.url : PlaceholderImage;
     },
   },
-}
+};
 </script>

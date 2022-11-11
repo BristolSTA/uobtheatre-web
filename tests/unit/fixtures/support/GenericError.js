@@ -9,6 +9,6 @@ export default (
     message,
     field,
     code,
-  }
-  return Object.assign(baseObj, overrides)
-}
+  };
+  return Object.assign(baseObj, overrides);
+};

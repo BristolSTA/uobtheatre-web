@@ -1,32 +1,32 @@
-import { mount } from '@vue/test-utils'
-import { expect } from 'chai'
+import { mount } from '@vue/test-utils';
+import { expect } from 'chai';
 
-import Booking from '@/classes/Booking'
-import Ticket from '@/classes/Ticket'
-import TicketsMatrix from '@/classes/TicketsMatrix'
-import TicketSelectionStage from '@/pages/production/_slug/book/_performanceId/tickets.vue'
-import SelectedTicketsTable from '@/components/booking/SelectedTicketsTable.vue'
-import TicketOptions from '@/components/booking/TicketOptions.vue'
+import { generateMountOptions } from '../../../helpers';
+import Booking from '@/classes/Booking';
+import Ticket from '@/classes/Ticket';
+import TicketsMatrix from '@/classes/TicketsMatrix';
+import TicketSelectionStage from '@/pages/production/_slug/book/_performanceId/tickets.vue';
+import SelectedTicketsTable from '@/components/booking/SelectedTicketsTable.vue';
+import TicketOptions from '@/components/booking/TicketOptions.vue';
 
-import FullBooking from '@/tests/unit/fixtures/instances/FullBooking'
-import GenericApolloResponse from '@/tests/unit/fixtures/support/GenericApolloResponse'
-import GenericMutationResponse from '@/tests/unit/fixtures/support/GenericMutationResponse'
-import { generateMountOptions } from '../../../helpers'
+import FullBooking from '@/tests/unit/fixtures/instances/FullBooking';
+import GenericApolloResponse from '@/tests/unit/fixtures/support/GenericApolloResponse';
+import GenericMutationResponse from '@/tests/unit/fixtures/support/GenericMutationResponse';
 
 describe('Ticket Selection Stage', () => {
-  let stageComponent
-  let ticketTypes
-  let production
-  let performance
+  let stageComponent;
+  let ticketTypes;
+  let production;
+  let performance;
 
   beforeEach(() => {
-    const bookingMock = FullBooking()
-    production = bookingMock.performance.production
-    performance = bookingMock.performance
+    const bookingMock = FullBooking();
+    production = bookingMock.performance.production;
+    performance = bookingMock.performance;
 
-    ticketTypes = new TicketsMatrix(performance)
-    const booking = new Booking()
-    booking.performance = performance
+    ticketTypes = new TicketsMatrix(performance);
+    const booking = new Booking();
+    booking.performance = performance;
 
     stageComponent = mount(
       TicketSelectionStage,
@@ -37,37 +37,39 @@ describe('Ticket Selection Stage', () => {
           ticketMatrix: ticketTypes,
         },
       })
-    )
-  })
+    );
+  });
 
   it('displays the available seat locations', () => {
-    expect(stageComponent.findComponent(TicketOptions).exists()).to.be.true
+    expect(stageComponent.findComponent(TicketOptions).exists()).to.be.true;
     expect(
       stageComponent.findComponent(TicketOptions).props('ticketMatrix')
-    ).to.eq(stageComponent.vm.ticketMatrix)
+    ).to.eq(stageComponent.vm.ticketMatrix);
     expect(stageComponent.findComponent(TicketOptions).props('booking')).to.eq(
       stageComponent.vm.booking
-    )
-  })
+    );
+  });
 
   it('reacts to request update event', async () => {
-    expect(stageComponent.vm.booking.dirty).to.be.true
+    expect(stageComponent.vm.booking.dirty).to.be.true;
     stageComponent.vm.$apollo.mock.mutationCallstack.push(
       GenericApolloResponse(
         'booking',
         GenericMutationResponse({ booking: FullBooking({ tickets: [] }) })
       )
-    )
-    await stageComponent.findComponent(TicketOptions).vm.$emit('request-update')
-    await stageComponent.vm.$nextTick()
+    );
+    await stageComponent
+      .findComponent(TicketOptions)
+      .vm.$emit('request-update');
+    await stageComponent.vm.$nextTick();
 
-    expect(stageComponent.vm.booking.dirty).to.be.false
-  })
+    expect(stageComponent.vm.booking.dirty).to.be.false;
+  });
 
   describe('with selected tickets', () => {
     beforeEach(async () => {
-      const booking = new Booking()
-      booking.performance = performance
+      const booking = new Booking();
+      booking.performance = performance;
       booking.tickets = [
         new Ticket(
           performance.ticketOptions[0].seatGroup.id,
@@ -85,21 +87,21 @@ describe('Ticket Selection Stage', () => {
           performance.ticketOptions[1].seatGroup.id,
           performance.ticketOptions[0].concessionTypes[1].concessionType.id
         ),
-      ]
+      ];
       await stageComponent.setProps({
         booking,
-      })
-    })
+      });
+    });
 
     it('displays selected tickets', () => {
       expect(stageComponent.findComponent(SelectedTicketsTable).exists()).to.be
-        .true
+        .true;
       expect(
         stageComponent.findComponent(SelectedTicketsTable).props('booking')
-      ).to.eq(stageComponent.vm.booking)
+      ).to.eq(stageComponent.vm.booking);
       expect(
         stageComponent.findComponent(SelectedTicketsTable).props('ticketMatrix')
-      ).to.eq(stageComponent.vm.ticketMatrix)
-    })
-  })
-})
+      ).to.eq(stageComponent.vm.ticketMatrix);
+    });
+  });
+});

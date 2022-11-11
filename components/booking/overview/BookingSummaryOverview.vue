@@ -26,9 +26,9 @@
 </template>
 
 <script>
-import Booking from '@/classes/Booking'
+import OverviewBox from '../../ui/Card.vue';
+import Booking from '@/classes/Booking';
 
-import OverviewBox from '../../ui/Card.vue'
 export default {
   name: 'BookingSumamryOverview',
   components: { OverviewBox },
@@ -38,5 +38,5 @@ export default {
       type: [Booking, Object],
     },
   },
-}
+};
 </script>

@@ -55,14 +55,14 @@
 </template>
 
 <script>
-import ProductionCastCredits from '@/components/production/ProductionCastCredits.vue'
-import ProductionPerformances from '@/components/production/ProductionPerformances.vue'
-import ProductionPageQuery from '@/graphql/queries/ProductionBySlug.gql'
-import ProductionOverview from '@/components/production/ProductionOverview.vue'
-import ClickableLink from '@/components/ui/ClickableLink.vue'
+import ProductionCastCredits from '@/components/production/ProductionCastCredits.vue';
+import ProductionPerformances from '@/components/production/ProductionPerformances.vue';
+import ProductionPageQuery from '@/graphql/queries/ProductionBySlug.gql';
+import ProductionOverview from '@/components/production/ProductionOverview.vue';
+import ClickableLink from '@/components/ui/ClickableLink.vue';
 
-import { oneLiner } from '@/utils/lang.js'
-import ProductionBanner from '@/components/production/ProductionBanner.vue'
+import { oneLiner } from '@/utils/lang.js';
+import ProductionBanner from '@/components/production/ProductionBanner.vue';
 
 export default {
   components: {
@@ -79,30 +79,33 @@ export default {
       variables: {
         slug: params.slug,
       },
-    })
+    });
 
-    const production = data.production
-    if (!production)
+    const production = data.production;
+    if (!production) {
       return error({
         statusCode: 404,
         message: 'This production does not exist',
-      })
+      });
+    }
     return {
       production,
-    }
+    };
   },
   data() {
     return {
       overview: true,
-    }
+    };
   },
   head() {
-    const productionName = this.production ? this.production.name : 'Loading...'
-    const meta = []
+    const productionName = this.production
+      ? this.production.name
+      : 'Loading...';
+    const meta = [];
     if (this.production) {
       const description = oneLiner(
         this.$options.filters.truncate(this.production.description, 100)
-      )
+      );
       meta.push(
         {
           hid: 'description',
@@ -119,37 +122,37 @@ export default {
           name: 'og:description',
           content: description,
         }
-      )
+      );
       if (this.production.featuredImage) {
         meta.push({
           hid: 'og:image',
           name: 'og:image',
           content: this.production.featuredImage.url,
-        })
+        });
       }
     }
     return {
       title: `${productionName}`,
       meta,
-    }
+    };
   },
   computed: {
     route() {
-      return this.$route
+      return this.$route;
     },
     crumbs() {
       return [
         { text: 'Whats On', path: '/productions' },
         { text: this.production.name },
-      ]
+      ];
     },
     hasCastCrew() {
       return Boolean(
         this.production.crew.length ||
           this.production.cast.length ||
           this.production.productionTeam.length
-      )
+      );
     },
   },
-}
+};
 </script>

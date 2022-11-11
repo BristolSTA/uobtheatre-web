@@ -1,15 +1,14 @@
-import { mount } from '@vue/test-utils'
-import { expect } from 'chai'
+import { mount } from '@vue/test-utils';
+import { expect } from 'chai';
 
-import ChangeEmail from '@/components/user/ChangeEmail.vue'
-import { swal } from '@/utils'
-
-import { generateMountOptions } from '../../helpers'
-import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse'
-import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
+import { generateMountOptions } from '../../helpers';
+import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse';
+import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse';
+import { swal } from '@/utils';
+import ChangeEmail from '@/components/user/ChangeEmail.vue';
 
 describe('Change Email', () => {
-  let component
+  let component;
   beforeEach(() => {
     component = mount(
       ChangeEmail,
@@ -23,17 +22,17 @@ describe('Change Email', () => {
           ],
         },
       })
-    )
-  })
+    );
+  });
 
   it('can request email change', async () => {
-    const stub = jest.spyOn(swal, 'fire')
-    const inputs = component.findAll('input')
-    inputs.at(0).setValue('joe.bloggs@example.org')
-    inputs.at(1).setValue('mypassword')
-    await component.find('form').trigger('submit')
+    const stub = jest.spyOn(swal, 'fire');
+    const inputs = component.findAll('input');
+    inputs.at(0).setValue('joe.bloggs@example.org');
+    inputs.at(1).setValue('mypassword');
+    await component.find('form').trigger('submit');
 
-    await component.vm.$nextTick()
-    expect(stub.mock.calls).length(1)
-  })
-})
+    await component.vm.$nextTick();
+    expect(stub.mock.calls).length(1);
+  });
+});

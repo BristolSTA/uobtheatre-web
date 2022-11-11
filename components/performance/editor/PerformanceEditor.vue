@@ -82,7 +82,7 @@
               min="1"
               @input="$emit('update:intervalDurationMins', $event)"
               @keypress.stop="
-                if (!/^[0-9]$/i.test($event.key)) $event.preventDefault()
+                if (!/^[0-9]$/i.test($event.key)) $event.preventDefault();
               "
             />
           </template>
@@ -114,17 +114,19 @@
           <sta-button
             class="bg-sta-orange hover:bg-sta-orange-dark transition-colors"
             @click="loadTicketOptions"
-            >Load from exisiting</sta-button
           >
+            Load from exisiting
+          </sta-button>
           <sta-button
             class="bg-sta-gray hover:bg-sta-gray-dark transition-colors"
             @click="ignoredExisitingPerformances = true"
-            >Start from scratch</sta-button
           >
+            Start from scratch
+          </sta-button>
         </div>
       </template>
-      <template v-else
-        ><div class="grid gap-4 grid-cols-1 md:grid-cols-2">
+      <template v-else>
+        <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
           <div class="px-2 border border-sta-gray rounded-lg">
             <div class="flex items-center justify-between pt-3">
               <h4 class="text-h4">Seat Groups</h4>
@@ -182,8 +184,8 @@
                   v-if="discount.performances.edges.length > 1"
                   #editor-footer
                 >
-                  <alert
-                    >Synced with
+                  <alert>
+                    Synced with
                     {{ discount.performances.edges.length - 1 }} other
                     performances.
                   </alert>
@@ -245,7 +247,7 @@
               min="1"
               @input="$emit('update:capacity', $event)"
               @keypress.stop="
-                if (!/^[0-9]$/i.test($event.key)) $event.preventDefault()
+                if (!/^[0-9]$/i.test($event.key)) $event.preventDefault();
               "
             />
           </template>
@@ -271,17 +273,17 @@
 </template>
 
 <script>
-import ErrorHelper from '@/components/ui/ErrorHelper.vue'
-import Errors from '@/classes/Errors'
-import { getValidationErrors, performMutation, swal } from '@/utils'
-import StaButton from '@/components/ui/StaButton.vue'
-import Alert from '@/components/ui/Alert.vue'
-import { singleDiscounts as singleDiscountsFn } from '@/utils/performance'
-import Card from '../../ui/Card.vue'
-import FormLabel from '../../ui/FormLabel.vue'
-import SeatGroup from './SeatGroup.vue'
-import ConcessionType from './ConcessionType.vue'
-import PriceMatrix from './PriceMatrix.vue'
+import Card from '../../ui/Card.vue';
+import FormLabel from '../../ui/FormLabel.vue';
+import SeatGroup from './SeatGroup.vue';
+import ConcessionType from './ConcessionType.vue';
+import PriceMatrix from './PriceMatrix.vue';
+import ErrorHelper from '@/components/ui/ErrorHelper.vue';
+import Errors from '@/classes/Errors';
+import { getValidationErrors, performMutation, swal } from '@/utils';
+import StaButton from '@/components/ui/StaButton.vue';
+import Alert from '@/components/ui/Alert.vue';
+import { singleDiscounts as singleDiscountsFn } from '@/utils/performance';
 
 export default {
   components: {
@@ -362,7 +364,7 @@ export default {
       performanceSeatGroups: [],
 
       deletedDiscounts: [],
-    }
+    };
   },
   apollo: {
     availableVenues: {
@@ -375,10 +377,10 @@ export default {
       variables() {
         return {
           slug: this.venue.slug,
-        }
+        };
       },
       skip() {
-        return !this.venue
+        return !this.venue;
       },
     },
     otherPerformances: {
@@ -388,7 +390,7 @@ export default {
       variables() {
         return {
           productionId: this.production.id,
-        }
+        };
       },
       fetchPolicy: 'cache-and-network',
     },
@@ -400,27 +402,27 @@ export default {
           !this.currentSeatGroups.find(
             (currentSeatGroup) => currentSeatGroup.id === seatGroup.id
           )
-      )
+      );
     },
     similarPerformances() {
       return this.otherPerformances.filter(
         (performance) =>
           performance.venue.id === this.venue?.id && performance.id !== this.id
-      )
+      );
     },
     currentSeatGroups() {
       return this.performanceSeatGroups.map(
         (ticketOption) => ticketOption.seatGroup
-      )
+      );
     },
     singleDiscounts() {
-      return singleDiscountsFn(this.discounts?.edges || [])
+      return singleDiscountsFn(this.discounts?.edges || []);
     },
     selectedSeatGroupCapacities() {
       return this.performanceSeatGroups.reduce(
         (sum, option) => sum + option.capacity,
         0
-      )
+      );
     },
     showTicketsEditor() {
       return (
@@ -428,13 +430,13 @@ export default {
         this.singleDiscounts.length ||
         this.ignoredExisitingPerformances ||
         !this.similarPerformances.length
-      )
+      );
     },
   },
   watch: {
     ticketOptions: {
       handler(newValue) {
-        this.performanceSeatGroups = [...newValue]
+        this.performanceSeatGroups = [...newValue];
       },
       immediate: true,
     },
@@ -444,9 +446,9 @@ export default {
         // If no interval has been set yet, but similar performances has an interval, pre-fill with those interval lengths
         const intervalLength = newVal.find(
           (performance) => performance.intervalDurationMins
-        )?.intervalDurationMins
+        )?.intervalDurationMins;
         if (this.intervalDurationMins === null && intervalLength) {
-          this.$emit('update:intervalDurationMins', intervalLength)
+          this.$emit('update:intervalDurationMins', intervalLength);
         }
       }
     },
@@ -464,13 +466,13 @@ export default {
         disabled: this.disabled,
         description: this.description,
         capacity: this.capacity === '' ? null : this.capacity,
-      }
+      };
 
       if (!returnObject.id) {
-        delete returnObject.id
+        delete returnObject.id;
       }
 
-      return returnObject
+      return returnObject;
     },
     async loadTicketOptions() {
       const { value } = await swal.fire({
@@ -487,8 +489,10 @@ export default {
         ),
         showCancelButton: true,
         confirmButtonText: 'Load',
-      })
-      if (!value) return
+      });
+      if (!value) {
+        return;
+      }
 
       // Load the details
       const { data } = await this.$apollo.query({
@@ -498,15 +502,15 @@ export default {
           performanceId: value,
         },
         fetchPolicy: 'no-cache',
-      })
+      });
 
       // Delete exisiting performance seat groups
-      const performance = data.production.performances.edges[0].node
-      this.performanceSeatGroups = []
+      const performance = data.production.performances.edges[0].node;
+      this.performanceSeatGroups = [];
 
       // Delete exisiting discounts / concessions
       for (const discount of this.singleDiscounts) {
-        await this.deleteConcession(discount)
+        await this.deleteConcession(discount);
       }
 
       // For the chosen performancem add seat groups ...
@@ -514,34 +518,35 @@ export default {
         this.addSeatGroup(
           performanceSeatGroup.seatGroup,
           performanceSeatGroup.price
-        )
-      })
+        );
+      });
 
       // And concession types...
       for (const edge of performance.discounts.edges) {
         if (
           edge.node.requirements.length > 1 ||
           edge.node.requirements[0].number !== 1
-        )
-          continue
-        const requirement = edge.node.requirements[0]
+        ) {
+          continue;
+        }
+        const requirement = edge.node.requirements[0];
         await this.addNewConcession(
           requirement.concessionType.name,
           requirement.concessionType.description,
           edge.node.percentage,
           requirement.concessionType.id
-        )
+        );
       }
     },
     async saveRelated() {
-      const mutations = []
+      const mutations = [];
       // Process seat group changes
       const currentSeatGroupIds = this.ticketOptions.map(
         (ticketOption) => ticketOption.id
-      )
+      );
       const editedSeatGroupIds = this.performanceSeatGroups.map(
         (performanceSeatGroup) => performanceSeatGroup.id
-      )
+      );
 
       // Delete deleted seat groups
       currentSeatGroupIds
@@ -558,8 +563,8 @@ export default {
               },
               'deletePerformanceSeatGroup'
             )
-          )
-        })
+          );
+        });
 
       // Update or add edited ones
       this.performanceSeatGroups.forEach((performanceSeatGroup) => {
@@ -567,8 +572,10 @@ export default {
           seatGroup: performanceSeatGroup.seatGroup.id,
           performance: this.performance.id,
           price: performanceSeatGroup.price,
+        };
+        if (performanceSeatGroup.id) {
+          input.id = performanceSeatGroup.id;
         }
-        if (performanceSeatGroup.id) input.id = performanceSeatGroup.id
         mutations.push(
           performMutation(
             this.$apollo,
@@ -580,8 +587,8 @@ export default {
             },
             'performanceSeatGroup'
           )
-        )
-      })
+        );
+      });
 
       // Delete old discounts
       this.deletedDiscounts
@@ -605,7 +612,7 @@ export default {
                 },
                 'discount'
               )
-            )
+            );
           }
 
           // Otherwise, try the delete
@@ -618,8 +625,8 @@ export default {
               },
               'deleteDiscount'
             )
-          )
-        })
+          );
+        });
 
       // Create or update concession types
 
@@ -635,8 +642,10 @@ export default {
                   performances: discount.performances.edges.map(
                     (edge) => edge.node.id
                   ),
+                };
+                if (discount.id) {
+                  input.id = discount.id;
                 }
-                if (discount.id) input.id = discount.id
                 performMutation(
                   this.$apollo,
                   {
@@ -647,17 +656,18 @@ export default {
                   },
                   'discount'
                 ).then((data) => {
-                  discount.id = data.discount.discount.id
+                  discount.id = data.discount.discount.id;
                   // Create or update the discount requirement & concession
                   discount.requirements.forEach((requirement) => {
                     // Step #1: Concession Type
                     let input = {
                       name: requirement.concessionType.name,
                       description: requirement.concessionType.description,
-                    }
+                    };
 
-                    if (requirement.concessionType.id)
-                      input.id = requirement.concessionType.id
+                    if (requirement.concessionType.id) {
+                      input.id = requirement.concessionType.id;
+                    }
 
                     performMutation(
                       this.$apollo,
@@ -671,15 +681,17 @@ export default {
                     )
                       .then((data) => {
                         requirement.concessionType.id =
-                          data.concessionType.concessionType.id
+                          data.concessionType.concessionType.id;
 
                         // Step#2: Update or create the requirement
                         input = {
                           number: requirement.number,
                           concessionType: requirement.concessionType.id,
                           discount: discount.id,
+                        };
+                        if (requirement.id) {
+                          input.id = requirement.id;
                         }
-                        if (requirement.id) input.id = requirement.id
 
                         performMutation(
                           this.$apollo,
@@ -692,22 +704,22 @@ export default {
                           'discountRequirement'
                         )
                           .then(resolve())
-                          .catch((e) => reject(e))
+                          .catch((e) => reject(e));
                       })
-                      .catch((e) => reject(e))
-                  })
-                })
+                      .catch((e) => reject(e));
+                  });
+                });
               })
-            )
-          })
+            );
+          });
       }
 
       try {
-        await Promise.all(mutations)
-        return true
+        await Promise.all(mutations);
+        return true;
       } catch (e) {
-        this.$emit('update:errors', getValidationErrors(e))
-        return false
+        this.$emit('update:errors', getValidationErrors(e));
+        return false;
       }
     },
     async addSeatGroup(sg = null, price = 0) {
@@ -723,18 +735,20 @@ export default {
           ),
           showCancelButton: true,
           confirmButtonText: 'Add',
-        })
-        if (!value) return
+        });
+        if (!value) {
+          return;
+        }
         sg = this.remainingSeatGroups.find(
           (seatGroup) => seatGroup.id === value
-        )
+        );
       }
 
       this.performanceSeatGroups.push({
         seatGroup: sg,
         price,
         capacity: sg.capacity,
-      })
+      });
     },
     async addNewConcession(
       name = null,
@@ -742,7 +756,9 @@ export default {
       percentage = 0,
       id = null
     ) {
-      const currentNum = this.discounts?.edges ? this.discounts.edges.length : 0
+      const currentNum = this.discounts?.edges
+        ? this.discounts.edges.length
+        : 0;
       await this.$emit('update:discounts', {
         edges: [
           ...(this.discounts?.edges || []),
@@ -763,16 +779,16 @@ export default {
             },
           },
         ],
-      })
+      });
     },
     async deleteConcession(discount) {
       // Remove from array
       await this.$emit('update:discounts', {
         edges: this.discounts.edges.filter((edge) => edge.node !== discount),
-      })
+      });
 
-      this.deletedDiscounts.push(discount)
+      this.deletedDiscounts.push(discount);
     },
   },
-}
+};
 </script>

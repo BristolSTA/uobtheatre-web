@@ -49,7 +49,7 @@
           }}
           remaining in this location
         </template>
-        <template v-else>No more tickets available at this location</template>
+        <template v-else> No more tickets available at this location </template>
       </div>
       <concession-type
         v-for="(concessionTypeEdge, index) in orderedConcessionTypes"
@@ -109,9 +109,9 @@
 </template>
 
 <script>
-import ConcessionType from '@/components/booking/ConcessionType.vue'
-import GroupTicketButton from '@/components/booking/GroupTicketButton.vue'
-import lo from 'lodash'
+import lo from 'lodash';
+import ConcessionType from '@/components/booking/ConcessionType.vue';
+import GroupTicketButton from '@/components/booking/GroupTicketButton.vue';
 
 export default {
   name: 'SeatGroup',
@@ -148,18 +148,18 @@ export default {
   },
   computed: {
     orderedConcessionTypes() {
-      return lo.sortBy(this.ticketOption.concessionTypes, 'price').reverse()
+      return lo.sortBy(this.ticketOption.concessionTypes, 'price').reverse();
     },
     available() {
       return (
         this.groupCapacityRemaining !== 0 ||
         this.currentLocationTickets.length !== 0
-      )
+      );
     },
     currentLocationTickets() {
       return this.currentTickets.filter((ticket) => {
-        return ticket.matches(this.ticketOption.seatGroup)
-      })
+        return ticket.matches(this.ticketOption.seatGroup);
+      });
     },
   },
   methods: {
@@ -170,14 +170,14 @@ export default {
           this.ticketOption.seatGroup,
           requirement.concessionType,
           requirement.number
-        )
-      })
+        );
+      });
     },
     onHeaderClick() {
       if (this.available) {
-        this.$emit('select-location')
+        this.$emit('select-location');
       }
     },
   },
-}
+};
 </script>

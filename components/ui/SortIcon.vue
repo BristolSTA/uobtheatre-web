@@ -28,17 +28,19 @@ export default {
     currentlySorted() {
       return (
         this.value && (!this.sortField || this.value.endsWith(this.sortField))
-      )
+      );
     },
     currentlySortedUp() {
-      return this.currentlySorted && this.value.startsWith('-')
+      return this.currentlySorted && this.value.startsWith('-');
     },
     currentlySortedDown() {
-      return this.currentlySorted && !this.currentlySortedUp
+      return this.currentlySorted && !this.currentlySortedUp;
     },
   },
   mounted() {
-    if (this.mustSort && !this.currentlySorted) this.onSort()
+    if (this.mustSort && !this.currentlySorted) {
+      this.onSort();
+    }
   },
   methods: {
     onSort() {
@@ -47,11 +49,13 @@ export default {
 
       if (this.currentlySorted) {
         // Exisiting sort
-        if (this.value.startsWith('-'))
-          this.$emit('input', this.mustSort ? '' + this.sortField : null)
-        else this.$emit('input', '-' + this.sortField)
+        if (this.value.startsWith('-')) {
+          this.$emit('input', this.mustSort ? '' + this.sortField : null);
+        } else {
+          this.$emit('input', '-' + this.sortField);
+        }
       } else {
-        this.$emit('input', '' + this.sortField)
+        this.$emit('input', '' + this.sortField);
       }
 
       // if (this.value === '-') {
@@ -63,5 +67,5 @@ export default {
       // }
     },
   },
-}
+};
 </script>

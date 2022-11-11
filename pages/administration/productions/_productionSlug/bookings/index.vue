@@ -32,12 +32,13 @@
           <table-head-item>Reference</table-head-item>
           <table-head-item>Quantity</table-head-item>
           <table-head-item>Status</table-head-item>
-          <table-head-item
-            >Created<sort-icon
+          <table-head-item>
+            Created<sort-icon
               v-model="bookingsOrderBy"
               :must-sort="true"
               sort-field="createdAt"
-          /></table-head-item>
+            />
+          </table-head-item>
         </template>
 
         <table-row
@@ -47,8 +48,8 @@
           :clickable="true"
           @click="$router.push(`bookings/${booking.reference}`)"
         >
-          <table-row-item
-            >{{ booking.user.firstName }}
+          <table-row-item>
+            {{ booking.user.firstName }}
             {{ booking.user.lastName }}
             <p v-if="booking.creator.id !== booking.user.id" class="text-xs">
               Created by {{ booking.creator.firstName }}
@@ -56,15 +57,17 @@
             </p>
           </table-row-item>
           <table-row-item>{{ booking.reference }}</table-row-item>
-          <table-row-item
-            >{{ booking.tickets.length }} ticket{{
+          <table-row-item>
+            {{ booking.tickets.length }} ticket{{
               booking.tickets.length > 1 ? 's' : ''
-            }}</table-row-item
-          >
-          <table-row-item>{{ booking.status.description }}</table-row-item>
-          <table-row-item>{{
-            booking.createdAt | dateFormat('dd/MMM/y HH:mm ZZZZ')
-          }}</table-row-item>
+            }}
+          </table-row-item>
+          <table-row-item>
+            {{ new BookingStatusEnum(booking.status).name }}
+          </table-row-item>
+          <table-row-item>
+            {{ booking.createdAt | dateFormat('dd/MMM/y HH:mm ZZZZ') }}
+          </table-row-item>
         </table-row>
       </paginated-table>
     </card>
@@ -72,15 +75,16 @@
 </template>
 
 <script>
-import AdminProductionCompleteBookingsQuery from '@/graphql/queries/admin/productions/AdminProductionCompleteBookings.gql'
-import AdminPage from '@/components/admin/AdminPage.vue'
-import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue'
-import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue'
-import TableRow from '@/components/ui/Tables/TableRow.vue'
-import TableRowItem from '@/components/ui/Tables/TableRowItem.vue'
-import Card from '@/components/ui/Card.vue'
-import SortIcon from '@/components/ui/SortIcon.vue'
-import AdminProductionLookupQuery from '@/graphql/queries/admin/productions/AdminProductionLookup.gql'
+import AdminProductionCompleteBookingsQuery from '@/graphql/queries/admin/productions/AdminProductionCompleteBookings.gql';
+import AdminPage from '@/components/admin/AdminPage.vue';
+import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue';
+import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
+import TableRow from '@/components/ui/Tables/TableRow.vue';
+import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
+import Card from '@/components/ui/Card.vue';
+import SortIcon from '@/components/ui/SortIcon.vue';
+import AdminProductionLookupQuery from '@/graphql/queries/admin/productions/AdminProductionLookup.gql';
+import BookingStatusEnum from '@/enums/PayableStatusEnum';
 export default {
   components: {
     AdminPage,
@@ -98,17 +102,18 @@ export default {
       variables: {
         slug: params.productionSlug,
       },
-    })
+    });
 
-    const production = data.production
-    if (!production)
+    const production = data.production;
+    if (!production) {
       return error({
         statusCode: 404,
         message: 'This production does not exist',
-      })
+      });
+    }
     return {
       production,
-    }
+    };
   },
   data() {
     return {
@@ -120,13 +125,15 @@ export default {
       bookingsStatus: null,
 
       production: null,
-    }
+
+      BookingStatusEnum,
+    };
   },
   head() {
-    const title = `Bookings for ${this.production.name}`
+    const title = `Bookings for ${this.production.name}`;
     return {
       title,
-    }
+    };
   },
   apollo: {
     bookings: {
@@ -139,21 +146,25 @@ export default {
           search: this.bookingsSearch,
           orderBy: this.bookingsOrderBy,
           status: this.bookingsStatus,
-        }
+        };
       },
       fetchPolicy: 'cache-and-network',
       update(data) {
-        const performances = data.production.performances.edges
-        if (!performances.length) return []
-        return performances[0].node.bookings.edges.map((edge) => edge.node)
+        const performances = data.production.performances.edges;
+        if (!performances.length) {
+          return [];
+        }
+        return performances[0].node.bookings.edges.map((edge) => edge.node);
       },
       debounce: 600,
       result(result) {
-        if (!result.data) return
+        if (!result.data) {
+          return;
+        }
         this.bookingsPageInfo =
-          result.data.production.performances.edges[0].node.bookings.pageInfo
+          result.data.production.performances.edges[0].node.bookings.pageInfo;
       },
     },
   },
-}
+};
 </script>

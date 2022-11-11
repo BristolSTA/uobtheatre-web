@@ -1,9 +1,9 @@
-import Payment from './Payment.js'
-import PerformanceNode from './Performance.js'
-import PriceBreakdown from './PriceBreakdown.js'
-import GenericNodeConnection from './support/GenericNodeConnection.js'
-import Ticket from './Ticket.js'
-import UserNode from './User.js'
+import Payment from './Payment.js';
+import PerformanceNode from './Performance.js';
+import PriceBreakdown from './PriceBreakdown.js';
+import GenericNodeConnection from './support/GenericNodeConnection.js';
+import Ticket from './Ticket.js';
+import UserNode from './User.js';
 export default (overrides = {}) => {
   return Object.assign(
     {
@@ -13,14 +13,11 @@ export default (overrides = {}) => {
       reference: 'yOIYg6Co8vGR',
       user: UserNode(),
       performance: PerformanceNode(),
-      status: {
-        value: 'PAID',
-        description: 'Paid',
-      },
+      status: 'PAID',
       tickets: [Ticket()],
       priceBreakdown: PriceBreakdown(),
       transactions: GenericNodeConnection([Payment()]),
     },
     overrides
-  )
-}
+  );
+};

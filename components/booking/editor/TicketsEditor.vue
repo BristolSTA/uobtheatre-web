@@ -43,12 +43,12 @@
 </template>
 
 <script>
-import Booking from '@/classes/Booking'
-import TicketsMatrix from '@/classes/TicketsMatrix'
-import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue'
-import Errors from '@/classes/Errors'
-import TicketOptions from '../TicketOptions.vue'
-import SelectedTicketsTable from '../SelectedTicketsTable.vue'
+import TicketOptions from '../TicketOptions.vue';
+import SelectedTicketsTable from '../SelectedTicketsTable.vue';
+import Booking from '@/classes/Booking';
+import TicketsMatrix from '@/classes/TicketsMatrix';
+import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue';
+import Errors from '@/classes/Errors';
 export default {
   components: { TicketOptions, AllErrorsDisplay, SelectedTicketsTable },
   props: {
@@ -79,12 +79,12 @@ export default {
   },
   computed: {
     performanceMinsAway() {
-      const timeDiff = new Date(this.booking.performance.start) - Date.now()
-      return Math.round(timeDiff / (1000 * 60))
+      const timeDiff = new Date(this.booking.performance.start) - Date.now();
+      return Math.round(timeDiff / (1000 * 60));
     },
     performanceStarted() {
-      return this.performanceMinsAway < 0
+      return this.performanceMinsAway < 0;
     },
   },
-}
+};
 </script>

@@ -8,5 +8,5 @@ export default (overrides = {}) => {
       value: 5,
     },
     overrides
-  )
-}
+  );
+};

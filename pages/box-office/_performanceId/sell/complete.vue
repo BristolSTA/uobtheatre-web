@@ -45,14 +45,14 @@
 </template>
 
 <script>
-import { DateTime } from 'luxon'
-import Booking from '@/classes/Booking'
-import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue'
-import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue'
-import CheckInTickets from '@/graphql/mutations/box-office/CheckInTickets.gql'
-import UnCheckInTickets from '@/graphql/mutations/box-office/UnCheckInTickets.gql'
-import { performMutation, errorToast, successToast } from '@/utils'
-import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue'
+import { DateTime } from 'luxon';
+import Booking from '@/classes/Booking';
+import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
+import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue';
+import CheckInTickets from '@/graphql/mutations/box-office/CheckInTickets.gql';
+import UnCheckInTickets from '@/graphql/mutations/box-office/UnCheckInTickets.gql';
+import { performMutation, errorToast, successToast } from '@/utils';
+import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue';
 export default {
   components: { TicketsOverview, PaymentOverview, BoxOfficeNavigation },
   props: {
@@ -64,25 +64,29 @@ export default {
   data() {
     return {
       checkedIn: false,
-    }
+    };
   },
   mounted() {
-    if (!this.booking.reference) return this.$router.push('../')
+    if (!this.booking.reference) {
+      return this.$router.push('../');
+    }
 
-    if (this.canAutoCheckIn()) this.changeTicketStatus(true)
+    if (this.canAutoCheckIn()) {
+      this.changeTicketStatus(true);
+    }
   },
   beforeDestroy() {
     // Remove stored booking ID
-    this.$store.commit('box-office/SET_IN_PROGRESS_BOOKING_ID', null)
+    this.$store.commit('box-office/SET_IN_PROGRESS_BOOKING_ID', null);
   },
   methods: {
     canAutoCheckIn() {
-      return this.performanceDoorsDiffMinutes() <= 15
+      return this.performanceDoorsDiffMinutes() <= 15;
     },
     performanceDoorsDiffMinutes() {
       return DateTime.fromISO(this.booking.performance.doorsOpen)
         .diff(DateTime.now())
-        .as('minutes')
+        .as('minutes');
     },
     async changeTicketStatus(checkingIn) {
       try {
@@ -96,14 +100,14 @@ export default {
               tickets: this.booking.tickets.map((ticket) => {
                 return {
                   ticketId: ticket.id,
-                }
+                };
               }),
             },
           },
           checkingIn ? 'checkInBooking' : 'uncheckInBooking'
-        )
+        );
 
-        this.checkedIn = checkingIn
+        this.checkedIn = checkingIn;
         successToast.fire({
           timer: 4000,
           title: !checkingIn
@@ -111,18 +115,18 @@ export default {
             : this.canAutoCheckIn()
             ? 'Tickets automatically checked in'
             : 'Tickets un-checked in',
-        })
+        });
       } catch (e) {
         errorToast.fire({
           title: checkingIn
             ? 'Unable to check in tickets'
             : 'Unable to un-check in tickets',
-        })
+        });
       }
     },
     goToMenu() {
-      this.$router.push(`/box-office/${this.booking.performance.id}`)
+      this.$router.push(`/box-office/${this.booking.performance.id}`);
     },
   },
-}
+};
 </script>

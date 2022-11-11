@@ -1,4 +1,4 @@
-import GenericNodeConnection from './support/GenericNodeConnection'
+import GenericNodeConnection from './support/GenericNodeConnection';
 export default (overrides = {}) => {
   return Object.assign(
     {
@@ -18,5 +18,5 @@ export default (overrides = {}) => {
       secondaryEmail: null,
     },
     overrides
-  )
-}
+  );
+};

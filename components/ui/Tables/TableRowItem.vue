@@ -1,9 +1,9 @@
 <template>
   <td class="p-2">
-    <slot></slot>
+    <slot />
   </td>
 </template>
 
 <script>
-export default {}
+export default {};
 </script>

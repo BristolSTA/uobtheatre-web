@@ -19,5 +19,5 @@ export default (overrides = {}) => {
       payObject: null, // TODO
     },
     overrides
-  )
-}
+  );
+};

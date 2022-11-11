@@ -29,12 +29,12 @@
 </template>
 
 <script>
-import AdminPerformancesIndexQuery from '@/graphql/queries/admin/productions/AdminPerformancesIndex.gql'
-import AdminProductionLookupQuery from '@/graphql/queries/admin/productions/AdminProductionLookup.gql'
-import AdminPage from '@/components/admin/AdminPage.vue'
-import PaginationBar from '@/components/ui/PaginationBar.vue'
-import LoadingContainer from '@/components/ui/LoadingContainer.vue'
-import TimeGroupedPerformanceSelector from '@/components/performance/TimeGroupedPerformanceSelector.vue'
+import AdminPerformancesIndexQuery from '@/graphql/queries/admin/productions/AdminPerformancesIndex.gql';
+import AdminProductionLookupQuery from '@/graphql/queries/admin/productions/AdminProductionLookup.gql';
+import AdminPage from '@/components/admin/AdminPage.vue';
+import PaginationBar from '@/components/ui/PaginationBar.vue';
+import LoadingContainer from '@/components/ui/LoadingContainer.vue';
+import TimeGroupedPerformanceSelector from '@/components/performance/TimeGroupedPerformanceSelector.vue';
 export default {
   components: {
     AdminPage,
@@ -49,17 +49,18 @@ export default {
       variables: {
         slug: params.productionSlug,
       },
-    })
+    });
 
-    const production = data.production
-    if (!production)
+    const production = data.production;
+    if (!production) {
       return error({
         statusCode: 404,
         message: 'This production does not exist',
-      })
+      });
+    }
     return {
       production,
-    }
+    };
   },
   apollo: {
     performancesData: {
@@ -71,7 +72,7 @@ export default {
           soldOut: false,
           disabled: false,
           take: 8,
-        }
+        };
       },
       update: (data) => data.production.performances,
     },
@@ -82,13 +83,13 @@ export default {
 
       performancesData: null,
       performancesOffset: 0,
-    }
+    };
   },
   head() {
-    const title = `Create booking for ${this.production.name}`
+    const title = `Create booking for ${this.production.name}`;
     return {
       title,
-    }
+    };
   },
-}
+};
 </script>

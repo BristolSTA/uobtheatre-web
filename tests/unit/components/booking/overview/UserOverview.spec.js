@@ -1,13 +1,12 @@
-import { createLocalVue, mount } from '@vue/test-utils'
-import { expect } from 'chai'
-import Vuex from 'vuex'
+import { createLocalVue, mount } from '@vue/test-utils';
+import { expect } from 'chai';
+import Vuex from 'vuex';
 
-import UserOverview from '@/components/booking/overview/UserOverview.vue'
+import { fixTextSpacing } from '../../../helpers';
+import UserOverview from '@/components/booking/overview/UserOverview.vue';
 
-import { fixTextSpacing } from '../../../helpers'
-
-const localVue = createLocalVue()
-localVue.use(Vuex)
+const localVue = createLocalVue();
+localVue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     auth: {
@@ -18,23 +17,23 @@ const store = new Vuex.Store({
       },
     },
   },
-})
+});
 
 describe('User Overview', () => {
-  let userOverviewComponent
+  let userOverviewComponent;
   beforeEach(() => {
     userOverviewComponent = mount(UserOverview, {
       store,
       localVue,
-    })
-  })
+    });
+  });
 
   it('shows users details from veux', () => {
     expect(fixTextSpacing(userOverviewComponent.text())).to.contain(
       'Joe Bloggs'
-    )
+    );
     expect(fixTextSpacing(userOverviewComponent.text())).to.contain(
       'joe.bloggs@example.org'
-    )
-  })
-})
+    );
+  });
+});

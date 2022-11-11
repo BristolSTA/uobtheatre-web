@@ -52,14 +52,7 @@
           payment is requried. Please click below to complete your booking.
         </p>
         <button
-          class="
-            p-2
-            bg-sta-green
-            hover:bg-sta-green-dark
-            rounded
-            focus:outline-none
-            transition-colors
-          "
+          class="p-2 bg-sta-green hover:bg-sta-green-dark rounded focus:outline-none transition-colors"
           @click="payFree"
         >
           Complete Booking
@@ -70,19 +63,19 @@
 </template>
 
 <script>
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
-import Booking from '@/classes/Booking'
-import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue'
-import { getValidationErrors, performMutation, swal } from '@/utils'
-import BookingStage from '@/classes/BookingStage'
-import SquarePayment from '@/components/square/SquarePayment.vue'
-import LoadingContainer from '@/components/ui/LoadingContainer.vue'
+import Booking from '@/classes/Booking';
+import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue';
+import { getValidationErrors, performMutation, swal } from '@/utils';
+import BookingStage from '@/classes/BookingStage';
+import SquarePayment from '@/components/square/SquarePayment.vue';
+import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 export default {
   stageInfo: new BookingStage({
     name: 'Payment',
     routeName: 'production-slug-book-performanceId-pay',
-    eligable: (production, booking) => !booking.dirty,
+    eligable: (_, booking) => !booking.dirty,
   }),
   components: { AllErrorsDisplay, SquarePayment, LoadingContainer },
   props: {
@@ -102,7 +95,7 @@ export default {
         google: false,
         apple: false,
       },
-    }
+    };
   },
   methods: {
     onPaying() {
@@ -112,13 +105,15 @@ export default {
         allowEscapeKey: false,
         allowEnterKey: false,
         didOpen: () => {
-          Swal.showLoading()
+          Swal.showLoading();
         },
-      })
+      });
     },
     async payFree() {
-      if (this.loading) return
-      this.loading = true
+      if (this.loading) {
+        return;
+      }
+      this.loading = true;
       try {
         const data = await performMutation(
           this.$apollo,
@@ -131,12 +126,12 @@ export default {
             },
           },
           'payBooking'
-        )
-        this.onBookingComplete(data.payBooking.booking.reference)
+        );
+        this.onBookingComplete(data.payBooking.booking.reference);
       } catch (e) {
-        this.errors = getValidationErrors(e)
-        this.booking.refreshIdempotencyKey()
-        this.loading = false
+        this.errors = getValidationErrors(e);
+        this.booking.refreshIdempotencyKey();
+        this.loading = false;
       }
     },
     async onNonceRecieved(paymentData) {
@@ -154,17 +149,17 @@ export default {
             },
           },
           'payBooking'
-        )
+        );
 
-        this.onBookingComplete(data.payBooking.booking.reference)
+        this.onBookingComplete(data.payBooking.booking.reference);
       } catch (e) {
-        this.errors = getValidationErrors(e)
-        this.booking.refreshIdempotencyKey()
+        this.errors = getValidationErrors(e);
+        this.booking.refreshIdempotencyKey();
       }
-      this.progressPopup.close()
+      this.progressPopup.close();
     },
     onBookingComplete(reference) {
-      this.$emit('paid')
+      this.$emit('paid');
       swal
         .fire({
           icon: 'success',
@@ -177,9 +172,9 @@ export default {
           allowOutsideClick: false,
         })
         .then(() => {
-          this.$router.push(`/user/booking/${reference}`)
-        })
+          this.$router.push(`/user/booking/${reference}`);
+        });
     },
   },
-}
+};
 </script>

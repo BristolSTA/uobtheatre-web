@@ -7,5 +7,5 @@ export default (overrides = {}) => {
       production: null,
     },
     overrides
-  )
-}
+  );
+};

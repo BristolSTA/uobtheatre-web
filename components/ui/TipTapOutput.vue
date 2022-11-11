@@ -2,7 +2,7 @@
 /* eslint-disable vue/no-v-html */
 </script>
 <template>
-  <div class="tiptap-output" v-html="html"></div>
+  <div class="tiptap-output" v-html="html" />
 </template>
 
 <script>
@@ -13,5 +13,5 @@ export default {
       type: String,
     },
   },
-}
+};
 </script>

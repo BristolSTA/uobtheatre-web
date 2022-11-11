@@ -33,12 +33,12 @@
 </template>
 
 <script>
-import lo from 'lodash'
-import Booking from '@/classes/Booking'
-import BookingMutation from '@/graphql/mutations/booking/Booking.gql'
-import { performMutation } from '@/utils'
-import TicketsMatrix from '@/classes/TicketsMatrix'
-import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue'
+import lo from 'lodash';
+import Booking from '@/classes/Booking';
+import BookingMutation from '@/graphql/mutations/booking/Booking.gql';
+import { performMutation } from '@/utils';
+import TicketsMatrix from '@/classes/TicketsMatrix';
+import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue';
 
 export default {
   components: {
@@ -64,11 +64,11 @@ export default {
 
       interaction_timer: lo.debounce(this.updateAPI, 2 * 1000),
       errors: null,
-    }
+    };
   },
   methods: {
     async updateAPI() {
-      let bookingResponse
+      let bookingResponse;
       try {
         if (!this.booking.id) {
           // We haven't got a booking yet, lets create one
@@ -84,8 +84,8 @@ export default {
               },
             },
             'booking'
-          )
-          bookingResponse = data.booking.booking
+          );
+          bookingResponse = data.booking.booking;
         } else {
           // We have a booking, lets update it
           const data = await performMutation(
@@ -100,32 +100,32 @@ export default {
               },
             },
             'booking'
-          )
-          bookingResponse = data.booking.booking
+          );
+          bookingResponse = data.booking.booking;
         }
       } catch ({ errors }) {
-        this.errors = errors
-        return
+        this.errors = errors;
+        return;
       }
 
       // Update booking ID in store
       this.$store.commit(
         'box-office/SET_IN_PROGRESS_BOOKING_ID',
         bookingResponse.id
-      )
+      );
 
       // Check for changes since API called.
       if (this.booking.tickets.length === bookingResponse.tickets.length) {
-        return this.booking.updateFromAPIData(bookingResponse)
+        return this.booking.updateFromAPIData(bookingResponse);
       }
 
       // There has been a change in the selected tickets whilst calling the API. Let's trigger another call...
-      this.interaction_timer()
+      this.interaction_timer();
     },
     cancel() {
-      this.$store.dispatch('box-office/cancelInProgressBooking')
-      this.$router.push(`/box-office/${this.performance.id}`)
+      this.$store.dispatch('box-office/cancelInProgressBooking');
+      this.$router.push(`/box-office/${this.performance.id}`);
     },
   },
-}
+};
 </script>

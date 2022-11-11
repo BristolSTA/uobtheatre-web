@@ -3,7 +3,7 @@
     class="p-2 mb-1"
     :class="[levelConfig.background, { 'text-center': centered }]"
   >
-    <slot></slot>
+    <slot />
   </div>
 </template>
 
@@ -21,7 +21,7 @@ const levelMap = {
   danger: {
     background: 'bg-sta-rouge text-white',
   },
-}
+};
 export default {
   props: {
     level: {
@@ -35,8 +35,8 @@ export default {
   },
   computed: {
     levelConfig() {
-      return levelMap[this.level] || {}
+      return levelMap[this.level] || {};
     },
   },
-}
+};
 </script>

@@ -1,10 +1,10 @@
-import bookingFixture from '@/tests/unit/fixtures/Booking'
-import PerformanceSeatGroup from '@/tests/unit/fixtures/PerformanceSeatGroup'
-import ConcessionTypeBookingType from '@/tests/unit/fixtures/ConcessionTypeBookingType'
-import SeatGroup from '@/tests/unit/fixtures/SeatGroup'
-import ConcessionType from '@/tests/unit/fixtures/ConcessionType'
-import Ticket from '@/tests/unit/fixtures/Ticket'
-import PriceBreakdownTicket from '../PriceBreakdownTicket'
+import PriceBreakdownTicket from '../PriceBreakdownTicket';
+import bookingFixture from '@/tests/unit/fixtures/Booking';
+import PerformanceSeatGroup from '@/tests/unit/fixtures/PerformanceSeatGroup';
+import ConcessionTypeBookingType from '@/tests/unit/fixtures/ConcessionTypeBookingType';
+import SeatGroup from '@/tests/unit/fixtures/SeatGroup';
+import ConcessionType from '@/tests/unit/fixtures/ConcessionType';
+import Ticket from '@/tests/unit/fixtures/Ticket';
 
 /**
  * Has
@@ -14,31 +14,31 @@ import PriceBreakdownTicket from '../PriceBreakdownTicket'
  *  1 Student The Meh Seats
  */
 export default (overrides = {}) => {
-  const bookingdata = bookingFixture()
+  const bookingdata = bookingFixture();
 
   const adult = ConcessionType({
     name: 'Adult',
     description: null,
-  })
+  });
   const adultBookingType = ConcessionTypeBookingType({
     concessionType: adult,
-  })
+  });
   const student = ConcessionType({
     name: 'Student',
     id: 2,
     description: 'Valid ID NOT required',
-  })
+  });
   const studentBookingType = ConcessionTypeBookingType({
     concessionType: student,
     price: 800,
     pricePounds: '8.00',
-  })
+  });
 
   const mehSeatGroup = SeatGroup({
     name: 'The Meh Seats',
     id: 2,
     description: null,
-  })
+  });
 
   bookingdata.performance.ticketOptions = [
     PerformanceSeatGroup({
@@ -50,7 +50,7 @@ export default (overrides = {}) => {
       seatGroup: mehSeatGroup,
       concessionTypes: [adultBookingType, studentBookingType],
     }),
-  ]
+  ];
 
   bookingdata.tickets = [
     Ticket({ id: 7 }),
@@ -66,7 +66,7 @@ export default (overrides = {}) => {
       seatGroup: mehSeatGroup,
       concessionType: student,
     }),
-  ]
+  ];
 
   bookingdata.priceBreakdown.tickets = [
     PriceBreakdownTicket({
@@ -88,7 +88,7 @@ export default (overrides = {}) => {
       concessionType: student,
       totalPrice: 100,
     }),
-  ]
+  ];
 
-  return Object.assign(bookingdata, overrides)
-}
+  return Object.assign(bookingdata, overrides);
+};

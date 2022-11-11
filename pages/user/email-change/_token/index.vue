@@ -1,14 +1,6 @@
 <template>
   <div
-    class="
-      flex
-      items-center
-      justify-center
-      p-6
-      min-h-full
-      text-white
-      bg-sta-gray
-    "
+    class="flex items-center justify-center p-6 min-h-full text-white bg-sta-gray"
   >
     <div class="relative text-center">
       <template v-if="!addedOk && loading">
@@ -49,13 +41,13 @@
   </div>
 </template>
 <script>
-import gql from 'graphql-tag'
+import gql from 'graphql-tag';
 
-import LoadingContainer from '@/components/ui/LoadingContainer.vue'
-import NonFieldError from '@/components/ui/NonFieldError.vue'
-import TextInput from '@/components/ui/TextInput.vue'
-import { getValidationErrors, performMutation, swalToast } from '@/utils'
-import LoadingIcon from '@/components/ui/LoadingIcon.vue'
+import LoadingContainer from '@/components/ui/LoadingContainer.vue';
+import NonFieldError from '@/components/ui/NonFieldError.vue';
+import TextInput from '@/components/ui/TextInput.vue';
+import { getValidationErrors, performMutation, swalToast } from '@/utils';
+import LoadingIcon from '@/components/ui/LoadingIcon.vue';
 
 export default {
   components: {
@@ -70,7 +62,7 @@ export default {
       password: null,
       addedOk: false,
       loading: true,
-    }
+    };
   },
   head: {
     title: 'Change Email',
@@ -92,16 +84,16 @@ export default {
           },
         },
         'verifySecondaryEmail'
-      )
-      this.addedOk = true
+      );
+      this.addedOk = true;
     } catch (e) {
-      this.addedOk = false
+      this.addedOk = false;
     }
-    this.loading = false
+    this.loading = false;
   },
   methods: {
     async finishSwap() {
-      this.loading = true
+      this.loading = true;
       try {
         await performMutation(
           this.$apollo,
@@ -118,7 +110,7 @@ export default {
             },
           },
           'swapEmails'
-        )
+        );
 
         await performMutation(
           this.$apollo,
@@ -135,19 +127,19 @@ export default {
             },
           },
           'removeSecondaryEmail'
-        )
+        );
 
         swalToast.fire({
           position: 'bottom-end',
           icon: 'success',
           title: 'Email changed!',
-        })
-        return this.$router.replace('/user')
+        });
+        return this.$router.replace('/user');
       } catch (e) {
-        this.errors = getValidationErrors(e)
+        this.errors = getValidationErrors(e);
       }
-      this.loading = false
+      this.loading = false;
     },
   },
-}
+};
 </script>

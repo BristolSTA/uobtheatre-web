@@ -1,17 +1,11 @@
 <template>
   <div>
     <h3
-      class="
-        text-sta-gray-light text-sm
-        font-bold
-        tracking-wide
-        select-none
-        uppercase
-      "
+      class="text-sta-gray-light text-sm font-bold tracking-wide select-none uppercase"
     >
       {{ name }}
     </h3>
-    <slot></slot>
+    <slot />
   </div>
 </template>
 
@@ -23,5 +17,5 @@ export default {
       type: String,
     },
   },
-}
+};
 </script>

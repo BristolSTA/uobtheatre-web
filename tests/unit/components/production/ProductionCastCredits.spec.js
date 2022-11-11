@@ -1,21 +1,20 @@
-import { mount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils';
 
-import { expect } from 'chai'
-import { DateTime } from 'luxon'
+import { expect } from 'chai';
+import { DateTime } from 'luxon';
 
-import ProductionCastCredits from '@/components/production/ProductionCastCredits'
-
-import { generateMountOptions } from '../../helpers.js'
-import Production from '../../fixtures/Production.js'
-import Performance from '../../fixtures/Performance.js'
-import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection.js'
-import CrewMember from '../../fixtures/CrewMember.js'
-import CrewRole from '../../fixtures/CrewRole.js'
-import ProductionTeamMember from '../../fixtures/ProductionTeamMember.js'
-import CastMember from '../../fixtures/CastMember.js'
+import { generateMountOptions } from '../../helpers.js';
+import Production from '../../fixtures/Production.js';
+import Performance from '../../fixtures/Performance.js';
+import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection.js';
+import CrewMember from '../../fixtures/CrewMember.js';
+import CrewRole from '../../fixtures/CrewRole.js';
+import ProductionTeamMember from '../../fixtures/ProductionTeamMember.js';
+import CastMember from '../../fixtures/CastMember.js';
+import ProductionCastCredits from '@/components/production/ProductionCastCredits';
 
 describe('Production Cast and Credits', function () {
-  let castCreditsContainer
+  let castCreditsContainer;
 
   beforeEach(async () => {
     await createWithPerformances(
@@ -57,55 +56,55 @@ describe('Production Cast and Credits', function () {
           }),
         ],
       }
-    )
-  })
+    );
+  });
 
   it('contains production team', () => {
-    expect(castCreditsContainer.text()).to.contain('Production Team')
+    expect(castCreditsContainer.text()).to.contain('Production Team');
 
-    expect(castCreditsContainer.text()).to.contain('Producer')
-    expect(castCreditsContainer.text()).to.contain('Joe Bloggs')
+    expect(castCreditsContainer.text()).to.contain('Producer');
+    expect(castCreditsContainer.text()).to.contain('Joe Bloggs');
 
-    expect(castCreditsContainer.text()).to.contain('Musical Director')
-    expect(castCreditsContainer.text()).to.contain('Jill Bloggs')
-  })
+    expect(castCreditsContainer.text()).to.contain('Musical Director');
+    expect(castCreditsContainer.text()).to.contain('Jill Bloggs');
+  });
 
   it('contains crew', () => {
-    expect(castCreditsContainer.text()).to.contain('Crew')
+    expect(castCreditsContainer.text()).to.contain('Crew');
 
-    expect(castCreditsContainer.text()).to.contain('Sound')
-    expect(castCreditsContainer.text()).to.contain('Tom S')
+    expect(castCreditsContainer.text()).to.contain('Sound');
+    expect(castCreditsContainer.text()).to.contain('Tom S');
 
-    expect(castCreditsContainer.text()).to.contain('Lighting')
-    expect(castCreditsContainer.text()).to.contain('James E')
-    expect(castCreditsContainer.text()).to.contain('Alex T')
-  })
+    expect(castCreditsContainer.text()).to.contain('Lighting');
+    expect(castCreditsContainer.text()).to.contain('James E');
+    expect(castCreditsContainer.text()).to.contain('Alex T');
+  });
 
   it('contains cast', () => {
-    expect(castCreditsContainer.text()).to.contain('Cast')
+    expect(castCreditsContainer.text()).to.contain('Cast');
 
-    const castArray = castCreditsContainer.findAll('.production-cast-member')
+    const castArray = castCreditsContainer.findAll('.production-cast-member');
     // cast memeber with picture
-    expect(castArray.at(0).text()).to.contain('Kit')
-    expect(castArray.at(0).text()).to.contain('Crazy Person')
+    expect(castArray.at(0).text()).to.contain('Kit');
+    expect(castArray.at(0).text()).to.contain('Crazy Person');
 
-    expect(castArray.at(0).find('img').exists()).to.be.true
+    expect(castArray.at(0).find('img').exists()).to.be.true;
     expect(castArray.at(0).find('img').attributes('src')).to.equal(
       'http://pathto.example/profile-pic.png'
-    )
+    );
 
     // cast memebr no picture
-    expect(castArray.at(1).text()).to.contain('John')
-    expect(castArray.at(1).text()).to.contain('Good Guy')
+    expect(castArray.at(1).text()).to.contain('John');
+    expect(castArray.at(1).text()).to.contain('Good Guy');
 
-    expect(castArray.at(1).find('img').exists()).to.be.false
-  })
+    expect(castArray.at(1).find('img').exists()).to.be.false;
+  });
 
   const createWithPerformances = (performances, productionOverrides) => {
-    const production = Production(productionOverrides)
+    const production = Production(productionOverrides);
     production.performances = GenericNodeConnection(
       performances.map((performance) => Performance(performance))
-    )
+    );
 
     castCreditsContainer = mount(
       ProductionCastCredits,
@@ -114,6 +113,6 @@ describe('Production Cast and Credits', function () {
           production,
         },
       })
-    )
-  }
-})
+    );
+  };
+});

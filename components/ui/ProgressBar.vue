@@ -6,7 +6,7 @@
     <div
       class="h-full bg-sta-green rounded-full"
       :style="{ width: `${Math.min(100, percentage)}%` }"
-    ></div>
+    />
   </div>
 </template>
 
@@ -22,5 +22,5 @@ export default {
       type: Number,
     },
   },
-}
+};
 </script>

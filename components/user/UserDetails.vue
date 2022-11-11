@@ -24,7 +24,9 @@
               First Name
             </th>
             <td class="pb-2">
-              <p v-if="!editing">{{ user.firstName }}</p>
+              <p v-if="!editing">
+                {{ user.firstName }}
+              </p>
               <text-input
                 v-else
                 v-model="firstName"
@@ -39,7 +41,9 @@
           <tr class="pb-4">
             <th class="pb-2 pr-6 text-sta-orange">Last Name</th>
             <td class="pb-2">
-              <p v-if="!editing">{{ user.lastName }}</p>
+              <p v-if="!editing">
+                {{ user.lastName }}
+              </p>
               <text-input
                 v-else
                 v-model="lastName"
@@ -54,7 +58,9 @@
           <tr class="pb-4">
             <th class="pb-2 pr-6 text-sta-orange">Email</th>
             <td class="pb-2">
-              <p v-if="!editing" class="break-all">{{ user.email }}</p>
+              <p v-if="!editing" class="break-all">
+                {{ user.email }}
+              </p>
               <button
                 v-else
                 class="btn btn-orange btn-outline px-2 py-1"
@@ -68,7 +74,7 @@
           <tr>
             <th class="pb-2 pr-6 text-sta-orange">Password</th>
             <td class="pb-2">
-              <template v-if="!editing">************</template>
+              <template v-if="!editing"> ************ </template>
               <button
                 v-else
                 class="btn btn-orange btn-outline px-2 py-1"
@@ -92,7 +98,7 @@
           </button>
           <p class="mt-2">
             Want to delete your account? Get in touch at
-            <span v-html="$config.application.support_email"></span>
+            <span v-html="$config.application.support_email" />
           </p>
         </div>
       </form>
@@ -109,13 +115,13 @@
 </template>
 
 <script>
-import TextInput from '@/components/ui/TextInput.vue'
-import ChangeEmail from './ChangeEmail.vue'
-import ChangePassword from './ChangePassword.vue'
-import LoadingContainer from '../ui/LoadingContainer.vue'
-import gql from 'graphql-tag'
-import { swalToast, performMutation, getValidationErrors } from '@/utils'
-import NonFieldError from '../ui/NonFieldError.vue'
+import TextInput from '@/components/ui/TextInput.vue';
+import ChangeEmail from './ChangeEmail.vue';
+import ChangePassword from './ChangePassword.vue';
+import LoadingContainer from '../ui/LoadingContainer.vue';
+import gql from 'graphql-tag';
+import { swalToast, performMutation, getValidationErrors } from '@/utils';
+import NonFieldError from '../ui/NonFieldError.vue';
 export default {
   name: 'UserDetails',
   components: {
@@ -141,14 +147,14 @@ export default {
 
       loading: false,
       errors: null,
-    }
+    };
   },
   methods: {
     editToggle() {
-      this.editing = !this.editing
+      this.editing = !this.editing;
     },
     async attemptUserUpdate() {
-      this.loading = true
+      this.loading = true;
       try {
         await performMutation(
           this.$apollo,
@@ -166,21 +172,21 @@ export default {
             },
           },
           'updateAccount'
-        )
+        );
 
         swalToast.fire({
           icon: 'success',
           title: 'Details updated!',
           position: 'bottom-end',
-        })
-        this.user.firstName = this.firstName
-        this.user.lastName = this.lastName
-        this.editing = false
+        });
+        this.user.firstName = this.firstName;
+        this.user.lastName = this.lastName;
+        this.editing = false;
       } catch (e) {
-        this.errors = getValidationErrors(e)
+        this.errors = getValidationErrors(e);
       }
-      this.loading = false
+      this.loading = false;
     },
   },
-}
+};
 </script>

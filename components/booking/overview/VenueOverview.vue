@@ -12,7 +12,9 @@
         target="_blank"
         title="Opens in a new tab"
       >
-        <icon-list-item icon="link">{{ venue.name }}</icon-list-item>
+        <icon-list-item icon="link">
+          {{ venue.name }}
+        </icon-list-item>
       </NuxtLink>
     </template>
     <div v-if="venue">
@@ -39,13 +41,13 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
+import gql from 'graphql-tag';
 
-import AddressFragments from '@/graphql/fragments/AddressFragment.gql'
+import IconListItem from '../../ui/IconListItem.vue';
+import OverviewBox from '../../ui/Card.vue';
+import AddressFragments from '@/graphql/fragments/AddressFragment.gql';
 
-import LoadingIcon from '@/components/ui/LoadingIcon.vue'
-import IconListItem from '../../ui/IconListItem.vue'
-import OverviewBox from '../../ui/Card.vue'
+import LoadingIcon from '@/components/ui/LoadingIcon.vue';
 
 export default {
   name: 'VenueOverview',
@@ -64,7 +66,7 @@ export default {
   data() {
     return {
       venue: null,
-    }
+    };
   },
   apollo: {
     venue: {
@@ -83,16 +85,16 @@ export default {
       variables() {
         return {
           slug: this.venueData,
-        }
+        };
       },
       skip() {
         if (typeof this.venueData !== 'string') {
-          this.venue = this.venueData
-          return true
+          this.venue = this.venueData;
+          return true;
         }
-        return false
+        return false;
       },
     },
   },
-}
+};
 </script>

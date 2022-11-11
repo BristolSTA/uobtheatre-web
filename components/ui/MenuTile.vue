@@ -7,10 +7,10 @@
   >
     <div :class="textSize">
       <font-awesome-icon v-if="icon" :icon="icon" />
-      <span class="pl-2"><slot></slot></span>
+      <span class="pl-2"><slot /></span>
     </div>
     <div v-if="$slots.description" class="pb-1 pr-1 sm:pb-0 sm:pr-4">
-      <slot name="description"></slot>
+      <slot name="description" />
     </div>
   </component>
 </template>
@@ -33,9 +33,12 @@ export default {
   },
   methods: {
     go() {
-      if (this.to) this.$router.push(this.to)
-      else this.$emit('click')
+      if (this.to) {
+        this.$router.push(this.to);
+      } else {
+        this.$emit('click');
+      }
     },
   },
-}
+};
 </script>

@@ -23,7 +23,9 @@
               <div class="text-2xl">
                 {{ slotProps.carouselItem.text.society.name }}
               </div>
-              <div class="text-h1">{{ slotProps.carouselItem.text.name }}</div>
+              <div class="text-h1">
+                {{ slotProps.carouselItem.text.name }}
+              </div>
               <div class="text-2xl">
                 {{
                   displayStartEnd(
@@ -108,34 +110,55 @@
   </div>
 </template>
 
-<script>
-import lo from 'lodash'
+<script lang="ts">
+import lo from 'lodash';
+import { defineComponent } from 'vue';
+import { MetaInfo } from 'vue-meta';
+import {
+  useHomepageUpcomingProductionsQuery,
+  ProductionNode,
+  ImageNode,
+  SocietyNode,
+  Maybe,
+} from '@/graphql/codegen/operations';
+import Carousel from '@/components/ui/Carousel.vue';
+import { displayStartEnd } from '@/utils';
+import { oneLiner } from '@/utils/lang';
+import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue';
 
-import Carousel from '@/components/ui/Carousel.vue'
-import { displayStartEnd } from '@/utils'
-import { oneLiner } from '@/utils/lang'
-import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue'
+interface BannerInfo {
+  id: string;
+  displayImage: Maybe<ImageNode> | undefined;
+  text: {
+    slug: string;
+    name: string;
+    start: string;
+    end: string;
+    society: Maybe<SocietyNode> | undefined;
+  };
+}
 
-export default {
+export default defineComponent({
   components: { Carousel, ProductionFeaturedImage },
   data() {
+    const upcomingProductions: ProductionNode[] = [];
     return {
-      upcomingProductions: [],
+      upcomingProductions,
       displayStartEnd,
-    }
+    };
   },
-  head() {
-    const appName = this.$appName
+  head(): MetaInfo {
+    const appName = this.$appName;
     return {
       title: `${appName} | The Home Of Bristol Student Performing Arts`,
-      titleTemplate: null,
-    }
+      titleTemplate: undefined,
+    };
   },
   computed: {
-    bannerProductions() {
+    bannerProductions(): BannerInfo[] {
       return this.upcomingProductionsToShow
         .filter((production) => {
-          return !!production.coverImage
+          return !!production.coverImage;
         })
         .map((production) => {
           return {
@@ -148,28 +171,27 @@ export default {
               end: production.end,
               society: production.society,
             },
-          }
-        })
+          };
+        });
     },
-    upcomingProductionsToShow() {
-      return lo.take(this.upcomingProductions, 4)
+    upcomingProductionsToShow(): ProductionNode[] {
+      return lo.take(this.upcomingProductions, 4);
     },
   },
   methods: {
     oneLiner,
   },
   apollo: {
-    upcomingProductions: {
-      query: require('@/graphql/queries/HomeUpcomingProductions.gql'),
-      update: (data) => data.productions.edges.map((edge) => edge.node),
+    upcomingProductions: useHomepageUpcomingProductionsQuery({
+      update: (data) => data?.productions?.edges.map((edge) => edge?.node),
       variables() {
         return {
           now: new Date(),
-        }
+        };
       },
-    },
+    }),
   },
-}
+});
 </script>
 
 <style>

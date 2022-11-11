@@ -1,23 +1,23 @@
-import gql from 'graphql-tag'
-import cookie from 'js-cookie'
-import jwtDecode from 'jwt-decode'
+import gql from 'graphql-tag';
+import cookie from 'js-cookie';
+import jwtDecode from 'jwt-decode';
 
-import Errors from '@/classes/Errors'
-import ErrorsPartial from '@/graphql/partials/ErrorsPartial'
-import ValidationError from '@/errors/ValidationError'
-import UnverifiedLoginError from '@/errors/auth/UnverifiedLoginError'
+import Errors from '@/classes/Errors';
+import ErrorsPartial from '@/graphql/partials/ErrorsPartial';
+import ValidationError from '@/errors/ValidationError';
+import UnverifiedLoginError from '@/errors/auth/UnverifiedLoginError';
 
-let refreshTimer
+let refreshTimer;
 
 export default {
   currentAuthToken(context) {
     return (
       context.store?.state?.auth?.token || context.$store?.state?.auth?.token
-    )
+    );
   },
 
   isRemembering(context) {
-    return cookie.get(context.$config.auth.rememberKey)
+    return cookie.get(context.$config.auth.rememberKey);
   },
 
   /**
@@ -25,15 +25,17 @@ export default {
    * @returns {boolean} Whether or not the user is logged in
    */
   isLoggedIn(context) {
-    return !!this.currentAuthToken(context) && !!context.store.state.auth.user
+    return !!this.currentAuthToken(context) && !!context.store.state.auth.user;
   },
 
   logout(context, trigger = true) {
-    clearTimeout(refreshTimer)
-    context.store.dispatch('auth/logout') // Remove token
-    cookie.remove(context.$config.auth.refreshTokenKey) // Remove fresh token cookie
-    cookie.remove(context.$config.auth.rememberKey) // Remove remember cookie
-    if (trigger) window.localStorage.setItem('logout', Date.now())
+    clearTimeout(refreshTimer);
+    context.store.dispatch('auth/logout'); // Remove token
+    cookie.remove(context.$config.auth.refreshTokenKey); // Remove fresh token cookie
+    cookie.remove(context.$config.auth.rememberKey); // Remove remember cookie
+    if (trigger) {
+      window.localStorage.setItem('logout', Date.now());
+    }
   },
 
   /**
@@ -41,12 +43,14 @@ export default {
    * @returns {string|null} API Authentication Token
    */
   async silentRefresh(context) {
-    const refreshToken = cookie.get(context.$config.auth.refreshTokenKey)
-    if (!refreshToken) return this.logout(context)
+    const refreshToken = cookie.get(context.$config.auth.refreshTokenKey);
+    if (!refreshToken) {
+      return this.logout(context);
+    }
 
     const provider = context.app
       ? context.app.apolloProvider
-      : context.$apolloProvider
+      : context.$apolloProvider;
 
     const { data } = await provider.defaultClient.mutate({
       mutation: gql`
@@ -60,52 +64,58 @@ export default {
       variables: {
         refreshToken,
       },
-    })
+    });
 
-    if (!data.refreshToken.token) return this.logout(context)
+    if (!data.refreshToken.token) {
+      return this.logout(context);
+    }
 
-    this.setToken(context, data.refreshToken.token)
-    this.setRefreshToken(context, data.refreshToken.refreshToken)
-    this.queueRefresh(context, data.refreshToken.token)
+    this.setToken(context, data.refreshToken.token);
+    this.setRefreshToken(context, data.refreshToken.refreshToken);
+    this.queueRefresh(context, data.refreshToken.token);
 
     return context.store.dispatch('auth/loadUserDetails', {
       apollo: context.app.apolloProvider.defaultClient,
       nuxtContext: context,
-    })
+    });
   },
 
   setRefreshToken(context, token, remember = null) {
-    const rememberLengthDays = 365
+    const rememberLengthDays = 365;
     if (remember !== null) {
-      if (remember)
+      if (remember) {
         cookie.set(context.$config.auth.rememberKey, true, {
           expires: remember ? rememberLengthDays : null,
-        })
-      else if (cookie.get(context.$config.auth.rememberKey)) {
-        cookie.remove(context.$config.auth.rememberKey)
+        });
+      } else if (cookie.get(context.$config.auth.rememberKey)) {
+        cookie.remove(context.$config.auth.rememberKey);
       }
     }
 
     cookie.set(context.$config.auth.refreshTokenKey, token, {
       expires: this.isRemembering(context) ? rememberLengthDays : null,
-    })
+    });
   },
 
   queueRefresh(context) {
-    if (refreshTimer) clearTimeout(refreshTimer)
-    const { exp } = jwtDecode(this.currentAuthToken(context))
-    let timeoutSeconds = exp - Math.round(Date.now() / 1000) - 30
+    if (refreshTimer) {
+      clearTimeout(refreshTimer);
+    }
+    const { exp } = jwtDecode(this.currentAuthToken(context));
+    let timeoutSeconds = exp - Math.round(Date.now() / 1000) - 30;
 
-    if (timeoutSeconds < 1) timeoutSeconds = 1
+    if (timeoutSeconds < 1) {
+      timeoutSeconds = 1;
+    }
 
     refreshTimer = setTimeout(() => {
-      refreshTimer = null
-      this.silentRefresh(context)
-    }, timeoutSeconds * 1000)
+      refreshTimer = null;
+      this.silentRefresh(context);
+    }, timeoutSeconds * 1000);
   },
 
   setToken(context, token) {
-    context.store.dispatch('auth/login', token)
+    context.store.dispatch('auth/login', token);
   },
 
   /**
@@ -139,13 +149,15 @@ export default {
           },
         })
         .then(({ data }) => {
-          if (!data.login.success)
+          if (!data.login.success) {
             return reject(
               new ValidationError(Errors.createFromAPI(data.login.errors))
-            )
+            );
+          }
 
-          if (!data.login.user.verified)
-            return reject(new UnverifiedLoginError())
+          if (!data.login.user.verified) {
+            return reject(new UnverifiedLoginError());
+          }
 
           const standardContext = {
             store: componentContext.$store,
@@ -153,22 +165,22 @@ export default {
             app: {
               apolloProvider: componentContext.$apolloProvider,
             },
-          }
+          };
 
-          this.setToken(standardContext, data.login.token)
+          this.setToken(standardContext, data.login.token);
           this.setRefreshToken(
             standardContext,
             data.login.refreshToken,
             remember
-          )
-          this.queueRefresh(standardContext)
+          );
+          this.queueRefresh(standardContext);
           standardContext.store
             .dispatch('auth/loadUserDetails', {
               apollo: standardContext.app.apolloProvider.defaultClient,
             })
-            .then(() => resolve(data.login))
-        })
-    })
+            .then(() => resolve(data.login));
+        });
+    });
   },
 
   /**
@@ -194,16 +206,17 @@ export default {
           },
         })
         .then(({ data }) => {
-          if (!data.resendActivationEmail.success)
+          if (!data.resendActivationEmail.success) {
             return reject(
               new ValidationError(
                 Errors.createFromAPI(data.resendActivationEmail.errors)
               )
-            )
+            );
+          }
 
-          return resolve()
-        })
-    })
+          return resolve();
+        });
+    });
   },
 
   /**
@@ -254,15 +267,15 @@ export default {
         })
         .then((result) => {
           if (result.data.register.success) {
-            return resolve(result.data.register)
+            return resolve(result.data.register);
           }
           return reject(
             new ValidationError(
               Errors.createFromAPI(result.data.register.errors)
             )
-          )
-        })
-    })
+          );
+        });
+    });
   },
 
   requestPasswordReset(componentContext, { email }) {
@@ -282,15 +295,15 @@ export default {
         })
         .then((result) => {
           if (result.data.sendPasswordResetEmail.success) {
-            return resolve(result.data.sendPasswordResetEmail)
+            return resolve(result.data.sendPasswordResetEmail);
           }
           return reject(
             new ValidationError(
               Errors.createFromAPI(result.data.sendPasswordResetEmail.errors)
             )
-          )
-        })
-    })
+          );
+        });
+    });
   },
 
   resetPassword(componentContext, { token, password, confirmedPassword }) {
@@ -312,15 +325,15 @@ export default {
         })
         .then((result) => {
           if (result.data.passwordReset.success) {
-            return resolve(result.data.passwordReset)
+            return resolve(result.data.passwordReset);
           }
           return reject(
             new ValidationError(
               Errors.createFromAPI(result.data.passwordReset.errors)
             )
-          )
-        })
-    })
+          );
+        });
+    });
   },
 
   activateAccount(componentContext, { token }) {
@@ -340,14 +353,14 @@ export default {
         })
         .then((result) => {
           if (result.data.verifyAccount.success) {
-            return resolve(result.data.verifyAccount)
+            return resolve(result.data.verifyAccount);
           }
           return reject(
             new ValidationError(
               Errors.createFromAPI(result.data.verifyAccount.errors)
             )
-          )
-        })
-    })
+          );
+        });
+    });
   },
-}
+};

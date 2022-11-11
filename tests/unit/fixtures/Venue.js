@@ -1,7 +1,7 @@
-import Address from './Address'
-import GenericConnection from './support/GenericNodeConnection'
-import PerformanceNode from './Performance.js'
-import ProductionNode from './Production.js'
+import Address from './Address';
+import GenericConnection from './support/GenericNodeConnection';
+import PerformanceNode from './Performance.js';
+import ProductionNode from './Production.js';
 
 export default (
   overrides = {},
@@ -31,5 +31,5 @@ export default (
       ),
     },
     overrides
-  )
-}
+  );
+};

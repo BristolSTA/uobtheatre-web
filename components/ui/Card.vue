@@ -5,17 +5,19 @@
         v-if="title || $slots.title"
         class="flex-grow mb-1 text-h3 sm:text-h2"
       >
-        <slot name="title">{{ title }}</slot>
+        <slot name="title">
+          {{ title }}
+        </slot>
       </h2>
       <div v-if="$slots.messageBox" class="pb-1 pr-1 sm:pb-0 sm:pr-4">
-        <slot name="messageBox"></slot>
+        <slot name="messageBox" />
       </div>
     </div>
     <div v-if="$slots.subtitle" class="text-sta-orange font-semibold">
-      <slot name="subtitle"></slot>
+      <slot name="subtitle" />
     </div>
     <div>
-      <slot></slot>
+      <slot />
     </div>
   </div>
 </template>
@@ -28,5 +30,5 @@ export default {
       type: String,
     },
   },
-}
+};
 </script>

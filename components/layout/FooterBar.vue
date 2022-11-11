@@ -7,13 +7,7 @@
             <li
               v-for="(item, index) in navItems"
               :key="index"
-              class="
-                flex
-                mt-2
-                text-center text-white
-                md:block md:text-left
-                underline
-              "
+              class="flex mt-2 text-center text-white md:block md:text-left underline"
             >
               <component
                 :is="item[0].startsWith('/') ? 'NuxtLink' : 'a'"
@@ -27,15 +21,7 @@
         </nav>
       </div>
       <div
-        class="
-          flex flex-1 flex-wrap
-          items-center
-          justify-center
-          mt-4
-          w-full
-          md:mt-0
-          gap-x-4
-        "
+        class="flex flex-1 flex-wrap items-center justify-center mt-4 w-full md:mt-0 gap-x-4"
       >
         <div class="w-44">
           <a href="https://bristolsta.com" target="_blank">
@@ -59,14 +45,7 @@
         </div>
 
         <div
-          class="
-            lg:flex-1
-            mt-2
-            text-center text-white
-            md:mt-0
-            lg:text-left
-            md:ml-12
-          "
+          class="lg:flex-1 mt-2 text-center text-white md:mt-0 lg:text-left md:ml-12"
         >
           <p class="mb-2 md:mb-4">
             &copy; Bristol Stage Technicians' Association
@@ -91,7 +70,7 @@ export default {
           'Contact Us',
         ],
       ],
-    }
+    };
   },
-}
+};
 </script>

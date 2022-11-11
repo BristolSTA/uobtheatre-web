@@ -16,10 +16,10 @@
 </template>
 
 <script>
-import Booking from '@/classes/Booking'
+import Booking from '@/classes/Booking';
 import Stages, {
   getStageIndex,
-} from '@/pages/production/_slug/book/-bookingStages'
+} from '@/pages/production/_slug/book/-bookingStages';
 export default {
   name: 'BookingNavigation',
   props: {
@@ -42,25 +42,30 @@ export default {
         return stageComponent.stageInfo.shouldBeUsed(
           this.production,
           this.booking
-        )
-      })
+        );
+      });
     },
   },
   methods: {
     stylesForButton(stage) {
-      const stageIndex = getStageIndex(stage)
-      if (this.currentStageIndex === stageIndex) return 'btn-orange'
+      const stageIndex = getStageIndex(stage);
+      if (this.currentStageIndex === stageIndex) {
+        return 'btn-orange';
+      }
       if (
         this.currentStageIndex > stageIndex &&
         stage.eligable(this.production, this.booking)
-      )
-        return 'btn-green'
-      return 'btn-gray-light disabled'
+      ) {
+        return 'btn-green';
+      }
+      return 'btn-gray-light disabled';
     },
     onSelectStage(stage) {
-      if (getStageIndex(stage.stageInfo) === this.currentStageIndex) return
-      this.$emit('goto-stage', stage)
+      if (getStageIndex(stage.stageInfo) === this.currentStageIndex) {
+        return;
+      }
+      this.$emit('goto-stage', stage);
     },
   },
-}
+};
 </script>

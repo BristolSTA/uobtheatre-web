@@ -2,6 +2,7 @@
 @import './_swal';
 @import './_table';
 @import './_misc';
+@import '@fortawesome/fontawesome-svg-core/styles.css';
 
 @function str-replace($string, $search, $replace: '') {
   $index: str-index($string, $search);

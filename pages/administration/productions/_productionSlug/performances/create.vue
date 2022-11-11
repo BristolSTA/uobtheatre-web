@@ -1,8 +1,10 @@
 <template>
   <admin-page title="Create a performance">
     <template #toolbar>
-      <sta-button colour="green" icon="save" @click="create">Create</sta-button>
-      <sta-button colour="orange" to="../../">Cancel</sta-button>
+      <sta-button colour="green" icon="save" @click="create">
+        Create
+      </sta-button>
+      <sta-button colour="orange" to="../../"> Cancel </sta-button>
     </template>
     <non-field-error :errors="errors" />
     <performance-editor
@@ -16,18 +18,18 @@
 </template>
 
 <script>
-import AdminPage from '@/components/admin/AdminPage.vue'
-import PerformanceEditor from '@/components/performance/editor/PerformanceEditor.vue'
-import StaButton from '@/components/ui/StaButton.vue'
+import Swal from 'sweetalert2';
+import AdminPage from '@/components/admin/AdminPage.vue';
+import PerformanceEditor from '@/components/performance/editor/PerformanceEditor.vue';
+import StaButton from '@/components/ui/StaButton.vue';
 import {
   errorToast,
   getValidationErrors,
   loadingSwal,
   performMutation,
   successToast,
-} from '@/utils'
-import Swal from 'sweetalert2'
-import NonFieldError from '@/components/ui/NonFieldError.vue'
+} from '@/utils';
+import NonFieldError from '@/components/ui/NonFieldError.vue';
 export default {
   components: { AdminPage, PerformanceEditor, StaButton, NonFieldError },
   async asyncData({ params, error, app }) {
@@ -37,32 +39,33 @@ export default {
       variables: {
         slug: params.productionSlug,
       },
-    })
+    });
 
-    const production = data.production
-    if (!production)
+    const production = data.production;
+    if (!production) {
       return error({
         statusCode: 404,
         message: 'This production does not exist',
-      })
+      });
+    }
     return {
       production,
-    }
+    };
   },
   data() {
     return {
       performance: {},
       production: null,
       errors: null,
-    }
+    };
   },
   mounted() {
-    this.performance = { discounts: {}, ...this.$refs.editor.getInputData() }
+    this.performance = { discounts: {}, ...this.$refs.editor.getInputData() };
   },
   methods: {
     async create() {
-      this.errors = null
-      loadingSwal.fire()
+      this.errors = null;
+      loadingSwal.fire();
       try {
         const data = await performMutation(
           this.$apollo,
@@ -76,24 +79,24 @@ export default {
             },
           },
           'performance'
-        )
+        );
 
-        this.performance.id = data.performance.performance.id
+        this.performance.id = data.performance.performance.id;
 
         if (!(await this.$refs.editor.saveRelated())) {
           errorToast.fire({
             title:
               'Performance created, but there was an issue creating the related objects',
-          })
-          return this.$router.push(`${this.performance.id}/edit`)
+          });
+          return this.$router.push(`${this.performance.id}/edit`);
         }
-        successToast.fire({ title: 'Performance Created' })
-        return this.$router.push(`../performances/${this.performance.id}`)
+        successToast.fire({ title: 'Performance Created' });
+        return this.$router.push(`../performances/${this.performance.id}`);
       } catch (e) {
-        this.errors = getValidationErrors(e)
-        Swal.close()
+        this.errors = getValidationErrors(e);
+        Swal.close();
       }
     },
   },
-}
+};
 </script>

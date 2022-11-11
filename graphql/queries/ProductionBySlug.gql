@@ -70,9 +70,7 @@ query productionBySlug($slug: String!) {
     crew {
       name
       role {
-        department {
-          description
-        }
+        department
       }
     }
     cast {

@@ -14,5 +14,5 @@ export default {
       type: [Array, Object, String],
     },
   },
-}
+};
 </script>

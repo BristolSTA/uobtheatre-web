@@ -8,13 +8,14 @@
       class="bg-sta-green hover:bg-sta-orange"
       :text-size="compact ? 'text-sm' : undefined"
       :class="[compact ? '' : 'w-full md:w-1/3 lg:w-1/4 2xl:w-1/5']"
-      >{{ box.name }}</menu-tile
     >
+      {{ box.name }}
+    </menu-tile>
   </div>
 </template>
 
 <script>
-import MenuTile from '../ui/MenuTile.vue'
+import MenuTile from '../ui/MenuTile.vue';
 export default {
   components: { MenuTile },
   props: {
@@ -50,21 +51,22 @@ export default {
           path: `/box-office/${this.performance.id}/bookings`,
         },
       ],
-    }
+    };
   },
   computed: {
     completeNavItems() {
-      const items = []
-      if (this.showHome)
+      const items = [];
+      if (this.showHome) {
         items.push({
           name: 'Dashboard',
           icon: 'home',
           path: `/box-office/${this.performance.id}`,
-        })
+        });
+      }
 
-      items.push(...this.navItems)
-      return items
+      items.push(...this.navItems);
+      return items;
     },
   },
-}
+};
 </script>

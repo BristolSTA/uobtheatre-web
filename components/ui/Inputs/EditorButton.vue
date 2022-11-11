@@ -9,7 +9,7 @@
     @click="$emit('click', editor.chain())"
   >
     <font-awesome-icon v-if="icon" :icon="icon" />
-    <slot></slot>
+    <slot />
   </button>
 </template>
 
@@ -31,12 +31,15 @@ export default {
   },
   computed: {
     isActive() {
-      if (!this.activeKey) return
+      if (!this.activeKey) {
+        return;
+      }
 
-      if (Array.isArray(this.activeKey))
-        return this.editor.isActive(...this.activeKey)
-      return this.editor.isActive(this.activeKey)
+      if (Array.isArray(this.activeKey)) {
+        return this.editor.isActive(...this.activeKey);
+      }
+      return this.editor.isActive(this.activeKey);
     },
   },
-}
+};
 </script>

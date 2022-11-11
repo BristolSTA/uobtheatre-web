@@ -23,15 +23,7 @@
                 placeholder="Search"
               />
               <button
-                class="
-                  p-2
-                  text-sm
-                  bg-sta-green
-                  hover:bg-sta-green-dark
-                  rounded
-                  focus:outline-none
-                  transition-colors
-                "
+                class="p-2 text-sm bg-sta-green hover:bg-sta-green-dark rounded focus:outline-none transition-colors"
                 @click="scanning = true"
               >
                 <font-awesome-icon icon="search" /> Ticket Scan Search
@@ -64,7 +56,7 @@
                 <th>Name</th>
                 <th>Reference</th>
                 <th>Checked In?<sort-icon v-model="checkedInSort" /></th>
-                <th>Price</th></template
+                <th>Price</th> </template
               ><template v-for="(booking, index) in bookings">
                 <booking-row
                   :key="`${index}-row`"
@@ -95,29 +87,23 @@
             <nuxt-link
               to="collect"
               class="hover:text-gray-300 underline transition-colors"
-              >Looking to check in tickets instead?</nuxt-link
             >
+              Looking to check in tickets instead?
+            </nuxt-link>
           </p>
         </div>
         <ticket-scanner
           @scanned="
             ({ bookingReference, ticketId }) => {
-              searchQuery = bookingReference
-              scannedTicket = ticketId
-              scanning = false
+              searchQuery = bookingReference;
+              scannedTicket = ticketId;
+              scanning = false;
             }
           "
         />
         <div class="text-center">
           <button
-            class="
-              p-2
-              bg-gray-400
-              hover:bg-gray-500
-              rounded
-              focus:outline-none
-              transition-colors
-            "
+            class="p-2 bg-gray-400 hover:bg-gray-500 rounded focus:outline-none transition-colors"
             @click="scanning = false"
           >
             Cancel
@@ -129,16 +115,16 @@
 </template>
 
 <script>
-import Booking from '@/classes/Booking.js'
+import Booking from '@/classes/Booking.js';
 
-import Overview from '@/components/box-office/Overview.vue'
-import BookingRow from '@/components/box-office/BookingRow.vue'
-import SortIcon from '@/components/ui/SortIcon.vue'
-import BoxOfficePerformanceBookings from '@/graphql/queries/box-office/BoxOfficePerformanceBookings.gql'
-import BookingDetailsRow from '@/components/box-office/BookingDetailsRow.vue'
-import TicketScanner from '@/components/ui/Inputs/TicketScanner.vue'
-import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue'
-import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue'
+import Overview from '@/components/box-office/Overview.vue';
+import BookingRow from '@/components/box-office/BookingRow.vue';
+import SortIcon from '@/components/ui/SortIcon.vue';
+import BoxOfficePerformanceBookings from '@/graphql/queries/box-office/BoxOfficePerformanceBookings.gql';
+import BookingDetailsRow from '@/components/box-office/BookingDetailsRow.vue';
+import TicketScanner from '@/components/ui/Inputs/TicketScanner.vue';
+import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue';
+import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue';
 
 export default {
   components: {
@@ -169,7 +155,7 @@ export default {
 
       scanning: false,
       scannedTicket: null,
-    }
+    };
   },
   computed: {
     crumbs() {
@@ -187,15 +173,15 @@ export default {
         {
           text: 'All Bookings',
         },
-      ]
+      ];
     },
   },
   mounted() {
     if (this.$route.query.q) {
-      this.searchQuery = this.$route.query.q
+      this.searchQuery = this.$route.query.q;
     }
     if (this.$route.query.qTicket) {
-      this.scannedTicket = this.$route.query.qTicket
+      this.scannedTicket = this.$route.query.qTicket;
     }
   },
   apollo: {
@@ -212,7 +198,7 @@ export default {
               : null,
           checkedIn: this.bookingFilter === 'NOCHECKIN' ? false : null,
           discount: this.bookingFilter === 'COMPS' ? 1 : null,
-        }
+        };
       },
       debounce: 100,
       update: (data) =>
@@ -220,13 +206,14 @@ export default {
           Booking.fromAPIData(edge.node)
         ),
       result(result) {
-        if (result.data)
-          this.pageInfo = result.data.performance.bookings.pageInfo
+        if (result.data) {
+          this.pageInfo = result.data.performance.bookings.pageInfo;
+        }
 
-        this.selected_booking_index = this.bookings.length === 1 ? 0 : null
+        this.selected_booking_index = this.bookings.length === 1 ? 0 : null;
       },
       fetchPolicy: 'cache-and-network',
     },
   },
-}
+};
 </script>

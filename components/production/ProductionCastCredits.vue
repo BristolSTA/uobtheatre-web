@@ -6,14 +6,7 @@
         <div
           v-for="(member, index) in sortedCast"
           :key="index"
-          class="
-            production-cast-member
-            flex
-            items-center
-            px-4
-            py-2
-            sm:justify-center
-          "
+          class="production-cast-member flex items-center px-4 py-2 sm:justify-center"
         >
           <div v-if="member.profilePicture" class="flex-none pr-4 w-20">
             <img
@@ -66,9 +59,9 @@
 </template>
 
 <script>
-import lodash from 'lodash'
+import lodash from 'lodash';
 
-import RoleGroup from './RoleGroup.vue'
+import RoleGroup from './RoleGroup.vue';
 export default {
   name: 'ProductionCastAndCredits',
   components: {
@@ -83,26 +76,26 @@ export default {
   data() {
     return {
       overview: true,
-    }
+    };
   },
   computed: {
     productionTeamGrouped() {
       return lodash
         .chain(this.production.productionTeam)
         .groupBy('role')
-        .value()
+        .value();
     },
     crewGrouped() {
       return lodash
         .chain(this.production.crew)
         .groupBy('role.department.description')
-        .value()
+        .value();
     },
     sortedCast() {
-      return lodash.sortBy(this.production.cast, 'profilePicture')
+      return lodash.sortBy(this.production.cast, 'profilePicture');
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

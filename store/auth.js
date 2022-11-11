@@ -1,20 +1,20 @@
-import { authService } from '@/services'
-import gql from 'graphql-tag'
-import AuthUserDetailsFragment from '@/graphql/fragments/user/AuthUserDetailsFragment.gql'
+import gql from 'graphql-tag';
+import { authService } from '@/services';
+import AuthUserDetailsFragment from '@/graphql/fragments/user/AuthUserDetailsFragment.gql';
 
 export const state = () => ({
   token: null,
   user: null,
-})
+});
 
 export const mutations = {
   SET_AUTH_USER(state, userDetails) {
-    state.user = userDetails
+    state.user = userDetails;
   },
   SET_TOKEN(state, token) {
-    state.token = token
+    state.token = token;
   },
-}
+};
 
 export const actions = {
   async loadUserDetails(context, { apollo, userInfo, nuxtContext }) {
@@ -29,18 +29,20 @@ export const actions = {
           ${AuthUserDetailsFragment}
         `,
         fetchPolicy: 'no-cache',
-      })
-      userInfo = data.me
+      });
+      userInfo = data.me;
     }
-    if (!userInfo) return authService.logout(nuxtContext)
+    if (!userInfo) {
+      return authService.logout(nuxtContext);
+    }
 
-    context.commit('SET_AUTH_USER', userInfo)
+    context.commit('SET_AUTH_USER', userInfo);
   },
   login(context, token) {
-    context.commit('SET_TOKEN', token)
+    context.commit('SET_TOKEN', token);
   },
   logout(context) {
-    context.commit('SET_AUTH_USER', null)
-    context.commit('SET_TOKEN', null)
+    context.commit('SET_AUTH_USER', null);
+    context.commit('SET_TOKEN', null);
   },
-}
+};

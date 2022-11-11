@@ -1,5 +1,5 @@
-import ConcessionTypeBookingType from './ConcessionTypeBookingType'
-import SeatGroup from './SeatGroup'
+import ConcessionTypeBookingType from './ConcessionTypeBookingType';
+import SeatGroup from './SeatGroup';
 
 export default (overrides = {}) => {
   return Object.assign(
@@ -11,5 +11,5 @@ export default (overrides = {}) => {
       concessionTypes: [ConcessionTypeBookingType()],
     },
     overrides
-  )
-}
+  );
+};

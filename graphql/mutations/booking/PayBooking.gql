@@ -3,7 +3,7 @@ mutation payBooking(
   $id: IdInputField!
   $totalPence: Int!
   $nonce: String
-  $provider: PaymentMethod
+  $provider: PaymentProvider
   $idempotencyKey: String
   $deviceId: String
   $verifyToken: String

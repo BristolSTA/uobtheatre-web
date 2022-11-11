@@ -48,12 +48,12 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
+import gql from 'graphql-tag';
 
-import LoadingContainer from '@/components/ui/LoadingContainer.vue'
-import NonFieldError from '@/components/ui/NonFieldError.vue'
-import TextInput from '@/components/ui/TextInput.vue'
-import { getValidationErrors, performMutation, swalToast } from '@/utils'
+import LoadingContainer from '@/components/ui/LoadingContainer.vue';
+import NonFieldError from '@/components/ui/NonFieldError.vue';
+import TextInput from '@/components/ui/TextInput.vue';
+import { getValidationErrors, performMutation, swalToast } from '@/utils';
 export default {
   components: {
     LoadingContainer,
@@ -67,11 +67,11 @@ export default {
       newPassword: null,
       confirmedNewPassword: null,
       errors: null,
-    }
+    };
   },
   methods: {
     async attemptChange() {
-      this.loading = true
+      this.loading = true;
       try {
         await performMutation(
           this.$apollo,
@@ -90,18 +90,18 @@ export default {
             },
           },
           'passwordChange'
-        )
+        );
         swalToast.fire({
           icon: 'success',
           title: 'Password Changed',
           position: 'bottom-end',
-        })
-        this.$emit('cancel')
+        });
+        this.$emit('cancel');
       } catch (e) {
-        this.errors = getValidationErrors(e)
+        this.errors = getValidationErrors(e);
       }
-      this.loading = false
+      this.loading = false;
     },
   },
-}
+};
 </script>

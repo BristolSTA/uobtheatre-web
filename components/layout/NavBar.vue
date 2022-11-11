@@ -1,13 +1,7 @@
 <template>
   <div class="antialiased bg-sta-gray-dark">
     <div
-      class="
-        flex flex-col
-        mx-auto
-        max-w-screen-xl
-        md:flex-row md:items-center md:justify-between
-        lg:container
-      "
+      class="flex flex-col mx-auto max-w-screen-xl md:flex-row md:items-center md:justify-between lg:container"
     >
       <div class="flex flex-row items-center justify-between p-4 text-white">
         <NuxtLink
@@ -40,32 +34,13 @@
       </div>
       <nav
         :class="{ flex: open, hidden: !open }"
-        class="
-          flex-col flex-grow
-          p-4
-          pt-0
-          space-y-2
-          md:flex
-          md:flex-row
-          md:items-center
-          md:justify-end
-          md:pb-0
-          md:space-y-0
-        "
+        class="flex-col flex-grow p-4 pt-0 space-y-2 md:flex md:flex-row md:items-center md:justify-end md:pb-0 md:space-y-0"
       >
         <NuxtLink
           v-for="(item, index) in navItems"
           :key="index"
           :to="item[0]"
-          class="
-            block
-            px-4
-            hover:text-sta-orange-dark
-            text-white
-            font-semibold
-            tracking-wide
-            uppercase
-          "
+          class="block px-4 hover:text-sta-orange-dark text-white font-semibold tracking-wide uppercase"
         >
           {{ item[1] }}
         </NuxtLink>
@@ -142,11 +117,10 @@
 </template>
 
 <script>
-import ClickableLink from '@/components/ui/ClickableLink.vue'
-import { authService } from '@/services'
-
-import DropdownItem from './DropdownItem.vue'
-import DropdownNavItem from './DropdownNavItem.vue'
+import DropdownItem from './DropdownItem.vue';
+import DropdownNavItem from './DropdownNavItem.vue';
+import ClickableLink from '@/components/ui/ClickableLink.vue';
+import { authService } from '@/services';
 
 export default {
   components: {
@@ -162,23 +136,25 @@ export default {
       ],
       open: false,
       authService,
-    }
+    };
   },
   watch: {
     $route() {
-      this.open = false
+      this.open = false;
     },
   },
   methods: {
     onLogout() {
-      this.$auth().logout()
-      this.$router.push('/')
+      this.$auth().logout();
+      this.$router.push('/');
     },
     closeUserMenu() {
-      if (this.$refs['user-dropdown']) this.$refs['user-dropdown'].hideMenu()
+      if (this.$refs['user-dropdown']) {
+        this.$refs['user-dropdown'].hideMenu();
+      }
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

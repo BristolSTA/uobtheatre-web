@@ -1,5 +1,5 @@
-import Production from './Production'
-import GenericNodeConnection from './support/GenericNodeConnection'
+import Production from './Production';
+import GenericNodeConnection from './support/GenericNodeConnection';
 
 export default (overrides = {}, includeProductions = false) => {
   return Object.assign(
@@ -21,5 +21,5 @@ export default (overrides = {}, includeProductions = false) => {
         : GenericNodeConnection(),
     },
     overrides
-  )
-}
+  );
+};

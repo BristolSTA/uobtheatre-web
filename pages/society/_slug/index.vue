@@ -7,30 +7,18 @@
       :style="{
         'background-image': banner,
       }"
-    ></div>
+    />
     <div>
       <h1 class="container pt-8 text-left text-h1">
         {{ society.name }}
       </h1>
     </div>
     <div
-      class="
-        flex-wrap
-        justify-around
-        mt-4
-        md:container md:flex md:my-8 md:space-x-6
-      "
+      class="flex-wrap justify-around mt-4 md:container md:flex md:my-8 md:space-x-6"
     >
       <div
         v-if="society.logo.url"
-        class="
-          flex
-          justify-center
-          mx-4
-          py-2
-          h-40
-          md:mx-0 md:py-0 md:w-60 md:h-60
-        "
+        class="flex justify-center mx-4 py-2 h-40 md:mx-0 md:py-0 md:w-60 md:h-60"
       >
         <img
           ref="society-logo"
@@ -60,14 +48,7 @@
                 </td>
                 <td v-if="production.isBookable" class="px-4 text-right">
                   <NuxtLink
-                    class="
-                      btn btn-orange
-                      my-1
-                      px-3
-                      py-1.5
-                      text-center text-sm
-                      font-semibold
-                    "
+                    class="btn btn-orange my-1 px-3 py-1.5 text-center text-sm font-semibold"
                     :to="`/production/${production.slug}/book`"
                   >
                     Book Now
@@ -97,7 +78,7 @@
             {{ society.website }}
           </a>
         </div>
-        <div v-if="society.website">
+        <div v-if="society.contact">
           <strong>Contact: </strong>
           <a
             :href="`mailto:${society.contact}`"
@@ -114,8 +95,8 @@
 </template>
 
 <script>
-import SocietyDetailQuery from '@/graphql/queries/SocietyDetail.gql'
-import TipTapOutput from '@/components/ui/TipTapOutput.vue'
+import SocietyDetailQuery from '@/graphql/queries/SocietyDetail.gql';
+import TipTapOutput from '@/components/ui/TipTapOutput.vue';
 
 export default {
   components: { TipTapOutput },
@@ -125,40 +106,41 @@ export default {
       variables: {
         slug: params.slug,
       },
-    })
+    });
 
-    const society = data.society
-    if (!society)
+    const society = data.society;
+    if (!society) {
       return error({
         statusCode: 404,
         message: 'This society does not exists',
-      })
+      });
+    }
     return {
       society,
-    }
+    };
   },
   data() {
     return {
       society: null,
-    }
+    };
   },
   head() {
-    const societyName = this.society ? this.society.name : 'Loading...'
+    const societyName = this.society ? this.society.name : 'Loading...';
     return {
       title: `${societyName}`,
-    }
+    };
   },
   computed: {
     banner() {
       return this.society.banner.url
         ? `url("${this.society.banner.url}")`
-        : null
+        : null;
     },
     productions() {
       return this.society.productions.edges
         .map((edge) => edge.node)
-        .filter((production) => production.end)
+        .filter((production) => production.end);
     },
   },
-}
+};
 </script>

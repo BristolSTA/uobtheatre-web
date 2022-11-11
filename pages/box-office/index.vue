@@ -21,15 +21,7 @@
           <div
             v-for="(performance, index) in performances"
             :key="index"
-            class="
-              p-3
-              max-w-md
-              text-center
-              hover:bg-sta-gray-dark
-              bg-sta-gray-light
-              rounded
-              cursor-pointer
-            "
+            class="p-3 max-w-md text-center hover:bg-sta-gray-dark bg-sta-gray-light rounded cursor-pointer"
             @click="selectedPerformance = performance"
           >
             <production-featured-image
@@ -75,10 +67,10 @@
 </template>
 
 <script>
-import BoxOfficePerformancesAvailable from '@/graphql/queries/box-office/BoxOfficePerformancesAvailable.gql'
-import { DateTime } from 'luxon'
-import LoadingContainer from '@/components/ui/LoadingContainer.vue'
-import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue'
+import { DateTime } from 'luxon';
+import BoxOfficePerformancesAvailable from '@/graphql/queries/box-office/BoxOfficePerformancesAvailable.gql';
+import LoadingContainer from '@/components/ui/LoadingContainer.vue';
+import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue';
 export default {
   components: { LoadingContainer, ProductionFeaturedImage },
   middleware: ['authed', 'can-boxoffice'],
@@ -90,27 +82,27 @@ export default {
       datePickerDate: null,
       dateOptions: [],
       optionsTimer: null,
-    }
+    };
   },
   head: {
     title: 'Box Office Select',
   },
   computed: {
     dateToSearch() {
-      return this.selectedDate !== '' ? this.selectedDate : this.datePickerDate
+      return this.selectedDate !== '' ? this.selectedDate : this.datePickerDate;
     },
   },
   watch: {
     selectedPerformance(performance) {
-      this.$router.push(`/box-office/${performance.id}`)
+      this.$router.push(`/box-office/${performance.id}`);
     },
   },
   mounted() {
-    this.updateDateOptions()
-    this.optionsTimer = setInterval(this.updateDateOptions, 60 * 60 * 1000)
+    this.updateDateOptions();
+    this.optionsTimer = setInterval(this.updateDateOptions, 60 * 60 * 1000);
   },
   destroyed() {
-    clearInterval(this.optionsTimer)
+    clearInterval(this.optionsTimer);
   },
   apollo: {
     performances: {
@@ -118,10 +110,10 @@ export default {
       variables() {
         return {
           date: this.dateToSearch,
-        }
+        };
       },
       skip() {
-        return !this.dateToSearch || this.dateToSeach === ''
+        return !this.dateToSearch || this.dateToSeach === '';
       },
       fetchPolicy: 'cache-and-network',
 
@@ -129,14 +121,14 @@ export default {
         data.performances.edges
           .map((edge) => edge.node)
           .filter(
-            (performance) => performance.production.status.value === 'PUBLISHED'
+            (performance) => performance.production.status === 'PUBLISHED'
           ),
     },
   },
   methods: {
     updateDateOptions() {
-      this.selectedDate = DateTime.now().toISODate()
-      this.datePickerDate = DateTime.now().toISODate()
+      this.selectedDate = DateTime.now().toISODate();
+      this.datePickerDate = DateTime.now().toISODate();
       this.dateOptions = [
         { value: DateTime.now().toISODate(), text: 'Today' },
         {
@@ -144,8 +136,8 @@ export default {
           text: 'Tomorrow',
         },
         { value: null, text: 'Custom' },
-      ]
+      ];
     },
   },
-}
+};
 </script>

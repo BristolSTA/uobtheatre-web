@@ -6,17 +6,7 @@
   >
     <div
       v-if="draggingOver"
-      class="
-        absolute
-        bottom-0
-        left-0
-        right-0
-        top-0
-        flex
-        items-center
-        justify-center
-        bg-sta-gray-dark bg-opacity-80
-      "
+      class="absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center bg-sta-gray-dark bg-opacity-80"
       @dragleave.prevent="onDragLeave"
     >
       <strong>Release to swap</strong>
@@ -28,27 +18,17 @@
           class="max-h-52 pointer-events-none select-none"
         />
         <div class="mt-3 text-center">
-          <error-helper v-if="error">{{ error }}</error-helper>
+          <error-helper v-if="error">
+            {{ error }}
+          </error-helper>
           <button
-            class="
-              p-1
-              bg-sta-orange
-              hover:bg-sta-orange-dark
-              rounded
-              transition-colors
-            "
+            class="p-1 bg-sta-orange hover:bg-sta-orange-dark rounded transition-colors"
             @click="file = null"
           >
             Remove
           </button>
           <button
-            class="
-              p-1
-              bg-sta-orange
-              hover:bg-sta-orange-dark
-              rounded
-              transition-colors
-            "
+            class="p-1 bg-sta-orange hover:bg-sta-orange-dark rounded transition-colors"
             @click="$refs.fileInput.click()"
           >
             Replace
@@ -60,13 +40,7 @@
         <p>
           Drag an image here or
           <button
-            class="
-              p-1
-              bg-sta-orange
-              hover:bg-sta-orange-dark
-              rounded
-              transition-colors
-            "
+            class="p-1 bg-sta-orange hover:bg-sta-orange-dark rounded transition-colors"
             @click="$refs.fileInput.click()"
           >
             Select
@@ -85,8 +59,8 @@
 </template>
 
 <script>
-import { swal } from '@/utils'
-import ErrorHelper from '../ErrorHelper.vue'
+import ErrorHelper from '../ErrorHelper.vue';
+import { swal } from '@/utils';
 export default {
   components: { ErrorHelper },
   props: {
@@ -120,51 +94,57 @@ export default {
       file: this.value,
       fileDataUrl: this.value,
       error: null,
-    }
+    };
   },
   watch: {
     file(newFile, oldFile) {
-      this.$emit('change', newFile)
+      this.$emit('change', newFile);
 
-      if (!newFile) return (this.fileDataUrl = null)
-      if (!(newFile instanceof Blob)) return (this.fileDataUrl = newFile)
-      const fr = new FileReader()
+      if (!newFile) {
+        return (this.fileDataUrl = null);
+      }
+      if (!(newFile instanceof Blob)) {
+        return (this.fileDataUrl = newFile);
+      }
+      const fr = new FileReader();
       fr.onload = () => {
-        this.fileDataUrl = fr.result
+        this.fileDataUrl = fr.result;
 
         this.validateFile(newFile, fr.result).then((result) => {
-          if (!result) this.file = oldFile
-        })
-      }
-      fr.readAsDataURL(newFile)
+          if (!result) {
+            this.file = oldFile;
+          }
+        });
+      };
+      fr.readAsDataURL(newFile);
     },
   },
   methods: {
     validateFile(file, fileReaderResult) {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         if (file.size / 1000000 > this.maxFileSizeMb) {
           swal.fire({
             title: 'Sorry, this image is too large',
             text: `Please ensure your file is under ${this.maxFileSizeMb}MB`,
-          })
-          return resolve(false)
+          });
+          return resolve(false);
         }
 
-        const image = new Image()
+        const image = new Image();
         image.onload = () => {
           if (this.requiredRatio) {
-            const ratio = image.width / image.height
+            const ratio = image.width / image.height;
             const maxAllowableRatio =
-              this.requiredRatio * (1 + this.ratioFlexability)
+              this.requiredRatio * (1 + this.ratioFlexability);
             const minAllowableRatio =
-              this.requiredRatio * (1 - this.ratioFlexability)
+              this.requiredRatio * (1 - this.ratioFlexability);
 
             if ((ratio > maxAllowableRatio) | (ratio < minAllowableRatio)) {
               swal.fire({
                 title: "Sorry, this image doesn't have the correct ratio",
                 text: `Please ensure your image has a ratio of ${this.requiredRatio}:1`,
-              })
-              return resolve(false)
+              });
+              return resolve(false);
             }
           }
           if (this.minWidth) {
@@ -172,37 +152,37 @@ export default {
               swal.fire({
                 title: "Sorry, this image doesn't have the correct width",
                 text: `Please ensure your image has width of atleast ${this.minWidth}px`,
-              })
-              return resolve(false)
+              });
+              return resolve(false);
             }
           }
 
-          resolve(true)
-        }
-        image.src = fileReaderResult
-      })
+          resolve(true);
+        };
+        image.src = fileReaderResult;
+      });
     },
     onDrop(event) {
-      this.draggingOver = false
+      this.draggingOver = false;
 
       const files = Array.from(event.dataTransfer.files).filter((file) =>
         file.type.startsWith('image')
-      )
+      );
       if (event && files.length) {
-        this.file = files[0]
+        this.file = files[0];
       } else {
-        this.error = `Unsupported file type`
+        this.error = 'Unsupported file type';
       }
     },
     handleFileSelection(e) {
-      this.file = e.target.files[0]
+      this.file = e.target.files[0];
     },
     onDragOver() {
-      this.draggingOver = true
+      this.draggingOver = true;
     },
-    onDragLeave(e) {
-      this.draggingOver = false
+    onDragLeave() {
+      this.draggingOver = false;
     },
   },
-}
+};
 </script>
