@@ -45,7 +45,7 @@
       <h1 class="text-h1">What's On</h1>
       <div
         v-for="(production, index) in upcomingProductionsToDisplay"
-        :key="production.id"
+        :key="production!.id"
         class="flex flex-wrap items-center py-4 production-feature"
         :class="{ 'flex-row-reverse': index % 2 == 1 }"
       >
@@ -53,10 +53,10 @@
           class="w-full p-2 text-center md:px-6 md:w-1/2"
           :class="[index % 2 == 0 ? 'md:text-right' : 'md:text-left']"
         >
-          <NuxtLink :to="`/production/${production.slug}`">
+          <NuxtLink :to="`/production/${production!.slug}`">
             <ProductionFeaturedImage
-              :image-object="production.featuredImage"
-              :alt="`${production.name} feature image`"
+              :image-object="production!.featuredImage"
+              :alt="`${production!.name} feature image`"
               class="inline-block"
               style="max-height: 300px"
             />
@@ -66,20 +66,20 @@
           class="w-full p-2 text-center md:px-6 md:w-1/2"
           :class="[index % 2 == 0 ? 'md:text-left' : 'md:text-right']"
         >
-          <NuxtLink :to="`/production/${production.slug}`">
+          <NuxtLink :to="`/production/${production!.slug}`">
             <h2 class="font-semibold hover:text-gray-300 text-h2">
-              {{ production.name }}
+              {{ production!.name }}
             </h2>
           </NuxtLink>
-          <span v-if="production.subtitle">{{ production.subtitle }}</span>
+          <span v-if="production!.subtitle">{{ production!.subtitle }}</span>
           <p class="font-semibold text-sta-orange">
-            {{ displayStartEnd(production.start, production.end, 'd MMMM') }}
+            {{ displayStartEnd(production!.start, production!.end, 'd MMMM') }}
           </p>
           <p>
-            {{ truncate(oneLiner(production.description), 230) }}
+            {{ truncate(oneLiner(production!.description || ''), 230) }}
           </p>
           <NuxtLink
-            :to="`/production/${production.slug}`"
+            :to="`/production/${production!.slug}`"
             class="mt-6 btn btn-green"
           >
             More Information & Book
@@ -129,7 +129,11 @@ const { result } = useHomepageUpcomingProductionsQuery({
 });
 
 const upcomingProductions = computed(() =>
-  !result?.value ? [] : result.value.productions.edges.map((edge) => edge.node)
+  result.value?.productions
+    ? result.value.productions.edges
+        .filter((edge) => edge?.node)
+        .map((edge) => edge!.node)
+    : []
 );
 
 const upcomingProductionsToDisplay = computed(() =>
@@ -139,17 +143,17 @@ const upcomingProductionsToDisplay = computed(() =>
 // Define banner productions
 const bannerProductions = computed(() =>
   upcomingProductionsToDisplay.value
-    .filter((production) => !!production.coverImage)
+    .filter((production) => production?.coverImage)
     .map((production) => {
       return {
-        id: production.id,
-        displayImage: production.coverImage,
+        id: production!.id,
+        displayImage: production!.coverImage,
         text: {
-          slug: production.slug,
-          name: production.name,
-          start: production.start,
-          end: production.end,
-          society: production.society
+          slug: production!.slug,
+          name: production!.name,
+          start: production!.start,
+          end: production!.end,
+          society: production!.society
         }
       };
     })

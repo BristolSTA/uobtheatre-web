@@ -18,6 +18,10 @@ export default class {
     return new this(errors);
   }
 
+  static createFromMessage(message) {
+    return new this([{ __typename: 'NonFieldError', message }]);
+  }
+
   /**
    * Resets errors object
    */

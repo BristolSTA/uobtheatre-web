@@ -27,25 +27,33 @@ export const useStore = defineStore('auth', {
     isLoggedIn: (state) => !!state.token && !!state.user
   },
   actions: {
+    /**
+     * Sets the auth user's details in the state
+     * @param userDetails Object of user's details
+     */
     setAuthUser(userDetails: AuthUserDetailsFragment) {
-      this.user.value = userDetails;
-    },
-    async loadUserDetails(userDetails: AuthUserDetailsFragment | null = null) {
-      if (!userDetails) {
-        const { data } = await useAsyncQuery<LoadUserDetailsQuery>(
-          LoadUserDetailsDocument,
-          {
-            fetchPolicy: 'no-cache'
-          }
-        );
-        if (data.value?.me) userDetails = data.value.me;
-      }
-      if (!userDetails) {
-        return this.logout();
-      }
-
       this.user = userDetails;
     },
+
+    /**
+     * Load user's details from the API
+     */
+    async loadUserDetails() {
+      // Fetch from API without cache
+      const { data } = await useAsyncQuery<LoadUserDetailsQuery>(
+        LoadUserDetailsDocument,
+        {
+          fetchPolicy: 'no-cache'
+        }
+      );
+
+      // If the user isn't returned, log out
+      if (!data.value?.me) return this.logout();
+
+      // Otherwise set the user in state
+      this.user = data.value.me;
+    },
+
     /**
      * Attempt to login the user with the provided details
      *
@@ -58,20 +66,37 @@ export const useStore = defineStore('auth', {
         variables: { email, password }
       });
 
-      const { data } = await mutate();
+      const mutateResponse = await mutate();
 
-      if (!data.login.success) {
-        throw new ValidationError(Errors.createFromAPI(data.login.errors));
+      if (!mutateResponse || !mutateResponse.data)
+        throw new ValidationError(
+          Errors.createFromMessage('An unknown error occured')
+        );
+
+      const data = mutateResponse.data;
+
+      // Check it was successfully
+      if (!data.login?.success) {
+        throw new ValidationError(Errors.createFromAPI(data.login?.errors));
       }
 
-      if (!data.login.user.verified) {
+      // Check the user is verified
+      if (!data.login.user?.verified) {
         throw new UnverifiedLoginError();
       }
+
+      // Check we have the tokens we need
+      if (!data.login.token || !data.login.refreshToken)
+        throw new ValidationError(
+          Errors.createFromMessage(
+            'Invalid response recieved. Please try again'
+          )
+        );
 
       // Store the auth token & tell Apollo about our shiny new token
       this.token = data.login.token;
       const { onLogin } = useApollo();
-      await onLogin(this.token);
+      await onLogin(this.token ?? undefined);
       // Store the fresh token
       this.setRefreshToken(data.login.refreshToken, remember);
       // Start queing a token refresh
@@ -79,43 +104,64 @@ export const useStore = defineStore('auth', {
       // Load user details
       await this.loadUserDetails();
     },
-    async refreshUsingToken() {
-      if (!this.getRefreshToken()) return this.logout();
 
+    /**
+     * Refresh the user auth tokens and data using the exisiting token
+     */
+    async refreshUsingToken() {
+      let currentRefreshToken;
+      // If the user doesn't have a refresh token, we'll log them out
+      if (!(currentRefreshToken = this.getRefreshToken())) return this.logout();
+
+      // Use the refresh token to get a new token and refresh token
       const { mutate } = useRefreshTokenMutationMutation({
         variables: {
-          refreshToken: this.getRefreshToken()
+          refreshToken: currentRefreshToken
         }
       });
 
-      const { data } = await mutate();
+      const mutateResponse = await mutate();
 
-      if (!data.refreshToken.token) {
+      const authToken = mutateResponse?.data?.refreshToken?.token;
+      const refreshToken = mutateResponse?.data?.refreshToken?.refreshToken;
+      if (!authToken || !refreshToken) {
         return this.logout();
       }
 
-      this.token = data.refreshToken.token;
-      this.setRefreshToken(data.refreshToken.refreshToken);
+      // Store the new tokens
+      this.token = authToken;
+      this.setRefreshToken(refreshToken);
       this.queueRefresh();
 
+      // Load the user's details
       return this.loadUserDetails();
     },
+
+    /**
+     * Queue a refresh of the auth token
+     */
     queueRefresh() {
-      if (refreshTimer) {
-        clearTimeout(refreshTimer);
-      }
-      const { exp } = jwtDecode<JwtPayload>(this.token);
-      let timeoutSeconds = exp - Math.round(Date.now() / 1000) - 30;
+      // If the timer is defined, we'll make sure it is cleared
+      if (refreshTimer) clearTimeout(refreshTimer);
 
-      if (timeoutSeconds < 1) {
-        timeoutSeconds = 1;
+      let nextSheduledRefreshSeconds = 1;
+
+      if (this.token) {
+        const { exp } = jwtDecode<JwtPayload>(this.token);
+        // If the JWT contains an expiry, we'll refresh 30 seconds before (or in 1 second if refresh already due). If it doesn't, we'll refresh in 1 minute
+        nextSheduledRefreshSeconds = Math.max(
+          1,
+          exp ? exp - Math.round(Date.now() / 1000) - 30 : 60
+        );
       }
 
+      // Schedule a refresh of the token
       refreshTimer = setTimeout(() => {
         refreshTimer = null;
         this.refreshUsingToken();
-      }, timeoutSeconds * 1000);
+      }, nextSheduledRefreshSeconds * 1000);
     },
+
     /**
      * Stores the given refresh token, taking into account device-user remembering preference
      *
@@ -128,21 +174,31 @@ export const useStore = defineStore('auth', {
     ) {
       const runtimeConfig = useRuntimeConfig();
       const rememberLengthDays = 365;
+
+      // If the user wants to be remembered, we'll store a cookie to remember this preference
       if (remember) {
-        cookie.set(runtimeConfig.public.auth.rememberKey, true, {
-          expires: remember ? rememberLengthDays : null
+        cookie.set(runtimeConfig.public.auth.rememberKey, 'true', {
+          expires: remember ? rememberLengthDays : undefined
         });
       } else if (
         remember === false &&
         cookie.get(runtimeConfig.public.auth.rememberKey)
       ) {
+        // If they don't want to be remembered, and the remember cookie is set, we'll take this opertunitiy to remove it
         cookie.remove(runtimeConfig.public.auth.rememberKey);
       }
 
+      // Finally, we'll set a cookie with the refresh token. If the user wants to be remembered, we'll make this expire in 1 year, otherwise it will expire with the session
       cookie.set(runtimeConfig.public.auth.refreshTokenKey, refreshToken, {
-        expires: this.isRemembering() ? rememberLengthDays : null
+        expires: this.isRemembering() ? rememberLengthDays : undefined
       });
     },
+
+    /**
+     * Logout the user
+     *
+     * @param broadcast bool If true, we'll broadcast the logout to other windows on this PC (so if they log out in one tab, it will log them out in all tabs on that PC.)
+     */
     async logout(broadcast = true) {
       const runtimeConfig = useRuntimeConfig();
 
@@ -151,7 +207,7 @@ export const useStore = defineStore('auth', {
       this.token = null;
 
       // Clear refresh timeout
-      clearTimeout(refreshTimer);
+      if (refreshTimer) clearTimeout(refreshTimer);
 
       // Remove cookies
       cookie.remove(runtimeConfig.public.auth.refreshTokenKey); // Remove fresh token cookie
@@ -164,21 +220,42 @@ export const useStore = defineStore('auth', {
       // Notify other windows
       if (broadcast) window.localStorage.setItem('logout', '1');
     },
+
+    /**
+     * Request a password reset for an given email address
+     *
+     * @param email string Email address to request a reset for
+     */
     async requestPasswordReset(email: string) {
+      // Send the mutation to request the reset
       const { mutate } = useRequestPasswordResetMutationMutation({
         variables: {
           email
         }
       });
 
-      const { data } = await mutate();
+      const mutateResponse = await mutate();
+      const data = mutateResponse?.data?.sendPasswordResetEmail;
 
-      if (!data.sendPasswordResetEmail.success) {
+      // Check we got the data we asked for
+      if (!mutateResponse || !data) {
         throw new ValidationError(
-          Errors.createFromAPI(data.sendPasswordResetEmail.errors)
+          Errors.createFromMessage('An unknown error occured')
         );
       }
+
+      // If the mutation was not successful, throw the errors
+      if (!data.success)
+        throw new ValidationError(Errors.createFromAPI(data.errors));
     },
+
+    /**
+     * Reset an account password using a token
+     *
+     * @param resetToken The reset token
+     * @param password The desired, new password
+     * @param confirmedPassword Confirmation of the new password
+     */
     async resetPassword(
       resetToken: string,
       password: string,
@@ -192,14 +269,26 @@ export const useStore = defineStore('auth', {
         }
       });
 
-      const { data } = await mutate();
+      const mutateResponse = await mutate();
+      const data = mutateResponse?.data?.passwordReset;
 
-      if (!data.passwordReset.success) {
+      // Check we got the data we wanted
+      if (!data)
         throw new ValidationError(
-          Errors.createFromAPI(data.passwordReset.errors)
+          Errors.createFromMessage('An unknown error occured')
         );
+
+      // If the mutation wasn't successful, we'll throw the errors
+      if (!data.success) {
+        throw new ValidationError(Errors.createFromAPI(data.errors));
       }
     },
+
+    /**
+     * Activate an account using a token
+     *
+     * @param activationToken The activation token
+     */
     async activateAccount(activationToken: string) {
       const { mutate } = useActiveAccountMutationMutation({
         variables: {
@@ -207,14 +296,30 @@ export const useStore = defineStore('auth', {
         }
       });
 
-      const { data } = await mutate();
+      const mutateResponse = await mutate();
+      const data = mutateResponse?.data?.verifyAccount;
 
-      if (!data.verifyAccount.success) {
+      // Check we got the data we wanted
+      if (!data)
         throw new ValidationError(
-          Errors.createFromAPI(data.verifyAccount.errors)
+          Errors.createFromMessage('An unknown error occured')
         );
+
+      // If the mutation wasn't successful, we'll throw the errors
+      if (!data.success) {
+        throw new ValidationError(Errors.createFromAPI(data.errors));
       }
     },
+
+    /**
+     * Register a new account
+     *
+     * @param firstName The user's first name, correctly capitalised
+     * @param lastName The user's last name, correctly capitalised
+     * @param email The user's email address
+     * @param password The user's desired password
+     * @param confirmedPassword The confirmation of the user's password
+     */
     async register(
       firstName: string,
       lastName: string,
@@ -232,21 +337,44 @@ export const useStore = defineStore('auth', {
         }
       });
 
-      const { data } = await mutate();
+      const mutateResponse = await mutate();
+      const data = mutateResponse?.data?.register;
 
-      if (!data.register.success) {
-        throw new ValidationError(Errors.createFromAPI(data.register.errors));
+      // Check we got the data we wanted
+      if (!data)
+        throw new ValidationError(
+          Errors.createFromMessage('An unknown error occured')
+        );
+
+      // If the mutation wasn't successful, we'll throw the errors
+      if (!data.success) {
+        throw new ValidationError(Errors.createFromAPI(data.errors));
       }
     },
+
+    /**
+     * Returns whether the user has requested to be remembered
+     */
     isRemembering() {
       const runtimeConfig = useRuntimeConfig();
       return !!cookie.get(runtimeConfig.public.auth.rememberKey);
     },
-    getRefreshToken() {
+
+    /**
+     * Returns the refresh token, if given
+     */
+    getRefreshToken(): string | undefined {
       const runtimeConfig = useRuntimeConfig();
       return cookie.get(runtimeConfig.public.auth.refreshTokenKey);
     },
-    hasPermission(permission) {
+
+    /**
+     * Returns if the current user has the specified permission
+     *
+     * @param permission The permission
+     */
+    hasPermission(permission: string) {
+      if (!this.user || !this.user.permissions) return false;
       return this.user.permissions.includes(permission);
     }
   }
