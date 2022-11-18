@@ -93,6 +93,7 @@ import HaveTicketsReadyScreen from '@/components/publicity-screens/HaveTicketsRe
 import SoldOutScreen from '@/components/publicity-screens/SoldOutScreen.vue';
 import WelcomeScreen from '@/components/publicity-screens/WelcomeScreen.vue';
 import PleaseWaitScreen from '@/components/publicity-screens/PleaseWaitScreen.vue';
+import ConfectionaryStoreMarketingScreen from '@/components/publicity-screens/ConfectionaryStoreMarketingScreen.vue';
 import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue';
 
 export default {
@@ -233,7 +234,11 @@ export default {
       if (this.now < DateTime.fromISO(performance.doorsOpen)) {
         screens.push(PleaseWaitScreen);
       } else if (this.now < DateTime.fromISO(performance.start)) {
-        screens.push(WelcomeScreen, HaveTicketsReadyScreen);
+        screens.push(
+          WelcomeScreen,
+          HaveTicketsReadyScreen,
+          ConfectionaryStoreMarketingScreen
+        );
 
         if (performance.soldOut) {
           screens.push(SoldOutScreen);
