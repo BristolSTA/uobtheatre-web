@@ -8,8 +8,8 @@
             ? 'bg-sta-orange'
             : 'bg-gray-200 hover:bg-gray-400 text-gray-700'
         ]"
-        @click="$emit('go-login')"
-        @keypress="$emit('go-login')"
+        @click="emit('go-login')"
+        @keypress="emit('go-login')"
       >
         Login
       </button>
@@ -20,8 +20,8 @@
             ? 'bg-gray-200 hover:bg-gray-400 text-gray-700'
             : ' bg-sta-orange'
         ]"
-        @click="$emit('go-signup')"
-        @keypress="$emit('go-signup')"
+        @click="emit('go-signup')"
+        @keypress="emit('go-signup')"
       >
         Sign Up
       </button>
@@ -84,7 +84,7 @@
       <hr class="border-t-2 border-sta-gray-dark" />
 
       <p class="mt-2 text-white">
-        <clickable-link @click="$emit('go-signup')">
+        <clickable-link @click="emit('go-signup')">
           Don't have an account? <strong>Sign Up</strong>
         </clickable-link>
       </p>
@@ -195,7 +195,7 @@
       </button>
 
       <p class="mt-2 text-white">
-        <clickable-link @click="$emit('go-login')">
+        <clickable-link @click="emit('go-login')">
           Already have an account? <strong>Log In</strong>
         </clickable-link>
       </p>
@@ -223,22 +223,27 @@ const props = defineProps({
   loginMode: { type: Boolean, default: true }
 });
 
+const emit = defineEmits<{
+  (event: 'go-login'): void;
+  (event: 'go-signup'): void;
+}>();
+
 const signUpDetails = reactive({
-  fullName: null as string,
-  firstName: null as string,
-  lastName: null as string,
-  confirmedPassword: null as string
+  fullName: undefined as string | undefined,
+  firstName: undefined as string | undefined,
+  lastName: undefined as string | undefined,
+  confirmedPassword: undefined as string | undefined
 });
 
-const email: Ref<string> = ref(null);
-const password: Ref<string> = ref(null);
+const email: Ref<string | undefined> = ref(undefined);
+const password: Ref<string | undefined> = ref(undefined);
 
 const acceptedTerms = ref(false);
 const rememberMe = ref(false);
 const loading = ref(false);
 
-const loginErrors: Ref<Errors> = ref(undefined);
-const signupErrors: Ref<Errors> = ref(undefined);
+const loginErrors: Ref<Errors | undefined> = ref(undefined);
+const signupErrors: Ref<Errors | undefined> = ref(undefined);
 
 const authStore = useStore();
 const route = useRoute();
@@ -246,7 +251,9 @@ const router = useRouter();
 
 async function attemptLogin() {
   loading.value = true;
-  loginErrors.value = null;
+  loginErrors.value = undefined;
+
+  if (!email.value || !password.value) return;
 
   try {
     await authStore.login(email.value, password.value, rememberMe.value);
@@ -278,14 +285,56 @@ async function attemptLogin() {
 
 async function attemptSignup() {
   loading.value = true;
-  signupErrors.value = null;
+  signupErrors.value = new Errors();
 
-  if (!signUpDetails.lastName || signUpDetails.lastName === '') {
-    signupErrors.value = new Errors();
+  if (!signUpDetails.firstName || signUpDetails.firstName === '') {
     signupErrors.value.record([
       {
-        message: 'Please provider a last name',
+        message: 'Please provide a first name',
+        field: 'firstName',
+        __typename: 'FieldError'
+      }
+    ]);
+    return (loading.value = false);
+  }
+  if (!signUpDetails.lastName || signUpDetails.lastName === '') {
+    signupErrors.value.record([
+      {
+        message: 'Please provide a last name',
         field: 'lastName',
+        __typename: 'FieldError'
+      }
+    ]);
+    return (loading.value = false);
+  }
+  if (!email.value || email.value === '') {
+    signupErrors.value.record([
+      {
+        message: 'Please provide a email address',
+        field: 'email',
+        __typename: 'FieldError'
+      }
+    ]);
+    return (loading.value = false);
+  }
+  if (!password.value || password.value === '') {
+    signupErrors.value.record([
+      {
+        message: 'Please provide a password',
+        field: 'password',
+        __typename: 'FieldError'
+      }
+    ]);
+    return (loading.value = false);
+  }
+  if (
+    !signUpDetails.confirmedPassword ||
+    signUpDetails.confirmedPassword === ''
+  ) {
+    signupErrors.value.record([
+      {
+        message: 'Please retype your password',
+        field: 'confirmedPassword',
         __typename: 'FieldError'
       }
     ]);
@@ -317,6 +366,7 @@ async function attemptSignup() {
 }
 
 function guessNameParts() {
+  if (!signUpDetails.fullName) return;
   const components = trim(signUpDetails.fullName).split(' ');
   signUpDetails.firstName = components.shift();
   signUpDetails.lastName = components.join(' ');

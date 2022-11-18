@@ -1,3 +1,4 @@
+import { useStore } from '@/store/auth';
 export default defineNuxtRouteMiddleware(() => {
   const authStore = useStore();
   if (!authStore.hasPermission('boxoffice_open')) {
