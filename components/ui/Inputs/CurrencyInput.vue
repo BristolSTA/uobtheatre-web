@@ -1,9 +1,9 @@
 <template>
-  <t-input ref="inputRef" :value="formattedValue" />
+  <t-input ref="inputRef" type="text" />
 </template>
 
 <script>
-import useCurrencyInput from 'vue-currency-input';
+import { useCurrencyInput } from 'vue-currency-input';
 
 export default {
   props: {
@@ -21,20 +21,20 @@ export default {
     },
   },
   setup(props) {
-    const { formattedValue, inputRef } = useCurrencyInput(
+    const { inputRef } = useCurrencyInput(
       Object.assign(
         {
           currency: 'GBP',
           precision: 2,
           valueRange: {
-            min: props.allowNegative ? undefined : 0,
+            min: props.allowNegative ? null : 0,
           },
         },
         props.options
       )
     );
 
-    return { inputRef, formattedValue };
+    return { inputRef };
   },
 };
 </script>

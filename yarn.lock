@@ -18629,17 +18629,10 @@ vue-client-only@^2.0.0:
   resolved "https://registry.yarnpkg.com/vue-client-only/-/vue-client-only-2.1.0.tgz#1a67a47b8ecacfa86d75830173fffee3bf8a4ee3"
   integrity sha512-vKl1skEKn8EK9f8P2ZzhRnuaRHLHrlt1sbRmazlvsx6EiC3A8oWF8YCBrMJzoN+W3OnElwIGbVjsx6/xelY1AA==
 
-vue-currency-input@^2.0.2:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/vue-currency-input/-/vue-currency-input-2.5.1.tgz#5349b94df8c9e99102a8960772748f477dfd5b95"
-  integrity sha512-H3n+dJPuVC3xsZMCKLk6S7BrmhC1l1UFOnCwHuvprpI2xoYS7mN5FVZQY7REqX4Ct9KdzIz5RAfNOwEIp0cniA==
-  dependencies:
-    vue-demi "^0.12.1"
-
-vue-demi@^0.12.1:
-  version "0.12.5"
-  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.12.5.tgz#8eeed566a7d86eb090209a11723f887d28aeb2d1"
-  integrity sha512-BREuTgTYlUr0zw0EZn3hnhC3I6gPWv+Kwh4MCih6QcAeaTlaIX0DwOVN0wHej7hSvDPecz4jygy/idsgKfW58Q==
+vue-currency-input@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/vue-currency-input/-/vue-currency-input-3.0.1.tgz#9eca071f65e4744c82aedc45dc471ddb5edf12c6"
+  integrity sha512-kyPgyGC8wQKFEZ+uptqQ1hLap6cPFyxwMSlGZOKSAQaNLBHJHSLPxV5W6rmOlLqdmgoAhm9ricBZfAOFt1Vycg==
 
 vue-eslint-parser@^7.1.1, vue-eslint-parser@^7.10.0:
   version "7.11.0"
