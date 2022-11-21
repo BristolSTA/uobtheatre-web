@@ -1,12 +1,12 @@
 <template>
-  <admin-page title="Create a performance">
+  <AdminPage title="Create a performance">
     <template #toolbar>
-      <sta-button colour="green" icon="save" @click="create">
+      <UiStaButton colour="green" icon="save" @click="create">
         Create
-      </sta-button>
-      <sta-button colour="orange" to="../../"> Cancel </sta-button>
+      </UiStaButton>
+      <UiStaButton colour="orange" to="../../"> Cancel </UiStaButton>
     </template>
-    <non-field-error :errors="errors" />
+    <UiNonFieldError :errors="errors" />
     <performance-editor
       ref="editor"
       v-model:errors="errors"
@@ -14,15 +14,14 @@
       :production="production"
       v-bind.sync="performance"
     />
-  </admin-page>
+  </AdminPage>
 </template>
 
 <script>
 import Swal from 'sweetalert2';
-import AdminPage from '@/components/admin/AdminPage.vue';
+
 import PerformanceEditor from '@/components/performance/editor/PerformanceEditor.vue';
-import StaButton from '@/components/ui/StaButton.vue';
-import NonFieldError from '~~/components/ui/UiNonFieldError.vue';
+
 import {
   AdminProductionLookupDocument,
   PerformanceMutationDocument
@@ -31,7 +30,7 @@ import {
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import { loadingSwal, successToast, errorToast } from '~~/utils/alerts';
 export default defineNuxtComponent({
-  components: { AdminPage, PerformanceEditor, StaButton, NonFieldError },
+  components: { PerformanceEditor, NonFieldError },
   async asyncData() {
     // Execute query
     const { data } = await useDefaultApolloClient().query({

@@ -42,8 +42,8 @@ import { DateTime } from 'luxon';
 
 import OverviewBox from '../../ui/Card.vue';
 import Booking from '@/classes/Booking';
-import BookingStatusEnum from '@/enums/PayableStatusEnum';
-import ProviderNameEnum from '@/enums/TransactionProviderNameEnum';
+import BookingStatusEnum from '~~/enums/PayableStatusEnum';
+import ProviderNameEnum from '~~/enums/TransactionProviderNameEnum';
 import { dateFormat } from '@/utils/datetime';
 
 export default defineNuxtComponent({

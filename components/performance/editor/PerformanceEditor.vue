@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-2">
-    <card title="Venue">
+    <UiCard title="Venue">
       <t-select
         placeholder="Select a venue"
         class="mb-4"
@@ -24,8 +24,8 @@
         assigned</span
       >
       <error-helper :errors="errors" field-name="venue" />
-    </card>
-    <card title="Timings">
+    </UiCard>
+    <UiCard title="Timings">
       <div class="space-y-4">
         <p>
           <strong>Note:</strong> All times should be in the time local to the
@@ -92,37 +92,37 @@
           </template>
         </form-label>
       </div>
-    </card>
+    </UiCard>
 
-    <card title="Ticket Options">
+    <UiCard title="Ticket Options">
       <template
         v-if="similarPerformances.length && showTicketsEditor"
         #messageBox
       >
-        <sta-button
+        <UiStaButton
           class="bg-sta-orange hover:bg-sta-orange-dark transition-colors"
           @click="loadTicketOptions"
         >
           Load From Exisiting Performance
-        </sta-button>
+        </UiStaButton>
       </template>
       <template v-if="!showTicketsEditor">
         <p class="text-center">
           Would you like to load ticket options from an exisiting performance?
         </p>
         <div class="flex justify-center gap-4 max-w-xl mx-auto mt-2">
-          <sta-button
+          <UiStaButton
             class="bg-sta-orange hover:bg-sta-orange-dark transition-colors"
             @click="loadTicketOptions"
           >
             Load from exisiting
-          </sta-button>
-          <sta-button
+          </UiStaButton>
+          <UiStaButton
             class="bg-sta-gray hover:bg-sta-gray-dark transition-colors"
             @click="ignoredExisitingPerformances = true"
           >
             Start from scratch
-          </sta-button>
+          </UiStaButton>
         </div>
       </template>
       <template v-else>
@@ -222,8 +222,8 @@
           />
         </div>
       </template>
-    </card>
-    <card title="Other Details">
+    </UiCard>
+    <UiCard title="Other Details">
       <div class="space-y-4">
         <form-label name="disabled" :errors="errors">
           Disabled
@@ -268,7 +268,7 @@
           </template>
         </form-label>
       </div>
-    </card>
+    </UiCard>
   </div>
 </template>
 
@@ -282,8 +282,7 @@ import ErrorHelper from '@/components/ui/ErrorHelper.vue';
 import Errors from '@/classes/Errors';
 import { getValidationErrors, performMutation } from '@/utils/api';
 import { swal } from '@/utils/alerts';
-import {dateFormat} from '@/utils/datetime'
-import StaButton from '@/components/ui/StaButton.vue';
+import { dateFormat } from '@/utils/datetime';
 import Alert from '@/components/ui/Alert.vue';
 import { singleDiscounts as singleDiscountsFn } from '@/utils/performance';
 
@@ -307,7 +306,6 @@ export default defineNuxtComponent({
     SeatGroup,
     ConcessionType,
     ErrorHelper,
-    StaButton,
     Alert,
     PriceMatrix
   },
@@ -496,10 +494,7 @@ export default defineNuxtComponent({
           this.similarPerformances.map((performance) => [
             performance.id,
             'Performance at ' +
-              dateFormat(
-                performance.start,
-                'EEEE dd MMMM y HH:mm ZZZZ'
-              )
+              dateFormat(performance.start, 'EEEE dd MMMM y HH:mm ZZZZ')
           ])
         ),
         showCancelButton: true,

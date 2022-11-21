@@ -1,5 +1,5 @@
 <template>
-  <card>
+  <UiCard>
     <loading-container :loading="loading">
       <tickets-editor
         :booking="booking"
@@ -19,13 +19,13 @@
           />
         </template>
       </form-label>
-      <sta-button
+      <UiStaButton
         colour="orange"
         :disabled="!bookingEmail || !booking.tickets.length"
         @click="create"
       >
         Create Booking
-      </sta-button>
+      </UiStaButton>
       <p>
         <strong>Note:</strong> Only complimentary bookings (100% discount) can
         be created here. Once you click create, booking confirmation will be
@@ -33,7 +33,7 @@
         completed.
       </p>
     </loading-container>
-  </card>
+  </UiCard>
 </template>
 
 <script>
@@ -43,9 +43,8 @@ import PayBookingMutation from '@/graphql/mutations/booking/PayBooking.gql';
 import TicketsMatrix from '@/classes/TicketsMatrix';
 import Booking from '@/classes/Booking';
 import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue';
-import Card from '@/components/ui/Card.vue';
+
 import FormLabel from '@/components/ui/FormLabel.vue';
-import StaButton from '@/components/ui/StaButton.vue';
 
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import { successToast } from '~~/utils/alerts';
@@ -55,7 +54,6 @@ export default defineNuxtComponent({
     TicketsEditor,
     Card,
     FormLabel,
-    StaButton,
     LoadingContainer
   },
   async asyncData() {

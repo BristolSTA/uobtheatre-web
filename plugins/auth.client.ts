@@ -1,10 +1,15 @@
-import { useStore } from '~~/store/auth';
+import useAuthStore from '~~/store/auth';
+import useBoxOfficeStore from '~~/store/box-office';
 
-export default defineNuxtPlugin((nuxtApp) => {
-  const authStore = useStore();
+export default defineNuxtPlugin(async () => {
+  const authStore = useAuthStore();
+  const boxOfficeStore = useBoxOfficeStore();
 
   // Attempt a silent refresh on load
-  authStore.refreshUsingToken();
+  await authStore.refreshUsingToken();
+
+  // Reload box office
+  boxOfficeStore.rememberState();
 
   // Listen for log-off via another tab
   window.addEventListener('storage', (event) => {

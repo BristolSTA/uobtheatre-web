@@ -120,11 +120,11 @@
 import DropdownItem from './DropdownItem.vue';
 import DropdownNavItem from './DropdownNavItem.vue';
 import ClickableLink from '@/components/ui/ClickableLink.vue';
-import { useStore } from '~/store/auth';
+import useAuthStore from '@/store/auth';
 
 const userDropdownComponent = ref(null);
 
-const authStore = useStore();
+const authStore = useAuthStore();
 const appConfig = useAppConfig();
 const navItems = [
   [{ path: '/productions' }, 'Whats On'],

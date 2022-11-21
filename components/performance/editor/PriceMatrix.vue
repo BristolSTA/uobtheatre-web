@@ -23,12 +23,12 @@
         >
           <form-label label-class="">
             {{ discount.requirements[0].concessionType.name }}
-            <badge
+            <UiBadge
               v-if="discount.performances.edges.length > 1"
               class="bg-blue-400"
             >
               <font-awesome-icon icon="sync" />
-            </badge>
+            </UiBadge>
             <template #control>
               <percentage-input
                 v-if="editing"
@@ -91,9 +91,9 @@
     </safe-table>
     <div v-if="editing" class="m-2 p-2 bg-sta-gray-dark">
       Note:
-      <badge class="bg-blue-400">
+      <UiBadge class="bg-blue-400">
         <font-awesome-icon icon="sync" />
-      </badge>
+      </UiBadge>
       Denotates a setting that is synced or shared across multiple performances.
       By changing this, it will change for the other performances too
     </div>
@@ -103,7 +103,7 @@
 <script>
 /* eslint-disable vue/no-unused-components */
 import FormLabel from '@/components/ui/FormLabel.vue';
-import Badge from '@/components/ui/Badge.vue';
+import Badge from '~~/components/ui/UiBadge.vue';
 import CurrencyInput from '@/components/ui/Inputs/CurrencyInput.vue';
 import PercentageInput from '@/components/ui/Inputs/PercentageInput.vue';
 import { singleDiscounts as singleDiscountsFn } from '@/utils/performance';

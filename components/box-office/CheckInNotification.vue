@@ -64,7 +64,7 @@
                     ({{ booking.tickets.length }} tickets)
                   </template>
                 </h3>
-                <nuxt-link
+                <NuxtLink
                   :to="`bookings?q=${scanData.bookingReference}&qTicket=${scanData.ticketId}`"
                   class="block px-2 py-1 transition-colors"
                   :class="[
@@ -74,7 +74,7 @@
                   ]"
                 >
                   View Booking
-                </nuxt-link>
+                </NuxtLink>
               </div>
               <div class="hidden space-x-8 md:flex">
                 <div>

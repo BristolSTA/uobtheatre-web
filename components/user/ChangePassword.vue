@@ -5,7 +5,7 @@
       class="flex flex-col p-6 pt-0 space-y-2"
       @submit.prevent="attemptChange"
     >
-      <non-field-error :errors="errors" />
+      <UiNonFieldError :errors="errors" />
       <text-input
         v-model="currentPassword"
         name="Current Password"
@@ -51,7 +51,7 @@
 import gql from 'graphql-tag';
 
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
-import NonFieldError from '~~/components/ui/UiNonFieldError.vue';
+
 import TextInput from '~~/components/ui/UiTextInput.vue';
 import { getValidationErrors, performMutation } from '@/utils/api';
 import { swalToast } from '@/utils/alerts';

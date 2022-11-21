@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-2">
-    <card title="Basic Details">
+    <UiCard title="Basic Details">
       <div class="space-y-4">
         <form-label :errors="errors" name="name" :required="true">
           Name
@@ -19,7 +19,7 @@
               $router.resolve({ path: `/productions/${computedSlug}` }).route
                 .fullPath
             }}
-            <sta-button
+            <UiStaButton
               class="text-sm bg-sta-orange hover:bg-sta-orange-dark transition-colors"
               @click="
                 () => {
@@ -29,7 +29,7 @@
               "
             >
               Change
-            </sta-button>
+            </UiStaButton>
           </template>
           <template v-else>
             <div class="flex">
@@ -40,7 +40,7 @@
                   @input="manualSlug = kebabCase($event)"
                 />
               </form-label>
-              <sta-button
+              <UiStaButton
                 class="bg-sta-green hover:bg-sta-green-dark transition-colors lg:mx-8 mx-4 mt-6"
                 @click="
                   () => {
@@ -50,7 +50,7 @@
                 "
               >
                 Done
-              </sta-button>
+              </UiStaButton>
             </div>
           </template>
           <br />
@@ -97,14 +97,14 @@
                   <th>
                     {{ contentWarning.warning.shortDescription }}
                     <p>
-                      <sta-button
+                      <UiStaButton
                         icon="trash"
                         :small="true"
                         colour="rouge"
                         @click="updateWarnings(contentWarning.warning, false)"
                       >
                         Remove
-                      </sta-button>
+                      </UiStaButton>
                     </p>
                   </th>
                   <td>
@@ -125,14 +125,14 @@
               </table>
             </div>
             <div>
-              <sta-button
+              <UiStaButton
                 class="bg-sta-green"
                 icon="plus-circle"
                 :small="true"
                 @click="onAddWarning"
               >
                 Add
-              </sta-button>
+              </UiStaButton>
             </div>
           </template>
         </form-label>
@@ -163,8 +163,8 @@
           </form-label>
         </div>
       </div>
-    </card>
-    <card title="Society">
+    </UiCard>
+    <UiCard title="Society">
       <t-select
         placeholder="Select a society"
         class="mb-4"
@@ -194,8 +194,8 @@
         <h4 class="font-bold text-lg">No Society Selected</h4>
       </div>
       <error-helper :errors="errors" field-name="society" />
-    </card>
-    <card title="Images">
+    </UiCard>
+    <UiCard title="Images">
       <div class="space-y-4">
         <div class="flex flex-wrap justify-evenly md:flex-nowrap md:space-x-4">
           <form-label :errors="errors" name="featuredImage">
@@ -246,7 +246,7 @@
           </template>
         </form-label>
       </div>
-    </card>
+    </UiCard>
   </div>
 </template>
 
@@ -261,7 +261,6 @@ import Errors from '@/classes/Errors';
 
 import imageUpload from '~~/services/imageUploadService';
 import ErrorHelper from '@/components/ui/ErrorHelper.vue';
-import StaButton from '@/components/ui/StaButton.vue';
 import { swal } from '@/utils/alerts';
 import {
   WarningsDocument,
@@ -274,8 +273,7 @@ export default defineNuxtComponent({
     ImageInput,
     Card,
     RichTextInput,
-    ErrorHelper,
-    StaButton
+    ErrorHelper
   },
   props: {
     id: {

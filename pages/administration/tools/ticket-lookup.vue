@@ -1,5 +1,5 @@
 <template>
-  <admin-page title="Ticket Lookup">
+  <AdminPage title="Ticket Lookup">
     <div v-if="!scannedData">
       <ticket-scanner @scanned="onScan" />
     </div>
@@ -10,7 +10,7 @@
       <div
         class="flex flex-wrap space-x-4 space-y-2 lg:flex-nowrap lg:space-y-0"
       >
-        <card v-if="ticketDetails" title="Ticket">
+        <UiCard v-if="ticketDetails" title="Ticket">
           <table>
             <table-row>
               <table-head-item>Seat Group</table-head-item>
@@ -29,8 +29,8 @@
               <table-row-item>{{ ticketDetails.checkedIn }}</table-row-item>
             </table-row>
           </table>
-        </card>
-        <card v-if="bookingInfo" title="Booking">
+        </UiCard>
+        <UiCard v-if="bookingInfo" title="Booking">
           <table>
             <table-row>
               <table-head-item>Performance</table-head-item>
@@ -58,25 +58,24 @@
             <table-row>
               <table-head-item>View Booking</table-head-item>
               <table-row-item>
-                <nuxt-link
+                <NuxtLink
                   class="inline-block m-2 ml-0 p-2 bg-sta-green hover:bg-sta-green-dark transition-colors"
                   :to="`/administration/productions/${bookingInfo.performance.production.slug}/bookings/${bookingInfo.reference}`"
                 >
                   View Booking
-                </nuxt-link>
+                </NuxtLink>
               </table-row-item>
             </table-row>
           </table>
-        </card>
+        </UiCard>
       </div>
     </div>
-  </admin-page>
+  </AdminPage>
 </template>
 
 <script>
 import TicketScanner from '@/components/ui/Inputs/TicketScanner.vue';
-import AdminPage from '@/components/admin/AdminPage.vue';
-import Card from '@/components/ui/Card.vue';
+
 import { errorToast } from '~~/utils/alerts';
 import { dateFormat } from '@/utils/datetime';
 import TableRow from '@/components/ui/Tables/TableRow.vue';

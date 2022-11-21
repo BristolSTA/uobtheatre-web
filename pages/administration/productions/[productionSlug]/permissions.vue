@@ -1,14 +1,14 @@
 <template>
-  <admin-page title="Edit Permissions">
+  <AdminPage title="Edit Permissions">
     <template #toolbar>
-      <sta-button
+      <UiStaButton
         v-if="production.assignedUsers.length"
         class="bg-sta-green hover:bg-sta-green-dark transition-colors"
         icon="save"
         @click="savePermissions"
       >
         Save
-      </sta-button>
+      </UiStaButton>
     </template>
     <all-errors-display :errors="errors" />
     <permissions-assigner
@@ -17,14 +17,13 @@
       @add="addUserPermissions"
       @remove="removeUserPermissions"
     />
-  </admin-page>
+  </AdminPage>
 </template>
 
 <script>
 import Swal from 'sweetalert2';
-import AdminPage from '@/components/admin/AdminPage.vue';
+
 import PermissionsAssigner from '@/components/admin/permissions/PermissionsAssigner.vue';
-import StaButton from '@/components/ui/StaButton.vue';
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import { loadingSwal, successToast } from '~~/utils/alerts';
 import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue';
@@ -33,7 +32,7 @@ import {
   ProductionPermissionsMutationsDocument
 } from '~~/graphql/codegen/operations';
 export default defineNuxtComponent({
-  components: { AdminPage, PermissionsAssigner, StaButton, AllErrorsDisplay },
+  components: { PermissionsAssigner, AllErrorsDisplay },
   async asyncData() {
     // Execute query
     const { data } = await useDefaultApolloClient().query({

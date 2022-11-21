@@ -1,5 +1,5 @@
 <template>
-  <admin-page :title="`${production.name} Bookings`">
+  <AdminPage :title="`${production.name} Bookings`">
     <div class="flex items-end space-x-4">
       <div><t-input v-model="bookingsSearch" placeholder="Search" /></div>
       <div>
@@ -18,7 +18,7 @@
         <t-datepicker :clearable="false" class="text-black" />
       </div> -->
     </div>
-    <card class="mt-4">
+    <UiCard class="mt-4">
       <paginated-table
         v-model:offset="bookingsOffset"
         :page-info="bookingsPageInfo"
@@ -70,21 +70,21 @@
           </table-row-item>
         </table-row>
       </paginated-table>
-    </card>
-  </admin-page>
+    </UiCard>
+  </AdminPage>
 </template>
 
 <script>
 import AdminProductionCompleteBookingsQuery from '@/graphql/queries/admin/productions/AdminProductionCompleteBookings.gql';
-import AdminPage from '@/components/admin/AdminPage.vue';
+
 import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue';
 import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
 import TableRow from '@/components/ui/Tables/TableRow.vue';
 import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
-import Card from '@/components/ui/Card.vue';
+
 import SortIcon from '@/components/ui/SortIcon.vue';
 import AdminProductionLookupQuery from '@/graphql/queries/admin/productions/AdminProductionLookup.gql';
-import BookingStatusEnum from '@/enums/PayableStatusEnum';
+import BookingStatusEnum from '~~/enums/PayableStatusEnum';
 import { dateFormat } from '@/utils/datetime';
 export default defineNuxtComponent({
   components: {

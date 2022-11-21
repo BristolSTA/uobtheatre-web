@@ -83,7 +83,7 @@
           </tr>
         </table>
         <div v-if="editing" class="m-4 text-center">
-          <non-field-error class="pb-2" :errors="errors" />
+          <UiNonFieldError class="pb-2" :errors="errors" />
           <button class="btn btn-green mr-2">Save Details</button>
           <button
             class="btn btn-orange"

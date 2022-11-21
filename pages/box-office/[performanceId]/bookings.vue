@@ -86,12 +86,12 @@
         <div class="mb-6 mx-auto p-2 bg-sta-rouge">
           <h3 class="text-center text-h3">Find a booking</h3>
           <p class="text-center">
-            <nuxt-link
+            <NuxtLink
               to="collect"
               class="hover:text-gray-300 underline transition-colors"
             >
               Looking to check in tickets instead?
-            </nuxt-link>
+            </NuxtLink>
           </p>
         </div>
         <ticket-scanner

@@ -1,31 +1,31 @@
 <template>
-  <admin-page :title="`Edit ${production.name}`">
+  <AdminPage :title="`Edit ${production.name}`">
     <template #toolbar>
-      <sta-button colour="green" @click="save"> Save Changes </sta-button>
-      <sta-button colour="orange" @click="$router.go(-1)"> Cancel </sta-button>
+      <UiStaButton colour="green" @click="save"> Save Changes </UiStaButton>
+      <UiStaButton colour="orange" @click="$router.go(-1)">
+        Cancel
+      </UiStaButton>
     </template>
-    <non-field-error :errors="errors" />
+    <UiNonFieldError :errors="errors" />
     <production-editor
       ref="editor"
       :production="production"
       v-bind.sync="production"
       :errors="errors"
     />
-  </admin-page>
+  </AdminPage>
 </template>
 
 <script>
 import Swal from 'sweetalert2';
 import AdminProductionEditQuery from '@/graphql/queries/admin/productions/AdminProductionEdit.gql';
 import ProductionEditor from '@/components/production/editor/ProductionEditor.vue';
-import AdminPage from '@/components/admin/AdminPage.vue';
-import StaButton from '@/components/ui/StaButton.vue';
-import NonFieldError from '~~/components/ui/UiNonFieldError.vue';
+
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import { loadingSwal, successToast } from '~~/utils/alerts';
 import { ProductionMutationDocument } from '~~/graphql/codegen/operations';
 export default defineNuxtComponent({
-  components: { ProductionEditor, AdminPage, StaButton, NonFieldError },
+  components: { ProductionEditor, NonFieldError },
   async asyncData() {
     // Execute query
     const { data } = await useDefaultApolloClient().query({

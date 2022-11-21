@@ -17,7 +17,7 @@
         </p>
         <loading-container :loading="loading">
           <form class="p-6" @submit.prevent="finishSwap">
-            <non-field-error :errors="errors" />
+            <UiNonFieldError :errors="errors" />
             <text-input
               v-model="password"
               name="Password"
@@ -44,7 +44,7 @@
 import gql from 'graphql-tag';
 
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
-import NonFieldError from '~~/components/ui/UiNonFieldError.vue';
+
 import TextInput from '~~/components/ui/UiTextInput.vue';
 import LoadingIcon from '~~/components/ui/UiLoadingIcon.vue';
 

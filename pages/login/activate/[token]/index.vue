@@ -18,11 +18,10 @@
   </AuthPageTemplate>
 </template>
 <script setup lang="ts">
-import { Ref } from 'vue';
 import { getValidationErrors } from '~/utils/api';
 import { swalToast } from '~/utils/alerts';
 
-import { useStore } from '~~/store/auth';
+import useAuthStore from '~~/store/auth';
 import Errors from '~~/classes/Errors';
 
 definePageMeta({
@@ -33,10 +32,10 @@ useHead({
   title: 'Active your account'
 });
 
-const errors: Ref<Errors> = ref(null);
+const errors = ref<Errors | null>(null);
 
 onMounted(async () => {
-  const authStore = useStore();
+  const authStore = useAuthStore();
   const token = useRoute().params.tokens;
 
   if (Array.isArray(token)) return;

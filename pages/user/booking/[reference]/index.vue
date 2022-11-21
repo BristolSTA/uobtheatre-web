@@ -84,7 +84,7 @@ import Ticket from '@/components/booking/Ticket.vue';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
 import Alert from '@/components/ui/Alert.vue';
 import { UserCompletedBookingDocument } from '~~/graphql/codegen/operations';
-import { useStore } from '~~/store/auth';
+import useAuthStore from '~~/store/auth';
 
 export default defineNuxtComponent({
   components: {
@@ -121,7 +121,7 @@ export default defineNuxtComponent({
       booking: null,
       user: null,
       expanded: false,
-      authStore: useStore()
+      authStore: useAuthStore()
     };
   },
   computed: {

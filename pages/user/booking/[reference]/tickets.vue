@@ -1,12 +1,12 @@
 <template>
   <div class="container">
     <h2 class="text-h2">Booking Tickets</h2>
-    <nuxt-link
+    <NuxtLink
       class="btn p-2 bg-sta-green hover:bg-sta-green-dark rounded transition-colors mb-2"
       to="./"
     >
       View Full Booking
-    </nuxt-link>
+    </NuxtLink>
 
     <div
       class="grid gap-4 grid-cols-1 2xl:grid-cols-4 px-4 py-4 bg-sta-gray-dark sm:grid-cols-2 xl:grid-cols-3"

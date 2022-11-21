@@ -38,7 +38,7 @@
       class="flex flex-col p-6 space-y-2"
       @submit.prevent="attemptLogin"
     >
-      <non-field-error :errors="loginErrors" />
+      <UiNonFieldError :errors="loginErrors" />
       <span
         v-if="loginErrors && loginErrors.hasCode('not_verified')"
         ref="resendEmail"
@@ -103,7 +103,7 @@
       class="flex flex-col p-6 space-y-2"
       @submit.prevent="attemptSignup"
     >
-      <non-field-error :errors="signupErrors" />
+      <UiNonFieldError :errors="signupErrors" />
       <text-input
         v-if="
           (!signUpDetails.firstName || !signUpDetails.lastName) && !signupErrors
@@ -173,16 +173,16 @@
         />
         <span class="text-white text-xs font-semibold">
           I have read and agree to the
-          <nuxt-link
+          <NuxtLink
             to="/terms"
             class="hover:text-sta-orange underline transition-colors"
-            >Terms of Service</nuxt-link
+            >Terms of Service</NuxtLink
           >
           and
-          <nuxt-link
+          <NuxtLink
             to="/privacy"
             class="hover:text-sta-orange underline transition-colors"
-            >Privacy Policy</nuxt-link
+            >Privacy Policy</NuxtLink
           >
         </span>
         <error-helper :errors="signupErrors" field-name="acceptedTerms" />
@@ -210,14 +210,14 @@ import { Ref } from 'vue';
 import LoadingIcon from '../ui/UiLoadingIcon.vue';
 import ClickableLink from '@/components/ui/ClickableLink.vue';
 import ErrorHelper from '@/components/ui/ErrorHelper.vue';
-import NonFieldError from '~~/components/ui/UiNonFieldError.vue';
+
+import useAuthStore from '@/store/auth';
 import TextInput from '~~/components/ui/UiTextInput.vue';
 import { catchOnly, getValidationErrors } from '@/utils/api';
 import { swalToast } from '@/utils/alerts';
 import ValidationError from '@/errors/ValidationError';
 import UnverifiedLoginError from '@/errors/auth/UnverifiedLoginError';
 import Errors from '@/classes/Errors';
-import { useStore } from '~/store/auth';
 
 const props = defineProps({
   loginMode: { type: Boolean, default: true }
@@ -245,7 +245,7 @@ const loading = ref(false);
 const loginErrors: Ref<Errors | undefined> = ref(undefined);
 const signupErrors: Ref<Errors | undefined> = ref(undefined);
 
-const authStore = useStore();
+const authStore = useAuthStore();
 const route = useRoute();
 const router = useRouter();
 

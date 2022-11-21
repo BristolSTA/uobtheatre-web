@@ -1,29 +1,29 @@
 <template>
-  <admin-page
+  <AdminPage
     :title="`${production.name} at ${dateFormat(
       performance.start,
       'd MMM yy HH:mm ZZZZ'
     )}`"
   >
     <template #toolbar>
-      <sta-button
+      <UiStaButton
         colour="green"
         icon="link"
         :to="`/box-office/${performance.id}`"
       >
         Goto Box Office
-      </sta-button>
-      <sta-button
+      </UiStaButton>
+      <UiStaButton
         v-if="production.permissions.includes('edit_production')"
         colour="orange"
         icon="edit"
         :to="`${performance.id}/edit`"
       >
         Edit
-      </sta-button>
+      </UiStaButton>
     </template>
     <div class="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
-      <card title="Summary" class="max-w-2xl">
+      <UiCard title="Summary" class="max-w-2xl">
         <table class="table-auto w-full">
           <tr>
             <table-head-item :text-left="false"> Status </table-head-item>
@@ -64,8 +64,8 @@
             </table-row-item>
           </tr>
         </table>
-      </card>
-      <card
+      </UiCard>
+      <UiCard
         v-if="performance.ticketsBreakdown.totalCapacity"
         title="Sales Overview"
       >
@@ -111,10 +111,10 @@
             </table-row-item>
           </tr>
         </table>
-      </card>
+      </UiCard>
     </div>
     <div v-if="ticketsMatrix.ticketOptions.length" class="gap-4">
-      <card class="mt-4" title="Sales By Ticket">
+      <UiCard class="mt-4" title="Sales By Ticket">
         <div class="flex flex-wrap justify-evenly space-x-6">
           <div>
             <table>
@@ -171,13 +171,13 @@
           </table>
         </div> -->
         </div>
-      </card>
-      <card class="mt-4" title="Ticket Pricing">
+      </UiCard>
+      <UiCard class="mt-4" title="Ticket Pricing">
         <price-matrix
           :discounts="performance.discounts.edges"
           :performance-seat-groups="performance.ticketOptions"
         />
-      </card>
+      </UiCard>
     </div>
     <div class="mt-6">
       <h2 class="text-h2">Tools</h2>
@@ -207,14 +207,12 @@
         </menu-tile>
       </div>
     </div>
-  </admin-page>
+  </AdminPage>
 </template>
 
 <script>
 import AdminPerformanceDetailQuery from '@/graphql/queries/admin/productions/AdminPerformanceDetail.gql';
-import Card from '@/components/ui/Card.vue';
-import AdminPage from '@/components/admin/AdminPage.vue';
-import StaButton from '@/components/ui/StaButton.vue';
+
 import ProgressBar from '@/components/ui/ProgressBar.vue';
 import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
 import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
@@ -230,7 +228,6 @@ export default defineNuxtComponent({
   components: {
     Card,
     AdminPage,
-    StaButton,
     ProgressBar,
     TableHeadItem,
     TableRowItem,

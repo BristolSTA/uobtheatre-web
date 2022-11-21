@@ -39,7 +39,7 @@
       {{ disabledReason }}
     </button>
     <component
-      :is="actionPath ? 'nuxt-link' : 'button'"
+      :is="actionPath ? 'NuxtLink' : 'button'"
       v-else
       class="btn btn-orange mt-4 w-2/3 text-center font-semibold"
       :to="actionPath"

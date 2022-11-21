@@ -18,13 +18,14 @@ import UnverifiedLoginError from '~~/errors/auth/UnverifiedLoginError';
 
 let refreshTimer: NodeJS.Timeout | null;
 
-export const useStore = defineStore('auth', {
+export const foo = 'bar';
+
+export default defineStore('auth', {
   state: () => ({
-    token: null as string | null,
     user: null as AuthUserDetailsFragment | null
   }),
   getters: {
-    isLoggedIn: (state) => !!state.token && !!state.user
+    isLoggedIn: (state) => !!state.user
   },
   actions: {
     /**
@@ -33,6 +34,11 @@ export const useStore = defineStore('auth', {
      */
     setAuthUser(userDetails: AuthUserDetailsFragment) {
       this.user = userDetails;
+    },
+
+    async getToken(): Promise<string | undefined> {
+      const { getToken } = useApollo();
+      return (await getToken()) as string | undefined;
     },
 
     /**
@@ -48,7 +54,9 @@ export const useStore = defineStore('auth', {
       );
 
       // If the user isn't returned, log out
-      if (!data.value?.me) return this.logout();
+      if (!data.value?.me) {
+        return this.logout();
+      }
 
       // Otherwise set the user in state
       this.user = data.value.me;
@@ -72,7 +80,6 @@ export const useStore = defineStore('auth', {
         throw new ValidationError(
           Errors.createFromMessage('An unknown error occured')
         );
-
       const data = mutateResponse.data;
 
       // Check it was successfully
@@ -94,9 +101,7 @@ export const useStore = defineStore('auth', {
         );
 
       // Store the auth token & tell Apollo about our shiny new token
-      this.token = data.login.token;
-      const { onLogin } = useApollo();
-      await onLogin(this.token ?? undefined);
+      this.setToken(data.login.token);
       // Store the fresh token
       this.setRefreshToken(data.login.refreshToken, remember);
       // Start queing a token refresh
@@ -105,13 +110,20 @@ export const useStore = defineStore('auth', {
       await this.loadUserDetails();
     },
 
+    async setToken(newToken: string) {
+      const { onLogin } = useApollo();
+      return onLogin(newToken);
+    },
+
     /**
      * Refresh the user auth tokens and data using the exisiting token
      */
     async refreshUsingToken() {
       let currentRefreshToken;
       // If the user doesn't have a refresh token, we'll log them out
-      if (!(currentRefreshToken = this.getRefreshToken())) return this.logout();
+      if (!(currentRefreshToken = this.getRefreshToken())) {
+        return this.logout();
+      }
 
       // Use the refresh token to get a new token and refresh token
       const { mutate } = useRefreshTokenMutationMutation({
@@ -129,7 +141,7 @@ export const useStore = defineStore('auth', {
       }
 
       // Store the new tokens
-      this.token = authToken;
+      await this.setToken(authToken);
       this.setRefreshToken(refreshToken);
       this.queueRefresh();
 
@@ -140,20 +152,23 @@ export const useStore = defineStore('auth', {
     /**
      * Queue a refresh of the auth token
      */
-    queueRefresh() {
+    async queueRefresh() {
       // If the timer is defined, we'll make sure it is cleared
       if (refreshTimer) clearTimeout(refreshTimer);
 
       let nextSheduledRefreshSeconds = 1;
 
-      if (this.token) {
-        const { exp } = jwtDecode<JwtPayload>(this.token);
+      const token = await this.getToken();
+      if (token) {
+        const { exp } = jwtDecode<JwtPayload>(token);
         // If the JWT contains an expiry, we'll refresh 30 seconds before (or in 1 second if refresh already due). If it doesn't, we'll refresh in 1 minute
         nextSheduledRefreshSeconds = Math.max(
           1,
           exp ? exp - Math.round(Date.now() / 1000) - 30 : 60
         );
       }
+
+      nextSheduledRefreshSeconds = 5;
 
       // Schedule a refresh of the token
       refreshTimer = setTimeout(() => {
@@ -166,7 +181,7 @@ export const useStore = defineStore('auth', {
      * Stores the given refresh token, taking into account device-user remembering preference
      *
      * @param refreshToken The refresh token
-     * @param remember Whether the user should be remembered on thsi device
+     * @param remember Whether the user should be remembered on this device
      */
     setRefreshToken(
       refreshToken: string,
@@ -204,7 +219,6 @@ export const useStore = defineStore('auth', {
 
       // Wipe store
       this.user = null;
-      this.token = null;
 
       // Clear refresh timeout
       if (refreshTimer) clearTimeout(refreshTimer);

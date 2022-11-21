@@ -29,15 +29,15 @@
     <div>
       <h3 class="text-h3">Quick Links</h3>
       <div class="flex flex-wrap gap-3">
-        <nuxt-link to="/administration/productions">
+        <NuxtLink to="/administration/productions">
           <div class="p-2 bg-sta-green">Your Live Productions</div>
-        </nuxt-link>
-        <nuxt-link to="/administration/tools/ticket-lookup">
+        </NuxtLink>
+        <NuxtLink to="/administration/tools/ticket-lookup">
           <div class="p-2 bg-sta-green">Ticket & Booking Lookup</div>
-        </nuxt-link>
-        <nuxt-link to="/administration/finance-reports">
+        </NuxtLink>
+        <NuxtLink to="/administration/finance-reports">
           <div class="p-2 bg-sta-green">Finance Reporting</div>
-        </nuxt-link>
+        </NuxtLink>
       </div>
     </div>
   </div>

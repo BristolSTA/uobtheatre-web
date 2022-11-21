@@ -5,14 +5,14 @@
       isActive ? 'text-sta-orange' : ' text-gray-400 hover:text-gray-100'
     ]"
   >
-    <nuxt-link :to="href" @click="$emit('click')">
+    <NuxtLink :to="href" @click="$emit('click')">
       <div class="flex items-center space-x-4">
         <div v-if="icon" class="flex w-5">
           <font-awesome-icon :icon="icon" />
         </div>
         <div><slot /></div>
       </div>
-    </nuxt-link>
+    </NuxtLink>
   </div>
 </template>
 

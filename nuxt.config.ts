@@ -82,12 +82,13 @@ export default defineNuxtConfig({
   },
 
   apollo: {
+    authType: 'JWT',
+    tokenStorage: 'localStorage',
     clients: {
       default: {
+        tokenName: publicConfig().auth.cookieName,
         httpEndpoint: publicConfig().api.graphqlEndpointInternal,
-        browserHttpEndpoint: publicConfig().api.graphqlEndpoint,
-        authType: 'JWT',
-        tokenName: publicConfig().auth.cookieName
+        browserHttpEndpoint: publicConfig().api.graphqlEndpoint
       }
     }
   },

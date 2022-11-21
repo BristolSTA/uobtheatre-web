@@ -1,5 +1,5 @@
 <template>
-  <admin-page title="Create a Booking">
+  <AdminPage title="Create a Booking">
     <p>Select a performance below to create a complimentry booking for.</p>
 
     <loading-container :loading="$apollo.queries.performancesData.loading">
@@ -25,13 +25,13 @@
         </div>
       </template>
     </loading-container>
-  </admin-page>
+  </AdminPage>
 </template>
 
 <script>
 import AdminPerformancesIndexQuery from '@/graphql/queries/admin/productions/AdminPerformancesIndex.gql';
 import AdminProductionLookupQuery from '@/graphql/queries/admin/productions/AdminProductionLookup.gql';
-import AdminPage from '@/components/admin/AdminPage.vue';
+
 import PaginationBar from '@/components/ui/PaginationBar.vue';
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 import TimeGroupedPerformanceSelector from '@/components/performance/TimeGroupedPerformanceSelector.vue';

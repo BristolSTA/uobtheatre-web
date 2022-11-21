@@ -25,13 +25,13 @@
           <table-row-item>
             {{ assignedUser.user.firstName }} {{ assignedUser.user.lastName }}
             <br />
-            <sta-button
+            <UiStaButton
               :small="true"
               class="bg-sta-rouge hover:bg-sta-rouge-dark transition-colors mt-2"
               @click="removeUser(assignedUser)"
             >
               Remove
-            </sta-button>
+            </UiStaButton>
           </table-row-item>
           <table-row-item
             v-for="(permission, apIndex) in assignablePermissions"
@@ -87,13 +87,13 @@
           </table-row>
         </tbody>
       </safe-table>
-      <sta-button
+      <UiStaButton
         class="bg-sta-green hover:bg-sta-green-dark transition-colors"
         :disabled="!newUser.email"
         @click="addNewUser"
       >
         Add New
-      </sta-button>
+      </UiStaButton>
     </div>
   </div>
 </template>
@@ -104,7 +104,6 @@ import BooleanInput from '@/components/ui/Inputs/BooleanInput.vue';
 import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
 import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
 import TableRow from '@/components/ui/Tables/TableRow.vue';
-import StaButton from '@/components/ui/StaButton.vue';
 import FormLabel from '@/components/ui/FormLabel.vue';
 export default defineNuxtComponent({
   components: {
@@ -113,7 +112,6 @@ export default defineNuxtComponent({
     TableHeadItem,
     TableRowItem,
     TableRow,
-    StaButton,
     FormLabel
   },
   props: {

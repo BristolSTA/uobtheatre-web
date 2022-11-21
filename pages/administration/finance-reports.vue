@@ -1,5 +1,5 @@
 <template>
-  <admin-page title="Finance Reports">
+  <AdminPage title="Finance Reports">
     <all-errors-display :errors="errors" />
     <loading-container :loading="generating">
       <div class="space-y-4">
@@ -59,18 +59,17 @@
         </template>
       </div>
     </loading-container>
-  </admin-page>
+  </AdminPage>
 </template>
 
 <script>
-import AdminPage from '@/components/admin/AdminPage.vue';
 import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue';
 import FormLabel from '@/components/ui/FormLabel.vue';
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 import { GenerateReportDocument } from '~~/graphql/codegen/operations';
 export default defineNuxtComponent({
-  components: { AdminPage, AllErrorsDisplay, FormLabel, LoadingContainer },
+  components: { AllErrorsDisplay, FormLabel, LoadingContainer },
   data() {
     return {
       errors: null,

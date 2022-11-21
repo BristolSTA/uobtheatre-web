@@ -1,30 +1,30 @@
 <template>
-  <admin-page :title="production.name">
+  <AdminPage :title="production.name">
     <template #toolbar>
-      <sta-button
+      <UiStaButton
         colour="green"
         icon="link"
         :to="`/production/${production.slug}`"
       >
         View Public Page
-      </sta-button>
-      <sta-button
+      </UiStaButton>
+      <UiStaButton
         v-if="canEditRightNow"
         colour="orange"
         icon="edit"
         :to="`${production.slug}/edit`"
       >
         Edit
-      </sta-button>
+      </UiStaButton>
     </template>
     <div class="space-y-4">
       <div class="flex flex-wrap justify-around space-y-4">
-        <card title="Summary" class="max-w-2xl">
+        <UiCard title="Summary" class="max-w-2xl">
           <table class="table-auto w-full">
             <tr>
               <table-head-item>Status</table-head-item>
               <table-row-item>
-                <production-status-badge :production="production" />
+                <ProductionStatusBadge :production="production" />
                 <p class="text-sm">
                   {{ statusDescription }}
                 </p>
@@ -61,11 +61,11 @@
               </table-row-item>
             </tr>
           </table>
-        </card>
+        </UiCard>
         <div>
-          <card v-if="actions.length" title="Actions" class="max-w-2xl">
+          <UiCard v-if="actions.length" title="Actions" class="max-w-2xl">
             <div class="flex gap-2">
-              <sta-button
+              <UiStaButton
                 v-for="(action, index) in actions"
                 :key="index"
                 class="bg-sta-orange hover:bg-sta-orange-dark mt-3"
@@ -74,20 +74,20 @@
                 @click="action.action()"
               >
                 {{ action.text }}
-              </sta-button>
+              </UiStaButton>
             </div>
-          </card>
+          </UiCard>
         </div>
       </div>
-      <card title="Performances">
+      <UiCard title="Performances">
         <template v-if="canEdit" #messageBox>
           <div class="flex items-center">
-            <nuxt-link
+            <NuxtLink
               class="hover:text-gray-300"
               :to="`${production.slug}/performances/create`"
             >
               <font-awesome-icon icon="plus-circle" class="fa-2x" />
-            </nuxt-link>
+            </NuxtLink>
           </div>
         </template>
         <paginated-table
@@ -117,12 +117,12 @@
             >
               <table-row-item>
                 <performance-status-badge :performance="performance" />
-                <badge
+                <UiBadge
                   v-if="performance.minSeatPrice === 0"
                   class="text-white bg-sta-orange font-bold"
                 >
                   Free
-                </badge>
+                </UiBadge>
               </table-row-item>
               <table-row-item>
                 {{ dateFormat(performance.start, 'EEEE dd MMMM y') }}
@@ -152,46 +152,42 @@
                 </template>
               </table-row-item>
               <table-row-item class="space-x-2">
-                <sta-button
+                <UiStaButton
                   :small="true"
                   colour="green"
                   :to="`/administration/productions/${production.slug}/performances/${performance.id}`"
                 >
                   View
-                </sta-button>
+                </UiStaButton>
               </table-row-item>
             </table-row>
           </template>
           <template #empty>
             <div class="flex items-center justify-center">
-              <nuxt-link
+              <NuxtLink
                 class="bg-sta-green py-1 px-2 rounded-full hover:bg-sta-green-dark"
                 :to="`${production.slug}/performances/create`"
               >
                 Add a performance?
-              </nuxt-link>
+              </NuxtLink>
             </div>
           </template>
         </paginated-table>
-      </card>
+      </UiCard>
     </div>
-  </admin-page>
+  </AdminPage>
 </template>
 
 <script>
 import AdminProductionShowQuery from '@/graphql/queries/admin/productions/AdminProductionShow.gql';
 import AdminPerformancesIndexQuery from '@/graphql/queries/admin/productions/AdminPerformancesIndex.gql';
-import AdminPage from '@/components/admin/AdminPage.vue';
-import StaButton from '@/components/ui/StaButton.vue';
-import Card from '@/components/ui/Card.vue';
+
 import ProgressBar from '@/components/ui/ProgressBar.vue';
 import PerformanceStatusBadge from '@/components/performance/PerformanceStatusBadge.vue';
 import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
 import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
-import ProductionStatusBadge from '@/components/production/ProductionStatusBadge.vue';
 import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue';
 import TableRow from '@/components/ui/Tables/TableRow.vue';
-import Badge from '@/components/ui/Badge.vue';
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import { successToast, swal } from '~~/utils/alerts';
 import { humanDuration, dateFormat } from '~~/utils/datetime';
@@ -199,17 +195,12 @@ import { SetProductionStatusDocument } from '@/graphql/codegen/operations';
 
 export default defineNuxtComponent({
   components: {
-    AdminPage,
-    StaButton,
-    Card,
     ProgressBar,
     PerformanceStatusBadge,
     TableRowItem,
     TableHeadItem,
-    ProductionStatusBadge,
     PaginatedTable,
-    TableRow,
-    Badge
+    TableRow
   },
   async asyncData() {
     // Execute query
@@ -223,7 +214,7 @@ export default defineNuxtComponent({
 
     const production = data.value.production;
     if (!production) {
-      throw createError(rror({
+      throw createError({
         statusCode: 404,
         message: 'This production does not exist'
       });

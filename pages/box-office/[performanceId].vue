@@ -21,7 +21,7 @@ export default defineNuxtComponent({
 
     const performance = data.performance;
     if (!performance) {
-      throw createError(rror({
+      throw createError({
         statusCode: 404,
         message: 'This performance does not exist'
       });

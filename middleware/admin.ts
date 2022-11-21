@@ -1,6 +1,6 @@
-import { useStore } from '@/store/auth';
+import useAuthStore from '@/store/auth';
 export default defineNuxtRouteMiddleware(() => {
-  const authStore = useStore();
+  const authStore = useAuthStore();
   if (!authStore.isLoggedIn || !authStore.hasPermission('admin_open')) {
     return navigateTo('/');
   }

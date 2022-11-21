@@ -3,7 +3,7 @@
     v-if="booking.performance"
     class="flex flex-col items-center justify-evenly min-h-full"
   >
-    <card
+    <UiCard
       v-if="booking.performance.description"
       ref="perf-description"
       class="w-full mb-2"
@@ -12,7 +12,7 @@
         <span class="text-xl">Performance Information</span>
       </template>
       {{ booking.performance.description }}
-    </card>
+    </UiCard>
     <div class="mb-2 p-6 pt-3 text-white">
       <h3 class="text-h3 font-semibold">
         <font-awesome-icon icon="exclamation-triangle" class="text-sta-rouge" />
@@ -47,7 +47,7 @@
 <script>
 import BookingStage from '@/classes/BookingStage';
 import Booking from '@/classes/Booking';
-import Card from '@/components/ui/Card.vue';
+
 import ContentWarningsDisplay from '@/components/production/content-warnings/ContentWarningsDisplay.vue';
 
 export default defineNuxtComponent({

@@ -1,6 +1,6 @@
 <template>
   <component
-    :is="to ? 'nuxt-link' : 'div'"
+    :is="to ? 'NuxtLink' : 'div'"
     class="p-3 cursor-pointer"
     :to="to"
     @click="go"

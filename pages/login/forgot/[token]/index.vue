@@ -35,12 +35,11 @@
   </AuthPageTemplate>
 </template>
 <script setup lang="ts">
-import { Ref } from 'vue';
 import { getValidationErrors } from '~~/utils/api';
 import { successToast } from '~~/utils/alerts';
 
 import Errors from '~~/classes/Errors';
-import { useStore } from '~~/store/auth';
+import useAuthStore from '~~/store/auth';
 
 definePageMeta({
   middleware: 'not-authed'
@@ -50,15 +49,20 @@ useHead({
   title: 'Reset your password'
 });
 
-const errors: Ref<Errors> = ref(null);
-const newPassword: Ref<string> = ref(null);
-const confirmedNewPassword: Ref<string> = ref(null);
+const errors = ref<Errors | null>(null);
+const newPassword = ref<string | null>(null);
+const confirmedNewPassword = ref<string | null>(null);
 
 async function attemptReset() {
-  const authStore = useStore();
+  const authStore = useAuthStore();
   const route = useRoute();
 
-  if (Array.isArray(route.params.token)) return;
+  if (
+    Array.isArray(route.params.token) ||
+    !newPassword.value ||
+    !confirmedNewPassword.value
+  )
+    return;
 
   try {
     await authStore.resetPassword(

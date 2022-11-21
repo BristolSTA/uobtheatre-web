@@ -1,5 +1,5 @@
 <template>
-  <admin-page title="Configuration" class="container">
+  <AdminPage title="Configuration" class="container">
     <p>
       This page is intended for use by site administrators to configure a device
       for use as a box office machine. Please don't change settings here unless
@@ -17,11 +17,10 @@
     >
       Save
     </button>
-  </admin-page>
+  </AdminPage>
 </template>
 
 <script>
-import AdminPage from '@/components/admin/AdminPage.vue';
 import FormLabel from '@/components/ui/FormLabel.vue';
 import { successToast } from '~~/utils/alerts';
 export default defineNuxtComponent({

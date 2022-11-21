@@ -2,7 +2,7 @@
   <div class="text-center">
     <h3 class="text-h3">Change your email</h3>
     <loading-container :loading="loading">
-      <non-field-error :errors="errors" />
+      <UiNonFieldError :errors="errors" />
       <form
         class="flex flex-col p-6 pt-0 space-y-2"
         @submit.prevent="addNewEmail"

@@ -1,13 +1,11 @@
 <template>
-  <badge class="text-white" :class="colours">
+  <UiBadge class="text-white" :class="colours">
     {{ status }}
-  </badge>
+  </UiBadge>
 </template>
 
 <script>
-import Badge from '../ui/Badge.vue';
 export default defineNuxtComponent({
-  components: { Badge },
   props: {
     performance: {
       required: true,

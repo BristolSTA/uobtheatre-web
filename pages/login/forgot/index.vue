@@ -30,12 +30,11 @@
 </template>
 
 <script setup lang="ts">
-import { Ref } from 'vue';
 import { swal } from '~~/utils/alerts';
 import { getValidationErrors } from '~~/utils/api';
 
 import Errors from '~~/classes/Errors';
-import { useStore } from '~~/store/auth';
+import useAuthStore from '~~/store/auth';
 
 definePageMeta({
   middleware: ['not-authed']
@@ -46,14 +45,15 @@ useHead({
 });
 
 // Define state
-const email: Ref<string> = ref(null);
+const email = ref<string | null>(null);
 const loading = ref(false);
-const errors: Ref<Errors> = ref(null);
+const errors = ref<Errors | null>(null);
 
-const authStore = useStore();
+const authStore = useAuthStore();
 
 async function requestReset() {
   loading.value = true;
+  if (!email.value) return;
   try {
     await authStore.requestPasswordReset(email.value);
     swal.fire({
