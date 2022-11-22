@@ -168,8 +168,6 @@ export default defineStore('auth', {
         );
       }
 
-      nextSheduledRefreshSeconds = 5;
-
       // Schedule a refresh of the token
       refreshTimer = setTimeout(() => {
         refreshTimer = null;

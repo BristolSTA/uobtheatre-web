@@ -62,7 +62,6 @@ export default defineNuxtComponent({
     }
   }),
   components: {
-    Card,
     ContentWarningsDisplay
   },
   props: {

@@ -2,10 +2,6 @@
   <div class="min-h-full bg-sta-gray">
     <Head>
       <Title>Book {{ production.name }}</Title>
-      <Script
-        :src="useRuntimeConfig().public.services.square.script"
-        defer="true"
-      ></Script>
     </Head>
     <div class="container">
       <production-banner
@@ -60,7 +56,7 @@
           id="booking-view"
           class="flex-grow sm:pb-4 max-w-full bg-sta-gray-dark sm:p-3"
         >
-          <NuxtChild
+          <NuxtPage
             ref="stageComponent"
             :production="production"
             :booking="booking"
@@ -161,6 +157,13 @@ export default defineNuxtComponent({
     }
     return {
       production
+    };
+  },
+  head() {
+    return {
+      script: [
+        { src: useRuntimeConfig().public.services.square.script, defer: 'true' }
+      ]
     };
   },
   data() {

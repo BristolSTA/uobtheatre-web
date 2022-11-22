@@ -52,7 +52,7 @@ import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 export default defineNuxtComponent({
   components: {
     TicketsEditor,
-    Card,
+
     FormLabel,
     LoadingContainer
   },

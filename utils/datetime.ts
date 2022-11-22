@@ -8,10 +8,10 @@ import { DateTime } from 'luxon';
  * @param {string} end ISO format end datetime
  * @returns {any} Difference between start and end in milliseconds
  */
-export const duration = (start, end) => {
-  start = DateTime.fromISO(start);
-  end = DateTime.fromISO(end);
-  return end.diff(start);
+export const duration = (start: string, end: string) => {
+  const startDateTime = DateTime.fromISO(start);
+  const endDateTime = DateTime.fromISO(end);
+  return endDateTime.diff(startDateTime);
 };
 
 /**

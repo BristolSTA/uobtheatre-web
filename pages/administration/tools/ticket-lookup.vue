@@ -86,7 +86,7 @@ export default defineNuxtComponent({
   components: {
     TicketScanner,
     AdminPage,
-    Card,
+
     TableHeadItem,
     TableRowItem,
     TableRow

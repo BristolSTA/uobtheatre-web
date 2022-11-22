@@ -255,7 +255,7 @@ import { v4 as uuid } from 'uuid';
 import kebabCase from 'lodash/kebabCase';
 import ImageInput from '../../ui/Inputs/ImageInput.vue';
 import FormLabel from '../../ui/FormLabel.vue';
-import Card from '../../ui/Card.vue';
+
 import RichTextInput from '@/components/ui/Inputs/RichTextInput.vue';
 import Errors from '@/classes/Errors';
 
@@ -271,7 +271,7 @@ export default defineNuxtComponent({
   components: {
     FormLabel,
     ImageInput,
-    Card,
+
     RichTextInput,
     ErrorHelper
   },

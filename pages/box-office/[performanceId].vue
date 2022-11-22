@@ -1,5 +1,5 @@
 <template>
-  <NuxtChild
+  <NuxtPage
     ref="child"
     :performance="performance"
     @hook:mounted="regenerateCrumbsLink"

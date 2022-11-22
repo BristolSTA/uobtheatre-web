@@ -273,7 +273,6 @@
 </template>
 
 <script>
-import Card from '../../ui/Card.vue';
 import FormLabel from '../../ui/FormLabel.vue';
 import SeatGroup from './SeatGroup.vue';
 import ConcessionType from './ConcessionType.vue';
@@ -302,7 +301,7 @@ import {
 export default defineNuxtComponent({
   components: {
     FormLabel,
-    Card,
+
     SeatGroup,
     ConcessionType,
     ErrorHelper,

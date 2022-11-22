@@ -64,8 +64,8 @@
           <template
             v-if="
               production.performances.edges
-                .map((edge) => edge.node)
-                .find((node) => node.intervalDurationMins)
+                .map((edge: any) => edge.node)
+                .find((node: any) => node.intervalDurationMins)
             "
           >
             <small>inc. interval</small>
@@ -86,8 +86,8 @@
       <button
         v-if="showBuyTicketsButton && production.isBookable"
         class="btn btn-green mt-4 w-full font-semibold"
-        @click="$emit('on-buy-tickets-click')"
-        @keypress="$emit('on-buy-tickets-click')"
+        @click="emit('on-buy-tickets-click')"
+        @keypress="emit('on-buy-tickets-click')"
       >
         Buy Tickets
       </button>
@@ -95,76 +95,71 @@
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
 import humanizeDuration from 'humanize-duration';
 import lo from 'lodash';
 
 import ProductionFeaturedImage from './ProductionFeaturedImage.vue';
 import IconListItem from '@/components/ui/IconListItem.vue';
-import { displayStartEnd } from '@/utils/datetime';
 
-export default defineNuxtComponent({
-  name: 'ProductionBanner',
-  components: { IconListItem, ProductionFeaturedImage },
-  props: {
-    production: {
-      required: true,
-      type: Object
-    },
-    showBuyTicketsButton: {
-      default: true,
-      type: Boolean
-    },
-    showDetailedInfo: {
-      default: true,
-      type: Boolean
-    }
+const emit = defineEmits<{
+  (event: 'on-buy-tickets-click'): void;
+}>();
+
+const props = defineProps({
+  production: {
+    required: true,
+    type: Object
   },
-  data() {
-    return {
-      venueOverflow: 3
-    };
+  showBuyTicketsButton: {
+    default: true,
+    type: Boolean
   },
-  computed: {
-    venues() {
-      let venues = [];
-      if (this.hasInPersonPerformances) {
-        venues = lo.uniqBy(
-          this.production.performances.edges.map((edge) => {
-            return edge.node.venue;
-          }),
-          'name'
-        );
-      }
-      lo.take(venues, this.venueOverflow + 1);
-      return venues;
-    },
-    hasOnlinePerformances() {
-      return !!this.production.performances.edges.find(
-        (edge) => edge.node.isOnline
-      );
-    },
-    hasInPersonPerformances() {
-      return !!this.production.performances.edges.find(
-        (edge) => edge.node.isInperson
-      );
-    },
-    duration() {
-      if (!this.production.performances.edges.length) {
-        return;
-      }
-      return humanizeDuration(
-        lo
-          .chain(this.production.performances.edges.map((edge) => edge.node))
-          .minBy('durationMins')
-          .value().durationMins *
-          60 *
-          1000
-      );
-    }
-  },
-  methods: {
-    displayStartEnd
+  showDetailedInfo: {
+    default: true,
+    type: Boolean
   }
+});
+
+const venueOverflow = 3;
+
+const venues = computed(() => {
+  let venues: any[] = [];
+  if (hasInPersonPerformances) {
+    venues = lo.uniqBy(
+      props.production.performances.edges.map((edge: any) => {
+        return edge.node.venue;
+      }),
+      'name'
+    );
+  }
+  lo.take(venues, venueOverflow + 1);
+  return venues;
+});
+
+const hasOnlinePerformances = computed(() => {
+  return !!props.production.performances.edges.find(
+    (edge: any) => edge.node.isOnline
+  );
+});
+
+const hasInPersonPerformances = computed(() => {
+  return !!props.production.performances.edges.find(
+    (edge: any) => edge.node.isInperson
+  );
+});
+
+const duration = computed(() => {
+  if (!props.production.performances.edges.length) {
+    return;
+  }
+  return humanizeDuration(
+    lo
+      .chain(props.production.performances.edges.map((edge: any) => edge.node))
+      .minBy('durationMins')
+      .value().durationMins *
+      60 *
+      1000
+  );
 });
 </script>

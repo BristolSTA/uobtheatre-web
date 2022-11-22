@@ -226,7 +226,6 @@ import PriceMatrix from '@/components/performance/editor/PriceMatrix.vue';
 import { GenerateReportDocument } from '~~/graphql/codegen/operations';
 export default defineNuxtComponent({
   components: {
-    Card,
     AdminPage,
     ProgressBar,
     TableHeadItem,

@@ -93,7 +93,7 @@ export default defineNuxtComponent({
     TableHeadItem,
     TableRow,
     TableRowItem,
-    Card,
+
     SortIcon
   },
   async asyncData() {
