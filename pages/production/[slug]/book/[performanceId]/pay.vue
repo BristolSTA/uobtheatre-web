@@ -74,18 +74,23 @@ import BookingStage from '@/classes/BookingStage';
 import SquarePayment from '@/components/square/SquarePayment.vue';
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 import { PayBookingDocument } from '~~/graphql/codegen/operations';
+
+const stageInfo = new BookingStage({
+  name: 'Payment',
+  routeName: 'production-slug-book-performanceId-pay',
+  eligable: (_, booking) => !booking.dirty
+});
 export default defineNuxtComponent({
-  stageInfo: new BookingStage({
-    name: 'Payment',
-    routeName: 'production-slug-book-performanceId-pay',
-    eligable: (_, booking) => !booking.dirty
-  }),
+  stageInfo,
   components: { AllErrorsDisplay, SquarePayment, LoadingContainer },
   props: {
     booking: {
       required: true,
       type: Booking
     }
+  },
+  mounted() {
+    this.$emit('mounted', stageInfo);
   },
   data() {
     return {

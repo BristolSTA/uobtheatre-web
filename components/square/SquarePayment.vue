@@ -5,7 +5,7 @@
         <h2 class="mb-2 text-center text-white text-h2">Pay with card</h2>
         <form id="payment-form">
           <div class="space-y-3">
-            <div id="card-container" />
+            <div id="card-container" ref="card-container" />
 
             <button
               id="card-button"
@@ -51,6 +51,12 @@
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 import { silentErrorHandler } from '@/utils/misc';
 
+const square = {
+  payments: null,
+  request: null,
+  methods: null
+};
+
 export default defineNuxtComponent({
   components: { LoadingContainer },
   props: {
@@ -68,13 +74,7 @@ export default defineNuxtComponent({
       squareErrors: [],
       timer: null,
       ready: false,
-      paying: false,
-
-      square: {
-        payments: null,
-        request: null,
-        methods: null
-      }
+      paying: false
     };
   },
   watch: {
@@ -101,21 +101,22 @@ export default defineNuxtComponent({
   },
   methods: {
     async initSquare() {
-      if (this.square.payments) {
+      if (square.payments) {
         return;
       }
 
       const config = useRuntimeConfig();
+
       // eslint-disable-next-line no-undef
-      this.square.payments = Square.payments(
-        config.public.services.square.application_id,
-        config.public.services.square.location_id
+      square.payments = Square.payments(
+        config.public.services.square.applicationId,
+        config.public.services.square.locationId
       );
 
-      this.square.methods = {};
+      square.methods = {};
 
       // Init the payment request
-      this.square.request = this.square.payments.paymentRequest({
+      square.request = square.payments.paymentRequest({
         countryCode: 'GB',
         currencyCode: 'GBP',
         total: {
@@ -125,7 +126,7 @@ export default defineNuxtComponent({
       });
 
       // Init card payment
-      this.square.methods.card = await this.square.payments.card({
+      square.methods.card = await square.payments.card({
         style: {
           '.message-icon': {
             color: 'white'
@@ -135,14 +136,13 @@ export default defineNuxtComponent({
           }
         }
       });
-      await this.square.methods.card.attach('#card-container');
+
+      await square.methods.card.attach('#card-container');
 
       try {
         // Init GPay
-        this.square.methods.gpay = await this.square.payments.googlePay(
-          this.square.request
-        );
-        await this.square.methods.gpay.attach('#sq-gpay-button', {
+        square.methods.gpay = await square.payments.googlePay(square.request);
+        await square.methods.gpay.attach('#sq-gpay-button', {
           buttonColor: 'white'
         });
       } catch (e) {
@@ -153,8 +153,8 @@ export default defineNuxtComponent({
 
       try {
         // Init ApplePay
-        this.square.methods.applepay = await this.square.payments.applePay(
-          this.square.request
+        square.methods.applepay = await square.payments.applePay(
+          square.request
         );
       } catch (e) {
         if (e.name !== 'PaymentMethodUnsupportedError') {
@@ -172,7 +172,7 @@ export default defineNuxtComponent({
         currencyCode: 'GBP',
         intent: 'CHARGE'
       };
-      const results = await this.square.payments.verifyBuyer(token, details);
+      const results = await square.payments.verifyBuyer(token, details);
       return results.token;
     },
     async pay(provider, verify = false) {
@@ -204,13 +204,13 @@ export default defineNuxtComponent({
       }
     },
     payCard() {
-      return this.pay(this.square.methods.card, true);
+      return this.pay(square.methods.card, true);
     },
     payGPay() {
-      return this.pay(this.square.methods.gpay);
+      return this.pay(square.methods.gpay);
     },
     payApplePay() {
-      return this.pay(this.square.methods.applepay);
+      return this.pay(square.methods.applepay);
     }
   }
 });

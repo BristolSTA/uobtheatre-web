@@ -101,11 +101,11 @@ export default defineStore('auth', {
         );
 
       // Store the auth token & tell Apollo about our shiny new token
-      this.setToken(data.login.token);
+      await this.setToken(data.login.token);
       // Store the fresh token
-      this.setRefreshToken(data.login.refreshToken, remember);
+      await this.setRefreshToken(data.login.refreshToken, remember);
       // Start queing a token refresh
-      this.queueRefresh();
+      await this.queueRefresh();
       // Load user details
       await this.loadUserDetails();
     },

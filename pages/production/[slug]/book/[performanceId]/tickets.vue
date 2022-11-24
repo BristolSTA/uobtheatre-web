@@ -30,11 +30,12 @@ import { getValidationErrors, performMutation } from '~~/utils/api';
 
 import BookingStage from '@/classes/BookingStage';
 import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue';
+const stageInfo = new BookingStage({
+  name: 'Ticket Selection',
+  routeName: 'production-slug-book-performanceId-tickets'
+});
 export default defineNuxtComponent({
-  stageInfo: new BookingStage({
-    name: 'Ticket Selection',
-    routeName: 'production-slug-book-performanceId-tickets'
-  }),
+  stageInfo,
   components: {
     TicketsEditor
   },
@@ -57,6 +58,9 @@ export default defineNuxtComponent({
       interaction_timer: lo.debounce(this.updateAPI, 2 * 1000),
       errors: null
     };
+  },
+  mounted() {
+    this.$emit('mounted', stageInfo);
   },
   methods: {
     async updateAPI() {

@@ -1,7 +1,7 @@
 <template>
   <div v-if="booking.performance && booking.performance.production">
     <div class="space-y-4">
-      <performance-overview
+      <booking-performance-overview
         :production="booking.performance.production"
         :performance="booking.performance"
       />
@@ -37,15 +37,16 @@ import UserOverview from '@/components/booking/overview/UserOverview.vue';
 import VenueOverview from '@/components/booking/overview/VenueOverview.vue';
 
 import BookingStage from '@/classes/BookingStage';
+const stageInfo = new BookingStage({
+  name: 'Overview',
+  routeName: 'production-slug-book-performanceId-overview',
+  eligable: (_, booking) => !booking.dirty
+});
 export default defineNuxtComponent({
-  stageInfo: new BookingStage({
-    name: 'Overview',
-    routeName: 'production-slug-book-performanceId-overview',
-    eligable: (_, booking) => !booking.dirty
-  }),
+  stageInfo,
   components: {
     VenueOverview,
-    PerformanceOverview,
+    BookingPerformanceOverview: PerformanceOverview,
     UserOverview,
     TicketsOverview,
     BookingPriceOverview
@@ -55,6 +56,9 @@ export default defineNuxtComponent({
       required: true,
       type: Booking
     }
+  },
+  mounted() {
+    this.$emit('mounted', stageInfo);
   }
 });
 </script>

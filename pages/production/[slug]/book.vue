@@ -61,7 +61,7 @@
             :production="production"
             :booking="booking"
             :ticket-matrix="ticketMatrix"
-            @hook:mounted="onChildMount"
+            @mounted="onChildMount"
             @select-performance="onSelectPerformance"
             @next-stage="navigateToStage()"
             @paid="paid = true"
@@ -94,6 +94,11 @@ import {
   PerformanceTicketOptionsDocument,
   UserDraftBookingForPerformanceDocument
 } from '~~/graphql/codegen/operations';
+
+definePageMeta({
+  middleware: 'authed'
+});
+
 export default defineNuxtComponent({
   components: {
     BookingNavigation,
@@ -130,7 +135,6 @@ export default defineNuxtComponent({
 
     return next();
   },
-  middleware: 'authed',
   async asyncData() {
     const { data } = await useDefaultApolloClient().query({
       query: gql`
@@ -211,8 +215,8 @@ export default defineNuxtComponent({
           return this.$router.push(`/production/${production.slug}/book`);
         });
     },
-    onChildMount() {
-      this.currentStage = this.$refs.stageComponent.$options.stageInfo;
+    onChildMount(stageInfo) {
+      this.currentStage = stageInfo;
 
       this.loadDataForStage();
       if (!this.currentStage.shouldBeUsed(this.production, this.booking)) {

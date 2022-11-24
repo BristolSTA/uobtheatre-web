@@ -50,17 +50,18 @@ import Booking from '@/classes/Booking';
 
 import ContentWarningsDisplay from '@/components/production/content-warnings/ContentWarningsDisplay.vue';
 
+const stageInfo = new BookingStage({
+  name: 'Content Warnings',
+  routeName: 'production-slug-book-performanceId-warnings',
+  shouldBeUsed: (production, booking) => {
+    return (
+      production.contentWarnings.length > 0 || booking?.performance?.description
+    );
+  }
+});
+
 export default defineNuxtComponent({
-  stageInfo: new BookingStage({
-    name: 'Content Warnings',
-    routeName: 'production-slug-book-performanceId-warnings',
-    shouldBeUsed: (production, booking) => {
-      return (
-        production.contentWarnings.length > 0 ||
-        booking?.performance?.description
-      );
-    }
-  }),
+  stageInfo,
   components: {
     ContentWarningsDisplay
   },
@@ -78,6 +79,9 @@ export default defineNuxtComponent({
     onUnderstood() {
       this.$emit('next-stage');
     }
+  },
+  mounted() {
+    this.$emit('mounted', stageInfo);
   }
 });
 </script>

@@ -9,12 +9,13 @@
 <script>
 import BookingStage from '@/classes/BookingStage';
 import TimeGroupedPerformanceSelector from '@/components/performance/TimeGroupedPerformanceSelector.vue';
+const stageInfo = new BookingStage({
+  name: 'Select Performance',
+  routeName: 'production-slug-book',
+  requiresPerformance: false
+});
 export default defineNuxtComponent({
-  stageInfo: new BookingStage({
-    name: 'Select Performance',
-    routeName: 'production-slug-book',
-    requiresPerformance: false
-  }),
+  stageInfo,
   components: { TimeGroupedPerformanceSelector },
   props: {
     production: {
@@ -30,6 +31,9 @@ export default defineNuxtComponent({
           (performance) => !(performance.disabled || performance.soldOut)
         );
     }
+  },
+  mounted() {
+    this.$emit('mounted', stageInfo);
   }
 });
 </script>

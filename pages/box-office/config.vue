@@ -20,23 +20,19 @@
   </AdminPage>
 </template>
 
-<script>
+<script setup lang="ts">
 import FormLabel from '@/components/ui/FormLabel.vue';
 import { successToast } from '~~/utils/alerts';
-export default defineNuxtComponent({
-  components: { FormLabel, AdminPage },
-  middleware: ['authed', 'can-boxoffice'],
-  data() {
-    return {
-      locationId: this.$store.state['box-office'].locationId
-    };
-  },
-  methods: {
-    save() {
-      this.$store.dispatch('box-office/setDeviceLocation', this.locationId);
+import useBoxOfficeStore from '@/store/box-office';
 
-      successToast.fire({ title: 'Saved' });
-    }
-  }
-});
+const boxOfficeStore = useBoxOfficeStore();
+
+definePageMeta({ head: ['authed', 'can-boxoffice'] });
+
+const locationId = ref<string | undefined>();
+
+function save() {
+  boxOfficeStore.setDeviceLocation(locationId.value);
+  successToast.fire({ title: 'Saved' });
+}
 </script>

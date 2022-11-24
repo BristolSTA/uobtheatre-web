@@ -21,7 +21,9 @@ export function getStageIndex(stageInfo) {
     return -1;
   }
   return stages.findIndex((stageComponent) => {
-    return stageComponent.stageInfo === (stageInfo.stageInfo ?? stageInfo);
+    return (
+      stageComponent.stageInfo.name === (stageInfo.stageInfo ?? stageInfo).name
+    );
   });
 }
 
