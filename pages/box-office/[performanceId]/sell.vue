@@ -25,6 +25,10 @@ import BoxOfficePerformanceBooking from '@/graphql/queries/box-office/BoxOfficeP
 import Booking from '@/classes/Booking';
 import Overview from '@/components/box-office/Overview.vue';
 import { dateFormat } from '~~/utils/datetime';
+import useBoxOfficeStore from '@/store/box-office';
+
+const boxOfficeStore = useBoxOfficeStore();
+
 export default defineNuxtComponent({
   components: { Overview },
   middleware: 'authed',
@@ -63,7 +67,7 @@ export default defineNuxtComponent({
   },
   computed: {
     inProgressID() {
-      return this.$store.state['box-office'].inProgressBookingID;
+      return boxOfficeStore.inProgressBookingID;
     },
     crumbs() {
       return [
@@ -115,7 +119,7 @@ export default defineNuxtComponent({
         this.booking.updateFromAPIData(data.performance.bookings.edges[0].node);
       } else {
         // Remove stored booking ID
-        this.$store.commit('box-office/SET_IN_PROGRESS_BOOKING_ID', null);
+        boxOfficeStore.$patch({ inProgressBookingID: undefined });
       }
     },
     onNextStage() {

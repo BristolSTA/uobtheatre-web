@@ -8,7 +8,7 @@
     <form-label>
       Location ID
       <template #control>
-        <t-input v-model="locationId" />
+        <UiInputText v-model="locationId" />
       </template>
     </form-label>
     <button
@@ -29,7 +29,7 @@ const boxOfficeStore = useBoxOfficeStore();
 
 definePageMeta({ head: ['authed', 'can-boxoffice'] });
 
-const locationId = ref<string | undefined>();
+const locationId = ref<string | undefined>(boxOfficeStore.locationId);
 
 function save() {
   boxOfficeStore.setDeviceLocation(locationId.value);

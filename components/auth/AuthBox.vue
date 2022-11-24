@@ -212,7 +212,7 @@ import ClickableLink from '@/components/ui/ClickableLink.vue';
 import ErrorHelper from '@/components/ui/ErrorHelper.vue';
 
 import useAuthStore from '@/store/auth';
-import TextInput from '~~/components/ui/UiTextInput.vue';
+import TextInput from '~~/components/ui/Input/UiInputText.vue';
 import { catchOnly, getValidationErrors } from '@/utils/api';
 import { swalToast } from '@/utils/alerts';
 import ValidationError from '@/errors/ValidationError';

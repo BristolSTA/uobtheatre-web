@@ -40,6 +40,9 @@ import { performMutation } from '~~/utils/api';
 import TicketsMatrix from '@/classes/TicketsMatrix';
 import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue';
 
+import useBoxOfficeStore from '@/store/box-office';
+const boxOfficeStore = useBoxOfficeStore();
+
 export default defineNuxtComponent({
   components: {
     TicketsEditor
@@ -109,10 +112,7 @@ export default defineNuxtComponent({
       }
 
       // Update booking ID in store
-      this.$store.commit(
-        'box-office/SET_IN_PROGRESS_BOOKING_ID',
-        bookingResponse.id
-      );
+      boxOfficeStore.$patch({ inProgressBookingID: bookingResponse.id });
 
       // Check for changes since API called.
       if (this.booking.tickets.length === bookingResponse.tickets.length) {
@@ -123,7 +123,7 @@ export default defineNuxtComponent({
       this.interaction_timer();
     },
     cancel() {
-      this.$store.dispatch('box-office/cancelInProgressBooking');
+      boxOfficeStore.cancelInProgressBooking();
       this.$router.push(`/box-office/${this.performance.id}`);
     }
   }

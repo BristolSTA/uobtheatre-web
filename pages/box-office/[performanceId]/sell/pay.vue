@@ -118,7 +118,7 @@
 </template>
 
 <script>
-import TextInput from '~~/components/ui/UiTextInput.vue';
+import TextInput from '~~/components/ui/Input/UiInputText.vue';
 import Booking from '@/classes/Booking';
 import BookingPriceOverview from '@/components/booking/overview/BookingPriceOverview.vue';
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
@@ -133,12 +133,15 @@ import {
   BoxOfficePerformanceBookingDocument,
   CancelPaymentDocument
 } from '~~/graphql/codegen/operations';
+import useBoxOfficeStore from '@/store/box-office';
 
 const enabledMethods = {
   cash: true,
   manualCard: false,
   squarePOS: true
 };
+
+const boxOfficeStore = useBoxOfficeStore();
 
 export default defineNuxtComponent({
   components: {
@@ -183,7 +186,7 @@ export default defineNuxtComponent({
       return (this.tendered - this.booking.totalPricePounds).toFixed(2);
     },
     terminalDevice() {
-      return this.$store.state['box-office'].terminalDevice;
+      return boxOfficeStore.terminalDevice;
     }
   },
   async mounted() {
@@ -191,9 +194,8 @@ export default defineNuxtComponent({
       return this.$router.replace('./');
     }
     try {
-      this.availableTerminals = await this.$store.dispatch(
-        'box-office/retrieveAvailableTerminalDevices'
-      );
+      this.availableTerminals =
+        await boxOfficeStore.retrieveAvailableTerminalDevices();
       // If we already have a device, let's check it's still good
       if (
         this.terminalDevice &&
@@ -201,7 +203,7 @@ export default defineNuxtComponent({
           (device) => device.id === this.terminalDevice.id
         )
       ) {
-        this.$store.commit('box-office/SET_TERMINAL_DEVICE', null);
+        boxOfficeStore.$patch({ terminalDevice: undefined });
       }
     } catch (e) {
       silentErrorHandler(e);
@@ -267,7 +269,7 @@ export default defineNuxtComponent({
       });
       const device = value !== null ? this.availableTerminals[value] : null;
       if (device) {
-        this.$store.commit('box-office/SET_TERMINAL_DEVICE', device);
+        boxOfficeStore.$patch({ terminalDevice: device });
       }
     },
     async pay(method) {

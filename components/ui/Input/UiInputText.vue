@@ -26,7 +26,7 @@
 <script>
 import lo from 'lodash';
 
-import ErrorHelper from './ErrorHelper.vue';
+import ErrorHelper from '../ErrorHelper.vue';
 import Errors from '@/classes/Errors';
 
 export default defineNuxtComponent({

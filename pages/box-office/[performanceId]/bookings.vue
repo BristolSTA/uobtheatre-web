@@ -124,7 +124,7 @@ import BookingRow from '@/components/box-office/BookingRow.vue';
 import SortIcon from '@/components/ui/SortIcon.vue';
 import BoxOfficePerformanceBookings from '@/graphql/queries/box-office/BoxOfficePerformanceBookings.gql';
 import BookingDetailsRow from '@/components/box-office/BookingDetailsRow.vue';
-import TicketScanner from '@/components/ui/Inputs/TicketScanner.vue';
+import TicketScanner from '@/components/ui/Input/TicketScanner.vue';
 import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue';
 import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue';
 import { dateFormat } from '~~/utils/datetime';

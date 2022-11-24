@@ -104,8 +104,8 @@
 /* eslint-disable vue/no-unused-components */
 import FormLabel from '@/components/ui/FormLabel.vue';
 import Badge from '~~/components/ui/UiBadge.vue';
-import CurrencyInput from '@/components/ui/Inputs/CurrencyInput.vue';
-import PercentageInput from '@/components/ui/Inputs/PercentageInput.vue';
+import CurrencyInput from '@/components/ui/Input/CurrencyInput.vue';
+import PercentageInput from '@/components/ui/Input/PercentageInput.vue';
 import { singleDiscounts as singleDiscountsFn } from '@/utils/performance';
 import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
 import SafeTable from '@/components/ui/Tables/SafeTable.vue';

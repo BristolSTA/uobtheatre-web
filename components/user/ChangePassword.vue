@@ -52,7 +52,7 @@ import gql from 'graphql-tag';
 
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 
-import TextInput from '~~/components/ui/UiTextInput.vue';
+import TextInput from '~~/components/ui/Input/UiInputText.vue';
 import { getValidationErrors, performMutation } from '@/utils/api';
 import { swalToast } from '@/utils/alerts';
 import ErrorsPartial from '@/graphql/partials/ErrorsPartial';

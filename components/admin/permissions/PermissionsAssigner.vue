@@ -100,7 +100,7 @@
 
 <script>
 import SafeTable from '@/components/ui/Tables/SafeTable.vue';
-import BooleanInput from '@/components/ui/Inputs/BooleanInput.vue';
+import BooleanInput from '@/components/ui/Input/BooleanInput.vue';
 import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
 import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
 import TableRow from '@/components/ui/Tables/TableRow.vue';

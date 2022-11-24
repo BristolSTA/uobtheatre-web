@@ -44,7 +44,7 @@ export default defineStore('box-office', {
         Cookie.remove(locationCookieKey);
       } else {
         Cookie.set(locationCookieKey, locationId, {
-          expires: temporary ? null : 365 * 1000
+          expires: temporary ? undefined : 365 * 1000
         });
       }
       this.locationId = locationId;

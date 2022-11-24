@@ -117,7 +117,7 @@ import LoadingContainer from '../ui/LoadingContainer.vue';
 import NonFieldError from '../ui/UiNonFieldError.vue';
 import ChangeEmail from './ChangeEmail.vue';
 import ChangePassword from './ChangePassword.vue';
-import TextInput from '~~/components/ui/UiTextInput.vue';
+import TextInput from '~~/components/ui/Input/UiInputText.vue';
 import { swalToast } from '@/utils/alerts';
 import { performMutation, getValidationErrors } from '@/utils/api';
 import ErrorsPartial from '@/graphql/partials/ErrorsPartial';

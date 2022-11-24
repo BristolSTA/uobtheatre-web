@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import TextInput from '../ui/UiTextInput.vue';
+import TextInput from '../ui/Input/UiInputText.vue';
 import InvalidCodeNotification from './InvalidCodeNotification.vue';
 import Ticket from '@/classes/Ticket';
 export default defineNuxtComponent({

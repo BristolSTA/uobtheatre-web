@@ -9,7 +9,7 @@
         @submit.prevent="attemptReset"
       >
         <UiNonFieldError :errors="errors" />
-        <UiTextInput
+        <UiInputText
           v-model="newPassword"
           name="New Password"
           type="password"
@@ -18,7 +18,7 @@
           autocomplete="new-password"
           required
         />
-        <UiTextInput
+        <UiInputText
           v-model="confirmedNewPassword"
           name="Confirm New Password"
           type="password"

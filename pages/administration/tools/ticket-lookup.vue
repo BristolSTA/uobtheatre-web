@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import TicketScanner from '@/components/ui/Inputs/TicketScanner.vue';
+import TicketScanner from '@/components/ui/Input/TicketScanner.vue';
 
 import { errorToast } from '~~/utils/alerts';
 import { dateFormat } from '@/utils/datetime';

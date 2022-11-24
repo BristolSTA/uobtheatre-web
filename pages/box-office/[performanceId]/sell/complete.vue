@@ -55,6 +55,9 @@ import UnCheckInTickets from '@/graphql/mutations/box-office/UnCheckInTickets.gq
 import { performMutation } from '~~/utils/api';
 import { successToast, errorToast } from '~~/utils/alerts';
 import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue';
+import useBoxOfficeStore from '@/store/box-office';
+const boxOfficeStore = useBoxOfficeStore();
+
 export default defineNuxtComponent({
   components: { TicketsOverview, PaymentOverview, BoxOfficeNavigation },
   props: {
@@ -79,7 +82,7 @@ export default defineNuxtComponent({
   },
   beforeUnmount() {
     // Remove stored booking ID
-    this.$store.commit('box-office/SET_IN_PROGRESS_BOOKING_ID', null);
+    boxOfficeStore.$patch({ inProgressBookingID: undefined });
   },
   methods: {
     canAutoCheckIn() {

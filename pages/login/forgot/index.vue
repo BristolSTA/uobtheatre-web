@@ -11,7 +11,7 @@
       <div class="p-6 text-white">
         <h1 class="text-h3">Forgot your password?</h1>
         <form class="flex flex-col space-y-2" @submit.prevent="requestReset">
-          <UiTextInput
+          <UiInputText
             v-model="email"
             name="Email"
             type="email"
