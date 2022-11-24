@@ -52,6 +52,11 @@ import { getValidationErrors, performMutation } from '~~/utils/api';
 import { swalToast } from '~~/utils/alerts';
 
 import ErrorsPartial from '@/graphql/partials/ErrorsPartial';
+
+definePageMeta({
+  middleware: ['authed']
+});
+
 export default defineNuxtComponent({
   components: {
     NonFieldError,
@@ -59,7 +64,6 @@ export default defineNuxtComponent({
     LoadingContainer,
     LoadingIcon
   },
-  middleware: 'authed',
   data() {
     return {
       password: null,

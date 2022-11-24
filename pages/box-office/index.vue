@@ -72,9 +72,12 @@ import { dateFormat } from '@/utils/datetime';
 import BoxOfficePerformancesAvailable from '@/graphql/queries/box-office/BoxOfficePerformancesAvailable.gql';
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue';
+definePageMeta({
+  middleware: ['authed', 'can-boxoffice']
+});
+
 export default defineNuxtComponent({
   components: { LoadingContainer, ProductionFeaturedImage },
-  middleware: ['authed', 'can-boxoffice'],
   data() {
     return {
       selectedPerformance: null,

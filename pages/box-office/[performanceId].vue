@@ -8,8 +8,11 @@
 
 <script>
 import BoxOfficePerformance from '@/graphql/queries/box-office/BoxOfficePerformance.gql';
+definePageMeta({
+  middleware: ['authed']
+});
+
 export default defineNuxtComponent({
-  middleware: 'authed',
   async asyncData() {
     // Execute query
     const { data } = await useDefaultApolloClient().query({

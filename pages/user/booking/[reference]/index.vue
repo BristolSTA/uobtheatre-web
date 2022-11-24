@@ -85,6 +85,9 @@ import ProductionBanner from '@/components/production/ProductionBanner.vue';
 import Alert from '@/components/ui/Alert.vue';
 import { UserCompletedBookingDocument } from '~~/graphql/codegen/operations';
 import useAuthStore from '~~/store/auth';
+definePageMeta({
+  middleware: ['authed']
+});
 
 export default defineNuxtComponent({
   components: {
@@ -96,7 +99,6 @@ export default defineNuxtComponent({
     Ticket,
     Alert
   },
-  middleware: 'authed',
   async asyncData() {
     const { data } = await useDefaultApolloClient().query({
       query: UserCompletedBookingDocument,

@@ -23,10 +23,14 @@
 <script>
 import AdminSidebar from '@/components/admin/AdminSidebar.vue';
 import Breadcrumbs from '@/components/ui/UiBreadcrumbs.vue';
+
+definePageMeta({
+  middleware: ['authed', 'admin']
+});
+
 export default defineNuxtComponent({
   components: { AdminSidebar, Breadcrumbs },
   layout: 'admin',
-  middleware: ['authed', 'admin'],
   data() {
     return {
       showSidebar: false

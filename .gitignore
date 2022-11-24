@@ -6,6 +6,6 @@ node_modules
 .output
 .env
 dist
+.eslintcache
 
 graphql/codegen/operations.ts
-nuxt2

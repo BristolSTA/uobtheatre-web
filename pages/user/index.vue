@@ -76,6 +76,10 @@ import {
   MyAccountDetailsDocument
 } from '~~/graphql/codegen/operations';
 
+definePageMeta({
+  middleware: ['authed']
+});
+
 export default defineNuxtComponent({
   components: {
     BookingSummaryOverview,
@@ -83,7 +87,6 @@ export default defineNuxtComponent({
     BookingsTable,
     PaginationBar
   },
-  middleware: 'authed',
   async asyncData() {
     const { data } = await useDefaultApolloClient().query({
       query: MyAccountDetailsDocument,
