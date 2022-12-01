@@ -11,7 +11,7 @@
       <form-label class="py-4" :required="true">
         User Email
         <template #control>
-          <t-input
+          <UiInputText
             v-model="bookingEmail"
             :disabled="!!booking.id"
             type="text"

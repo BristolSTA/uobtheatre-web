@@ -50,7 +50,6 @@ import BookingStatusEnum from '~~/enums/PayableStatusEnum';
 import { dateFormat } from '@/utils/datetime';
 export default defineNuxtComponent({
   components: {
-    AdminPage,
     ProductionBanner,
     PerformanceOverview,
     VenueOverview,
@@ -58,8 +57,7 @@ export default defineNuxtComponent({
     TicketsOverview,
     TableHeadItem,
     TableRowItem,
-    TableRow,
-    Card
+    TableRow
   },
   async asyncData() {
     const { data } = await useDefaultApolloClient().query({

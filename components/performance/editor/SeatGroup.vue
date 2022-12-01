@@ -6,12 +6,12 @@
       <small>
         Max Capacity:
         {{ capacityOverride ? capacityOverride : value.capacity }}
-        <strike
+        <del
           v-if="capacityOverride && capacityOverride !== value.capacity"
           class="text-sta-gray-lighter"
         >
           {{ value.capacity }}
-        </strike>
+        </del>
       </small>
     </p>
     <font-awesome-icon

@@ -1,7 +1,7 @@
 <template>
   <AdminPage :title="`${production.name} Bookings`">
     <div class="flex items-end space-x-4">
-      <div><t-input v-model="bookingsSearch" placeholder="Search" /></div>
+      <div><UiInputText v-model="bookingsSearch" placeholder="Search" /></div>
       <div>
         <label>Status</label
         ><t-select
@@ -88,7 +88,6 @@ import BookingStatusEnum from '~~/enums/PayableStatusEnum';
 import { dateFormat } from '@/utils/datetime';
 export default defineNuxtComponent({
   components: {
-    AdminPage,
     PaginatedTable,
     TableHeadItem,
     TableRow,

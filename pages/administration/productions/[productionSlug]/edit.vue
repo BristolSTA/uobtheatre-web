@@ -25,7 +25,7 @@ import { getValidationErrors, performMutation } from '~~/utils/api';
 import { loadingSwal, successToast } from '~~/utils/alerts';
 import { ProductionMutationDocument } from '~~/graphql/codegen/operations';
 export default defineNuxtComponent({
-  components: { ProductionEditor, NonFieldError },
+  components: { ProductionEditor },
   async asyncData() {
     // Execute query
     const { data } = await useDefaultApolloClient().query({

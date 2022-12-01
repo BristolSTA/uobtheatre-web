@@ -77,7 +77,8 @@ export default defineNuxtConfig({
       '@fortawesome/vue-fontawesome',
       '@fortawesome/fontawesome-svg-core',
       '@fortawesome/free-regular-svg-icons',
-      '@fortawesome/free-brands-svg-icons'
+      '@fortawesome/free-brands-svg-icons',
+      '@vuepic/vue-datepicker'
     ]
   },
 

@@ -2103,23 +2103,6 @@
     "@unhead/schema" "1.0.2"
     hookable "^5.4.1"
 
-"@variantjs/core@^0.0.79":
-  version "0.0.79"
-  resolved "https://registry.yarnpkg.com/@variantjs/core/-/core-0.0.79.tgz#b569a3c921d84b38b5765f7ecc8515d705914844"
-  integrity sha512-8GR/mMPsoWM71CxH1lUnpx7Z0Re7Iu6KNtAJ7s7mXnKoxG5qV75ew4HssOsfsJYa/UuPuJ+yid4Yr9snHoQUrA==
-
-"@variantjs/core@^0.0.90":
-  version "0.0.90"
-  resolved "https://registry.yarnpkg.com/@variantjs/core/-/core-0.0.90.tgz#eb9bfb9a46b50bbaadf6a94457c85099d32d8509"
-  integrity sha512-fef+nC+AR0l+0QR9TlHIAThaI8Qms7sDwUW3a8qQdBlc0482tyHMvrC8CeR5763l2ji6PTbA7DeOeTlWB19uWg==
-
-"@variantjs/vue@^0.0.22":
-  version "0.0.22"
-  resolved "https://registry.yarnpkg.com/@variantjs/vue/-/vue-0.0.22.tgz#462d8275b696be8586db3b659764f51ceb9393e2"
-  integrity sha512-n3sT15mJhBxFZ5aubOCI0cHo6e0C2c9Hh83mi+NbNBOFAcCLhePp25MjF0mlcG93qqfIIugNLx+SuU77nfiYbQ==
-  dependencies:
-    "@variantjs/core" "^0.0.79"
-
 "@vercel/nft@^0.22.1":
   version "0.22.1"
   resolved "https://registry.yarnpkg.com/@vercel/nft/-/nft-0.22.1.tgz#0d91d2a21e3a7f0b23ce1550da9870eac4942828"
@@ -2335,6 +2318,13 @@
   version "3.2.45"
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.2.45.tgz#a3fffa7489eafff38d984e23d0236e230c818bc2"
   integrity sha512-Ewzq5Yhimg7pSztDV+RH1UDKBzmtqieXQlpTVm2AwraoRL/Rks96mvd8Vgi7Lj+h+TH8dv7mXD3FRZR3TUvbSg==
+
+"@vuepic/vue-datepicker@3.5.3":
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/@vuepic/vue-datepicker/-/vue-datepicker-3.5.3.tgz#e671e7c93b8a93c3e647552b97e471e6fc6fa272"
+  integrity sha512-tyqnRDuqj02decCwzwGP7ht0erc33Ktcm8zyEx90C7Vt5Y4roq2CV21ovzmdRluUW8p/1abLcL7ZSqedWtAzKw==
+  dependencies:
+    date-fns "^2.29.3"
 
 "@vueuse/head@^1.0.15":
   version "1.0.16"
@@ -3690,6 +3680,16 @@ dataloader@2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/dataloader/-/dataloader-2.1.0.tgz#c69c538235e85e7ac6c6c444bae8ecabf5de9df7"
   integrity sha512-qTcEYLen3r7ojZNgVUaRggOI+KM7jrKxXeSHhogh/TWxYMeONEMqY+hmkobiYQozsGIyg9OYVzO4ZIfoB4I0pQ==
+
+date-fns@^2.29.3:
+  version "2.29.3"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.29.3.tgz#27402d2fc67eb442b511b70bbdf98e6411cd68a8"
+  integrity sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==
+
+dayjs@^1.11.6:
+  version "1.11.6"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.6.tgz#2e79a226314ec3ec904e3ee1dd5a4f5e5b1c7afb"
+  integrity sha512-zZbY5giJAinCG+7AGaw0wIhNZ6J8AhWuSXKvuc1KAyMiRsvGQWqh4L+MomvhdAYjN+lqvVCMq1I41e3YHvXkyQ==
 
 de-indent@^1.0.2:
   version "1.0.2"

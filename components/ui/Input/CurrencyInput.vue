@@ -1,5 +1,5 @@
 <template>
-  <t-input ref="inputRef" :value="formattedValue" />
+  <UiInputText ref="inputRef" :model-value="formattedValue" />
 </template>
 
 <script>

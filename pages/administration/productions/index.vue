@@ -10,18 +10,21 @@
     </template>
     <div class="flex flex-wrap gap-3 items-end md:flex-nowrap">
       <div>
-        <TInput v-model="productionSearchFilter" placeholder="Search by name" />
+        <UiInputText
+          v-model="productionSearchFilter"
+          placeholder="Search by name"
+        />
       </div>
       <div>
         <label>Status</label>
-        <TSelect
+        <UiInputSelect
           v-model="productionsStatusFilter"
           :options="[
-            { value: null, text: 'All' },
-            { value: 'DRAFT', text: 'Draft' },
-            { value: 'PUBLISHED', text: 'Published' },
-            { value: 'CLOSED', text: 'Closed' },
-            { value: 'COMPLETE', text: 'Complete' }
+            { value: null, displayText: 'All' },
+            { value: 'DRAFT', displayText: 'Draft' },
+            { value: 'PUBLISHED', displayText: 'Published' },
+            { value: 'CLOSED', displayText: 'Closed' },
+            { value: 'COMPLETE', displayText: 'Complete' }
           ]"
         />
       </div>
@@ -85,7 +88,6 @@ import {
   AdminProductionsQueryVariables
 } from '@/graphql/codegen/operations';
 import { displayStartEnd } from '~~/utils/datetime';
-import { TInput, TSelect } from '@variantjs/vue';
 
 const productionsOffset = ref(0);
 const productionsStatusFilter = ref(null);

@@ -4,7 +4,7 @@
     <loading-container :loading="generating">
       <div class="space-y-4">
         <h2 class="text-h2">Select Report</h2>
-        <t-select
+        <UiInputSelect
           v-model="currentReport"
           placeholder="Select a report"
           :options="reports"
@@ -79,8 +79,12 @@ export default defineNuxtComponent({
       generating: false,
 
       reports: [
-        { text: 'Period Totals', value: 'PeriodTotals', requires_times: true },
-        { text: 'Outstanding Payments', value: 'OutstandingPayments' }
+        {
+          displayText: 'Period Totals',
+          value: 'PeriodTotals',
+          requires_times: true
+        },
+        { displayText: 'Outstanding Payments', value: 'OutstandingPayments' }
       ]
     };
   },

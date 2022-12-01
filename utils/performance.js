@@ -1,4 +1,4 @@
-export function singleDiscounts(discountEdges) {
+export function getSingleDiscounts(discountEdges) {
   return [
     ...discountEdges
       .map((edge) => edge.node)

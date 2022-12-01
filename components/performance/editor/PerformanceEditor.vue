@@ -1,21 +1,20 @@
 <template>
   <div class="space-y-2">
     <UiCard title="Venue">
-      <t-select
+      <UiInputSelect
         placeholder="Select a venue"
         class="mb-4"
-        :value="venue ? venue.id : null"
+        :model-value="performance.venue?.id"
         :disabled="!!performanceSeatGroups.length"
         :options="
           availableVenues.map((venue) => ({
             value: venue.id,
-            text: venue.name
+            displayText: venue.name
           }))
         "
         @input="
-          $emit(
-            'update:venue',
-            availableVenues.find((venue) => venue.id === $event)
+          performance.venue = availableVenues.find(
+            (venue) => venue.id === $event
           )
         "
       />
@@ -34,53 +33,28 @@
         <form-label name="doorsOpen" :errors="errors" :required="true">
           Doors Open
           <template #control>
-            <t-datepicker
-              :value="doorsOpen"
-              user-format="Y-m-d H:i"
-              date-format="Z"
-              :timepicker="true"
-              class="text-black"
-              initial-time="00:00:00"
-              @change="$emit('update:doorsOpen', $event)"
-            />
+            <VueDatepicker v-model="performance.doorsOpen" class="text-black" />
           </template>
         </form-label>
         <form-label name="start" :errors="errors" :required="true">
           Performance Starts
           <template #control>
-            <t-datepicker
-              :value="start"
-              user-format="Y-m-d H:i"
-              date-format="Z"
-              :timepicker="true"
-              class="text-black"
-              initial-time="00:00:00"
-              @change="$emit('update:start', $event)"
-            />
+            <VueDatepicker v-model="performance.start" class="text-black" />
           </template>
         </form-label>
         <form-label name="end" :errors="errors" :required="true">
           Performance Ends
           <template #control>
-            <t-datepicker
-              :value="end"
-              user-format="Y-m-d H:i"
-              date-format="Z"
-              :timepicker="true"
-              class="text-black"
-              initial-time="00:00:00"
-              @change="$emit('update:end', $event)"
-            />
+            <VueDatepicker v-model="performance.end" class="text-black" />
           </template>
         </form-label>
         <form-label name="intervalDurationMins" :errors="errors">
           Interval Length
           <template #control>
-            <t-input
-              :value="intervalDurationMins"
+            <UiInputText
+              v-model="performance.intervalDurationMins"
               type="number"
               min="1"
-              @input="$emit('update:intervalDurationMins', $event)"
               @keypress.stop="
                 if (!/^[0-9]$/i.test($event.key)) $event.preventDefault();
               "
@@ -146,19 +120,21 @@
                 :removable="true"
                 @remove="performanceSeatGroups.splice(index, 1)"
               />
-              <alert v-if="!venue" class="text-sm" level="warning">
+              <alert v-if="!performance.venue" class="text-sm" level="warning">
                 You must select a venue before adding seat groups
               </alert>
               <alert
                 v-if="
-                  venue && selectedSeatGroupCapacities > venue.internalCapacity
+                  performance.venue &&
+                  selectedSeatGroupCapacities >
+                    performance.venue.internalCapacity
                 "
                 class="text-sm"
                 level="warning"
               >
                 <strong>NB:</strong> Venue capacity will limit this
                 performance's capacity automatically to
-                {{ venue.internalCapacity }}
+                {{ performance.venue.internalCapacity }}
               </alert>
             </div>
           </div>
@@ -228,10 +204,7 @@
         <form-label name="disabled" :errors="errors">
           Disabled
           <template #control>
-            <t-toggle
-              :checked="disabled"
-              @change="$emit('update:disabled', $event)"
-            />
+            <UiInputToggle v-model="performance.disabled" />
           </template>
           <template #helper>
             Disabled performances will not show, and will not be available for
@@ -241,11 +214,10 @@
         <form-label name="capacity" :errors="errors">
           Performance Capacity
           <template #control>
-            <t-input
-              :value="capacity"
+            <UiInputText
+              v-model="performance.capacity"
               type="number"
               min="1"
-              @input="$emit('update:capacity', $event)"
               @keypress.stop="
                 if (!/^[0-9]$/i.test($event.key)) $event.preventDefault();
               "
@@ -261,10 +233,7 @@
         <form-label name="description" :errors="errors">
           Description
           <template #control>
-            <t-textarea
-              :value="description"
-              @input="$emit('update:description', $event)"
-            />
+            <UiInputTextArea v-model="performance.description" />
           </template>
         </form-label>
       </div>
@@ -283,7 +252,8 @@ import { getValidationErrors, performMutation } from '@/utils/api';
 import { swal } from '@/utils/alerts';
 import { dateFormat } from '@/utils/datetime';
 import Alert from '@/components/ui/Alert.vue';
-import { singleDiscounts as singleDiscountsFn } from '@/utils/performance';
+import { getSingleDiscounts as singleDiscountsFn } from '@/utils/performance';
+import VueDatepicker from '@vuepic/vue-datepicker';
 
 import {
   AdminPerformanceDetailDocument,
@@ -301,7 +271,7 @@ import {
 export default defineNuxtComponent({
   components: {
     FormLabel,
-
+    VueDatepicker,
     SeatGroup,
     ConcessionType,
     ErrorHelper,
@@ -313,57 +283,13 @@ export default defineNuxtComponent({
       default: null,
       type: Object
     },
-    id: {
-      type: String,
-      default: null
-    },
-    capacity: {
-      type: [Number, String],
-      default: null
-    },
-    doorsOpen: {
-      type: String,
-      default: null
-    },
-    start: {
-      type: String,
-      default: null
-    },
-    production: {
-      type: Object,
-      default: null
-    },
-    end: {
-      type: String,
-      default: null
-    },
-    venue: {
-      type: Object,
-      default: null
-    },
     errors: {
       type: Errors,
       default: null
     },
-    discounts: {
+    production: {
       type: Object,
-      default: () => {}
-    },
-    ticketOptions: {
-      type: Array,
-      default: () => []
-    },
-    disabled: {
-      type: Boolean,
-      default: false
-    },
-    description: {
-      type: String,
-      default: null
-    },
-    intervalDurationMins: {
-      type: [Number],
-      default: null
+      required: true
     }
   },
   data() {
@@ -388,11 +314,11 @@ export default defineNuxtComponent({
       update: (data) => data.venue.seatGroups.edges.map((edge) => edge.node),
       variables() {
         return {
-          slug: this.venue.slug
+          slug: this.performance.venue.slug
         };
       },
       skip() {
-        return !this.venue;
+        return !this.performance.venue;
       }
     },
     otherPerformances: {
@@ -428,7 +354,7 @@ export default defineNuxtComponent({
       );
     },
     singleDiscounts() {
-      return singleDiscountsFn(this.discounts?.edges || []);
+      return singleDiscountsFn(this.performance.discounts?.edges || []);
     },
     selectedSeatGroupCapacities() {
       return this.performanceSeatGroups.reduce(
@@ -446,7 +372,7 @@ export default defineNuxtComponent({
     }
   },
   watch: {
-    ticketOptions: {
+    'performance.ticketOptions': {
       handler(newValue) {
         this.performanceSeatGroups = [...newValue];
       },
@@ -459,8 +385,8 @@ export default defineNuxtComponent({
         const intervalLength = newVal.find(
           (performance) => performance.intervalDurationMins
         )?.intervalDurationMins;
-        if (this.intervalDurationMins === null && intervalLength) {
-          this.$emit('update:intervalDurationMins', intervalLength);
+        if (this.performance.intervalDurationMins === null && intervalLength) {
+          this.performance.intervalDurationMins = intervalLength;
         }
       }
     }
@@ -468,16 +394,19 @@ export default defineNuxtComponent({
   methods: {
     getInputData() {
       const returnObject = {
-        id: this.id,
-        doorsOpen: this.doorsOpen,
+        id: this.performance.id,
+        doorsOpen: this.performance.doorsOpen,
         intervalDurationMins:
-          this.intervalDurationMins === '' ? null : this.intervalDurationMins,
-        start: this.start,
-        end: this.end,
-        venue: this.venue?.id,
-        disabled: this.disabled,
-        description: this.description,
-        capacity: this.capacity === '' ? null : this.capacity
+          this.performance.intervalDurationMins === ''
+            ? null
+            : this.performance.intervalDurationMins,
+        start: this.performance.start,
+        end: this.performance.end,
+        venue: this.performance.venue?.id,
+        disabled: this.performance.disabled,
+        description: this.performance.description,
+        capacity:
+          this.performance.capacity === '' ? null : this.performance.capacity
       };
 
       if (!returnObject.id) {
@@ -639,8 +568,8 @@ export default defineNuxtComponent({
 
       // Create or update concession types
 
-      if (this.discounts?.edges) {
-        this.discounts.edges
+      if (this.performance.discounts?.edges) {
+        this.performance.discounts.edges
           .map((edge) => edge.node)
           .forEach((discount) => {
             mutations.push(
@@ -765,12 +694,12 @@ export default defineNuxtComponent({
       percentage = 0,
       id = null
     ) {
-      const currentNum = this.discounts?.edges
-        ? this.discounts.edges.length
+      const currentNum = this.performance.discounts?.edges
+        ? this.performance.discounts.edges.length
         : 0;
-      await this.$emit('update:discounts', {
+      this.performance.discounts = {
         edges: [
-          ...(this.discounts?.edges || []),
+          ...(this.performance.discounts?.edges || []),
           {
             node: {
               percentage,
@@ -788,13 +717,13 @@ export default defineNuxtComponent({
             }
           }
         ]
-      });
+      };
     },
     async deleteConcession(discount) {
       // Remove from array
-      await this.$emit('update:discounts', {
+      this.performance.discounts = {
         edges: this.discounts.edges.filter((edge) => edge.node !== discount)
-      });
+      };
 
       this.deletedDiscounts.push(discount);
     }

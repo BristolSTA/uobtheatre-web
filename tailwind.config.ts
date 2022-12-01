@@ -1,4 +1,6 @@
 import type { Config } from 'tailwindcss';
+const path = require('path');
+
 export default <Partial<Config>>{
   future: {
     removeDeprecatedGapUtilities: true

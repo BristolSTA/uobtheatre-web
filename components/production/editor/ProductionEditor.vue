@@ -5,7 +5,7 @@
         <form-label :errors="errors" name="name" :required="true">
           Name
           <template #control>
-            <t-input
+            <UiInputText
               :value="name"
               placeholder="e.g. My Show"
               @input="$emit('update:name', $event)"
@@ -35,7 +35,7 @@
             <div class="flex">
               <form-label class="flex-grow">
                 Slug
-                <t-input
+                <UiInputText
                   :value="manualSlug"
                   @input="manualSlug = kebabCase($event)"
                 />
@@ -58,7 +58,7 @@
         </p>
         <form-label :errors="errors" name="subtitle">
           Subtitle
-          <t-input
+          <UiInputText
             :value="subtitle"
             @input="$emit('update:subtitle', $event)"
           />
@@ -66,7 +66,7 @@
         <form-label :errors="errors" name="contactEmail" :required="true">
           Contact Email Address
           <template #control>
-            <t-input
+            <UiInputText
               :value="contactEmail"
               @input="$emit('update:contactEmail', $event)"
             />
@@ -143,7 +143,7 @@
             name="ageRating"
           >
             Age Rating
-            <t-input
+            <UiInputText
               :value="ageRating"
               type="number"
               min="4"
@@ -156,7 +156,7 @@
           </form-label>
           <form-label class="flex-grow" :errors="errors" name="facebookEvent">
             Facebook Event Link
-            <t-input
+            <UiInputText
               :value="facebookEvent"
               @input="$emit('update:facebookEvent', $event)"
             />

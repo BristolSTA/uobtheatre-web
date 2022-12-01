@@ -29,7 +29,7 @@
       <form-label :required="true">
         Name
         <template #control>
-          <t-input
+          <UiInputText
             :value="name"
             placeholder="e.g. Student"
             @input="$emit('update:name', $event)"
@@ -39,7 +39,7 @@
       <form-label>
         Description
         <template #control>
-          <t-input
+          <UiInputText
             :value="description"
             placeholder="e.g. Valid ID card required"
             @input="$emit('update:description', $event)"

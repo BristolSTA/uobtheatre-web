@@ -59,7 +59,6 @@ definePageMeta({
 
 export default defineNuxtComponent({
   components: {
-    NonFieldError,
     TextInput,
     LoadingContainer,
     LoadingIcon

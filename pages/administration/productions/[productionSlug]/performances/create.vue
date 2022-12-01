@@ -12,7 +12,6 @@
       v-model:errors="errors"
       :performance="performance"
       :production="production"
-      v-bind.sync="performance"
     />
   </AdminPage>
 </template>
@@ -30,7 +29,7 @@ import {
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import { loadingSwal, successToast, errorToast } from '~~/utils/alerts';
 export default defineNuxtComponent({
-  components: { PerformanceEditor, NonFieldError },
+  components: { PerformanceEditor },
   async asyncData() {
     // Execute query
     const { data } = await useDefaultApolloClient().query({
@@ -53,7 +52,9 @@ export default defineNuxtComponent({
   },
   data() {
     return {
-      performance: {},
+      performance: {
+        ticketOptions: []
+      },
       production: null,
       errors: null
     };

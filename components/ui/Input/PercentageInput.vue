@@ -1,12 +1,12 @@
 <template>
-  <t-input
+  <UiInputText
     ref="inputRef"
     type="number"
     min="0"
     max="100"
     max-length="3"
-    :value="value"
-    @input="onInput"
+    :model-value="modelValue"
+    @update:model-value="onInput"
     @blur="onBlur"
     @keypress.stop="
       () => {
@@ -19,7 +19,7 @@
 <script>
 export default defineNuxtComponent({
   props: {
-    value: {
+    modelValue: {
       type: Number,
       default: null
     },
@@ -30,7 +30,7 @@ export default defineNuxtComponent({
   },
   methods: {
     onInput(event) {
-      this.$emit('input', event);
+      this.$emit('update:model-value', event);
     },
     onBlur(event) {
       let newVal = event.target.value;

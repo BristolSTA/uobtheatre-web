@@ -33,7 +33,7 @@
               <percentage-input
                 v-if="editing"
                 :key="discount.id"
-                :value="discount.percentage * 100"
+                :model-value="discount.percentage * 100"
                 @blur="
                   (event) => {
                     discount.percentage = event / 100;
@@ -106,7 +106,7 @@ import FormLabel from '@/components/ui/FormLabel.vue';
 import Badge from '~~/components/ui/UiBadge.vue';
 import CurrencyInput from '@/components/ui/Input/CurrencyInput.vue';
 import PercentageInput from '@/components/ui/Input/PercentageInput.vue';
-import { singleDiscounts as singleDiscountsFn } from '@/utils/performance';
+import { getSingleDiscounts as singleDiscountsFn } from '@/utils/performance';
 import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
 import SafeTable from '@/components/ui/Tables/SafeTable.vue';
 import TableRow from '@/components/ui/Tables/TableRow.vue';

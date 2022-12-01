@@ -59,7 +59,6 @@ import ErrorsPartial from '@/graphql/partials/ErrorsPartial';
 export default defineNuxtComponent({
   components: {
     LoadingContainer,
-    NonFieldError,
     TextInput
   },
   data() {
