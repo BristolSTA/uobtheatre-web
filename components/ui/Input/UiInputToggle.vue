@@ -8,7 +8,7 @@
 </template>
 <script lang="ts" setup>
 const props = defineProps<{
-  modelValue: boolean;
+  modelValue?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -20,7 +20,7 @@ const value = computed({
     return props.modelValue;
   },
   set(value) {
-    emit('update:modelValue', value);
+    emit('update:modelValue', !!value);
   }
 });
 </script>

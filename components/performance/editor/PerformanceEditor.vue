@@ -4,7 +4,7 @@
       <UiInputSelect
         placeholder="Select a venue"
         class="mb-4"
-        :model-value="performance.venue?.id"
+        :model-value="performance.venue?.id || ''"
         :disabled="!!performanceSeatGroups.length"
         :options="
           availableVenues.map((venue) => ({
@@ -12,7 +12,7 @@
             displayText: venue.name
           }))
         "
-        @input="
+        @update:model-value="
           performance.venue = availableVenues.find(
             (venue) => venue.id === $event
           )
@@ -33,19 +33,31 @@
         <form-label name="doorsOpen" :errors="errors" :required="true">
           Doors Open
           <template #control>
-            <VueDatepicker v-model="performance.doorsOpen" class="text-black" />
+            <VueDatepicker
+              v-model="performance.doorsOpen"
+              :start-time="{ hours: 0, minutes: 0, seconds: 0 }"
+              format="dd/MM/yyyy HH:mm"
+            />
           </template>
         </form-label>
         <form-label name="start" :errors="errors" :required="true">
           Performance Starts
           <template #control>
-            <VueDatepicker v-model="performance.start" class="text-black" />
+            <VueDatepicker
+              v-model="performance.start"
+              :start-time="{ hours: 0, minutes: 0, seconds: 0 }"
+              format="dd/MM/yyyy HH:mm"
+            />
           </template>
         </form-label>
         <form-label name="end" :errors="errors" :required="true">
           Performance Ends
           <template #control>
-            <VueDatepicker v-model="performance.end" class="text-black" />
+            <VueDatepicker
+              v-model="performance.end"
+              :start-time="{ hours: 0, minutes: 0, seconds: 0 }"
+              format="dd/MM/yyyy HH:mm"
+            />
           </template>
         </form-label>
         <form-label name="intervalDurationMins" :errors="errors">
@@ -374,7 +386,7 @@ export default defineNuxtComponent({
   watch: {
     'performance.ticketOptions': {
       handler(newValue) {
-        this.performanceSeatGroups = [...newValue];
+        if (newValue !== undefined) this.performanceSeatGroups = [...newValue];
       },
       immediate: true
     },
@@ -403,7 +415,7 @@ export default defineNuxtComponent({
         start: this.performance.start,
         end: this.performance.end,
         venue: this.performance.venue?.id,
-        disabled: this.performance.disabled,
+        disabled: !!this.performance.disabled,
         description: this.performance.description,
         capacity:
           this.performance.capacity === '' ? null : this.performance.capacity
@@ -451,7 +463,7 @@ export default defineNuxtComponent({
         await this.deleteConcession(discount);
       }
 
-      // For the chosen performancem add seat groups ...
+      // For the chosen performance add seat groups ...
       performance.ticketOptions.forEach((performanceSeatGroup) => {
         this.addSeatGroup(
           performanceSeatGroup.seatGroup,
@@ -479,9 +491,10 @@ export default defineNuxtComponent({
     async saveRelated() {
       const mutations = [];
       // Process seat group changes
-      const currentSeatGroupIds = this.ticketOptions.map(
-        (ticketOption) => ticketOption.id
-      );
+      const currentSeatGroupIds = this.performance.ticketOptions
+        ? this.performance.ticketOptions.map((ticketOption) => ticketOption.id)
+        : [];
+
       const editedSeatGroupIds = this.performanceSeatGroups.map(
         (performanceSeatGroup) => performanceSeatGroup.id
       );
@@ -567,7 +580,6 @@ export default defineNuxtComponent({
         });
 
       // Create or update concession types
-
       if (this.performance.discounts?.edges) {
         this.performance.discounts.edges
           .map((edge) => edge.node)

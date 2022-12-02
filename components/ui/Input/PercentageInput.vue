@@ -6,11 +6,10 @@
     max="100"
     max-length="3"
     :model-value="modelValue"
-    @update:model-value="onInput"
     @blur="onBlur"
     @keypress.stop="
-      () => {
-        if (!/^[0-9.]$/i.test($event.key)) $event.preventDefault();
+      (event) => {
+        if (!/^[0-9.]$/i.test(event.key)) event.preventDefault();
       }
     "
   />
@@ -28,9 +27,10 @@ export default defineNuxtComponent({
       type: Object
     }
   },
+  emits: ['blur'],
   methods: {
     onInput(event) {
-      this.$emit('update:model-value', event);
+      this.$emit('update:modelValue', event);
     },
     onBlur(event) {
       let newVal = event.target.value;
@@ -40,7 +40,7 @@ export default defineNuxtComponent({
       if (newVal < 0) {
         newVal = 0;
       }
-      this.$emit('input', newVal);
+      this.$emit('update:modelValue', newVal);
       this.$emit('blur', newVal);
     }
   }

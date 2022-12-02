@@ -36,6 +36,7 @@ export default defineNuxtComponent({
       type: Boolean
     }
   },
+  emits: ['click'],
   computed: {
     asType() {
       if (this.to) {

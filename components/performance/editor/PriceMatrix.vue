@@ -34,12 +34,7 @@
                 v-if="editing"
                 :key="discount.id"
                 :model-value="discount.percentage * 100"
-                @blur="
-                  (event) => {
-                    discount.percentage = event / 100;
-                    discount._percentageModified = true;
-                  }
-                "
+                @update:model-value="setDiscountPercentage(discount, $event)"
               />
               <div v-else class="font-bold">
                 {{ discount.percentage * 100 }}%
@@ -65,9 +60,9 @@
                 <div class="w-20">
                   <currency-input
                     :key="performanceSeatGroup.id"
-                    :value="performanceSeatGroup.price / 100"
+                    :model-value="performanceSeatGroup.price / 100"
                     placeholder="Base Price"
-                    @input="
+                    @update:model-value="
                       (event) => {
                         performanceSeatGroup.price = event * 100;
                         performanceSeatGroup._priceModified = true;
@@ -170,6 +165,10 @@ export default defineNuxtComponent({
         ).toFixed(2);
       }
       return (currentValue / 100).toFixed(2);
+    },
+    setDiscountPercentage(discountObject, integerPercentage) {
+      discountObject.percentage = integerPercentage / 100;
+      discountObject._percentageModified = true;
     }
   }
 });

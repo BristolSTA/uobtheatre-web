@@ -69,6 +69,7 @@ export default defineNuxtComponent({
           },
           'performance'
         );
+
         const { data } = await this.$apollo.query({
           query: AdminPerformanceDetailQuery,
           variables: {
