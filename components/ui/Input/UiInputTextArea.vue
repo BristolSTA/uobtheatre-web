@@ -3,6 +3,7 @@
     <textarea
       class="w-full text-black"
       :value="props.modelValue || ''"
+      :placeholder="props.placeholder"
       @input="
         emit('update:modelValue', ($event.target as HTMLInputElement).value)
       "
@@ -12,6 +13,7 @@
 <script lang="ts" setup>
 const props = defineProps<{
   modelValue?: string;
+  placeholder?: string;
 }>();
 
 const emit = defineEmits<{

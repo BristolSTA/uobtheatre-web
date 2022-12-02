@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="text-black">
     <select
       v-model="value"
       class="text-black w-full"
       :disabled="props.disabled"
     >
-      <option v-if="props.placeholder" disabled selected>
+      <option v-if="props.placeholder" value="" disabled selected>
         {{ props.placeholder }}
       </option>
       <option
@@ -27,13 +27,15 @@ interface Option {
 
 interface Props {
   options: Option[];
-  modelValue: string;
-  disabled: boolean;
-  placeholder: string | undefined;
+  modelValue?: string | null;
+  disabled?: boolean;
+  placeholder?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  disabled: false
+  disabled: false,
+  placeholder: undefined,
+  modelValue: undefined
 });
 
 const emit = defineEmits<{

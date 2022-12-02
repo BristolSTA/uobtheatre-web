@@ -7,12 +7,7 @@
       </UiStaButton>
     </template>
     <UiNonFieldError :errors="errors" />
-    <production-editor
-      ref="editor"
-      :production="production"
-      v-bind.sync="production"
-      :errors="errors"
-    />
+    <production-editor ref="editor" :production="production" :errors="errors" />
   </AdminPage>
 </template>
 
@@ -32,7 +27,8 @@ export default defineNuxtComponent({
       query: AdminProductionEditQuery,
       variables: {
         slug: useRoute().params.productionSlug
-      }
+      },
+      fetchPolicy: 'no-cache'
     });
 
     const production = data.production;
@@ -74,7 +70,9 @@ export default defineNuxtComponent({
           }
         });
         this.production = data.production;
-        this.$router.replace(`../${this.production.slug}`);
+        this.$router.replace(
+          `/administration/productions/${this.production.slug}`
+        );
         successToast.fire({ title: 'Production Updated' });
       } catch (e) {
         this.errors = getValidationErrors(e);

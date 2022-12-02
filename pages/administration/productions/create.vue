@@ -7,12 +7,7 @@
       </UiStaButton>
     </template>
     <UiNonFieldError :errors="errors" />
-    <production-editor
-      ref="editor"
-      :production="production"
-      v-bind.sync="production"
-      :errors="errors"
-    />
+    <production-editor ref="editor" :production="production" :errors="errors" />
     <div class="pt-4 flex items-center justify-center">
       <div class="rounded-lg bg-sta-gray-lighter p-3">
         NB: Performances can be created after you have started the draft
@@ -31,13 +26,11 @@ import { loadingSwal, successToast } from '~~/utils/alerts';
 import { ProductionMutationDocument } from '~~/graphql/codegen/operations';
 export default defineNuxtComponent({
   components: {
-    ProductionEditor,
-    AdminPage,
-    NonFieldError
+    ProductionEditor
   },
   data() {
     return {
-      production: null,
+      production: {},
       errors: null
     };
   },

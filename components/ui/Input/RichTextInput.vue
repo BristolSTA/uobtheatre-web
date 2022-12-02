@@ -7,14 +7,14 @@
         title="Bold"
         class="pl-3 rounded-tl-md"
         :editor="editor"
-        @click="$event.focus().toggleBold().run()"
+        @click="$event.toggleBold().run()"
       />
       <editor-button
         active-key="italic"
         icon="italic"
         title="Italic"
         :editor="editor"
-        @click="$event.focus().toggleItalic().run()"
+        @click="$event.toggleItalic().run()"
       />
       <div class="w-6 bg-white" />
       <editor-button
@@ -22,14 +22,14 @@
         icon="paragraph"
         title="Paragraph"
         :editor="editor"
-        @click="$event.focus().setParagraph().run()"
+        @click="$event.setParagraph().run()"
       />
       <editor-button
         :active-key="['heading', { level: 1 }]"
         title="Heading 1"
         class="font-bold"
         :editor="editor"
-        @click="$event.focus().toggleHeading({ level: 1 }).run()"
+        @click="$event.toggleHeading({ level: 1 }).run()"
       >
         H1
       </editor-button>
@@ -38,7 +38,7 @@
         title="Heading 2"
         class="font-bold"
         :editor="editor"
-        @click="$event.focus().toggleHeading({ level: 2 }).run()"
+        @click="$event.toggleHeading({ level: 2 }).run()"
       >
         H2
       </editor-button>
@@ -48,35 +48,35 @@
         icon="list-ul"
         title="Bullet List"
         :editor="editor"
-        @click="$event.focus().toggleBulletList().run()"
+        @click="$event.toggleBulletList().run()"
       />
       <editor-button
         active-key="orderedList"
         icon="list-ol"
         title="Numbered List"
         :editor="editor"
-        @click="$event.focus().toggleOrderedList().run()"
+        @click="$event.toggleOrderedList().run()"
       />
       <editor-button
         active-key="blockquote"
         icon="quote-right"
         title="Block Quote"
         :editor="editor"
-        @click="$event.focus().toggleBlockquote().run()"
+        @click="$event.toggleBlockquote().run()"
       />
       <div class="w-6 bg-white" />
       <editor-button
         icon="undo"
         title="Undo"
         :editor="editor"
-        @click="$event.focus().undo().run()"
+        @click="$event.undo().run()"
       />
       <editor-button
         icon="redo"
         title="Redo"
         class="mr-3 rounded-tr-md"
         :editor="editor"
-        @click="$event.focus().redo().run()"
+        @click="$event.redo().run()"
       />
     </div>
     <div class="p-2 border-2 border-white">
@@ -97,7 +97,7 @@ export default defineNuxtComponent({
   },
 
   props: {
-    value: {
+    modelValue: {
       type: String,
       default: ''
     }
@@ -110,7 +110,7 @@ export default defineNuxtComponent({
   },
 
   watch: {
-    value(value) {
+    modelValue(value) {
       const isSame = this.editor.getHTML() === value;
 
       if (isSame) {
@@ -132,7 +132,7 @@ export default defineNuxtComponent({
       },
       onUpdate: () => {
         // HTML
-        this.$emit('input', this.editor.getHTML());
+        this.$emit('update:modelValue', this.editor.getHTML());
       }
     });
   },

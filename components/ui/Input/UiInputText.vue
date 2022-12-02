@@ -35,8 +35,8 @@ export default defineNuxtComponent({
   inheritAttrs: false,
   props: {
     modelValue: {
-      required: true,
-      validator: () => true
+      required: false,
+      type: [String]
     },
     inputClass: {
       default: null,

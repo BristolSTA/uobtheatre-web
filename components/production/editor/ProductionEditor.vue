@@ -5,19 +5,14 @@
         <form-label :errors="errors" name="name" :required="true">
           Name
           <template #control>
-            <UiInputText
-              :value="name"
-              placeholder="e.g. My Show"
-              @input="$emit('update:name', $event)"
-            />
+            <UiInputText v-model="production.name" placeholder="e.g. My Show" />
           </template>
         </form-label>
         <p v-if="computedSlug">
           <template v-if="!changingSlug">
             Your production will be at
             {{
-              $router.resolve({ path: `/productions/${computedSlug}` }).route
-                .fullPath
+              $router.resolve({ path: `/productions/${computedSlug}` }).fullPath
             }}
             <UiStaButton
               class="text-sm bg-sta-orange hover:bg-sta-orange-dark transition-colors"
@@ -36,15 +31,15 @@
               <form-label class="flex-grow">
                 Slug
                 <UiInputText
-                  :value="manualSlug"
-                  @input="manualSlug = kebabCase($event)"
+                  :model-value="manualSlug"
+                  @update:model-value="manualSlug = kebabCase($event)"
                 />
               </form-label>
               <UiStaButton
                 class="bg-sta-green hover:bg-sta-green-dark transition-colors lg:mx-8 mx-4 mt-6"
                 @click="
                   () => {
-                    $emit('update:slug', manualSlug);
+                    production.slug = maualSlug;
                     changingSlug = false;
                   }
                 "
@@ -58,18 +53,14 @@
         </p>
         <form-label :errors="errors" name="subtitle">
           Subtitle
-          <UiInputText
-            :value="subtitle"
-            @input="$emit('update:subtitle', $event)"
-          />
+          <template #control>
+            <UiInputText v-model="production.subtitle" />
+          </template>
         </form-label>
         <form-label :errors="errors" name="contactEmail" :required="true">
           Contact Email Address
           <template #control>
-            <UiInputText
-              :value="contactEmail"
-              @input="$emit('update:contactEmail', $event)"
-            />
+            <UiInputText v-model="production.contactEmail" />
           </template>
           <template #helper>
             This email will be shown to people equiring about accessibility and
@@ -79,10 +70,7 @@
         <form-label :errors="errors" name="description" :required="true">
           Description
           <template #control>
-            <rich-text-input
-              :value="description"
-              @input="$emit('update:description', $event)"
-            />
+            <rich-text-input v-model="production.description" />
           </template>
         </form-label>
         <form-label :errors="errors" name="warnings">
@@ -91,7 +79,7 @@
             <div>
               <table class="w-full">
                 <tr
-                  v-for="contentWarning in contentWarnings"
+                  v-for="contentWarning in production.contentWarnings"
                   :key="contentWarning.warning.id"
                 >
                   <th>
@@ -108,10 +96,9 @@
                     </p>
                   </th>
                   <td>
-                    <textarea
+                    <UiInputTextArea
                       v-model="contentWarning.information"
                       class="w-full text-black"
-                      type="text"
                       :placeholder="
                         contentWarning.information
                           ? contentWarning.information
@@ -144,11 +131,10 @@
           >
             Age Rating
             <UiInputText
-              :value="ageRating"
+              v-model="production.ageRating"
               type="number"
               min="4"
               max="18"
-              @input="$emit('update:ageRating', $event)"
               @keypress.stop="
                 if (!/^[0-9]$/i.test($event.key)) $event.preventDefault();
               "
@@ -156,39 +142,35 @@
           </form-label>
           <form-label class="flex-grow" :errors="errors" name="facebookEvent">
             Facebook Event Link
-            <UiInputText
-              :value="facebookEvent"
-              @input="$emit('update:facebookEvent', $event)"
-            />
+            <UiInputText v-model="production.facebookEvent" />
           </form-label>
         </div>
       </div>
     </UiCard>
     <UiCard title="Society">
-      <t-select
+      <UiInputSelect
         placeholder="Select a society"
         class="mb-4"
-        :value="society ? society.id : null"
+        :model-value="production.society?.id || ''"
         :options="
           availableSocieties.map((society) => ({
             value: society.id,
-            text: society.name
+            displayText: society.name
           }))
         "
-        @input="
-          $emit(
-            'update:society',
-            availableSocieties.find((society) => society.id === $event)
+        @update:model-value="
+          production.society = availableSocieties.find(
+            (society) => society.id === $event
           )
         "
       />
 
       <div
-        v-if="society"
+        v-if="production.society"
         class="flex items-center justify-center p-4 bg-sta-gray-dark rounded-lg space-x-8"
       >
-        <img :src="society.logo.url" style="max-width: 100px" />
-        <span class="text-xl font-semibold">{{ society.name }}</span>
+        <img :src="production.society.logo.url" style="max-width: 100px" />
+        <span class="text-xl font-semibold">{{ production.society.name }}</span>
       </div>
       <div v-else>
         <h4 class="font-bold text-lg">No Society Selected</h4>
@@ -206,11 +188,11 @@
             </template>
             <template #control>
               <image-input
-                :value="featuredImage ? featuredImage.url : null"
+                :model-value="production.featuredImage?.url"
                 :required-ratio="16 / 9"
                 :min-width="400"
                 :ratio-flexability="0.13"
-                @change="$emit('update:featuredImage', { file: $event })"
+                @change="production.featuredImage = { file: $event }"
               />
             </template>
           </form-label>
@@ -222,10 +204,10 @@
             </template>
             <template #control>
               <image-input
-                :value="posterImage ? posterImage.url : null"
+                :model-value="production.posterImage?.url"
                 :required-ratio="1 / Math.sqrt(2)"
                 :min-width="100"
-                @change="$emit('update:posterImage', { file: $event })"
+                @change="production.posterImag = { file: $event }"
               />
             </template>
           </form-label>
@@ -238,10 +220,10 @@
           </template>
           <template #control>
             <image-input
-              :value="coverImage ? coverImage.url : null"
+              :model-value="production.coverImage?.url"
               :required-ratio="3"
               :min-width="1200"
-              @change="$emit('update:coverImage', { file: $event })"
+              @change="production.coverImage = { file: $event }"
             />
           </template>
         </form-label>
@@ -271,66 +253,17 @@ export default defineNuxtComponent({
   components: {
     FormLabel,
     ImageInput,
-
     RichTextInput,
     ErrorHelper
   },
   props: {
-    id: {
-      type: String,
-      default: null
-    },
     errors: {
       type: Errors,
       default: null
     },
-    name: {
-      type: String,
-      default: null
-    },
-    subtitle: {
-      type: String,
-      default: null
-    },
-    contactEmail: {
-      type: String,
-      default: null
-    },
-    description: {
-      type: String,
-      default: null
-    },
-    contentWarnings: {
-      default: () => [],
-      type: Array
-    },
-    society: {
-      default: null,
-      type: Object
-    },
-    facebookEvent: {
-      default: null,
-      type: String
-    },
-    ageRating: {
-      default: null,
-      type: [Number, String]
-    },
-    coverImage: {
-      default: null,
-      type: Object
-    },
-    posterImage: {
-      default: null,
-      type: Object
-    },
-    featuredImage: {
-      default: null,
-      type: Object
-    },
-    slug: {
-      default: null,
-      type: String
+    production: {
+      type: Object,
+      required: true
     }
   },
   data() {
@@ -355,7 +288,7 @@ export default defineNuxtComponent({
   },
   computed: {
     computedSlug() {
-      return this.slug || kebabCase(this.name);
+      return this.production.slug || kebabCase(this.production.name);
     }
   },
   methods: {
@@ -367,7 +300,7 @@ export default defineNuxtComponent({
           this.availableWarnings
             .filter(
               (warning) =>
-                !this.contentWarnings
+                !this.production.contentWarnings
                   .map((cw) => cw.warning.id)
                   .includes(warning.id)
             )
@@ -410,21 +343,18 @@ export default defineNuxtComponent({
       );
     },
     updateWarnings(warning, include, information = null) {
-      return this.$emit(
-        'update:contentWarnings',
-        include
-          ? [...this.contentWarnings, { information, warning }]
-          : this.contentWarnings.filter(
-              (currentWarning) => currentWarning.warning.id !== warning.id
-            )
-      );
+      this.production.contentWarnings = include
+        ? [...this.production.contentWarnings, { information, warning }]
+        : this.production.contentWarnings.filter(
+            (currentWarning) => currentWarning.warning.id !== warning.id
+          );
     },
     async getInputData() {
       // Upload any new images
       const images = {
-        coverImage: this.coverImage,
-        featuredImage: this.featuredImage,
-        posterImage: this.posterImage
+        coverImage: this.production.coverImage,
+        featuredImage: this.production.featuredImage,
+        posterImage: this.production.posterImage
       };
 
       for (const [key, imageNode] of Object.entries(images)) {
@@ -435,7 +365,6 @@ export default defineNuxtComponent({
           images[key] = imageNode.id;
         } else if (imageNode.file) {
           const image = await imageUpload(
-            this,
             imageNode.file,
             key + `_${this.id ?? uuid()}.` + imageNode.file.name.split('.')[1]
           );
@@ -446,19 +375,19 @@ export default defineNuxtComponent({
       }
 
       const returnObject = {
-        id: this.id,
-        name: this.name,
-        slug: this.slug,
-        subtitle: this.subtitle,
-        description: this.description,
-        ageRating: this.ageRating,
-        facebookEvent: this.facebookEvent,
-        contactEmail: this.contactEmail,
-        contentWarnings: this.contentWarnings.map((cw) => ({
+        id: this.production.id,
+        name: this.production.name,
+        slug: this.production.slug,
+        subtitle: this.production.subtitle,
+        description: this.production.description,
+        ageRating: this.production.ageRating,
+        facebookEvent: this.production.facebookEvent,
+        contactEmail: this.production.contactEmail,
+        contentWarnings: (this.production.contentWarnings ?? []).map((cw) => ({
           id: cw.warning.id,
           information: cw.information
         })),
-        society: this.society?.id,
+        society: this.production.society?.id,
         ...images
       };
 

@@ -87,6 +87,7 @@ export default defineNuxtComponent({
       type: Number
     }
   },
+  emits: ['change'],
   data() {
     return {
       draggingOver: false,

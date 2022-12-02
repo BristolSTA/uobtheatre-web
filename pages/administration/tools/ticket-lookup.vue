@@ -85,7 +85,6 @@ import { AdminBookingLookupDocument } from '@/graphql/codegen/operations';
 export default defineNuxtComponent({
   components: {
     TicketScanner,
-    AdminPage,
 
     TableHeadItem,
     TableRowItem,
