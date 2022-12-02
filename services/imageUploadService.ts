@@ -10,7 +10,7 @@ export default async function (file: File, name: string | undefined) {
   formData.append('file', file, name);
   const result = await axios.post(endpoint, formData, {
     headers: {
-      'content-type': 'multipart/form-data',
+      'Content-Type': 'multipart/form-data',
       Authorization: `JWT ${token}`
     }
   });

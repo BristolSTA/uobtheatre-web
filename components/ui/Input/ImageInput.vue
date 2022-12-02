@@ -64,7 +64,7 @@ import { swal } from '@/utils/alerts';
 export default defineNuxtComponent({
   components: { ErrorHelper },
   props: {
-    value: {
+    modelValue: {
       default: null,
       type: [String]
     },
@@ -92,8 +92,8 @@ export default defineNuxtComponent({
     return {
       draggingOver: false,
 
-      file: this.value,
-      fileDataUrl: this.value,
+      file: this.modelValue,
+      fileDataUrl: this.modelValue,
       error: null
     };
   },
