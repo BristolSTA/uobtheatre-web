@@ -163,7 +163,10 @@
               <concession-type
                 v-for="discount in singleDiscounts"
                 :key="discount.id"
-                v-bind.sync="discount.requirements[0].concessionType"
+                v-model:name="discount.requirements[0].concessionType.name"
+                v-model:description="
+                  discount.requirements[0].concessionType.description
+                "
                 :removable="true"
                 :editable="true"
                 @remove="deleteConcession(discount)"

@@ -30,9 +30,9 @@
         Name
         <template #control>
           <UiInputText
-            :value="name"
+            :model-value="name"
             placeholder="e.g. Student"
-            @input="$emit('update:name', $event)"
+            @update:model-value="$emit('update:name', $event)"
           />
         </template>
       </form-label>
@@ -40,9 +40,11 @@
         Description
         <template #control>
           <UiInputText
-            :value="description"
+            :model-value="description"
             placeholder="e.g. Valid ID card required"
-            @input="$emit('update:description', $event)"
+            @update:model-value="
+              $emit('update:description', $event.target.value)
+            "
           />
         </template>
       </form-label>
