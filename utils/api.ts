@@ -55,12 +55,6 @@ export const performMutation = (apollo, options, mutationName) => {
   });
 };
 
-// interface IMutationResult<TMutationIndex extends string> {
-//   [k in TMutationIndex]: {
-//     success: boolean;
-//   };
-// }
-
 export const doMutation = async <TResult>(
   mutationFunctionReturn: UseMutationReturn<TResult, any>,
   mutationPrimaryIndex: string
