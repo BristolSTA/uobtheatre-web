@@ -4,19 +4,15 @@
       <div><UiInputText v-model="bookingsSearch" placeholder="Search" /></div>
       <div>
         <label>Status</label
-        ><t-select
+        ><UiInputSelect
           v-model="bookingsStatus"
           :options="[
-            { text: 'All', value: null },
-            { text: 'In Progress', value: 'IN_PROGRESS' },
-            { text: 'Paid', value: 'PAID' }
+            { displayText: 'All', value: null },
+            { displayText: 'In Progress', value: 'IN_PROGRESS' },
+            { displayText: 'Paid', value: 'PAID' }
           ]"
         />
       </div>
-      <!-- <div>
-        <label>Date</label>
-        <t-datepicker :clearable="false" class="text-black" />
-      </div> -->
     </div>
     <UiCard class="mt-4">
       <paginated-table

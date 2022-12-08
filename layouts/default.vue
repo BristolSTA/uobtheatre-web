@@ -22,22 +22,5 @@ const crumbs = computed(() => {
   }
 
   return [];
-  // return pageComponent.$children[0].crumbs;
 });
-
-// const getCrumbs = () => {
-//   crumbs.run();
-//   this.$forceUpdate();
-// };
-
-// // Watch route for change. If it changes, we'll reset the breadcrumbs
-// const route = useRoute();
-// watch(route, () => {
-//   const timer = setInterval(() => {
-//     if (pageComponent.$children.length > 0) {
-//       getCrumbs();
-//       clearInterval(timer);
-//     }
-//   }, 100);
-// });
 </script>

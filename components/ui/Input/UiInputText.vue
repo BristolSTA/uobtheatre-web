@@ -6,7 +6,7 @@
     <input
       :id="inputId"
       ref="input"
-      class="p-1 w-full text-black rounded-sm focus:outline-none"
+      class="px-2 py-2 w-full text-black rounded-sm focus:outline-none rounded"
       v-bind="$attrs"
       :class="inputClass"
       :name="inputId"

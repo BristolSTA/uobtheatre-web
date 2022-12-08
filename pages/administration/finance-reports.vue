@@ -17,28 +17,22 @@
           <form-label field-name="startTime">
             Start Time
             <template #control>
-              <t-datepicker
+              <VueDatepicker
                 v-model="start"
-                :timepicker="true"
-                user-format="Y-m-d H:i:S"
-                date-format="Y-m-dTH:i:S"
-                class="text-black"
+                format="dd/MM/yyyy HH:mm"
                 :required="true"
-                :initial-time="'00:00:00'"
+                :start-time="{ hours: 0, minutes: 0, seconds: 0 }"
               />
             </template>
           </form-label>
           <form-label field-name="endTime">
             End Time
             <template #control>
-              <t-datepicker
+              <VueDatepicker
                 v-model="end"
-                :timepicker="true"
-                class="text-black"
-                user-format="Y-m-d H:i:S"
-                date-format="Y-m-dTH:i:S"
+                format="dd/MM/yyyy HH:mm"
                 :required="true"
-                :initial-time="'00:00:00'"
+                :start-time="{ hours: 0, minutes: 0, seconds: 0 }"
               />
             </template>
           </form-label>
@@ -68,8 +62,9 @@ import FormLabel from '@/components/ui/FormLabel.vue';
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 import { GenerateReportDocument } from '~~/graphql/codegen/operations';
+import VueDatepicker from '@vuepic/vue-datepicker';
 export default defineNuxtComponent({
-  components: { AllErrorsDisplay, FormLabel, LoadingContainer },
+  components: { AllErrorsDisplay, FormLabel, LoadingContainer, VueDatepicker },
   data() {
     return {
       errors: null,

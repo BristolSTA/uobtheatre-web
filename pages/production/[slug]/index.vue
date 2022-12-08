@@ -111,6 +111,11 @@ export default defineNuxtComponent({
       production: null
     };
   },
+  meta() {
+    return {
+      breadcrumb: 'test'
+    };
+  },
   computed: {
     route() {
       return this.$route;

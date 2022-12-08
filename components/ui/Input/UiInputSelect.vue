@@ -2,7 +2,7 @@
   <div class="text-black">
     <select
       v-model="value"
-      class="text-black w-full"
+      class="text-black w-full rounded"
       :disabled="props.disabled"
     >
       <option v-if="props.placeholder" value="" disabled selected>
@@ -22,7 +22,7 @@
 <script setup lang="ts">
 interface Option {
   displayText: string;
-  value: string;
+  value: string | null;
 }
 
 interface Props {

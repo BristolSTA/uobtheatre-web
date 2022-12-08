@@ -3,13 +3,14 @@
     <template #toolbar>
       <UiStaButton
         class="bg-sta-green hover:bg-sta-green-dark transition-colors"
-        to="productions/create"
+        to="/administration/productions/create"
       >
         Start New Draft
       </UiStaButton>
     </template>
     <div class="flex flex-wrap gap-3 items-end md:flex-nowrap">
       <div>
+        <label>Name</label>
         <UiInputText
           v-model="productionSearchFilter"
           placeholder="Search by name"
@@ -30,7 +31,11 @@
       </div>
       <div>
         <label>Run Date</label>
-        <t-datepicker v-model="productionsRunDateFilter" class="text-black" />
+        <VueDatepicker
+          v-model="productionsRunDateFilter"
+          :enable-time-picker="false"
+          format="dd/MM/yyyy"
+        />
       </div>
     </div>
     <UiCard class="mt-6">
@@ -88,27 +93,40 @@ import {
   AdminProductionsQueryVariables
 } from '@/graphql/codegen/operations';
 import { displayStartEnd } from '~~/utils/datetime';
+import VueDatepicker from '@vuepic/vue-datepicker';
+import { DateTime } from 'luxon';
 
 const productionsOffset = ref(0);
-const productionsStatusFilter = ref(null);
-const productionsRunDateFilter = ref(null);
-const productionSearchFilter = ref(null);
+const productionsStatusFilter = ref<string | null>(null);
+const productionsRunDateFilter = ref<Date | null>(null);
+const productionSearchFilter = ref<string | null>(null);
 
 useHead({
   title: 'Your Productions'
 });
 
-const { result: queryResult, loading } = useAdminProductionsQuery({
-  offset: productionsOffset.value,
-  status: productionsStatusFilter.value,
-  startLte: productionsRunDateFilter.value
-    ? productionsRunDateFilter.value + 'T23:59:59'
-    : null,
-  endGte: productionsRunDateFilter.value
-    ? productionsRunDateFilter.value + 'T00:00:00'
-    : null,
-  search: productionSearchFilter.value
-} as AdminProductionsQueryVariables);
+const { result: queryResult, loading } = useAdminProductionsQuery(
+  () =>
+    ({
+      offset: productionsOffset.value,
+      status: productionsStatusFilter.value,
+      startLte: productionsRunDateFilter.value
+        ? DateTime.fromJSDate(productionsRunDateFilter.value).set({
+            hour: 0,
+            minute: 0,
+            second: 0
+          })
+        : null,
+      endGte: productionsRunDateFilter.value
+        ? DateTime.fromJSDate(productionsRunDateFilter.value).set({
+            hour: 23,
+            minute: 59,
+            second: 59
+          })
+        : null,
+      search: productionSearchFilter.value
+    } as AdminProductionsQueryVariables)
+);
 
 const productionsData = computed(() => queryResult.value?.productions);
 </script>

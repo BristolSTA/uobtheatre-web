@@ -12,7 +12,7 @@
         v-if="canEditRightNow"
         colour="orange"
         icon="edit"
-        :to="`${production.slug}/edit`"
+        :to="`/administration/productions/${production.slug}/edit`"
       >
         Edit
       </UiStaButton>
@@ -84,7 +84,7 @@
           <div class="flex items-center">
             <NuxtLink
               class="hover:text-gray-300"
-              :to="`${production.slug}/performances/create`"
+              :to="`/administration/productions/${production.slug}/performances/create`"
             >
               <font-awesome-icon icon="plus-circle" class="fa-2x" />
             </NuxtLink>
@@ -212,8 +212,8 @@ export default defineNuxtComponent({
       fetchPolicy: 'no-cache'
     });
 
-    const production = data.value.production;
-    if (!production) {
+    const production = computed(() => data.value.production);
+    if (!production.value) {
       throw createError({
         statusCode: 404,
         message: 'This production does not exist'
@@ -388,7 +388,7 @@ export default defineNuxtComponent({
         });
         return;
       }
-      await this.$nuxt.refresh();
+      await refreshNuxtData();
       successToast.fire({ title: 'Status updated' });
     }
   }

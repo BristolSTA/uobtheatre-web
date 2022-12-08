@@ -1,3 +1,4 @@
+import { UseMutationReturn } from '@vue/apollo-composable';
 import Errors from '~~/classes/Errors';
 import ValidationError from '~~/errors/ValidationError';
 // TODO: Type all the things
@@ -52,4 +53,32 @@ export const performMutation = (apollo, options, mutationName) => {
         reject(e);
       });
   });
+};
+
+// interface IMutationResult<TMutationIndex extends string> {
+//   [k in TMutationIndex]: {
+//     success: boolean;
+//   };
+// }
+
+export const doMutation = async <TResult>(
+  mutationFunctionReturn: UseMutationReturn<TResult, any>,
+  mutationPrimaryIndex: string
+): Promise<TResult> => {
+  const response = await mutationFunctionReturn.mutate();
+  if (!response || !response.data)
+    throw new ValidationError(
+      Errors.createFromMessage('An unknown error occured')
+    );
+  const data = response.data;
+
+  // Check it was successful
+  // @ts-ignore
+  if (!data?.[mutationPrimaryIndex]?.success) {
+    throw new ValidationError( // @ts-ignore
+      Errors.createFromAPI(data?.[mutationPrimaryIndex]?.errors)
+    );
+  }
+
+  return data;
 };

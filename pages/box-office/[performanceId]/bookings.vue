@@ -32,12 +32,12 @@
 
             <div>
               <label>Filter</label
-              ><t-select
+              ><UiInputSelect
                 v-model="bookingFilter"
                 :options="[
-                  { value: null, text: 'All' },
-                  { value: 'COMPS', text: 'Comps Only' },
-                  { value: 'NOCHECKIN', text: 'Not Checked In' }
+                  { value: null, displayText: 'All' },
+                  { value: 'COMPS', displayText: 'Comps Only' },
+                  { value: 'NOCHECKIN', displayText: 'Not Checked In' }
                 ]"
               />
             </div>

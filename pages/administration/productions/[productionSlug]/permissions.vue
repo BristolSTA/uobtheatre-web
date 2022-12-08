@@ -2,7 +2,7 @@
   <AdminPage title="Edit Permissions">
     <template #toolbar>
       <UiStaButton
-        v-if="production.assignedUsers.length"
+        v-if="production?.assignedUsers?.length"
         class="bg-sta-green hover:bg-sta-green-dark transition-colors"
         icon="save"
         @click="savePermissions"
@@ -12,118 +12,125 @@
     </template>
     <all-errors-display :errors="errors" />
     <permissions-assigner
-      :assignable-permissions="production.assignablePermissions"
-      :assigned-users="production.assignedUsers"
+      :assignable-permissions="production.assignablePermissions ?? []"
+      :assigned-users="production.assignedUsers ?? []"
       @add="addUserPermissions"
       @remove="removeUserPermissions"
     />
   </AdminPage>
 </template>
 
-<script>
+<script lang="ts" setup>
 import Swal from 'sweetalert2';
 
 import PermissionsAssigner from '@/components/admin/permissions/PermissionsAssigner.vue';
-import { getValidationErrors, performMutation } from '~~/utils/api';
+import { getValidationErrors } from '~~/utils/api';
 import { loadingSwal, successToast } from '~~/utils/alerts';
 import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue';
 import {
   AdminProductionPermissionsDocument,
-  ProductionPermissionsMutationsDocument
+  AdminProductionPermissionsQuery,
+  AdminProductionPermissionsQueryVariables,
+  useProductionPermissionsMutationsMutation
 } from '~~/graphql/codegen/operations';
-export default defineNuxtComponent({
-  components: { PermissionsAssigner, AllErrorsDisplay },
-  async asyncData() {
-    // Execute query
-    const { data } = await useDefaultApolloClient().query({
-      query: AdminProductionPermissionsDocument,
-      variables: {
-        slug: useRoute().params.productionSlug
-      },
-      fetchPolicy: 'no-cache'
-    });
+import Errors from '~~/classes/Errors';
 
-    const production = data.production;
-    if (!production) {
-      throw createError({
-        statusCode: 404,
-        message: 'This production does not exist'
-      });
-    }
-    if (production.assignedUsers === null) {
-      throw createError({
-        statusCode: 401,
-        message: 'You do not have permission to alter permissions'
-      });
-    }
-    return {
-      production
-    };
-  },
-  data() {
-    return {
-      production: null,
-      errors: null
-    };
-  },
-  methods: {
-    async savePermissions() {
-      const changedUsers = this.production.assignedUsers.filter(
-        (user) => user.modified
-      );
-      const mutations = changedUsers.map((assignedUser) => {
-        return this.setUserPermissions(
-          assignedUser.user.email,
-          assignedUser.assignedPermissions
-        );
-      });
-
-      await Promise.all(mutations);
-
-      if (!this.errors) {
-        successToast.fire({ title: 'Users updated succesfully' });
-        this.$nuxt.refresh();
-      }
-    },
-    async addUserPermissions(newUser) {
-      loadingSwal.fire();
-      if (
-        !(await this.setUserPermissions(newUser.email, newUser.permissions))
-      ) {
-        return Swal.close();
-      }
-      successToast.fire({ title: 'User has been added' });
-      this.$nuxt.refresh();
-    },
-    async removeUserPermissions(assignedUser) {
-      loadingSwal.fire();
-      if (!(await this.setUserPermissions(assignedUser.user.email, []))) {
-        return Swal.close();
-      }
-      successToast.fire({ title: 'User has been removed' });
-      this.$nuxt.refresh();
-    },
-    async setUserPermissions(email, permissions) {
-      this.errors = null;
-      try {
-        await performMutation(
-          this.$apollo,
-          {
-            mutation: ProductionPermissionsMutationsDocument,
-            variables: {
-              productionId: this.production.id,
-              userEmail: email,
-              permissions
-            }
-          },
-          'productionPermissions'
-        );
-        return true;
-      } catch (e) {
-        this.errors = getValidationErrors(e);
-        return false;
-      }
-    }
-  }
+const { data, refresh } = await useAsyncQuery<AdminProductionPermissionsQuery>({
+  query: AdminProductionPermissionsDocument,
+  variables: {
+    slug: useRoute().params.productionSlug
+  } as AdminProductionPermissionsQueryVariables,
+  cache: false
 });
+
+const production = computed(() => data.value?.production);
+
+if (!production.value) {
+  throw createError({
+    statusCode: 404,
+    message: 'This production does not exist',
+    fatal: true
+  });
+}
+if (production?.value.assignedUsers === null) {
+  throw createError({
+    statusCode: 401,
+    message: 'You do not have permission to alter permissions',
+    fatal: true
+  });
+}
+
+const errors = ref<Errors | null>(null);
+
+async function savePermissions() {
+  const changedUsers = production.value?.assignedUsers
+    ? production.value.assignedUsers.filter((user: any) => user?.modified)
+    : [];
+
+  const mutations: (boolean | Promise<boolean>)[] = changedUsers.map(
+    (assignedUser) => {
+      if (!assignedUser?.user) return false;
+      return setUserPermissions(
+        assignedUser.user.email,
+        (assignedUser.assignedPermissions?.filter(
+          (perm) => perm !== null
+        ) as string[]) ?? []
+      );
+    }
+  );
+
+  await Promise.all(mutations);
+
+  if (!errors) {
+    successToast.fire({ title: 'Users updated succesfully' });
+    refresh();
+  }
+}
+
+interface IPermissionUser {
+  email: string;
+  permissions: string[];
+}
+
+async function addUserPermissions(newUser: IPermissionUser) {
+  loadingSwal.fire();
+  if (!(await setUserPermissions(newUser.email, newUser.permissions))) {
+    return Swal.close();
+  }
+  successToast.fire({ title: 'User has been added' });
+  refresh();
+}
+
+async function removeUserPermissions(assignedUser: { user: IPermissionUser }) {
+  loadingSwal.fire();
+  if (!(await setUserPermissions(assignedUser.user.email, []))) {
+    return Swal.close();
+  }
+  successToast.fire({ title: 'User has been removed' });
+  refresh();
+}
+
+async function setUserPermissions(
+  email: string,
+  permissions: string[]
+): Promise<boolean> {
+  errors.value = null;
+  if (!production) return false;
+  try {
+    await doMutation(
+      useProductionPermissionsMutationsMutation({
+        variables: {
+          productionId: production.value?.id,
+          userEmail: email,
+          permissions
+        }
+      }),
+      'productionPermissions'
+    );
+  } catch (e) {
+    errors.value = getValidationErrors(e);
+    return false;
+  }
+  return true;
+}
 </script>
