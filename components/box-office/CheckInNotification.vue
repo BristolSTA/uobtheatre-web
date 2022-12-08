@@ -124,8 +124,6 @@
 </template>
 
 <script>
-import AudioPositive from '@/assets/audio/beep_positive.mp3';
-import AudioNegative from '@/assets/audio/beep_negative.mp3';
 import Booking from '@/classes/Booking';
 export default defineNuxtComponent({
   props: {
@@ -156,7 +154,9 @@ export default defineNuxtComponent({
     }
   },
   mounted() {
-    new Audio(this.errors ? AudioNegative : AudioPositive).play();
+    new Audio(
+      this.errors ? '/audio/beep_negative.mp3' : '/audio/beep_positive.mp3'
+    ).play();
   }
 });
 </script>

@@ -33,7 +33,6 @@
 <script>
 import { QrcodeStream } from 'vue-qrcode-reader';
 import LoadingIcon from '../ui/UiLoadingIcon.vue';
-import AudioSingle from '@/assets/audio/beep_single.mp3';
 import Ticket from '@/classes/Ticket';
 export default defineNuxtComponent({
   components: { QrcodeStream, LoadingIcon },
@@ -98,7 +97,7 @@ export default defineNuxtComponent({
       }
     },
     onDecode(string) {
-      new Audio(AudioSingle).play();
+      new Audio('/audio/beep_single.mp3').play();
 
       try {
         const ticketData = Ticket.dataFromQRCode(string);
