@@ -1,15 +1,15 @@
 import Swal from 'sweetalert2';
-import tailwindConfig from '#tailwind-config';
+// import tailwindConfig from '#tailwind-config';
 
 export const swal = Swal.mixin({
-  background: tailwindConfig.theme.colors['sta-gray'].DEFAULT,
+  // background: tailwindConfig.theme.colors['sta-gray'].DEFAULT,
   customClass: {
     title: 'text-white',
     htmlContainer: 'text-white',
     input: 'bg-white'
-  },
-  confirmButtonColor: tailwindConfig.theme.colors['sta-orange'].DEFAULT,
-  denyButtonColor: tailwindConfig.theme.colors['sta-rouge'].DEFAULT
+  }
+  // confirmButtonColor: tailwindConfig.theme.colors['sta-orange'].DEFAULT,
+  // denyButtonColor: tailwindConfig.theme.colors['sta-rouge'].DEFAULT
 });
 export const swalToast = swal.mixin({
   toast: true,
