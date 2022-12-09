@@ -25,6 +25,9 @@ export default defineConfig({
   plugins: [vue()],
   test: {
     globals: true,
-    environment: 'jsdom'
+    environment: 'jsdom',
+    deps: {
+      inline: [/@nuxt\/test-utils-edge/]
+    }
   }
 });

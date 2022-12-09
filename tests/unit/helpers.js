@@ -1,5 +1,5 @@
 import { mount, RouterLinkStub } from '@vue/test-utils';
-import { expect } from 'chai';
+import { expect, vi } from 'vitest';
 import config from '~~/config.public';
 import { createTestingPinia } from '@pinia/testing';
 
@@ -31,7 +31,7 @@ const mountWithRouterMock = async function (
 ) {
   contextOptions = Object.assign(
     {
-      error: jest.fn(),
+      error: vi.fn(),
       app: {
         apolloProvider: {
           defaultClient: mountOptions.mocks ? mountOptions.mocks.$apollo : null
@@ -114,7 +114,7 @@ const generateApolloMock = function (options) {
       handledQueries: () => queryCalls.length,
       handledMutations: () => mutationCalls.length
     },
-    query: jest.fn((options) => {
+    query: vi.fn((options) => {
       queryCalls.push(options);
       if (queryCallstack[queryCalls.length - 1]) {
         return Promise.resolve(queryCallstack[queryCalls.length - 1]);
@@ -129,7 +129,7 @@ const generateApolloMock = function (options) {
       );
       return Promise.resolve();
     }),
-    mutate: jest.fn(() => {
+    mutate: vi.fn(() => {
       mutationCalls.push(options);
       if (mutationCallstack[mutationCalls.length - 1]) {
         return Promise.resolve(mutationCallstack[mutationCalls.length - 1]);

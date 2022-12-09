@@ -1,6 +1,14 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 import publicConfig from './config.public';
 // import eslintPlugin from 'vite-plugin-eslint';
+
+const cssFiles = [
+  '@fortawesome/fontawesome-svg-core/styles.css',
+  'leaflet/dist/leaflet.css'
+];
+
+if (process.env.MODE !== 'test') cssFiles.push('@/assets/styles/app.scss');
+
 export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss', '@nuxtjs/apollo', '@pinia/nuxt'],
 
@@ -56,11 +64,7 @@ export default defineNuxtConfig({
     }
   },
 
-  css: [
-    '@/assets/styles/app.scss',
-    '@fortawesome/fontawesome-svg-core/styles.css',
-    'leaflet/dist/leaflet.css'
-  ],
+  css: cssFiles,
 
   tailwindcss: {
     exposeConfig: true
