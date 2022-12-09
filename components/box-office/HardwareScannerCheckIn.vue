@@ -34,7 +34,7 @@ const checkedInDataState = () => {
     scanData: {}
   };
 };
-export default defineNuxtComponent({
+export default {
   components: {
     CheckInNotification,
     HardwareScanner
@@ -107,5 +107,5 @@ export default defineNuxtComponent({
       this.checkedInData = checkedInDataState();
     }
   }
-});
+};
 </script>

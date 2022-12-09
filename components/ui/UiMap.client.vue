@@ -17,5 +17,5 @@ onMounted(() => {
     leafletMapInstance.value = L.map(map.value);
     emit('initalised', leafletMapInstance);
   });
-});
+};
 </script>

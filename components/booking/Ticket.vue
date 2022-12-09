@@ -50,7 +50,7 @@ import QrcodeVue from 'qrcode.vue';
 import Ticket from '@/classes/Ticket';
 import { dateFormat } from '@/utils/datetime';
 
-export default defineNuxtComponent({
+export default {
   name: 'Ticket',
   components: {
     QrcodeVue
@@ -83,5 +83,5 @@ export default defineNuxtComponent({
         : null;
     }
   }
-});
+};
 </script>

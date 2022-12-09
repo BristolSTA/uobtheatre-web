@@ -23,7 +23,7 @@
 <script>
 import ProductionFeaturedImage from './ProductionFeaturedImage.vue';
 import { displayStartEnd } from '@/utils/datetime';
-export default defineNuxtComponent({
+export default {
   components: { ProductionFeaturedImage },
   props: {
     production: {
@@ -34,7 +34,7 @@ export default defineNuxtComponent({
   methods: {
     displayStartEnd
   }
-});
+};
 </script>
 
 <style scoped lang="postcss">

@@ -31,7 +31,7 @@
 
 <script>
 import startCase from 'lodash/startCase';
-export default defineNuxtComponent({
+export default {
   name: 'Breadcrumbs',
   props: {
     crumbs: {
@@ -71,5 +71,5 @@ export default defineNuxtComponent({
       return crumbs;
     }
   }
-});
+};
 </script>

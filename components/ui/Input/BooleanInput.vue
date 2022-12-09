@@ -15,7 +15,7 @@
 </template>
 
 <script>
-export default defineNuxtComponent({
+export default {
   props: {
     checked: {
       type: Boolean,
@@ -26,5 +26,5 @@ export default defineNuxtComponent({
       default: false
     }
   }
-});
+};
 </script>

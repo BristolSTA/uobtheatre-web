@@ -22,7 +22,7 @@
 </template>
 
 <script>
-export default defineNuxtComponent({
+export default {
   props: {
     title: {
       required: true,
@@ -41,5 +41,5 @@ export default defineNuxtComponent({
       type: [Object, String]
     }
   }
-});
+};
 </script>

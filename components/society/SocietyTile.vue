@@ -17,14 +17,14 @@
 </template>
 
 <script>
-export default defineNuxtComponent({
+export default {
   props: {
     society: {
       required: true,
       type: Object
     }
   }
-});
+};
 </script>
 
 <style scoped lang="postcss">

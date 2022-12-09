@@ -8,12 +8,12 @@
 </template>
 
 <script>
-export default defineNuxtComponent({
+export default {
   props: {
     name: {
       required: true,
       type: String
     }
   }
-});
+};
 </script>

@@ -161,5 +161,5 @@ const duration = computed(() => {
       60 *
       1000
   );
-});
+};
 </script>

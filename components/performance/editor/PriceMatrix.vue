@@ -106,7 +106,7 @@ import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
 import SafeTable from '@/components/ui/Tables/SafeTable.vue';
 import TableRow from '@/components/ui/Tables/TableRow.vue';
 import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
-export default defineNuxtComponent({
+export default {
   components: {
     FormLabel,
     Badge,
@@ -171,5 +171,5 @@ export default defineNuxtComponent({
       discountObject._percentageModified = true;
     }
   }
-});
+};
 </script>

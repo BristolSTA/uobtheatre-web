@@ -67,7 +67,7 @@ import LoadingIcon from '../ui/UiLoadingIcon.vue';
 import Booking from '@/classes/Booking';
 import TicketMatrix from '@/classes/TicketsMatrix';
 
-export default defineNuxtComponent({
+export default {
   components: { LoadingIcon },
   props: {
     booking: {
@@ -86,5 +86,5 @@ export default defineNuxtComponent({
   data() {
     return {};
   }
-});
+};
 </script>

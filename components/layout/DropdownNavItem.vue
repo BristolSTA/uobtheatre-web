@@ -34,7 +34,7 @@
 </template>
 
 <script>
-export default defineNuxtComponent({
+export default {
   data() {
     return {
       open: false
@@ -56,5 +56,5 @@ export default defineNuxtComponent({
       this.open = false;
     }
   }
-});
+};
 </script>

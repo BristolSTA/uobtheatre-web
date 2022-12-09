@@ -43,7 +43,7 @@ const checkedInDataState = () => {
   };
 };
 
-export default defineNuxtComponent({
+export default {
   components: {
     CheckInNotification,
     InvalidCodeNotification
@@ -121,5 +121,5 @@ export default defineNuxtComponent({
       this.checkedInData = checkedInDataState();
     }
   }
-});
+};
 </script>

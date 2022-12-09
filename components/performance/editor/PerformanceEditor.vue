@@ -283,7 +283,7 @@ import {
   VenuesDocument
 } from '@/graphql/codegen/operations';
 
-export default defineNuxtComponent({
+export default {
   components: {
     FormLabel,
     VueDatepicker,
@@ -743,5 +743,5 @@ export default defineNuxtComponent({
       this.deletedDiscounts.push(discount);
     }
   }
-});
+};
 </script>

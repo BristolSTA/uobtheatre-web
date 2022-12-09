@@ -38,5 +38,5 @@ const colours = computed<string>(() => {
     return 'bg-gray-600';
   }
   return 'bg-gray-500';
-});
+};
 </script>

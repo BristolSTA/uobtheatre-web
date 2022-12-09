@@ -62,7 +62,7 @@
 import lodash from 'lodash';
 
 import RoleGroup from './RoleGroup.vue';
-export default defineNuxtComponent({
+export default {
   name: 'ProductionCastAndCredits',
   components: {
     RoleGroup
@@ -95,7 +95,7 @@ export default defineNuxtComponent({
       return lodash.sortBy(this.production.cast, 'profilePicture');
     }
   }
-});
+};
 </script>
 
 <style lang="postcss" scoped>

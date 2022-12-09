@@ -37,7 +37,7 @@
 </template>
 
 <script>
-export default defineNuxtComponent({
+export default {
   props: {
     contentWarning: {
       required: true,
@@ -72,5 +72,5 @@ export default defineNuxtComponent({
       this.$emit('update:open', newVal);
     }
   }
-});
+};
 </script>

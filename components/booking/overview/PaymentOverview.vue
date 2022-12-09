@@ -46,7 +46,7 @@ import BookingStatusEnum from '~~/enums/PayableStatusEnum';
 import ProviderNameEnum from '~~/enums/TransactionProviderNameEnum';
 import { dateFormat } from '@/utils/datetime';
 
-export default defineNuxtComponent({
+export default {
   name: 'PaymentOverview',
   components: { OverviewBox },
   props: {
@@ -90,5 +90,5 @@ export default defineNuxtComponent({
       return newestDate ? DateTime.fromJSDate(newestDate) : null;
     }
   }
-});
+};
 </script>

@@ -90,7 +90,7 @@ import { Editor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
 import EditorButton from './EditorButton.vue';
 
-export default defineNuxtComponent({
+export default {
   components: {
     EditorContent,
     EditorButton
@@ -140,5 +140,5 @@ export default defineNuxtComponent({
   beforeUnmount() {
     this.editor.destroy();
   }
-});
+};
 </script>

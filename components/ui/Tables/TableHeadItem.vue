@@ -5,12 +5,12 @@
 </template>
 
 <script>
-export default defineNuxtComponent({
+export default {
   props: {
     textLeft: {
       default: true,
       type: Boolean
     }
   }
-});
+};
 </script>

@@ -57,7 +57,7 @@ const square = {
   methods: null
 };
 
-export default defineNuxtComponent({
+export default {
   components: { LoadingContainer },
   props: {
     useWallets: {
@@ -213,7 +213,7 @@ export default defineNuxtComponent({
       return this.pay(square.methods.applepay);
     }
   }
-});
+};
 </script>
 
 <style>

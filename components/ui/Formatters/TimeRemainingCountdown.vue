@@ -14,7 +14,7 @@
 <script>
 import { DateTime, Duration } from 'luxon';
 import humanizeDuration from 'humanize-duration';
-export default defineNuxtComponent({
+export default {
   props: {
     expiresAt: {
       required: true,
@@ -56,5 +56,5 @@ export default defineNuxtComponent({
       }
     }
   }
-});
+};
 </script>

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-export default defineNuxtComponent({
+export default {
   props: {
     performance: {
       required: true,
@@ -35,5 +35,5 @@ export default defineNuxtComponent({
       return 'Bookable';
     }
   }
-});
+};
 </script>

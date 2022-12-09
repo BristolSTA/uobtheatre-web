@@ -11,7 +11,7 @@
 </template>
 
 <script>
-export default defineNuxtComponent({
+export default {
   props: {
     percentage: {
       default: 0,
@@ -22,5 +22,5 @@ export default defineNuxtComponent({
       type: Number
     }
   }
-});
+};
 </script>

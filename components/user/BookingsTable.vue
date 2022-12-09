@@ -44,7 +44,7 @@
 
 <script>
 import { dateFormat } from '@/utils/datetime';
-export default defineNuxtComponent({
+export default {
   name: 'BookingsTable',
   props: {
     bookings: {
@@ -59,5 +59,5 @@ export default defineNuxtComponent({
   methods: {
     dateFormat
   }
-});
+};
 </script>

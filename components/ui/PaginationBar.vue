@@ -75,7 +75,7 @@
 </template>
 
 <script>
-export default defineNuxtComponent({
+export default {
   props: {
     disabled: {
       type: Boolean,
@@ -194,5 +194,5 @@ export default defineNuxtComponent({
       this.$emit('gotoPage', page);
     }
   }
-});
+};
 </script>

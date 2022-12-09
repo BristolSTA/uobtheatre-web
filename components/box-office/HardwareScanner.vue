@@ -29,7 +29,7 @@
 import TextInput from '../ui/Input/UiInputText.vue';
 import InvalidCodeNotification from './InvalidCodeNotification.vue';
 import Ticket from '@/classes/Ticket';
-export default defineNuxtComponent({
+export default {
   components: { TextInput, InvalidCodeNotification },
   props: {
     value: {
@@ -90,5 +90,5 @@ export default defineNuxtComponent({
       this.$refs.input.focus();
     }
   }
-});
+};
 </script>

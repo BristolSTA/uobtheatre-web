@@ -24,7 +24,7 @@
 </template>
 
 <script>
-export default defineNuxtComponent({
+export default {
   props: {
     value: {
       required: true,
@@ -39,5 +39,5 @@ export default defineNuxtComponent({
       type: Number
     }
   }
-});
+};
 </script>

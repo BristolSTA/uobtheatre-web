@@ -44,7 +44,7 @@ import TextInput from '../ui/Input/UiInputText.vue';
 import { getValidationErrors, performMutation } from '@/utils/api';
 import { swal } from '@/utils/alerts';
 import ErrorsPartial from '@/graphql/partials/ErrorsPartial';
-export default defineNuxtComponent({
+export default {
   components: {
     LoadingContainer,
     TextInput,
@@ -92,5 +92,5 @@ export default defineNuxtComponent({
       this.loading = false;
     }
   }
-});
+};
 </script>

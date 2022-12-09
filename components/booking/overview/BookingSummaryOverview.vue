@@ -30,7 +30,7 @@ import OverviewBox from '../../ui/Card.vue';
 import Booking from '@/classes/Booking';
 import { dateFormat } from '@/utils/datetime';
 
-export default defineNuxtComponent({
+export default {
   name: 'BookingSumamryOverview',
   components: { OverviewBox },
   props: {
@@ -42,5 +42,5 @@ export default defineNuxtComponent({
   methods: {
     dateFormat
   }
-});
+};
 </script>

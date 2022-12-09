@@ -22,7 +22,7 @@ const levelMap = {
     background: 'bg-sta-rouge text-white'
   }
 };
-export default defineNuxtComponent({
+export default {
   props: {
     level: {
       type: String,
@@ -38,5 +38,5 @@ export default defineNuxtComponent({
       return levelMap[this.level] || {};
     }
   }
-});
+};
 </script>

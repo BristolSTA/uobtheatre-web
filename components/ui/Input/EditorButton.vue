@@ -14,7 +14,7 @@
 </template>
 
 <script>
-export default defineNuxtComponent({
+export default {
   props: {
     editor: {
       required: true,
@@ -41,5 +41,5 @@ export default defineNuxtComponent({
       return this.editor.isActive(this.activeKey);
     }
   }
-});
+};
 </script>

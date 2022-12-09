@@ -23,7 +23,7 @@
 
 <script>
 import QrcodeVue from 'qrcode.vue';
-export default defineNuxtComponent({
+export default {
   components: { QrcodeVue }
-});
+};
 </script>

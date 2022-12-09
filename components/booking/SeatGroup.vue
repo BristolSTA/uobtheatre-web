@@ -113,7 +113,7 @@ import lo from 'lodash';
 import ConcessionType from '@/components/booking/ConcessionType.vue';
 import GroupTicketButton from '@/components/booking/GroupTicketButton.vue';
 
-export default defineNuxtComponent({
+export default {
   name: 'SeatGroup',
   components: { ConcessionType, GroupTicketButton },
   props: {
@@ -179,5 +179,5 @@ export default defineNuxtComponent({
       }
     }
   }
-});
+};
 </script>

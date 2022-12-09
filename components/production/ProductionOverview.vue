@@ -87,7 +87,7 @@ import ContentWarningsDisplay from './content-warnings/ContentWarningsDisplay.vu
 import ProductionPosterImage from './ProductionPosterImage.vue';
 import TipTapOutput from '@/components/ui/TipTapOutput.vue';
 import IconListItem from '@/components/ui/IconListItem.vue';
-export default defineNuxtComponent({
+export default {
   components: {
     IconListItem,
     TipTapOutput,
@@ -127,5 +127,5 @@ export default defineNuxtComponent({
       );
     }
   }
-});
+};
 </script>

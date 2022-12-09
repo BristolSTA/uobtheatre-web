@@ -36,7 +36,7 @@
 import { DateTime } from 'luxon';
 import TimeGroupedPerformanceSelector from '@/components/performance/TimeGroupedPerformanceSelector.vue';
 
-export default defineNuxtComponent({
+export default {
   name: 'ProductionPerformances',
   components: {
     TimeGroupedPerformanceSelector
@@ -52,5 +52,5 @@ export default defineNuxtComponent({
       return DateTime.now() > DateTime.fromISO(this.production.end);
     }
   }
-});
+};
 </script>

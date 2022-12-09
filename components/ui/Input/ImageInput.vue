@@ -61,7 +61,7 @@
 <script>
 import ErrorHelper from '../ErrorHelper.vue';
 import { swal } from '@/utils/alerts';
-export default defineNuxtComponent({
+export default {
   components: { ErrorHelper },
   props: {
     modelValue: {
@@ -185,5 +185,5 @@ export default defineNuxtComponent({
       this.draggingOver = false;
     }
   }
-});
+};
 </script>

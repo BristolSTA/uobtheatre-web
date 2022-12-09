@@ -9,7 +9,7 @@
 
 <script>
 import Errors from '@/classes/Errors';
-export default defineNuxtComponent({
+export default {
   props: {
     errors: {
       required: false,
@@ -21,5 +21,5 @@ export default defineNuxtComponent({
       type: String
     }
   }
-});
+};
 </script>

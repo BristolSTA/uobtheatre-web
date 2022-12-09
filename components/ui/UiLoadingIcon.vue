@@ -7,12 +7,12 @@
 </template>
 
 <script>
-export default defineNuxtComponent({
+export default {
   props: {
     sizeClass: {
       type: String,
       default: 'fa-2x'
     }
   }
-});
+};
 </script>

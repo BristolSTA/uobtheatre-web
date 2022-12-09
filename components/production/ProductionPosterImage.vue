@@ -5,7 +5,7 @@
 <script>
 import PlaceholderImage from '@/assets/images/placeholder-poster-image.png';
 
-export default defineNuxtComponent({
+export default {
   props: {
     imageObject: {
       required: true,
@@ -17,5 +17,5 @@ export default defineNuxtComponent({
       return this.imageObject ? this.imageObject.url : PlaceholderImage;
     }
   }
-});
+};
 </script>

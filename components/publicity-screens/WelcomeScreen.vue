@@ -12,7 +12,7 @@
 
 <script>
 import ProductionFeaturedImage from '../production/ProductionFeaturedImage.vue';
-export default defineNuxtComponent({
+export default {
   components: { ProductionFeaturedImage },
   props: {
     performance: {
@@ -24,5 +24,5 @@ export default defineNuxtComponent({
       type: Object
     }
   }
-});
+};
 </script>

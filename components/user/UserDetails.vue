@@ -121,7 +121,7 @@ import TextInput from '~~/components/ui/Input/UiInputText.vue';
 import { swalToast } from '@/utils/alerts';
 import { performMutation, getValidationErrors } from '@/utils/api';
 import ErrorsPartial from '@/graphql/partials/ErrorsPartial';
-export default defineNuxtComponent({
+export default {
   name: 'UserDetails',
   components: {
     TextInput,
@@ -187,5 +187,5 @@ export default defineNuxtComponent({
       this.loading = false;
     }
   }
-});
+};
 </script>

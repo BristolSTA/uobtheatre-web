@@ -62,7 +62,7 @@
 </template>
 
 <script>
-export default defineNuxtComponent({
+export default {
   name: 'ConcessionType',
   props: {
     concessionTypeEdge: {
@@ -97,5 +97,5 @@ export default defineNuxtComponent({
       this.$emit('remove-ticket');
     }
   }
-});
+};
 </script>

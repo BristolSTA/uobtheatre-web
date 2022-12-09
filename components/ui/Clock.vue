@@ -7,7 +7,7 @@ export function getZeroPad(n) {
   return (parseInt(n, 10) >= 10 ? '' : '0') + n;
 }
 
-export default defineNuxtComponent({
+export default {
   data() {
     return {
       timer: null,
@@ -32,5 +32,5 @@ export default defineNuxtComponent({
       this.$emit('time', now);
     }
   }
-});
+};
 </script>

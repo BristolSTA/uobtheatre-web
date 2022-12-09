@@ -116,7 +116,7 @@ import CheckInMutation from '@/graphql/mutations/box-office/CheckInTickets.gql';
 import UnCheckInMutation from '@/graphql/mutations/box-office/UnCheckInTickets.gql';
 import BoxOfficePerformanceBooking from '@/graphql/queries/box-office/BoxOfficePerformanceBooking.gql';
 
-export default defineNuxtComponent({
+export default {
   components: { LoadingIcon },
   props: {
     booking: {
@@ -219,5 +219,5 @@ export default defineNuxtComponent({
       this.editing = false;
     }
   }
-});
+};
 </script>

@@ -47,7 +47,7 @@ import lo from 'lodash';
 import OverviewBox from '../../ui/Card.vue';
 import Booking from '@/classes/Booking';
 
-export default defineNuxtComponent({
+export default {
   name: 'TicketsOverview',
   components: { OverviewBox },
   props: {
@@ -64,5 +64,5 @@ export default defineNuxtComponent({
       );
     }
   }
-});
+};
 </script>

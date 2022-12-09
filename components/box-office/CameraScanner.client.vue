@@ -34,7 +34,7 @@
 import { QrcodeStream } from 'vue-qrcode-reader';
 import LoadingIcon from '../ui/UiLoadingIcon.vue';
 import Ticket from '@/classes/Ticket';
-export default defineNuxtComponent({
+export default {
   components: { QrcodeStream, LoadingIcon },
   props: {
     on: {
@@ -116,5 +116,5 @@ export default defineNuxtComponent({
       }
     }
   }
-});
+};
 </script>

@@ -125,7 +125,7 @@
 
 <script>
 import Booking from '@/classes/Booking';
-export default defineNuxtComponent({
+export default {
   props: {
     alreadyCheckedIn: {
       type: Boolean,
@@ -158,5 +158,5 @@ export default defineNuxtComponent({
       this.errors ? '/audio/beep_negative.mp3' : '/audio/beep_positive.mp3'
     ).play();
   }
-});
+};
 </script>

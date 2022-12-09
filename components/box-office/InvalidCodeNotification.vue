@@ -18,9 +18,9 @@
 </template>
 
 <script>
-export default defineNuxtComponent({
+export default {
   mounted() {
     new Audio('/audio/beep_negative.mp3').play();
   }
-});
+};
 </script>

@@ -15,7 +15,7 @@
 
 <script>
 import LoadingIcon from './UiLoadingIcon.vue';
-export default defineNuxtComponent({
+export default {
   components: { LoadingIcon },
   props: {
     loading: {
@@ -36,5 +36,5 @@ export default defineNuxtComponent({
       return !this.loading || !this.hideContentWhenLoading;
     }
   }
-});
+};
 </script>

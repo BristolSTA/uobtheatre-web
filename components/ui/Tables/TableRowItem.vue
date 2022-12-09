@@ -5,5 +5,5 @@
 </template>
 
 <script>
-export default defineNuxtComponent({});
+export default {};
 </script>
