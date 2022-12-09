@@ -4,7 +4,7 @@
       <button
         class="py-3 w-1/2 font-semibold rounded-none focus:outline-none"
         :class="[
-          props.loginMode
+          loginMode
             ? 'bg-sta-orange'
             : 'bg-gray-200 hover:bg-gray-400 text-gray-700'
         ]"
@@ -16,7 +16,7 @@
       <button
         class="py-3 w-1/2 font-semibold rounded-none focus:outline-none"
         :class="[
-          props.loginMode
+          loginMode
             ? 'bg-gray-200 hover:bg-gray-400 text-gray-700'
             : ' bg-sta-orange'
         ]"
@@ -34,7 +34,7 @@
       <loading-icon size-class="" />
     </div>
     <form
-      v-if="props.loginMode"
+      v-if="loginMode"
       class="flex flex-col p-6 space-y-2"
       @submit.prevent="attemptLogin"
     >
@@ -206,7 +206,7 @@
 <script setup lang="ts">
 import trim from 'lodash/trim';
 
-import { Ref } from 'vue';
+import { Ref, reactive, ref } from 'vue';
 import LoadingIcon from '../ui/UiLoadingIcon.vue';
 import ClickableLink from '@/components/ui/ClickableLink.vue';
 import ErrorHelper from '@/components/ui/ErrorHelper.vue';
@@ -219,7 +219,7 @@ import ValidationError from '@/errors/ValidationError';
 import UnverifiedLoginError from '@/errors/auth/UnverifiedLoginError';
 import Errors from '@/classes/Errors';
 
-const props = defineProps({
+defineProps({
   loginMode: { type: Boolean, default: true }
 });
 
