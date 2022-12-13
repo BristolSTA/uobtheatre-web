@@ -47,20 +47,22 @@
       >
         Resend Verification Email?
       </span>
-      <text-input
+      <UiInputText
         v-model="email"
         name="Email"
         type="email"
         autocomplete="email username"
         required
+        data-test="email-input"
         :errors="loginErrors"
       />
-      <text-input
+      <UiInputText
         v-model="password"
         name="Password"
         type="password"
         autocomplete="current-password"
         required
+        data-test="password-input"
         :errors="loginErrors"
       />
       <label for="remember_me" class="flex items-center space-x-2">
@@ -72,11 +74,11 @@
         />
         <span class="text-white text-xs font-semibold">Remember me?</span>
       </label>
-
       <button
         class="btn btn-orange btn-outline mt-2 w-full text-center text-xl font-semibold"
         :disabled="!email || !password"
         type="submit"
+        data-test="login-button"
       >
         Log In
       </button>
@@ -104,7 +106,7 @@
       @submit.prevent="attemptSignup"
     >
       <UiNonFieldError :errors="signupErrors" />
-      <text-input
+      <UiInputText
         v-if="
           (!signUpDetails.firstName || !signUpDetails.lastName) && !signupErrors
         "
@@ -115,14 +117,14 @@
         @blur="guessNameParts"
       />
       <div v-else class="flex flex-col space-y-2">
-        <text-input
+        <UiInputText
           v-model="signUpDetails.firstName"
           name="First Name"
           autocomplete="given-name"
           :errors="signupErrors"
           required
         />
-        <text-input
+        <UiInputText
           v-model="signUpDetails.lastName"
           name="Last Name"
           autocomplete="family-name"
@@ -130,7 +132,7 @@
           :errors="signupErrors"
         />
       </div>
-      <text-input
+      <UiInputText
         v-model="email"
         name="Email"
         type="email"
@@ -145,7 +147,7 @@
       >
         Request password reset?
       </NuxtLink>
-      <text-input
+      <UiInputText
         v-model="password"
         name="Password"
         type="password"
@@ -154,7 +156,7 @@
         autocomplete="new-password"
         required
       />
-      <text-input
+      <UiInputText
         v-model="signUpDetails.confirmedPassword"
         name="Confirm Password"
         type="password"
@@ -206,13 +208,12 @@
 <script setup lang="ts">
 import trim from 'lodash/trim';
 
-import { Ref, reactive, ref } from 'vue';
+import { reactive, ref } from 'vue';
 import LoadingIcon from '../ui/UiLoadingIcon.vue';
 import ClickableLink from '@/components/ui/ClickableLink.vue';
 import ErrorHelper from '@/components/ui/ErrorHelper.vue';
 
 import useAuthStore from '@/store/auth';
-import TextInput from '~~/components/ui/Input/UiInputText.vue';
 import { catchOnly, getValidationErrors } from '@/utils/api';
 import { swalToast } from '@/utils/alerts';
 import ValidationError from '@/errors/ValidationError';
@@ -235,15 +236,15 @@ const signUpDetails = reactive({
   confirmedPassword: undefined as string | undefined
 });
 
-const email: Ref<string | undefined> = ref(undefined);
-const password: Ref<string | undefined> = ref(undefined);
+const email = ref<string | undefined>(undefined);
+const password = ref<string | undefined>(undefined);
 
 const acceptedTerms = ref(false);
 const rememberMe = ref(false);
 const loading = ref(false);
 
-const loginErrors: Ref<Errors | undefined> = ref(undefined);
-const signupErrors: Ref<Errors | undefined> = ref(undefined);
+const loginErrors = ref<Errors | undefined>(undefined);
+const signupErrors = ref<Errors | undefined>(undefined);
 
 const authStore = useAuthStore();
 const route = useRoute();

@@ -1,7 +1,8 @@
 import { defineConfig } from 'vitest/config';
+// import NuxtVitest from 'vite-plugin-nuxt-test';
+import Vue from '@vitejs/plugin-vue';
 
 import { resolve } from 'path';
-import vue from '@vitejs/plugin-vue';
 const r = (p: string) => resolve(__dirname, p);
 
 export const alias: Record<string, string> = {
@@ -22,12 +23,14 @@ export default defineConfig({
   resolve: {
     alias
   },
-  plugins: [vue()],
+  // plugins: [NuxtVitest()],
+  plugins: [Vue()],
   test: {
     globals: true,
     environment: 'jsdom',
     deps: {
-      inline: [/@nuxt\/test-utils-edge/]
-    }
+      inline: ['@nuxt/test-utils-edge']
+    },
+    setupFiles: ['tests/unit/setup.ts']
   }
 });
