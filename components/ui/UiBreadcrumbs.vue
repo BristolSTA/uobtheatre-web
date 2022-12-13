@@ -8,7 +8,7 @@
           class="flex pr-2 text-sm"
         >
           <NuxtLink
-            v-if="crumb.path && crumb.path !== $route.fullPath"
+            v-if="crumb.path && crumb.path !== route.fullPath"
             :to="crumb.path"
           >
             <span class="text-sta-orange-light hover:text-white">{{
@@ -47,12 +47,17 @@ export default {
       type: Boolean
     }
   },
+  data() {
+    return {
+      route: useRoute()
+    };
+  },
   computed: {
     crumbsToUse() {
       return this.crumbs || (this.useAuto ? this.routeCrumbs : []);
     },
     routeCrumbs() {
-      const fullPath = useRoute().fullPath.split('?')[0];
+      const fullPath = this.route.fullPath.split('?')[0];
       const params = fullPath.startsWith('/')
         ? fullPath.substring(1).split('/')
         : fullPath.split('/');

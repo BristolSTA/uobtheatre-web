@@ -28,3 +28,4 @@ import { createTestingPinia } from '@pinia/testing';
 vi.stubGlobal('useRoute', () => ({}));
 vi.stubGlobal('useRouter', () => ({}));
 config.global.plugins = [createTestingPinia()];
+config.global.stubs = { 'font-awesome-icon': true };

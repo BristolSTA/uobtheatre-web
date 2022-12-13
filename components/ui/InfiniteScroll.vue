@@ -1,7 +1,12 @@
 <template>
   <div>
     <slot />
-    <p v-if="hasMore" ref="bottom-loader" class="pb-4 text-center text-4xl">
+    <p
+      v-if="hasMore"
+      ref="bottom-loader"
+      data-test="bottom-loader"
+      class="pb-4 text-center text-4xl"
+    >
       <loading-icon size-class="" />
     </p>
   </div>
