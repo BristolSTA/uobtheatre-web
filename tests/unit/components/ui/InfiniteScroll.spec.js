@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils';
+import { mount, flushPromises } from '@vue/test-utils';
 import { expect, vi } from 'vitest';
 
 import InfiniteScroll from '@/components/ui/InfiniteScroll.vue';
@@ -78,11 +78,7 @@ describe('Infinite Scroll', () => {
       }
     };
     promiseResolve(result);
-    await infiniteScrollComponent.vm.$nextTick();
-    await infiniteScrollComponent.vm.$nextTick();
-    await infiniteScrollComponent.vm.$nextTick();
-    await infiniteScrollComponent.vm.$nextTick();
-    await infiniteScrollComponent.vm.$nextTick();
+    await flushPromises();
 
     // Shouldnt be loading anymore
     expect(infiniteScrollComponent.emitted('loadingChange').length).to.eq(2);
@@ -111,10 +107,7 @@ describe('Infinite Scroll', () => {
       }
     };
     promiseResolve(result);
-    await infiniteScrollComponent.vm.$nextTick();
-    await infiniteScrollComponent.vm.$nextTick();
-    await infiniteScrollComponent.vm.$nextTick();
-    await infiniteScrollComponent.vm.$nextTick();
+    await flushPromises();
 
     // Shouldnt be loading anymore
     expect(infiniteScrollComponent.emitted('loadingChange').length).to.eq(2);
@@ -143,10 +136,7 @@ describe('Infinite Scroll', () => {
       }
     };
     promiseResolve(result);
-    await infiniteScrollComponent.vm.$nextTick();
-    await infiniteScrollComponent.vm.$nextTick();
-    await infiniteScrollComponent.vm.$nextTick();
-    await infiniteScrollComponent.vm.$nextTick();
+    await flushPromises();
 
     apolloQueryMock.mockClear();
     expect(infiniteScrollComponent.find('[data-test="bottom-loader"]').exists())
@@ -178,10 +168,8 @@ describe('Infinite Scroll', () => {
 
     result.data.queryName.pageInfo.hasNextPage = false;
     promiseResolve(result);
-    await infiniteScrollComponent.vm.$nextTick();
-    await infiniteScrollComponent.vm.$nextTick();
-    await infiniteScrollComponent.vm.$nextTick();
-    await infiniteScrollComponent.vm.$nextTick();
+
+    await flushPromises();
 
     expect(infiniteScrollComponent.emitted('loadingChange').length).to.eq(4);
     expect(infiniteScrollComponent.emitted('newData').length).to.eq(2);
@@ -201,10 +189,7 @@ describe('Infinite Scroll', () => {
       }
     });
     apolloQueryMock.mockClear();
-    await infiniteScrollComponent.vm.$nextTick();
-    await infiniteScrollComponent.vm.$nextTick();
-    await infiniteScrollComponent.vm.$nextTick();
-    await infiniteScrollComponent.vm.$nextTick();
+    await flushPromises();
 
     expect(infiniteScrollComponent.find('[data-test="bottom-loader"]').exists())
       .to.be.false;
