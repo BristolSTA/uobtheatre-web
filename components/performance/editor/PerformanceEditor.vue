@@ -267,7 +267,7 @@ import { getValidationErrors, performMutation } from '@/utils/api';
 import { swal } from '@/utils/alerts';
 import { dateFormat } from '@/utils/datetime';
 import Alert from '@/components/ui/Alert.vue';
-import { getSingleDiscounts as singleDiscountsFn } from '@/utils/performance';
+import { getSingleDiscounts } from '@/utils/performance';
 import VueDatepicker from '@vuepic/vue-datepicker';
 
 import {
@@ -369,7 +369,7 @@ export default {
       );
     },
     singleDiscounts() {
-      return singleDiscountsFn(this.performance.discounts?.edges || []);
+      return getSingleDiscounts(this.performance.discounts?.edges || []);
     },
     selectedSeatGroupCapacities() {
       return this.performanceSeatGroups.reduce(
