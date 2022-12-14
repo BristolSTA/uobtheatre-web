@@ -1,4 +1,5 @@
 import { UseMutationReturn } from '@vue/apollo-composable';
+import { GqlErrorUnion } from '@/graphql/codegen/operations';
 import Errors from '~~/classes/Errors';
 import ValidationError from '~~/errors/ValidationError';
 // TODO: Type all the things
@@ -55,24 +56,37 @@ export const performMutation = (apollo, options, mutationName) => {
   });
 };
 
-export const doMutation = async <TResult>(
+interface ValidationMutationResponse {
+  success: boolean;
+  errors?: GqlErrorUnion[] | null;
+}
+
+export const doMutation = async <
+  TResult extends {
+    [key in ResponseKey]?: ValidationMutationResponse | null;
+  },
+  ResponseKey extends keyof TResult
+>(
   mutationFunctionReturn: UseMutationReturn<TResult, any>,
-  mutationPrimaryIndex: string
-): Promise<TResult> => {
+  mutationPrimaryIndex: ResponseKey
+): Promise<NonNullable<TResult[ResponseKey]>> => {
   const response = await mutationFunctionReturn.mutate();
-  if (!response || !response.data)
+
+  const mutationResponse = response?.data?.[mutationPrimaryIndex];
+
+  if (mutationResponse == null)
     throw new ValidationError(
       Errors.createFromMessage('An unknown error occured')
     );
-  const data = response.data;
 
   // Check it was successful
-  // @ts-ignore
-  if (!data?.[mutationPrimaryIndex]?.success) {
-    throw new ValidationError( // @ts-ignore
-      Errors.createFromAPI(data?.[mutationPrimaryIndex]?.errors)
+  if (!mutationResponse.success) {
+    throw new ValidationError(
+      mutationResponse.errors
+        ? Errors.createFromAPI(mutationResponse.errors)
+        : Errors.createFromMessage('An error occured')
     );
   }
 
-  return data;
+  return mutationResponse;
 };

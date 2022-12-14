@@ -374,6 +374,7 @@ function guessNameParts() {
 }
 
 function resendVerificationEmail() {
+  // TODO
   //       this.loading = true;
   //       this.loginErrors = null;
   //       try {
@@ -386,66 +387,4 @@ function resendVerificationEmail() {
   //       }
   //       this.loading = false;
 }
-
-// export default {
-//   methods: {
-//     async attemptSignup() {
-//       this.loading = true;
-//       this.signupErrors = null;
-
-//       if (!this.lastName || this.lastName === '') {
-//         this.signupErrors = new Errors();
-//         this.signupErrors.record([
-//           {
-//             message: 'Please provider a last name',
-//             field: 'lastName',
-//             __typename: 'FieldError',
-//           },
-//         ]);
-//         return (this.loading = false);
-//       }
-
-//       try {
-//         await authService.register(this, {
-//           firstName: this.firstName,
-//           lastName: this.lastName,
-//           email: this.email,
-//           password: this.password,
-//           confirmedPassword: this.confirmedPassword,
-//         });
-
-//         swalToast.fire({
-//           icon: 'success',
-//           title: 'Account Created',
-//           text: 'Please check your emails to verify your account',
-//           showConfirmButton: true,
-//           position: 'bottom-end',
-//         });
-//         return this.$router.push('/');
-//       } catch (e) {
-//         this.signupErrors = getValidationErrors(e);
-//       }
-
-//       this.loading = false;
-//     },
-//     async resendVerificationEmail() {
-//       this.loading = true;
-//       this.loginErrors = null;
-//       try {
-//         await authService.resendVerificationEmail(this, this.email);
-//         successToast.fire({
-//           title: 'Verfication email sent!',
-//         });
-//       } catch (e) {
-//         this.loginErrors = getValidationErrors(e);
-//       }
-//       this.loading = false;
-//     },
-//     guessNameParts() {
-//       const components = lo.trim(this.fullName).split(' ');
-//       this.firstName = components.shift();
-//       this.lastName = components.join(' ');
-//     },
-//   },
-// };
 </script>

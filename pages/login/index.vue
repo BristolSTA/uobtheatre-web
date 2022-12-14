@@ -1,7 +1,7 @@
 <template>
   <AuthPageTemplate>
     <AuthBox
-      :login="true"
+      :login-mode="true"
       @go-signup="
         () => {
           $router.replace('/signup');
@@ -11,7 +11,7 @@
   </AuthPageTemplate>
 </template>
 
-<script setup>
+<script setup lang="ts">
 definePageMeta({
   middleware: 'not-authed'
 });

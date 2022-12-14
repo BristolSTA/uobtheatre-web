@@ -6,13 +6,13 @@
 
 <script setup lang="ts">
 import ProductionStatusEnum from '~~/enums/ProductionStatusEnum';
+import { ProductionNode } from '~~/graphql/codegen/operations';
 
-const props = defineProps({
-  production: {
-    required: true,
-    type: Object
-  }
-});
+type ProductionProps = Pick<ProductionNode, 'isBookable' | 'status'>;
+
+const props = defineProps<{
+  production: ProductionProps;
+}>();
 
 const status = computed<string>(() => {
   if (

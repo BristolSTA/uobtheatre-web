@@ -70,30 +70,20 @@ export default defineStore('auth', {
      * @param remember Whether the user would like to be remembered on this device
      */
     async login(email: string, password: string, remember: boolean) {
-      const { mutate } = useLoginMutationMutation({
-        variables: { email, password }
-      });
-
-      const mutateResponse = await mutate();
-
-      if (!mutateResponse || !mutateResponse.data)
-        throw new ValidationError(
-          Errors.createFromMessage('An unknown error occured')
-        );
-      const data = mutateResponse.data;
-
-      // Check it was successfully
-      if (!data.login?.success) {
-        throw new ValidationError(Errors.createFromAPI(data.login?.errors));
-      }
+      const loginData = await doMutation(
+        useLoginMutationMutation({
+          variables: { email, password }
+        }),
+        'login'
+      );
 
       // Check the user is verified
-      if (!data.login.user?.verified) {
+      if (!loginData.user?.verified) {
         throw new UnverifiedLoginError();
       }
 
       // Check we have the tokens we need
-      if (!data.login.token || !data.login.refreshToken)
+      if (!loginData.token || !loginData.refreshToken)
         throw new ValidationError(
           Errors.createFromMessage(
             'Invalid response recieved. Please try again'
@@ -101,9 +91,9 @@ export default defineStore('auth', {
         );
 
       // Store the auth token & tell Apollo about our shiny new token
-      await this.setToken(data.login.token);
+      await this.setToken(loginData.token);
       // Store the fresh token
-      await this.setRefreshToken(data.login.refreshToken, remember);
+      await this.setRefreshToken(loginData.refreshToken, remember);
       // Start queing a token refresh
       await this.queueRefresh();
       // Load user details
@@ -136,6 +126,7 @@ export default defineStore('auth', {
 
       const authToken = mutateResponse?.data?.refreshToken?.token;
       const refreshToken = mutateResponse?.data?.refreshToken?.refreshToken;
+
       if (!authToken || !refreshToken) {
         return this.logout();
       }
