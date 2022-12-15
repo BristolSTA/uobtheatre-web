@@ -5,4 +5,4 @@ import { createTestingPinia } from '@pinia/testing';
 config.global.plugins = [createTestingPinia()];
 
 // Globally stub the font awesome icon component
-config.global.stubs = { 'font-awesome-icon': true };
+config.global.stubs = { 'font-awesome-icon': true, NuxtLink: true };
