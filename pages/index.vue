@@ -115,6 +115,7 @@ import take from 'lodash/take';
 import { useHomepageUpcomingProductionsQuery } from '@/graphql/codegen/operations';
 import { oneLiner, truncate } from '@/utils/lang';
 import { displayStartEnd } from '@/utils/datetime';
+import { useHead, useAppConfig, computed } from '#imports';
 
 // Set SEO data
 const appConfig = useAppConfig();

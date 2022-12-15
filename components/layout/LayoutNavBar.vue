@@ -121,6 +121,7 @@ import DropdownItem from './DropdownItem.vue';
 import DropdownNavItem from './DropdownNavItem.vue';
 import ClickableLink from '@/components/ui/ClickableLink.vue';
 import useAuthStore from '@/store/auth';
+import { ref, useAppConfig, useRoute, watch } from '#imports';
 
 const userDropdownComponent = ref(null);
 

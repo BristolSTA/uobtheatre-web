@@ -82,6 +82,8 @@ import TableRow from '@/components/ui/Tables/TableRow.vue';
 import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
 import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
 import { AdminBookingLookupDocument } from '@/graphql/codegen/operations';
+import { defineNuxtComponent } from '#app';
+
 export default defineNuxtComponent({
   components: {
     TicketScanner,

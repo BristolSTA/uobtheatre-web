@@ -78,6 +78,8 @@ definePageMeta({
   middleware: ['authed', 'can-boxoffice']
 });
 
+import { defineNuxtComponent } from '#app';
+
 export default defineNuxtComponent({
   components: { LoadingContainer, ProductionFeaturedImage, VueDatepicker },
   data() {

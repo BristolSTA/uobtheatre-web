@@ -34,6 +34,8 @@ const stageInfo = new BookingStage({
   name: 'Ticket Selection',
   routeName: 'production-slug-book-performanceId-tickets'
 });
+import { defineNuxtComponent } from '#app';
+
 export default defineNuxtComponent({
   stageInfo,
   components: {

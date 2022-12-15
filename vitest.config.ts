@@ -16,7 +16,11 @@ export const alias: Record<string, string> = {
   '@@/': r('./'),
   assets: r('./assets'),
   public: r('./public'),
-  'public/': r('./public/')
+  'public/': r('./public/'),
+  // '#components': r('./.nuxt/components'),
+  '#imports': r('./.nuxt/imports'),
+  '#build': r('./.nuxt'),
+  '#build/': r('./.nuxt/')
 };
 
 export default defineConfig({

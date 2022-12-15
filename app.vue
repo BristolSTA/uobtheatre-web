@@ -5,6 +5,7 @@
 </template>
 
 <script setup>
+import { useHead } from '#imports';
 // Global title
 useHead({
   titleTemplate: (titleChunk) =>

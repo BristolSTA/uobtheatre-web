@@ -35,6 +35,8 @@
 import ProductionTile from '@/components/production/ProductionTile.vue';
 import InfiniteScroll from '@/components/ui/InfiniteScroll.vue';
 import { UpcomingProductionsDocument } from '~~/graphql/codegen/operations';
+import { defineNuxtComponent } from '#app';
+
 export default defineNuxtComponent({
   components: { ProductionTile, InfiniteScroll },
   data() {

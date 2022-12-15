@@ -40,6 +40,7 @@ import { successToast } from '~~/utils/alerts';
 
 import Errors from '~~/classes/Errors';
 import useAuthStore from '~~/store/auth';
+import { definePageMeta, useHead, ref, useRoute, useRouter } from '#imports';
 
 definePageMeta({
   middleware: 'not-authed'

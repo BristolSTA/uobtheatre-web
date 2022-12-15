@@ -1,5 +1,6 @@
 import axios from 'axios';
 import useAuthStore from '@/store/auth';
+import { useRuntimeConfig } from '#imports';
 
 export default async function (file: File, name: string | undefined) {
   const endpoint = useRuntimeConfig().public.api.uploadEndpoint;

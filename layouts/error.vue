@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import { defineNuxtComponent } from '#app';
+
 export default defineNuxtComponent({
   props: {
     buttonText: {

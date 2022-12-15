@@ -49,6 +49,8 @@ import FormLabel from '@/components/ui/FormLabel.vue';
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import { successToast } from '~~/utils/alerts';
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
+import { defineNuxtComponent } from '#app';
+
 export default defineNuxtComponent({
   components: {
     TicketsEditor,

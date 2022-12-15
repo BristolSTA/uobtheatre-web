@@ -193,6 +193,8 @@ import { successToast, swal } from '~~/utils/alerts';
 import { humanDuration, dateFormat } from '~~/utils/datetime';
 import { SetProductionStatusDocument } from '@/graphql/codegen/operations';
 
+import { defineNuxtComponent } from '#app';
+
 export default defineNuxtComponent({
   components: {
     ProgressBar,

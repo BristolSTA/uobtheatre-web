@@ -9,8 +9,10 @@
 </template>
 
 <script>
+import { defineNuxtComponent } from '#app';
 import FooterBar from '@/components/layout/LayoutFooterBar.vue';
 import NavBar from '@/components/layout/LayoutNavBar.vue';
+
 export default defineNuxtComponent({
   components: { NavBar, FooterBar }
 });

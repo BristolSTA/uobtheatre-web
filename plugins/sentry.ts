@@ -1,4 +1,6 @@
 import * as Sentry from '@sentry/browser';
+import { defineNuxtPlugin } from '#app';
+import { useRuntimeConfig } from '#imports';
 
 export default defineNuxtPlugin((nuxtApp) => {
   const runtimeConfig = useRuntimeConfig();

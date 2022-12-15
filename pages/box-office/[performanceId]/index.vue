@@ -18,6 +18,8 @@ import Overview from '@/components/box-office/Overview.vue';
 import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue';
 import { dateFormat } from '~~/utils/datetime';
 
+import { defineNuxtComponent } from '#app';
+
 export default defineNuxtComponent({
   components: { Overview, BoxOfficeNavigation },
   props: {

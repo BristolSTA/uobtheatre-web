@@ -102,6 +102,8 @@ import SocietyDetailQuery from '@/graphql/queries/SocietyDetail.gql';
 import TipTapOutput from '@/components/ui/TipTapOutput.vue';
 import { dateFormat } from '@/utils/datetime';
 
+import { defineNuxtComponent } from '#app';
+
 export default defineNuxtComponent({
   components: { TipTapOutput },
   async asyncData() {

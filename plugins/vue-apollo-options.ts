@@ -1,4 +1,6 @@
 import { createApolloProvider } from '@vue/apollo-option';
+import { defineNuxtPlugin } from '#app';
+import { useApolloClient } from '#imports';
 
 /**
  * This plugin is needed in the midpoint between transition from the Options API to the Composition API.

@@ -235,6 +235,8 @@
 import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
 import TableRow from '@/components/ui/Tables/TableRow.vue';
 import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
+import { defineNuxtComponent } from '#app';
+
 export default defineNuxtComponent({
   components: { TableRowItem, TableRow, TableHeadItem },
   data() {

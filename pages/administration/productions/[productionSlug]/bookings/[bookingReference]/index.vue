@@ -48,6 +48,8 @@ import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
 import BookingStatusEnum from '~~/enums/PayableStatusEnum';
 
 import { dateFormat } from '@/utils/datetime';
+import { defineNuxtComponent } from '#app';
+
 export default defineNuxtComponent({
   components: {
     ProductionBanner,

@@ -15,6 +15,7 @@ import {
 import Errors from '~~/classes/Errors';
 import ValidationError from '~~/errors/ValidationError';
 import UnverifiedLoginError from '~~/errors/auth/UnverifiedLoginError';
+import { useRuntimeConfig, useApollo } from '#imports';
 
 let refreshTimer: NodeJS.Timeout | null;
 

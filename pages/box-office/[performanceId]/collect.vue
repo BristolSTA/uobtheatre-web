@@ -20,6 +20,8 @@ import TicketScanner from '@/components/ui/Input/TicketScanner.vue';
 import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue';
 import { dateFormat } from '~~/utils/datetime';
 
+import { defineNuxtComponent } from '#app';
+
 export default defineNuxtComponent({
   components: { Overview, TicketScanner, BoxOfficeNavigation },
   props: {

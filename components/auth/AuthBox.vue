@@ -208,6 +208,9 @@
 <script setup lang="ts">
 import trim from 'lodash/trim';
 
+import { NuxtLink, UiInputText, UiNonFieldError } from '#components';
+import { useRouter, useRoute } from '#imports';
+
 import { reactive, ref } from 'vue';
 import LoadingIcon from '../ui/UiLoadingIcon.vue';
 import ClickableLink from '@/components/ui/ClickableLink.vue';

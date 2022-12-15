@@ -80,6 +80,8 @@ const stageInfo = new BookingStage({
   routeName: 'production-slug-book-performanceId-pay',
   eligable: (_, booking) => !booking.dirty
 });
+import { defineNuxtComponent } from '#app';
+
 export default defineNuxtComponent({
   stageInfo,
   components: { AllErrorsDisplay, SquarePayment, LoadingContainer },

@@ -2,11 +2,17 @@ import { describe, expect, it, beforeEach } from 'vitest';
 import UserAuthBox from '@/components/auth/AuthBox.vue';
 import { shallowMount, mount } from '@vue/test-utils';
 import UiInputText from '~~/components/ui/Input/UiInputText.vue';
+import { setup } from '@nuxt/test-utils';
 
 // vi.spyOn(authService, 'queueRefresh').mockImplementation(() => {});
 
+// vi.stubGlobal('useRoute', () => ({}));
+// vi.stubGlobal('useRouter', () => ({}));
+
 describe('AuthBox', async function () {
   let authBoxComponent;
+
+  await setup();
 
   it('can switch between login and signup', async () => {
     authBoxComponent = await shallowMount(UserAuthBox);

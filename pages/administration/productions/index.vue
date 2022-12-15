@@ -95,6 +95,7 @@ import {
 import { displayStartEnd } from '~~/utils/datetime';
 import VueDatepicker from '@vuepic/vue-datepicker';
 import { DateTime } from 'luxon';
+import { ref, useHead, computed } from '#imports';
 
 const productionsOffset = ref(0);
 const productionsStatusFilter = ref<string | null>(null);

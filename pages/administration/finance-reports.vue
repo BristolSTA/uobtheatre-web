@@ -63,6 +63,8 @@ import { getValidationErrors, performMutation } from '~~/utils/api';
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 import { GenerateReportDocument } from '~~/graphql/codegen/operations';
 import VueDatepicker from '@vuepic/vue-datepicker';
+import { defineNuxtComponent } from '#app';
+
 export default defineNuxtComponent({
   components: { AllErrorsDisplay, FormLabel, LoadingContainer, VueDatepicker },
   data() {

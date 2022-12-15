@@ -12,6 +12,8 @@ definePageMeta({
   middleware: ['authed']
 });
 
+import { defineNuxtComponent } from '#app';
+
 export default defineNuxtComponent({
   async asyncData() {
     // Execute query

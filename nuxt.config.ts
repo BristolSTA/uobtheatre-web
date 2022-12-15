@@ -2,20 +2,25 @@
 import publicConfig from './config.public';
 // import eslintPlugin from 'vite-plugin-eslint';
 
+// Define CSS Files to Bundle
 const cssFiles = [
   '@fortawesome/fontawesome-svg-core/styles.css',
   'leaflet/dist/leaflet.css'
 ];
 
+// If we are NOT testing (cypress), we push the app styles
 if (process.env.MODE !== 'test') cssFiles.push('@/assets/styles/app.scss');
 
 export default defineNuxtConfig({
+  // Define third party plugins/modules we are using
   modules: ['@nuxtjs/tailwindcss', '@nuxtjs/apollo', '@pinia/nuxt'],
 
+  // Define the runtime config
   runtimeConfig: {
     public: publicConfig()
   },
 
+  // Define app confiugration
   app: {
     head: {
       title: 'UOB Theatre | The Home Of Bristol Student Theatre',
@@ -64,18 +69,28 @@ export default defineNuxtConfig({
     }
   },
 
+  // Set the CSS Files
   css: cssFiles,
 
+  // Tailwind module configuration
   tailwindcss: {
     exposeConfig: true
   },
 
+  // Vite configuration
   vite: {
     // plugins: [eslintPlugin()]
   },
 
+  // Disable Server-Side-Rendering
   ssr: false,
 
+  // Disable auto-imports
+  imports: {
+    autoImport: false
+  },
+
+  // Configure Build Options
   build: {
     transpile: [
       '@fortawesome/vue-fontawesome',
@@ -86,6 +101,7 @@ export default defineNuxtConfig({
     ]
   },
 
+  // Configure Apollo (GraphQL) module
   apollo: {
     authType: 'JWT',
     tokenStorage: 'localStorage',
@@ -98,6 +114,7 @@ export default defineNuxtConfig({
     }
   },
 
+  // Configure Typescripy
   typescript: {
     tsConfig: {
       types: ['node', '@types/lodash']

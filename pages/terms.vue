@@ -86,6 +86,8 @@
 
 <script>
 /* eslint-disable vue/no-v-html */
+import { defineNuxtComponent } from '#app';
+
 export default defineNuxtComponent({
   head: {
     title: 'Terms and Conditions'

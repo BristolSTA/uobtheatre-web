@@ -42,6 +42,8 @@ const stageInfo = new BookingStage({
   routeName: 'production-slug-book-performanceId-overview',
   eligable: (_, booking) => !booking.dirty
 });
+import { defineNuxtComponent } from '#app';
+
 export default defineNuxtComponent({
   stageInfo,
   components: {

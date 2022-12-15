@@ -26,6 +26,8 @@ import { getValidationErrors, performMutation } from '~~/utils/api';
 import { swalToast } from '~~/utils/alerts';
 import ErrorsPartial from '@/graphql/partials/ErrorsPartial';
 
+import { defineNuxtComponent } from '#app';
+
 export default defineNuxtComponent({
   components: {
     LoadingIcon
