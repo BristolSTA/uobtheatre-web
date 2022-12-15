@@ -143,8 +143,6 @@ const enabledMethods = {
 
 const boxOfficeStore = useBoxOfficeStore();
 
-import { defineNuxtComponent } from '#app';
-
 export default defineNuxtComponent({
   components: {
     TextInput,

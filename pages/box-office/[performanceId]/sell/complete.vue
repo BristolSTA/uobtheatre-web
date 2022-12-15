@@ -58,8 +58,6 @@ import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue
 import useBoxOfficeStore from '@/store/box-office';
 const boxOfficeStore = useBoxOfficeStore();
 
-import { defineNuxtComponent } from '#app';
-
 export default defineNuxtComponent({
   components: { TicketsOverview, PaymentOverview, BoxOfficeNavigation },
   props: {

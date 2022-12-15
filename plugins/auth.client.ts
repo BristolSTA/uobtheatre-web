@@ -1,4 +1,3 @@
-import { defineNuxtPlugin } from '#app';
 import useAuthStore from '~~/store/auth';
 import useBoxOfficeStore from '~~/store/box-office';
 

@@ -224,7 +224,6 @@ import { performMutation } from '~~/utils/api';
 import { dateFormat } from '@/utils/datetime';
 import PriceMatrix from '@/components/performance/editor/PriceMatrix.vue';
 import { GenerateReportDocument } from '~~/graphql/codegen/operations';
-import { defineNuxtComponent } from '#app';
 
 export default defineNuxtComponent({
   components: {

@@ -2,11 +2,10 @@ import { describe, expect, it, beforeEach } from 'vitest';
 import UserAuthBox from '@/components/auth/AuthBox.vue';
 import { shallowMount, mount } from '@vue/test-utils';
 import UiInputText from '~~/components/ui/Input/UiInputText.vue';
+import { NuxtLinkStub } from '#testSupport/stubs';
 
-// vi.spyOn(authService, 'queueRefresh').mockImplementation(() => {});
-
-// vi.stubGlobal('useRoute', () => ({}));
-// vi.stubGlobal('useRouter', () => ({}));
+vi.stubGlobal('useRoute', () => ({}));
+vi.stubGlobal('useRouter', () => ({}));
 
 describe('AuthBox', async function () {
   let authBoxComponent;
@@ -254,7 +253,7 @@ describe('AuthBox', async function () {
     // });
 
     it('has link to reset password', () => {
-      const link = authBoxComponent.find('nuxtlink');
+      const link = authBoxComponent.findComponent(NuxtLinkStub);
       expect(link.text()).to.eq('Forgot your password?');
       expect(link.attributes('to')).to.eq('/login/forgot');
     });

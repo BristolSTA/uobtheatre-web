@@ -129,8 +129,6 @@ import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue';
 import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue';
 import { dateFormat } from '~~/utils/datetime';
 
-import { defineNuxtComponent } from '#app';
-
 export default defineNuxtComponent({
   components: {
     Overview,

@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { expect, vi } from 'vitest';
 
 import Breadcrumbs from '@/components/ui/UiBreadcrumbs.vue';
-import { NuxtLinkStub } from '../../stubs';
+import { NuxtLinkStub } from '#testSupport/stubs';
 
 describe('Breadcrumbs', () => {
   let breadcrumbsComponent;
@@ -12,13 +12,6 @@ describe('Breadcrumbs', () => {
       fullPath: '/productions/legally-ginger/book'
     }));
     breadcrumbsComponent = await mount(Breadcrumbs, {
-      global: {
-        stubs: {
-          'font-awesome-icon': true,
-          NuxtLink: NuxtLinkStub
-        }
-      },
-
       props: {
         crumbs: [
           { text: 'Whats On', path: '/productions' },

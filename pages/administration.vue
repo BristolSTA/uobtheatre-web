@@ -28,8 +28,6 @@ definePageMeta({
   middleware: ['authed', 'admin']
 });
 
-import { defineNuxtComponent } from '#app';
-
 export default defineNuxtComponent({
   components: { AdminSidebar, Breadcrumbs },
   layout: 'admin',

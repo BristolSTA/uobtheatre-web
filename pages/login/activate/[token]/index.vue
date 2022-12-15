@@ -20,14 +20,6 @@
 <script setup lang="ts">
 import { getValidationErrors } from '~/utils/api';
 import { swalToast } from '~/utils/alerts';
-import {
-  definePageMeta,
-  useHead,
-  ref,
-  onMounted,
-  useRoute,
-  useRouter
-} from '#imports';
 
 import useAuthStore from '~~/store/auth';
 import Errors from '~~/classes/Errors';

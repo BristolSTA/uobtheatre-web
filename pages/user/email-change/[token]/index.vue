@@ -57,8 +57,6 @@ definePageMeta({
   middleware: ['authed']
 });
 
-import { defineNuxtComponent } from '#app';
-
 export default defineNuxtComponent({
   components: {
     TextInput,

@@ -77,8 +77,6 @@ import ClickableLink from '@/components/ui/ClickableLink.vue';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
 import { excerptFromDescription } from '~~/utils/production';
 
-import { defineNuxtComponent } from '#app';
-
 export default defineNuxtComponent({
   components: {
     ProductionCastCredits,

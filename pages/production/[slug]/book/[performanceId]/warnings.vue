@@ -60,8 +60,6 @@ const stageInfo = new BookingStage({
   }
 });
 
-import { defineNuxtComponent } from '#app';
-
 export default defineNuxtComponent({
   stageInfo,
   components: {

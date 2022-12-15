@@ -28,7 +28,6 @@ import {
 
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import { loadingSwal, successToast, errorToast } from '~~/utils/alerts';
-import { defineNuxtComponent } from '#app';
 
 export default defineNuxtComponent({
   components: { PerformanceEditor },

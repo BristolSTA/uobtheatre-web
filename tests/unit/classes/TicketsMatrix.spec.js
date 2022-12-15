@@ -1,5 +1,5 @@
 import { describe, expect, it, beforeEach } from 'vitest';
-import Performance from '../fixtures/Performance';
+import Performance from '#testSupport/fixtures/Performance';
 import TicketsMatrix from '@/classes/TicketsMatrix';
 
 describe('TicketsMatrix', () => {

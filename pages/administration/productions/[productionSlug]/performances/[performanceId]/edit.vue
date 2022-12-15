@@ -22,7 +22,6 @@ import PerformanceEditor from '@/components/performance/editor/PerformanceEditor
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import { loadingSwal, successToast, errorToast } from '~~/utils/alerts';
 import { PerformanceMutationDocument } from '~~/graphql/codegen/operations';
-import { defineNuxtComponent } from '#app';
 
 export default defineNuxtComponent({
   components: { PerformanceEditor },

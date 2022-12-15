@@ -44,8 +44,6 @@
 </template>
 
 <script>
-import { defineNuxtComponent } from '#app';
-
 export default defineNuxtComponent({
   head: {
     title: 'Dashboard'

@@ -1,12 +1,12 @@
 import { DateTime } from 'luxon';
 import { describe, expect, vi, it, beforeAll, beforeEach } from 'vitest';
 
-import PerformanceFixture from '../fixtures/Performance';
+import PerformanceFixture from '#testSupport/fixtures/Performance';
 
-import { assertNoVisualDifference } from '../helpers';
-import ConcessionTypeBookingType from '../fixtures/ConcessionTypeBookingType';
-import BookingFixture from '../fixtures/Booking';
-import ConcessionType from '../fixtures/ConcessionType';
+import { assertNoVisualDifference } from '#testSupport/helpers';
+import ConcessionTypeBookingType from '#testSupport/fixtures/ConcessionTypeBookingType';
+import BookingFixture from '#testSupport/fixtures/Booking';
+import ConcessionType from '#testSupport/fixtures/ConcessionType';
 import TicketsMatrix from '@/classes/TicketsMatrix';
 import Ticket from '@/classes/Ticket';
 import Booking from '@/classes/Booking';

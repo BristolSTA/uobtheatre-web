@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { expect } from 'vitest';
 
 import TextInput from '@/components/ui/Input/UiInputText.vue';
-import { fakeValidationErrors } from '../../fixtures/instances/FakeErrors';
+import { fakeValidationErrors } from '#testSupport/fixtures/instances/FakeErrors';
 
 describe('TextInput', () => {
   let component;

@@ -26,7 +26,6 @@
 import TicketClass from '@/classes/Ticket';
 import Ticket from '@/components/booking/Ticket.vue';
 import { PerformanceByIdDocument } from '~~/graphql/codegen/operations';
-import { defineNuxtComponent } from '#app';
 
 export default defineNuxtComponent({
   components: { Ticket },

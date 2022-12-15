@@ -4,7 +4,6 @@
 
 <script>
 import stages from '../-bookingStages';
-import { defineNuxtComponent } from '#app';
 
 export default defineNuxtComponent({
   beforeRouteEnter(to, _, next) {

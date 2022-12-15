@@ -2,7 +2,7 @@ import { expect, vi } from 'vitest';
 
 import Carousel from '~~/components/ui/UiCarousel.vue';
 import { mount } from '@vue/test-utils';
-import Society from '../../fixtures/Society';
+import Society from '#testSupport/fixtures/Society';
 
 describe('Carousel', function () {
   let carouselComponent;

@@ -43,8 +43,6 @@ import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue';
 import useBoxOfficeStore from '@/store/box-office';
 const boxOfficeStore = useBoxOfficeStore();
 
-import { defineNuxtComponent } from '#app';
-
 export default defineNuxtComponent({
   components: {
     TicketsEditor

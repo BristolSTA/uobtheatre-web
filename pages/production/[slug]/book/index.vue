@@ -14,7 +14,6 @@ const stageInfo = new BookingStage({
   routeName: 'production-slug-book',
   requiresPerformance: false
 });
-import { defineNuxtComponent } from '#app';
 
 export default defineNuxtComponent({
   stageInfo,

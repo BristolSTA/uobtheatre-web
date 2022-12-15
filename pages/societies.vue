@@ -29,7 +29,6 @@
 import SocietyTile from '@/components/society/SocietyTile.vue';
 import InfiniteScroll from '@/components/ui/InfiniteScroll.vue';
 import { AllSocietiesDocument } from '~~/graphql/codegen/operations';
-import { defineNuxtComponent } from '#app';
 
 export default defineNuxtComponent({
   components: { SocietyTile, InfiniteScroll },

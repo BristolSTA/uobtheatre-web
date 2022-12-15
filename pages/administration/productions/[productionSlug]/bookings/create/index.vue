@@ -35,7 +35,6 @@ import AdminProductionLookupQuery from '@/graphql/queries/admin/productions/Admi
 import PaginationBar from '@/components/ui/PaginationBar.vue';
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 import TimeGroupedPerformanceSelector from '@/components/performance/TimeGroupedPerformanceSelector.vue';
-import { defineNuxtComponent } from '#app';
 
 export default defineNuxtComponent({
   components: {

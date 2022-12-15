@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitest/config';
-// import NuxtVitest from 'vite-plugin-nuxt-test';
 import Vue from '@vitejs/plugin-vue';
+import AutoImport from 'unplugin-auto-import/vite';
+import Components from 'unplugin-vue-components/vite';
 
 import { resolve } from 'path';
 const r = (p: string) => resolve(__dirname, p);
@@ -14,31 +15,23 @@ export const alias: Record<string, string> = {
   '@': r('.'),
   '@/': r('./'),
   '@@/': r('./'),
+  '#testSupport': r('./tests/unit/support'),
   assets: r('./assets'),
-  public: r('./public'),
-  'public/': r('./public/'),
-  '#components': r('./.nuxt/components'),
-  '#imports': r('./.nuxt/imports.d.ts'),
-  '#head': './tests/unit/nuxtModuleMocks/head',
-  '#app': './tests/unit/nuxtModuleMocks/app',
-  '../node_modules/@nuxtjs/apollo/dist/runtime/composables':
-    './tests/unit/nuxtModuleMocks/apollo',
-  '../node_modules/@pinia/nuxt/dist/runtime/composables':
-    './tests/unit/nuxtModuleMocks/pinia'
+  public: r('./public')
 };
 
 export default defineConfig({
   resolve: {
     alias
   },
-  // plugins: [NuxtVitest()],
-  plugins: [Vue()],
+  plugins: [
+    Vue(),
+    AutoImport({ imports: ['vue'], dts: false }), // Auto imports vue composable functions (ref, reactive, etc)
+    Components({ dirs: 'components', dts: false }) // Simulates Nuxt's auto component importing
+  ],
   test: {
     globals: true,
     environment: 'jsdom',
-    deps: {
-      inline: ['@nuxt/test-utils-edge']
-    },
-    setupFiles: ['tests/unit/setup.ts']
+    setupFiles: ['tests/unit/support/setup.ts']
   }
 });

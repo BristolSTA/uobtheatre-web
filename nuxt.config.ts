@@ -12,6 +12,21 @@ const cssFiles = [
 if (process.env.MODE !== 'test') cssFiles.push('@/assets/styles/app.scss');
 
 export default defineNuxtConfig({
+  // Define aliases
+  alias: {
+    '~~': '/<rootDir>',
+    '@@': '/<rootDir>',
+    '~': '/<rootDir>',
+    '@': '/<rootDir>',
+    '~~/': '/<rootDir>/',
+    '@@/': '/<rootDir>/',
+    '~/': '/<rootDir>/',
+    '@/': '/<rootDir>/',
+    assets: '/<rootDir>/assets',
+    public: '/<rootDir>/public',
+    '#testSupport': '/<rootDir>/tests/unit/.support'
+  },
+
   // Define third party plugins/modules we are using
   modules: ['@nuxtjs/tailwindcss', '@nuxtjs/apollo', '@pinia/nuxt'],
 
@@ -84,11 +99,6 @@ export default defineNuxtConfig({
 
   // Disable Server-Side-Rendering
   ssr: false,
-
-  // Disable auto-imports
-  imports: {
-    autoImport: false
-  },
 
   // Configure Build Options
   build: {

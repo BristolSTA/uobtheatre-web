@@ -19,7 +19,6 @@ import ProductionEditor from '@/components/production/editor/ProductionEditor.vu
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import { loadingSwal, successToast } from '~~/utils/alerts';
 import { ProductionMutationDocument } from '~~/graphql/codegen/operations';
-import { defineNuxtComponent } from '#app';
 
 export default defineNuxtComponent({
   components: { ProductionEditor },
