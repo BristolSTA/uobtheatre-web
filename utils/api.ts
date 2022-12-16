@@ -18,7 +18,6 @@ export function catchOnly(errors, caughtError, callback) {
   if (errors.some((errorClass) => caughtError instanceof errorClass)) {
     return callback(caughtError);
   }
-
   throw caughtError;
 }
 

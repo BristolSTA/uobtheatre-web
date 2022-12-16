@@ -1,17 +1,21 @@
 import { describe, expect, it, beforeEach } from 'vitest';
 import UserAuthBox from '@/components/auth/AuthBox.vue';
-import { shallowMount, mount } from '@vue/test-utils';
-import UiInputText from '~~/components/ui/Input/UiInputText.vue';
+import { mount } from '#testSupport/helpers';
 import { NuxtLinkStub } from '#testSupport/stubs';
-
-vi.stubGlobal('useRoute', () => ({}));
-vi.stubGlobal('useRouter', () => ({}));
+import { setCompositionData } from '#testSupport/helpers';
+import useAuthStore from '@/store/auth';
+import ValidationError from '~~/errors/ValidationError';
+import { flushPromises } from '@vue/test-utils';
+import UnverifiedLoginError from '~~/errors/auth/UnverifiedLoginError';
 
 describe('AuthBox', async function () {
   let authBoxComponent;
 
   it('can switch between login and signup', async () => {
-    authBoxComponent = await shallowMount(UserAuthBox);
+    authBoxComponent = await mount(UserAuthBox, {
+      routeInfo: {}
+    });
+
     const buttons = authBoxComponent.findAll('div[role=navigation] button');
     expect(authBoxComponent.emitted('go-login')).to.be.undefined;
     expect(authBoxComponent.emitted('go-signup')).to.be.undefined;
@@ -35,24 +39,14 @@ describe('AuthBox', async function () {
     expect(authBoxComponent.text()).to.contain('Sign Up');
   });
 
-  // it.only('loading screen overlays correctly', async () => {
-  //   authBoxComponent = await mountWithRouterMock(UserAuthBox);
-  //   expect(authBoxComponent.findComponent({ ref: 'loading-overlay' }).exists())
-  //     .to.be.false;
-
-  //   await authBoxComponent.setData({
-  //     loading: true
-  //   });
-
-  //   expect(authBoxComponent.findComponent({ ref: 'loading-overlay' }).exists())
-  //     .to.be.true;
-  // });
-
   describe('Login Section', () => {
     beforeEach(async () => {
       authBoxComponent = await mount(UserAuthBox, {
-        global: {
-          components: { UiInputText }
+        shallow: false,
+        routeInfo: {
+          query: {
+            redirect: '/redirect/url'
+          }
         }
       });
     });
@@ -96,161 +90,73 @@ describe('AuthBox', async function () {
       expect(loginButton.attributes('disabled')).toBeUndefined();
     });
 
-    // it('shows errors on incorrect credentials', async () => {
-    //   authBoxComponent.vm.$apollo = generateApolloMock({
-    //     mutationCallstack: [
-    //       GenericApolloResponse(
-    //         'login',
-    //         GenericErrorsResponse(
-    //           GenericError('Unable to log in with provided credentials.')
-    //         )
-    //       )
-    //     ]
-    //   });
-    //   authBoxComponent.setData({
-    //     email: 'nobody@example.org',
-    //     password: 'fakeness'
-    //   });
-    //   await authBoxComponent.find('form').trigger('submit');
-    //   await authBoxComponent.vm.$nextTick();
-    //   expect(authBoxComponent.text()).to.contain(
-    //     'Error: Unable to log in with provided credentials.'
-    //   );
-    // });
+    it('shows errors on incorrect credentials', async () => {
+      const store = useAuthStore();
+      store.login.mockRejectedValueOnce(
+        new ValidationError('Unable to log in with provided credentials.')
+      );
 
-    // it('offers option to resend verification email', async () => {
-    //   authBoxComponent.vm.$apollo = generateApolloMock({
-    //     mutationCallstack: [
-    //       GenericApolloResponse(
-    //         'login',
-    //         GenericErrorsResponse(
-    //           GenericError(undefined, undefined, undefined, 'not_verified')
-    //         )
-    //       ),
-    //       GenericApolloResponse(
-    //         'resendActivationEmail',
-    //         GenericMutationResponse()
-    //       )
-    //     ]
-    //   });
-    //   authBoxComponent.setData({
-    //     email: 'nobody@example.org',
-    //     password: 'fakeness'
-    //   });
-    //   await authBoxComponent.find('form').trigger('submit');
-    //   await authBoxComponent.vm.$nextTick();
-    //   expect(authBoxComponent.findComponent({ ref: 'resendEmail' }).exists()).to
-    //     .be.true;
-    //   expect(authBoxComponent.vm.$apollo.mock.handledMutations()).to.eq(1);
-    //   authBoxComponent.findComponent({ ref: 'resendEmail' }).trigger('click');
-    //   expect(authBoxComponent.vm.$apollo.mock.handledMutations()).to.eq(2);
-    // });
+      setCompositionData(authBoxComponent, {
+        email: 'nobody@example.org',
+        password: 'fakeness'
+      });
 
-    // it('redirects to intended on successful login if has', async () => {
-    //   let fakeReplace, storeDispatchFn;
+      await authBoxComponent.find('form').trigger('submit');
+      await authBoxComponent.vm.$nextTick();
 
-    //   authBoxComponent = await mountWithRouterMock(
-    //     UserAuthBox,
-    //     generateMountOptions(['apollo', 'config'], {
-    //       mocks: {
-    //         $route: {
-    //           query: {
-    //             redirect: '/some/path'
-    //           }
-    //         },
-    //         $store: {
-    //           dispatch: (storeDispatchFn = vi.fn(() => Promise.resolve())),
-    //           state: {
-    //             'box-office': {
-    //               locationId: null
-    //             }
-    //           }
-    //         },
-    //         $router: {
-    //           replace: (fakeReplace = vi.fn(() => Promise.resolve()))
-    //         }
-    //       },
-    //       apollo: {
-    //         mutationCallstack: [
-    //           GenericApolloResponse(
-    //             'login',
-    //             GenericMutationResponse({
-    //               token: '36c86c19f8f8d73aa59c3a00814137bdee0ab8de',
-    //               user: User()
-    //             })
-    //           )
-    //         ]
-    //       },
-    //       data() {
-    //         return {
-    //           email: 'm.pegg@example.org',
-    //           password: '1234'
-    //         };
-    //       }
-    //     })
-    //   );
+      expect(authBoxComponent.text()).to.contain(
+        'Error: Unable to log in with provided credentials.'
+      );
+    });
 
-    //   await authBoxComponent.vm.attemptLogin();
-    //   expect(fakeReplace.mock.calls[0][0]).to.eq('/some/path');
-    //   expect(storeDispatchFn.mock.calls).length(2);
-    //   expect(storeDispatchFn.mock.calls[0][0]).to.eq('auth/login');
-    //   expect(storeDispatchFn.mock.calls[0][1]).to.eq(
-    //     '36c86c19f8f8d73aa59c3a00814137bdee0ab8de'
-    //   );
-    //   expect(storeDispatchFn.mock.calls[1][0]).to.eq('auth/loadUserDetails');
-    //   expect(storeDispatchFn.mock.calls[1][1].apollo).to.not.be.undefined;
-    // });
+    it('offers option to resend verification email', async () => {
+      setCompositionData(authBoxComponent, {
+        email: 'nobody@example.org',
+        password: 'fakeness'
+      });
 
-    // it('redirects to home on successful login if no intended', async () => {
-    //   let fakeReplace;
-    //   authBoxComponent = await mountWithRouterMock(
-    //     UserAuthBox,
-    //     generateMountOptions(['apollo', 'config'], {
-    //       propsData: {
-    //         login: true
-    //       },
-    //       mocks: {
-    //         $route: {
-    //           query: {}
-    //         },
-    //         $apolloHelpers: {
-    //           onLogin: vi.fn()
-    //         },
-    //         $store: {
-    //           dispatch: vi.fn(() => Promise.resolve()),
-    //           state: {
-    //             'box-office': {
-    //               locationId: null
-    //             }
-    //           }
-    //         },
-    //         $router: {
-    //           replace: (fakeReplace = vi.fn())
-    //         }
-    //       },
-    //       apollo: {
-    //         mutationCallstack: [
-    //           GenericApolloResponse(
-    //             'login',
-    //             GenericMutationResponse({
-    //               token: '36c86c19f8f8d73aa59c3a00814137bdee0ab8de',
-    //               user: User()
-    //             })
-    //           )
-    //         ]
-    //       },
-    //       data() {
-    //         return {
-    //           email: 'm.pegg@example.org',
-    //           password: '1234'
-    //         };
-    //       }
-    //     })
-    //   );
+      const store = useAuthStore();
+      store.login.mockRejectedValueOnce(new UnverifiedLoginError());
 
-    //   await authBoxComponent.vm.attemptLogin();
-    //   expect(fakeReplace.mock.calls[0][0]).to.eq('/');
-    // });
+      await authBoxComponent.find('form').trigger('submit');
+      await flushPromises();
+
+      const resendVerificationButton = authBoxComponent.find(
+        '[data-test="resend-email"'
+      );
+
+      expect(resendVerificationButton.exists()).to.be.true;
+      await resendVerificationButton.trigger('click');
+
+      expect(store.resendVerificationEmail).toHaveBeenCalledOnce();
+    });
+
+    it('redirects to intended on successful login if has', async () => {
+      setCompositionData(authBoxComponent, {
+        email: 'example@example.org',
+        password: 'password123'
+      });
+
+      await authBoxComponent.vm.attemptLogin();
+
+      const router = useRouter();
+      expect(router.replace).toHaveBeenCalledWith('/redirect/url');
+    });
+
+    it('redirects to home on successful login if no intended', async () => {
+      setCompositionData(authBoxComponent, {
+        email: 'example@example.org',
+        password: 'password123'
+      });
+
+      const route = useRoute();
+      route.query.redirect = undefined;
+
+      await authBoxComponent.vm.attemptLogin();
+
+      const router = useRouter();
+      expect(router.replace).toHaveBeenCalledWith('/');
+    });
 
     it('has link to reset password', () => {
       const link = authBoxComponent.findComponent(NuxtLinkStub);
@@ -259,151 +165,98 @@ describe('AuthBox', async function () {
     });
   });
 
-  // describe('Sign Up Section', () => {
-  //   let swalToastStub;
-  //   let registerStub;
-  //   let routerPushStub;
-  //   beforeEach(async () => {
-  //     // swalToastStub = vi.spyOn(swalToast, 'fire');
-  //     // registerStub = vi.spyOn(authService, 'register');
-  //     authBoxComponent = await mountWithRouterMock(
-  //       UserAuthBox,
-  //       generateMountOptions(['apollo'], {
-  //         propsData: {
-  //           login: false
-  //         },
-  //         mocks: {
-  //           $router: {
-  //             push: (routerPushStub = vi.fn())
-  //           },
-  //           $store: {
-  //             state: {
-  //               'box-office': {
-  //                 locationId: null
-  //               }
-  //             }
-  //           }
-  //         }
-  //       })
-  //     );
-  //   });
+  describe('Sign Up Section', () => {
+    beforeEach(() => {
+      authBoxComponent = mount(UserAuthBox, {
+        props: { loginMode: false },
+        shallow: false,
+        routeInfo: {}
+      });
+    });
 
-  //   it('top nav button shows signup as active', () => {
-  //     const buttons = authBoxComponent.findAll('div[role=navigation] button');
-  //     expect(buttons[1].classes()).to.contain('bg-sta-orange');
-  //   });
+    it('top nav button shows signup as active', () => {
+      const buttons = authBoxComponent.findAll('div[role=navigation] button');
+      expect(buttons[1].classes()).to.contain('bg-sta-orange');
+    });
 
-  //   it('shows full name input box initially', () => {
-  //     expect(authBoxComponent.find('input#fullName').exists()).to.be.true;
-  //     expect(authBoxComponent.find('input#firstName').exists()).to.be.false;
-  //     expect(authBoxComponent.find('input#lastName').exists()).to.be.false;
-  //   });
+    it('shows full name input box initially', () => {
+      expect(authBoxComponent.find('input#fullName').exists()).to.be.true;
+      expect(authBoxComponent.find('input#firstName').exists()).to.be.false;
+      expect(authBoxComponent.find('input#lastName').exists()).to.be.false;
+    });
 
-  //   it('splits full name correctly', async () => {
-  //     const fullNameInputField = authBoxComponent.find('input#fullName');
+    it('splits full name correctly', async () => {
+      const fullNameInputField = authBoxComponent.find('input#fullName');
 
-  //     fullNameInputField.setValue('Joe');
-  //     await fullNameInputField.trigger('blur');
-  //     expect(authBoxComponent.find('input#firstName').exists()).to.be.false;
-  //     expect(authBoxComponent.find('input#lastName').exists()).to.be.false;
+      fullNameInputField.setValue('Joe');
+      await fullNameInputField.trigger('blur');
+      expect(authBoxComponent.find('input#firstName').exists()).to.be.false;
+      expect(authBoxComponent.find('input#lastName').exists()).to.be.false;
 
-  //     fullNameInputField.setValue('Joe Bloggs');
-  //     await fullNameInputField.trigger('blur');
-  //     expect(authBoxComponent.find('input#firstName').element.value).to.eq(
-  //       'Joe'
-  //     );
-  //     expect(authBoxComponent.find('input#lastName').element.value).to.eq(
-  //       'Bloggs'
-  //     );
-  //   });
+      fullNameInputField.setValue('Joe Bloggs');
+      await fullNameInputField.trigger('blur');
+      expect(authBoxComponent.find('input#firstName').element.value).to.eq(
+        'Joe'
+      );
+      expect(authBoxComponent.find('input#lastName').element.value).to.eq(
+        'Bloggs'
+      );
+    });
 
-  //   it('submit button blocked until ToS accepted', async () => {
-  //     const button = authBoxComponent.find('form button');
-  //     expect(button.attributes('disabled')).to.be.ok;
+    it('submit button blocked until ToS accepted', async () => {
+      const button = authBoxComponent.find('form button');
+      expect(button.attributes('disabled')).toBeDefined();
 
-  //     await authBoxComponent.find('input#accept_terms').setChecked();
-  //     expect(button.attributes('disabled')).to.not.be.ok;
-  //   });
+      await authBoxComponent.find('input#accept_terms').setChecked();
+      expect(button.attributes('disabled')).not.toBeDefined();
+    });
 
-  //   it('can signup correctly', async () => {
-  //     const attemptSignupStub = jest
-  //       .spyOn(authBoxComponent.vm, 'attemptSignup')
-  //       .mockImplementation(() => {});
-  //     const fullNameInputField = authBoxComponent.find('input#fullName');
-  //     fullNameInputField.setValue('Joe Bloggs');
-  //     await fullNameInputField.trigger('blur');
-  //     await authBoxComponent
-  //       .find('input#email')
-  //       .setValue('joe.bloggs@example.org');
-  //     await authBoxComponent.find('input#password1').setValue('12345678');
-  //     await authBoxComponent.find('input#password2').setValue('12345678');
-  //     await authBoxComponent.find('input#accept_terms').setChecked();
-  //     await authBoxComponent.find('form').trigger('submit');
-  //     expect(attemptSignupStub.mock.calls).length(1);
+    it('can signup correctly', async () => {
+      const fullNameInputField = authBoxComponent.find('input#fullName');
+      fullNameInputField.setValue('Joe Bloggs');
+      await fullNameInputField.trigger('blur');
+      await authBoxComponent
+        .find('input#email')
+        .setValue('joe.bloggs@example.org');
+      await authBoxComponent.find('input#password1').setValue('12345678');
+      await authBoxComponent.find('input#password2').setValue('12345678');
+      await authBoxComponent.find('input#accept_terms').setChecked();
+      await authBoxComponent.find('form').trigger('submit');
 
-  //     attemptSignupStub.mockRestore();
+      const store = useAuthStore();
+      const router = useRouter();
+      expect(store.register).toBeCalledWith(
+        'Joe',
+        'Bloggs',
+        'joe.bloggs@example.org',
+        '12345678',
+        '12345678'
+      );
 
-  //     authBoxComponent.vm.$apollo = generateApolloMock({
-  //       mutationCallstack: [
-  //         GenericApolloResponse('register', GenericMutationResponse())
-  //       ]
-  //     });
+      expect(router.push).toBeCalledWith('/');
+    });
 
-  //     return authBoxComponent.vm.attemptSignup().then(() => {
-  //       expect(registerStub.mock.calls).length(1);
-  //       expect(registerStub.mock.calls[0][0]).to.include({
-  //         firstName: 'Joe',
-  //         lastName: 'Bloggs',
-  //         email: 'joe.bloggs@example.org',
-  //         password: '12345678',
-  //         confirmedPassword: '12345678'
-  //       });
-  //       expect(swalToastStub.mock.calls).length(1);
+    it('can display signup errors', async () => {
+      const store = useAuthStore();
+      store.register.mockRejectedValueOnce(
+        new ValidationError('Your confirmed password does not match')
+      );
 
-  //       expect(routerPushStub.mock.calls).length(1);
-  //       expect(routerPushStub.mock.calls[0][0]).to.eq('/');
-  //     });
-  //   });
+      const fullNameInputField = authBoxComponent.find('input#fullName');
+      fullNameInputField.setValue('Joe Bloggs');
+      await fullNameInputField.trigger('blur');
+      await authBoxComponent
+        .find('input#email')
+        .setValue('joe.bloggs@example.org');
+      await authBoxComponent.find('input#password1').setValue('12345678');
+      await authBoxComponent.find('input#password2').setValue('1234567');
+      await authBoxComponent.find('input#accept_terms').setChecked();
+      await authBoxComponent.find('form').trigger('submit');
+      await flushPromises();
 
-  //   it('can display signup errors', async () => {
-  //     const attemptSignupStub = jest
-  //       .spyOn(authBoxComponent.vm, 'attemptSignup')
-  //       .mockImplementation(() => {});
-
-  //     const fullNameInputField = authBoxComponent.find('input#fullName');
-  //     fullNameInputField.setValue('Joe Bloggs');
-  //     await fullNameInputField.trigger('blur');
-  //     await authBoxComponent
-  //       .find('input#email')
-  //       .setValue('joe.bloggs@example.org');
-  //     await authBoxComponent.find('input#password1').setValue('12345678');
-  //     await authBoxComponent.find('input#password2').setValue('1234567');
-  //     await authBoxComponent.find('input#accept_terms').setChecked();
-  //     await authBoxComponent.find('form').trigger('submit');
-  //     expect(attemptSignupStub.mock.calls).length(1);
-
-  //     attemptSignupStub.mockRestore();
-
-  //     authBoxComponent.vm.$apollo = generateApolloMock({
-  //       mutationCallstack: [
-  //         GenericApolloResponse(
-  //           'register',
-  //           GenericErrorsResponse(
-  //             GenericError('Your confirmed password does not match')
-  //           )
-  //         )
-  //       ]
-  //     });
-
-  //     return authBoxComponent.vm.attemptSignup().then(() => {
-  //       expect(
-  //         authBoxComponent.findComponent({ ref: 'loading-overlay' }).exists()
-  //       ).to.be.false;
-  //       expect(authBoxComponent.vm.signup_errors).to.be.instanceOf(Errors);
-  //       expect(authBoxComponent.text()).to.contain(
-  //         'Your confirmed password does not match'
-  //       );
-  //     });
-  //   });
-  // });
+      expect(authBoxComponent.text()).to.contain(
+        'Your confirmed password does not match'
+      );
+    });
+  });
 });

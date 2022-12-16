@@ -14,17 +14,18 @@ if (process.env.MODE !== 'test') cssFiles.push('@/assets/styles/app.scss');
 export default defineNuxtConfig({
   // Define aliases
   alias: {
-    '~~': '/<rootDir>',
-    '@@': '/<rootDir>',
-    '~': '/<rootDir>',
-    '@': '/<rootDir>',
-    '~~/': '/<rootDir>/',
-    '@@/': '/<rootDir>/',
-    '~/': '/<rootDir>/',
-    '@/': '/<rootDir>/',
-    assets: '/<rootDir>/assets',
-    public: '/<rootDir>/public',
-    '#testSupport': '/<rootDir>/tests/unit/.support'
+    '~~': '.',
+    '@@': '.',
+    '~': '.',
+    '@': '.',
+    '~~/*': './*',
+    '@@/*': './*',
+    '~/*': './*',
+    '@/*': './*',
+    assets: 'assets',
+    public: 'public',
+    '#testSupport': 'tests/unit/support',
+    '#testSupport/*': 'tests/unit/support/*'
   },
 
   // Define third party plugins/modules we are using

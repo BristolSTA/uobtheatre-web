@@ -28,7 +28,7 @@
     </div>
     <div
       v-if="loading"
-      ref="loading-overlay"
+      data-test="loading-overlay"
       class="absolute z-10 top-0 flex items-center justify-center w-full h-full text-white text-3xl bg-sta-gray-dark bg-opacity-95"
     >
       <loading-icon size-class="" />
@@ -41,7 +41,7 @@
       <UiNonFieldError :errors="loginErrors" />
       <span
         v-if="loginErrors && loginErrors.hasCode('not_verified')"
-        ref="resendEmail"
+        data-test="resend-email"
         class="cursor-point hover:text-gray-200 underline text-sm cursor-pointer"
         @click="resendVerificationEmail"
       >
@@ -208,15 +208,14 @@
 <script setup lang="ts">
 import trim from 'lodash/trim';
 
-// import { reactive, ref } from 'vue';
 import LoadingIcon from '../ui/UiLoadingIcon.vue';
 import ClickableLink from '@/components/ui/ClickableLink.vue';
 import ErrorHelper from '@/components/ui/ErrorHelper.vue';
 
 import useAuthStore from '@/store/auth';
 import { catchOnly, getValidationErrors } from '@/utils/api';
-import { swalToast } from '@/utils/alerts';
-import ValidationError from '@/errors/ValidationError';
+import { swalToast, successToast } from '@/utils/alerts';
+import ValidationError from '~~/errors/ValidationError';
 import UnverifiedLoginError from '@/errors/auth/UnverifiedLoginError';
 import Errors from '@/classes/Errors';
 
@@ -255,7 +254,6 @@ async function attemptLogin() {
   loginErrors.value = undefined;
 
   if (!email.value || !password.value) return;
-
   try {
     await authStore.login(email.value, password.value, rememberMe.value);
 
@@ -271,12 +269,15 @@ async function attemptLogin() {
     return router.replace('/');
   } catch (e) {
     catchOnly([ValidationError, UnverifiedLoginError], e, () => {
-      loginErrors.value = getValidationErrors(e);
       if (e instanceof UnverifiedLoginError) {
-        loginErrors.value.push({
-          message: 'Your account has not been verified yet.',
-          code: 'not_verified'
-        });
+        loginErrors.value = Errors.createFromAPI([
+          {
+            message: 'Your account has not been verified yet.',
+            code: 'not_verified'
+          }
+        ]);
+      } else {
+        loginErrors.value = getValidationErrors(e);
       }
     });
   }
@@ -361,9 +362,9 @@ async function attemptSignup() {
     return useRouter().push('/');
   } catch (e) {
     signupErrors.value = getValidationErrors(e);
+  } finally {
+    loading.value = false;
   }
-
-  loading.value = false;
 }
 
 function guessNameParts() {
@@ -373,18 +374,21 @@ function guessNameParts() {
   signUpDetails.lastName = components.join(' ');
 }
 
-function resendVerificationEmail() {
-  // TODO
-  //       this.loading = true;
-  //       this.loginErrors = null;
-  //       try {
-  //         await authService.resendVerificationEmail(this, this.email);
-  //         successToast.fire({
-  //           title: 'Verfication email sent!',
-  //         });
-  //       } catch (e) {
-  //         this.loginErrors = getValidationErrors(e);
-  //       }
-  //       this.loading = false;
+async function resendVerificationEmail() {
+  loading.value = true;
+  loginErrors.value = undefined;
+
+  if (!email.value) return;
+
+  try {
+    await authStore.resendVerificationEmail(email.value);
+    successToast.fire({
+      title: 'Verfication email sent!'
+    });
+  } catch (e) {
+    loginErrors.value = getValidationErrors(e);
+  } finally {
+    loading.value = false;
+  }
 }
 </script>

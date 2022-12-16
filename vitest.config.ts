@@ -6,6 +6,7 @@ import Components from 'unplugin-vue-components/vite';
 import { resolve } from 'path';
 const r = (p: string) => resolve(__dirname, p);
 
+// Define a set of module aliases to file directories (Mirrors the .nuxt/tsconfig.json's compiler "paths")
 export const alias: Record<string, string> = {
   '~': r('.'),
   '~/': r('./'),
@@ -25,13 +26,14 @@ export default defineConfig({
     alias
   },
   plugins: [
-    Vue(),
+    Vue(), // Vue SFC File support
     AutoImport({ imports: ['vue'], dts: false }), // Auto imports vue composable functions (ref, reactive, etc)
-    Components({ dirs: 'components', dts: false }) // Simulates Nuxt's auto component importing
+    Components({ dirs: 'components', dts: false }) // Replicates Nuxt's auto component importing
   ],
   test: {
     globals: true,
-    environment: 'jsdom',
-    setupFiles: ['tests/unit/support/setup.ts']
+    environment: 'jsdom', // Register JSDOM to replicate browser APIs
+    setupFiles: ['tests/unit/support/setup.ts'], // Register files to be run at the start of each test file
+    restoreMocks: true
   }
 });

@@ -10,7 +10,8 @@ import {
   useRequestPasswordResetMutationMutation,
   useResetPasswordMutationMutation,
   useActiveAccountMutationMutation,
-  useRegisterUserMutationMutation
+  useRegisterUserMutationMutation,
+  useResendActivationMutationMutation
 } from '@/graphql/codegen/operations';
 import Errors from '~~/classes/Errors';
 import ValidationError from '~~/errors/ValidationError';
@@ -353,6 +354,22 @@ export default defineStore('auth', {
       if (!data.success) {
         throw new ValidationError(Errors.createFromAPI(data.errors));
       }
+    },
+
+    /**
+     * Resends the account verification email for an account
+     *
+     * @param email The user's email address
+     */
+    async resendVerificationEmail(email: string) {
+      await doMutation(
+        useResendActivationMutationMutation({
+          variables: {
+            email
+          }
+        }),
+        'resendActivationEmail'
+      );
     },
 
     /**
