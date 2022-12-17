@@ -45,6 +45,9 @@ jobs:
       - name: Install dependencies 👨🏻‍💻
         run: yarn
 
+      - name: Load GraphQL Codegen 🕸
+        run: GQL_SCHEMA=https://raw.githubusercontent.com/BristolSTA/uobtheatre-api/dev/schema.graphql yarn codegen
+
       - name: Run linter 👀
         run: yarn lint:tsc && yarn lint:js
 

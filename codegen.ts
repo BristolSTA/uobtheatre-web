@@ -4,7 +4,7 @@ require('dotenv').config();
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: publicConfig().api.graphqlEndpointInternal,
+  schema: process.env.GQL_SCHEMA ?? publicConfig().api.graphqlEndpointInternal,
   documents: './graphql/**/*.(gql|graphql)',
   generates: {
     './graphql/codegen/operations.ts': {
