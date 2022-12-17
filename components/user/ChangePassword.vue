@@ -11,7 +11,7 @@
         name="Current Password"
         type="password"
         :errors="errors"
-        error-key="old_passowrd"
+        error-key="oldPassowrd"
         autocomplete="current-password"
         required
       />
@@ -20,7 +20,7 @@
         name="New Password"
         type="password"
         :errors="errors"
-        error-key="new_password1"
+        error-key="newPassword1"
         autocomplete="new-password"
         required
       />
@@ -29,7 +29,7 @@
         name="Confirm New Password"
         type="password"
         :errors="errors"
-        error-key="new_password2"
+        error-key="newPassword2"
         autocomplete="new-password"
         required
       />

@@ -81,7 +81,7 @@
             {{ society.website }}
           </a>
         </div>
-        <div v-if="society.website">
+        <div v-if="society.contact">
           <strong>Contact: </strong>
           <a
             :href="`mailto:${society.contact}`"
