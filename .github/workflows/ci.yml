@@ -111,7 +111,7 @@ jobs:
         run: API_BASE=http://localhost:9000 yarn codegen
 
       - name: Run End-to-End Tests 🧪
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v5
         with:
           start: yarn pretest:e2e:ci
           wait-on: 'http://localhost:3000'
