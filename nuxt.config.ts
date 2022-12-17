@@ -14,16 +14,6 @@ if (process.env.MODE !== 'test') cssFiles.push('@/assets/styles/app.scss');
 export default defineNuxtConfig({
   // Define aliases
   alias: {
-    '~~': '.',
-    '@@': '.',
-    '~': '.',
-    '@': '.',
-    '~~/*': './*',
-    '@@/*': './*',
-    '~/*': './*',
-    '@/*': './*',
-    assets: 'assets',
-    public: 'public',
     '#testSupport': 'tests/unit/support',
     '#testSupport/*': 'tests/unit/support/*'
   },

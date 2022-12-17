@@ -1,5 +1,5 @@
-import useAuthStore from '~~/store/auth';
-import useBoxOfficeStore from '~~/store/box-office';
+import useAuthStore from '@/store/auth';
+import useBoxOfficeStore from '@/store/box-office';
 
 export default defineNuxtPlugin(async () => {
   const authStore = useAuthStore();
