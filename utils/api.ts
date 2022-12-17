@@ -10,7 +10,11 @@ import ValidationError from '~~/errors/ValidationError';
  * @param {Error} caughtError The caught error
  * @param {Function} callback The function to call if is a valid exception
  */
-export function catchOnly(errors, caughtError, callback) {
+export function catchOnly<T>(
+  errors: any[],
+  caughtError: unknown,
+  callback: (e: unknown) => T
+): T {
   if (!Array.isArray(errors)) {
     errors = [errors];
   }
@@ -26,21 +30,28 @@ export function catchOnly(errors, caughtError, callback) {
  * @param error TODO
  * @param throwExp Whether to throw exceptions
  */
-export function getValidationErrors(error, throwExp = true): Errors {
+export function getValidationErrors(
+  error: unknown,
+  throwExp = true
+): Errors | undefined {
   if (!(error instanceof ValidationError)) {
     if (!throwExp) {
-      return;
+      return undefined;
     }
     throw error;
   }
   return error.errors;
 }
 
-export const performMutation = (apollo, options, mutationName) => {
+export const performMutation = (
+  apollo: any,
+  options: object,
+  mutationName: string
+) => {
   return new Promise((resolve, reject) => {
     apollo
       .mutate(options)
-      .then(({ data }) => {
+      .then(({ data }: { data: any }) => {
         if (!data[mutationName].success) {
           return reject(
             new ValidationError(Errors.createFromAPI(data[mutationName].errors))
@@ -48,7 +59,7 @@ export const performMutation = (apollo, options, mutationName) => {
         }
         resolve(data);
       })
-      .catch((e) => {
+      .catch((e: typeof Error) => {
         errorHandler(e);
         reject(e);
       });

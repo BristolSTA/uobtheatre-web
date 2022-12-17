@@ -39,7 +39,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<{
-  (event: 'update:modelValue', value: string | null): void;
+  (event: 'update:modelValue', value: string | null | undefined): void;
 }>();
 
 const value = computed({

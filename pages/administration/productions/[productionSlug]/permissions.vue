@@ -12,8 +12,8 @@
     </template>
     <all-errors-display :errors="errors" />
     <permissions-assigner
-      :assignable-permissions="production.assignablePermissions ?? []"
-      :assigned-users="production.assignedUsers ?? []"
+      :assignable-permissions="production?.assignablePermissions ?? []"
+      :assigned-users="production?.assignedUsers ?? []"
       @add="addUserPermissions"
       @remove="removeUserPermissions"
     />
@@ -60,7 +60,7 @@ if (production?.value.assignedUsers === null) {
   });
 }
 
-const errors = ref<Errors | null>(null);
+const errors = ref<Errors | undefined>(undefined);
 
 async function savePermissions() {
   const changedUsers = production.value?.assignedUsers
@@ -114,7 +114,7 @@ async function setUserPermissions(
   email: string,
   permissions: string[]
 ): Promise<boolean> {
-  errors.value = null;
+  errors.value = undefined;
   if (!production) return false;
   try {
     await doMutation(

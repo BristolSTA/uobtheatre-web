@@ -12,7 +12,7 @@ const props = withDefaults(
     allowNegative?: boolean;
   }>(),
   {
-    options: () => {},
+    options: () => ({}),
     allowNegative: false
   }
 );

@@ -277,7 +277,7 @@ async function attemptLogin() {
           }
         ]);
       } else {
-        loginErrors.value = getValidationErrors(e);
+        loginErrors.value = getValidationErrors(e) ?? undefined;
       }
     });
   }

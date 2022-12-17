@@ -94,7 +94,7 @@ const { data } = await useAsyncQuery<VenuePageDetailsQuery>(
   { slug: useRoute().params.slug } as VenuePageDetailsQueryVariables
 );
 
-if (!data.value.venue)
+if (!data.value?.venue)
   throw createError({
     statusCode: 404,
     message: 'This venue does not exist'
@@ -109,6 +109,7 @@ const googleMapsLink = computed(
 );
 
 function initMap(mapRef: Ref<L.Map>) {
+  if (!venue.address.latitude || !venue.address.longitude) return;
   const map = mapRef.value.setView(
     [venue.address.latitude, venue.address.longitude],
     14

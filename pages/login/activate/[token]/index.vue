@@ -3,7 +3,7 @@
     <div
       class="w-100 relative p-6 text-center text-white bg-sta-gray shadow-2xl"
     >
-      <template v-if="!error">
+      <template v-if="!errors">
         <h1 class="text-h3">Activating your account...</h1>
         <div>
           <UiLoadingIcon size-class="text-h1" />
@@ -32,7 +32,7 @@ useHead({
   title: 'Active your account'
 });
 
-const errors = ref<Errors | null>(null);
+const errors = ref<Errors | undefined>(undefined);
 
 onMounted(async () => {
   const authStore = useAuthStore();

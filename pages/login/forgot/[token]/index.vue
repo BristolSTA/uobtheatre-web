@@ -49,7 +49,7 @@ useHead({
   title: 'Reset your password'
 });
 
-const errors = ref<Errors | null>(null);
+const errors = ref<Errors | undefined>(undefined);
 const newPassword = ref<string | null>(null);
 const confirmedNewPassword = ref<string | null>(null);
 

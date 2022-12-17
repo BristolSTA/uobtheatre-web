@@ -17,11 +17,7 @@ export function oneLiner(text: string): string {
  * @param length Maximum length in charecters
  * @param clamp String used to signify truncation. Defaults to '...'
  */
-export function truncate(
-  text: string,
-  length: number,
-  clamp: string = undefined
-): string {
+export function truncate(text: string, length: number, clamp?: string): string {
   clamp = clamp || '...';
   return text.length < length ? text : text.substring(0, length) + clamp;
 }
@@ -33,6 +29,6 @@ export function truncate(
  * @param {Array<string>} array List of strings to join
  * @returns {string} Joined string
  */
-export const joinWithAnd = (array) => {
+export const joinWithAnd = (array: string[]) => {
   return array.join(', ').replace(/, ([^,]*)$/, ' and $1');
 };

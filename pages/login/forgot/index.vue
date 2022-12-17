@@ -47,7 +47,7 @@ useHead({
 // Define state
 const email = ref<string | null>(null);
 const loading = ref(false);
-const errors = ref<Errors | null>(null);
+const errors = ref<Errors | undefined>(undefined);
 
 const authStore = useAuthStore();
 

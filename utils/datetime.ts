@@ -20,7 +20,10 @@ export const duration = (start: string, end: string) => {
  * @param {number} durationMins number of minuites
  * @returns {string} Formatted readable duration string
  */
-export const humanDuration = (durationMins, options) => {
+export const humanDuration = (
+  durationMins: number,
+  options?: humanizeDuration.Options
+) => {
   const mergedOptions = Object.assign({ round: true, largest: 1 }, options);
   return humanizeDuration(durationMins * 60 * 1000, mergedOptions);
 };
@@ -31,7 +34,7 @@ export const humanDuration = (durationMins, options) => {
  * @param {DateTime} date number of minuites
  * @returns {string} String of time of day
  */
-export const humanDayTime = (date) => {
+export const humanDayTime = (date: DateTime) => {
   if (date.hour < 12) {
     return 'Morning';
   }
@@ -49,17 +52,26 @@ export const humanDayTime = (date) => {
  * @param {string} format Luxon datetime format string (excluding year)
  * @returns {string} Formatted start to end datetime string
  */
-export function displayStartEnd(start, end, format): string {
-  start = DateTime.fromISO(start);
-  end = DateTime.fromISO(end);
+export function displayStartEnd(
+  start: string,
+  end: string,
+  format: string
+): string {
+  const startDateTime = DateTime.fromISO(start);
+  const endDateTime = DateTime.fromISO(end);
 
   let result = '';
-  if (start.month !== end.month || start.day !== end.day) {
+  if (
+    startDateTime.month !== endDateTime.month ||
+    startDateTime.day !== endDateTime.day
+  ) {
     result =
-      start.toFormat(start.year === end.year ? format : format + ' y') + ' - ';
+      startDateTime.toFormat(
+        startDateTime.year === endDateTime.year ? format : format + ' y'
+      ) + ' - ';
   }
 
-  result += `${end.toFormat(format + ' y')}`;
+  result += `${endDateTime.toFormat(format + ' y')}`;
   return result;
 }
 

@@ -125,10 +125,11 @@ export default defineNuxtConfig({
     }
   },
 
-  // Configure Typescripy
+  // Configure Typescript
   typescript: {
     tsConfig: {
-      types: ['node', '@types/lodash']
+      types: ['node', '@types/lodash'],
+      exclude: ['../graphql/codegen/operations.ts']
     }
   }
 });
