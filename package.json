@@ -28,6 +28,7 @@
     "@nuxtjs/eslint-config-typescript": "^11.0.0",
     "@nuxtjs/tailwindcss": "^6.1.2",
     "@pinia/testing": "^0.0.14",
+    "@rollup/plugin-graphql": "^2.0.2",
     "@tailwindcss/forms": "^0.5.3",
     "@testing-library/vue": "^6.6.1",
     "@types/humanize-duration": "^3.27.1",

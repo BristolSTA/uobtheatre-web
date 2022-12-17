@@ -3,6 +3,7 @@ import { Router, _RouteLocationBase } from 'vue-router';
 import { vi } from 'vitest';
 import { useApollo as originalUseApollo } from '@nuxtjs/apollo/dist/runtime/composables';
 import { merge } from 'lodash';
+import { createTestingPinia } from '@pinia/testing';
 
 //@ts-ignore
 globalThis.defineAppConfig = (options: any) => options;
@@ -18,6 +19,7 @@ interface MountOptions {
   apollo?: ApolloMountingOptions;
   routeInfo?: Partial<_RouteLocationBase>;
   mockRouter?: boolean;
+  pinia?: Parameters<typeof createTestingPinia>[0];
 }
 
 /**
@@ -105,15 +107,22 @@ export default function (
   component: Parameters<typeof vtuMount>[0],
   options?: Parameters<typeof vtuMount>[1] & MountOptions
 ) {
+  // Extract out config options
   const {
     mockRouter = true,
     routeInfo,
     apollo,
     shallow = true,
+    pinia,
     ...vtuMountOptions
   } = options ?? {};
 
-  let stubMountOptions = {};
+  let stubMountOptions = {
+    global: {
+      plugins: [createTestingPinia(pinia)] // Install Pinia mock
+    }
+  };
+
   const addStubMountOptions = (options: object) =>
     merge(stubMountOptions, options);
 

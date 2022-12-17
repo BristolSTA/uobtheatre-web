@@ -1,10 +1,10 @@
 import PriceBreakdownTicket from '../PriceBreakdownTicket';
-import bookingFixture from '@/tests/unit/fixtures/Booking';
-import PerformanceSeatGroup from '@/tests/unit/fixtures/PerformanceSeatGroup';
-import ConcessionTypeBookingType from '@/tests/unit/fixtures/ConcessionTypeBookingType';
-import SeatGroup from '@/tests/unit/fixtures/SeatGroup';
-import ConcessionType from '@/tests/unit/fixtures/ConcessionType';
-import Ticket from '@/tests/unit/fixtures/Ticket';
+import bookingFixture from '#testSupport/fixtures/Booking';
+import PerformanceSeatGroup from '#testSupport/fixtures/PerformanceSeatGroup';
+import ConcessionTypeBookingType from '#testSupport/fixtures/ConcessionTypeBookingType';
+import SeatGroup from '#testSupport/fixtures/SeatGroup';
+import ConcessionType from '#testSupport/fixtures/ConcessionType';
+import Ticket from '#testSupport/fixtures/Ticket';
 
 /**
  * Has

@@ -10,7 +10,7 @@ describe('TextInput', () => {
 
   beforeEach(() => {
     component = mount(TextInput, {
-      propsData: {
+      props: {
         name: 'An input',
         value: null
       }

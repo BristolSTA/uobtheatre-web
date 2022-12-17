@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitest/config';
 import Vue from '@vitejs/plugin-vue';
+import graphql from '@rollup/plugin-graphql';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 
@@ -26,9 +27,10 @@ export default defineConfig({
     alias
   },
   plugins: [
+    graphql(), // GraphQL File Loading
     Vue(), // Vue SFC File support
     AutoImport({ imports: ['vue'], dts: false }), // Auto imports vue composable functions (ref, reactive, etc)
-    Components({ dirs: 'components', dts: false }) // Replicates Nuxt's auto component importing
+    Components({ dirs: 'components', dts: false }) // Replicates Nuxt's auto component importing,
   ],
   test: {
     globals: true,

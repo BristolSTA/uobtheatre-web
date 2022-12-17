@@ -31,7 +31,7 @@
 
 <script>
 import { DateTime } from 'luxon';
-import OverviewBox from '../../ui/Card.vue';
+import OverviewBox from '../../ui/UiCard.vue';
 import IconListItem from '@/components/ui/IconListItem.vue';
 
 import { humanDuration, humanDayTime, dateFormat } from '@/utils/datetime';

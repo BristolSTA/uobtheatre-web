@@ -1,9 +1,9 @@
 import { config } from '@vue/test-utils';
-import { createTestingPinia } from '@pinia/testing';
 import { NuxtLinkStub } from './stubs';
+import { vi } from 'vitest';
 
-// Globally use a pinia mock
-config.global.plugins = [createTestingPinia()];
+// Stub out the "defineNuxtComponent" composabel
+vi.stubGlobal('defineNuxtComponent', (opts: any) => opts);
 
 // Globally stub the font awesome icon component
 config.global.stubs = {

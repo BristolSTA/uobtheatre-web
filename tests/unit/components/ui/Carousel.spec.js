@@ -145,7 +145,7 @@ describe('Carousel', function () {
 
     it('autoplays with non default interval', async () => {
       carouselComponent = await mount(Carousel, {
-        propsData: {
+        props: {
           carouselItems,
           autoplay: true,
           pauseOnHover: true,
@@ -193,7 +193,7 @@ describe('Carousel', function () {
   describe('with only one banner production', () => {
     beforeEach(async () => {
       carouselComponent = await mount(Carousel, {
-        propsData: {
+        props: {
           carouselItems: carouselItems.slice(0, 1),
           autoplay: true,
           pauseOnHover: true

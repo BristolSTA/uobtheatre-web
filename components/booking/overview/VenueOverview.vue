@@ -44,7 +44,7 @@
 import gql from 'graphql-tag';
 
 import IconListItem from '../../ui/IconListItem.vue';
-import OverviewBox from '../../ui/Card.vue';
+import OverviewBox from '../../ui/UiCard.vue';
 import AddressFragments from '@/graphql/fragments/AddressFragment.gql';
 
 import LoadingIcon from '~~/components/ui/UiLoadingIcon.vue';
