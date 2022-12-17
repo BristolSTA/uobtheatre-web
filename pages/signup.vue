@@ -4,7 +4,7 @@
       :login-mode="false"
       @go-login="
         () => {
-          $router.replace('/login');
+          useRouter().replace('/login');
         }
       "
     />

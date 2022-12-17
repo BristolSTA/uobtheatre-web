@@ -182,7 +182,7 @@ export default defineNuxtComponent({
           allowOutsideClick: false
         })
         .then(() => {
-          this.$router.push(`/user/booking/${reference}`);
+          useRouter().push(`/user/booking/${reference}`);
         });
     }
   }

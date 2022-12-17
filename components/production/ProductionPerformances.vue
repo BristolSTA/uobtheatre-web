@@ -22,7 +22,7 @@
           :performances="production.performances.edges.map((edge) => edge.node)"
           @select-performance="
             (performance) =>
-              $router.push(
+              useRouter().push(
                 `/production/${production.slug}/book/${performance.id}`
               )
           "

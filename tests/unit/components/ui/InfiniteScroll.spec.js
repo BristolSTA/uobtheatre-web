@@ -1,4 +1,5 @@
-import { mount, flushPromises } from '@vue/test-utils';
+import { flushPromises } from '@vue/test-utils';
+import { mount } from '#testSupport/helpers';
 import { expect, vi } from 'vitest';
 
 import InfiniteScroll from '@/components/ui/InfiniteScroll.vue';
@@ -19,15 +20,15 @@ describe('Infinite Scroll', () => {
     // Reset mocks
     window.addEventListener.mockClear();
     window.removeEventListener.mockClear();
-    vi.stubGlobal('useDefaultApolloClient', () => ({
-      query: (apolloQueryMock = vi.fn(
-        () =>
-          new Promise((resolve) => {
-            promiseResolve = resolve;
-          })
-      ))
-    }));
     infiniteScrollComponent = mount(InfiniteScroll, {
+      apollo: {
+        queryMockFn: (apolloQueryMock = vi.fn(
+          () =>
+            new Promise((resolve) => {
+              promiseResolve = resolve;
+            })
+        ))
+      },
       props: {
         apolloQuery: fakeQuery
       }

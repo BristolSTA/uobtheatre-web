@@ -138,7 +138,7 @@ export default defineNuxtComponent({
           title: 'Booking created!'
         });
 
-        this.$router.replace(`../${this.booking.reference}`);
+        useRouter().replace(`../${this.booking.reference}`);
       } catch (e) {
         this.errors = getValidationErrors(e);
       } finally {

@@ -34,7 +34,7 @@ export default {
   methods: {
     go() {
       if (this.to) {
-        this.$router.push(this.to);
+        useRouter().push(this.to);
       } else {
         this.$emit('click');
       }

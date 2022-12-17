@@ -2,7 +2,7 @@
   <AdminPage title="Create a Production">
     <template #toolbar>
       <UiStaButton colour="green" @click="create"> Create Draft </UiStaButton>
-      <UiStaButton colour="orange" @click="$router.go(-1)">
+      <UiStaButton colour="orange" @click="useRouter().go(-1)">
         Cancel
       </UiStaButton>
     </template>
@@ -54,7 +54,7 @@ export default defineNuxtComponent({
           'production'
         );
         successToast.fire({ title: 'Production Created' });
-        this.$router.push(`${data.production.production.slug}`);
+        useRouter().push(`${data.production.production.slug}`);
       } catch (e) {
         this.errors = getValidationErrors(e);
       }

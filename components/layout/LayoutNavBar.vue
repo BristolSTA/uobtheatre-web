@@ -123,7 +123,6 @@ import ClickableLink from '@/components/ui/ClickableLink.vue';
 import useAuthStore from '@/store/auth';
 
 const userDropdownComponent = ref(null);
-
 const authStore = useAuthStore();
 const appConfig = useAppConfig();
 const navItems = [

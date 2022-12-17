@@ -140,7 +140,7 @@ export default defineNuxtComponent({
           icon: 'success',
           title: 'Email changed!'
         });
-        return this.$router.replace('/user');
+        return useRouter().replace('/user');
       } catch (e) {
         this.errors = getValidationErrors(e);
       }

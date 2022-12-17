@@ -81,7 +81,7 @@ export default defineNuxtComponent({
         this.performance = data.production.performances.edges[0].node;
         if (saveResult) {
           successToast.fire({ title: 'Performance Updated' });
-          return this.$router.push(
+          return useRouter().push(
             `/administration/productions/${this.production.slug}/performances/${this.performance.id}`
           );
         }

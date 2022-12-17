@@ -133,7 +133,7 @@ export default defineNuxtComponent({
     currentDisplayedProductionUrl() {
       return this.currentDisplayedProduction
         ? window.location.host +
-            this.$router.resolve({
+            useRouter().resolve({
               path: `/production/${this.currentDisplayedProduction.slug}`
             }).href
         : '';

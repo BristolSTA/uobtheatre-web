@@ -3,7 +3,7 @@
     <h2 class="text-h3">Reference: {{ booking.reference }}</h2>
     <button
       class="btn p-2 bg-sta-green hover:bg-sta-green-dark rounded transition-colors mb-2"
-      @click="$router.go(-1)"
+      @click="useRouter().go(-1)"
     >
       <font-awesome-icon icon="chevron-left" />
       Edit Booking
@@ -191,7 +191,7 @@ export default defineNuxtComponent({
   },
   async mounted() {
     if (!this.booking.tickets.length) {
-      return this.$router.replace('./');
+      return useRouter().replace('./');
     }
     try {
       this.availableTerminals =
@@ -324,7 +324,7 @@ export default defineNuxtComponent({
     bookingCompleted(bookingData) {
       this.paying = false;
       this.booking.updateFromAPIData(bookingData);
-      this.$router.push(
+      useRouter().push(
         `/box-office/${this.booking.performance.id}/sell/complete`
       );
     }

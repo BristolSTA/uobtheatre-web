@@ -6,7 +6,7 @@
       <template v-if="performancesData">
         <time-grouped-performance-selector
           :performances="performancesData.edges.map((edge) => edge.node)"
-          @select-performance="$router.push(`create/${$event.id}`)"
+          @select-performance="useRouter().push(`create/${$event.id}`)"
         />
         <div class="flex justify-center">
           <pagination-bar

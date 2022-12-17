@@ -102,7 +102,7 @@ export default defineNuxtComponent({
   },
   watch: {
     selectedPerformance(performance) {
-      this.$router.push(`/box-office/${performance.id}`);
+      useRouter().push(`/box-office/${performance.id}`);
     }
   },
   mounted() {

@@ -62,7 +62,7 @@ export default defineNuxtComponent({
         icon: 'success',
         title: 'Email verified!'
       });
-      return this.$router.replace('/login');
+      return useRouter().replace('/login');
     } catch (e) {
       this.errors = getValidationErrors(e);
     }

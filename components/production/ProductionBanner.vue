@@ -4,7 +4,7 @@
   >
     <div class="relative inline-block m-8 w-full max-w-xl md:w-2/3">
       <production-featured-image
-        ref="featured-image"
+        data-test="featured-image"
         class="p-4 w-full sm:p-8"
         :image-object="production.featuredImage"
         :alt="`${production.name} feature image`"
@@ -123,20 +123,6 @@ const props = defineProps({
 
 const venueOverflow = 3;
 
-const venues = computed(() => {
-  let venues: any[] = [];
-  if (hasInPersonPerformances) {
-    venues = lo.uniqBy(
-      props.production.performances.edges.map((edge: any) => {
-        return edge.node.venue;
-      }),
-      'name'
-    );
-  }
-  lo.take(venues, venueOverflow + 1);
-  return venues;
-});
-
 const hasOnlinePerformances = computed(() => {
   return !!props.production.performances.edges.find(
     (edge: any) => edge.node.isOnline
@@ -147,6 +133,20 @@ const hasInPersonPerformances = computed(() => {
   return !!props.production.performances.edges.find(
     (edge: any) => edge.node.isInperson
   );
+});
+
+const venues = computed(() => {
+  let venueList: any[] = [];
+  if (hasInPersonPerformances.value) {
+    venueList = lo.uniqBy(
+      props.production.performances.edges.map((edge: any) => {
+        return edge.node.venue;
+      }),
+      'name'
+    );
+  }
+  lo.take(venueList, venueOverflow + 1);
+  return venueList;
 });
 
 const duration = computed(() => {

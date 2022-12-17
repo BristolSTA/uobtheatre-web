@@ -2,7 +2,7 @@
   <AdminPage :title="`Edit ${production.name}`">
     <template #toolbar>
       <UiStaButton colour="green" @click="save"> Save Changes </UiStaButton>
-      <UiStaButton colour="orange" @click="$router.go(-1)">
+      <UiStaButton colour="orange" @click="useRouter().go(-1)">
         Cancel
       </UiStaButton>
     </template>
@@ -71,7 +71,7 @@ export default defineNuxtComponent({
           }
         });
         this.production = data.production;
-        this.$router.replace(
+        useRouter().replace(
           `/administration/productions/${this.production.slug}`
         );
         successToast.fire({ title: 'Production Updated' });

@@ -51,11 +51,7 @@
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 import { silentErrorHandler } from '@/utils/misc';
 
-const square = {
-  payments: null,
-  request: null,
-  methods: null
-};
+let square;
 
 export default {
   components: { LoadingContainer },
@@ -87,6 +83,11 @@ export default {
     }
   },
   mounted() {
+    square = {
+      payments: null,
+      request: null,
+      methods: null
+    };
     const checkToInit = () => {
       if (typeof Square !== 'undefined') {
         clearInterval(this.timer);

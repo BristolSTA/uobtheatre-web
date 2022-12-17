@@ -73,7 +73,7 @@ export default defineNuxtComponent({
   },
   mounted() {
     if (!this.booking.reference) {
-      return this.$router.push('../');
+      return useRouter().push('../');
     }
 
     if (this.canAutoCheckIn()) {
@@ -130,7 +130,7 @@ export default defineNuxtComponent({
       }
     },
     goToMenu() {
-      this.$router.push(`/box-office/${this.booking.performance.id}`);
+      useRouter().push(`/box-office/${this.booking.performance.id}`);
     }
   }
 });

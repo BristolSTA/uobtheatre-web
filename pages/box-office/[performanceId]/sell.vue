@@ -124,7 +124,7 @@ export default defineNuxtComponent({
     },
     onNextStage() {
       this.detailed = false;
-      this.$router.push(`/box-office/${this.performance.id}/sell/pay`);
+      useRouter().push(`/box-office/${this.performance.id}/sell/pay`);
     }
   }
 });

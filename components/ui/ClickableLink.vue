@@ -20,6 +20,7 @@ export default {
       default: false,
       type: Boolean
     }
-  }
+  },
+  emits: ['click']
 };
 </script>

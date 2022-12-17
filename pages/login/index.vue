@@ -4,7 +4,7 @@
       :login-mode="true"
       @go-signup="
         () => {
-          $router.replace('/signup');
+          useRouter().replace('/signup');
         }
       "
     />

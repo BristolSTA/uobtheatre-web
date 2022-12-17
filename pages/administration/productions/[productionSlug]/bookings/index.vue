@@ -42,7 +42,7 @@
           :key="booking.reference"
           :striped="true"
           :clickable="true"
-          @click="$router.push(`bookings/${booking.reference}`)"
+          @click="useRouter().push(`bookings/${booking.reference}`)"
         >
           <table-row-item>
             {{ booking.user.firstName }}

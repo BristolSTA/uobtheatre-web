@@ -124,7 +124,7 @@ export default defineNuxtComponent({
     },
     cancel() {
       boxOfficeStore.cancelInProgressBooking();
-      this.$router.push(`/box-office/${this.performance.id}`);
+      useRouter().push(`/box-office/${this.performance.id}`);
     }
   }
 });

@@ -12,7 +12,8 @@
           <template v-if="!changingSlug">
             Your production will be at
             {{
-              $router.resolve({ path: `/productions/${computedSlug}` }).fullPath
+              useRouter().resolve({ path: `/productions/${computedSlug}` })
+                .fullPath
             }}
             <UiStaButton
               class="text-sm bg-sta-orange hover:bg-sta-orange-dark transition-colors"

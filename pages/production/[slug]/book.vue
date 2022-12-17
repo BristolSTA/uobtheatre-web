@@ -210,9 +210,9 @@ export default defineNuxtComponent({
         })
         .then(({ isDismissed }) => {
           if (isDismissed) {
-            return this.$router.push('/');
+            return useRouter().push('/');
           }
-          return this.$router.push(`/production/${production.slug}/book`);
+          return useRouter().push(`/production/${production.slug}/book`);
         });
     },
     onChildMount(stageInfo) {
@@ -240,7 +240,7 @@ export default defineNuxtComponent({
         );
       }
 
-      this.$router[replace ? 'replace' : 'push']({
+      useRouter()[replace ? 'replace' : 'push']({
         name: stage.stageInfo.routeName,
         hash: '#booking-view',
         params: {

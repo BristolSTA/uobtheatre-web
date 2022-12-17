@@ -281,7 +281,7 @@ export default defineNuxtComponent({
         list.push({
           icon: 'list-ul',
           action: () =>
-            this.$router.push(
+            useRouter().push(
               `/administration/productions/${this.production.slug}/permissions`
             ),
           text: 'Edit Permissions'

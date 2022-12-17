@@ -4,6 +4,7 @@ import { vi } from 'vitest';
 import { useApollo as originalUseApollo } from '@nuxtjs/apollo/dist/runtime/composables';
 import { merge } from 'lodash';
 import { createTestingPinia } from '@pinia/testing';
+import publicConfig from '@/config.public';
 
 //@ts-ignore
 globalThis.defineAppConfig = (options: any) => options;
@@ -13,6 +14,8 @@ import appConfig from '@/app.config';
 interface ApolloMountingOptions {
   mutationResponses?: object[];
   queryResponses?: object[];
+  mutationMockFn?: () => Promise<any>;
+  queryMockFn?: () => Promise<any>;
 }
 
 interface MountOptions {
@@ -27,7 +30,12 @@ interface MountOptions {
  */
 function registerApolloStub(mountingOptions: ApolloMountingOptions) {
   // Compose the client mock
-  const { mutationResponses = [], queryResponses = [] } = mountingOptions;
+  const {
+    mutationResponses = [],
+    queryResponses = [],
+    queryMockFn,
+    mutationMockFn
+  } = mountingOptions;
 
   const queryMock = vi.fn((options): Promise<any> => {
     if (queryResponses[queryMock.mock.calls.length - 1]) {
@@ -61,8 +69,8 @@ function registerApolloStub(mountingOptions: ApolloMountingOptions) {
 
   const mockClient = {
     mock: { mutationResponses, queryResponses },
-    query: queryMock,
-    mutate: mutationMock
+    query: queryMockFn ?? queryMock,
+    mutate: mutationMockFn ?? mutationMock
   };
 
   // Stub "useApollo" composable
@@ -101,6 +109,36 @@ function registerRouterStub() {
   };
 
   vi.stubGlobal('useRouter', () => routerInner);
+  return {
+    global: {
+      mocks: {
+        useRouter: () => routerInner
+      }
+    }
+  };
+}
+
+/**
+ * Stubs the "useRoute" composable
+ */
+function registerRouteStub(routeOpt: Partial<_RouteLocationBase> | undefined) {
+  const useRouteMock = () => {
+    if (routeOpt) return routeOpt;
+
+    console.error(
+      "useRoute was called, but was not initalised by mount(). Include the 'routeInfo' mouting property."
+    );
+    return {};
+  };
+
+  vi.stubGlobal('useRoute', useRouteMock);
+  return {
+    global: {
+      mocks: {
+        useRoute: useRouteMock
+      }
+    }
+  };
 }
 
 export default function (
@@ -130,13 +168,18 @@ export default function (
   if (apollo) addStubMountOptions(registerApolloStub(apollo));
 
   // Stub out "useRouter" composable
-  if (mockRouter) registerRouterStub();
+  if (mockRouter) addStubMountOptions(registerRouterStub());
 
   // Stub out "useRoute" composable
-  if (routeInfo) vi.stubGlobal('useRoute', () => routeInfo);
+  addStubMountOptions(registerRouteStub(routeInfo));
 
   // Stub out the "useAppConfig" composable
   vi.stubGlobal('useAppConfig', () => appConfig);
+
+  // Stub out the "useRuntimeConfig" composable
+  vi.stubGlobal('useRuntimeConfig', () => ({
+    public: publicConfig()
+  }));
 
   return vtuMount(component, {
     ...merge({}, stubMountOptions, vtuMountOptions),
