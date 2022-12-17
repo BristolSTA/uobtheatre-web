@@ -4,7 +4,7 @@
     <infinite-scroll
       :apollo-query="upcomingProductionsQuery"
       :apollo-variables="{ now: new Date() }"
-      @newData="handleNewData"
+      @new-data="handleNewData"
     >
       <div
         v-if="productions"

@@ -27,6 +27,7 @@ export default {
       type: Object
     }
   },
+  emits: ['update:modelValue'],
   emits: ['blur'],
   methods: {
     onInput(event) {

@@ -32,6 +32,7 @@ export default {
       default: false
     }
   },
+  emits: ['click'],
   computed: {
     isActive() {
       const currentUrl = useRoute().path;

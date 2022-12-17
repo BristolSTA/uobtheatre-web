@@ -65,6 +65,7 @@ export default {
       type: String
     }
   },
+  emits: ['paying', 'cancelled', 'ready', 'nonceRecieved', 'nonceError'],
   data() {
     return {
       squareErrors: [],

@@ -38,6 +38,7 @@ export default {
       default: null,
       type: Number
     }
-  }
+  },
+  emits: ['remove']
 };
 </script>

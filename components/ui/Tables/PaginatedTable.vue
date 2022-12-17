@@ -24,8 +24,8 @@
             v-if="hasNextPage || hasPreviousPage"
             :has-next-page="hasNextPage"
             :has-previous-page="hasPreviousPage"
-            @previousPage="previousPage"
-            @nextPage="nextPage"
+            @previous-page="previousPage"
+            @next-page="nextPage"
           />
         </div>
       </div>
@@ -64,6 +64,7 @@ export default {
       type: Boolean
     }
   },
+  emits: ['nextPage', 'update:offset', 'previousPage'],
   computed: {
     hasNextPage() {
       return this.pageInfo.hasNextPage;

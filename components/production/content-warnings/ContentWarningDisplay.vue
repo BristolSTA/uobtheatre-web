@@ -48,6 +48,7 @@ export default {
       type: Boolean
     }
   },
+  emits: ['update:open'],
   data() {
     return {
       expanded: this.open

@@ -24,7 +24,7 @@
           :price="booking.totalPricePounds"
           @paying="onPaying()"
           @cancelled="progressPopup.close()"
-          @nonceRecieved="onNonceRecieved"
+          @nonce-recieved="onNonceRecieved"
         />
       </div>
       <p class="mt-4 text-center text-sta-gray-lighter">

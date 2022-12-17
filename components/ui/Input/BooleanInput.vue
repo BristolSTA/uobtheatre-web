@@ -25,6 +25,7 @@ export default {
       type: Boolean,
       default: false
     }
-  }
+  },
+  emits: ['change']
 };
 </script>

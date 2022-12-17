@@ -14,13 +14,13 @@
             :current-offset="performancesOffset"
             :page-info="performancesData.pageInfo"
             :disabled="$apollo.queries.performancesData.loading"
-            @previousPage="
+            @previous-page="
               performancesOffset = Math.max(
                 0,
                 performancesOffset - performancesData.edges.length
               )
             "
-            @nextPage="performancesOffset += performancesData.edges.length"
+            @next-page="performancesOffset += performancesData.edges.length"
           />
         </div>
       </template>

@@ -24,6 +24,7 @@ export default {
       default: null
     }
   },
+  emits: ['input'],
   computed: {
     currentlySorted() {
       return (

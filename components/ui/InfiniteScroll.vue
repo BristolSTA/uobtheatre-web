@@ -33,6 +33,7 @@ export default {
       type: String
     }
   },
+  emits: ['loadingChange', 'newData'],
   data() {
     return {
       loading: false,

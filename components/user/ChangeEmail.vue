@@ -48,6 +48,7 @@ export default {
     LoadingContainer,
     TextInput
   },
+  emits: ['cancel'],
   data() {
     return {
       email: null,

@@ -61,6 +61,7 @@ export default {
     LoadingContainer,
     TextInput
   },
+  emits: ['cancel'],
   data() {
     return {
       loading: false,

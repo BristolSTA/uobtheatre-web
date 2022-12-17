@@ -29,6 +29,7 @@ export default {
       type: String
     }
   },
+  emits: ['click'],
   computed: {
     isActive() {
       if (!this.activeKey) {

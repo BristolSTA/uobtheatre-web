@@ -29,8 +29,8 @@
         <pagination-bar
           :page-info="activeBookings.pageInfo"
           :current-offset="activeBookingsOffset"
-          @nextPage="activeBookingsOffset += activeBookings.edges.length"
-          @previousPage="
+          @next-page="activeBookingsOffset += activeBookings.edges.length"
+          @previous-page="
             activeBookingsOffset = Math.max(
               activeBookingsOffset - activeBookings.edges.length,
               0
@@ -52,8 +52,8 @@
           <pagination-bar
             :page-info="oldBookings.pageInfo"
             :current-offset="oldBookingsOffset"
-            @nextPage="oldBookingsOffset += oldBookings.edges.length"
-            @previousPage="
+            @next-page="oldBookingsOffset += oldBookings.edges.length"
+            @previous-page="
               oldBookingsOffset = Math.max(
                 oldBookingsOffset - oldBookings.edges.length,
                 0

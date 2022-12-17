@@ -31,6 +31,7 @@ export default {
       type: String
     }
   },
+  emits: ['close'],
   methods: {
     go() {
       if (this.to) {

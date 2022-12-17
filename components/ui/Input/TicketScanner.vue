@@ -70,6 +70,7 @@ export default {
       type: [Number, String]
     }
   },
+  emits: ['scanned', 'invalidCode'],
   data() {
     return {
       showCamera: false

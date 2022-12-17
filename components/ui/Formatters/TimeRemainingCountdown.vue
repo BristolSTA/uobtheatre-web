@@ -21,6 +21,7 @@ export default {
       type: String
     }
   },
+  emits: ['finished'],
   data() {
     return {
       remainingDuration: null,

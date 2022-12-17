@@ -73,15 +73,15 @@ export default {
       type: Object
     }
   },
-  methods: {
-    dateFormat
-  },
   computed: {
     fullName() {
       return this.user
         ? lo.join([this.user.firstName, this.user.lastName], ' ')
         : null;
     }
+  },
+  methods: {
+    dateFormat
   }
 };
 </script>

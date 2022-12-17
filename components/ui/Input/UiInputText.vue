@@ -35,7 +35,7 @@ export default {
   inheritAttrs: false,
   props: {
     modelValue: {
-      required: false,
+      default: null,
       type: [String]
     },
     inputClass: {
@@ -75,6 +75,7 @@ export default {
       type: Boolean
     }
   },
+  emits: ['focus', 'blur', 'change', 'update:modelValue'],
   computed: {
     inputId() {
       return (

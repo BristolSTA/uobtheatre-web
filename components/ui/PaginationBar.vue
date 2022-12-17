@@ -125,6 +125,7 @@ export default {
       type: String
     }
   },
+  emits: ['previousPage', 'nextPage', 'gotoPage'],
   computed: {
     canGoBackward() {
       return (
