@@ -1,13 +1,91 @@
 import { mount as vtuMount } from '@vue/test-utils';
 import { Router, _RouteLocationBase } from 'vue-router';
 import { vi } from 'vitest';
+import { useApollo as originalUseApollo } from '@nuxtjs/apollo/dist/runtime/composables';
+import { merge } from 'lodash';
 
-interface ApolloMountingOptions {}
+//@ts-ignore
+globalThis.defineAppConfig = (options: any) => options;
+// vi.stubGlobal('defineAppConfig', (options: any) => options);
+import appConfig from '@/app.config';
+
+interface ApolloMountingOptions {
+  mutationResponses?: object[];
+  queryResponses?: object[];
+}
 
 interface MountOptions {
   apollo?: ApolloMountingOptions;
   routeInfo?: Partial<_RouteLocationBase>;
   mockRouter?: boolean;
+}
+
+/**
+ * Stubs the "useApollo" composable and "$apollo" property to mock responses to calls
+ */
+function registerApolloStub(mountingOptions: ApolloMountingOptions) {
+  // Compose the client mock
+  const { mutationResponses = [], queryResponses = [] } = mountingOptions;
+
+  const queryMock = vi.fn((options): Promise<any> => {
+    if (queryResponses[queryMock.mock.calls.length - 1]) {
+      return Promise.resolve(queryResponses[queryMock.mock.calls.length - 1]);
+    }
+
+    console.warn(
+      `Unhandled apollo query. ${
+        queryMock.mock.calls.length - 1
+      } previous calls, but only ${queryResponses.length} in stack`,
+      options.query
+    );
+    return Promise.resolve();
+  });
+
+  const mutationMock = vi.fn((options): Promise<any> => {
+    if (mutationResponses[mutationMock.mock.calls.length - 1]) {
+      return Promise.resolve(
+        mutationResponses[mutationMock.mock.calls.length - 1]
+      );
+    }
+
+    console.warn(
+      `Unhandled apollo mutation. ${
+        mutationMock.mock.calls.length - 1
+      } previous calls, but only ${mutationResponses.length} in stack`,
+      options.mutation
+    );
+    return Promise.resolve();
+  });
+
+  const mockClient = {
+    mock: { mutationResponses, queryResponses },
+    query: queryMock,
+    mutate: mutationMock
+  };
+
+  // Stub "useApollo" composable
+  const useApolloInner: ReturnType<typeof originalUseApollo> = {
+    getToken: vi.fn().mockResolvedValue(null),
+    clients: undefined,
+    onLogin: vi.fn().mockResolvedValue(null),
+    onLogout: vi.fn().mockResolvedValue(null)
+  };
+
+  vi.stubGlobal('useApollo', () => useApolloInner);
+
+  // Stub "useApolloClient" composable
+  vi.stubGlobal('useApolloClient', () => ({
+    resolveClient: vi.fn(() => mockClient),
+    client: mockClient
+  }));
+
+  return {
+    global: {
+      mocks: {
+        $apollo: mockClient
+      }
+    }
+  };
 }
 
 /**
@@ -30,9 +108,17 @@ export default function (
   const {
     mockRouter = true,
     routeInfo,
+    apollo,
     shallow = true,
     ...vtuMountOptions
   } = options ?? {};
+
+  let stubMountOptions = {};
+  const addStubMountOptions = (options: object) =>
+    merge(stubMountOptions, options);
+
+  // Mock apollo functionality
+  if (apollo) addStubMountOptions(registerApolloStub(apollo));
 
   // Stub out "useRouter" composable
   if (mockRouter) registerRouterStub();
@@ -40,5 +126,11 @@ export default function (
   // Stub out "useRoute" composable
   if (routeInfo) vi.stubGlobal('useRoute', () => routeInfo);
 
-  return vtuMount(component, { ...vtuMountOptions, shallow });
+  // Stub out the "useAppConfig" composable
+  vi.stubGlobal('useAppConfig', () => appConfig);
+
+  return vtuMount(component, {
+    ...merge({}, stubMountOptions, vtuMountOptions),
+    shallow
+  });
 }

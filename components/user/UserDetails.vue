@@ -95,7 +95,7 @@
           <p class="mt-2">
             Want to delete your account? Get in touch at
             <!-- eslint-disable-next-line vue/no-v-html -->
-            <span v-html="useAppConfig().support_email" />
+            <span v-html="appConfig.support_email" />
           </p>
         </div>
       </form>
@@ -114,7 +114,6 @@
 <script>
 import gql from 'graphql-tag';
 import LoadingContainer from '../ui/LoadingContainer.vue';
-import NonFieldError from '../ui/UiNonFieldError.vue';
 import ChangeEmail from './ChangeEmail.vue';
 import ChangePassword from './ChangePassword.vue';
 import TextInput from '~~/components/ui/Input/UiInputText.vue';
@@ -127,8 +126,7 @@ export default {
     TextInput,
     ChangePassword,
     ChangeEmail,
-    LoadingContainer,
-    NonFieldError
+    LoadingContainer
   },
   props: {
     user: {
@@ -145,7 +143,9 @@ export default {
       lastName: this.user.lastName,
 
       loading: false,
-      errors: null
+      errors: null,
+
+      appConfig: useAppConfig()
     };
   },
   methods: {
