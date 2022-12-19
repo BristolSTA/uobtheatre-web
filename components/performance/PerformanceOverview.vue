@@ -65,6 +65,7 @@ export default {
       type: String
     }
   },
+  emits: ['select'],
   computed: {
     disabledReason() {
       if (this.performance.soldOut) {

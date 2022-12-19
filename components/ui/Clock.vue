@@ -8,6 +8,7 @@ export function getZeroPad(n) {
 }
 
 export default {
+  emits: ['time'],
   data() {
     return {
       timer: null,

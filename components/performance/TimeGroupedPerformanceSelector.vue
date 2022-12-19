@@ -38,6 +38,7 @@ export default {
       required: true
     }
   },
+  emits: ['select-performance'],
   computed: {
     groupedPerformances() {
       return lo

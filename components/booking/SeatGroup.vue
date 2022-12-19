@@ -146,6 +146,7 @@ export default {
       type: Boolean
     }
   },
+  emits: ['add-ticket', 'set-tickets', 'remove-ticket', 'select-location'],
   computed: {
     orderedConcessionTypes() {
       return lo.sortBy(this.ticketOption.concessionTypes, 'price').reverse();

@@ -16,6 +16,7 @@ export default {
       type: Boolean
     }
   },
+  emits: ['click'],
   computed: {
     classes() {
       const classes = [];

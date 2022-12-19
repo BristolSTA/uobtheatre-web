@@ -60,6 +60,7 @@ export default {
       type: Number
     }
   },
+  emits: ['request-update'],
   data() {
     return {
       expanded: true,

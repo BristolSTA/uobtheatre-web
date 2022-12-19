@@ -3,7 +3,7 @@
     <BoxOfficeCameraScanner
       :on="!cameraOff"
       class="bg-gray-800"
-      @invalidCode="onInvalidCode"
+      @invalid-code="onInvalidCode"
       @scanned="onScan"
       @close="$emit('close')"
     />
@@ -15,7 +15,7 @@
         :ticket="checkedInData.ticket"
         :scan-data="checkedInData.scanData"
         @close="closeNotificaton"
-        @checkInAll="checkInAll"
+        @check-in-all="checkInAll"
       />
     </div>
     <div class="absolute mt-4 md:static">
@@ -55,6 +55,7 @@ export default {
       required: true
     }
   },
+  emits: ['close', 'scanned'],
   data() {
     return {
       cameraOff: false,

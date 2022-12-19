@@ -76,6 +76,7 @@ export default {
       type: Number
     }
   },
+emits: ['change'],
   computed: {
     performanceMinsAway() {
       const timeDiff = new Date(this.booking.performance.start) - Date.now();

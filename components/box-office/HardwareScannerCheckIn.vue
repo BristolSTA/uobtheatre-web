@@ -4,7 +4,7 @@
       ref="scanInput"
       v-model="scannedCode"
       @scanned="checkTicket"
-      @invalidCode="$emit('invalidCode')"
+      @invalid-code="$emit('invalidCode')"
     />
     <check-in-notification
       v-if="checkedInData.success !== undefined"
@@ -14,7 +14,7 @@
       :ticket="checkedInData.ticket"
       :scan-data="checkedInData.scanData"
       @close="closeNotificaton"
-      @checkInAll="checkInAll"
+      @check-in-all="checkInAll"
     />
   </div>
 </template>
@@ -45,6 +45,7 @@ export default {
       type: [Number, String]
     }
   },
+  emits: ['invalidCode', 'scanned'],
   data() {
     return {
       scannedCode: null,

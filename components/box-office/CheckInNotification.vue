@@ -148,6 +148,7 @@ export default {
       default: null
     }
   },
+  emits: ['close', 'checkInAll'],
   computed: {
     bookingInstance() {
       return Booking.fromAPIData(this.booking);

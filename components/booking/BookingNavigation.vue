@@ -36,6 +36,7 @@ export default {
       type: Booking
     }
   },
+  emits: ['goto-stage'],
   computed: {
     applicableStages() {
       return Stages.filter((stageComponent) => {

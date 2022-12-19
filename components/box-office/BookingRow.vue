@@ -50,6 +50,7 @@ export default {
       required: true,
       type: Number
     }
-  }
+  },
+  emits: ['select-booking']
 };
 </script>

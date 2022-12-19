@@ -27,8 +27,7 @@ export default {
       type: Object
     }
   },
-  emits: ['update:modelValue'],
-  emits: ['blur'],
+  emits: ['update:modelValue', 'blur'],
   methods: {
     onInput(event) {
       this.$emit('update:modelValue', event);

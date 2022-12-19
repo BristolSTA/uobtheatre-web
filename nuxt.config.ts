@@ -1,6 +1,6 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 import publicConfig from './config.public';
-// import eslintPlugin from 'vite-plugin-eslint';
+import eslintPlugin from 'vite-plugin-eslint';
 
 // Define CSS Files to Bundle
 const cssFiles = [
@@ -85,7 +85,7 @@ export default defineNuxtConfig({
 
   // Vite configuration
   vite: {
-    // plugins: [eslintPlugin()]
+    plugins: [eslintPlugin()]
   },
 
   // Disable Server-Side-Rendering

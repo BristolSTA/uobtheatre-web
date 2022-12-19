@@ -37,6 +37,7 @@ export default {
       type: String
     }
   },
+  emits: ['input', 'invalidCode', 'scanned'],
   data() {
     return {
       placeholder: 'Scan a Ticket...',

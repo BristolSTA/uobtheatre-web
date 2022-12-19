@@ -178,7 +178,9 @@ export default {
           title: 'Details updated!',
           position: 'bottom-end'
         });
+        // eslint-disable-next-line vue/no-mutating-props
         this.user.firstName = this.firstName;
+        // eslint-disable-next-line vue/no-mutating-props
         this.user.lastName = this.lastName;
         this.editing = false;
       } catch (e) {

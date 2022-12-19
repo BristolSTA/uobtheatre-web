@@ -10,7 +10,7 @@
       <BoxOfficeCameraScanner
         v-else
         @scanned="$emit('scanned', $event)"
-        @invalidCode="$emit('invalidCode')"
+        @invalid-code="$emit('invalidCode')"
         @close="showCamera = false"
       />
     </template>
@@ -19,12 +19,12 @@
         v-if="checkInMode"
         :performance-id="performanceId"
         @scanned="$emit('scanned', $event)"
-        @invalidCode="$emit('invalidCode')"
+        @invalid-code="$emit('invalidCode')"
       />
       <hardware-scanner
         v-else
         @scanned="$emit('scanned', $event)"
-        @invalidCode="$emit('invalidCode')"
+        @invalid-code="$emit('invalidCode')"
       />
     </template>
 

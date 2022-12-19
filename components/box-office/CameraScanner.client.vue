@@ -42,6 +42,7 @@ export default {
       default: true
     }
   },
+  emits: ['close', 'ready', 'unable', 'scanned', 'invalidCode'],
   data() {
     return {
       error: null,

@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div class="space-y-2">
     <UiCard title="Venue">
@@ -307,6 +308,7 @@ export default {
       required: true
     }
   },
+  emits: ['update:errors'],
   data() {
     return {
       ignoredExisitingPerformances: false,
@@ -401,6 +403,7 @@ export default {
           (performance) => performance.intervalDurationMins
         )?.intervalDurationMins;
         if (this.performance.intervalDurationMins === null && intervalLength) {
+          // eslint-disable-next-line vue/no-mutating-props
           this.performance.intervalDurationMins = intervalLength;
         }
       }
@@ -712,6 +715,7 @@ export default {
       const currentNum = this.performance.discounts?.edges
         ? this.performance.discounts.edges.length
         : 0;
+      // eslint-disable-next-line vue/no-mutating-props
       this.performance.discounts = {
         edges: [
           ...(this.performance.discounts?.edges || []),
@@ -736,6 +740,7 @@ export default {
     },
     async deleteConcession(discount) {
       // Remove from array
+      // eslint-disable-next-line vue/no-mutating-props
       this.performance.discounts = {
         edges: this.discounts.edges.filter((edge) => edge.node !== discount)
       };

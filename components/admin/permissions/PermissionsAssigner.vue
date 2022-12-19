@@ -124,6 +124,7 @@ export default {
       required: true
     }
   },
+  emits: ['add', 'remove'],
   data() {
     return {
       newUser: {

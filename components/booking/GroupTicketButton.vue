@@ -30,6 +30,7 @@ export default {
       type: Object
     }
   },
+  emits: ['add-discount-tickets'],
   methods: {
     addTickets() {
       this.$emit('add-discount-tickets');

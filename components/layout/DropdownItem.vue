@@ -2,7 +2,7 @@
   <NuxtLink
     class="row focus:shadow-outline flex items-start p-2 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 bg-transparent rounded-lg focus:outline-none"
     :to="route"
-    @click.native="$emit('click')"
+    @click="$emit('click')"
   >
     <div
       v-if="icon"
@@ -40,6 +40,7 @@ export default {
       required: true,
       type: [Object, String]
     }
-  }
+  },
+  emits: ['click']
 };
 </script>

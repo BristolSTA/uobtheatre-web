@@ -19,6 +19,7 @@
 
 <script>
 export default {
+  emits: ['close'],
   mounted() {
     new Audio('/audio/beep_negative.mp3').play();
   }

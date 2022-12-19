@@ -76,6 +76,7 @@ export default {
       type: Boolean
     }
   },
+  emits: ['remove', 'update:name', 'update:description'],
   data() {
     return {
       editing: false

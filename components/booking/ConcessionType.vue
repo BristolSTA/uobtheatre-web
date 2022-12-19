@@ -82,6 +82,7 @@ export default {
       type: Boolean
     }
   },
+  emits: ['set-tickets', 'add-ticket', 'remove-ticket'],
   computed: {
     numTickets() {
       return this.currentTickets.filter((ticket) => {

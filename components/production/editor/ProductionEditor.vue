@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div class="space-y-2">
     <UiCard title="Basic Details">
@@ -344,6 +345,7 @@ export default {
       );
     },
     updateWarnings(warning, include, information = null) {
+      // eslint-disable-next-line vue/no-mutating-props
       this.production.contentWarnings = include
         ? [...this.production.contentWarnings, { information, warning }]
         : this.production.contentWarnings.filter(
