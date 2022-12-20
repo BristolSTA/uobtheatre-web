@@ -22,6 +22,7 @@ interface MountOptions {
   apollo?: ApolloMountingOptions;
   routeInfo?: Partial<_RouteLocationBase>;
   mockRouter?: boolean;
+  routerInfo?: Partial<Router>;
   pinia?: Parameters<typeof createTestingPinia>[0];
 }
 
@@ -89,6 +90,22 @@ function registerApolloStub(mountingOptions: ApolloMountingOptions) {
     client: mockClient
   }));
 
+  vi.mock('@vue/apollo-composable', () => ({
+    useQuery: (...args: any[]) => {
+      const useQueryResult = ref<any>(null);
+
+      useApolloClient()
+        .client.query(...args)
+        .then((result) => {
+          useQueryResult.value = result.data;
+        });
+      return {
+        result: useQueryResult
+      };
+    },
+    useMutation: (...args) => useApolloClient().client.mutate(...args)
+  }));
+
   return {
     global: {
       mocks: {
@@ -101,18 +118,23 @@ function registerApolloStub(mountingOptions: ApolloMountingOptions) {
 /**
  * Stubs the "useRouter" composable with mock functions
  */
-function registerRouterStub() {
+function registerRouterStub(routerInfo?: Partial<Router>) {
   // We define the return of useRouter outside of the function so that the mocks remain the same over multiple calls
-  const routerInner: Partial<Router> = {
-    replace: vi.fn().mockResolvedValue(null),
-    push: vi.fn().mockResolvedValue(null)
-  };
+  const routerInner: Partial<Router> = Object.assign(
+    {
+      replace: vi.fn().mockResolvedValue(null),
+      push: vi.fn().mockResolvedValue(null),
+      resolve: vi.fn()
+    },
+    routerInfo
+  );
 
   vi.stubGlobal('useRouter', () => routerInner);
   return {
     global: {
       mocks: {
-        useRouter: () => routerInner
+        useRouter: () => routerInner,
+        $router: routerInner
       }
     }
   };
@@ -135,10 +157,25 @@ function registerRouteStub(routeOpt: Partial<_RouteLocationBase> | undefined) {
   return {
     global: {
       mocks: {
-        useRoute: useRouteMock
+        useRoute: useRouteMock,
+        $route: routeOpt
       }
     }
   };
+}
+
+function registerNuxtComposableStubs() {
+  const stubs = {
+    useHead: vi.fn(),
+    useAppConfig: appConfig,
+    useRuntimeConfig: {
+      public: publicConfig()
+    }
+  };
+
+  for (let [key, stub] of Object.entries(stubs)) {
+    vi.stubGlobal(key, () => stub);
+  }
 }
 
 export default function (
@@ -148,6 +185,7 @@ export default function (
   // Extract out config options
   const {
     mockRouter = true,
+    routerInfo,
     routeInfo,
     apollo,
     shallow = true,
@@ -168,18 +206,13 @@ export default function (
   if (apollo) addStubMountOptions(registerApolloStub(apollo));
 
   // Stub out "useRouter" composable
-  if (mockRouter) addStubMountOptions(registerRouterStub());
+  if (mockRouter || routerInfo)
+    addStubMountOptions(registerRouterStub(routerInfo));
 
   // Stub out "useRoute" composable
   addStubMountOptions(registerRouteStub(routeInfo));
 
-  // Stub out the "useAppConfig" composable
-  vi.stubGlobal('useAppConfig', () => appConfig);
-
-  // Stub out the "useRuntimeConfig" composable
-  vi.stubGlobal('useRuntimeConfig', () => ({
-    public: publicConfig()
-  }));
+  registerNuxtComposableStubs();
 
   return vtuMount(component, {
     ...merge({}, stubMountOptions, vtuMountOptions),

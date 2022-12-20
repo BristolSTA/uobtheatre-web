@@ -130,9 +130,7 @@ const { result } = useHomepageUpcomingProductionsQuery({
 
 const upcomingProductions = computed(() =>
   result.value?.productions
-    ? result.value.productions.edges
-        .filter((edge) => edge?.node)
-        .map((edge) => edge!.node)
+    ? result.value.productions.edges.map((edge) => edge!.node)
     : []
 );
 
