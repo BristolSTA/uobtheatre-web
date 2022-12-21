@@ -302,7 +302,6 @@ export default defineStore('auth', {
 
       const mutateResponse = await mutate();
       const data = mutateResponse?.data?.verifyAccount;
-
       // Check we got the data we wanted
       if (!data)
         throw new ValidationError(

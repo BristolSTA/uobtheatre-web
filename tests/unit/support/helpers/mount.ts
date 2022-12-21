@@ -24,6 +24,7 @@ interface MountOptions {
   mockRouter?: boolean;
   routerInfo?: Partial<Router>;
   pinia?: Parameters<typeof createTestingPinia>[0];
+  preMount?: () => void;
 }
 
 /**
@@ -170,7 +171,8 @@ function registerNuxtComposableStubs() {
     useAppConfig: appConfig,
     useRuntimeConfig: {
       public: publicConfig()
-    }
+    },
+    definePageMeta: vi.fn()
   };
 
   for (let [key, stub] of Object.entries(stubs)) {
@@ -190,6 +192,7 @@ export default function (
     apollo,
     shallow = true,
     pinia,
+    preMount,
     ...vtuMountOptions
   } = options ?? {};
 
@@ -213,6 +216,8 @@ export default function (
   addStubMountOptions(registerRouteStub(routeInfo));
 
   registerNuxtComposableStubs();
+
+  if (preMount) preMount();
 
   return vtuMount(component, {
     ...merge({}, stubMountOptions, vtuMountOptions),
