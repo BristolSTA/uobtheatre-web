@@ -95,7 +95,7 @@ function registerApolloStub(mountingOptions: ApolloMountingOptions) {
     useQuery: (...args: any[]) => {
       const useQueryResult = ref<any>(null);
 
-      useApolloClient()
+      useApolloClient() //@ts-ignore
         .client.query(...args)
         .then((result) => {
           useQueryResult.value = result.data;
@@ -103,8 +103,8 @@ function registerApolloStub(mountingOptions: ApolloMountingOptions) {
       return {
         result: useQueryResult
       };
-    },
-    useMutation: (...args) => useApolloClient().client.mutate(...args)
+    }, //@ts-ignore
+    useMutation: (...args: any[]) => useApolloClient().client.mutate(...args)
   }));
 
   return {
