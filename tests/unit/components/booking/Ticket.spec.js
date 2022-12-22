@@ -10,9 +10,9 @@ describe('Ticket component', function () {
   let ticketComponent;
   const booking = new Booking();
 
-  beforeAll(() => {
+  beforeAll(async () => {
     booking.updateFromAPIData(BookingFixture());
-    ticketComponent = mount(Ticket, {
+    ticketComponent = await mount(Ticket, {
       props: {
         performance: booking.performance,
         ticket: booking.tickets[0],

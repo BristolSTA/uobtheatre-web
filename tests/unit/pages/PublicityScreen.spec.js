@@ -38,7 +38,7 @@ const prod4 = Production({
 
 describe('Publicity Screen', function () {
   let pageComponent;
-  beforeEach(() => {
+  beforeEach(async () => {
     vi.useFakeTimers('modern');
   });
   afterEach(() => {

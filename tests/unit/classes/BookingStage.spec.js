@@ -4,7 +4,7 @@ import BookingStage from '@/classes/BookingStage';
 describe('BookingStage Class', () => {
   let stage;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     stage = new BookingStage({
       name: 'My Booking Stage',
       routeName: 'my-booking-stage'

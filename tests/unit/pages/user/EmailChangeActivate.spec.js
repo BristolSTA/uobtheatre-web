@@ -14,7 +14,7 @@ describe('Email Change Activate', function () {
   let component;
 
   const mountComponent = async (apolloResponses) => {
-    component = mount(EmailChangeActivate, {
+    component = await mount(EmailChangeActivate, {
       shallow: false,
       apollo: {
         mutationResponses: apolloResponses

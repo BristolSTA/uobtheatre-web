@@ -5,8 +5,8 @@ import PaginationBar from '@/components/ui/PaginationBar.vue';
 
 describe('Pagination Bar', () => {
   let component;
-  beforeEach(() => {
-    component = mount(PaginationBar, {
+  beforeEach(async () => {
+    component = await mount(PaginationBar, {
       props: {
         numberOfPages: 5,
         currentPage: 5,

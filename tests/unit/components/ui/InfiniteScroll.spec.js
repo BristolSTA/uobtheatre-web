@@ -16,11 +16,11 @@ describe('Infinite Scroll', () => {
   vi.spyOn(window, 'addEventListener');
   vi.spyOn(window, 'removeEventListener');
 
-  beforeEach(() => {
+  beforeEach(async () => {
     // Reset mocks
     window.addEventListener.mockClear();
     window.removeEventListener.mockClear();
-    infiniteScrollComponent = mount(InfiniteScroll, {
+    infiniteScrollComponent = await mount(InfiniteScroll, {
       apollo: {
         queryMockFn: (apolloQueryMock = vi.fn(
           () =>

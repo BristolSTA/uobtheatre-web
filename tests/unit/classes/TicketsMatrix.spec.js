@@ -5,7 +5,7 @@ import TicketsMatrix from '@/classes/TicketsMatrix';
 describe('TicketsMatrix', () => {
   let matrix;
   let apiData;
-  beforeEach(() => {
+  beforeEach(async () => {
     apiData = Performance();
     matrix = new TicketsMatrix(apiData);
   });

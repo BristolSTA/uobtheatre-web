@@ -6,8 +6,8 @@ import SocietyTile from '@/components/society/SocietyTile.vue';
 
 describe('Society Tile', () => {
   let societyTileComponent;
-  beforeAll(() => {
-    societyTileComponent = mount(SocietyTile, {
+  beforeAll(async () => {
+    societyTileComponent = await mount(SocietyTile, {
       shallow: false,
       props: {
         society: {

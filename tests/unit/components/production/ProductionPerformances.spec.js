@@ -20,21 +20,21 @@ describe('Production Performances', function () {
     vi.useRealTimers();
   });
 
-  it('shows no performances available if none returned', () => {
-    createWithPerformances([]);
+  it('shows no performances available if none returned', async () => {
+    await createWithPerformances([]);
     expect(performancesContainer.text()).to.contain('No Upcoming Performances');
   });
 
-  it('shows no performances available if none returned', () => {
+  it('shows no performances available if none returned', async () => {
     Date.now = vi.fn(() => new Date(Date.UTC(2021, 1, 1)).valueOf());
-    createWithPerformances([]);
+    await createWithPerformances([]);
     expect(performancesContainer.text()).to.contain(
       'You are currently viewing archive details of an event in the past.'
     );
   });
 
   describe('With performances', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       createWithPerformances([
         // An available in-person & online performance
         {
@@ -104,13 +104,13 @@ describe('Production Performances', function () {
     });
   });
 
-  const createWithPerformances = (performances, productionOverrides) => {
+  const createWithPerformances = async (performances, productionOverrides) => {
     const production = Production(productionOverrides);
     production.performances = GenericNodeConnection(
       performances.map((performance) => Performance(performance))
     );
 
-    performancesContainer = mount(ProductionPerformances, {
+    performancesContainer = await mount(ProductionPerformances, {
       props: {
         production
       },

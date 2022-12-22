@@ -7,8 +7,8 @@ import TicketsMatrix from '@/classes/TicketsMatrix';
 
 describe('Selected Tickets Table', () => {
   let component;
-  beforeEach(() => {
-    component = mount(SelectedTicketsTable, {
+  beforeEach(async () => {
+    component = await mount(SelectedTicketsTable, {
       props: {
         booking: Booking.fromAPIData(FullBooking()),
         ticketMatrix: new TicketsMatrix(FullBooking().performance)

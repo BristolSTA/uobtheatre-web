@@ -12,7 +12,7 @@ import { flushPromises } from '@vue/test-utils';
 
 describe('Change Password', () => {
   it('can update their password', async () => {
-    const component = mount(ChangePassword, {
+    const component = await mount(ChangePassword, {
       shallow: false,
       apollo: {
         mutationResponses: [
@@ -34,7 +34,7 @@ describe('Change Password', () => {
   });
 
   it('can show errors', async () => {
-    const component = mount(ChangePassword, {
+    const component = await mount(ChangePassword, {
       shallow: false,
       apollo: {
         mutationResponses: [

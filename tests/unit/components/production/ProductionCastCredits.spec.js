@@ -98,13 +98,13 @@ describe('Production Cast and Credits', function () {
     expect(castArray.at(1).find('img').exists()).to.be.false;
   });
 
-  const createWithPerformances = (performances, productionOverrides) => {
+  const createWithPerformances = async (performances, productionOverrides) => {
     const production = Production(productionOverrides);
     production.performances = GenericNodeConnection(
       performances.map((performance) => Performance(performance))
     );
 
-    castCreditsContainer = mount(ProductionCastCredits, {
+    castCreditsContainer = await mount(ProductionCastCredits, {
       shallow: false,
       props: {
         production

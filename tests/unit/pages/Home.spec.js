@@ -35,7 +35,7 @@ describe('Home', function () {
   describe('Splashscreen', () => {
     let splashscreenContainer;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       splashscreenContainer = homepageComponent.find('#splashscreen');
     });
 
@@ -87,7 +87,7 @@ describe('Home', function () {
 
   describe("What's On", () => {
     let whatsOnContainer;
-    beforeEach(() => {
+    beforeEach(async () => {
       whatsOnContainer = homepageComponent.find({ ref: 'whatson' });
     });
     it('falls back with no productions', () => {

@@ -10,8 +10,8 @@ import Production from '#testSupport/fixtures/Production';
 describe('Performance Overview', function () {
   let performanceOverviewComponent;
 
-  beforeAll(() => {
-    performanceOverviewComponent = mount(PerformanceOverview, {
+  beforeAll(async () => {
+    performanceOverviewComponent = await mount(PerformanceOverview, {
       shallow: false,
       props: {
         production: Production(),

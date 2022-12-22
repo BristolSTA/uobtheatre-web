@@ -117,13 +117,13 @@ describe('Production Overview', function () {
     expect(overviewContainer.text()).not.to.contain('Medium');
   });
 
-  const createWithPerformances = (performances, productionOverrides) => {
+  const createWithPerformances = async (performances, productionOverrides) => {
     const production = Production(productionOverrides);
     production.performances = GenericNodeConnection(
       performances.map((performance) => Performance(performance))
     );
 
-    overviewContainer = mount(ProductionOverview, {
+    overviewContainer = await mount(ProductionOverview, {
       shallow: false,
       props: {
         production

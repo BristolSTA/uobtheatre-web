@@ -3,7 +3,7 @@ import Errors from '@/classes/Errors';
 
 describe('Errors', () => {
   let errors;
-  beforeEach(() => {
+  beforeEach(async () => {
     errors = new Errors([
       {
         message: 'An general issue',

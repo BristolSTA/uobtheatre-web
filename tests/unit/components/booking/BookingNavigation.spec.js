@@ -8,7 +8,7 @@ describe('Booking Navigation', () => {
   let navigationComponent;
 
   describe('using all stages', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       // Set all the stages to report they should be used
       Stages.forEach((stageComponent) => {
         vi.spyOn(stageComponent.stageInfo, 'shouldBeUsed').mockReturnValue(
@@ -17,7 +17,7 @@ describe('Booking Navigation', () => {
       });
       const booking = new Booking();
       booking.performance = { id: 1 };
-      navigationComponent = mount(BookingNavgiation, {
+      navigationComponent = await mount(BookingNavgiation, {
         props: {
           currentStageIndex: 0,
           production: {
@@ -134,13 +134,13 @@ describe('Booking Navigation', () => {
   });
 
   describe('with optional stage', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       Stages.forEach((stageComponent, index) => {
         vi.spyOn(stageComponent.stageInfo, 'shouldBeUsed').mockReturnValue(
           index !== 1
         );
       });
-      navigationComponent = mount(BookingNavgiation, {
+      navigationComponent = await mount(BookingNavgiation, {
         props: {
           currentStageIndex: 0,
           maxAllowedStageIndex: 0,

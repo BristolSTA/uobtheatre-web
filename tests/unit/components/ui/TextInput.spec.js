@@ -8,8 +8,8 @@ describe('TextInput', () => {
   let component;
   const input = () => component.find('input');
 
-  beforeEach(() => {
-    component = mount(TextInput, {
+  beforeEach(async () => {
+    component = await mount(TextInput, {
       props: {
         name: 'An input',
         value: null

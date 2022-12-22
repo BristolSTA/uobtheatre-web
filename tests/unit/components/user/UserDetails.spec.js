@@ -13,8 +13,8 @@ import { swalToast } from '~/utils/alerts';
 describe('User Details', () => {
   let userDetailsComponent;
 
-  beforeEach(() => {
-    userDetailsComponent = mount(UserDetails, {
+  beforeEach(async () => {
+    userDetailsComponent = await mount(UserDetails, {
       shallow: false,
       props: {
         user: {

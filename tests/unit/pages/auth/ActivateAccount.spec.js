@@ -12,7 +12,7 @@ describe('Activate Account', function () {
 
   it('activates account with valid token', async () => {
     const swalToastStub = vi.spyOn(swalToast, 'fire');
-    component = mount(ActivateAccount, {
+    component = await mount(ActivateAccount, {
       shallow: false,
       routeInfo: {
         params: {
@@ -36,7 +36,7 @@ describe('Activate Account', function () {
   });
 
   it('shows error with invalid token', async () => {
-    component = mount(ActivateAccount, {
+    component = await mount(ActivateAccount, {
       shallow: false,
       routeInfo: {
         params: {

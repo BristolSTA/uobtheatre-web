@@ -6,8 +6,8 @@ import UserOverview from '@/components/booking/overview/UserOverview.vue';
 describe('User Overview', () => {
   let userOverviewComponent;
 
-  beforeEach(() => {
-    userOverviewComponent = mount(UserOverview, {
+  beforeEach(async () => {
+    userOverviewComponent = await mount(UserOverview, {
       shallow: false,
       pinia: {
         initialState: {

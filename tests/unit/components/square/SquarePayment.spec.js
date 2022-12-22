@@ -5,11 +5,11 @@ import SquarePayment from '@/components/square/SquarePayment.vue';
 
 describe('Card Payment', () => {
   let component, squareSDKMock;
-  beforeEach(() => {
+  beforeEach(async () => {
     squareSDKMock = SquareWebSDK();
     vi.stubGlobal('Square', squareSDKMock);
 
-    component = mount(SquarePayment, {
+    component = await mount(SquarePayment, {
       shallow: false,
       props: {
         price: '10.00'

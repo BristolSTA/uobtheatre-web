@@ -7,8 +7,8 @@ import ConcessionType from '@/components/booking/ConcessionType.vue';
 
 describe('Concession Type', () => {
   let concessionTypeComponent;
-  beforeEach(() => {
-    concessionTypeComponent = mount(ConcessionType, {
+  beforeEach(async () => {
+    concessionTypeComponent = await mount(ConcessionType, {
       props: {
         concessionTypeEdge: PerformanceSeatGroup().concessionTypes[0],
         maxAddAllowed: 10,

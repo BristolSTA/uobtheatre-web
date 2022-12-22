@@ -12,7 +12,8 @@ describe('Signup', function () {
       shallow: false,
       global: {
         stubs: [AuthBox]
-      }
+      },
+      routeInfo: {}
     });
     authBoxComponent = signupComponent.findComponent(AuthBox);
     router = useRouter();

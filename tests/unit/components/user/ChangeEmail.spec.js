@@ -8,8 +8,8 @@ import ChangeEmail from '@/components/user/ChangeEmail.vue';
 
 describe('Change Email', () => {
   let component;
-  beforeEach(() => {
-    component = mount(ChangeEmail, {
+  beforeEach(async () => {
+    component = await mount(ChangeEmail, {
       apollo: {
         mutationResponses: [
           GenericApolloResponse(

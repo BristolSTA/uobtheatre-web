@@ -12,8 +12,8 @@ import { flushPromises } from '@vue/test-utils';
 describe('Email Verify', function () {
   let component;
 
-  const mountComponent = (apolloyResponseInner) => {
-    component = mount(EmailVerify, {
+  const mountComponent = async (apolloyResponseInner) => {
+    component = await mount(EmailVerify, {
       apollo: {
         mutationResponses: [
           GenericApolloResponse('verifyAccount', apolloyResponseInner)
@@ -28,7 +28,7 @@ describe('Email Verify', function () {
   };
 
   it('verifies an account with valid token', async () => {
-    mountComponent(GenericMutationResponse());
+    await mountComponent(GenericMutationResponse());
 
     expect(component.text()).to.contain('Verifying email');
 
@@ -39,7 +39,7 @@ describe('Email Verify', function () {
   });
 
   it('shows error with invalid token', async () => {
-    mountComponent(GenericErrorsResponse());
+    await mountComponent(GenericErrorsResponse());
 
     await flushPromises();
     expect(component.text()).to.contain('There was an error');

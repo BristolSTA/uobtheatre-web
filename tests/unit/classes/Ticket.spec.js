@@ -39,7 +39,7 @@ describe('Ticket Class', () => {
     }
   ];
 
-  beforeEach(() => {
+  beforeEach(async () => {
     ticket = new Ticket(
       correctSeatGroup.id,
       correctConcessionTypeEdge.concessionType.id

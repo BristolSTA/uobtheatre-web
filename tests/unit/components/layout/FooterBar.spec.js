@@ -6,8 +6,8 @@ import FooterBar from '@/components/layout/LayoutFooterBar.vue';
 describe('FooterBar', function () {
   let footerBarComponent;
 
-  beforeEach(() => {
-    footerBarComponent = mount(FooterBar, {
+  beforeEach(async () => {
+    footerBarComponent = await mount(FooterBar, {
       shallow: false
     });
   });

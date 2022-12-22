@@ -10,8 +10,8 @@ import Ticket from '@/classes/Ticket';
 
 describe('Ticket Options', () => {
   let component;
-  beforeEach(() => {
-    component = mount(TicketOptions, {
+  beforeEach(async () => {
+    component = await mount(TicketOptions, {
       props: {
         booking: Booking.fromAPIData(FullBooking()),
         ticketMatrix: new TicketsMatrix(FullBooking().performance)
@@ -144,10 +144,10 @@ describe('Ticket Options', () => {
     expect(component.vm.interaction_timer.mock.calls.length).to.eq(1);
   });
 
-  it('calls update API once interaction timer debounced', () => {
+  it('calls update API once interaction timer debounced', async () => {
     vi.spyOn(lo, 'debounce');
 
-    component = mount(TicketOptions, {
+    component = await mount(TicketOptions, {
       props: {
         booking: component.vm.booking,
         ticketMatrix: component.vm.ticketMatrix

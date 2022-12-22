@@ -6,8 +6,8 @@ import ProductionTile from '@/components/production/ProductionTile.vue';
 
 describe('Production Tile', () => {
   let productionTileComponent;
-  beforeAll(() => {
-    productionTileComponent = mount(ProductionTile, {
+  beforeAll(async () => {
+    productionTileComponent = await mount(ProductionTile, {
       shallow: false,
       props: {
         production: {

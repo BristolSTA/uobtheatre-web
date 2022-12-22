@@ -166,8 +166,8 @@ describe('AuthBox', async function () {
   });
 
   describe('Sign Up Section', () => {
-    beforeEach(() => {
-      authBoxComponent = mount(UserAuthBox, {
+    beforeEach(async () => {
+      authBoxComponent = await mount(UserAuthBox, {
         props: { loginMode: false },
         shallow: false,
         routeInfo: {}

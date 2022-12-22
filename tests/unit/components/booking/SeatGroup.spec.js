@@ -11,7 +11,7 @@ describe('Seat Location Component', () => {
   let seatGroupComponent;
   let ticketOption;
   let discounts;
-  beforeEach(() => {
+  beforeEach(async () => {
     const performance = Performance();
 
     const student = {
@@ -33,7 +33,7 @@ describe('Seat Location Component', () => {
       concessionType: student
     });
 
-    seatGroupComponent = mount(SeatGroup, {
+    seatGroupComponent = await mount(SeatGroup, {
       props: {
         expanded: false,
         ticketOption: (ticketOption = performance.ticketOptions[0]),
@@ -176,7 +176,7 @@ describe('Seat Location Component', () => {
     ).to.eq(0);
   });
   describe('sold out group', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       seatGroupComponent.setProps({
         groupCapacityRemaining: 0
       });

@@ -50,7 +50,7 @@ describe('Booking Class', () => {
     bookingAPIData = BookingFixture();
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     booking = new Booking();
     booking.dirty = false;
   });
@@ -118,7 +118,7 @@ describe('Booking Class', () => {
     let ticket2;
     let ticket3;
     let ticket4;
-    beforeEach(() => {
+    beforeEach(async () => {
       ticket1 = fakeTicket(concession100Edge);
       ticket2 = fakeTicket(concession1000Edge);
       ticket3 = fakeTicket(concession500Edge);

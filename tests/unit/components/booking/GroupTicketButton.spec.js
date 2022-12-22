@@ -6,7 +6,7 @@ import GroupTicketButton from '@/components/booking/GroupTicketButton.vue';
 
 describe('Group Ticket Button', () => {
   let buttonComponent;
-  beforeEach(() => {
+  beforeEach(async () => {
     const performance = Performance();
 
     const student = {
@@ -26,7 +26,7 @@ describe('Group Ticket Button', () => {
       concessionType: student
     });
 
-    buttonComponent = mount(GroupTicketButton, {
+    buttonComponent = await mount(GroupTicketButton, {
       props: {
         discount
       }
