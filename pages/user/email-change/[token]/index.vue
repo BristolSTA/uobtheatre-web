@@ -67,7 +67,8 @@ export default defineNuxtComponent({
     return {
       password: null,
       addedOk: false,
-      loading: true
+      loading: true,
+      errors: null
     };
   },
   head: {

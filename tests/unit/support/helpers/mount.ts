@@ -180,7 +180,7 @@ function registerNuxtComposableStubs() {
   }
 }
 
-export default function (
+export default async function (
   component: Parameters<typeof vtuMount>[0],
   options?: Parameters<typeof vtuMount>[1] & MountOptions
 ) {
@@ -219,8 +219,18 @@ export default function (
 
   if (preMount) preMount();
 
-  return vtuMount(component, {
-    ...merge({}, stubMountOptions, vtuMountOptions),
+  let dataOpt = vtuMountOptions.data ? vtuMountOptions.data() : {};
+  if (component.asyncData) {
+    const data = await component.asyncData();
+    Object.assign(dataOpt, data);
+  }
+
+  const mountedComponent = vtuMount(component, {
+    ...merge({}, stubMountOptions, vtuMountOptions, {
+      data: () => dataOpt
+    }),
     shallow
   });
+
+  return mountedComponent;
 }
