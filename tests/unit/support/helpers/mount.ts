@@ -91,6 +91,13 @@ function registerApolloStub(mountingOptions: ApolloMountingOptions) {
     client: mockClient
   }));
 
+  vi.stubGlobal('useAsyncQuery', async (opt: any) => {
+    const response = await mockClient.query(opt);
+    return {
+      data: ref(response.data)
+    };
+  });
+
   vi.mock('@vue/apollo-composable', () => ({
     useQuery: (...args: any[]) => {
       const useQueryResult = ref<any>(null);
@@ -168,15 +175,16 @@ function registerRouteStub(routeOpt: Partial<_RouteLocationBase> | undefined) {
 function registerNuxtComposableStubs() {
   const stubs = {
     useHead: vi.fn(),
-    useAppConfig: appConfig,
-    useRuntimeConfig: {
+    useAppConfig: () => appConfig,
+    useRuntimeConfig: () => ({
       public: publicConfig()
-    },
-    definePageMeta: vi.fn()
+    }),
+    definePageMeta: vi.fn(),
+    createError: vi.fn((message) => new Error(message))
   };
 
   for (let [key, stub] of Object.entries(stubs)) {
-    vi.stubGlobal(key, () => stub);
+    vi.stubGlobal(key, stub);
   }
 }
 

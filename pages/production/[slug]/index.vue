@@ -93,6 +93,7 @@ export default defineNuxtComponent({
         slug: useRoute().params.slug
       }
     });
+
     const data = result.data;
     const production = data.value.production;
     if (!production) {

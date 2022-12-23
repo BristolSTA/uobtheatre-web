@@ -116,9 +116,10 @@ export default defineNuxtComponent({
     if (!society) {
       throw createError({
         statusCode: 404,
-        message: 'This society does not exists'
+        message: 'This society does not exist'
       });
     }
+
     return {
       society
     };
