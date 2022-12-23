@@ -103,7 +103,7 @@ describe('Society page', function () {
     });
   });
 
-  it.only('handles invalid society', async () => {
+  it('handles invalid society', async () => {
     await expect(async () => {
       await mount(Society, {
         apollo: {

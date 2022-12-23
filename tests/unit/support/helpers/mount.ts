@@ -1,4 +1,4 @@
-import { mount as vtuMount } from '@vue/test-utils';
+import { flushPromises, mount as vtuMount } from '@vue/test-utils';
 import { Router, _RouteLocationBase } from 'vue-router';
 import { vi } from 'vitest';
 import { useApollo as originalUseApollo } from '@nuxtjs/apollo/dist/runtime/composables';
@@ -233,12 +233,13 @@ export default async function (
     Object.assign(dataOpt, data);
   }
 
-  const mountedComponent = vtuMount(component, {
+  const mountedComponent = await vtuMount(component, {
     ...merge({}, stubMountOptions, vtuMountOptions, {
       data: () => dataOpt
     }),
     shallow
   });
+  await flushPromises();
 
   return mountedComponent;
 }

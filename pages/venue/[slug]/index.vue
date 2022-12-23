@@ -94,11 +94,12 @@ const { data } = await useAsyncQuery<VenuePageDetailsQuery>(
   { slug: useRoute().params.slug } as VenuePageDetailsQueryVariables
 );
 
-if (!data.value?.venue)
+if (!data.value?.venue) {
   throw createError({
     statusCode: 404,
     message: 'This venue does not exist'
   });
+}
 
 const venue = data.value.venue;
 
