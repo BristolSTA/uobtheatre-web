@@ -100,7 +100,7 @@ import humanizeDuration from 'humanize-duration';
 import lo from 'lodash';
 
 import ProductionFeaturedImage from './ProductionFeaturedImage.vue';
-import IconListItem from '@/components/ui/IconListItem.vue';
+import IconListItem from '~~/components/ui/UiIconListItem.vue';
 
 const emit = defineEmits<{
   (event: 'on-buy-tickets-click'): void;

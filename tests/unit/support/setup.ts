@@ -14,7 +14,8 @@ vi.stubGlobal('definePageMeta', vi.fn());
 config.global.stubs = {
   'font-awesome-icon': true,
   Head: true,
-  Title: true
+  Title: true,
+  Meta: true
 };
 
 // Globally register some fake Nuxt components

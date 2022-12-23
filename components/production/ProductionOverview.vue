@@ -85,8 +85,8 @@
 import Modal from '../ui/Modal.vue';
 import ContentWarningsDisplay from './content-warnings/ContentWarningsDisplay.vue';
 import ProductionPosterImage from './ProductionPosterImage.vue';
-import TipTapOutput from '@/components/ui/TipTapOutput.vue';
-import IconListItem from '@/components/ui/IconListItem.vue';
+import TipTapOutput from '~~/components/ui/UiTipTapOutput.vue';
+import IconListItem from '~~/components/ui/UiIconListItem.vue';
 export default {
   components: {
     IconListItem,

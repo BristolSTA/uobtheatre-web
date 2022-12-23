@@ -88,7 +88,7 @@ import QrcodeVue from 'qrcode.vue';
 import VenueUpcomingProductionsQuery from '@/graphql/queries/publicity-screen/VenueUpcomingProductions.gql';
 import UpcomingProductionsQuery from '@/graphql/queries/publicity-screen/AllUpcomingProductions.gql';
 import { displayStartEnd } from '~~/utils/datetime';
-import IconListItem from '@/components/ui/IconListItem.vue';
+import IconListItem from '~~/components/ui/UiIconListItem.vue';
 import HaveTicketsReadyScreen from '@/components/publicity-screens/HaveTicketsReadyScreen.vue';
 import SoldOutScreen from '@/components/publicity-screens/SoldOutScreen.vue';
 import WelcomeScreen from '@/components/publicity-screens/WelcomeScreen.vue';

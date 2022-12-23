@@ -112,7 +112,7 @@
 import { DateTime } from 'luxon';
 
 import Alert from '../ui/Alert.vue';
-import IconListItem from '@/components/ui/IconListItem.vue';
+import IconListItem from '~~/components/ui/UiIconListItem.vue';
 import { humanDuration, dateFormat } from '@/utils/datetime';
 import Clock from '@/components/ui/Clock.vue';
 import { BoxOfficePerformanceTicketBreakdownDocument } from '~~/graphql/codegen/operations';

@@ -43,7 +43,7 @@
 <script>
 import gql from 'graphql-tag';
 
-import IconListItem from '../../ui/IconListItem.vue';
+import IconListItem from '../../ui/UiIconListItem.vue';
 import OverviewBox from '../../ui/UiCard.vue';
 import AddressFragments from '@/graphql/fragments/AddressFragment.gql';
 

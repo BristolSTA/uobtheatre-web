@@ -35,7 +35,7 @@ describe('Production Performances', function () {
 
   describe('With performances', () => {
     beforeEach(async () => {
-      createWithPerformances([
+      await createWithPerformances([
         // An available in-person & online performance
         {
           doorsOpen: DateTime.fromISO('2020-11-28T15:00:00'),

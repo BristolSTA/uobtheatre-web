@@ -18,7 +18,7 @@
         class="w-full max-w-2xl h-full md:m-4 lg:w-2/3"
       >
         <img
-          ref="image"
+          data-test="image"
           class="p-3 w-full md:p-0"
           :src="venue.image.url"
           :alt="`${venue.name} image`"
@@ -40,7 +40,7 @@
               <tr>
                 <th class="align-top pr-2">Address:</th>
                 <td class="align-top">
-                  <div v-if="venue.address" ref="address">
+                  <div v-if="venue.address" data-test="address-details">
                     <p v-if="venue.address.buildingName">
                       {{ venue.address.buildingName }}
                     </p>
@@ -73,7 +73,7 @@
         "
         class="flex justify-center w-full h-96 lg:mb-4 lg:w-3/5"
       >
-        <UiMap class="w-full" @initalised="initMap" />
+        <UiMap class="w-full" data-test="map" @initalised="initMap" />
       </div>
     </div>
   </div>

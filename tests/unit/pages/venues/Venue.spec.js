@@ -1,60 +1,78 @@
 import { expect } from 'vitest';
 
-import { fixTextSpacing, mount } from '#testSupport/helpers';
+import {
+  fixTextSpacing,
+  mount,
+  setCompositionData
+} from '#testSupport/helpers';
 import { GenericApolloResponse } from '#testSupport/helpers/api';
 
 import FakeVenue from '#testSupport/fixtures/Venue';
+import FakeAddress from '#testSupport/fixtures/Address';
 
 import Venue from '@/pages/venue/[slug]/index.vue';
+import { flushPromises } from '@vue/test-utils';
 
 describe('Venue page', function () {
   let venuePageComponent;
-  let address;
+  let addressContainer;
 
-  beforeEach(async () => {
-    venuePageComponent = await mount(Venue, {
-      apollo: {
-        queryResponses: [GenericApolloResponse('venue', FakeVenue())]
+  async function mountComponent(addressChanges = {}) {
+    venuePageComponent = await mount(
+      {
+        template: '<Suspense><Index /></Suspense>'
       },
-      routeInfo: {
-        params: {
-          slug: 'anson-theatre'
+      {
+        shallow: false,
+        global: {
+          components: { Index: Venue },
+          stubs: ['UiMap']
+        },
+        apollo: {
+          queryResponses: [
+            GenericApolloResponse(
+              'venue',
+              FakeVenue({ address: FakeAddress(addressChanges) })
+            )
+          ]
+        },
+        routeInfo: {
+          params: {
+            slug: 'anson-theatre'
+          }
         }
       }
-    });
+    );
+    await flushPromises();
+    await venuePageComponent.vm.$nextTick();
+
+    addressContainer = venuePageComponent.find('[data-test="address-details"]');
+  }
+
+  beforeEach(async () => {
+    await mountComponent();
   });
 
   it('fetches the venue', async () => {
-    await venuePageComponent.vm.$nextTick();
-    expect(venuePageComponent.vm.venue.name).to.eq('Anson Theatre');
     expect(venuePageComponent.text()).to.contain('Anson Theatre');
     expect(venuePageComponent.text()).to.contain('not the anson rooms');
     expect(fixTextSpacing(venuePageComponent.text())).to.contain(
-      'Capacity: Max 420'
+      'Capacity:Max 420'
     );
 
     expect(
-      venuePageComponent
-        .find({
-          ref: 'image'
-        })
-        .attributes('src')
+      venuePageComponent.find('[data-test="image"]').attributes('src')
     ).to.equal('http://pathto.example/venue-image.png');
 
-    expect(venuePageComponent.find({ ref: 'venue-map' }).exists()).to.be.true;
+    expect(venuePageComponent.find('[data-test="map"]').exists()).to.be.true;
   });
 
   describe('venue address', () => {
-    let addressContainer;
-    beforeEach(async () => {
-      await venuePageComponent.vm.$nextTick();
-      addressContainer = venuePageComponent.find({ ref: 'address' });
-    });
-
     // building number and name
-    it('has the correct address', () => {
+    it('has the correct address', async () => {
+      await mountComponent();
       expect(fixTextSpacing(addressContainer.text())).to.contain(
-        'Wills Memorial Building 69 Queens Road'
+        'Wills Memorial Building69 Queens Road'
       );
       expect(addressContainer.text()).to.contain('London');
       expect(addressContainer.text()).to.contain('BS69 420');
@@ -62,13 +80,9 @@ describe('Venue page', function () {
 
     // no building number
     it('has the correct address', async () => {
-      await venuePageComponent.setData({
-        venue: {
-          address: Object.assign({}, address, {
-            buildingName: 'Wills Memorial Building',
-            buildingNumber: null
-          })
-        }
+      await mountComponent({
+        buildingName: 'Wills Memorial Building',
+        buildingNumber: null
       });
       expect(fixTextSpacing(addressContainer.text())).to.contain(
         'Wills Memorial Building Queens Road'
@@ -77,14 +91,11 @@ describe('Venue page', function () {
 
     // no building name
     it('has the correct address', async () => {
-      await venuePageComponent.setData({
-        venue: {
-          address: Object.assign({}, address, {
-            buildingName: null,
-            buildingNumber: '69'
-          })
-        }
+      await mountComponent({
+        buildingName: null,
+        buildingNumber: '69'
       });
+
       expect(fixTextSpacing(addressContainer.text())).to.contain(
         '69 Queens Road'
       );
@@ -92,27 +103,23 @@ describe('Venue page', function () {
 
     // no building name or number
     it('has the correct address', async () => {
-      await venuePageComponent.setData({
-        venue: {
-          address: Object.assign({}, address, {
-            buildingName: null,
-            buildingNumber: null
-          })
-        }
+      await mountComponent({
+        buildingName: null,
+        buildingNumber: null
       });
+
       expect(fixTextSpacing(addressContainer.text())).to.contain('Queens Road');
     });
   });
 
   it('checks map doesnt exist with invalid lat or long', async () => {
-    await venuePageComponent.setData({
+    setCompositionData(venuePageComponent, {
       venue: { address: { latitude: null } }
     });
-
     expect(venuePageComponent.find({ ref: 'venue-map' }).exists()).to.be.false;
   });
 
-  it.only('handles invalid venue', async () => {
+  it('handles invalid venue', async () => {
     await mount(Venue, {
       apollo: {
         queryResponses: [GenericApolloResponse('venue')]
@@ -123,6 +130,7 @@ describe('Venue page', function () {
         }
       }
     });
+    await flushPromises();
 
     expect(createError).toHaveBeenCalledWith({
       statusCode: 404,
