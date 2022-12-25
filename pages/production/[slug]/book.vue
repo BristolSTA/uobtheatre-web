@@ -57,7 +57,7 @@
           class="flex-grow sm:pb-4 max-w-full bg-sta-gray-dark sm:p-3"
         >
           <NuxtPage
-            ref="stageComponent"
+            data-test="nuxt-page"
             :production="production"
             :booking="booking"
             :ticket-matrix="ticketMatrix"
@@ -159,6 +159,7 @@ export default defineNuxtComponent({
         message: 'This production does not exist'
       });
     }
+
     return {
       production
     };
