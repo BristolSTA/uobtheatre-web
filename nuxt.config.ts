@@ -25,7 +25,6 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: publicConfig()
   },
-
   // Define app confiugration
   app: {
     head: {
