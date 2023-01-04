@@ -33,11 +33,6 @@ export default defineNuxtComponent({
       performance
     };
   },
-  computed: {
-    crumbs() {
-      return this.$refs.child.crumbs;
-    }
-  },
   methods: {
     regenerateCrumbsLink() {
       this._computedWatchers.crumbs.run();

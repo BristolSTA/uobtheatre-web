@@ -17,6 +17,7 @@
 import Overview from '@/components/box-office/Overview.vue';
 import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue';
 import { dateFormat } from '~~/utils/datetime';
+import { defineBreadcrumbs } from '~~/composables/defineBreadcrumbs';
 
 export default defineNuxtComponent({
   components: { Overview, BoxOfficeNavigation },
@@ -26,18 +27,20 @@ export default defineNuxtComponent({
       type: Object
     }
   },
-  computed: {
-    crumbs() {
-      return [
-        { text: 'Box Office', path: '/box-office' },
-        {
-          text: `${this.performance.production.name} on ${dateFormat(
-            this.performance.start,
-            'ccc dd MMM T'
-          )}`
-        }
-      ];
-    }
+  setup() {
+    const { breadcrumbs } = defineBreadcrumbs();
+    return { breadcrumbs };
+  },
+  mounted() {
+    this.breadcrumbs = [
+      { text: 'Box Office', path: '/box-office' },
+      {
+        text: `${this.performance.production.name} on ${dateFormat(
+          this.performance.start,
+          'ccc dd MMM T'
+        )}`
+      }
+    ];
   }
 });
 </script>

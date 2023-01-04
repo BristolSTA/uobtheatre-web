@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col h-screen font-body">
     <LayoutNavBar />
-    <UiBreadcrumbs v-if="crumbs" :crumbs="crumbs" />
+    <UiBreadcrumbs v-if="navStore.breadcrumbs" :crumbs="navStore.breadcrumbs" />
     <main class="flex-1 pb-2 text-white bg-sta-gray">
       <slot ref="pageComponent" />
     </main>
@@ -10,17 +10,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import useNavStore from '@/store/nav';
 
-// Load the "pageComponent" ref from the template
-const pageComponent = ref(null);
-
-// Declare the "crumbs" computed property
-const crumbs = computed(() => {
-  if (!pageComponent.value) {
-    return null;
-  }
-
-  return [];
+const router = useRouter();
+const navStore = useNavStore();
+router.beforeEach((to, from) => {
+  navStore.breadcrumbs = undefined;
 });
 </script>

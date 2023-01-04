@@ -18,6 +18,7 @@
 import Overview from '@/components/box-office/Overview.vue';
 import TicketScanner from '@/components/ui/Input/TicketScanner.vue';
 import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue';
+import { defineBreadcrumbs } from '~~/composables/defineBreadcrumbs';
 import { dateFormat } from '~~/utils/datetime';
 
 export default defineNuxtComponent({
@@ -28,22 +29,24 @@ export default defineNuxtComponent({
       type: Object
     }
   },
-  computed: {
-    crumbs() {
-      return [
-        { text: 'Box Office', path: '/box-office' },
-        {
-          text: `${this.performance.production.name} on ${dateFormat(
-            this.performance.start,
-            'ccc dd MMM T'
-          )}`,
-          path: `/box-office/${this.performance.id}`
-        },
-        {
-          text: 'Collect or Check'
-        }
-      ];
-    }
+  setup() {
+    const { breadcrumbs } = defineBreadcrumbs();
+    return { breadcrumbs };
+  },
+  mounted() {
+    this.breadcrumbs = [
+      { text: 'Box Office', path: '/box-office' },
+      {
+        text: `${this.performance.production.name} on ${dateFormat(
+          this.performance.start,
+          'ccc dd MMM T'
+        )}`,
+        path: `/box-office/${this.performance.id}`
+      },
+      {
+        text: 'Collect or Check'
+      }
+    ];
   }
 });
 </script>

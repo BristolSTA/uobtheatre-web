@@ -127,6 +127,7 @@ import BookingDetailsRow from '@/components/box-office/BookingDetailsRow.vue';
 import TicketScanner from '@/components/ui/Input/TicketScanner.vue';
 import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue';
 import BoxOfficeNavigation from '@/components/box-office/BoxOfficeNavigation.vue';
+import { defineBreadcrumbs } from '~~/composables/defineBreadcrumbs';
 import { dateFormat } from '~~/utils/datetime';
 
 export default defineNuxtComponent({
@@ -160,24 +161,26 @@ export default defineNuxtComponent({
       scannedTicket: null
     };
   },
-  computed: {
-    crumbs() {
-      return [
-        { text: 'Box Office', path: '/box-office' },
-        {
-          text: `${this.performance.production.name} on ${dateFormat(
-            this.performance.start,
-            'ccc dd MMM T'
-          )}`,
-          path: `/box-office/${this.performance.id}`
-        },
-        {
-          text: 'All Bookings'
-        }
-      ];
-    }
+
+  setup() {
+    const { breadcrumbs } = defineBreadcrumbs();
+    return { breadcrumbs };
   },
   mounted() {
+    this.breadcrumbs = [
+      { text: 'Box Office', path: '/box-office' },
+      {
+        text: `${this.performance.production.name} on ${dateFormat(
+          this.performance.start,
+          'ccc dd MMM T'
+        )}`,
+        path: `/box-office/${this.performance.id}`
+      },
+      {
+        text: 'All Bookings'
+      }
+    ];
+
     if (this.$route.query.q) {
       this.searchQuery = this.$route.query.q;
     }

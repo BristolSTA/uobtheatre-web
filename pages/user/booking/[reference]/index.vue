@@ -85,6 +85,7 @@ import ProductionBanner from '@/components/production/ProductionBanner.vue';
 import Alert from '@/components/ui/Alert.vue';
 import { UserCompletedBookingDocument } from '~~/graphql/codegen/operations';
 import useAuthStore from '~~/store/auth';
+import { defineBreadcrumbs } from '~~/composables/defineBreadcrumbs';
 definePageMeta({
   middleware: ['authed']
 });
@@ -126,17 +127,17 @@ export default defineNuxtComponent({
       authStore: useAuthStore()
     };
   },
+  setup() {
+    defineBreadcrumbs([
+      { text: 'My Account', path: '/user' },
+      { text: 'Booking Details' }
+    ]);
+  },
   computed: {
     production() {
       return this.booking.performance
         ? this.booking.performance.production
         : null;
-    },
-    crumbs() {
-      return [
-        { text: 'My Account', path: '/user' },
-        { text: 'Booking Details' }
-      ];
     }
   },
   methods: {

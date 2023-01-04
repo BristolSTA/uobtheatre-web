@@ -94,6 +94,7 @@ import {
   PerformanceTicketOptionsDocument,
   UserDraftBookingForPerformanceDocument
 } from '~~/graphql/codegen/operations';
+import { defineBreadcrumbs } from '~~/composables/defineBreadcrumbs';
 
 definePageMeta({
   middleware: 'authed'
@@ -180,19 +181,23 @@ export default defineNuxtComponent({
       paid: false
     };
   },
+  setup() {
+    const { breadcrumbs } = defineBreadcrumbs();
+    return { breadcrumbs };
+  },
+  mounted() {
+    this.breadcrumbs = [
+      { text: 'Whats On', path: '/productions' },
+      {
+        text: this.production.name,
+        path: `/production/${this.production.slug}`
+      },
+      { text: 'Book' }
+    ];
+  },
   computed: {
     currentStageIndex() {
       return getStageIndex(this.currentStage);
-    },
-    crumbs() {
-      return [
-        { text: 'Whats On', path: '/productions' },
-        {
-          text: this.production.name,
-          path: `/production/${this.production.slug}`
-        },
-        { text: 'Book' }
-      ];
     }
   },
   methods: {

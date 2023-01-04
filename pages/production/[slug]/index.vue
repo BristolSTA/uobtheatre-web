@@ -76,6 +76,7 @@ import ClickableLink from '@/components/ui/ClickableLink.vue';
 
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
 import { excerptFromDescription } from '~~/utils/production';
+import { defineBreadcrumbs } from '~~/composables/defineBreadcrumbs';
 
 export default defineNuxtComponent({
   components: {
@@ -112,23 +113,12 @@ export default defineNuxtComponent({
       production: null
     };
   },
-  meta() {
-    return {
-      breadcrumb: 'test'
-    };
-  },
   computed: {
     route() {
       return this.$route;
     },
     shortDescription() {
       return excerptFromDescription(this.production.description);
-    },
-    crumbs() {
-      return [
-        { text: 'Whats On', path: '/productions' },
-        { text: this.production.name }
-      ];
     },
     hasCastCrew() {
       return Boolean(
@@ -137,6 +127,16 @@ export default defineNuxtComponent({
           this.production.productionTeam.length
       );
     }
+  },
+  setup() {
+    const { breadcrumbs } = defineBreadcrumbs();
+    return { breadcrumbs };
+  },
+  mounted() {
+    this.breadcrumbs = [
+      { text: 'Whats On', path: '/productions' },
+      { text: this.production.name }
+    ];
   }
 });
 </script>

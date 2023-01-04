@@ -8,7 +8,7 @@
           :detailed="false"
         />
       </div>
-      <nuxt-child
+      <NuxtPage
         v-model:booking="booking"
         :performance="performance"
         :ticket-matrix="ticketMatrix"
@@ -26,6 +26,7 @@ import Booking from '@/classes/Booking';
 import Overview from '@/components/box-office/Overview.vue';
 import { dateFormat } from '~~/utils/datetime';
 import useBoxOfficeStore from '@/store/box-office';
+import { defineBreadcrumbs } from '~~/composables/defineBreadcrumbs';
 
 const boxOfficeStore = useBoxOfficeStore();
 
@@ -65,24 +66,13 @@ export default defineNuxtComponent({
       booking: null
     };
   },
+  setup() {
+    const { breadcrumbs } = defineBreadcrumbs();
+    return { breadcrumbs };
+  },
   computed: {
     inProgressID() {
       return boxOfficeStore.inProgressBookingID;
-    },
-    crumbs() {
-      return [
-        { text: 'Box Office', path: '/box-office' },
-        {
-          text: `${this.performance.production.name} on ${dateFormat(
-            this.performance.start,
-            'ccc dd MMM T'
-          )}`,
-          path: `/box-office/${this.performance.id}`
-        },
-        {
-          text: 'Sell Tickets'
-        }
-      ];
     }
   },
   watch: {
@@ -96,6 +86,19 @@ export default defineNuxtComponent({
     }
   },
   mounted() {
+    this.breadcrumbs = [
+      { text: 'Box Office', path: '/box-office' },
+      {
+        text: `${this.performance.production.name} on ${dateFormat(
+          this.performance.start,
+          'ccc dd MMM T'
+        )}`,
+        path: `/box-office/${this.performance.id}`
+      },
+      {
+        text: 'Sell Tickets'
+      }
+    ];
     this.loadExistingBookingData();
   },
   methods: {
