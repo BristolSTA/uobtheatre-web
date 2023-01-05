@@ -127,7 +127,7 @@ export default defineNuxtComponent({
     }
 
     // Delete their booking
-    this.$apollo.mutate({
+    useDefaultApolloClient().mutate({
       mutation: DeleteBookingMutation,
       variables: {
         bookingId: this.booking.id
@@ -258,14 +258,14 @@ export default defineNuxtComponent({
       });
     },
     loadDataForStage() {
-      if (this.$route.params.performanceId) {
+      if (useRoute().params.performanceId) {
         // Check if user already has a draft booking for this performance if not already
         if (this.previousBooking === null) {
-          this.$apollo
+          useDefaultApolloClient()
             .query({
               query: UserDraftBookingForPerformanceDocument,
               variables: {
-                performanceID: this.$route.params.performanceId
+                performanceID: useRoute().params.performanceId
               },
               fetchPolicy: 'no-cache'
             })
@@ -297,12 +297,12 @@ export default defineNuxtComponent({
             .map((edge) => edge.node)
             .find(
               (performance) =>
-                performance.id === this.$route.params.performanceId
+                performance.id === useRoute().params.performanceId
             );
         }
 
         if (!this.ticketMatrix) {
-          this.$apollo
+          useDefaultApolloClient()
             .query({
               query: PerformanceTicketOptionsDocument,
               variables: {

@@ -68,7 +68,7 @@ describe('Create Booking Page', () => {
     expect(bookingNavigation.exists()).to.be.true;
     expect(bookingNavigation.props('currentStageIndex')).to.eq(0);
     expect(bookingNavigation.props('production').name).to.eq('Legally Ginger');
-    expect(bookingNavigation.props('booking')).to.eq(
+    expect(bookingNavigation.props('booking')).toEqual(
       bookingComponent.vm.booking
     );
   });
@@ -81,7 +81,7 @@ describe('Create Booking Page', () => {
     const nuxtChild = bookingComponent.findComponent({ name: 'NuxtPage' });
     expect(nuxtChild.exists()).to.be.true;
     expect(nuxtChild.props('production').name).to.eq('Legally Ginger');
-    expect(nuxtChild.props('booking')).to.eq(bookingComponent.vm.booking);
+    expect(nuxtChild.props('booking')).toEqual(bookingComponent.vm.booking);
     expect(nuxtChild.props('ticketMatrix')).to.eq('fakeMatrix');
   });
 

@@ -233,10 +233,11 @@ export default async function (
     Object.assign(dataOpt, data);
   }
 
-  return await vtuMount(component, {
+  const mountingOptions = {
     ...merge({}, stubMountOptions, vtuMountOptions, {
       data: () => dataOpt
     }),
     shallow
-  });
+  };
+  return await vtuMount(component, mountingOptions);
 }
