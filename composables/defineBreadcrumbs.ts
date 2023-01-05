@@ -14,7 +14,7 @@ export const defineBreadcrumbs = (
     ? breadcrumbGenerator
     : ref(breadcrumbGenerator);
 
-  const watcher = watch(breadcrumbs, setBreadcrumbs);
+  watch(breadcrumbs, setBreadcrumbs);
 
   function setBreadcrumbs(breadcrumbsRef: Breadcrumb[] | undefined) {
     navStore.breadcrumbs = breadcrumbsRef;

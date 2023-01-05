@@ -10,6 +10,7 @@ describe('Login', function () {
   beforeEach(async () => {
     loginComponent = await mount(Login, {
       shallow: false,
+      routeInfo: {},
       global: {
         stubs: [AuthBox]
       }
