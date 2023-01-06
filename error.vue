@@ -1,31 +1,33 @@
 <template>
-  <div class="flex items-center justify-center w-full h-full bg-sta-gray">
-    <div class="px-10 w-full text-white sm:px-0 sm:w-1/2 xl:w-1/3">
-      <div class="text-left">
-        <slot>
-          <h1 class="text-h1">
-            <slot name="title"> Oops! </slot>
-          </h1>
-          <h2 class="text-h2">
-            <slot name="subtitle">
-              {{ message }}
-            </slot>
-          </h2>
-          <p v-if="error.message">
-            {{ error.message }}
-          </p>
-        </slot>
-      </div>
-      <div v-if="buttonTo" class="mt-4">
-        <NuxtLink
-          :to="buttonTo"
-          class="btn btn-outline btn-orange font font-semibold"
-        >
-          {{ buttonText }}
-        </NuxtLink>
+  <NuxtLayout>
+    <div class="flex items-center justify-center w-full h-full bg-sta-gray">
+      <div class="px-10 w-full text-white sm:px-0 sm:w-1/2 xl:w-1/3">
+        <div class="text-left">
+          <slot>
+            <h1 class="text-h1">
+              <slot name="title"> Oops! </slot>
+            </h1>
+            <h2 class="text-h2">
+              <slot name="subtitle">
+                {{ message }}
+              </slot>
+            </h2>
+            <p v-if="error.message">
+              {{ error.message }}
+            </p>
+          </slot>
+        </div>
+        <div v-if="buttonTo" class="mt-4">
+          <NuxtLink
+            :to="buttonTo"
+            class="btn btn-outline btn-orange font font-semibold"
+          >
+            {{ buttonText }}
+          </NuxtLink>
+        </div>
       </div>
     </div>
-  </div>
+  </NuxtLayout>
 </template>
 
 <script>
