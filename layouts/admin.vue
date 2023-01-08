@@ -2,7 +2,7 @@
   <div class="flex flex-col h-screen font-body">
     <nav-bar />
     <main class="flex-1 text-white bg-sta-gray">
-      <Nuxt />
+      <slot />
     </main>
     <footer-bar />
   </div>

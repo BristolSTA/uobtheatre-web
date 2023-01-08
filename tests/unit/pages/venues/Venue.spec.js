@@ -132,9 +132,6 @@ describe('Venue page', function () {
     });
     await flushPromises();
 
-    expect(createError).toHaveBeenCalledWith({
-      statusCode: 404,
-      message: 'This venue does not exist'
-    });
+    expect(navigateTo).toHaveBeenCalledOnce();
   });
 });

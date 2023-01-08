@@ -46,13 +46,9 @@ const { data, refresh } = await useAsyncQuery<AdminProductionPermissionsQuery>({
 const production = computed(() => data.value?.production);
 
 if (!production.value) {
-  throw createError({
-    statusCode: 404,
-    message: 'This production does not exist',
-    fatal: true
-  });
+  navigateTo('/404');
 }
-if (production?.value.assignedUsers === null) {
+if (production?.value?.assignedUsers === null) {
   throw createError({
     statusCode: 401,
     message: 'You do not have permission to alter permissions',

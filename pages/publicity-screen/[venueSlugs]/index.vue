@@ -95,6 +95,9 @@ import WelcomeScreen from '@/components/publicity-screens/WelcomeScreen.vue';
 import PleaseWaitScreen from '@/components/publicity-screens/PleaseWaitScreen.vue';
 import ConfectionaryStoreMarketingScreen from '@/components/publicity-screens/ConfectionaryStoreMarketingScreen.vue';
 import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue';
+definePageMeta({
+  layout: 'publicity-screen'
+});
 
 export default defineNuxtComponent({
   components: {
@@ -104,7 +107,6 @@ export default defineNuxtComponent({
     SoldOutScreen,
     ProductionFeaturedImage
   },
-  layout: 'publicityScreen',
   data() {
     return {
       now: null,

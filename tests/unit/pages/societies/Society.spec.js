@@ -117,9 +117,6 @@ describe('Society page', function () {
       });
     }).rejects.toThrowError();
 
-    expect(createError).toHaveBeenCalledWith({
-      statusCode: 404,
-      message: 'This society does not exist'
-    });
+    expect(navigateTo).toHaveBeenCalledOnce();
   });
 });

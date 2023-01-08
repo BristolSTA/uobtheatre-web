@@ -214,10 +214,7 @@ export default defineNuxtComponent({
 
     const production = computed(() => data.value.production);
     if (!production.value) {
-      throw createError({
-        statusCode: 404,
-        message: 'This production does not exist'
-      });
+      return navigateTo('/404');
     }
     return {
       production

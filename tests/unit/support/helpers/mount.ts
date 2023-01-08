@@ -180,7 +180,8 @@ function registerNuxtComposableStubs() {
       public: publicConfig()
     }),
     definePageMeta: vi.fn(),
-    createError: vi.fn((message) => new Error(message))
+    createError: vi.fn((message) => new Error(message)),
+    navigateTo: vi.fn(() => {})
   };
 
   for (let [key, stub] of Object.entries(stubs)) {

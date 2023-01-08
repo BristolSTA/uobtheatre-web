@@ -114,10 +114,7 @@ export default defineNuxtComponent({
 
     const society = data.value.society;
     if (!society) {
-      throw createError({
-        statusCode: 404,
-        message: 'This society does not exist'
-      });
+      return navigateTo('/404');
     }
 
     return {

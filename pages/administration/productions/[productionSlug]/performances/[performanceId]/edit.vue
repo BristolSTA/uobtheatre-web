@@ -38,9 +38,7 @@ export default defineNuxtComponent({
 
     const production = data.production;
     if (!production || !production.performances.edges.length) {
-      throw createError({
-        statusCode: 404
-      });
+      return navigateTo('/404');
     }
     return {
       performance: production.performances.edges[0].node,
