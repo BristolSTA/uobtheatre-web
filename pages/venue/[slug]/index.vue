@@ -95,7 +95,10 @@ const { data } = await useAsyncQuery<VenuePageDetailsQuery>(
 );
 
 if (!data.value?.venue) {
-  throw navigateTo('/404');
+  throw createSafeError({
+    statusCode: 404,
+    message: 'This venue does not exist'
+  });
 }
 
 const venue = data.value.venue;

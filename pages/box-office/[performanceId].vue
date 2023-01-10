@@ -24,7 +24,10 @@ export default defineNuxtComponent({
 
     const performance = data.performance;
     if (!performance) {
-      return navigateTo('/404');
+      throw createSafeError({
+        statusCode: 404,
+        message: 'This performance does not exist'
+      });
     }
     return {
       performance

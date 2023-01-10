@@ -8,7 +8,7 @@
           </h1>
           <h2 class="text-h2">
             <slot name="subtitle">
-              {{ message }}
+              {{ errorTypeMessage }}
             </slot>
           </h2>
           <p v-if="error.message">
@@ -43,7 +43,7 @@ const props = withDefaults(
   }
 );
 
-const message = computed(() => {
+const errorTypeMessage = computed(() => {
   if (props.error.statusCode === 404) {
     return '404 - Page Not found';
   }

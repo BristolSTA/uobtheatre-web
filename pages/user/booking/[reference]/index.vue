@@ -109,7 +109,10 @@ export default defineNuxtComponent({
     });
 
     if (!data.me.bookings.edges[0]) {
-      return navigateTo('/404');
+      throw createSafeError({
+        statusCode: 404,
+        message: 'This booking does not exist'
+      });
     }
 
     return {

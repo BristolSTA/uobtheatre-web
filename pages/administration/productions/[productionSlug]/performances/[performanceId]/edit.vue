@@ -38,7 +38,10 @@ export default defineNuxtComponent({
 
     const production = data.production;
     if (!production || !production.performances.edges.length) {
-      return navigateTo('/404');
+      throw createSafeError({
+        statusCode: 404,
+        message: 'This production does not exist'
+      });
     }
     return {
       performance: production.performances.edges[0].node,
