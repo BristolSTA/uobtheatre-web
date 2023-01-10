@@ -4,7 +4,7 @@
     <LayoutNavBar />
     <UiBreadcrumbs v-if="navStore.breadcrumbs" :crumbs="navStore.breadcrumbs" />
     <main class="flex-1 pb-2 text-white bg-sta-gray">
-      <NuxtErrorBoundary>
+      <NuxtErrorBoundary @error="onBoundaryErrorCatch">
         <slot />
         <template #error="{ error }"
           ><LayoutErrorPageInner :error="error"
@@ -17,10 +17,15 @@
 
 <script setup lang="ts">
 import useNavStore from '@/store/nav';
+import { silentErrorHandler } from '@/utils/misc';
 
 const router = useRouter();
 const navStore = useNavStore();
-router.beforeEach((to, from) => {
+router.beforeEach(() => {
   navStore.breadcrumbs = undefined;
 });
+
+function onBoundaryErrorCatch(error: Error) {
+  silentErrorHandler(error);
+}
 </script>
