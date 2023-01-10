@@ -7,7 +7,7 @@
       <NuxtErrorBoundary>
         <slot />
         <template #error="{ error }"
-          >123<LayoutErrorPageInner :error="error"
+          ><LayoutErrorPageInner :error="error"
         /></template>
       </NuxtErrorBoundary>
     </main>

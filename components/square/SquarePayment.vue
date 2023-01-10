@@ -12,8 +12,8 @@
               type="button"
               class="btn btn-orange w-full"
               :disabled="!ready"
-              @click.prevent="payCard"
-              @keypress.prevent="payCard"
+              @click.stop="payCard"
+              @keypress.stop="payCard"
             >
               Pay £{{ price }}
             </button>
@@ -78,8 +78,6 @@ export default {
     paying(newVal) {
       if (newVal) {
         this.$emit('paying');
-      } else {
-        this.$emit('cancelled');
       }
     }
   },
@@ -177,6 +175,14 @@ export default {
       const results = await square.payments.verifyBuyer(token, details);
       return results.token;
     },
+    onCancelled() {
+      this.paying = false;
+      this.$emit('cancelled');
+    },
+    onSuccessfulNonceGeneration(paymentData) {
+      this.paying = false;
+      this.$emit('nonceRecieved', paymentData);
+    },
     async pay(provider, verify = false) {
       this.paying = true;
       this.squareErrors = [];
@@ -188,16 +194,16 @@ export default {
           if (verify) {
             paymentData.verifyToken = await this.verifyBuyer(result.token);
           }
-          return this.$emit('nonceRecieved', paymentData);
+          return this.onSuccessfulNonceGeneration(paymentData);
         }
 
-        this.paying = false;
+        this.onCancelled();
         if (result.status !== 'Cancel') {
           this.squareErrors = result.errors.map((error) => error.message);
           this.$emit('nonceError', this.squareErrors);
         }
       } catch (e) {
-        this.paying = false;
+        this.onCancelled();
         this.squareErrors = [
           'An unexpected error was encountered whilst trying to process your payment. No charge has been made.'
         ];

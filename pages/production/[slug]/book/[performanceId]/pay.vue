@@ -22,8 +22,8 @@
       <div class="container">
         <square-payment
           :price="booking.totalPricePounds"
-          @paying="onPaying()"
-          @cancelled="progressPopup.close()"
+          @paying="onPaying"
+          @cancelled="onCancelled"
           @nonce-recieved="onNonceRecieved"
         />
       </div>
@@ -118,6 +118,10 @@ export default defineNuxtComponent({
           Swal.showLoading();
         }
       });
+      this.errors = null;
+    },
+    onCancelled() {
+      Swal.close();
     },
     async payFree() {
       if (this.loading) {
@@ -163,10 +167,10 @@ export default defineNuxtComponent({
 
         this.onBookingComplete(data.payBooking.booking.reference);
       } catch (e) {
+        Swal.close();
         this.errors = getValidationErrors(e);
         this.booking.refreshIdempotencyKey();
       }
-      this.progressPopup.close();
     },
     onBookingComplete(reference) {
       this.$emit('paid');
