@@ -25,7 +25,7 @@ router.beforeEach(() => {
   navStore.breadcrumbs = undefined;
 });
 
-function onBoundaryErrorCatch(error: Error) {
+function onBoundaryErrorCatch(error: unknown) {
   silentErrorHandler(error);
 }
 </script>
