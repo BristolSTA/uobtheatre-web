@@ -77,5 +77,6 @@ export function displayStartEnd(
 
 export function dateFormat(date: DateTime | string, format: string) {
   date = date instanceof DateTime ? date : DateTime.fromISO(date);
+  date.setLocale('en-GB');
   return date.toFormat(format);
 }

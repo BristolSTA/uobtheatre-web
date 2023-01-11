@@ -13,7 +13,7 @@
     "pretest:e2e:local": "API_BASE=http://uobtheatre-api:8000 yarn generate --devtools && yarn preview",
     "pretest:e2e:ci": "API_BASE=http://localhost:9000 yarn generate --devtools && yarn preview",
     "test:e2e:silent": "cypress run",
-    "test:unit": "TZ=UTC vitest",
+    "test:unit": "vitest",
     "test": "nuxt test"
   },
   "devDependencies": {
