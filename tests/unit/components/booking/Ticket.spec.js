@@ -41,8 +41,12 @@ describe('Ticket component', function () {
     console.log(JSON.stringify(ticketComponent.text()), ticketComponent.html());
     expect(ticketComponent.text()).to.contain('Legally Ginger');
     expect(ticketComponent.text()).to.contain('Monday 9 March 2020');
-    expect(ticketComponent.text()).to.contain('Doors: 3:00 PM');
-    expect(ticketComponent.text()).to.contain('Start: 4:00 PM');
+    expect(ticketComponent.text().replace(/\u202f/g, '')).to.contain(
+      'Doors: 3:00 PM'
+    );
+    expect(ticketComponent.text().replace(/\u202f/g, '')).to.contain(
+      'Start: 4:00 PM'
+    );
 
     expect(ticketComponent.text()).to.contain('1x Adult');
     expect(ticketComponent.text()).to.contain('Best seats in the house');
