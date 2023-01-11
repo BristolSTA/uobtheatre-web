@@ -117,6 +117,6 @@ describe('Society page', function () {
       });
     }).rejects.toThrowError();
 
-    expect(navigateTo).toHaveBeenCalledOnce();
+    expect(createError).toHaveBeenCalledOnce();
   });
 });

@@ -132,6 +132,6 @@ describe('Venue page', function () {
     });
     await flushPromises();
 
-    expect(navigateTo).toHaveBeenCalledOnce();
+    expect(createError).toHaveBeenCalledOnce();
   });
 });

@@ -132,7 +132,9 @@ function registerRouterStub(routerInfo?: Partial<Router>) {
     {
       replace: vi.fn().mockResolvedValue(null),
       push: vi.fn().mockResolvedValue(null),
-      resolve: vi.fn()
+      resolve: vi.fn(),
+      beforeEach: vi.fn(),
+      afterEach: vi.fn()
     },
     routerInfo
   );
@@ -180,7 +182,8 @@ function registerNuxtComposableStubs() {
       public: publicConfig()
     }),
     definePageMeta: vi.fn(),
-    createError: vi.fn((message) => new Error(message)),
+    createError: vi.fn(() => new Error('Error created with CreateError mock')),
+    showError: vi.fn(() => {}),
     navigateTo: vi.fn(() => {})
   };
 

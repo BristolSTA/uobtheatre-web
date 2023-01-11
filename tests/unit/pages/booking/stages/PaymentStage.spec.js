@@ -14,16 +14,21 @@ import Payment from '#testSupport/fixtures/Payment';
 import FakeBooking from '#testSupport/fixtures/Booking';
 import CardPayment from '@/components/square/SquarePayment.vue';
 import { flushPromises } from '@vue/test-utils';
+import Swal from 'sweetalert2';
 
 describe('Payment Stage', () => {
   let paymentStageComponent;
-  const popupClose = vi.fn();
 
   vi.mock('@/utils/alerts', () => ({
     swal: {
       fire: vi.fn(() => {
         return new Promise((resolve) => resolve());
       })
+    }
+  }));
+  vi.mock('sweetalert2', () => ({
+    default: {
+      close: vi.fn()
     }
   }));
 
@@ -59,18 +64,11 @@ describe('Payment Stage', () => {
       propsData: {
         booking
       },
-      data() {
-        return {
-          progressPopup: {
-            close: popupClose
-          }
-        };
-      },
       apollo: {
         mutationResponses: mutations
       }
     });
-    popupClose.mockReset();
+    Swal.close.mockReset();
   }
 
   beforeEach(async () => {
@@ -81,7 +79,7 @@ describe('Payment Stage', () => {
     await paymentStageComponent
       .findComponent(CardPayment)
       .vm.$emit('cancelled');
-    expect(popupClose.mock.calls).length(1);
+    expect(Swal.close.mock.calls).length(1);
   });
 
   describe('with valid card / nonce input', () => {
@@ -106,9 +104,6 @@ describe('Payment Stage', () => {
       const router = useRouter();
 
       expect(router.push).toHaveBeenCalledWith('/user/booking/yOIYg6Co8vGR');
-
-      // Loading popup should close
-      expect(popupClose.mock.calls).length(1);
     });
 
     it('shows any mutation errors', async () => {
