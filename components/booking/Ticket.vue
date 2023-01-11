@@ -8,11 +8,12 @@
     </p>
     <p>
       <span class="pr-2">
-        Doors: {{ dateFormat(performance.doorsOpen, 't') }}
+        Doors:
+        {{ dateFormatLocale(performance.doorsOpen, DateTime.TIME_SIMPLE) }}
       </span>
       |
       <span class="pl-2">
-        Start: {{ dateFormat(performance.start, 't') }}
+        Start: {{ dateFormatLocale(performance.start, DateTime.TIME_SIMPLE) }}
       </span>
     </p>
     <div
@@ -49,6 +50,7 @@ import QrcodeVue from 'qrcode.vue';
 
 import Ticket from '@/classes/Ticket';
 import { dateFormat } from '@/utils/datetime';
+import { DateTime } from 'luxon';
 
 export default {
   name: 'Ticket',
@@ -72,6 +74,11 @@ export default {
       default: null,
       type: Object
     }
+  },
+  data() {
+    return {
+      DateTime
+    };
   },
   computed: {
     fullName() {
