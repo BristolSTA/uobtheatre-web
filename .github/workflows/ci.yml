@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Setup node env 🏗
-        uses: actions/setup-node@v2.3.0
+        uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ matrix.node }}
           check-latest: true
@@ -34,7 +34,7 @@ jobs:
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
       - name: Cache node_modules 📦
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v3.2.3
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -65,13 +65,13 @@ jobs:
         node-version: [18.x]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@master
 
       - name: Copy Testing Env ✉
         run: cp .env.test .env
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2.3.0
+        uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -80,7 +80,7 @@ jobs:
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
       - name: Cache node_modules 📦
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v3.2.3
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -92,7 +92,7 @@ jobs:
         name: Install Yarn Dependencies 👨🏻‍💻
 
       - name: Authenticate with GitHub Container Registry 🔒
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2.1.0
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
@@ -116,4 +116,3 @@ jobs:
         with:
           start: yarn pretest:e2e:ci
           wait-on: 'http://localhost:3000'
-          headless: true

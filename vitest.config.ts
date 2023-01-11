@@ -42,6 +42,11 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom', // Register JSDOM to replicate browser APIs
     setupFiles: ['tests/unit/support/setup.ts'], // Register files to be run at the start of each test file
-    restoreMocks: true
-  }
+    restoreMocks: true,
+    coverage: {
+      exclude: [
+        'graphql/codegen/**'
+      ]
+    }
+  },
 });

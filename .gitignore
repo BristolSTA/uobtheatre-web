@@ -1,13 +1,24 @@
+# Yarn Stuff
 node_modules
-*.log*
+.cache
+
+# Nuxt Stuff
 .nuxt
 .nitro
-.cache
 .output
 .env
 dist
+
+# Vitest Generated Files
+coverage
+
+# Eslint
 .eslintcache
 
+# General log files
+*.log*
+
+# Codegen Generated Files
 graphql/codegen/operations.ts
 
 # Cypress files
