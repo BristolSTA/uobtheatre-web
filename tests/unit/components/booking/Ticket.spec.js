@@ -38,6 +38,7 @@ describe('Ticket component', function () {
   });
 
   it('has the correct data', () => {
+    console.log(ticketComponent.text());
     expect(ticketComponent.text()).to.contain('Legally Ginger');
     expect(ticketComponent.text()).to.contain('Monday 9 March 2020');
     expect(ticketComponent.text()).to.contain('Doors: 3:00 PM');
