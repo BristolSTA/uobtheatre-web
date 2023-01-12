@@ -1,4 +1,3 @@
-// FYI, VRM = Visitor Relationship Management
 import { event, purchase } from 'vue-gtag';
 
 interface EventDescription {
@@ -9,11 +8,11 @@ interface EventDescription {
 
 export const events = {
   booking: {
-    started: { category: 'booking', action: 'started' },
-    resumed: { category: 'booking', action: 'resumed' },
-    completed: { category: 'booking', action: 'completed' },
-    abandoned: { category: 'booking', action: 'abandoned' },
-    expried: { category: 'booking', action: 'expired' }
+    started: { category: 'ecommerce', action: 'booking_started' },
+    resumed: { category: 'ecommerce', action: 'booking_resumed' },
+    completed: { category: 'ecommerce', action: 'booking_completed' },
+    abandoned: { category: 'ecommerce', action: 'booking_abandoned' },
+    expried: { category: 'ecommerce', action: 'booking_expired' }
   }
 };
 

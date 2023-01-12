@@ -95,7 +95,7 @@ import {
   UserDraftBookingForPerformanceDocument
 } from '~~/graphql/codegen/operations';
 import { defineBreadcrumbs } from '~~/composables/defineBreadcrumbs';
-import { events, recordEvent } from '~~/utils/vrm';
+import { events, recordEvent } from '~~/utils/analytics';
 
 definePageMeta({
   middleware: 'authed'

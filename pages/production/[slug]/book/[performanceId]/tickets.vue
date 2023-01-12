@@ -30,7 +30,7 @@ import { getValidationErrors, performMutation } from '~~/utils/api';
 
 import BookingStage from '@/classes/BookingStage';
 import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue';
-import { recordEvent, events } from '~~/utils/vrm';
+import { recordEvent, events } from '~~/utils/analytics';
 const stageInfo = new BookingStage({
   name: 'Ticket Selection',
   routeName: 'production-slug-book-performanceId-tickets'
