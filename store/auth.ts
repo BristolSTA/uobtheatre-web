@@ -225,7 +225,8 @@ export default defineStore('auth', {
       await onLogout();
 
       // Notify other windows
-      if (broadcast) window.localStorage.setItem('logout', '1');
+      if (broadcast)
+        window.localStorage.setItem('logout', Date.now().toString());
     },
 
     /**

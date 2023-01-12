@@ -1,5 +1,4 @@
 import { VueWrapper } from '@vue/test-utils';
-import { expect } from 'vitest';
 export { default as mount } from './helpers/mount';
 
 /**
