@@ -209,7 +209,7 @@
                 :model-value="production.posterImage?.url"
                 :required-ratio="1 / Math.sqrt(2)"
                 :min-width="100"
-                @change="production.posterImag = { file: $event }"
+                @change="production.posterImage = { file: $event }"
               />
             </template>
           </form-label>

@@ -3,7 +3,6 @@ import { describe, expect, vi, it, beforeAll, beforeEach } from 'vitest';
 
 import PerformanceFixture from '#testSupport/fixtures/Performance';
 
-import { assertNoVisualDifference } from '#testSupport/helpers';
 import ConcessionTypeBookingType from '#testSupport/fixtures/ConcessionTypeBookingType';
 import BookingFixture from '#testSupport/fixtures/Booking';
 import ConcessionType from '#testSupport/fixtures/ConcessionType';
@@ -300,8 +299,8 @@ describe('Booking Class', () => {
 
     booking.priceBreakdown = bookingAPIData.priceBreakdown;
 
-    assertNoVisualDifference(
-      booking.miscCosts,
+    expect(
+      booking.miscCosts).toEqual(
       bookingAPIData.priceBreakdown.miscCosts
     );
   });

@@ -58,14 +58,6 @@ export default {
       } else {
         this.$emit('input', '' + this.sortField);
       }
-
-      // if (this.value === '-') {
-      //   this.$emit('input', this.mustSort ? this.sortField ?? '' : null)
-      // } else if (this.value === null) {
-      //   this.$emit('input', '')
-      // } else {
-      //   this.$emit('input', '-')
-      // }
     }
   }
 };

@@ -1,8 +1,4 @@
-import {
-  mount,
-  fixTextSpacing,
-  assertNoVisualDifference
-} from '#testSupport/helpers';
+import { mount, fixTextSpacing } from '#testSupport/helpers';
 import { NuxtLinkStub } from '#testSupport/stubs';
 import { expect } from 'vitest';
 import { DateTime } from 'luxon';
@@ -118,7 +114,7 @@ describe('ProductionBanner', function () {
       }
     ]);
 
-    assertNoVisualDifference(headerContainer.vm.venues, []);
+    expect(headerContainer.vm.venues).to.be.empty;
     expect(fixTextSpacing(headerContainer.text())).to.contain('View Online');
     expect(headerContainer.findAllComponents(NuxtLinkStub).length).to.equal(1);
   });

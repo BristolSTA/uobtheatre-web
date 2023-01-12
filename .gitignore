@@ -2,6 +2,9 @@
 node_modules
 .cache
 
+# Docker Stuff
+.docker
+
 # Nuxt Stuff
 .nuxt
 .nitro

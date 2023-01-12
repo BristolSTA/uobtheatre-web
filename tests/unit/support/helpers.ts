@@ -1,3 +1,4 @@
+import { VueWrapper } from '@vue/test-utils';
 import { expect } from 'vitest';
 export { default as mount } from './helpers/mount';
 
@@ -8,25 +9,16 @@ export { default as mount } from './helpers/mount';
  * @param {string} text Text to fix
  * @returns {string} Fixed text
  */
-export function fixTextSpacing(text) {
+export function fixTextSpacing(text: string) {
   return text.replace(/\s\s+/g, ' ');
 }
 
 /**
  * Sets data of for composition Vue components
  */
-export function setCompositionData(component, data) {
+export function setCompositionData(component: VueWrapper, data: object) {
   for (const [key, value] of Object.entries(data)) {
+    // @ts-ignore
     component.vm[key] = value;
   }
-}
-
-/**
- * Asserts no visual differnce between recieved and expected objects
- *
- * @param {object|Array|string} recieved Recieved object
- * @param {object|Array|string} expected Expected object
- */
-export function assertNoVisualDifference(recieved, expected) {
-  expect(JSON.stringify(recieved)).to.eq(JSON.stringify(expected));
 }

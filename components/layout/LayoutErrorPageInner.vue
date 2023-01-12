@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { H3Error } from 'h3';
+import type { H3Error } from 'h3';
 
 const props = withDefaults(
   defineProps<{
