@@ -30,6 +30,7 @@ import { getValidationErrors, performMutation } from '~~/utils/api';
 
 import BookingStage from '@/classes/BookingStage';
 import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue';
+import { recordEvent, events } from '~~/utils/vrm';
 const stageInfo = new BookingStage({
   name: 'Ticket Selection',
   routeName: 'production-slug-book-performanceId-tickets'
@@ -83,6 +84,7 @@ export default defineNuxtComponent({
             'booking'
           );
           bookingResponse = data.booking.booking;
+          recordEvent(events.booking.started);
         } else {
           // We have a booking, lets update it
           const data = await performMutation(

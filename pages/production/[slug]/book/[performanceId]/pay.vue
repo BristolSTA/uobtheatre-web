@@ -74,6 +74,7 @@ import BookingStage from '@/classes/BookingStage';
 import SquarePayment from '@/components/square/SquarePayment.vue';
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 import { PayBookingDocument } from '~~/graphql/codegen/operations';
+import { recordPaymentEvent, recordEvent, events } from '~~/utils/vrm';
 
 const stageInfo = new BookingStage({
   name: 'Payment',
@@ -165,6 +166,10 @@ export default defineNuxtComponent({
           'payBooking'
         );
 
+        recordPaymentEvent({
+          transaction_id: `booking_${this.booking.id}`,
+          value: this.booking.totalPrice / 100
+        });
         this.onBookingComplete(data.payBooking.booking.reference);
       } catch (e) {
         Swal.close();
@@ -174,6 +179,7 @@ export default defineNuxtComponent({
     },
     onBookingComplete(reference) {
       this.$emit('paid');
+      recordEvent(events.booking.completed);
       swal
         .fire({
           icon: 'success',

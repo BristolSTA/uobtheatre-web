@@ -95,6 +95,7 @@ import {
   UserDraftBookingForPerformanceDocument
 } from '~~/graphql/codegen/operations';
 import { defineBreadcrumbs } from '~~/composables/defineBreadcrumbs';
+import { events, recordEvent } from '~~/utils/vrm';
 
 definePageMeta({
   middleware: 'authed'
@@ -133,6 +134,8 @@ export default defineNuxtComponent({
         bookingId: this.booking.id
       }
     });
+
+    recordEvent(events.booking.abandoned);
 
     return next();
   },
@@ -203,8 +206,17 @@ export default defineNuxtComponent({
   methods: {
     bookingExpired() {
       const production = this.production;
+
+      // Clear away all of the data
       this.loadDataForStage();
+
+      // Set the booking to a blank one
       this.booking = new Booking();
+
+      // Record the event
+      recordEvent(events.booking.expried);
+
+      // Display popup to user
       swal
         .fire({
           title: 'Booking Expired',
@@ -285,6 +297,7 @@ export default defineNuxtComponent({
                   })
                   .then((result) => {
                     if (result.isConfirmed) {
+                      recordEvent(events.booking.resumed);
                       this.booking.updateFromAPIData(this.previousBooking);
                     }
                   });
