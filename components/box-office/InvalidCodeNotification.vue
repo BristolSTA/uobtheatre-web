@@ -18,10 +18,10 @@
 </template>
 
 <script>
-import AudioNegative from '@/assets/audio/beep_negative.mp3';
 export default {
+  emits: ['close'],
   mounted() {
-    new Audio(AudioNegative).play();
-  },
+    new Audio('/audio/beep_negative.mp3').play();
+  }
 };
 </script>

@@ -64,17 +64,17 @@
                     ({{ booking.tickets.length }} tickets)
                   </template>
                 </h3>
-                <nuxt-link
+                <NuxtLink
                   :to="`bookings?q=${scanData.bookingReference}&qTicket=${scanData.ticketId}`"
                   class="block px-2 py-1 transition-colors"
                   :class="[
                     errors
                       ? 'bg-sta-green hover:bg-sta-green-dark'
-                      : 'bg-sta-orange hover:bg-sta-orange-dark',
+                      : 'bg-sta-orange hover:bg-sta-orange-dark'
                   ]"
                 >
                   View Booking
-                </nuxt-link>
+                </NuxtLink>
               </div>
               <div class="hidden space-x-8 md:flex">
                 <div>
@@ -124,39 +124,40 @@
 </template>
 
 <script>
-import AudioPositive from '@/assets/audio/beep_positive.mp3';
-import AudioNegative from '@/assets/audio/beep_negative.mp3';
 import Booking from '@/classes/Booking';
 export default {
   props: {
     alreadyCheckedIn: {
       type: Boolean,
-      default: false,
+      default: false
     },
     scanData: {
       type: Object,
-      required: true,
+      required: true
     },
     errors: {
       type: Array,
-      default: null,
+      default: null
     },
     ticket: {
       type: Object,
-      default: null,
+      default: null
     },
     booking: {
       type: Object,
-      default: null,
-    },
+      default: null
+    }
   },
+  emits: ['close', 'checkInAll'],
   computed: {
     bookingInstance() {
       return Booking.fromAPIData(this.booking);
-    },
+    }
   },
   mounted() {
-    new Audio(this.errors ? AudioNegative : AudioPositive).play();
-  },
+    new Audio(
+      this.errors ? '/audio/beep_negative.mp3' : '/audio/beep_positive.mp3'
+    ).play();
+  }
 };
 </script>

@@ -29,7 +29,7 @@
         <td class="pr-2">On</td>
         <td class="">:</td>
         <td class="px-2">
-          {{ datePaid | dateFormat('EEE d MMM kkkk') }}
+          {{ dateFormat(datePaid, 'EEE d MMM kkkk') }}
         </td>
       </tr>
     </table>
@@ -40,10 +40,11 @@
 <script>
 import { DateTime } from 'luxon';
 
-import OverviewBox from '../../ui/Card.vue';
+import OverviewBox from '../../ui/UiCard.vue';
 import Booking from '@/classes/Booking';
-import BookingStatusEnum from '@/enums/PayableStatusEnum';
-import ProviderNameEnum from '@/enums/TransactionProviderNameEnum';
+import BookingStatusEnum from '~~/enums/PayableStatusEnum';
+import ProviderNameEnum from '~~/enums/TransactionProviderNameEnum';
+import { dateFormat } from '@/utils/datetime';
 
 export default {
   name: 'PaymentOverview',
@@ -51,13 +52,13 @@ export default {
   props: {
     booking: {
       required: true,
-      type: Booking,
-    },
+      type: Booking
+    }
   },
   data() {
     return {
       BookingStatusEnum,
-      ProviderNameEnum,
+      ProviderNameEnum
     };
   },
   computed: {
@@ -84,7 +85,10 @@ export default {
       );
 
       return newestDate ? DateTime.fromJSDate(newestDate) : null;
-    },
+    }
   },
+  methods: {
+    dateFormat
+  }
 };
 </script>

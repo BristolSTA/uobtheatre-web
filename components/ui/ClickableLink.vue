@@ -18,8 +18,9 @@ export default {
   props: {
     disabled: {
       default: false,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
+  emits: ['click']
 };
 </script>

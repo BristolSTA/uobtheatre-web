@@ -2,10 +2,7 @@
   <div class="min-h-full text-white bg-sta-gray">
     <div class="container">
       <h1 class="py-4 text-h1">Societies</h1>
-      <infinite-scroll
-        :apollo-query="require('@/graphql/queries/AllSocieties.gql')"
-        @newData="handleNewData"
-      >
+      <infinite-scroll :apollo-query="query" @new-data="handleNewData">
         <div class="grid gap-4 grid-cols-1 mb-4 sm:grid-cols-2 lg:grid-cols-3">
           <society-tile
             v-for="(society, index) in societies"
@@ -31,15 +28,18 @@
 <script>
 import SocietyTile from '@/components/society/SocietyTile.vue';
 import InfiniteScroll from '@/components/ui/InfiniteScroll.vue';
-export default {
+import { AllSocietiesDocument } from '~~/graphql/codegen/operations';
+
+export default defineNuxtComponent({
   components: { SocietyTile, InfiniteScroll },
   data() {
     return {
       societies: null,
+      query: AllSocietiesDocument
     };
   },
   head: {
-    title: 'Societies',
+    title: 'Societies'
   },
   methods: {
     handleNewData(data) {
@@ -47,7 +47,7 @@ export default {
         this.societies = [];
       }
       this.societies.push(...data.edges.map((edge) => edge.node));
-    },
-  },
-};
+    }
+  }
+});
 </script>

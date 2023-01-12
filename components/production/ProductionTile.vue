@@ -22,22 +22,22 @@
 
 <script>
 import ProductionFeaturedImage from './ProductionFeaturedImage.vue';
-import { displayStartEnd } from '@/utils';
+import { displayStartEnd } from '@/utils/datetime';
 export default {
   components: { ProductionFeaturedImage },
   props: {
     production: {
       required: true,
-      type: Object,
-    },
+      type: Object
+    }
   },
   methods: {
-    displayStartEnd,
-  },
+    displayStartEnd
+  }
 };
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .production-tile:hover .production-title {
   @apply text-sta-green;
 }

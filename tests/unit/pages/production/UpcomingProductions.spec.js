@@ -1,30 +1,30 @@
-import { expect } from 'chai';
+import { expect, vi } from 'vitest';
+import { mount } from '#testSupport/helpers';
+import {
+  GenericApolloResponse,
+  GenericNodeConnection
+} from '#testSupport/helpers/api';
 
-import { generateMountOptions, mountWithRouterMock } from '../../helpers';
-import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse';
-import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection';
-import Production from '../../fixtures/Production';
-import UpcomingProductions from '@/pages/productions';
-import InfiniteScroll from '@/components/ui/InfiniteScroll';
-import ProductionTile from '@/components/production/ProductionTile';
+import Production from '#testSupport/fixtures/Production';
+import UpcomingProductions from '@/pages/productions.vue';
+import InfiniteScroll from '@/components/ui/InfiniteScroll.vue';
+import ProductionTile from '@/components/production/ProductionTile.vue';
 
-jest.mock('@/utils.js', () => ({
-  ...jest.requireActual('@/utils.js'),
-  isInViewport: jest.fn(() => false),
+vi.mock('@/utils/misc.js', () => ({
+  isInViewport: vi.fn(() => false)
 }));
+
 describe('Upcoming Productions', () => {
   let upcomingProductionsComponent;
   beforeEach(async () => {
-    upcomingProductionsComponent = await mountWithRouterMock(
-      UpcomingProductions,
-      generateMountOptions(['apollo'], {
-        apollo: {
-          queryCallstack: [
-            GenericApolloResponse('productions', GenericNodeConnection()),
-          ],
-        },
-      })
-    );
+    upcomingProductionsComponent = await mount(UpcomingProductions, {
+      shallow: false,
+      apollo: {
+        queryResponses: [
+          GenericApolloResponse('productions', GenericNodeConnection())
+        ]
+      }
+    });
   });
 
   it('contains an infinite scroll instance', () => {
@@ -46,21 +46,19 @@ describe('Upcoming Productions', () => {
   describe('with many productions', () => {
     let upcomingProductionsComponent;
     beforeEach(async () => {
-      upcomingProductionsComponent = await mountWithRouterMock(
-        UpcomingProductions,
-        generateMountOptions(['apollo'], {
-          apollo: {
-            queryCallstack: [
-              GenericApolloResponse(
-                'productions',
-                GenericNodeConnection(Array(9).fill(Production()), {
-                  hasNextPage: true,
-                })
-              ),
-            ],
-          },
-        })
-      );
+      upcomingProductionsComponent = await mount(UpcomingProductions, {
+        shallow: false,
+        apollo: {
+          queryResponses: [
+            GenericApolloResponse(
+              'productions',
+              GenericNodeConnection(Array(9).fill(Production()), {
+                hasNextPage: true
+              })
+            )
+          ]
+        }
+      });
     });
 
     it('fetches first 9 performances and displays loader', async () => {
@@ -79,7 +77,7 @@ describe('Upcoming Productions', () => {
       expect(
         upcomingProductionsComponent
           .findComponent(InfiniteScroll)
-          .findComponent({ ref: 'bottom-loader' })
+          .find({ ref: 'bottom-loader' })
           .exists()
       ).to.be.true;
     });
@@ -89,19 +87,17 @@ describe('Upcoming Productions', () => {
     let upcomingProductionsComponent;
 
     beforeEach(async () => {
-      upcomingProductionsComponent = await mountWithRouterMock(
-        UpcomingProductions,
-        generateMountOptions(['apollo'], {
-          apollo: {
-            queryCallstack: [
-              GenericApolloResponse(
-                'productions',
-                GenericNodeConnection(Array(3).fill(Production()))
-              ),
-            ],
-          },
-        })
-      );
+      upcomingProductionsComponent = await mount(UpcomingProductions, {
+        shallow: false,
+        apollo: {
+          queryResponses: [
+            GenericApolloResponse(
+              'productions',
+              GenericNodeConnection(Array(3).fill(Production()))
+            )
+          ]
+        }
+      });
     });
 
     it('fetches all the productions and doesnt display loader', async () => {
@@ -120,7 +116,7 @@ describe('Upcoming Productions', () => {
       expect(
         upcomingProductionsComponent
           .findComponent(InfiniteScroll)
-          .findComponent({ ref: 'bottom-loader' })
+          .find({ ref: 'bottom-loader' })
           .exists()
       ).to.be.false;
     });

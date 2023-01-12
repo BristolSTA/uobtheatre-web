@@ -19,7 +19,7 @@
                 {{ booking.performance.production.name }}
               </NuxtLink>
               <p class="text-sta-orange">
-                {{ booking.performance.start | dateFormat('d MMMM kkkk') }}
+                {{ dateFormat(booking.performance.start, 'd MMMM kkkk') }}
               </p>
             </div>
           </td>
@@ -43,17 +43,21 @@
 </template>
 
 <script>
+import { dateFormat } from '@/utils/datetime';
 export default {
   name: 'BookingsTable',
   props: {
     bookings: {
       required: true,
-      type: Array,
+      type: Array
     },
     canLoadMore: {
       default: false,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
+  methods: {
+    dateFormat
+  }
 };
 </script>

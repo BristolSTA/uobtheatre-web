@@ -9,13 +9,13 @@ export default {
   props: {
     imageObject: {
       required: true,
-      type: Object,
-    },
+      type: Object
+    }
   },
   computed: {
     imageUrl() {
       return this.imageObject ? this.imageObject.url : PlaceholderImage;
-    },
-  },
+    }
+  }
 };
 </script>

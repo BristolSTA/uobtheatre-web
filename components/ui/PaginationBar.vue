@@ -8,7 +8,7 @@
       class="relative inline-flex items-center px-2 py-2 text-sm font-medium"
       :class="[
         [canGoBackward ? inactiveButtonStyle : disabledButtonStyle],
-        { 'cursor-pointer': canGoBackward },
+        { 'cursor-pointer': canGoBackward }
       ]"
       :disabled="!canGoBackward"
       @click="previousPage"
@@ -37,7 +37,7 @@
         class="relative inline-flex items-center px-4 py-2 text-sm font-medium"
         :class="[
           page == currentPage ? activeButtonStyle : inactiveButtonStyle,
-          isNaN(page) ? 'cursor-default' : 'cursor-pointer',
+          isNaN(page) ? 'cursor-default' : 'cursor-pointer'
         ]"
         @click="gotoPage(page)"
         @keypress="gotoPage(page)"
@@ -50,7 +50,7 @@
       class="relative inline-flex items-center px-2 py-2 text-sm font-medium"
       :class="[
         [canGoForward ? inactiveButtonStyle : disabledButtonStyle],
-        { 'cursor-pointer': canGoForward },
+        { 'cursor-pointer': canGoForward }
       ]"
       :disabled="!canGoForward"
       @click="nextPage"
@@ -79,52 +79,53 @@ export default {
   props: {
     disabled: {
       type: Boolean,
-      default: false,
+      default: false
     },
     pageInfo: {
       type: Object,
-      default: null,
+      default: null
     },
     hasNextPage: {
       default: undefined,
-      type: Boolean,
+      type: Boolean
     },
     hasPreviousPage: {
       default: undefined,
-      type: Boolean,
+      type: Boolean
     },
     numberOfPages: {
       default: null,
-      type: Number,
+      type: Number
     },
     currentPage: {
       default: null,
-      type: Number,
+      type: Number
     },
     currentOffset: {
       default: null,
-      type: Number,
+      type: Number
     },
     numberPagesToDisplay: {
       default: 5,
-      type: Number,
+      type: Number
     },
     activeButtonStyle: {
       default:
         'bg-sta-orange text-gray-700 border border-gray-300 focus:outline-none',
-      type: String,
+      type: String
     },
     inactiveButtonStyle: {
       default:
         'bg-white text-gray-700 border border-gray-300 hover:bg-gray-200 focus:outline-none',
-      type: String,
+      type: String
     },
     disabledButtonStyle: {
       default:
         'cursor-default bg-opacity-70 text-gray-300 border border-gray-300',
-      type: String,
-    },
+      type: String
+    }
   },
+  emits: ['previousPage', 'nextPage', 'gotoPage'],
   computed: {
     canGoBackward() {
       return (
@@ -172,7 +173,7 @@ export default {
         inner.push(this.numberOfPages);
       }
       return inner;
-    },
+    }
   },
   methods: {
     previousPage() {
@@ -192,7 +193,7 @@ export default {
         return;
       }
       this.$emit('gotoPage', page);
-    },
-  },
+    }
+  }
 };
 </script>

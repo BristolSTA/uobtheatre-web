@@ -1,18 +1,18 @@
-import { expect } from 'chai';
+import { expect } from 'vitest';
 
 import BookingStage from '@/classes/BookingStage';
 import stages, {
   getNextStage,
   getPreviousStage,
-  getStageIndex,
-} from '@/pages/production/_slug/book/-bookingStages';
+  getStageIndex
+} from '@/pages/production/[slug]/book/-bookingStages';
 
 describe('Booking Stages', () => {
   const fakeComponent = new (class {})();
 
   it('can get stage index', () => {
     const stage = new BookingStage('My Booking Stage', fakeComponent, {
-      path: 'my-booking-stage',
+      path: 'my-booking-stage'
     });
     expect(getStageIndex(stage)).to.eq(-1);
 
@@ -27,8 +27,8 @@ describe('Booking Stages', () => {
       getStageIndex(
         getNextStage(null, {
           contentWarnings: [
-            { warning: { shortDescription: 'Strobe lighting' } },
-          ],
+            { warning: { shortDescription: 'Strobe lighting' } }
+          ]
         })
       )
     ).to.eq(1);
@@ -40,8 +40,8 @@ describe('Booking Stages', () => {
           0,
           {
             contentWarnings: [
-              { warning: { shortDescription: 'Strobe lighting' } },
-            ],
+              { warning: { shortDescription: 'Strobe lighting' } }
+            ]
           },
           { performance: { description: 'perf_description' } }
         )
@@ -53,8 +53,8 @@ describe('Booking Stages', () => {
           1,
           {
             contentWarnings: [
-              { warning: { shortDescription: 'Strobe lighting' } },
-            ],
+              { warning: { shortDescription: 'Strobe lighting' } }
+            ]
           },
           { performance: { description: 'perf_description' } }
         )
@@ -68,8 +68,8 @@ describe('Booking Stages', () => {
           0,
           {
             contentWarnings: [
-              { warning: { shortDescription: 'Strobe lighting' } },
-            ],
+              { warning: { shortDescription: 'Strobe lighting' } }
+            ]
           },
           { performance: { description: 'perf_description' } }
         )
@@ -81,8 +81,8 @@ describe('Booking Stages', () => {
           1,
           {
             contentWarnings: [
-              { warning: { shortDescription: 'Strobe lighting' } },
-            ],
+              { warning: { shortDescription: 'Strobe lighting' } }
+            ]
           },
           { performance: { description: 'perf_description' } }
         )
@@ -131,8 +131,8 @@ describe('Booking Stages', () => {
           stages[1],
           {
             contentWarnings: [
-              { warning: { shortDescription: 'Strobe lighting' } },
-            ],
+              { warning: { shortDescription: 'Strobe lighting' } }
+            ]
           },
           { performance: { description: 'perf_description' } }
         )
@@ -144,8 +144,8 @@ describe('Booking Stages', () => {
           1,
           {
             contentWarnings: [
-              { warning: { shortDescription: 'Strobe lighting' } },
-            ],
+              { warning: { shortDescription: 'Strobe lighting' } }
+            ]
           },
           { performance: { description: 'perf_description' } }
         )

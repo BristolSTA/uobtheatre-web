@@ -1,47 +1,21 @@
-import { expect } from 'chai';
+import { expect, vi } from 'vitest';
+import { mount } from '#testSupport/helpers';
 
-import {
-  generateApolloMock,
-  generateMountOptions,
-  mountWithRouterMock,
-} from '../../helpers';
-import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse';
-import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse';
-import GenericErrorsResponse from '../../fixtures/support/GenericErrorsResponse';
-import GenericError from '../../fixtures/support/GenericError';
 import ForgotPassword from '@/pages/login/forgot/index.vue';
-import { swal, swalToast } from '@/utils';
-import { authService } from '@/services';
+import ForgotPasswordWithToken from '@/pages/login/forgot/[token]/index.vue';
+import { swal, swalToast } from '@/utils/alerts';
+import useAuthStore from '@/store/auth';
+import ValidationError from '~~/errors/ValidationError';
 
-describe('Forgot Password', function () {
+describe('Request Password Reset Page', function () {
   let forgotPasswordComponent;
 
-  it('redirects if user is already authenticated', () => {
-    expect(ForgotPassword.middleware).to.include('not-authed');
-  });
-
   describe('without reset token', () => {
-    const swalStub = jest.spyOn(swal, 'fire');
+    const swalStub = vi.spyOn(swal, 'fire');
+
     beforeEach(async () => {
-      jest.spyOn(authService, 'requestPasswordReset');
-      forgotPasswordComponent = await mountWithRouterMock(
-        ForgotPassword,
-        generateMountOptions(['apollo'], {
-          mocks: {
-            $route: {
-              query: {},
-            },
-          },
-          apollo: {
-            mutationCallstack: [
-              GenericApolloResponse(
-                'sendPasswordResetEmail',
-                GenericMutationResponse()
-              ),
-            ],
-          },
-        })
-      );
+      forgotPasswordComponent = await mount(ForgotPassword, { shallow: false });
+      swalStub.mockClear();
     });
 
     it('shows email address input form', () => {
@@ -49,153 +23,100 @@ describe('Forgot Password', function () {
     });
 
     it('can request reset', async () => {
-      const requestResetStub = jest
-        .spyOn(forgotPasswordComponent.vm, 'requestReset')
-        .mockImplementation(() => {});
+      const authStore = useAuthStore();
 
       await forgotPasswordComponent
         .find('input#email')
         .setValue('joe.bloggs@example.org');
-      forgotPasswordComponent.find('form').trigger('submit');
 
-      expect(requestResetStub.mock.calls).length(1);
-      requestResetStub.mockRestore();
+      await forgotPasswordComponent.find('form').trigger('submit');
 
-      await forgotPasswordComponent.vm.requestReset();
-
-      expect(authService.requestPasswordReset.mock.calls).length(1);
-      expect(authService.requestPasswordReset.mock.calls[0][1]).to.include({
-        email: 'joe.bloggs@example.org',
-      });
-      expect(swalStub.mock.calls).length(1);
+      expect(authStore.requestPasswordReset).toHaveBeenCalledWith(
+        'joe.bloggs@example.org'
+      );
+      expect(swalStub).toHaveBeenCalledOnce();
     });
   });
+});
 
+describe('Reset Password Page', () => {
+  let component;
   describe('with invalid reset token', () => {
     beforeEach(async () => {
-      forgotPasswordComponent = await mountWithRouterMock(
-        ForgotPassword,
-        generateMountOptions(['apollo'], {
-          mocks: {
-            $route: {
-              query: {
-                resetToken: '123',
-              },
-            },
-          },
-          apollo: {
-            mutationCallstack: [
-              GenericApolloResponse(
-                'passwordReset',
-                GenericErrorsResponse(
-                  GenericError('Invalid Password Reset Token')
-                )
-              ),
-            ],
-          },
-        })
-      );
+      component = await mount(ForgotPasswordWithToken, {
+        shallow: false,
+        routeInfo: {
+          params: {
+            resetToken: '123'
+          }
+        },
+        preMount: () => {
+          const authStore = useAuthStore();
+          authStore.resetPassword.mockRejectedValueOnce(
+            new ValidationError('Invalid Password Reset Token')
+          );
+        }
+      });
     });
 
     it('shows error message when resetting', async () => {
-      await forgotPasswordComponent
-        .find('input#new_password1')
-        .setValue('example1234');
-      await forgotPasswordComponent
-        .find('input#new_password2')
-        .setValue('example1234');
+      await component.find('input#new_password1').setValue('example1234');
+      await component.find('input#new_password2').setValue('example1234');
 
-      await forgotPasswordComponent.vm.resetPassword();
-      await forgotPasswordComponent.vm.$nextTick();
+      await component.find('form').trigger('submit');
+      await component.vm.$nextTick();
 
-      expect(forgotPasswordComponent.text()).to.contain(
-        'Invalid Password Reset Token'
-      );
+      expect(component.text()).to.contain('Invalid Password Reset Token');
     });
   });
 
   describe('with reset token', () => {
-    const swalToastStub = jest.spyOn(swalToast, 'fire');
-    const resetStub = jest.spyOn(authService, 'resetPassword');
-    let routerPushFake;
+    const swalToastStub = vi.spyOn(swalToast, 'fire');
+
     beforeEach(async () => {
-      resetStub.mockClear();
       swalToastStub.mockClear();
-      forgotPasswordComponent = await mountWithRouterMock(
-        ForgotPassword,
-        generateMountOptions(['apollo'], {
-          mocks: {
-            $router: {
-              push: (routerPushFake = jest.fn()),
-            },
-            $route: {
-              query: {
-                resetToken: '1234abcd',
-              },
-            },
-          },
-          apollo: {
-            mutationCallstack: [
-              GenericApolloResponse(
-                'passwordReset',
-                GenericErrorsResponse(
-                  GenericError('Your confirmed password does not match!')
-                )
-              ),
-            ],
-          },
-        })
-      );
+      component = await mount(ForgotPasswordWithToken, {
+        shallow: false,
+        routeInfo: {
+          params: {
+            token: '1234abcd'
+          }
+        }
+      });
     });
 
     it('shows errors', async () => {
-      await forgotPasswordComponent
-        .find('input#new_password1')
-        .setValue('example1234');
-      await forgotPasswordComponent
-        .find('input#new_password2')
-        .setValue('example123');
+      const authStore = useAuthStore();
+      authStore.resetPassword.mockRejectedValueOnce(
+        new ValidationError('Your confirmed password does not match!')
+      );
 
-      await forgotPasswordComponent.vm.resetPassword();
+      await component.find('input#new_password1').setValue('example1234');
+      await component.find('input#new_password2').setValue('example123');
 
-      expect(forgotPasswordComponent.text()).to.contain(
+      await component.find('form').trigger('submit');
+      await component.vm.$nextTick();
+
+      expect(component.text()).to.contain(
         'Your confirmed password does not match!'
       );
     });
 
     it('can reset password', async () => {
-      const resetStub = jest
-        .spyOn(forgotPasswordComponent.vm, 'resetPassword')
-        .mockImplementation(() => {});
+      await component.find('input#new_password1').setValue('example1234');
+      await component.find('input#new_password2').setValue('example1234');
 
-      forgotPasswordComponent.vm.$apollo = generateApolloMock({
-        mutationCallstack: [
-          GenericApolloResponse('passwordReset', GenericMutationResponse()),
-        ],
-      });
+      await component.find('form').trigger('submit');
 
-      await forgotPasswordComponent
-        .find('input#new_password1')
-        .setValue('example1234');
-      await forgotPasswordComponent
-        .find('input#new_password2')
-        .setValue('example1234');
-      forgotPasswordComponent.find('form').trigger('submit');
-
-      expect(resetStub.mock.calls).length(1);
-      resetStub.mockRestore();
-
-      await forgotPasswordComponent.vm.resetPassword();
-
-      expect(authService.resetPassword.mock.calls).length(1);
-      expect(authService.resetPassword.mock.calls[0][1]).to.include({
-        token: '1234abcd',
-        password: 'example1234',
-        confirmedPassword: 'example1234',
-      });
+      const authStore = useAuthStore();
+      expect(authStore.resetPassword).toHaveBeenCalledWith(
+        '1234abcd',
+        'example1234',
+        'example1234'
+      );
       expect(swalToastStub.mock.calls).length(1);
-      expect(routerPushFake.mock.calls).length(1);
-      expect(routerPushFake.mock.calls[0][0]).to.eq('/login');
+      const router = useRouter();
+      expect(router.replace).toHaveBeenCalledWith('/login');
     });
   });
 });

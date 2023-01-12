@@ -1,22 +1,22 @@
-import { mount } from '@vue/test-utils';
-import { expect } from 'chai';
-import { fixTextSpacing } from '@/tests/unit/helpers';
+import { mount, fixTextSpacing } from '#testSupport/helpers';
+import { expect } from 'vitest';
 
-import OverviewBox from '@/components/ui/Card.vue';
+import OverviewBox from '~~/components/ui/UiCard.vue';
 import PerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue';
 
-import Performance from '@/tests/unit/fixtures/Performance';
-import Production from '@/tests/unit/fixtures/Production';
+import Performance from '#testSupport/fixtures/Performance';
+import Production from '#testSupport/fixtures/Production';
 
 describe('Performance Overview', function () {
   let performanceOverviewComponent;
 
-  beforeAll(() => {
-    performanceOverviewComponent = mount(PerformanceOverview, {
-      propsData: {
+  beforeAll(async () => {
+    performanceOverviewComponent = await mount(PerformanceOverview, {
+      shallow: false,
+      props: {
         production: Production(),
-        performance: Performance(),
-      },
+        performance: Performance()
+      }
     });
   });
 
@@ -40,7 +40,7 @@ describe('Performance Overview', function () {
     });
     it.each([null, 10])('shows interval length when able', async (duration) => {
       await performanceOverviewComponent.setProps({
-        performance: Performance({ intervalDurationMins: duration }),
+        performance: Performance({ intervalDurationMins: duration })
       });
 
       expect(fixTextSpacing(performanceOverviewComponent.text())).to.contain(

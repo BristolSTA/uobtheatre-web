@@ -1,19 +1,19 @@
 import { mount } from '@vue/test-utils';
-import { expect } from 'chai';
+import { expect } from 'vitest';
 
-import { fakeValidationErrors } from '../../fixtures/instances/FakeErrors';
-import TextInput from '@/components/ui/TextInput.vue';
+import TextInput from '@/components/ui/Input/UiInputText.vue';
+import { fakeValidationErrors } from '#testSupport/fixtures/instances/FakeErrors';
 
 describe('TextInput', () => {
   let component;
   const input = () => component.find('input');
 
-  beforeEach(() => {
-    component = mount(TextInput, {
-      propsData: {
+  beforeEach(async () => {
+    component = await mount(TextInput, {
+      props: {
         name: 'An input',
-        value: null,
-      },
+        value: null
+      }
     });
   });
 
@@ -22,22 +22,22 @@ describe('TextInput', () => {
     const inputs = component.findAll('input');
     expect(inputs.length).to.eq(1);
 
-    expect(inputs.at(0).attributes()).to.include({
+    expect(inputs[0].attributes()).to.include({
       id: 'anInput',
       name: 'anInput',
-      type: 'text',
+      type: 'text'
     });
   });
 
   it('generates appropriate form id and name', async () => {
     await component.setProps({
-      name: 'Email',
+      name: 'Email'
     });
     expect(input().attributes('id')).to.eq('email');
     expect(input().attributes('name')).to.eq('email');
 
     await component.setProps({
-      name: 'A Seperated Label',
+      name: 'A Seperated Label'
     });
     expect(input().attributes('id')).to.eq('aSeperatedLabel');
     expect(input().attributes('name')).to.eq('aSeperatedLabel');
@@ -45,22 +45,23 @@ describe('TextInput', () => {
 
   it('can set an autocomplete value', async () => {
     await component.setProps({
-      autocomplete: 'current-password none',
+      autocomplete: 'current-password none'
     });
     expect(input().attributes('autocomplete')).to.eq('current-password none');
   });
 
   it('can set its type', async () => {
     await component.setProps({
-      type: 'password',
+      type: 'password'
     });
     expect(input().attributes('type')).to.eq('password');
   });
 
   it('sets its initial value', async () => {
     await component.setProps({
-      value: 'Hello world',
+      modelValue: 'Hello world'
     });
+    await component.vm.$nextTick();
     expect(input().element.value).to.eq('Hello world');
   });
 
@@ -74,7 +75,7 @@ describe('TextInput', () => {
     expect(component.text()).not.to.contain('An error on the anInput field');
 
     await component.setProps({
-      errors: fakeValidationErrors(['anInput']),
+      errors: fakeValidationErrors(['anInput'])
     });
 
     expect(component.text()).to.contain('An error on the anInput field');

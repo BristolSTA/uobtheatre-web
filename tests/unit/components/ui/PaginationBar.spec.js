@@ -5,13 +5,13 @@ import PaginationBar from '@/components/ui/PaginationBar.vue';
 
 describe('Pagination Bar', () => {
   let component;
-  beforeEach(() => {
-    component = mount(PaginationBar, {
-      propsData: {
+  beforeEach(async () => {
+    component = await mount(PaginationBar, {
+      props: {
         numberOfPages: 5,
         currentPage: 5,
-        numberPagesToDisplay: 5,
-      },
+        numberPagesToDisplay: 5
+      }
     });
   });
 
@@ -28,7 +28,7 @@ describe('Pagination Bar', () => {
     assertPagesInOrder([1, 2, 3, 4, 5]);
 
     await setProps(1, 1, null);
-    expect(component.html()).to.eq('');
+    expect(component.html()).to.eq('<!--v-if-->');
 
     await setProps(2, 1, null);
     assertPagesInOrder([1, 2]);
@@ -115,7 +115,7 @@ describe('Pagination Bar', () => {
       'button:not(:first-of-type):not(:last-of-type)'
     ); // First and last are back / forwards
     let i = 0;
-    buttons.wrappers.forEach((button, index) => {
+    buttons.forEach((button, index) => {
       i++;
       expect(button.text()).to.eq(expectedOrder[index].toString());
     });

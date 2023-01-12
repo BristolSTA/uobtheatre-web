@@ -43,11 +43,11 @@
 <script>
 import gql from 'graphql-tag';
 
-import IconListItem from '../../ui/IconListItem.vue';
-import OverviewBox from '../../ui/Card.vue';
+import IconListItem from '../../ui/UiIconListItem.vue';
+import OverviewBox from '../../ui/UiCard.vue';
 import AddressFragments from '@/graphql/fragments/AddressFragment.gql';
 
-import LoadingIcon from '@/components/ui/LoadingIcon.vue';
+import LoadingIcon from '~~/components/ui/UiLoadingIcon.vue';
 
 export default {
   name: 'VenueOverview',
@@ -56,16 +56,16 @@ export default {
     venueData: {
       requried: true,
       type: [Object, String],
-      default: null,
+      default: null
     },
     online: {
       default: false,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
   data() {
     return {
-      venue: null,
+      venue: null
     };
   },
   apollo: {
@@ -84,7 +84,7 @@ export default {
       `,
       variables() {
         return {
-          slug: this.venueData,
+          slug: this.venueData
         };
       },
       skip() {
@@ -93,8 +93,8 @@ export default {
           return true;
         }
         return false;
-      },
-    },
-  },
+      }
+    }
+  }
 };
 </script>

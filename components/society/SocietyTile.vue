@@ -21,13 +21,13 @@ export default {
   props: {
     society: {
       required: true,
-      type: Object,
-    },
-  },
+      type: Object
+    }
+  }
 };
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .society-tile:hover .society-title {
   @apply text-sta-green;
 }

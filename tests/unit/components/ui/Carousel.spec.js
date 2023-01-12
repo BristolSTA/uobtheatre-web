@@ -1,8 +1,8 @@
-import { expect } from 'chai';
+import { expect, vi } from 'vitest';
 
-import { mountWithRouterMock } from '../../helpers';
-import Society from '../../fixtures/Society';
-import Carousel from '@/components/ui/Carousel.vue';
+import Carousel from '~~/components/ui/UiCarousel.vue';
+import { mount } from '@vue/test-utils';
+import Society from '#testSupport/fixtures/Society';
 
 describe('Carousel', function () {
   let carouselComponent;
@@ -13,58 +13,58 @@ describe('Carousel', function () {
       {
         id: 1,
         displayImage: {
-          url: 'http://pathto.example/my-image0.png',
+          url: 'http://pathto.example/my-image0.png'
         },
         text: {
           name: 'My production without a picture',
           slug: 'my-production-without-a-picture',
           society: Society({ name: 'Dramatic Pause', slug: 'dramatic-pause' }),
           start: '2020-11-13T00:00:00.000',
-          end: '2020-11-14T00:00:00.000',
-        },
+          end: '2020-11-14T00:00:00.000'
+        }
       },
       {
         id: 2,
         displayImage: {
-          url: 'http://pathto.example/my-image.png',
+          url: 'http://pathto.example/my-image.png'
         },
         text: {
           name: 'Upside Down Cake',
           slug: 'upside-down-cake',
           society: Society({
             name: 'Joe Bloggs Productions',
-            slug: 'joe-bloggs-productions',
+            slug: 'joe-bloggs-productions'
           }),
           start: '2020-11-14T00:00:00.000',
-          end: '2020-11-18T00:00:00.000',
-        },
+          end: '2020-11-18T00:00:00.000'
+        }
       },
       {
         id: 3,
         displayImage: {
-          url: 'http://pathto.example/my-image2.png',
+          url: 'http://pathto.example/my-image2.png'
         },
         text: {
           name: 'Legally Ginger',
           society: Society({ name: 'MTB', slug: 'mtb' }),
           start: '2019-11-14T00:00:00.000',
-          end: '2019-11-18T00:00:00.000',
-        },
-      },
+          end: '2019-11-18T00:00:00.000'
+        }
+      }
     ];
 
-    jest.useFakeTimers();
-    carouselComponent = await mountWithRouterMock(Carousel, {
-      propsData: {
+    vi.useFakeTimers();
+    carouselComponent = await mount(Carousel, {
+      props: {
         carouselItems,
         autoplay: true,
-        pauseOnHover: true,
-      },
+        pauseOnHover: true
+      }
     });
   });
 
   afterEach(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   describe('carousel functions as a carousel', () => {
@@ -88,7 +88,7 @@ describe('Carousel', function () {
     it('prev button decrements slide', async () => {
       const prevButton = carouselComponent.find('#prevBtn');
       await carouselComponent.setData({
-        currentItem: 1,
+        currentItem: 1
       });
 
       prevButton.trigger('click');
@@ -104,13 +104,13 @@ describe('Carousel', function () {
     it('buttons go to correct slide', () => {
       const buttons = carouselComponent.findAll('.carousel-indicator');
 
-      buttons.at(1).trigger('click');
+      buttons[1].trigger('click');
       expect(carouselComponent.vm.currentItem).equals(1);
-      buttons.at(0).trigger('click');
+      buttons[0].trigger('click');
       expect(carouselComponent.vm.currentItem).equals(0);
-      buttons.at(2).trigger('click');
+      buttons[2].trigger('click');
       expect(carouselComponent.vm.currentItem).equals(2);
-      jest.advanceTimersByTime(5000);
+      vi.advanceTimersByTime(5000);
       expect(carouselComponent.vm.currentItem).equals(0);
     });
   });
@@ -122,12 +122,12 @@ describe('Carousel', function () {
       expect(carouselComponent.vm.autoplayInterval).equals(null);
       carouselComponent.find('#carousel').trigger('mouseout');
       expect(carouselComponent.vm.autoplayInterval).to.not.equal(null);
-      jest.advanceTimersByTime(5000);
+      vi.advanceTimersByTime(5000);
       expect(carouselComponent.vm.currentItem).equals(1);
     });
     it('mouseover does nothing when disabed', async () => {
       await carouselComponent.setProps({
-        pauseOnHover: false,
+        pauseOnHover: false
       });
       expect(carouselComponent.vm.autoplayInterval).to.not.equal(null);
       carouselComponent.find('#carousel').trigger('mouseover');
@@ -137,43 +137,43 @@ describe('Carousel', function () {
     });
 
     it('autoplays after interval', () => {
-      jest.advanceTimersByTime(4000);
+      vi.advanceTimersByTime(4000);
       expect(carouselComponent.vm.currentItem).equals(0);
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
       expect(carouselComponent.vm.currentItem).equals(1);
     });
 
     it('autoplays with non default interval', async () => {
-      carouselComponent = await mountWithRouterMock(Carousel, {
-        propsData: {
+      carouselComponent = await mount(Carousel, {
+        props: {
           carouselItems,
           autoplay: true,
           pauseOnHover: true,
-          autoplaySpeed: 2000,
-        },
+          autoplaySpeed: 2000
+        }
       });
 
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
       expect(carouselComponent.vm.currentItem).equals(0);
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
       expect(carouselComponent.vm.currentItem).equals(1);
     });
 
     it('disable autoplay when destroyed', () => {
       expect(carouselComponent.vm.autoplayInterval).to.not.equal(null);
-      carouselComponent.destroy();
+      carouselComponent.unmount();
       expect(carouselComponent.vm.autoplayInterval).equals(null);
     });
   });
 
   describe('with no autoplay', () => {
     beforeEach(async () => {
-      carouselComponent = await mountWithRouterMock(Carousel, {
-        propsData: {
+      carouselComponent = await mount(Carousel, {
+        props: {
           carouselItems,
           autoplay: false,
-          pauseOnHover: true,
-        },
+          pauseOnHover: true
+        }
       });
     });
 
@@ -192,12 +192,12 @@ describe('Carousel', function () {
 
   describe('with only one banner production', () => {
     beforeEach(async () => {
-      carouselComponent = await mountWithRouterMock(Carousel, {
-        propsData: {
+      carouselComponent = await mount(Carousel, {
+        props: {
           carouselItems: carouselItems.slice(0, 1),
           autoplay: true,
-          pauseOnHover: true,
-        },
+          pauseOnHover: true
+        }
       });
     });
 

@@ -5,7 +5,7 @@
       class="flex flex-col p-6 pt-0 space-y-2"
       @submit.prevent="attemptChange"
     >
-      <non-field-error :errors="errors" />
+      <UiNonFieldError :errors="errors" />
       <text-input
         v-model="currentPassword"
         name="Current Password"
@@ -51,22 +51,24 @@
 import gql from 'graphql-tag';
 
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
-import NonFieldError from '@/components/ui/NonFieldError.vue';
-import TextInput from '@/components/ui/TextInput.vue';
-import { getValidationErrors, performMutation, swalToast } from '@/utils';
+
+import TextInput from '~~/components/ui/Input/UiInputText.vue';
+import { getValidationErrors, performMutation } from '@/utils/api';
+import { swalToast } from '@/utils/alerts';
+import ErrorsPartial from '@/graphql/partials/ErrorsPartial';
 export default {
   components: {
     LoadingContainer,
-    NonFieldError,
-    TextInput,
+    TextInput
   },
+  emits: ['cancel'],
   data() {
     return {
       loading: false,
       currentPassword: null,
       newPassword: null,
       confirmedNewPassword: null,
-      errors: null,
+      errors: null
     };
   },
   methods: {
@@ -79,29 +81,29 @@ export default {
             mutation: gql`
           mutation ($currentPassword: String!, $newPassword: String!, $confirmedNewPassword: String!) {
             passwordChange(oldPassword: $currentPassword, newPassword1: $newPassword, newPassword2: $confirmedNewPassword) {
-                ${require('@/graphql/partials/ErrorsPartial').default}
+                ${ErrorsPartial}
             }
           }
         `,
             variables: {
               currentPassword: this.currentPassword,
               newPassword: this.newPassword,
-              confirmedNewPassword: this.confirmedNewPassword,
-            },
+              confirmedNewPassword: this.confirmedNewPassword
+            }
           },
           'passwordChange'
         );
         swalToast.fire({
           icon: 'success',
           title: 'Password Changed',
-          position: 'bottom-end',
+          position: 'bottom-end'
         });
         this.$emit('cancel');
       } catch (e) {
         this.errors = getValidationErrors(e);
       }
       this.loading = false;
-    },
-  },
+    }
+  }
 };
 </script>

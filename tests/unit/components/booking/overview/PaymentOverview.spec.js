@@ -1,11 +1,11 @@
-import { expect } from 'chai';
+import { mount, fixTextSpacing } from '#testSupport/helpers';
+import { expect } from 'vitest';
 
-import { fixTextSpacing, mountWithRouterMock } from '../../../helpers';
 import Booking from '@/classes/Booking';
-import OverviewBox from '@/components/ui/Card.vue';
+import OverviewBox from '~~/components/ui/UiCard.vue';
 import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue';
 
-import FullBooking from '@/tests/unit/fixtures/instances/FullBooking';
+import FullBooking from '#testSupport/fixtures/instances/FullBooking';
 
 describe('Payment Overview', function () {
   let paymentOverviewComponent;
@@ -14,10 +14,11 @@ describe('Payment Overview', function () {
     const bookingdata = FullBooking();
 
     const booking = Booking.fromAPIData(bookingdata);
-    paymentOverviewComponent = await mountWithRouterMock(PaymentOverview, {
-      propsData: {
-        booking,
-      },
+    paymentOverviewComponent = await mount(PaymentOverview, {
+      shallow: false,
+      props: {
+        booking
+      }
     });
   });
 
@@ -39,7 +40,7 @@ describe('Payment Overview', function () {
     const costRows = paymentOverviewComponent.findAll('tr');
 
     expect(costRows.length).to.eq(2);
-    expect(fixTextSpacing(costRows.at(0).text())).to.eq('Total Paid : £12.65');
-    expect(fixTextSpacing(costRows.at(1).text())).to.eq('On : Fri 8 May 2020');
+    expect(fixTextSpacing(costRows.at(0).text())).to.eq('Total Paid:£12.65');
+    expect(fixTextSpacing(costRows.at(1).text())).to.eq('On:Fri 8 May 2020');
   });
 });

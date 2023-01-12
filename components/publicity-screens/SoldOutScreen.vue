@@ -14,8 +14,8 @@ export default {
   props: {
     performance: {
       type: Object,
-      default: null,
-    },
-  },
+      default: null
+    }
+  }
 };
 </script>

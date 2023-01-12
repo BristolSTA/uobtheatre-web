@@ -9,7 +9,7 @@
           : available
           ? 'bg-sta-green'
           : 'bg-sta-gray-dark border-2 border-sta-rouge',
-        available ? 'cursor-pointer' : '',
+        available ? 'cursor-pointer' : ''
       ]"
       @click="onHeaderClick"
       @keypress="onHeaderClick"
@@ -119,33 +119,34 @@ export default {
   props: {
     expanded: {
       required: true,
-      type: Boolean,
+      type: Boolean
     },
     ticketOption: {
       required: true,
-      type: Object,
+      type: Object
     },
     groupCapacityRemaining: {
       required: true,
-      type: Number,
+      type: Number
     },
     currentTickets: {
       required: true,
-      type: Array,
+      type: Array
     },
     discounts: {
       required: true,
-      type: Array,
+      type: Array
     },
     showCapacities: {
       default: false,
-      type: Boolean,
+      type: Boolean
     },
     canAddTickets: {
       default: true,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
+  emits: ['add-ticket', 'set-tickets', 'remove-ticket', 'select-location'],
   computed: {
     orderedConcessionTypes() {
       return lo.sortBy(this.ticketOption.concessionTypes, 'price').reverse();
@@ -160,7 +161,7 @@ export default {
       return this.currentTickets.filter((ticket) => {
         return ticket.matches(this.ticketOption.seatGroup);
       });
-    },
+    }
   },
   methods: {
     onAddDiscountTickets(discount) {
@@ -177,7 +178,7 @@ export default {
       if (this.available) {
         this.$emit('select-location');
       }
-    },
-  },
+    }
+  }
 };
 </script>

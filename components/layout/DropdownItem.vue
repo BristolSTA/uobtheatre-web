@@ -2,7 +2,7 @@
   <NuxtLink
     class="row focus:shadow-outline flex items-start p-2 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 bg-transparent rounded-lg focus:outline-none"
     :to="route"
-    @click.native="$emit('click')"
+    @click="$emit('click')"
   >
     <div
       v-if="icon"
@@ -26,20 +26,21 @@ export default {
   props: {
     title: {
       required: true,
-      type: String,
+      type: String
     },
     subtitle: {
       default: null,
-      type: String,
+      type: String
     },
     icon: {
       default: null,
-      type: String,
+      type: String
     },
     route: {
       required: true,
-      type: [Object, String],
-    },
+      type: [Object, String]
+    }
   },
+  emits: ['click']
 };
 </script>

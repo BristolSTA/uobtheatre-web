@@ -1,33 +1,31 @@
-import { mount } from '@vue/test-utils';
-import { expect } from 'chai';
+import { mount } from '#testSupport/helpers';
+import { NuxtLinkStub } from '#testSupport/stubs';
+import { expect } from 'vitest';
 
-import { generateMountOptions, RouterLinkStub } from '../../helpers';
-import ProductionTile from '@/components/production/ProductionTile';
+import ProductionTile from '@/components/production/ProductionTile.vue';
 
 describe('Production Tile', () => {
   let productionTileComponent;
-  beforeAll(() => {
-    productionTileComponent = mount(
-      ProductionTile,
-      generateMountOptions(['router'], {
-        propsData: {
-          production: {
-            slug: 'legally-ginger',
-            name: 'Legally Ginger',
-            featuredImage: {
-              url: 'example.org/feature-image.png',
-            },
-            start: '2021-03-03T14:00:00',
-            end: '2021-03-06T14:00:00',
+  beforeAll(async () => {
+    productionTileComponent = await mount(ProductionTile, {
+      shallow: false,
+      props: {
+        production: {
+          slug: 'legally-ginger',
+          name: 'Legally Ginger',
+          featuredImage: {
+            url: 'example.org/feature-image.png'
           },
-        },
-      })
-    );
+          start: '2021-03-03T14:00:00',
+          end: '2021-03-06T14:00:00'
+        }
+      }
+    });
   });
 
   it('links to production page', () => {
-    const link = productionTileComponent.findComponent(RouterLinkStub);
-    expect(link.props('to')).to.eq('/production/legally-ginger');
+    const link = productionTileComponent.findComponent(NuxtLinkStub);
+    expect(link.attributes('to')).to.eq('/production/legally-ginger');
   });
   it('has feature image', () => {
     expect(productionTileComponent.find('img').attributes('src')).to.eq(

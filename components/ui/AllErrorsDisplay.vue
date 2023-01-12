@@ -19,8 +19,8 @@ export default {
     errors: {
       required: false,
       default: null,
-      type: Errors,
-    },
-  },
+      type: Errors
+    }
+  }
 };
 </script>

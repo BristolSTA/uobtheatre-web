@@ -1,29 +1,41 @@
-import { RouterLinkStub } from '@vue/test-utils';
-import { expect } from 'chai';
+import { NuxtLinkStub } from '#testSupport/stubs';
+import { expect } from 'vitest';
 
+import { fixTextSpacing, mount } from '#testSupport/helpers';
 import {
-  fixTextSpacing,
-  generateMountOptions,
-  mountWithRouterMock,
-} from '../helpers';
-import Production from '../fixtures/Production';
-import Carousel from '@/components/ui/Carousel.vue';
+  GenericApolloResponse,
+  GenericNodeConnection
+} from '#testSupport/helpers/api';
+import Production from '#testSupport/fixtures/Production';
+import Carousel from '@/components/ui/UiCarousel.vue';
 import Home from '@/pages/index.vue';
+import { flushPromises } from '@vue/test-utils';
 
 describe('Home', function () {
   let homepageComponent;
 
+  async function mountComponent(queryEdgeResponse = []) {
+    return (homepageComponent = await mount(Home, {
+      shallow: false,
+      apollo: {
+        queryResponses: [
+          GenericApolloResponse(
+            'productions',
+            GenericNodeConnection(queryEdgeResponse)
+          )
+        ]
+      }
+    }));
+  }
+
   beforeEach(async () => {
-    homepageComponent = await mountWithRouterMock(
-      Home,
-      generateMountOptions(['apollo'])
-    );
+    homepageComponent = await mountComponent();
   });
 
   describe('Splashscreen', () => {
     let splashscreenContainer;
 
-    beforeEach(() => {
+    beforeEach(async () => {
       splashscreenContainer = homepageComponent.find('#splashscreen');
     });
 
@@ -34,11 +46,11 @@ describe('Home', function () {
     });
 
     it('shows fallback with no featured production with image', async () => {
-      homepageComponent = await mountWithRouterMock(Home, {
-        data() {
-          return { upcomingProductions: [Production({ coverImage: null })] };
-        },
-      });
+      homepageComponent = await mountComponent([
+        Production({ coverImage: null })
+      ]);
+
+      await flushPromises();
 
       expect(fixTextSpacing(homepageComponent.text())).to.contain(
         'Welcome to UOB Theatre The Home of Bristol Student Performing Arts'
@@ -57,7 +69,7 @@ describe('Home', function () {
       await seedProductions();
 
       const carousel = homepageComponent.findComponent(Carousel);
-      const slide = carousel.findComponent({ ref: 'carousel' });
+      const slide = carousel.find({ ref: 'carousel' });
       expect(slide.text()).to.contain('STA');
       expect(slide.text()).to.contain('Legally Ginger');
       expect(fixTextSpacing(slide.text())).to.contain(
@@ -68,15 +80,15 @@ describe('Home', function () {
         'background-image: url(http://pathto.example/cover-image.png)'
       );
       expect(
-        homepageComponent.findAllComponents(RouterLinkStub).at(0).props('to')
+        homepageComponent.findAllComponents(NuxtLinkStub).at(0).attributes('to')
       ).to.equal('/production/legally-ginger');
     });
   });
 
   describe("What's On", () => {
     let whatsOnContainer;
-    beforeEach(() => {
-      whatsOnContainer = homepageComponent.findComponent({ ref: 'whatson' });
+    beforeEach(async () => {
+      whatsOnContainer = homepageComponent.find({ ref: 'whatson' });
     });
     it('falls back with no productions', () => {
       expect(whatsOnContainer.text()).to.contain(
@@ -88,8 +100,8 @@ describe('Home', function () {
       await seedProductions();
 
       const whatsOnProductions = homepageComponent
-        .findComponent({
-          ref: 'whatson',
+        .find({
+          ref: 'whatson'
         })
         .findAll('.production-feature');
 
@@ -110,7 +122,7 @@ describe('Home', function () {
       // Link to production
       expect(whatsOnProductions.at(0).find('a').exists()).to.be.true;
       expect(
-        homepageComponent.findAllComponents(RouterLinkStub).at(2).props('to')
+        homepageComponent.findAllComponents(NuxtLinkStub).at(2).attributes('to')
       ).to.equal('/production/legally-ginger');
 
       // Second div should be reversed
@@ -125,26 +137,18 @@ describe('Home', function () {
   });
 
   const seedProductions = async () => {
-    homepageComponent = await mountWithRouterMock(
-      Home,
-      generateMountOptions(['apollo'], {
-        data() {
-          return {
-            upcomingProductions: [
-              // Seed a production that can't be featured (no cover photo)
-              Production({
-                coverImage: null,
-                start: '2020-11-13',
-                end: '2020-11-13',
-              }),
-              // Seed a production that can be featured
-              Production({ id: 2, start: '2020-11-14', end: '2020-11-18' }),
-              Production({ id: 3, start: '2020-11-14', end: '2020-11-18' }),
-              Production({ id: 4 }),
-            ],
-          };
-        },
-      })
-    );
+    homepageComponent = await mountComponent([
+      // Seed a production that can't be featured (no cover photo)
+      Production({
+        coverImage: null,
+        start: '2020-11-13',
+        end: '2020-11-13'
+      }),
+      // Seed a production that can be featured
+      Production({ id: 2, start: '2020-11-14', end: '2020-11-18' }),
+      Production({ id: 3, start: '2020-11-14', end: '2020-11-18' }),
+      Production({ id: 4 })
+    ]);
+    await flushPromises();
   };
 });

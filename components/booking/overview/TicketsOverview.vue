@@ -1,7 +1,7 @@
 <template>
   <overview-box>
     <template #title>
-      <font-awesome-icon icon="ticket-alt" class="mr-2" />
+      <font-awesome-icon icon="ticket" class="mr-2" />
       Tickets
     </template>
     <template #messageBox>
@@ -44,7 +44,7 @@
 <script>
 import lo from 'lodash';
 
-import OverviewBox from '../../ui/Card.vue';
+import OverviewBox from '../../ui/UiCard.vue';
 import Booking from '@/classes/Booking';
 
 export default {
@@ -53,8 +53,8 @@ export default {
   props: {
     booking: {
       required: true,
-      type: Booking,
-    },
+      type: Booking
+    }
   },
   computed: {
     seatGroupedTickets() {
@@ -62,7 +62,7 @@ export default {
         this.booking.ticketOverview(),
         (concessionTickets) => concessionTickets.seatGroup.id
       );
-    },
-  },
+    }
+  }
 };
 </script>

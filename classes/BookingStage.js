@@ -17,7 +17,7 @@ export default class {
     routeName,
     shouldBeUsed = null,
     eligable = null,
-    requiresPerformance = true,
+    requiresPerformance = true
   }) {
     this.name = name;
     this.routeName = routeName;

@@ -1,68 +1,82 @@
-import { mount } from '@vue/test-utils';
-import { expect } from 'chai';
+import { expect } from 'vitest';
+import { mount } from '#testSupport/helpers';
 
-import { generateMountOptions } from '../../helpers';
-import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse';
-import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse';
-import GenericErrorsResponse from '../../fixtures/support/GenericErrorsResponse';
-import EmailVerify from '@/pages/user/email-verify/_token/index.vue';
+import {
+  GenericApolloResponse,
+  GenericMutationResponse,
+  GenericErrorsResponse
+} from '#testSupport/helpers/api';
+import { flushPromises } from '@vue/test-utils';
 
-describe('Email Verify', function () {
+import EmailChangeActivate from '@/pages/user/email-verify/[token]/index.vue';
+
+describe('Email Change Activate', function () {
   let component;
 
-  it('verifies an account with valid token', async () => {
-    const routerReplaceMock = jest.fn();
-    component = mount(
-      EmailVerify,
-      generateMountOptions(['apollo'], {
-        apollo: {
-          mutationCallstack: [
-            GenericApolloResponse('verifyAccount', GenericMutationResponse()),
-          ],
-        },
-        mocks: {
-          $route: {
-            params: {
-              token: '1234abcd',
-            },
-          },
-          $router: {
-            replace: routerReplaceMock,
-          },
-        },
-      })
-    );
+  const mountComponent = async (apolloResponses) => {
+    component = await mount(EmailChangeActivate, {
+      shallow: false,
+      apollo: {
+        mutationResponses: apolloResponses
+      },
+      routeInfo: {
+        params: {
+          token: '1234abcd'
+        }
+      }
+    });
+  };
 
-    expect(component.text()).to.contain('Verifying email');
+  it('adds secondary email with valid token', async () => {
+    await mountComponent([
+      GenericApolloResponse('verifySecondaryEmail', GenericMutationResponse())
+    ]);
 
-    await component.vm.$nextTick();
+    expect(component.text()).to.contain('Adding email');
+
+    await flushPromises();
     await component.vm.$nextTick();
 
-    expect(routerReplaceMock.mock.calls.length).to.eq(1);
-    expect(routerReplaceMock.mock.calls[0][0]).to.eq('/login');
+    expect(component.text()).to.contain('Complete email change');
+    expect(component.findAll('input')).length(1);
   });
 
   it('shows error with invalid token', async () => {
-    component = mount(
-      EmailVerify,
-      generateMountOptions(['apollo'], {
-        apollo: {
-          mutationCallstack: [
-            GenericApolloResponse('verifyAccount', GenericErrorsResponse()),
-          ],
-        },
-        mocks: {
-          $route: {
-            params: {
-              token: 'invalidCode',
-            },
-          },
-        },
-      })
-    );
+    await mountComponent([
+      GenericApolloResponse('verifySecondaryEmail', GenericErrorsResponse())
+    ]);
 
+    await flushPromises();
     await component.vm.$nextTick();
-    await component.vm.$nextTick();
+
     expect(component.text()).to.contain('There was an error');
+  });
+
+  describe('with added secondary email', () => {
+    let replaceStub;
+    beforeEach(async () => {
+      await mountComponent([
+        GenericApolloResponse(
+          'verifySecondaryEmail',
+          GenericMutationResponse()
+        ),
+        GenericApolloResponse('swapEmails', GenericMutationResponse()),
+        GenericApolloResponse('removeSecondaryEmail', GenericMutationResponse())
+      ]);
+
+      await flushPromises();
+      await component.vm.$nextTick();
+    });
+
+    it('can enter password to swap', async () => {
+      component.find('input').setValue('mypassword');
+      await component.find('form').trigger('submit');
+
+      await flushPromises();
+      await component.vm.$nextTick();
+
+      const router = useRouter();
+      expect(router.replace).toHaveBeenCalledWith('/user');
+    });
   });
 });

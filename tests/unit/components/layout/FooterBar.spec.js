@@ -1,15 +1,14 @@
-import { mount } from '@vue/test-utils';
-import { expect } from 'chai';
-
-import { fixTextSpacing } from '../../helpers';
-import FooterBar from '@/components/layout/FooterBar.vue';
+import { mount, fixTextSpacing } from '#testSupport/helpers';
+import { NuxtLinkStub } from '#testSupport/stubs';
+import { expect } from 'vitest';
+import FooterBar from '@/components/layout/LayoutFooterBar.vue';
 
 describe('FooterBar', function () {
   let footerBarComponent;
 
-  beforeEach(() => {
-    footerBarComponent = mount(FooterBar, {
-      stubs: ['NuxtLink'],
+  beforeEach(async () => {
+    footerBarComponent = await mount(FooterBar, {
+      shallow: false
     });
   });
 
@@ -24,19 +23,19 @@ describe('FooterBar', function () {
     await footerBarComponent.setData({
       navItems: [
         ['/privacy', 'Privacy'],
-        ['/terms', 'Terms'],
-      ],
+        ['/terms', 'Terms']
+      ]
     });
-    const links = footerBarComponent.findAll('ul nuxtlink-stub');
+    const links = footerBarComponent.find('ul').findAllComponents(NuxtLinkStub);
 
     expect(links.length).to.equal(2);
 
     // First link should direct to privacy
-    expect(links.at(0).attributes('to')).to.equal('/privacy');
+    expect(links.at(0).attributes('href')).to.equal('/privacy');
     expect(links.at(0).text()).to.equal('Privacy');
 
     // Second link should be terms
-    expect(links.at(1).attributes('to')).to.equal('/terms');
+    expect(links.at(1).attributes('href')).to.equal('/terms');
     expect(links.at(1).text()).to.equal('Terms');
   });
 });

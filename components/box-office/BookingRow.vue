@@ -6,7 +6,7 @@
         ? 'bg-sta-orange'
         : index % 2 == 0
         ? 'bg-sta-gray-light'
-        : 'bg-sta-gray',
+        : 'bg-sta-gray'
     ]"
     @click="$emit('select-booking')"
     @keypress="$emit('select-booking')"
@@ -40,16 +40,17 @@ export default {
   props: {
     booking: {
       required: true,
-      type: Booking,
+      type: Booking
     },
     active: {
       required: true,
-      type: Boolean,
+      type: Boolean
     },
     index: {
       required: true,
-      type: Number,
-    },
+      type: Number
+    }
   },
+  emits: ['select-booking']
 };
 </script>

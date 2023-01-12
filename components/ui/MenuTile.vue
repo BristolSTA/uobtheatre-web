@@ -1,6 +1,6 @@
 <template>
   <component
-    :is="to ? 'nuxt-link' : 'div'"
+    :is="to ? 'NuxtLink' : 'div'"
     class="p-3 cursor-pointer"
     :to="to"
     @click="go"
@@ -20,25 +20,26 @@ export default {
   props: {
     to: {
       default: null,
-      type: [Object, String],
+      type: [Object, String]
     },
     icon: {
       default: null,
-      type: String,
+      type: String
     },
     textSize: {
       default: 'text-h2',
-      type: String,
-    },
+      type: String
+    }
   },
+  emits: ['close', 'click'],
   methods: {
     go() {
       if (this.to) {
-        this.$router.push(this.to);
+        useRouter().push(this.to);
       } else {
         this.$emit('click');
       }
-    },
-  },
+    }
+  }
 };
 </script>

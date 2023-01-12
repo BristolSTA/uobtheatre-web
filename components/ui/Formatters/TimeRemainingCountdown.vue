@@ -4,7 +4,7 @@
       remainingDuration
         ? humanizeDuration(remainingDuration.toMillis(), {
             round: true,
-            largest: 1,
+            largest: 1
           })
         : ''
     }}
@@ -18,13 +18,14 @@ export default {
   props: {
     expiresAt: {
       required: true,
-      type: String,
-    },
+      type: String
+    }
   },
+  emits: ['finished'],
   data() {
     return {
       remainingDuration: null,
-      intervalTimer: null,
+      intervalTimer: null
     };
   },
   computed: {
@@ -37,13 +38,13 @@ export default {
       }
 
       return this.remainingDuration;
-    },
+    }
   },
   mounted() {
     this.calculateRemainingSeconds();
     this.intervalTimer = setInterval(this.calculateRemainingSeconds, 500);
   },
-  beforeDestroy() {
+  beforeUnmount() {
     clearInterval(this.intervalTimer);
   },
   methods: {
@@ -54,7 +55,7 @@ export default {
         this.remainingDuration = Duration.fromMillis(0);
         this.$emit('finished');
       }
-    },
-  },
+    }
+  }
 };
 </script>

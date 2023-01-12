@@ -1,11 +1,11 @@
-import { expect } from 'chai';
+import { mount, fixTextSpacing } from '#testSupport/helpers';
+import { expect } from 'vitest';
 
-import { fixTextSpacing, mountWithRouterMock } from '../../../helpers';
 import Booking from '@/classes/Booking';
 import BookingPriceOverview from '@/components/booking/overview/BookingPriceOverview.vue';
-import OverviewBox from '@/components/ui/Card.vue';
+import OverviewBox from '~~/components/ui/UiCard.vue';
 
-import FullBooking from '@/tests/unit/fixtures/instances/FullBooking';
+import FullBooking from '#testSupport/fixtures/instances/FullBooking';
 
 describe('Booking Price Overview', function () {
   let bookingPriceOverviewComponent;
@@ -14,14 +14,12 @@ describe('Booking Price Overview', function () {
     const bookingdata = FullBooking();
 
     const booking = Booking.fromAPIData(bookingdata);
-    bookingPriceOverviewComponent = await mountWithRouterMock(
-      BookingPriceOverview,
-      {
-        propsData: {
-          booking,
-        },
+    bookingPriceOverviewComponent = await mount(BookingPriceOverview, {
+      shallow: false,
+      props: {
+        booking
       }
-    );
+    });
   });
 
   it('has overview box component', () => {
@@ -33,13 +31,11 @@ describe('Booking Price Overview', function () {
     const costRows = bookingPriceOverviewComponent.findAll('tr');
 
     expect(costRows.length).to.eq(2);
-    expect(fixTextSpacing(costRows.at(0).text())).to.eq(
-      'Tickets Including any discounts : £4.90'
-    );
-    expect(fixTextSpacing(costRows.at(1).text())).to.eq('Booking Fee : £0.05');
+    expect(costRows.at(0).text()).to.eq('TicketsIncluding any discounts:£4.90');
+    expect(costRows.at(1).text()).to.eq('Booking Fee:£0.05');
     expect(
       fixTextSpacing(
-        bookingPriceOverviewComponent.findComponent({ ref: 'total' }).text()
+        bookingPriceOverviewComponent.find({ ref: 'total' }).text()
       )
     ).to.eq('Order Total: £4.95');
   });

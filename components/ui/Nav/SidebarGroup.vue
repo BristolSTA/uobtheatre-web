@@ -14,8 +14,8 @@ export default {
   props: {
     name: {
       required: true,
-      type: String,
-    },
-  },
+      type: String
+    }
+  }
 };
 </script>

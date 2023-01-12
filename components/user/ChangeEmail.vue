@@ -2,7 +2,7 @@
   <div class="text-center">
     <h3 class="text-h3">Change your email</h3>
     <loading-container :loading="loading">
-      <non-field-error :errors="errors" />
+      <UiNonFieldError :errors="errors" />
       <form
         class="flex flex-col p-6 pt-0 space-y-2"
         @submit.prevent="addNewEmail"
@@ -39,15 +39,16 @@
 import gql from 'graphql-tag';
 
 import LoadingContainer from '../ui/LoadingContainer.vue';
-import NonFieldError from '../ui/NonFieldError.vue';
-import TextInput from '../ui/TextInput.vue';
-import { getValidationErrors, performMutation, swal } from '@/utils';
+import TextInput from '../ui/Input/UiInputText.vue';
+import { getValidationErrors, performMutation } from '@/utils/api';
+import { swal } from '@/utils/alerts';
+import ErrorsPartial from '@/graphql/partials/ErrorsPartial';
 export default {
   components: {
     LoadingContainer,
-    TextInput,
-    NonFieldError,
+    TextInput
   },
+  emits: ['cancel'],
   data() {
     return {
       email: null,
@@ -55,7 +56,7 @@ export default {
       password: null,
 
       loading: false,
-      errors: null,
+      errors: null
     };
   },
   methods: {
@@ -68,27 +69,27 @@ export default {
             mutation: gql`
           mutation ($email: String!, $password: String!) {
             sendSecondaryEmailActivation(email: $email, password: $password) {
-                ${require('@/graphql/partials/ErrorsPartial').default}
+                ${ErrorsPartial}
             }
           }
         `,
             variables: {
               email: this.email,
-              password: this.password,
-            },
+              password: this.password
+            }
           },
           'sendSecondaryEmailActivation'
         );
         swal.fire({
           icon: 'info',
           title: 'Check your email',
-          text: `We have sent a verification email to ${this.email}`,
+          text: `We have sent a verification email to ${this.email}`
         });
       } catch (e) {
         this.errors = getValidationErrors(e);
       }
       this.loading = false;
-    },
-  },
+    }
+  }
 };
 </script>

@@ -1,43 +1,31 @@
 <template>
   <div class="flex flex-col h-screen font-body">
-    <nav-bar />
-    <breadcrumbs v-if="crumbs" :crumbs="crumbs" />
+    <NuxtLoadingIndicator color="#FF9F1C" :height="5" />
+    <LayoutNavBar />
+    <UiBreadcrumbs v-if="navStore.breadcrumbs" :crumbs="navStore.breadcrumbs" />
     <main class="flex-1 pb-2 text-white bg-sta-gray">
-      <Nuxt ref="page" @hook:mounted="getCrumbs" />
+      <NuxtErrorBoundary @error="onBoundaryErrorCatch">
+        <slot />
+        <template #error="{ error }"
+          ><LayoutErrorPageInner :error="error"
+        /></template>
+      </NuxtErrorBoundary>
     </main>
-    <footer-bar />
+    <LayoutFooterBar />
   </div>
 </template>
 
-<script>
-import FooterBar from '@/components/layout/FooterBar.vue';
-import NavBar from '@/components/layout/NavBar.vue';
-import Breadcrumbs from '@/components/ui/Breadcrumbs.vue';
-export default {
-  components: { NavBar, FooterBar, Breadcrumbs },
-  computed: {
-    crumbs() {
-      if (!this.$refs.page) {
-        return null;
-      }
-      return this.$refs.page.$children[0].crumbs;
-    },
-  },
-  watch: {
-    $route() {
-      const timer = setInterval(() => {
-        if (this.$refs.page.$children.length > 0) {
-          this.getCrumbs();
-          clearInterval(timer);
-        }
-      }, 100);
-    },
-  },
-  methods: {
-    getCrumbs() {
-      this._computedWatchers.crumbs.run();
-      this.$forceUpdate();
-    },
-  },
-};
+<script setup lang="ts">
+import useNavStore from '@/store/nav';
+import { silentErrorHandler } from '@/utils/misc';
+
+const router = useRouter();
+const navStore = useNavStore();
+router.beforeEach(() => {
+  navStore.breadcrumbs = undefined;
+});
+
+function onBoundaryErrorCatch(error: unknown) {
+  silentErrorHandler(error);
+}
 </script>

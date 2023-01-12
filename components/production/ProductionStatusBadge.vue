@@ -1,45 +1,42 @@
 <template>
-  <badge class="text-white" :class="colours">
+  <UiBadge class="text-white" :class="colours">
     {{ status }}
-  </badge>
+  </UiBadge>
 </template>
 
-<script>
-import Badge from '../ui/Badge.vue';
-import ProductionStatusEnum from '@/enums/ProductionStatusEnum';
-export default {
-  components: { Badge },
-  props: {
-    production: {
-      required: true,
-      type: Object,
-    },
-  },
-  computed: {
-    colours() {
-      if (['Pending'].includes(this.status)) {
-        return 'bg-sta-orange';
-      }
-      if (['Closed', 'Not Bookable'].includes(this.status)) {
-        return 'bg-sta-rouge';
-      }
-      if (['Published'].includes(this.status)) {
-        return 'bg-sta-green';
-      }
-      if (['Complete'].includes(this.status)) {
-        return 'bg-gray-600';
-      }
-      return 'bg-gray-500';
-    },
-    status() {
-      if (
-        !this.production.isBookable &&
-        (!this.production.status || this.production.status === 'PUBLISHED')
-      ) {
-        return 'Not Bookable';
-      }
-      return new ProductionStatusEnum(this.production.status).name;
-    },
-  },
-};
+<script setup lang="ts">
+import ProductionStatusEnum from '~~/enums/ProductionStatusEnum';
+import { ProductionNode } from '~~/graphql/codegen/operations';
+
+type ProductionProps = Pick<ProductionNode, 'isBookable' | 'status'>;
+
+const props = defineProps<{
+  production: ProductionProps;
+}>();
+
+const status = computed<string>(() => {
+  if (
+    !props.production.isBookable &&
+    (!props.production.status || props.production.status === 'PUBLISHED')
+  ) {
+    return 'Not Bookable';
+  }
+  return new ProductionStatusEnum(props.production.status).name;
+});
+
+const colours = computed<string>(() => {
+  if (['Pending'].includes(status.value)) {
+    return 'bg-sta-orange';
+  }
+  if (['Closed', 'Not Bookable'].includes(status.value)) {
+    return 'bg-sta-rouge';
+  }
+  if (['Published'].includes(status.value)) {
+    return 'bg-sta-green';
+  }
+  if (['Complete'].includes(status.value)) {
+    return 'bg-gray-600';
+  }
+  return 'bg-gray-500';
+});
 </script>

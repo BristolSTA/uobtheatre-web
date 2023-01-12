@@ -1,50 +1,58 @@
-import { expect } from 'chai';
+import { expect } from 'vitest';
+import {
+  GenericApolloResponse,
+  GenericNodeConnection
+} from '#testSupport/helpers/api';
+import { mount } from '#testSupport/helpers';
 
-import { generateMountOptions, mountWithRouterMock } from '../../helpers';
-import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse';
-import Production from '../../fixtures/Production';
-import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection';
-import Performance from '../../fixtures/Performance';
-import Booking from '../../fixtures/Booking';
-import Book from '@/pages/production/_slug/book.vue';
-import { swal } from '@/utils';
+import Production from '#testSupport/fixtures/Production';
+import Performance from '#testSupport/fixtures/Performance';
+import Booking from '#testSupport/fixtures/Booking';
+import Book from '@/pages/production/[slug]/book.vue';
+import { swal } from '@/utils/alerts';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
 import BookingNavigation from '@/components/booking/BookingNavigation.vue';
-import stages from '@/pages/production/_slug/book/-bookingStages';
+import stages from '@/pages/production/[slug]/book/-bookingStages';
+import { flushPromises } from '@vue/test-utils';
 
 describe('Create Booking Page', () => {
-  let bookingComponent, routerPushFake, routerReplaceFake;
-  const fakeNuxtChild = {
-    template: '<div />',
-    stageInfo: stages[0].stageInfo,
-    props: ['production', 'ticketMatrix', 'booking'],
-  };
+  let bookingComponent;
+  function generateFakeNuxtPage(stageInfo) {
+    return {
+      template: '<div></div>',
+      stageInfo: stageInfo ?? stages[0].stageInfo,
+      mounted() {
+        this.$emit('mounted', stageInfo ?? stages[0].stageInfo);
+      },
+      props: ['production', 'ticketMatrix', 'booking']
+    };
+  }
+
+  async function mountComponent(routeParams = {}, queryResponses, fakePage) {
+    bookingComponent = await mount(Book, {
+      shallow: false,
+      routeInfo: {
+        params: Object.assign(
+          {},
+          {
+            slug: 'legally-ginger'
+          },
+          routeParams
+        )
+      },
+      apollo: {
+        queryResponses
+      },
+      global: {
+        components: { NuxtPage: fakePage ?? generateFakeNuxtPage() }
+      }
+    });
+  }
 
   beforeEach(async () => {
-    bookingComponent = await mountWithRouterMock(
-      Book,
-      generateMountOptions(['apollo'], {
-        mocks: {
-          $router: {
-            push: (routerPushFake = jest.fn()),
-          },
-          $route: {
-            params: {},
-          },
-        },
-        apollo: {
-          queryCallstack: [
-            GenericApolloResponse('production', Production({}, true)),
-          ],
-        },
-        stubs: { NuxtChild: fakeNuxtChild },
-      }),
-      {
-        params: {
-          slug: 'legally-ginger',
-        },
-      }
-    );
+    await mountComponent(undefined, [
+      GenericApolloResponse('production', Production({}, true))
+    ]);
   });
 
   it('has a production banner', () => {
@@ -60,80 +68,70 @@ describe('Create Booking Page', () => {
     expect(bookingNavigation.exists()).to.be.true;
     expect(bookingNavigation.props('currentStageIndex')).to.eq(0);
     expect(bookingNavigation.props('production').name).to.eq('Legally Ginger');
-    expect(bookingNavigation.props('booking')).to.eq(
+    expect(bookingNavigation.props('booking')).toEqual(
       bookingComponent.vm.booking
     );
   });
 
   it('has a nuxt child', async () => {
     await bookingComponent.setData({
-      ticketMatrix: 'fakeMatrix',
+      ticketMatrix: 'fakeMatrix'
     });
-    const nuxtChild = bookingComponent.findComponent(fakeNuxtChild);
+
+    const nuxtChild = bookingComponent.findComponent({ name: 'NuxtPage' });
     expect(nuxtChild.exists()).to.be.true;
     expect(nuxtChild.props('production').name).to.eq('Legally Ginger');
-    expect(nuxtChild.props('booking')).to.eq(bookingComponent.vm.booking);
+    expect(nuxtChild.props('booking')).toEqual(bookingComponent.vm.booking);
     expect(nuxtChild.props('ticketMatrix')).to.eq('fakeMatrix');
   });
 
   it('reacts to the child emitting select performance event', async () => {
-    const childComponent = bookingComponent.findComponent(fakeNuxtChild);
+    const childComponent = bookingComponent.findComponent({ name: 'NuxtPage' });
 
     await childComponent.vm.$emit('select-performance', {
-      id: 1,
+      id: 1
     });
 
     expect(bookingComponent.vm.booking.performance.id).to.eq(1);
-    expect(routerPushFake.mock.calls).length(1);
-    expect(routerPushFake.mock.calls[0][0].name).to.eq(
-      'production-slug-book-performanceId-warnings'
-    );
+
+    const router = useRouter();
+    expect(router.push).toHaveBeenCalledWith({
+      hash: '#booking-view',
+      name: 'production-slug-book-performanceId-warnings',
+      params: {
+        slug: 'legally-ginger',
+        performanceId: 1
+      }
+    });
   });
 
   it('reacts to the child emitting next stage event', async () => {
-    const childComponent = bookingComponent.findComponent(fakeNuxtChild);
+    const childComponent = bookingComponent.findComponent({ name: 'NuxtPage' });
 
     bookingComponent.vm.currentStage = stages[1].stageInfo;
 
     await childComponent.vm.$emit('next-stage');
 
-    expect(routerPushFake.mock.calls[0][0].name).to.eq(
-      'production-slug-book-performanceId-tickets'
-    );
+    const router = useRouter();
+    expect(router.push).toHaveBeenCalledWith({
+      hash: '#booking-view',
+      name: 'production-slug-book-performanceId-tickets',
+      params: {
+        slug: 'legally-ginger',
+        performanceId: null
+      }
+    });
   });
 
   describe('with performance id', () => {
     beforeEach(async () => {
-      bookingComponent = await mountWithRouterMock(
-        Book,
-        generateMountOptions(['apollo'], {
-          mocks: {
-            $router: {
-              push: (routerPushFake = jest.fn()),
-            },
-            $route: {
-              params: {
-                performanceId: 1,
-              },
-            },
-          },
-          apollo: {
-            queryCallstack: [
-              ...bookingComponent.vm.$apollo.mock.queryCallstack,
-              GenericApolloResponse('me', {
-                bookings: GenericNodeConnection(),
-              }),
-              GenericApolloResponse('performance', Performance()),
-            ],
-          },
-          stubs: { NuxtChild: fakeNuxtChild },
+      await mountComponent({ performanceId: 1 }, [
+        GenericApolloResponse('production', Production({}, true)),
+        GenericApolloResponse('me', {
+          bookings: GenericNodeConnection()
         }),
-        {
-          params: {
-            slug: 'legally-ginger',
-          },
-        }
-      );
+        GenericApolloResponse('performance', Performance())
+      ]);
 
       await bookingComponent.vm.$nextTick();
     });
@@ -149,54 +147,32 @@ describe('Create Booking Page', () => {
 
       await bookingNavigation.vm.$emit('goto-stage', stages[1]);
 
-      expect(routerPushFake.mock.calls).length(1);
-      expect(routerPushFake.mock.calls[0][0].name).to.eq(
-        'production-slug-book-performanceId-warnings'
-      );
-      expect(routerPushFake.mock.calls[0][0].params.performanceId).to.eq(1);
-      expect(routerPushFake.mock.calls[0][0].params.slug).to.eq(
-        'legally-ginger'
-      );
+      const router = useRouter();
+
+      expect(router.push).toHaveBeenCalledWith({
+        name: 'production-slug-book-performanceId-warnings',
+        hash: '#booking-view',
+        params: {
+          performanceId: 1,
+          slug: 'legally-ginger'
+        }
+      });
     });
   });
 
   describe('with exisiting draft booking', () => {
     let stub, mount;
     beforeAll(() => {
-      stub = jest.spyOn(swal, 'fire');
+      stub = vi.spyOn(swal, 'fire');
 
       mount = async () => {
-        bookingComponent = await mountWithRouterMock(
-          Book,
-          generateMountOptions(['apollo'], {
-            mocks: {
-              $router: {
-                push: (routerPushFake = jest.fn()),
-              },
-              $route: {
-                params: {
-                  performanceId: 1,
-                },
-              },
-            },
-
-            apollo: {
-              queryCallstack: [
-                ...bookingComponent.vm.$apollo.mock.queryCallstack,
-                GenericApolloResponse('me', {
-                  bookings: GenericNodeConnection([Booking()]),
-                }),
-                GenericApolloResponse('performance', Performance()),
-              ],
-            },
-            stubs: { NuxtChild: fakeNuxtChild },
+        await mountComponent({ performanceId: 1 }, [
+          GenericApolloResponse('production', Production({}, true)),
+          GenericApolloResponse('me', {
+            bookings: GenericNodeConnection([Booking()])
           }),
-          {
-            params: {
-              slug: 'legally-ginger',
-            },
-          }
-        );
+          GenericApolloResponse('performance', Performance())
+        ]);
       };
     });
 
@@ -207,7 +183,7 @@ describe('Create Booking Page', () => {
     it('can resume booking', async () => {
       stub.mockResolvedValue({ isConfirmed: true });
       await mount();
-      await bookingComponent.vm.$nextTick();
+      await flushPromises();
 
       expect(stub.mock.calls).length(1);
       expect(bookingComponent.vm.booking.id).to.eq(1);
@@ -215,11 +191,11 @@ describe('Create Booking Page', () => {
     it('can decline to resume booking', async () => {
       stub.mockResolvedValue({ isConfirmed: false });
       await mount();
-      const updateStub = jest
+      const updateStub = vi
         .spyOn(bookingComponent.vm.booking, 'updateFromAPIData')
         .mockImplementation();
 
-      await bookingComponent.vm.$nextTick();
+      await flushPromises();
 
       expect(stub.mock.calls).length(1);
       expect(updateStub.mock.calls).length(0);
@@ -227,74 +203,58 @@ describe('Create Booking Page', () => {
   });
 
   describe('mounted middleware', () => {
-    const mount = async (stage = stages[0]) => {
-      const fakeChild = JSON.parse(JSON.stringify(fakeNuxtChild));
-      fakeChild.stageInfo = stage.stageInfo;
-
-      bookingComponent = await mountWithRouterMock(
-        Book,
-        generateMountOptions(['apollo'], {
-          mocks: {
-            $router: {
-              push: (routerPushFake = jest.fn()),
-              replace: (routerReplaceFake = jest.fn()),
-            },
-            $route: {
-              params: {
-                performanceId: 1,
-              },
-            },
-          },
-          apollo: {
-            queryCallstack: [
-              ...bookingComponent.vm.$apollo.mock.queryCallstack,
-              GenericApolloResponse('me', {
-                bookings: GenericNodeConnection(),
-              }),
-              GenericApolloResponse('performance', Performance()),
-            ],
-          },
-          stubs: {
-            NuxtChild: fakeChild,
-          },
-        }),
-        {
-          params: {
-            slug: 'legally-ginger',
-          },
-        }
+    const mountComponentInner = async (stage = stages[0]) => {
+      await mountComponent(
+        { performanceId: 1 },
+        [
+          GenericApolloResponse('production', Production({}, true)),
+          GenericApolloResponse('me', {
+            bookings: GenericNodeConnection([Booking()])
+          }),
+          GenericApolloResponse('performance', Performance())
+        ],
+        generateFakeNuxtPage(stage.stageInfo)
       );
     };
-    afterEach(() => {
-      routerPushFake.mockClear();
-    });
+
     it('it changes stage if stage should not be used', async () => {
       const stage = stages[1];
-      const mock = jest
+      const mock = vi
         .spyOn(stage.stageInfo, 'shouldBeUsed')
         .mockImplementation(() => false);
-      await mount(stage);
+      await mountComponentInner(stage);
 
-      expect(routerReplaceFake.mock.calls).length(1);
-      expect(routerReplaceFake.mock.calls[0][0].name).to.eq(
-        'production-slug-book-performanceId-tickets'
-      );
+      const router = useRouter();
+      expect(router.replace).toHaveBeenCalledWith({
+        hash: '#booking-view',
+        name: 'production-slug-book-performanceId-tickets',
+        params: {
+          slug: 'legally-ginger',
+          performanceId: 1
+        }
+      });
       mock.mockReset();
     });
+
     it('it changes stage if not eligable for stage', async () => {
       const stage = stages[1];
-      const shouldBeUsedMock = jest
+      const shouldBeUsedMock = vi
         .spyOn(stage.stageInfo, 'shouldBeUsed')
         .mockImplementation(() => true);
-      const eligableMock = jest
+      const eligableMock = vi
         .spyOn(stage.stageInfo, 'eligable')
         .mockImplementation(() => false);
-      await mount(stage);
+      await mountComponentInner(stage);
 
-      expect(routerPushFake.mock.calls).length(1);
-      expect(routerPushFake.mock.calls[0][0].name).to.eq(
-        'production-slug-book'
-      );
+      const router = useRouter();
+      expect(router.push).toHaveBeenCalledWith({
+        hash: '#booking-view',
+        name: 'production-slug-book',
+        params: {
+          slug: 'legally-ginger',
+          performanceId: 1
+        }
+      });
       shouldBeUsedMock.mockReset();
       eligableMock.mockReset();
     });

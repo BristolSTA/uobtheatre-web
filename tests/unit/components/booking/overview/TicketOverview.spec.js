@@ -1,11 +1,11 @@
-import { expect } from 'chai';
+import { mount, fixTextSpacing } from '#testSupport/helpers';
+import { expect } from 'vitest';
 
-import { fixTextSpacing, mountWithRouterMock } from '../../../helpers';
 import Booking from '@/classes/Booking';
-import OverviewBox from '@/components/ui/Card.vue';
+import OverviewBox from '~~/components/ui/UiCard.vue';
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
 
-import FullBooking from '@/tests/unit/fixtures/instances/FullBooking';
+import FullBooking from '#testSupport/fixtures/instances/FullBooking';
 
 describe('Ticket Overview', function () {
   let ticketOverviewComponent;
@@ -15,10 +15,11 @@ describe('Ticket Overview', function () {
 
     const booking = Booking.fromAPIData(bookingdata);
 
-    ticketOverviewComponent = await mountWithRouterMock(TicketsOverview, {
-      propsData: {
-        booking,
-      },
+    ticketOverviewComponent = await mount(TicketsOverview, {
+      shallow: false,
+      props: {
+        booking
+      }
     });
   });
 

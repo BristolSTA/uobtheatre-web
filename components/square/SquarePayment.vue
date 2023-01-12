@@ -5,15 +5,15 @@
         <h2 class="mb-2 text-center text-white text-h2">Pay with card</h2>
         <form id="payment-form">
           <div class="space-y-3">
-            <div id="card-container" />
+            <div id="card-container" ref="card-container" />
 
             <button
               id="card-button"
               type="button"
               class="btn btn-orange w-full"
               :disabled="!ready"
-              @click.prevent="payCard"
-              @keypress.prevent="payCard"
+              @click.stop="payCard"
+              @keypress.stop="payCard"
             >
               Pay £{{ price }}
             </button>
@@ -49,44 +49,44 @@
 
 <script>
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
-import { silentErrorHandler } from '@/utils';
+import { silentErrorHandler } from '@/utils/misc';
+
+let square;
 
 export default {
   components: { LoadingContainer },
   props: {
     useWallets: {
       default: true,
-      type: Boolean,
+      type: Boolean
     },
     price: {
       required: true,
-      type: String,
-    },
+      type: String
+    }
   },
+  emits: ['paying', 'cancelled', 'ready', 'nonceRecieved', 'nonceError'],
   data() {
     return {
       squareErrors: [],
       timer: null,
       ready: false,
-      paying: false,
-
-      square: {
-        payments: null,
-        request: null,
-        methods: null,
-      },
+      paying: false
     };
   },
   watch: {
     paying(newVal) {
       if (newVal) {
         this.$emit('paying');
-      } else {
-        this.$emit('cancelled');
       }
-    },
+    }
   },
   mounted() {
+    square = {
+      payments: null,
+      request: null,
+      methods: null
+    };
     const checkToInit = () => {
       if (typeof Square !== 'undefined') {
         clearInterval(this.timer);
@@ -96,53 +96,54 @@ export default {
     checkToInit();
     this.timer = setInterval(checkToInit, 100);
   },
-  beforeDestroy() {
+  beforeUnmount() {
     clearInterval(this.timer);
   },
   methods: {
     async initSquare() {
-      if (this.square.payments) {
+      if (square.payments) {
         return;
       }
 
+      const config = useRuntimeConfig();
+
       // eslint-disable-next-line no-undef
-      this.square.payments = Square.payments(
-        this.$config.services.square.application_id,
-        this.$config.services.square.location_id
+      square.payments = Square.payments(
+        config.public.services.square.applicationId,
+        config.public.services.square.locationId
       );
 
-      this.square.methods = {};
+      square.methods = {};
 
       // Init the payment request
-      this.square.request = this.square.payments.paymentRequest({
+      square.request = square.payments.paymentRequest({
         countryCode: 'GB',
         currencyCode: 'GBP',
         total: {
           amount: this.price,
-          label: 'Total',
-        },
+          label: 'Total'
+        }
       });
 
       // Init card payment
-      this.square.methods.card = await this.square.payments.card({
+      square.methods.card = await square.payments.card({
         style: {
           '.message-icon': {
-            color: 'white',
+            color: 'white'
           },
           '.message-text': {
-            color: 'white',
-          },
-        },
+            color: 'white'
+          }
+        }
       });
-      await this.square.methods.card.attach('#card-container');
+
+      await square.methods.card.attach('#card-container');
 
       try {
         // Init GPay
-        this.square.methods.gpay = await this.square.payments.googlePay(
-          this.square.request
-        );
-        await this.square.methods.gpay.attach('#sq-gpay-button', {
-          buttonColor: 'white',
+        square.methods.gpay = await square.payments.googlePay(square.request);
+        await square.methods.gpay.attach('#sq-gpay-button', {
+          buttonColor: 'white'
         });
       } catch (e) {
         if (e.name !== 'PaymentMethodUnsupportedError') {
@@ -152,8 +153,8 @@ export default {
 
       try {
         // Init ApplePay
-        this.square.methods.applepay = await this.square.payments.applePay(
-          this.square.request
+        square.methods.applepay = await square.payments.applePay(
+          square.request
         );
       } catch (e) {
         if (e.name !== 'PaymentMethodUnsupportedError') {
@@ -169,10 +170,18 @@ export default {
         amount: this.price,
         billingContact: {},
         currencyCode: 'GBP',
-        intent: 'CHARGE',
+        intent: 'CHARGE'
       };
-      const results = await this.square.payments.verifyBuyer(token, details);
+      const results = await square.payments.verifyBuyer(token, details);
       return results.token;
+    },
+    onCancelled() {
+      this.paying = false;
+      this.$emit('cancelled');
+    },
+    onSuccessfulNonceGeneration(paymentData) {
+      this.paying = false;
+      this.$emit('nonceRecieved', paymentData);
     },
     async pay(provider, verify = false) {
       this.paying = true;
@@ -185,33 +194,33 @@ export default {
           if (verify) {
             paymentData.verifyToken = await this.verifyBuyer(result.token);
           }
-          return this.$emit('nonceRecieved', paymentData);
+          return this.onSuccessfulNonceGeneration(paymentData);
         }
 
-        this.paying = false;
+        this.onCancelled();
         if (result.status !== 'Cancel') {
           this.squareErrors = result.errors.map((error) => error.message);
           this.$emit('nonceError', this.squareErrors);
         }
       } catch (e) {
-        this.paying = false;
+        this.onCancelled();
         this.squareErrors = [
-          'An unexpected error was encountered whilst trying to process your payment. No charge has been made.',
+          'An unexpected error was encountered whilst trying to process your payment. No charge has been made.'
         ];
         silentErrorHandler(e);
         this.$emit('nonceError', this.squareErrors);
       }
     },
     payCard() {
-      return this.pay(this.square.methods.card, true);
+      return this.pay(square.methods.card, true);
     },
     payGPay() {
-      return this.pay(this.square.methods.gpay);
+      return this.pay(square.methods.gpay);
     },
     payApplePay() {
-      return this.pay(this.square.methods.applepay);
-    },
-  },
+      return this.pay(square.methods.applepay);
+    }
+  }
 };
 </script>
 

@@ -1,42 +1,17 @@
 module.exports = {
   root: true,
-  env: {
-    node: true,
+  parser: 'vue-eslint-parser',
+  parserOptions: {
+    parser: '@typescript-eslint/parser'
   },
-  ignorePatterns: ['tests/unit/test.spec.example.js'],
-  plugins: ['prettier', '@typescript-eslint'],
+  plugins: ['unused-imports', 'prettier'],
   extends: [
-    '@nuxtjs',
-    '@nuxtjs/eslint-config-typescript',
-    'prettier',
-    'plugin:prettier/recommended',
+    'plugin:vue/vue3-recommended',
     'plugin:nuxt/recommended',
+    'prettier'
   ],
   rules: {
-    'import/no-named-as-default': 'off',
-    'prettier/prettier': ['error', { singleQuote: true }],
-  },
-  settings: {
-    'import/resolved': {
-      node: {
-        extensions: ['.ts', '.tsx', '.js', '.jsx'],
-      },
-    },
-  },
-  overrides: [
-    {
-      files: ['*.test.js', '*.spec.js'],
-      rules: {
-        'no-unused-expressions': 'off',
-      },
-    },
-    {
-      files: ['*.graphql'],
-      parser: '@graphql-eslint/eslint-plugin',
-      plugins: ['@graphql-eslint'],
-      rules: {
-        '@graphql-eslint/known-type-names': 'error',
-      },
-    },
-  ],
+    'unused-imports/no-unused-imports': 'error',
+    'vue/multi-word-component-names': 0
+  }
 };

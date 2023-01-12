@@ -1,18 +1,16 @@
 <template>
-  <badge class="text-white" :class="colours">
+  <UiBadge class="text-white" :class="colours">
     {{ status }}
-  </badge>
+  </UiBadge>
 </template>
 
 <script>
-import Badge from '../ui/Badge.vue';
 export default {
-  components: { Badge },
   props: {
     performance: {
       required: true,
-      type: Object,
-    },
+      type: Object
+    }
   },
   computed: {
     colours() {
@@ -35,7 +33,7 @@ export default {
         return 'Unavailable';
       }
       return 'Bookable';
-    },
-  },
+    }
+  }
 };
 </script>

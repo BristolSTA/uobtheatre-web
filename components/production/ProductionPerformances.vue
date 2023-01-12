@@ -22,7 +22,7 @@
           :performances="production.performances.edges.map((edge) => edge.node)"
           @select-performance="
             (performance) =>
-              $router.push(
+              useRouter().push(
                 `/production/${production.slug}/book/${performance.id}`
               )
           "
@@ -39,18 +39,18 @@ import TimeGroupedPerformanceSelector from '@/components/performance/TimeGrouped
 export default {
   name: 'ProductionPerformances',
   components: {
-    TimeGroupedPerformanceSelector,
+    TimeGroupedPerformanceSelector
   },
   props: {
     production: {
       required: true,
-      type: Object,
-    },
+      type: Object
+    }
   },
   computed: {
     prodInPast() {
       return DateTime.now() > DateTime.fromISO(this.production.end);
-    },
-  },
+    }
+  }
 };
 </script>
