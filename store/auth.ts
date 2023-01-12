@@ -217,6 +217,8 @@ export default defineStore('auth', {
       cookie.remove(runtimeConfig.public.auth.refreshTokenKey); // Remove fresh token cookie
       cookie.remove(runtimeConfig.public.auth.rememberKey); // Remove remember cookie
 
+      navigateTo('/');
+
       // Notify apollo
       const { onLogout } = useApollo();
       await onLogout();
