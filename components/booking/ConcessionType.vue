@@ -47,7 +47,7 @@
             :class="[
               maxAddAllowed < 1 || !canAddTickets
                 ? 'btn-gray-light'
-                : 'btn-orange',
+                : 'btn-orange'
             ]"
             :disabled="maxAddAllowed < 1 || !canAddTickets"
             @click="addTicket"
@@ -67,27 +67,28 @@ export default {
   props: {
     concessionTypeEdge: {
       required: true,
-      type: Object,
+      type: Object
     },
     currentTickets: {
       required: true,
-      type: Array,
+      type: Array
     },
     maxAddAllowed: {
       required: true,
-      type: Number,
+      type: Number
     },
     canAddTickets: {
       default: true,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
+  emits: ['set-tickets', 'add-ticket', 'remove-ticket'],
   computed: {
     numTickets() {
       return this.currentTickets.filter((ticket) => {
         return ticket.matches(null, this.concessionTypeEdge.concessionType);
       }).length;
-    },
+    }
   },
   methods: {
     addTicket() {
@@ -95,7 +96,7 @@ export default {
     },
     minusTicket() {
       this.$emit('remove-ticket');
-    },
-  },
+    }
+  }
 };
 </script>

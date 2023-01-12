@@ -45,27 +45,28 @@ export default {
   props: {
     booking: {
       required: true,
-      type: Booking,
+      type: Booking
     },
     ticketMatrix: {
       type: TicketMatrix,
-      default: null,
+      default: null
     },
     showCapacities: {
       default: false,
-      type: Boolean,
+      type: Boolean
     },
     maxTickets: {
       default: null,
-      type: Number,
-    },
+      type: Number
+    }
   },
+  emits: ['request-update'],
   data() {
     return {
       expanded: true,
       selected_location_index: null,
 
-      interaction_timer: lo.debounce(this.requestUpdate, 2 * 1000),
+      interaction_timer: lo.debounce(this.requestUpdate, 2 * 1000)
     };
   },
   methods: {
@@ -92,7 +93,7 @@ export default {
     },
     requestUpdate() {
       this.$emit('request-update');
-    },
-  },
+    }
+  }
 };
 </script>

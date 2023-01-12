@@ -1,14 +1,13 @@
-import { expect } from 'chai';
-
+import { describe, expect, vi, it, beforeEach } from 'vitest';
 import BookingStage from '@/classes/BookingStage';
 
 describe('BookingStage Class', () => {
   let stage;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     stage = new BookingStage({
       name: 'My Booking Stage',
-      routeName: 'my-booking-stage',
+      routeName: 'my-booking-stage'
     });
   });
 
@@ -22,17 +21,17 @@ describe('BookingStage Class', () => {
 
   it('can detemine if it should be used', () => {
     const fakeProduction = {
-      id: 1,
+      id: 1
     };
     const fakeBooking = {
-      id: 2,
+      id: 2
     };
-    const shouldBeUsedFn = jest.fn();
+    const shouldBeUsedFn = vi.fn();
     expect(stage.shouldBeUsed(fakeProduction, fakeBooking)).to.be.true; // No should be used fn
 
     stage = new BookingStage({
       name: 'My Booking Stage',
-      shouldBeUsed: shouldBeUsedFn.mockReturnValueOnce(false),
+      shouldBeUsed: shouldBeUsedFn.mockReturnValueOnce(false)
     });
 
     expect(stage.shouldBeUsed(fakeProduction, fakeBooking)).to.be.false;
@@ -43,27 +42,27 @@ describe('BookingStage Class', () => {
 
   it('can detemine if it is eligable', () => {
     const fakeProduction = {
-      id: 1,
+      id: 1
     };
     const fakeBooking = {
       id: 2,
-      performance: { id: 1 },
+      performance: { id: 1 }
     };
-    const eligableFn = jest.fn();
+    const eligableFn = vi.fn();
     // Requires performance defaults to true, so this should be false (no performance in booking)
     expect(stage.eligable(fakeProduction, { id: 2 })).to.be.false;
 
     // Set requires performance to be false (no eligable function)
     stage = new BookingStage({
       name: 'My Booking Stage',
-      requiresPerformance: false,
+      requiresPerformance: false
     });
     expect(stage.eligable(fakeProduction, fakeBooking)).to.be.true;
 
     // Requires performance = true with eligable function that returns true
     stage = new BookingStage({
       name: 'My Booking Stage',
-      eligable: eligableFn.mockReturnValueOnce(true),
+      eligable: eligableFn.mockReturnValueOnce(true)
     });
     expect(stage.eligable(fakeProduction, fakeBooking)).to.be.true;
     expect(eligableFn.mock.calls.length).to.eq(1);

@@ -1,10 +1,10 @@
 <template>
-  <admin-page title="Finance Reports">
+  <AdminPage title="Finance Reports">
     <all-errors-display :errors="errors" />
     <loading-container :loading="generating">
       <div class="space-y-4">
         <h2 class="text-h2">Select Report</h2>
-        <t-select
+        <UiInputSelect
           v-model="currentReport"
           placeholder="Select a report"
           :options="reports"
@@ -17,28 +17,22 @@
           <form-label field-name="startTime">
             Start Time
             <template #control>
-              <t-datepicker
+              <VueDatepicker
                 v-model="start"
-                :timepicker="true"
-                user-format="Y-m-d H:i:S"
-                date-format="Y-m-dTH:i:S"
-                class="text-black"
+                format="dd/MM/yyyy HH:mm"
                 :required="true"
-                :initial-time="'00:00:00'"
+                :start-time="{ hours: 0, minutes: 0, seconds: 0 }"
               />
             </template>
           </form-label>
           <form-label field-name="endTime">
             End Time
             <template #control>
-              <t-datepicker
+              <VueDatepicker
                 v-model="end"
-                :timepicker="true"
-                class="text-black"
-                user-format="Y-m-d H:i:S"
-                date-format="Y-m-dTH:i:S"
+                format="dd/MM/yyyy HH:mm"
                 :required="true"
-                :initial-time="'00:00:00'"
+                :start-time="{ hours: 0, minutes: 0, seconds: 0 }"
               />
             </template>
           </form-label>
@@ -59,17 +53,19 @@
         </template>
       </div>
     </loading-container>
-  </admin-page>
+  </AdminPage>
 </template>
 
 <script>
-import AdminPage from '@/components/admin/AdminPage.vue';
 import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue';
 import FormLabel from '@/components/ui/FormLabel.vue';
-import { getValidationErrors, performMutation } from '@/utils';
+import { getValidationErrors, performMutation } from '~~/utils/api';
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
-export default {
-  components: { AdminPage, AllErrorsDisplay, FormLabel, LoadingContainer },
+import { GenerateReportDocument } from '~~/graphql/codegen/operations';
+import VueDatepicker from '@vuepic/vue-datepicker';
+
+export default defineNuxtComponent({
+  components: { AllErrorsDisplay, FormLabel, LoadingContainer, VueDatepicker },
   data() {
     return {
       errors: null,
@@ -79,13 +75,17 @@ export default {
       generating: false,
 
       reports: [
-        { text: 'Period Totals', value: 'PeriodTotals', requires_times: true },
-        { text: 'Outstanding Payments', value: 'OutstandingPayments' },
-      ],
+        {
+          displayText: 'Period Totals',
+          value: 'PeriodTotals',
+          requires_times: true
+        },
+        { displayText: 'Outstanding Payments', value: 'OutstandingPayments' }
+      ]
     };
   },
   head: {
-    title: 'Finance Reports',
+    title: 'Finance Reports'
   },
   computed: {
     currentReportObject() {
@@ -93,7 +93,7 @@ export default {
         return;
       }
       return this.reports.find((report) => report.value === this.currentReport);
-    },
+    }
   },
   methods: {
     async generateReport() {
@@ -102,12 +102,12 @@ export default {
         const data = await performMutation(
           this.$apollo,
           {
-            mutation: require('@/graphql/mutations/admin/GenerateReport.gql'),
+            mutation: GenerateReportDocument,
             variables: {
               name: this.currentReport,
               start: this.start,
-              end: this.end,
-            },
+              end: this.end
+            }
           },
           'generateReport'
         );
@@ -117,7 +117,7 @@ export default {
       } finally {
         this.generating = false;
       }
-    },
-  },
-};
+    }
+  }
+});
 </script>

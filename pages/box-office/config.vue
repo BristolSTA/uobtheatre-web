@@ -1,5 +1,5 @@
 <template>
-  <admin-page title="Configuration" class="container">
+  <AdminPage title="Configuration" class="container">
     <p>
       This page is intended for use by site administrators to configure a device
       for use as a box office machine. Please don't change settings here unless
@@ -8,7 +8,7 @@
     <form-label>
       Location ID
       <template #control>
-        <t-input v-model="locationId" />
+        <UiInputText v-model="locationId" />
       </template>
     </form-label>
     <button
@@ -17,27 +17,22 @@
     >
       Save
     </button>
-  </admin-page>
+  </AdminPage>
 </template>
 
-<script>
-import AdminPage from '@/components/admin/AdminPage.vue';
+<script setup lang="ts">
 import FormLabel from '@/components/ui/FormLabel.vue';
-import { successToast } from '@/utils';
-export default {
-  components: { FormLabel, AdminPage },
-  middleware: ['authed', 'can-boxoffice'],
-  data() {
-    return {
-      locationId: this.$store.state['box-office'].locationId,
-    };
-  },
-  methods: {
-    save() {
-      this.$store.dispatch('box-office/setDeviceLocation', this.locationId);
+import { successToast } from '~~/utils/alerts';
+import useBoxOfficeStore from '@/store/box-office';
 
-      successToast.fire({ title: 'Saved' });
-    },
-  },
-};
+const boxOfficeStore = useBoxOfficeStore();
+
+definePageMeta({ head: ['authed', 'can-boxoffice'] });
+
+const locationId = ref<string | undefined>(boxOfficeStore.locationId);
+
+function save() {
+  boxOfficeStore.setDeviceLocation(locationId.value);
+  successToast.fire({ title: 'Saved' });
+}
 </script>

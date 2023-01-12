@@ -1,12 +1,11 @@
-import { RouterLinkStub } from '@vue/test-utils';
-import { expect } from 'chai';
-
-import { mountWithRouterMock } from '../../../helpers';
+import { mount } from '#testSupport/helpers';
+import { expect } from 'vitest';
+import { NuxtLinkStub } from '#testSupport/stubs';
 import Booking from '@/classes/Booking';
 import BookingSummaryOverview from '@/components/booking/overview/BookingSummaryOverview.vue';
-import OverviewBox from '@/components/ui/Card.vue';
+import OverviewBox from '~~/components/ui/UiCard.vue';
 
-import FullBooking from '@/tests/unit/fixtures/instances/FullBooking';
+import FullBooking from '#testSupport/fixtures/instances/FullBooking';
 
 describe('Booking Summary Overview', function () {
   let bookingSummaryOverviewComponent;
@@ -16,14 +15,12 @@ describe('Booking Summary Overview', function () {
 
     const booking = Booking.fromAPIData(bookingdata);
 
-    bookingSummaryOverviewComponent = await mountWithRouterMock(
-      BookingSummaryOverview,
-      {
-        propsData: {
-          booking,
-        },
+    bookingSummaryOverviewComponent = await mount(BookingSummaryOverview, {
+      shallow: false,
+      props: {
+        booking
       }
-    );
+    });
   });
 
   it('has overview box component', () => {
@@ -45,21 +42,21 @@ describe('Booking Summary Overview', function () {
   it('has working links', async () => {
     await bookingSummaryOverviewComponent.vm;
     expect(
-      bookingSummaryOverviewComponent.findAllComponents(RouterLinkStub).length
+      bookingSummaryOverviewComponent.findAllComponents(NuxtLinkStub).length
     ).to.equal(2);
 
     expect(
       bookingSummaryOverviewComponent
-        .findAllComponents(RouterLinkStub)
+        .findAllComponents(NuxtLinkStub)
         .at(0)
-        .props('to')
+        .attributes('to')
     ).to.equal('/production/legally-ginger');
 
     expect(
       bookingSummaryOverviewComponent
-        .findAllComponents(RouterLinkStub)
+        .findAllComponents(NuxtLinkStub)
         .at(1)
-        .props('to')
+        .attributes('to')
     ).to.equal('/user/booking/yOIYg6Co8vGR');
   });
 });

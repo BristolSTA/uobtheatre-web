@@ -5,7 +5,7 @@
       class="w-full py-1 px-3 transition-colors group"
       :class="{
         'hover:bg-gray-600 rounded': expandable,
-        'bg-gray-600 rounded-bl-none rounded-br-none': expanded && expandable,
+        'bg-gray-600 rounded-bl-none rounded-br-none': expanded && expandable
       }"
       @click="
         if (expandable) {
@@ -19,7 +19,7 @@
           v-if="expandable"
           class="rounded px-1"
           :class="{
-            'border group-hover:border-0 bg-white text-gray-700': !expanded,
+            'border group-hover:border-0 bg-white text-gray-700': !expanded
           }"
         >
           <span v-if="!expanded">See Details</span>
@@ -41,16 +41,17 @@ export default {
   props: {
     contentWarning: {
       required: true,
-      type: Object,
+      type: Object
     },
     open: {
       default: false,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
+  emits: ['update:open'],
   data() {
     return {
-      expanded: this.open,
+      expanded: this.open
     };
   },
   computed: {
@@ -62,7 +63,7 @@ export default {
         this.contentWarning.information ??
         this.contentWarning.warning.longDescription
       );
-    },
+    }
   },
   watch: {
     open(newVal) {
@@ -70,7 +71,7 @@ export default {
     },
     expanded(newVal) {
       this.$emit('update:open', newVal);
-    },
-  },
+    }
+  }
 };
 </script>

@@ -1,11 +1,11 @@
-import { mount, RouterLinkStub } from '@vue/test-utils';
-import { expect } from 'chai';
+import { mount, fixTextSpacing } from '#testSupport/helpers';
+import { expect } from 'vitest';
 import { DateTime } from 'luxon';
-import Production from '../../fixtures/Production.js';
-import Performance from '../../fixtures/Performance.js';
-import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection.js';
-import { fixTextSpacing, generateMountOptions } from '../../helpers.js';
-import ProductionOverview from '@/components/production/ProductionOverview';
+import Production from '#testSupport/fixtures/Production.js';
+import Performance from '#testSupport/fixtures/Performance.js';
+import GenericNodeConnection from '#testSupport/fixtures/support/GenericNodeConnection.js';
+import ProductionOverview from '@/components/production/ProductionOverview.vue';
+import { NuxtLinkStub } from '#testSupport/stubs';
 
 describe('Production Overview', function () {
   let overviewContainer;
@@ -14,8 +14,8 @@ describe('Production Overview', function () {
       {
         start: DateTime.fromISO('2020-11-14'),
         isInperson: true,
-        isOnline: false,
-      },
+        isOnline: false
+      }
     ]);
 
     // correct descriprion
@@ -25,7 +25,7 @@ describe('Production Overview', function () {
     expect(
       overviewContainer
         .findComponent({
-          ref: 'poster-image',
+          ref: 'poster-image'
         })
         .attributes('src')
     ).to.equal('http://pathto.example/poster-image.png');
@@ -36,20 +36,19 @@ describe('Production Overview', function () {
       {
         start: DateTime.fromISO('2020-11-14'),
         isInperson: true,
-        isOnline: false,
-      },
+        isOnline: false
+      }
     ]);
 
     // correct warnings
-    const warnings = overviewContainer.findComponent({ ref: 'warnings' });
+    const warnings = overviewContainer.find({ ref: 'warnings' });
     expect(warnings.exists()).to.be.true;
 
     // correct medium for in person
     expect(overviewContainer.text()).to.contain('Medium: In Person Only');
 
     // correct age rating
-    expect(overviewContainer.findComponent({ ref: 'age-rating' }).exists()).to
-      .be.true;
+    expect(overviewContainer.find({ ref: 'age-rating' }).exists()).to.be.true;
     expect(overviewContainer.text()).to.contain('Ages 18+');
 
     // correct description
@@ -58,11 +57,11 @@ describe('Production Overview', function () {
     );
 
     expect(
-      overviewContainer.findAllComponents(RouterLinkStub).at(0).props('to')
+      overviewContainer.findAllComponents(NuxtLinkStub).at(0).attributes('to')
     ).to.equal('/society/sta');
 
     // correct facebook link
-    const link = overviewContainer.findComponent({ ref: 'facebook-link' });
+    const link = overviewContainer.find({ ref: 'facebook-link' });
     expect(link.exists()).to.be.true;
     expect(link.attributes('href')).to.eq(
       'https://facebook.com/legally-ginger'
@@ -75,28 +74,26 @@ describe('Production Overview', function () {
         {
           start: DateTime.fromISO('2020-11-14'),
           isInperson: false,
-          isOnline: true,
-        },
+          isOnline: true
+        }
       ],
       {
         __dont_factory: ['contentWarnings'],
         contentWarnings: [],
         ageRating: null,
-        facebookEvent: null,
+        facebookEvent: null
       }
     );
 
     // no warnings
-    expect(overviewContainer.findComponent({ ref: 'warnings' }).exists()).to.be
-      .false;
+    expect(overviewContainer.find({ ref: 'warnings' }).exists()).to.be.false;
 
     // no age rating
-    expect(overviewContainer.findComponent({ ref: 'age-rating' }).exists()).to
-      .be.false;
+    expect(overviewContainer.find({ ref: 'age-rating' }).exists()).to.be.false;
 
     // no facebook link
-    expect(overviewContainer.findComponent({ ref: 'facebook-link' }).exists())
-      .to.be.false;
+    expect(overviewContainer.find({ ref: 'facebook-link' }).exists()).to.be
+      .false;
 
     // online only medium
     expect(overviewContainer.text()).to.contain('Medium: Online Only');
@@ -107,8 +104,8 @@ describe('Production Overview', function () {
       {
         start: DateTime.fromISO('2020-11-14'),
         isInperson: true,
-        isOnline: true,
-      },
+        isOnline: true
+      }
     ]);
 
     // medium is online and in person
@@ -120,19 +117,17 @@ describe('Production Overview', function () {
     expect(overviewContainer.text()).not.to.contain('Medium');
   });
 
-  const createWithPerformances = (performances, productionOverrides) => {
+  const createWithPerformances = async (performances, productionOverrides) => {
     const production = Production(productionOverrides);
     production.performances = GenericNodeConnection(
       performances.map((performance) => Performance(performance))
     );
 
-    overviewContainer = mount(
-      ProductionOverview,
-      generateMountOptions(['router'], {
-        propsData: {
-          production,
-        },
-      })
-    );
+    overviewContainer = await mount(ProductionOverview, {
+      shallow: false,
+      props: {
+        production
+      }
+    });
   };
 });

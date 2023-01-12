@@ -1,4 +1,4 @@
-query ($slug: String!) {
+query adminProductionLookup($slug: String!) {
   production(slug: $slug) {
     id
     name

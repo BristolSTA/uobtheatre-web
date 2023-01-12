@@ -1,29 +1,24 @@
-import { expect } from 'chai';
+import { expect } from 'vitest';
+import { mount } from '#testSupport/helpers';
+import { NuxtLinkStub } from '#testSupport/stubs';
 
-import {
-  generateMountOptions,
-  mountWithRouterMock,
-  RouterLinkStub,
-} from '../../helpers';
-import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse';
-import User from '../../fixtures/User';
+import { GenericApolloResponse } from '#testSupport/helpers/api';
+import User from '#testSupport/fixtures/User';
 import BookingSummaryOverview from '@/components/booking/overview/BookingSummaryOverview.vue';
 import BookingsTable from '@/components/user/BookingsTable.vue';
 import UserDetails from '@/components/user/UserDetails.vue';
-import MyAccount from '@/pages/user/index';
+import MyAccount from '@/pages/user/index.vue';
 
 describe('My Account', () => {
   let myAccountComponent;
 
   beforeEach(async () => {
-    myAccountComponent = await mountWithRouterMock(
-      MyAccount,
-      generateMountOptions(['apollo'], {
-        apollo: {
-          queryCallstack: [GenericApolloResponse('me', User())],
-        },
-      })
-    );
+    myAccountComponent = await mount(MyAccount, {
+      shallow: false,
+      apollo: {
+        queryResponses: [GenericApolloResponse('me', User())]
+      }
+    });
   });
 
   it('contains user details', () => {
@@ -46,12 +41,12 @@ describe('My Account', () => {
       expect(
         myAccountComponent.findAllComponents(BookingSummaryOverview)
       ).length(0);
-      expect(myAccountComponent.findComponent(RouterLinkStub).exists()).to.be
+      expect(myAccountComponent.findComponent(NuxtLinkStub).exists()).to.be
         .true;
       expect(
-        myAccountComponent.findComponent(RouterLinkStub).props('to')
+        myAccountComponent.findComponent(NuxtLinkStub).attributes('to')
       ).to.eq('/productions');
-      expect(myAccountComponent.findComponent(RouterLinkStub).text()).to.eq(
+      expect(myAccountComponent.findComponent(NuxtLinkStub).text()).to.eq(
         "View What's On"
       );
       expect(myAccountComponent.text()).to.contain('No Upcoming Bookings');

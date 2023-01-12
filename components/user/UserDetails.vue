@@ -1,7 +1,3 @@
-<script>
-/* eslint-disable vue/no-v-html */
-</script>
-
 <template>
   <div
     class="flex flex-col flex-wrap items-center justify-center lg:space-x-10"
@@ -87,7 +83,7 @@
           </tr>
         </table>
         <div v-if="editing" class="m-4 text-center">
-          <non-field-error class="pb-2" :errors="errors" />
+          <UiNonFieldError class="pb-2" :errors="errors" />
           <button class="btn btn-green mr-2">Save Details</button>
           <button
             class="btn btn-orange"
@@ -98,7 +94,8 @@
           </button>
           <p class="mt-2">
             Want to delete your account? Get in touch at
-            <span v-html="$config.application.support_email" />
+            <!-- eslint-disable-next-line vue/no-v-html -->
+            <span v-html="appConfig.support_email" />
           </p>
         </div>
       </form>
@@ -115,27 +112,27 @@
 </template>
 
 <script>
-import TextInput from '@/components/ui/TextInput.vue';
+import gql from 'graphql-tag';
+import LoadingContainer from '../ui/LoadingContainer.vue';
 import ChangeEmail from './ChangeEmail.vue';
 import ChangePassword from './ChangePassword.vue';
-import LoadingContainer from '../ui/LoadingContainer.vue';
-import gql from 'graphql-tag';
-import { swalToast, performMutation, getValidationErrors } from '@/utils';
-import NonFieldError from '../ui/NonFieldError.vue';
+import TextInput from '~~/components/ui/Input/UiInputText.vue';
+import { swalToast } from '@/utils/alerts';
+import { performMutation, getValidationErrors } from '@/utils/api';
+import ErrorsPartial from '@/graphql/partials/ErrorsPartial';
 export default {
   name: 'UserDetails',
   components: {
     TextInput,
     ChangePassword,
     ChangeEmail,
-    LoadingContainer,
-    NonFieldError,
+    LoadingContainer
   },
   props: {
     user: {
       required: true,
-      type: Object,
-    },
+      type: Object
+    }
   },
   data() {
     return {
@@ -147,6 +144,8 @@ export default {
 
       loading: false,
       errors: null,
+
+      appConfig: useAppConfig()
     };
   },
   methods: {
@@ -162,14 +161,14 @@ export default {
             mutation: gql`
           mutation ($firstName: String!, $lastName: String!) {
             updateAccount(firstName: $firstName, lastName: $lastName) {
-                ${require('@/graphql/partials/ErrorsPartial').default}
+                ${ErrorsPartial}
             }
           }
         `,
             variables: {
               firstName: this.firstName,
-              lastName: this.lastName,
-            },
+              lastName: this.lastName
+            }
           },
           'updateAccount'
         );
@@ -177,16 +176,18 @@ export default {
         swalToast.fire({
           icon: 'success',
           title: 'Details updated!',
-          position: 'bottom-end',
+          position: 'bottom-end'
         });
+        // eslint-disable-next-line vue/no-mutating-props
         this.user.firstName = this.firstName;
+        // eslint-disable-next-line vue/no-mutating-props
         this.user.lastName = this.lastName;
         this.editing = false;
       } catch (e) {
         this.errors = getValidationErrors(e);
       }
       this.loading = false;
-    },
-  },
+    }
+  }
 };
 </script>

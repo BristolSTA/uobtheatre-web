@@ -1,5 +1,8 @@
 <template>
   <div class="max-w-full">
+    <Head>
+      <Title>{{ title }}</Title>
+    </Head>
     <div class="flex flex-col items-center justify-between md:flex-row">
       <h1 v-if="title" class="text-h1">
         {{ title }}
@@ -20,8 +23,8 @@ export default {
   props: {
     title: {
       default: null,
-      type: String,
-    },
-  },
+      type: String
+    }
+  }
 };
 </script>

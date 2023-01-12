@@ -1,28 +1,22 @@
 <template>
-  <auth-page-template>
-    <user-auth-box
-      :login="false"
+  <AuthPageTemplate>
+    <AuthBox
+      :login-mode="false"
       @go-login="
         () => {
-          $router.replace('/login');
+          useRouter().replace('/login');
         }
       "
     />
-  </auth-page-template>
+  </AuthPageTemplate>
 </template>
 
-<script>
-import UserAuthBox from '@/components/auth/UserAuthBox.vue';
+<script setup lang="ts">
+definePageMeta({
+  middleware: 'not-authed'
+});
 
-import AuthPageTemplate from '@/components/auth/AuthPageTemplate.vue';
-
-export default {
-  components: { UserAuthBox, AuthPageTemplate },
-  middleware: 'not-authed',
-  head() {
-    return {
-      title: 'Sign Up',
-    };
-  },
-};
+useHead({
+  title: 'Sign Up'
+});
 </script>

@@ -1,38 +1,24 @@
-import { expect } from 'chai';
-
 import {
+  mount,
   fixTextSpacing,
-  mountWithRouterMock,
-  RouterLinkStub,
-} from '../../helpers';
+  setCompositionData
+} from '#testSupport/helpers';
+import { NuxtLinkStub } from '#testSupport/stubs';
+import { expect, vi } from 'vitest';
+import useAuthStore from '@/store/auth.ts';
+
 import DropdownNavItem from '@/components/layout/DropdownNavItem.vue';
-import NavBar from '@/components/layout/NavBar.vue';
+import NavBar from '@/components/layout/LayoutNavBar.vue';
 import ClickableLink from '@/components/ui/ClickableLink.vue';
+import { ref } from 'vue';
 
 describe('NavBar', function () {
   let navbarComponent, routerPushFake, logoutFn;
 
   beforeEach(async () => {
-    navbarComponent = await mountWithRouterMock(NavBar, {
-      mocks: {
-        $route: {},
-        $router: {
-          push: (routerPushFake = jest.fn()),
-        },
-        $store: {
-          state: {
-            auth: {
-              user: null,
-            },
-          },
-        },
-        $auth: () => {
-          return {
-            logout: (logoutFn = jest.fn()),
-            hasPermission: jest.fn(() => true),
-          };
-        },
-      },
+    navbarComponent = await mount(NavBar, {
+      shallow: false,
+      routeInfo: ref({})
     });
   });
 
@@ -42,32 +28,34 @@ describe('NavBar', function () {
 
   it('correctly shows navigation links', async () => {
     // Set navbar's navigation links manually
-    await navbarComponent.setData({
+    setCompositionData(navbarComponent, {
       navItems: [
         ['/', 'Home'],
-        ['/about-us', 'About Us'],
-      ],
+        ['/about-us', 'About Us']
+      ]
     });
 
-    const links = navbarComponent.findAllComponents(RouterLinkStub);
+    await navbarComponent.vm.$forceUpdate();
+
+    const links = navbarComponent.findAllComponents(NuxtLinkStub);
     expect(links.length).to.equal(5); // Link on logo, Home, About us, Login and Register in submenu
 
     // First link should be the link on the sitename
-    expect(links.at(0).props('to')).to.equal('/');
+    expect(links.at(0).attributes('to')).to.equal('/');
 
     // Second link should be our "Home" link
-    expect(links.at(1).props('to')).to.eq('/');
+    expect(links.at(1).attributes('to')).to.eq('/');
     expect(links.at(1).text()).to.eq('Home');
 
     // Third link should be our "About Us" link
-    expect(links.at(2).props('to')).to.eq('/about-us');
+    expect(links.at(2).attributes('to')).to.eq('/about-us');
     expect(links.at(2).text()).to.eq('About Us');
 
     // Fourth link should be our "Login" section in the dropdown
-    expect(links.at(3).props('to')).to.eq('/login');
+    expect(links.at(3).attributes('to')).to.eq('/login');
 
     // Final link should be our "Register" section in the dropdown
-    expect(links.at(4).props('to')).to.eq('/signup');
+    expect(links.at(4).attributes('to')).to.eq('/signup');
   });
 
   it('can toggle the mobile navbar', async () => {
@@ -96,23 +84,22 @@ describe('NavBar', function () {
     expect(
       navbarComponent
         .findComponent(DropdownNavItem)
-        .findComponent(RouterLinkStub)
-        .props('to')
+        .findComponent(NuxtLinkStub)
+        .attributes('to')
     ).to.eq('/login');
     expect(
       navbarComponent
         .findComponent(DropdownNavItem)
-        .findAllComponents(RouterLinkStub)
+        .findAllComponents(NuxtLinkStub)
         .at(1)
-        .props('to')
+        .attributes('to')
     ).to.eq('/signup');
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('shows user context bar when authenticated', async () => {
-    navbarComponent.vm.$store.state.auth.user = {
-      firstName: 'Joe',
-    };
+    const store = useAuthStore();
+    store.user = { firstName: 'Joe', lastName: 'Bloggs' };
     await navbarComponent.vm.$forceUpdate();
 
     expect(fixTextSpacing(navbarComponent.text())).to.contain('Hi, Joe');
@@ -128,9 +115,6 @@ describe('NavBar', function () {
 
     await logoutButton.trigger('click');
 
-    expect(logoutFn.mock.calls.length).to.eq(1);
-    expect(routerPushFake.mock.calls.length).to.eq(1);
-    expect(routerPushFake.mock.calls[0][0]).to.eq('/'); // Redirects home on logout
-    jest.clearAllMocks();
+    expect(store.logout).toHaveBeenCalledOnce();
   });
 });

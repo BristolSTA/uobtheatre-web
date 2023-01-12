@@ -1,22 +1,19 @@
 import { CodegenConfig } from '@graphql-codegen/cli';
-import configFn from './config.js';
+import publicConfig from './config.public';
 require('dotenv').config();
-
-const configData = configFn();
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: configData.api.graphql_endpoint_internal,
-  documents: './graphql/**/*.gql',
+  schema: process.env.GQL_SCHEMA ?? publicConfig().api.graphqlEndpointInternal,
+  documents: './graphql/**/*.(gql|graphql)',
   generates: {
     './graphql/codegen/operations.ts': {
-      plugins: [
-        'typescript',
-        'typescript-operations',
-        'typescript-vue-apollo-smart-ops',
-      ],
-    },
-  },
+      plugins: ['typescript', 'typescript-operations', 'typescript-vue-apollo'],
+      config: {
+        vueCompositionApiImportFrom: 'vue'
+      }
+    }
+  }
 };
 
 export default config;

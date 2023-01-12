@@ -7,6 +7,7 @@ query completeBookings(
   $max: Int = 10
 ) {
   me {
+    id
     bookings(
       statusIn: ["PAID", "CANCELLED"]
       first: $max

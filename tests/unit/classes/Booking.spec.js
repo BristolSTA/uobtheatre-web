@@ -1,12 +1,11 @@
-import { expect } from 'chai';
 import { DateTime } from 'luxon';
+import { describe, expect, vi, it, beforeAll, beforeEach } from 'vitest';
 
-import PerformanceFixture from '../fixtures/Performance';
+import PerformanceFixture from '#testSupport/fixtures/Performance';
 
-import { assertNoVisualDifference } from '../helpers';
-import ConcessionTypeBookingType from '../fixtures/ConcessionTypeBookingType';
-import BookingFixture from '../fixtures/Booking';
-import ConcessionType from '../fixtures/ConcessionType';
+import ConcessionTypeBookingType from '#testSupport/fixtures/ConcessionTypeBookingType';
+import BookingFixture from '#testSupport/fixtures/Booking';
+import ConcessionType from '#testSupport/fixtures/ConcessionType';
 import TicketsMatrix from '@/classes/TicketsMatrix';
 import Ticket from '@/classes/Ticket';
 import Booking from '@/classes/Booking';
@@ -20,29 +19,29 @@ describe('Booking Class', () => {
   let ticketsMatrix;
   let bookingAPIData;
 
-  jest.spyOn(DateTime, 'local');
+  vi.spyOn(DateTime, 'local');
 
   beforeAll(() => {
     const performance = PerformanceFixture();
     seatGroup = performance.ticketOptions[0].seatGroup;
     concession100Edge = ConcessionTypeBookingType({
       price: 100,
-      pricePounds: '1.00',
+      pricePounds: '1.00'
     });
     concession1000Edge = ConcessionTypeBookingType({
       concessionType: ConcessionType({ id: 2 }),
       price: 1000,
-      pricePounds: '10.00',
+      pricePounds: '10.00'
     });
     concession500Edge = ConcessionTypeBookingType({
       concessionType: ConcessionType({ id: 3 }),
       price: 500,
-      pricePounds: '5.00',
+      pricePounds: '5.00'
     });
     performance.ticketOptions[0].concessionTypes = [
       concession100Edge,
       concession1000Edge,
-      concession500Edge,
+      concession500Edge
     ];
 
     ticketsMatrix = new TicketsMatrix(performance);
@@ -50,7 +49,7 @@ describe('Booking Class', () => {
     bookingAPIData = BookingFixture();
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     booking = new Booking();
     booking.dirty = false;
   });
@@ -90,7 +89,7 @@ describe('Booking Class', () => {
 
   it('cant add a ticket if matrix doesnt allow', () => {
     const ticket = fakeTicket();
-    jest.spyOn(ticketsMatrix, 'canAddTickets').mockReturnValueOnce(false);
+    vi.spyOn(ticketsMatrix, 'canAddTickets').mockReturnValueOnce(false);
     booking.addTicket(ticket, ticketsMatrix);
 
     expect(booking.tickets).not.to.include(ticket);
@@ -118,7 +117,7 @@ describe('Booking Class', () => {
     let ticket2;
     let ticket3;
     let ticket4;
-    beforeEach(() => {
+    beforeEach(async () => {
       ticket1 = fakeTicket(concession100Edge);
       ticket2 = fakeTicket(concession1000Edge);
       ticket3 = fakeTicket(concession500Edge);
@@ -183,7 +182,7 @@ describe('Booking Class', () => {
     booking.tickets = [
       fakeTicket(concession100Edge),
       fakeTicket(concession1000Edge),
-      fakeTicket(concession500Edge),
+      fakeTicket(concession500Edge)
     ];
     expect(booking.ticketsTotalPriceEstimate(ticketsMatrix)).to.eq(1600);
   });
@@ -195,7 +194,7 @@ describe('Booking Class', () => {
     booking.tickets = [
       fakeTicket(concession100Edge),
       fakeTicket(concession1000Edge),
-      fakeTicket(concession500Edge),
+      fakeTicket(concession500Edge)
     ];
 
     expect(booking.ticketsTotalPricePoundsEstimate(ticketsMatrix)).to.eq(
@@ -275,13 +274,13 @@ describe('Booking Class', () => {
       fakeTicket(concession100Edge),
       fakeTicket(concession1000Edge),
       fakeTicket(concession1000Edge),
-      fakeTicket(concession500Edge),
+      fakeTicket(concession500Edge)
     ];
     expect(booking.ticketOverviewEstimate(ticketsMatrix).length).to.eq(3);
     expect(booking.ticketOverviewEstimate(ticketsMatrix)[0]).to.include({
       number: 1,
       totalPrice: 100,
-      ticketPrice: 100,
+      ticketPrice: 100
     });
     expect(
       booking.ticketOverviewEstimate(ticketsMatrix)[0].seatGroup.name
@@ -292,7 +291,7 @@ describe('Booking Class', () => {
     expect(booking.ticketOverviewEstimate(ticketsMatrix)[1]).to.include({
       number: 2,
       totalPrice: 2000,
-      ticketPrice: 1000,
+      ticketPrice: 1000
     });
   });
   it('can get misc costs', () => {
@@ -300,8 +299,8 @@ describe('Booking Class', () => {
 
     booking.priceBreakdown = bookingAPIData.priceBreakdown;
 
-    assertNoVisualDifference(
-      booking.miscCosts,
+    expect(
+      booking.miscCosts).toEqual(
       bookingAPIData.priceBreakdown.miscCosts
     );
   });

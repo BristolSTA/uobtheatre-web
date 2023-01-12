@@ -1,0 +1,6 @@
+#import "../../fragments/user/AuthUserDetailsFragment.gql"
+query loadUserDetails {
+  me {
+    ...AuthUserDetails
+  }
+}

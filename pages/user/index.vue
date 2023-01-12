@@ -29,8 +29,8 @@
         <pagination-bar
           :page-info="activeBookings.pageInfo"
           :current-offset="activeBookingsOffset"
-          @nextPage="activeBookingsOffset += activeBookings.edges.length"
-          @previousPage="
+          @next-page="activeBookingsOffset += activeBookings.edges.length"
+          @previous-page="
             activeBookingsOffset = Math.max(
               activeBookingsOffset - activeBookings.edges.length,
               0
@@ -52,8 +52,8 @@
           <pagination-bar
             :page-info="oldBookings.pageInfo"
             :current-offset="oldBookingsOffset"
-            @nextPage="oldBookingsOffset += oldBookings.edges.length"
-            @previousPage="
+            @next-page="oldBookingsOffset += oldBookings.edges.length"
+            @previous-page="
               oldBookingsOffset = Math.max(
                 oldBookingsOffset - oldBookings.edges.length,
                 0
@@ -71,23 +71,29 @@ import BookingSummaryOverview from '@/components/booking/overview/BookingSummary
 import BookingsTable from '@/components/user/BookingsTable.vue';
 import UserDetails from '@/components/user/UserDetails.vue';
 import PaginationBar from '@/components/ui/PaginationBar.vue';
+import {
+  CompleteBookingsDocument,
+  MyAccountDetailsDocument
+} from '~~/graphql/codegen/operations';
 
-export default {
+definePageMeta({
+  middleware: ['authed']
+});
+
+export default defineNuxtComponent({
   components: {
     BookingSummaryOverview,
     UserDetails,
     BookingsTable,
-    PaginationBar,
+    PaginationBar
   },
-  middleware: 'authed',
-  async asyncData({ app }) {
-    const { data } = await app.apolloProvider.defaultClient.query({
-      query: require('@/graphql/queries/user/MyAccountDetails.gql'),
-      fetchPolicy: 'no-cache',
+  async asyncData() {
+    const { data } = await useDefaultApolloClient().query({
+      query: MyAccountDetailsDocument,
+      fetchPolicy: 'no-cache'
     });
-
     return {
-      user: data.me,
+      user: data.me
     };
   },
   data() {
@@ -96,34 +102,34 @@ export default {
       activeBookingsOffset: null,
       oldBookings: { edges: [] },
       oldBookingsOffset: null,
-      user: null,
+      user: null
     };
   },
   head: {
-    title: 'My Account',
+    title: 'My Account'
   },
   apollo: {
     activeBookings: {
-      query: require('@/graphql/queries/user/CompleteBookings.gql'),
+      query: CompleteBookingsDocument,
       variables() {
         return {
           active: true,
           max: 3,
-          offset: this.activeBookingsOffset,
+          offset: this.activeBookingsOffset
         };
       },
-      update: (data) => data.me.bookings,
+      update: (data) => data.me.bookings
     },
     oldBookings: {
-      query: require('@/graphql/queries/user/CompleteBookings.gql'),
+      query: CompleteBookingsDocument,
       variables() {
         return {
           active: false,
-          offset: this.oldBookingsOffset,
+          offset: this.oldBookingsOffset
         };
       },
-      update: (data) => data.me.bookings,
-    },
-  },
-};
+      update: (data) => data.me.bookings
+    }
+  }
+});
 </script>

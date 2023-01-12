@@ -1,23 +1,25 @@
-import { mount } from '@vue/test-utils';
-import { expect } from 'chai';
+import { expect } from 'vitest';
+import { mount } from '#testSupport/helpers';
+
 import BookingCls from '@/classes/Booking';
 
-import AudienceWarningsStage from '@/pages/production/_slug/book/_performanceId/warnings.vue';
-import Production from '@/tests/unit/fixtures/Production';
-import Booking from '@/tests/unit/fixtures/Booking';
+import AudienceWarningsStage from '@/pages/production/[slug]/book/[performanceId]/warnings.vue';
+import Production from '#testSupport/fixtures/Production';
+import Booking from '#testSupport/fixtures/Booking';
 
 describe('Audience Warnings Stage', () => {
   let warningComponent;
 
   describe('with warnings, and no performance description', () => {
-    beforeAll(() => {
-      warningComponent = mount(AudienceWarningsStage, {
+    beforeAll(async () => {
+      warningComponent = await mount(AudienceWarningsStage, {
+        shallow: false,
         propsData: {
           production: Production(),
           booking: BookingCls.fromAPIData(
             Booking({ performance: { descrption: null } })
-          ),
-        },
+          )
+        }
       });
     });
 
@@ -40,12 +42,13 @@ describe('Audience Warnings Stage', () => {
   });
 
   describe('with performance description and no warnings', () => {
-    beforeAll(() => {
-      warningComponent = mount(AudienceWarningsStage, {
+    beforeAll(async () => {
+      warningComponent = await mount(AudienceWarningsStage, {
+        shallow: false,
         propsData: {
           production: Production({ contentWarnings: [] }),
-          booking: BookingCls.fromAPIData(Booking()),
-        },
+          booking: BookingCls.fromAPIData(Booking())
+        }
       });
     });
 

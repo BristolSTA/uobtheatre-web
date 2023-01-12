@@ -1,34 +1,29 @@
-import { createLocalVue, mount } from '@vue/test-utils';
-import { expect } from 'chai';
-import Vuex from 'vuex';
+import { mount, fixTextSpacing } from '#testSupport/helpers';
+import { expect } from 'vitest';
 
-import { fixTextSpacing } from '../../../helpers';
 import UserOverview from '@/components/booking/overview/UserOverview.vue';
-
-const localVue = createLocalVue();
-localVue.use(Vuex);
-const store = new Vuex.Store({
-  state: {
-    auth: {
-      user: {
-        firstName: 'Joe',
-        lastName: 'Bloggs',
-        email: 'joe.bloggs@example.org',
-      },
-    },
-  },
-});
 
 describe('User Overview', () => {
   let userOverviewComponent;
-  beforeEach(() => {
-    userOverviewComponent = mount(UserOverview, {
-      store,
-      localVue,
+
+  beforeEach(async () => {
+    userOverviewComponent = await mount(UserOverview, {
+      shallow: false,
+      pinia: {
+        initialState: {
+          auth: {
+            user: {
+              firstName: 'Joe',
+              lastName: 'Bloggs',
+              email: 'joe.bloggs@example.org'
+            }
+          }
+        }
+      }
     });
   });
 
-  it('shows users details from veux', () => {
+  it('shows users details from pinia', () => {
     expect(fixTextSpacing(userOverviewComponent.text())).to.contain(
       'Joe Bloggs'
     );

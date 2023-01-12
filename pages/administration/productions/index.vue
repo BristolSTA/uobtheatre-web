@@ -1,140 +1,132 @@
 <template>
-  <admin-page title="Your Productions">
+  <AdminPage title="Your Productions">
     <template #toolbar>
-      <sta-button
+      <UiStaButton
         class="bg-sta-green hover:bg-sta-green-dark transition-colors"
-        to="productions/create"
+        to="/administration/productions/create"
       >
         Start New Draft
-      </sta-button>
+      </UiStaButton>
     </template>
     <div class="flex flex-wrap gap-3 items-end md:flex-nowrap">
       <div>
-        <t-input
+        <label>Name</label>
+        <UiInputText
           v-model="productionSearchFilter"
           placeholder="Search by name"
         />
       </div>
       <div>
         <label>Status</label>
-        <t-select
+        <UiInputSelect
           v-model="productionsStatusFilter"
           :options="[
-            { value: null, text: 'All' },
-            { value: 'DRAFT', text: 'Draft' },
-            { value: 'PUBLISHED', text: 'Published' },
-            { value: 'CLOSED', text: 'Closed' },
-            { value: 'COMPLETE', text: 'Complete' },
+            { value: null, displayText: 'All' },
+            { value: 'DRAFT', displayText: 'Draft' },
+            { value: 'PUBLISHED', displayText: 'Published' },
+            { value: 'CLOSED', displayText: 'Closed' },
+            { value: 'COMPLETE', displayText: 'Complete' }
           ]"
         />
       </div>
       <div>
         <label>Run Date</label>
-        <t-datepicker v-model="productionsRunDateFilter" class="text-black" />
+        <VueDatepicker
+          v-model="productionsRunDateFilter"
+          :enable-time-picker="false"
+          format="dd/MM/yyyy"
+        />
       </div>
     </div>
-    <card class="mt-6">
-      <paginated-table
+    <UiCard class="mt-6">
+      <UiTablesPaginatedTable
+        v-model:offset="productionsOffset"
         :items="
-          productionsData ? productionsData.edges.map((edge) => edge.node) : []
+          productionsData ? productionsData.edges.map((edge) => edge?.node) : []
         "
+        :loading="loading"
         :max-per-page="10"
-        :loading="$apollo.queries.productionsData.loading"
-        :offset.sync="productionsOffset"
         :page-info="productionsData ? productionsData.pageInfo : {}"
       >
         <template #head>
-          <table-head-item>Status</table-head-item>
-          <table-head-item>Name</table-head-item>
-          <table-head-item>Society</table-head-item>
-          <table-head-item>Dates</table-head-item>
+          <UiTablesTableHeadItem>Status</UiTablesTableHeadItem>
+          <UiTablesTableHeadItem>Name</UiTablesTableHeadItem>
+          <UiTablesTableHeadItem>Society</UiTablesTableHeadItem>
+          <UiTablesTableHeadItem>Dates</UiTablesTableHeadItem>
         </template>
         <template #default="slotProps">
-          <table-row
+          <UiTablesTableRow
             v-for="(production, index) in slotProps.items"
             :key="index"
           >
-            <table-row-item>
-              <production-status-badge :production="production" />
-            </table-row-item>
-            <table-row-item>
-              <nuxt-link
+            <UiTablesTableRowItem>
+              <ProductionStatusBadge :production="production" />
+            </UiTablesTableRowItem>
+            <UiTablesTableRowItem>
+              <NuxtLink
                 :to="`/administration/productions/${production.slug}`"
                 class="text-sta-orange hover:text-sta-orange-dark font-semibold"
               >
                 {{ production.name }}
-              </nuxt-link>
-            </table-row-item>
-            <table-row-item>{{ production.society.name }}</table-row-item>
-            <table-row-item>
+              </NuxtLink>
+            </UiTablesTableRowItem>
+            <UiTablesTableRowItem>{{
+              production.society.name
+            }}</UiTablesTableRowItem>
+            <UiTablesTableRowItem>
               {{
                 production.start && production.end
                   ? displayStartEnd(production.start, production.end, 'd MMMM')
                   : ''
               }}
-            </table-row-item>
-          </table-row>
+            </UiTablesTableRowItem>
+          </UiTablesTableRow>
         </template>
-      </paginated-table>
-    </card>
-  </admin-page>
+      </UiTablesPaginatedTable>
+    </UiCard>
+  </AdminPage>
 </template>
 
-<script>
-import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue';
-import AdminProductionsQuery from '@/graphql/queries/admin/productions/AdminProductionsIndex.gql';
-import { displayStartEnd } from '@/utils';
-import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
-import TableRow from '@/components/ui/Tables/TableRow.vue';
-import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
-import Card from '@/components/ui/Card.vue';
-import ProductionStatusBadge from '@/components/production/ProductionStatusBadge.vue';
-import AdminPage from '@/components/admin/AdminPage.vue';
-import StaButton from '@/components/ui/StaButton.vue';
-export default {
-  components: {
-    PaginatedTable,
-    TableHeadItem,
-    TableRowItem,
-    Card,
-    TableRow,
-    ProductionStatusBadge,
-    AdminPage,
-    StaButton,
-  },
-  data() {
-    return {
-      productionsData: null,
-      productionsOffset: 0,
-      productionsStatusFilter: null,
-      productionsRunDateFilter: null,
-      productionSearchFilter: null,
-    };
-  },
-  head: {
-    title: 'Your Productions',
-  },
-  methods: {
-    displayStartEnd,
-  },
-  apollo: {
-    productionsData: {
-      query: AdminProductionsQuery,
-      variables() {
-        return {
-          offset: this.productionsOffset,
-          status: this.productionsStatusFilter,
-          startLte: this.productionsRunDateFilter
-            ? this.productionsRunDateFilter + 'T23:59:59'
-            : null,
-          endGte: this.productionsRunDateFilter
-            ? this.productionsRunDateFilter + 'T00:00:00'
-            : null,
-          search: this.productionSearchFilter,
-        };
-      },
-      update: (data) => data.productions,
-    },
-  },
-};
+<script setup lang="ts">
+import {
+  useAdminProductionsQuery,
+  AdminProductionsQueryVariables
+} from '@/graphql/codegen/operations';
+import { displayStartEnd } from '~~/utils/datetime';
+import VueDatepicker from '@vuepic/vue-datepicker';
+import { DateTime } from 'luxon';
+
+const productionsOffset = ref(0);
+const productionsStatusFilter = ref<string | null>(null);
+const productionsRunDateFilter = ref<Date | null>(null);
+const productionSearchFilter = ref<string | null>(null);
+
+useHead({
+  title: 'Your Productions'
+});
+
+const { result: queryResult, loading } = useAdminProductionsQuery(
+  () =>
+    ({
+      offset: productionsOffset.value,
+      status: productionsStatusFilter.value,
+      startLte: productionsRunDateFilter.value
+        ? DateTime.fromJSDate(productionsRunDateFilter.value).set({
+            hour: 0,
+            minute: 0,
+            second: 0
+          })
+        : null,
+      endGte: productionsRunDateFilter.value
+        ? DateTime.fromJSDate(productionsRunDateFilter.value).set({
+            hour: 23,
+            minute: 59,
+            second: 59
+          })
+        : null,
+      search: productionSearchFilter.value
+    } as AdminProductionsQueryVariables)
+);
+
+const productionsData = computed(() => queryResult.value?.productions);
 </script>

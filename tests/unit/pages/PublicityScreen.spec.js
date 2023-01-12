@@ -1,13 +1,16 @@
-import { expect } from 'chai';
+import { expect, vi } from 'vitest';
 
-import Venue from '../fixtures/Venue';
-import { generateMountOptions, mountWithRouterMock } from '../helpers';
-import GenericNodeConnection from '../fixtures/support/GenericNodeConnection';
-import GenericApolloResponse from '../fixtures/support/GenericApolloResponse';
-import Production from '../fixtures/Production';
-import Performance from '../fixtures/Performance';
-import PublicityScreenPage from '@/pages/publicity-screen/_venueSlugs/index.vue';
+import Venue from '#testSupport/fixtures/Venue';
+import { mount } from '#testSupport/helpers';
+import {
+  GenericApolloResponse,
+  GenericNodeConnection
+} from '#testSupport/helpers/api';
+import Production from '#testSupport/fixtures/Production';
+import Performance from '#testSupport/fixtures/Performance';
+import PublicityScreenPage from '@/pages/publicity-screen/[venueSlugs]/index.vue';
 import HaveTicketsReadyScreen from '@/components/publicity-screens/HaveTicketsReadyScreen.vue';
+import { flushPromises } from '@vue/test-utils';
 
 const prod1 = Production({ id: 1, name: 'My Production 1' });
 const prod2 = Production({ id: 2, name: 'My Production 2' });
@@ -17,9 +20,9 @@ const prod3 = Production({
   performances: GenericNodeConnection([
     Performance({
       doorsOpen: '2020-01-01T10:30:00',
-      start: '2020-01-01T10:40:00',
-    }),
-  ]),
+      start: '2020-01-01T10:40:00'
+    })
+  ])
 });
 const prod4 = Production({
   id: 4,
@@ -28,43 +31,40 @@ const prod4 = Production({
   performances: GenericNodeConnection([
     Performance({
       doorsOpen: '2020-01-01T10:30:00',
-      start: '2020-01-01T10:40:00',
-    }),
-  ]),
+      start: '2020-01-01T10:40:00'
+    })
+  ])
 });
 
 describe('Publicity Screen', function () {
   let pageComponent;
-  beforeEach(() => {
-    jest.useFakeTimers('modern');
+  beforeEach(async () => {
+    vi.useFakeTimers('modern');
   });
   afterEach(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   async function makeComponent(callstack, onlyTheseVenues = false) {
-    pageComponent = await mountWithRouterMock(
-      PublicityScreenPage,
-      generateMountOptions(['apollo'], {
-        apollo: {
-          queryCallstack: callstack,
+    pageComponent = await mount(PublicityScreenPage, {
+      shallow: false,
+      apollo: {
+        queryResponses: callstack
+      },
+      routeInfo: {
+        params: {
+          venueSlugs: 'my-venue1,my-venue2'
         },
-        mocks: {
-          $route: {
-            params: {
-              venueSlugs: 'my-venue1,my-venue2',
-            },
-            query: {
-              onlyTheseVenues,
-            },
-          },
-          $router: {
-            resolve: () => 'http://my.url/',
-          },
-        },
-      })
-    );
-    await pageComponent.vm.$nextTick();
+        query: {
+          onlyTheseVenues
+        }
+      },
+      routerInfo: {
+        resolve: () => 'http://my.url/'
+      }
+    });
+
+    await flushPromises();
   }
 
   it('handles no available productions', async () => {
@@ -77,7 +77,7 @@ describe('Publicity Screen', function () {
         'venue',
         Venue({ name: 'My Venue 2', productions: GenericNodeConnection() })
       ),
-      GenericApolloResponse('productions', GenericNodeConnection()),
+      GenericApolloResponse('productions', GenericNodeConnection())
     ]);
     expect(pageComponent.text()).to.contain(
       'Welcome to My Venue 1 & My Venue 2'
@@ -92,20 +92,20 @@ describe('Publicity Screen', function () {
             'venue',
             Venue({
               name: 'My Venue 1',
-              productions: GenericNodeConnection(),
+              productions: GenericNodeConnection()
             })
           ),
           GenericApolloResponse(
             'venue',
             Venue({
               name: 'My Venue 2',
-              productions: GenericNodeConnection([prod1, prod4]),
+              productions: GenericNodeConnection([prod1, prod4])
             })
           ),
           GenericApolloResponse(
             'productions',
             GenericNodeConnection([prod1, prod2])
-          ),
+          )
         ],
         onlyTheseVenues
       );
@@ -118,13 +118,13 @@ describe('Publicity Screen', function () {
       expect(pageComponent.text()).to.contain('My Production 1');
       expect(pageComponent.text()).not.to.contain('My Production 2');
 
-      jest.advanceTimersByTime(10001);
+      vi.advanceTimersByTime(10001);
       // Second slide is the second production
       await pageComponent.vm.$nextTick();
       expect(pageComponent.text()).not.to.contain('My Production 1');
       expect(pageComponent.text()).to.contain('My Production 2');
 
-      jest.advanceTimersByTime(10001);
+      vi.advanceTimersByTime(10001);
       // Third slide is the first production (loops back...)
       await pageComponent.vm.$nextTick();
       expect(pageComponent.text()).to.contain('My Production 1');
@@ -143,7 +143,7 @@ describe('Publicity Screen', function () {
   describe('with an active performance', () => {
     it.each([
       [prod3, 'My Production 3', 2],
-      [prod4, 'My Production 4', 1],
+      [prod4, 'My Production 4', 1]
     ])(
       'shows box office screens (%#)',
       async (
@@ -158,7 +158,7 @@ describe('Publicity Screen', function () {
               Venue({
                 id: 1,
                 name: 'My Venue 1',
-                productions: GenericNodeConnection([prod1]),
+                productions: GenericNodeConnection([prod1])
               })
             ),
             GenericApolloResponse(
@@ -167,14 +167,34 @@ describe('Publicity Screen', function () {
                 id: 2,
                 name: 'My Venue 2',
                 productions: GenericNodeConnection([
-                  activePerformanceProduction,
-                ]),
+                  activePerformanceProduction
+                ])
               })
             ),
+            GenericApolloResponse(
+              'venue',
+              Venue({
+                id: 2,
+                name: 'My Venue 2',
+                productions: GenericNodeConnection([
+                  activePerformanceProduction
+                ])
+              })
+            ),
+            GenericApolloResponse(
+              'venue',
+              Venue({
+                id: 2,
+                name: 'My Venue 2',
+                productions: GenericNodeConnection([
+                  activePerformanceProduction
+                ])
+              })
+            )
           ],
           true
         );
-        jest.setSystemTime(new Date('2020-01-01T10:00:00'));
+        vi.setSystemTime(new Date('2020-01-01T10:00:00'));
 
         // Currently 10:00:00, doors open at 10:30:00 (over 20 mins away, so we expect to be in general upcoming productions state)
         expect(pageComponent.vm.productionsOnNow.length).to.be.eq(0);
@@ -188,8 +208,8 @@ describe('Publicity Screen', function () {
             .exists()
         ).to.be.false;
 
-        jest.setSystemTime(new Date('2020-01-01T10:11:00'));
-        jest.advanceTimersByTime(10000);
+        vi.setSystemTime(new Date('2020-01-01T10:11:00'));
+        vi.advanceTimersByTime(10000);
         await pageComponent.vm.$nextTick();
         expect(pageComponent.vm.productionsOnNow.length).to.be.eq(1);
         expect(
@@ -198,17 +218,17 @@ describe('Publicity Screen', function () {
             .exists()
         ).to.be.true;
         expect(pageComponent.text()).to.contain(
-          `Welcome to this performance of ${productionName}`
+          `Welcome to this performance of${productionName}`
         );
 
-        jest.setSystemTime(new Date('2020-01-01T10:31:00'));
-        jest.advanceTimersByTime(10000);
+        vi.setSystemTime(new Date('2020-01-01T10:31:00'));
+        vi.advanceTimersByTime(10000);
         await pageComponent.vm.$nextTick();
         expect(pageComponent.findComponent(HaveTicketsReadyScreen).exists()).to
           .be.true;
 
-        jest.setSystemTime(new Date('2020-01-01T11:00:00'));
-        jest.advanceTimersByTime(10000);
+        vi.setSystemTime(new Date('2020-01-01T11:00:00'));
+        vi.advanceTimersByTime(10000);
         await pageComponent.vm.$nextTick();
         expect(pageComponent.text()).to.contain('Book now at');
         expect(

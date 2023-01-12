@@ -85,7 +85,7 @@ export default class Booking {
     return {
       tickets: this.tickets.map((ticket) => {
         return ticket.apiData;
-      }),
+      })
     };
   }
 
@@ -341,7 +341,7 @@ export default class Booking {
           concessionType: concessionTypeEdge.concessionType,
           seatGroup,
           ticketPrice: concessionTypeEdge.price,
-          totalPrice: concessionTypeEdge.price * groupedTickets.length,
+          totalPrice: concessionTypeEdge.price * groupedTickets.length
         };
       })
       .value();
@@ -356,7 +356,7 @@ export default class Booking {
     }
     return this.priceBreakdown.miscCosts.map((miscCost) => {
       return Object.assign(miscCost, {
-        valuePounds: (miscCost.value / 100).toFixed(2),
+        valuePounds: (miscCost.value / 100).toFixed(2)
       });
     });
   }

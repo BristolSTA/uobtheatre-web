@@ -1,3 +1,2 @@
-graphql/codegen/operations.ts
-.nuxt
-static/sw.js
+graphql/codegen
+tests/unit/test.spec.example.js

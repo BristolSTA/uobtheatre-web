@@ -14,7 +14,7 @@
         <button class="md:hidden" @click="showSidebar = true">
           <font-awesome-icon icon="caret-square-right" class="fa-2x" />
         </button>
-        <nuxt-child />
+        <NuxtPage />
       </div>
     </div>
   </div>
@@ -22,19 +22,23 @@
 
 <script>
 import AdminSidebar from '@/components/admin/AdminSidebar.vue';
-import Breadcrumbs from '@/components/ui/Breadcrumbs.vue';
-export default {
+import Breadcrumbs from '@/components/ui/UiBreadcrumbs.vue';
+
+definePageMeta({
+  middleware: ['authed', 'admin']
+});
+
+export default defineNuxtComponent({
   components: { AdminSidebar, Breadcrumbs },
   layout: 'admin',
-  middleware: ['authed', 'admin'],
   data() {
     return {
-      showSidebar: false,
+      showSidebar: false
     };
   },
   head: {
     titleTemplate: (chunk) =>
-      chunk ? `${chunk} | Admin | UOB Theatre` : 'Administration | UOB Theatre',
-  },
-};
+      chunk ? `${chunk} | Admin | UOB Theatre` : 'Administration | UOB Theatre'
+  }
+});
 </script>

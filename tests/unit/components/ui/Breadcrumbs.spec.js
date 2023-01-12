@@ -1,52 +1,49 @@
-import { RouterLinkStub } from '@vue/test-utils';
-import { expect } from 'chai';
+import { mount } from '@vue/test-utils';
+import { expect, vi } from 'vitest';
 
-import { mountWithRouterMock } from '../../helpers';
-import Breadcrumbs from '@/components/ui/Breadcrumbs.vue';
+import Breadcrumbs from '@/components/ui/UiBreadcrumbs.vue';
+import { NuxtLinkStub } from '#testSupport/stubs';
 
 describe('Breadcrumbs', () => {
-  let breadcrumsComponent;
+  let breadcrumbsComponent;
 
   beforeEach(async () => {
-    breadcrumsComponent = await mountWithRouterMock(Breadcrumbs, {
-      stubs: { 'font-awesome-icon': true },
-      mocks: {
-        $route: {
-          fullPath: '/productions/legally-ginger/book',
-        },
-      },
-      propsData: {
+    vi.stubGlobal('useRoute', () => ({
+      fullPath: '/productions/legally-ginger/book'
+    }));
+    breadcrumbsComponent = await mount(Breadcrumbs, {
+      props: {
         crumbs: [
           { text: 'Whats On', path: '/productions' },
           {
             text: 'Legally Ginger',
-            path: '/productions/legally-ginger',
+            path: '/productions/legally-ginger'
           },
-          { text: 'Book' },
-        ],
-      },
+          { text: 'Book' }
+        ]
+      }
     });
   });
 
   it('has 2 chevrons', () => {
-    expect(breadcrumsComponent.findAll('font-awesome-icon-stub')).length(2);
+    expect(breadcrumbsComponent.findAll('font-awesome-icon-stub')).length(2);
   });
 
   it('has corrct text', () => {
-    expect(breadcrumsComponent.text()).to.contain('Whats On');
-    expect(breadcrumsComponent.text()).to.contain('Legally Ginger');
-    expect(breadcrumsComponent.text()).to.contain('Book');
+    expect(breadcrumbsComponent.text()).to.contain('Whats On');
+    expect(breadcrumbsComponent.text()).to.contain('Legally Ginger');
+    expect(breadcrumbsComponent.text()).to.contain('Book');
   });
 
   it('has correct links', () => {
     expect(
-      breadcrumsComponent.findAllComponents(RouterLinkStub).length
+      breadcrumbsComponent.findAllComponents(NuxtLinkStub).length
     ).to.equal(2);
     expect(
-      breadcrumsComponent.findAllComponents(RouterLinkStub).at(0).props('to')
+      breadcrumbsComponent.findAllComponents(NuxtLinkStub)[0].attributes('to')
     ).to.equal('/productions');
     expect(
-      breadcrumsComponent.findAllComponents(RouterLinkStub).at(1).props('to')
+      breadcrumbsComponent.findAllComponents(NuxtLinkStub)[1].attributes('to')
     ).to.equal('/productions/legally-ginger');
   });
 });

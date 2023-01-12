@@ -46,7 +46,7 @@
         <button
           v-if="production.contentWarnings.length"
           ref="warnings"
-          class="p-3 bg-sta-rouge rounded-md hover:bg-sta-rouge-dark transition-colors scale-110 flex gap-2 items-center flex-wrap lg:flex-nowrap justify-center"
+          class="p-3 bg-sta-rouge rounded-md hover:bg-sta-rouge-dark transition-colors flex gap-2 items-center flex-wrap lg:flex-nowrap justify-center"
           @click="showContentWarningsDetail = true"
         >
           This production has content warnings.
@@ -85,22 +85,22 @@
 import Modal from '../ui/Modal.vue';
 import ContentWarningsDisplay from './content-warnings/ContentWarningsDisplay.vue';
 import ProductionPosterImage from './ProductionPosterImage.vue';
-import TipTapOutput from '@/components/ui/TipTapOutput.vue';
-import IconListItem from '@/components/ui/IconListItem.vue';
+import TipTapOutput from '~~/components/ui/UiTipTapOutput.vue';
+import IconListItem from '~~/components/ui/UiIconListItem.vue';
 export default {
   components: {
     IconListItem,
     TipTapOutput,
     Modal,
     ContentWarningsDisplay,
-    ProductionPosterImage,
+    ProductionPosterImage
   },
   props: {
-    production: { required: true, type: Object },
+    production: { required: true, type: Object }
   },
   data() {
     return {
-      showContentWarningsDetail: false,
+      showContentWarningsDetail: false
     };
   },
   computed: {
@@ -125,7 +125,7 @@ export default {
       return !!this.production.performances.edges.find(
         (edge) => edge.node.isInperson
       );
-    },
-  },
+    }
+  }
 };
 </script>

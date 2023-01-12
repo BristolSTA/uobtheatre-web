@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import LoadingIcon from '../ui/LoadingIcon.vue';
+import LoadingIcon from '../ui/UiLoadingIcon.vue';
 import Booking from '@/classes/Booking';
 import TicketMatrix from '@/classes/TicketsMatrix';
 
@@ -72,19 +72,19 @@ export default {
   props: {
     booking: {
       required: true,
-      type: Booking,
+      type: Booking
     },
     ticketMatrix: {
       type: TicketMatrix,
-      default: null,
+      default: null
     },
     showPrices: {
       default: true,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
   data() {
     return {};
-  },
+  }
 };
 </script>

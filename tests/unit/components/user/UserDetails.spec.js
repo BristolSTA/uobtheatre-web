@@ -1,36 +1,34 @@
-import { mount } from '@vue/test-utils';
-import { expect } from 'chai';
+import { mount } from '#testSupport/helpers';
+import { expect } from 'vitest';
+import { flushPromises } from '@vue/test-utils';
 
-import { generateMountOptions } from '../../helpers';
-import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse';
-import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse';
-import TextInput from '@/components/ui/TextInput.vue';
+import TextInput from '~~/components/ui/Input/UiInputText.vue';
 import ChangeEmail from '@/components/user/ChangeEmail.vue';
 import ChangePassword from '@/components/user/ChangePassword.vue';
 import UserDetails from '@/components/user/UserDetails.vue';
-import { swalToast } from '@/utils';
+import GenericApolloResponse from '#testSupport/fixtures/support/GenericApolloResponse';
+import GenericMutationResponse from '#testSupport/fixtures/support/GenericMutationResponse';
+import { swalToast } from '~/utils/alerts';
 
 describe('User Details', () => {
   let userDetailsComponent;
 
-  beforeEach(() => {
-    userDetailsComponent = mount(
-      UserDetails,
-      generateMountOptions(['apollo', 'config'], {
-        propsData: {
-          user: {
-            firstName: 'Joe',
-            lastName: 'Bloggs',
-            email: 'joe.bloggs@example.org',
-          },
-        },
-        apollo: {
-          mutationCallstack: [
-            GenericApolloResponse('updateAccount', GenericMutationResponse()),
-          ],
-        },
-      })
-    );
+  beforeEach(async () => {
+    userDetailsComponent = await mount(UserDetails, {
+      shallow: false,
+      props: {
+        user: {
+          firstName: 'Joe',
+          lastName: 'Bloggs',
+          email: 'joe.bloggs@example.org'
+        }
+      },
+      apollo: {
+        mutationResponses: [
+          GenericApolloResponse('updateAccount', GenericMutationResponse())
+        ]
+      }
+    });
   });
 
   it('shows user details when not editing', () => {
@@ -52,11 +50,11 @@ describe('User Details', () => {
   describe('while editing', () => {
     beforeEach(async () => {
       await userDetailsComponent.setData({
-        editing: true,
+        editing: true
       });
     });
     it('can update their name', async () => {
-      const swalToastStub = jest.spyOn(swalToast, 'fire');
+      const swalToastStub = vi.spyOn(swalToast, 'fire');
       const firstNameInput = userDetailsComponent.find('input');
       const lastNameInput = userDetailsComponent.findAll('input').at(1);
 
@@ -68,8 +66,7 @@ describe('User Details', () => {
 
       userDetailsComponent.find('form').trigger('submit');
 
-      await userDetailsComponent.vm.$nextTick();
-      await userDetailsComponent.vm.$nextTick();
+      await flushPromises();
 
       expect(swalToastStub.mock.calls).length(1);
     });

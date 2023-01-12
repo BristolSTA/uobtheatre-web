@@ -1,50 +1,50 @@
-import { RouterLinkStub } from '@vue/test-utils';
-import { expect } from 'chai';
+import { expect } from 'vitest';
+import { mount } from '#testSupport/helpers';
+import { NuxtLinkStub } from '#testSupport/stubs';
+import {
+  GenericApolloResponse,
+  GenericNodeConnection
+} from '#testSupport/helpers/api';
 
-import { generateMountOptions, mountWithRouterMock } from '../../helpers';
-import FakeSociety from '../../fixtures/Society';
-import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse';
-import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection';
-import Production from '../../fixtures/Production';
-import Society from '@/pages/society/_slug/index';
+import FakeSociety from '#testSupport/fixtures/Society';
+import Production from '#testSupport/fixtures/Production';
+import Society from '@/pages/society/[slug]/index.vue';
 
 describe('Society page', function () {
   let societyPageComponent;
 
   beforeEach(async () => {
-    societyPageComponent = await mountWithRouterMock(
-      Society,
-      generateMountOptions(['apollo'], {
-        apollo: {
-          queryCallstack: [
-            GenericApolloResponse(
-              'society',
-              FakeSociety({
-                productions: GenericNodeConnection([
-                  Production({
-                    name: 'Bins',
-                    slug: 'bins',
-                    isBookable: true,
-                    end: '2020-10-18T00:00:00',
-                  }),
-                  Production({
-                    name: 'Centuary',
-                    slug: 'centuary',
-                    isBookable: false,
-                    end: '2019-10-19T00:00:00',
-                  }),
-                ]),
-              })
-            ),
-          ],
-        },
-      }),
-      {
+    societyPageComponent = await mount(Society, {
+      shallow: false,
+      apollo: {
+        queryResponses: [
+          GenericApolloResponse(
+            'society',
+            FakeSociety({
+              productions: GenericNodeConnection([
+                Production({
+                  name: 'Bins',
+                  slug: 'bins',
+                  isBookable: true,
+                  end: '2020-10-18T00:00:00'
+                }),
+                Production({
+                  name: 'Centuary',
+                  slug: 'centuary',
+                  isBookable: false,
+                  end: '2019-10-19T00:00:00'
+                })
+              ])
+            })
+          )
+        ]
+      },
+      routeInfo: {
         params: {
-          slug: 'sta',
-        },
+          slug: 'sta'
+        }
       }
-    );
+    });
   });
 
   it('fetches the society', async () => {
@@ -57,8 +57,8 @@ describe('Society page', function () {
 
     expect(
       societyPageComponent
-        .findComponent({
-          ref: 'society-logo',
+        .find({
+          ref: 'society-logo'
         })
         .attributes('src')
     ).to.equal('http://pathto.example/logo-image.png');
@@ -66,8 +66,8 @@ describe('Society page', function () {
 
   it('shows society splashscreen', async () => {
     await societyPageComponent.vm.$nextTick();
-    const splashscreenContainer = societyPageComponent.findComponent({
-      ref: 'banner',
+    const splashscreenContainer = societyPageComponent.find({
+      ref: 'banner'
     });
 
     expect(splashscreenContainer.attributes('style')).to.contain(
@@ -80,7 +80,7 @@ describe('Society page', function () {
     let tableRows;
     beforeEach(() => {
       tableRows = societyPageComponent.findAll('tr');
-      links = societyPageComponent.findAllComponents(RouterLinkStub);
+      links = societyPageComponent.findAllComponents(NuxtLinkStub);
     });
 
     it('correct number of productions', () => {
@@ -97,29 +97,26 @@ describe('Society page', function () {
     });
 
     it('has correct links', () => {
-      expect(links.at(0).props('to')).to.equal('/production/bins');
-      expect(links.at(1).props('to')).to.equal('/production/bins/book');
-      expect(links.at(2).props('to')).to.equal('/production/centuary');
+      expect(links.at(0).attributes('to')).to.equal('/production/bins');
+      expect(links.at(1).attributes('to')).to.equal('/production/bins/book');
+      expect(links.at(2).attributes('to')).to.equal('/production/centuary');
     });
   });
 
   it('handles invalid society', async () => {
-    const errorFn = jest.fn();
-    societyPageComponent = await mountWithRouterMock(
-      Society,
-      generateMountOptions(['apollo'], {
+    await expect(async () => {
+      await mount(Society, {
         apollo: {
-          queryCallstack: [GenericApolloResponse('society')],
+          queryResponses: [GenericApolloResponse('society')]
         },
-      }),
-      {
-        error: errorFn,
-        params: {
-          slug: 'not-drama-soc',
-        },
-      }
-    );
-    expect(errorFn.mock.calls.length).to.eq(1);
-    expect(errorFn.mock.calls[0][0]).to.include({ statusCode: 404 });
+        routeInfo: {
+          params: {
+            slug: 'not-drama-soc'
+          }
+        }
+      });
+    }).rejects.toThrowError();
+
+    expect(createError).toHaveBeenCalledOnce();
   });
 });

@@ -18,13 +18,24 @@ export default class {
     return new this(errors);
   }
 
+  static createFromMessage(message, field = null, code = null) {
+    return new this([
+      {
+        __typename: field ? 'FieldError' : 'NonFieldError',
+        message,
+        field,
+        code
+      }
+    ]);
+  }
+
   /**
    * Resets errors object
    */
   reset() {
     this.errors = {
       field_errors: [],
-      non_field_errors: [],
+      non_field_errors: []
     };
   }
 
@@ -119,7 +130,7 @@ export default class {
       }),
       non_field_errors: errors.filter((error) => {
         return error.__typename === 'NonFieldError' || !error.__typename;
-      }),
+      })
     };
   }
 
@@ -134,7 +145,7 @@ export default class {
     const error = {
       message,
       code,
-      field,
+      field
     };
     if (error.field) {
       this.errors.field_errors.push(error);

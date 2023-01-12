@@ -13,17 +13,18 @@ export default {
   props: {
     value: {
       type: String,
-      default: null,
+      default: null
     },
     mustSort: {
       type: Boolean,
-      default: false,
+      default: false
     },
     sortField: {
       type: String,
-      default: null,
-    },
+      default: null
+    }
   },
+  emits: ['input'],
   computed: {
     currentlySorted() {
       return (
@@ -35,7 +36,7 @@ export default {
     },
     currentlySortedDown() {
       return this.currentlySorted && !this.currentlySortedUp;
-    },
+    }
   },
   mounted() {
     if (this.mustSort && !this.currentlySorted) {
@@ -57,15 +58,7 @@ export default {
       } else {
         this.$emit('input', '' + this.sortField);
       }
-
-      // if (this.value === '-') {
-      //   this.$emit('input', this.mustSort ? this.sortField ?? '' : null)
-      // } else if (this.value === null) {
-      //   this.$emit('input', '')
-      // } else {
-      //   this.$emit('input', '-')
-      // }
-    },
-  },
+    }
+  }
 };
 </script>

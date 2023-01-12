@@ -1,35 +1,35 @@
-import { mount } from '@vue/test-utils';
-import { expect } from 'chai';
+import { mount } from '#testSupport/helpers';
+import { expect } from 'vitest';
 
-import Performance from '../../fixtures/Performance';
+import Performance from '#testSupport/fixtures/Performance';
 import GroupTicketButton from '@/components/booking/GroupTicketButton.vue';
 
 describe('Group Ticket Button', () => {
   let buttonComponent;
-  beforeEach(() => {
+  beforeEach(async () => {
     const performance = Performance();
 
     const student = {
       name: 'Student',
-      id: 2,
+      id: 2
     };
     performance.ticketOptions[0].concessionTypes.push({
       concessionType: student,
       price: 800,
-      pricePounds: '8.00',
+      pricePounds: '8.00'
     });
     const discount = performance.discounts.edges[0].node;
     discount.requirements.push({
       id: 1,
       number: 2,
       discount: null,
-      concessionType: student,
+      concessionType: student
     });
 
-    buttonComponent = mount(GroupTicketButton, {
-      propsData: {
-        discount,
-      },
+    buttonComponent = await mount(GroupTicketButton, {
+      props: {
+        discount
+      }
     });
   });
 
@@ -39,10 +39,10 @@ describe('Group Ticket Button', () => {
 
   it('displays the discounts requirements', () => {
     expect(buttonComponent.text().replace(/\s\s+/g, ' ')).to.contain(
-      'Adult x 1'
+      'Adultx 1'
     );
     expect(buttonComponent.text().replace(/\s\s+/g, ' ')).to.contain(
-      'Student x 2'
+      'Studentx 2'
     );
   });
 

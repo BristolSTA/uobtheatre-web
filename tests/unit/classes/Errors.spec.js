@@ -1,31 +1,30 @@
-import { expect } from 'chai';
-
+import { describe, expect, it, beforeEach } from 'vitest';
 import Errors from '@/classes/Errors';
 
 describe('Errors', () => {
   let errors;
-  beforeEach(() => {
+  beforeEach(async () => {
     errors = new Errors([
       {
         message: 'An general issue',
-        __typename: 'NonFieldError',
+        __typename: 'NonFieldError'
       },
       {
         message: 'An issue with a field',
         field: 'myfield',
-        __typename: 'FieldError',
+        __typename: 'FieldError'
       },
       {
         message: 'Another issue with a field',
         field: 'myfield',
-        __typename: 'FieldError',
+        __typename: 'FieldError'
       },
       {
         message: 'An issue with a code',
         field: 'anotherfieldthesecond',
         code: 'something_wrong',
-        __typename: 'FieldError',
-      },
+        __typename: 'FieldError'
+      }
     ]);
   });
 
@@ -39,8 +38,8 @@ describe('Errors', () => {
     const errors = Errors.createFromAPI([
       {
         message: 'My Error',
-        __typename: 'NonFieldError',
-      },
+        __typename: 'NonFieldError'
+      }
     ]);
 
     expect(errors.hasNonFieldErrors()).to.be.true;
@@ -74,7 +73,7 @@ describe('Errors', () => {
 
   it('can get a fields first error', () => {
     expect(errors.first('myfield')).to.include({
-      message: 'An issue with a field',
+      message: 'An issue with a field'
     });
   });
 
@@ -114,12 +113,12 @@ describe('Errors', () => {
       {
         message: 'A new error for an amazingfield',
         field: 'amazingfield',
-        __typename: 'FieldError',
+        __typename: 'FieldError'
       },
       {
         message: 'A new general error',
-        __typename: 'NonFieldError',
-      },
+        __typename: 'NonFieldError'
+      }
     ]);
 
     expect(errors.nonFieldErrors).length(1);
@@ -139,7 +138,7 @@ describe('Errors', () => {
 
     errors.push({
       message: 'My Message',
-      code: 'my-code',
+      code: 'my-code'
     });
     expect(errors.nonFieldErrors.length).to.eq(2);
     expect(errors.nonFieldErrors[1].code).to.eq('my-code');
@@ -147,7 +146,7 @@ describe('Errors', () => {
     errors.push({
       message: 'My Second Message',
       code: 'my-second-code',
-      field: 'my-field',
+      field: 'my-field'
     });
     expect(errors.fieldErrors.length).to.eq(4);
     expect(errors.fieldErrors[3].code).to.eq('my-second-code');

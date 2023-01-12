@@ -28,16 +28,17 @@
 <script>
 import lo from 'lodash';
 import { DateTime } from 'luxon';
-import { humanDayTime } from '@/utils';
+import { humanDayTime } from '@/utils/datetime';
 import PerformanceOverview from '@/components/performance/PerformanceOverview.vue';
 export default {
   components: { PerformanceOverview },
   props: {
     performances: {
       type: Array,
-      required: true,
-    },
+      required: true
+    }
   },
+  emits: ['select-performance'],
   computed: {
     groupedPerformances() {
       return lo
@@ -49,7 +50,7 @@ export default {
           return humanDayTime(DateTime.fromISO(performance.start));
         })
         .value();
-    },
-  },
+    }
+  }
 };
 </script>

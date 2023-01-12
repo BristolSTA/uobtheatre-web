@@ -1,0 +1,14 @@
+#import "../../fragments/AddressFragment.gql"
+query venuePageDetails($slug: String!) {
+  venue(slug: $slug) {
+    name
+    internalCapacity
+    description
+    image {
+      url
+    }
+    address {
+      ...AddressFields
+    }
+  }
+}

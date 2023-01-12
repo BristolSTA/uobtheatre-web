@@ -8,19 +8,20 @@ export function getZeroPad(n) {
 }
 
 export default {
+  emits: ['time'],
   data() {
     return {
       timer: null,
       hours: 0,
       minutes: 0,
-      seconds: 0,
+      seconds: 0
     };
   },
   mounted() {
     this.updateDateTime();
     this.timer = setInterval(this.updateDateTime, 1000);
   },
-  beforeDestroy() {
+  beforeUnmount() {
     clearInterval(this.timer);
   },
   methods: {
@@ -30,7 +31,7 @@ export default {
       this.minutes = getZeroPad(now.getMinutes());
       this.seconds = getZeroPad(now.getSeconds());
       this.$emit('time', now);
-    },
-  },
+    }
+  }
 };
 </script>

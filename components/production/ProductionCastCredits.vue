@@ -65,17 +65,17 @@ import RoleGroup from './RoleGroup.vue';
 export default {
   name: 'ProductionCastAndCredits',
   components: {
-    RoleGroup,
+    RoleGroup
   },
   props: {
     production: {
       required: true,
-      type: Object,
-    },
+      type: Object
+    }
   },
   data() {
     return {
-      overview: true,
+      overview: true
     };
   },
   computed: {
@@ -93,12 +93,12 @@ export default {
     },
     sortedCast() {
       return lodash.sortBy(this.production.cast, 'profilePicture');
-    },
-  },
+    }
+  }
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .crew-section-header {
   @apply text-2xl;
   @apply tracking-wide;

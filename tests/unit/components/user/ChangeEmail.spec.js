@@ -1,32 +1,29 @@
-import { mount } from '@vue/test-utils';
-import { expect } from 'chai';
+import { expect, vi } from 'vitest';
 
-import { generateMountOptions } from '../../helpers';
-import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse';
-import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse';
-import { swal } from '@/utils';
+import { mount } from '#testSupport/helpers';
+import GenericMutationResponse from '#testSupport/fixtures/support/GenericMutationResponse';
+import GenericApolloResponse from '#testSupport/fixtures/support/GenericApolloResponse';
+import { swal } from '~/utils/alerts';
 import ChangeEmail from '@/components/user/ChangeEmail.vue';
 
 describe('Change Email', () => {
   let component;
-  beforeEach(() => {
-    component = mount(
-      ChangeEmail,
-      generateMountOptions(['apollo'], {
-        apollo: {
-          mutationCallstack: [
-            GenericApolloResponse(
-              'sendSecondaryEmailActivation',
-              GenericMutationResponse()
-            ),
-          ],
-        },
-      })
-    );
+  beforeEach(async () => {
+    component = await mount(ChangeEmail, {
+      apollo: {
+        mutationResponses: [
+          GenericApolloResponse(
+            'sendSecondaryEmailActivation',
+            GenericMutationResponse()
+          )
+        ]
+      },
+      shallow: false
+    });
   });
 
   it('can request email change', async () => {
-    const stub = jest.spyOn(swal, 'fire');
+    const stub = vi.spyOn(swal, 'fire');
     const inputs = component.findAll('input');
     inputs.at(0).setValue('joe.bloggs@example.org');
     inputs.at(1).setValue('mypassword');

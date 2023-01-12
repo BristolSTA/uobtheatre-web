@@ -1,31 +1,30 @@
-import { mount } from '@vue/test-utils';
-import { expect } from 'chai';
-
+import { mount } from '#testSupport/helpers';
+import { expect, vi } from 'vitest';
 import Booking from '@/classes/Booking';
 import BookingNavgiation from '@/components/booking/BookingNavigation.vue';
-import Stages from '@/pages/production/_slug/book/-bookingStages';
+import Stages from '@/pages/production/[slug]/book/-bookingStages';
 
 describe('Booking Navigation', () => {
   let navigationComponent;
 
   describe('using all stages', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       // Set all the stages to report they should be used
       Stages.forEach((stageComponent) => {
-        jest
-          .spyOn(stageComponent.stageInfo, 'shouldBeUsed')
-          .mockReturnValue(true);
+        vi.spyOn(stageComponent.stageInfo, 'shouldBeUsed').mockReturnValue(
+          true
+        );
       });
       const booking = new Booking();
       booking.performance = { id: 1 };
-      navigationComponent = mount(BookingNavgiation, {
-        propsData: {
+      navigationComponent = await mount(BookingNavgiation, {
+        props: {
           currentStageIndex: 0,
           production: {
-            warnings: ['Generic Warning Here'],
+            warnings: ['Generic Warning Here']
           },
-          booking,
-        },
+          booking
+        }
       });
     });
 
@@ -48,7 +47,7 @@ describe('Booking Navigation', () => {
 
       await navigationComponent.setProps({
         currentStageIndex: 1,
-        maxAllowedStageIndex: 1,
+        maxAllowedStageIndex: 1
       });
 
       expect(
@@ -65,10 +64,10 @@ describe('Booking Navigation', () => {
     it('correctly disables buttons', async () => {
       await navigationComponent.setProps({
         currentStageIndex: Math.round(Stages.length / 2),
-        maxAllowedStageIndex: Math.round(Stages.length / 2),
+        maxAllowedStageIndex: Math.round(Stages.length / 2)
       });
 
-      jest.spyOn(navigationComponent.vm, 'onSelectStage');
+      vi.spyOn(navigationComponent.vm, 'onSelectStage');
 
       for (const [index] of Stages.entries()) {
         if (index > navigationComponent.vm.currentStageIndex) {
@@ -78,7 +77,7 @@ describe('Booking Navigation', () => {
               .findAll('button')
               .at(index)
               .attributes('disabled')
-          ).to.eq('disabled');
+          ).to.eq('');
           await navigationComponent
             .findAll('button')
             .at(index)
@@ -115,7 +114,7 @@ describe('Booking Navigation', () => {
     it('emits event when valid navigation block clicked', async () => {
       await navigationComponent.setProps({
         currentStageIndex: 1,
-        maxAllowedStageIndex: 1,
+        maxAllowedStageIndex: 1
       });
       await navigationComponent.findAll('button').at(0).trigger('click');
       expect(navigationComponent.emitted()['goto-stage'].length).to.eq(1);
@@ -135,21 +134,21 @@ describe('Booking Navigation', () => {
   });
 
   describe('with optional stage', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       Stages.forEach((stageComponent, index) => {
-        jest
-          .spyOn(stageComponent.stageInfo, 'shouldBeUsed')
-          .mockReturnValue(index !== 1);
+        vi.spyOn(stageComponent.stageInfo, 'shouldBeUsed').mockReturnValue(
+          index !== 1
+        );
       });
-      navigationComponent = mount(BookingNavgiation, {
-        propsData: {
+      navigationComponent = await mount(BookingNavgiation, {
+        props: {
           currentStageIndex: 0,
           maxAllowedStageIndex: 0,
           production: {
-            warnings: ['Generic Warning Here'],
+            warnings: ['Generic Warning Here']
           },
-          booking: new Booking(),
-        },
+          booking: new Booking()
+        }
       });
     });
 

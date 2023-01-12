@@ -1,18 +1,17 @@
-import { expect } from 'chai';
-
-import Performance from '../fixtures/Performance';
+import { describe, expect, it, beforeEach } from 'vitest';
+import Performance from '#testSupport/fixtures/Performance';
 import TicketsMatrix from '@/classes/TicketsMatrix';
 
 describe('TicketsMatrix', () => {
   let matrix;
   let apiData;
-  beforeEach(() => {
+  beforeEach(async () => {
     apiData = Performance();
     matrix = new TicketsMatrix(apiData);
   });
 
   it('can get ticket options', () => {
-    expect(matrix.ticketOptions).to.include(apiData.ticketOptions[0]);
+    expect(matrix.ticketOptions[0].id).to.eq(apiData.ticketOptions[0].id);
   });
   it('can get performance capacity remaining', () => {
     expect(matrix.performanceCapacityRemaining).to.eq(69);

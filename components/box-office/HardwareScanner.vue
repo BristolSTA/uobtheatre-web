@@ -9,7 +9,7 @@
         focused
           ? 'focus:ring-sta-green'
           : 'ring-sta-rouge bg-sta-rouge bg-opacity-40 placeholder-white',
-        'py-3 text-center ring focus:outline-none',
+        'py-3 text-center ring focus:outline-none'
       ]"
       @input="$emit('input', $event)"
       @change="handleScan"
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import TextInput from '../ui/TextInput.vue';
+import TextInput from '../ui/Input/UiInputText.vue';
 import InvalidCodeNotification from './InvalidCodeNotification.vue';
 import Ticket from '@/classes/Ticket';
 export default {
@@ -34,14 +34,15 @@ export default {
   props: {
     value: {
       default: null,
-      type: String,
-    },
+      type: String
+    }
   },
+  emits: ['input', 'invalidCode', 'scanned'],
   data() {
     return {
       placeholder: 'Scan a Ticket...',
       invalidCode: false,
-      focused: true,
+      focused: true
     };
   },
   watch: {
@@ -59,7 +60,7 @@ export default {
       if (newVal) {
         this.$emit('invalidCode');
       }
-    },
+    }
   },
   mounted() {
     this.focus();
@@ -88,7 +89,7 @@ export default {
     },
     focus() {
       this.$refs.input.focus();
-    },
-  },
+    }
+  }
 };
 </script>

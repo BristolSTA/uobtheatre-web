@@ -1,6 +1,8 @@
 export default class {
   constructor(rawPerformance) {
-    this.raw_ticket_options = rawPerformance.ticketOptions;
+    this.raw_ticket_options = JSON.parse(
+      JSON.stringify(rawPerformance.ticketOptions)
+    );
     this._performanceCapacityRemaining = rawPerformance.capacityRemaining;
     this.raw_discounts = rawPerformance.discounts;
   }
@@ -45,16 +47,23 @@ export default class {
    * @param {number} seatGroupId Seat group ID to decrease capacity by 1
    */
   decrementSeatGroupCapacity(seatGroupId) {
-    this.ticketOptions.find((option) => option.seatGroup.id === seatGroupId)
-      .capacityRemaining--;
+    const index = this.ticketOptions.findIndex(
+      (option) => option.seatGroup.id === seatGroupId
+    );
+    this.raw_ticket_options[index].capacityRemaining =
+      this.raw_ticket_options[index].capacityRemaining - 1;
   }
 
   /**
    * @param {number} seatGroupId Seat group ID to increase capacity by 1
    */
   incrementSeatGroupCapacity(seatGroupId) {
-    this.ticketOptions.find((option) => option.seatGroup.id === seatGroupId)
-      .capacityRemaining++;
+    const index = this.ticketOptions.findIndex(
+      (option) => option.seatGroup.id === seatGroupId
+    );
+
+    this.raw_ticket_options[index].capacityRemaining =
+      this.raw_ticket_options[index].capacityRemaining + 1;
   }
 
   /**

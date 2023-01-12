@@ -24,6 +24,6 @@
 <script>
 import QrcodeVue from 'qrcode.vue';
 export default {
-  components: { QrcodeVue },
+  components: { QrcodeVue }
 };
 </script>

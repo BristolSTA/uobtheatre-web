@@ -1,17 +1,15 @@
-import { mount } from '@vue/test-utils';
-
-import { expect } from 'chai';
+import { mount } from '#testSupport/helpers';
+import { expect } from 'vitest';
 import { DateTime } from 'luxon';
 
-import { generateMountOptions } from '../../helpers.js';
-import Production from '../../fixtures/Production.js';
-import Performance from '../../fixtures/Performance.js';
-import GenericNodeConnection from '../../fixtures/support/GenericNodeConnection.js';
-import CrewMember from '../../fixtures/CrewMember.js';
-import CrewRole from '../../fixtures/CrewRole.js';
-import ProductionTeamMember from '../../fixtures/ProductionTeamMember.js';
-import CastMember from '../../fixtures/CastMember.js';
-import ProductionCastCredits from '@/components/production/ProductionCastCredits';
+import Production from '#testSupport/fixtures/Production.js';
+import Performance from '#testSupport/fixtures/Performance.js';
+import GenericNodeConnection from '#testSupport/fixtures/support/GenericNodeConnection.js';
+import CrewMember from '#testSupport/fixtures/CrewMember.js';
+import CrewRole from '#testSupport/fixtures/CrewRole.js';
+import ProductionTeamMember from '#testSupport/fixtures/ProductionTeamMember.js';
+import CastMember from '#testSupport/fixtures/CastMember.js';
+import ProductionCastCredits from '@/components/production/ProductionCastCredits.vue';
 
 describe('Production Cast and Credits', function () {
   let castCreditsContainer;
@@ -22,39 +20,39 @@ describe('Production Cast and Credits', function () {
         {
           start: DateTime.fromISO('2020-11-14'),
           isInperson: true,
-          isOnline: false,
-        },
+          isOnline: false
+        }
       ],
       {
         crew: [
           CrewMember({
             name: 'James E',
-            role: CrewRole({ department: { description: 'Lighting' } }),
+            role: CrewRole({ department: { description: 'Lighting' } })
           }),
           CrewMember({
             name: 'Alex T',
-            role: CrewRole({ department: { description: 'Lighting' } }),
+            role: CrewRole({ department: { description: 'Lighting' } })
           }),
           CrewMember({
             name: 'Tom S',
-            role: CrewRole({ department: { description: 'Sound' } }),
-          }),
+            role: CrewRole({ department: { description: 'Sound' } })
+          })
         ],
         productionTeam: [
           ProductionTeamMember({ name: 'Joe Bloggs', role: 'Producer' }),
           ProductionTeamMember({
             name: 'Jill Bloggs',
-            role: 'Musical Director',
-          }),
+            role: 'Musical Director'
+          })
         ],
         cast: [
           CastMember({ name: 'Kit', role: 'Crazy Person' }),
           CastMember({
             name: 'John',
             role: 'Good Guy',
-            profilePicture: null,
-          }),
-        ],
+            profilePicture: null
+          })
+        ]
       }
     );
   });
@@ -100,19 +98,17 @@ describe('Production Cast and Credits', function () {
     expect(castArray.at(1).find('img').exists()).to.be.false;
   });
 
-  const createWithPerformances = (performances, productionOverrides) => {
+  const createWithPerformances = async (performances, productionOverrides) => {
     const production = Production(productionOverrides);
     production.performances = GenericNodeConnection(
       performances.map((performance) => Performance(performance))
     );
 
-    castCreditsContainer = mount(
-      ProductionCastCredits,
-      generateMountOptions(['router'], {
-        propsData: {
-          production,
-        },
-      })
-    );
+    castCreditsContainer = await mount(ProductionCastCredits, {
+      shallow: false,
+      props: {
+        production
+      }
+    });
   };
 });

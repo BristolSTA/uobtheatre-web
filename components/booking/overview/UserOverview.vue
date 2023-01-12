@@ -1,24 +1,20 @@
 <template>
-  <overview-box>
+  <UiCard>
     <template #title>
-      <font-awesome-icon icon="user-edit" class="mr-2" />
+      <font-awesome-icon icon="user-pen" class="mr-2" />
       Your Details
     </template>
     <template #subtitle>
-      {{ $store.state.auth.user.firstName }}
-      {{ $store.state.auth.user.lastName }}
+      {{ authStore.user?.firstName }}
+      {{ authStore.user?.lastName }}
     </template>
     <div>
-      {{ $store.state.auth.user.email }}
+      {{ authStore.user?.email }}
     </div>
-  </overview-box>
+  </UiCard>
 </template>
 
-<script>
-import OverviewBox from '../../ui/Card.vue';
-
-export default {
-  name: 'UserOverview',
-  components: { OverviewBox },
-};
+<script setup lang="ts">
+import useAuthStore from '@/store/auth';
+const authStore = useAuthStore();
 </script>

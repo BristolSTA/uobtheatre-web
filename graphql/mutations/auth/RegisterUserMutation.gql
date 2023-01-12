@@ -1,0 +1,28 @@
+mutation registerUserMutation(
+  $firstName: String!
+  $lastName: String!
+  $email: String!
+  $password: String!
+  $confirmedPassword: String!
+) {
+  register(
+    firstName: $firstName
+    lastName: $lastName
+    email: $email
+    password1: $password
+    password2: $confirmedPassword
+  ) {
+    success
+    errors {
+      ... on NonFieldError {
+        message
+        code
+      }
+      ... on FieldError {
+        message
+        field
+        code
+      }
+    }
+  }
+}

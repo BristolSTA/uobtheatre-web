@@ -6,12 +6,12 @@
       <small>
         Max Capacity:
         {{ capacityOverride ? capacityOverride : value.capacity }}
-        <strike
+        <del
           v-if="capacityOverride && capacityOverride !== value.capacity"
           class="text-sta-gray-lighter"
         >
           {{ value.capacity }}
-        </strike>
+        </del>
       </small>
     </p>
     <font-awesome-icon
@@ -28,16 +28,17 @@ export default {
   props: {
     value: {
       required: true,
-      type: Object,
+      type: Object
     },
     removable: {
       default: false,
-      type: Boolean,
+      type: Boolean
     },
     capacityOverride: {
       default: null,
-      type: Number,
-    },
+      type: Number
+    }
   },
+  emits: ['remove']
 };
 </script>
