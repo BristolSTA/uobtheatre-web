@@ -52,6 +52,7 @@ import { getValidationErrors, performMutation } from '~~/utils/api';
 import { swalToast } from '~~/utils/alerts';
 
 import ErrorsPartial from '@/graphql/partials/ErrorsPartial';
+import useAuthStore from '@/store/auth';
 
 definePageMeta({
   middleware: ['authed']
@@ -102,6 +103,7 @@ export default defineNuxtComponent({
     async finishSwap() {
       this.loading = true;
       try {
+        // Swap emails
         await performMutation(
           this.$apollo,
           {
@@ -119,6 +121,11 @@ export default defineNuxtComponent({
           'swapEmails'
         );
 
+        // Refresh auth - the old token won't be valid as the email address has changed, and this is contained in the JWT
+        const authStore = useAuthStore();
+        await authStore.refreshUsingToken();
+
+        // Remove the old email
         await performMutation(
           this.$apollo,
           {

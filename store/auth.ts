@@ -217,6 +217,7 @@ export default defineStore('auth', {
       cookie.remove(runtimeConfig.public.auth.refreshTokenKey); // Remove fresh token cookie
       cookie.remove(runtimeConfig.public.auth.rememberKey); // Remove remember cookie
 
+      // Take to homepage
       navigateTo('/');
 
       // Notify apollo
