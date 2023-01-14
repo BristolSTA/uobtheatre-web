@@ -168,6 +168,7 @@ export default defineNuxtComponent({
 
         recordPaymentEvent({
           transaction_id: `booking_${this.booking.id}`,
+          currency: 'GBP',
           value: this.booking.totalPrice / 100
         });
         this.onBookingComplete(data.payBooking.booking.reference);
