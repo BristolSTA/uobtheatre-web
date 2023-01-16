@@ -11,7 +11,7 @@
 <script>
 export default {
   props: {
-    value: {
+    modelValue: {
       type: String,
       default: null
     },
@@ -24,15 +24,16 @@ export default {
       default: null
     }
   },
-  emits: ['input'],
+  emits: ['update:modelValue'],
   computed: {
     currentlySorted() {
       return (
-        this.value && (!this.sortField || this.value.endsWith(this.sortField))
+        this.modelValue &&
+        (!this.sortField || this.modelValue.endsWith(this.sortField))
       );
     },
     currentlySortedUp() {
-      return this.currentlySorted && this.value.startsWith('-');
+      return this.currentlySorted && this.modelValue.startsWith('-');
     },
     currentlySortedDown() {
       return this.currentlySorted && !this.currentlySortedUp;
@@ -50,13 +51,16 @@ export default {
 
       if (this.currentlySorted) {
         // Exisiting sort
-        if (this.value.startsWith('-')) {
-          this.$emit('input', this.mustSort ? '' + this.sortField : null);
+        if (this.modelValue.startsWith('-')) {
+          this.$emit(
+            'update:modelValue',
+            this.mustSort ? '' + this.sortField : null
+          );
         } else {
-          this.$emit('input', '-' + this.sortField);
+          this.$emit('update:modelValue', '-' + this.sortField);
         }
       } else {
-        this.$emit('input', '' + this.sortField);
+        this.$emit('update:modelValue', '' + this.sortField);
       }
     }
   }
