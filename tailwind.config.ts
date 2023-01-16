@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss';
-const path = require('path');
+import tailwindForms from '@tailwindcss/forms';
 
 export default <Partial<Config>>{
   future: {
@@ -81,5 +81,5 @@ export default <Partial<Config>>{
       dropShadow: ['hover']
     }
   },
-  plugins: [require('@tailwindcss/forms')]
+  plugins: [tailwindForms()]
 };
