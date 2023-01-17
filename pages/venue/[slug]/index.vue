@@ -89,9 +89,14 @@ import { Ref } from 'vue';
 
 import L from 'leaflet';
 
+const slug = useRoute().params.slug;
+
+if (typeof slug !== 'string')
+  throw createSafeError({ message: 'Only one slug can be passed' });
+
 const { data } = await useAsyncQuery<VenuePageDetailsQuery>(
   VenuePageDetailsDocument,
-  { slug: useRoute().params.slug } as VenuePageDetailsQueryVariables
+  { slug } satisfies VenuePageDetailsQueryVariables
 );
 
 if (!data.value?.venue) {
