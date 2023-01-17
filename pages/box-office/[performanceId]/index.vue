@@ -104,7 +104,7 @@
 <script lang="ts" setup>
 import InjectionKeys from '@/utils/injection-keys';
 import {
-  BoxOfficePerformanceBookingQuery,
+  BoxOfficePerformanceBookingsQuery,
   useBoxOfficePerformanceBookingsQuery
 } from '~~/graphql/codegen/operations';
 const performance = inject(InjectionKeys.boxOffice.performance);
@@ -132,7 +132,7 @@ const bookings = computed(() =>
         .filter((booking) => booking !== null) as NonNullable<
         NonNullable<
           NonNullable<
-            BoxOfficePerformanceBookingQuery['performance']
+            BoxOfficePerformanceBookingsQuery['performance']
           >['bookings']['edges'][number]
         >['node']
       >[])
