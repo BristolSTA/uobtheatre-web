@@ -22,9 +22,7 @@
         </div>
       </div>
     </div>
-    <div class="flex flex-col gap-5 font-body overflow-hidden flex-grow">
-      <BoxOfficeDesktopCheckin />
-
+    <div class="flex flex-col gap-5 font-body overflow-y-hidden flex-grow">
       <div class="flex items-end gap-5">
         <UiInputText
           v-model="searchText"
@@ -53,28 +51,17 @@
           />
         </div>
         <div
-          class="flex-grow bg-sta-gray-dark rounded-xl p-5 py-3 flex flex-col"
+          class="flex-grow bg-sta-gray-dark rounded-xl p-5 py-3 flex flex-col relative"
         >
-          <template v-if="inspectedObjects.booking">
-            <BoxOfficeBookingHeader
-              :booking="inspectedObjects.booking"
-              class="flex-none"
-            />
-            <div class="flex-grow overflow-y-auto my-2">
-              <BoxOfficeBookingTickets
-                :tickets="inspectedObjects.booking.tickets"
-                class="w-full text-white"
-                @select-ticket="onSelectTicket"
-              />
-            </div>
-            <BoxOfficeButton
-              class="bg-sta-green hover:bg-sta-green-dark text-white"
-              >Check In Remaining 4 Tickets</BoxOfficeButton
-            >
-          </template>
+          <BoxOfficeBookingInspector
+            v-if="inspectedObjects.booking"
+            :booking="inspectedObjects.booking"
+            @select-ticket="selectTicket"
+            @close="closeBooking"
+          />
           <div v-else class="overflow-y-auto flex flex-col h-full">
             <div
-              v-if="loadingBookings"
+              v-if="loadingBookings || loadingBooking"
               class="flex flex-grow items-center justify-center"
             >
               <UiLoadingIcon class="text-white text-5xl" />
@@ -89,7 +76,8 @@
               <div
                 v-for="booking in bookings"
                 :key="booking.id"
-                class="w-full bg-sta-gray-light p-3"
+                class="w-full bg-sta-gray-light hover:bg-sta-orange cursor-pointer p-3"
+                @click="selectBooking(booking)"
               >
                 <BoxOfficeBookingHeader :booking="booking" />
               </div>
@@ -97,6 +85,7 @@
           </div>
         </div>
       </div>
+      <BoxOfficeDesktopCheckin />
     </div>
   </div>
 </template>
@@ -104,17 +93,22 @@
 <script lang="ts" setup>
 import InjectionKeys from '@/utils/injection-keys';
 import {
+  BoxOfficePerformanceBookingQuery,
+  BoxOfficePerformanceBookingQueryVariables,
   BoxOfficePerformanceBookingsQuery,
+  BoxOfficePerformanceBookingDocument,
   useBoxOfficePerformanceBookingsQuery
 } from '~~/graphql/codegen/operations';
 const performance = inject(InjectionKeys.boxOffice.performance);
 
-if (!performance) throw createSafeError('Invalid performance');
+if (!performance)
+  throw createSafeError('There was an issue loading this performance');
 
 const autoCheckIn = ref(true);
 const searchText = ref<string>('');
 const bookingFilter = ref<string | null>();
 const offset = ref(0);
+const loadingBooking = ref(false);
 
 const { result: bookingsQueryResult, loading: loadingBookings } =
   useBoxOfficePerformanceBookingsQuery(() => ({
@@ -125,35 +119,75 @@ const { result: bookingsQueryResult, loading: loadingBookings } =
     discount: bookingFilter.value === 'COMPS' ? 1 : null
   }));
 
+type SimpleBookings = NonNullable<
+  NonNullable<
+    NonNullable<
+      BoxOfficePerformanceBookingsQuery['performance']
+    >['bookings']['edges'][number]
+  >['node']
+>[];
+
 const bookings = computed(() =>
   bookingsQueryResult.value
     ? (bookingsQueryResult.value.performance?.bookings.edges
         .map((edge) => edge?.node)
-        .filter((booking) => booking !== null) as NonNullable<
-        NonNullable<
-          NonNullable<
-            BoxOfficePerformanceBookingsQuery['performance']
-          >['bookings']['edges'][number]
-        >['node']
-      >[])
+        .filter((booking) => booking !== null) as SimpleBookings)
     : []
 );
 
 watch(loadingBookings, (newValue) => {
-  if (newValue == true) {
-    inspectedObjects.booking = undefined;
-    inspectedObjects.ticket = undefined;
-  }
+  if (newValue == true) closeBooking();
 });
 
-const inspectedObjects = reactive({
+type DeatiledBooking = NonNullable<
+  NonNullable<
+    NonNullable<
+      BoxOfficePerformanceBookingQuery['performance']
+    >['bookings']['edges'][number]
+  >['node']
+>;
+
+type Ticket = NonNullable<NonNullable<DeatiledBooking['tickets']>[number]>;
+
+const inspectedObjects = reactive<{
+  booking?: DeatiledBooking;
+  ticket?: Ticket;
+}>({
   booking: undefined,
   ticket: undefined
 });
 
-function onSelectTicket(selectedTicket: { id: string }) {
-  inspectedObjects.ticket = inspectedObjects.booking.tickets.find(
-    (ticket) => ticket.id == selectedTicket.id
-  );
+// When the user selects a ticket
+function selectTicket(selectedTicket: { id: string }) {
+  inspectedObjects.ticket =
+    inspectedObjects.booking!.tickets!.find(
+      (ticket) => ticket.id == selectedTicket.id
+    ) || undefined;
+}
+
+// When the user selects a booking
+async function selectBooking(booking: SimpleBookings[number]) {
+  if (!performance)
+    return errorHandler(
+      'No performance was available when running selectBooking'
+    );
+  loadingBooking.value = true;
+  const { data } = await useAsyncQuery<BoxOfficePerformanceBookingQuery>({
+    query: BoxOfficePerformanceBookingDocument,
+    variables: {
+      performanceId: performance.id,
+      bookingId: booking.id
+    } satisfies BoxOfficePerformanceBookingQueryVariables
+  });
+  loadingBooking.value = false;
+
+  inspectedObjects.booking =
+    data.value?.performance?.bookings.edges[0]?.node || undefined;
+}
+
+// Close any opened booking
+function closeBooking() {
+  inspectedObjects.booking = undefined;
+  inspectedObjects.ticket = undefined;
 }
 </script>

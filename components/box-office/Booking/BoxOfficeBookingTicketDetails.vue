@@ -32,28 +32,25 @@
 <script lang="ts" setup>
 import humanizeDuration from 'humanize-duration';
 import { DateTime } from 'luxon';
+import {
+  ConcessionTypeNode,
+  ExtendedUserNode,
+  SeatGroupNode,
+  TicketNode
+} from '~~/graphql/codegen/operations';
 
 const props = defineProps<{
-  ticket: {
-    id: string;
-    seatGroup: {
-      name: string;
-    };
-    concessionType: {
-      name: string;
-    };
-    checkedInAt?: string;
-    checkedInBy?: {
-      firstName: string;
-      lastName: string;
-    };
+  ticket: Pick<TicketNode, 'id' | 'checkedInAt'> & {
+    seatGroup: Pick<SeatGroupNode, 'name'>;
+    concessionType: Pick<ConcessionTypeNode, 'name'>;
+    checkedInBy?: Pick<ExtendedUserNode, 'firstName' | 'lastName'>;
   };
 }>();
 
 const now = useClock(5);
 
 const checkedIn = computed(
-  () => props.ticket.checkedInAt && props.ticket.checkedInBy
+  () => !!props.ticket.checkedInAt && !!props.ticket.checkedInBy
 );
 
 const items = computed<{ title: string; text: string }[]>(() => {
@@ -62,7 +59,7 @@ const items = computed<{ title: string; text: string }[]>(() => {
     { title: 'Type', text: 'General Admission' }
   ];
 
-  if (checkedIn) {
+  if (checkedIn.value) {
     const timeAgo = humanizeDuration(
       now.value.toMillis() -
         DateTime.fromISO(props.ticket.checkedInAt as string).toMillis(),
@@ -74,7 +71,9 @@ const items = computed<{ title: string; text: string }[]>(() => {
 
     items.push({
       title: 'Last Check In',
-      text: `${timeAgo} ago by ${props.ticket.checkedInBy.firstName} ${props.ticket.checkedInBy.lastName}`
+      text: `${timeAgo} ago by ${props.ticket.checkedInBy!.firstName} ${
+        props.ticket!.checkedInBy!.lastName
+      }`
     });
   }
   return items;

@@ -9,6 +9,10 @@ fragment BookingTicketDetails on BookingNode {
       id
       name
     }
-    checkedIn
+    checkedInAt
+    checkedInBy {
+      firstName
+      lastName
+    }
   }
 }

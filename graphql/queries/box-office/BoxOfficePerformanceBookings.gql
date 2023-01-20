@@ -1,4 +1,3 @@
-#import "../../fragments/booking/DetailedBookingDetails.gql"
 query boxOfficePerformanceBookings(
   $id: ID!
   $search: String
@@ -27,7 +26,15 @@ query boxOfficePerformanceBookings(
       }
       edges {
         node {
-          ...DetailedBookingDetails
+          id
+          user {
+            firstName
+            lastName
+          }
+          reference
+          tickets {
+            checkedInAt
+          }
         }
       }
     }
