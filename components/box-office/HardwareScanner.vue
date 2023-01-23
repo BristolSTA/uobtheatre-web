@@ -3,7 +3,7 @@
     <h2 class="font-bold">Scan a Ticket</h2>
     <text-input
       ref="input"
-      :value="value"
+      :model-value="modelValue"
       :placeholder="placeholder"
       :input-class="[
         focused
@@ -11,7 +11,7 @@
           : 'ring-sta-rouge bg-sta-rouge bg-opacity-40 placeholder-white',
         'py-3 text-center ring focus:outline-none'
       ]"
-      @input="$emit('input', $event)"
+      @update:model-value="$emit('update:modelValue', $event)"
       @change="handleScan"
       @blur="focused = false"
       @focus="focused = true"
@@ -32,12 +32,12 @@ import Ticket from '@/classes/Ticket';
 export default {
   components: { TextInput, InvalidCodeNotification },
   props: {
-    value: {
+    modelValue: {
       default: null,
       type: String
     }
   },
-  emits: ['input', 'invalidCode', 'scanned'],
+  emits: ['update:modelValue', 'invalidCode', 'scanned'],
   data() {
     return {
       placeholder: 'Scan a Ticket...',
@@ -53,7 +53,7 @@ export default {
         this.placeholder = 'Click here to scan';
       }
     },
-    value() {
+    modelValue() {
       this.invalidCode = false;
     },
     invalidCode(newVal) {
