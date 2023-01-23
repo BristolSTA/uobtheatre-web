@@ -53,36 +53,34 @@
         <div
           class="flex-grow bg-sta-gray-dark rounded-xl p-5 py-3 flex flex-col relative"
         >
-          <BoxOfficeBookingInspector
-            v-if="inspectedObjects.booking"
-            :booking="inspectedObjects.booking"
-            @select-ticket="selectTicket"
-            @close="closeBooking"
-          />
-          <div v-else class="overflow-y-auto flex flex-col h-full">
-            <div
-              v-if="loadingBookings || loadingBooking"
-              class="flex flex-grow items-center justify-center"
-            >
-              <UiLoadingIcon class="text-white text-5xl" />
+          <UiLoadingContainer
+            class="h-full"
+            :loading="loadingBookings || loadingBooking"
+            :hide-content-when-loading="true"
+          >
+            <div class="overflow-y-auto flex flex-col h-full">
+              <BoxOfficeBookingInspector
+                v-if="inspectedObjects.booking"
+                :booking="inspectedObjects.booking"
+                @select-ticket="selectTicket"
+                @check-in-tickets="
+                  inspectedObjects.booking
+                    ? checkInTickets(
+                        inspectedObjects.booking?.reference,
+                        $event.map((ticket) => ticket.id)
+                      )
+                    : null
+                "
+                @close="closeBooking"
+              />
+
+              <BoxOfficeBookingList
+                v-else
+                :bookings="bookings"
+                @select="selectBooking($event)"
+              />
             </div>
-            <div
-              v-else-if="!bookings || !bookings.length"
-              class="flex flex-grow items-center justify-center text-white font-bold text-xl"
-            >
-              No Matching Bookings Found
-            </div>
-            <div v-else class="flex flex-col gap-3">
-              <div
-                v-for="booking in bookings"
-                :key="booking.id"
-                class="w-full bg-sta-gray-light hover:bg-sta-orange cursor-pointer p-3"
-                @click="selectBooking(booking)"
-              >
-                <BoxOfficeBookingHeader :booking="booking" />
-              </div>
-            </div>
-          </div>
+          </UiLoadingContainer>
         </div>
       </div>
       <BoxOfficeDesktopCheckin />
@@ -97,8 +95,12 @@ import {
   BoxOfficePerformanceBookingQueryVariables,
   BoxOfficePerformanceBookingsQuery,
   BoxOfficePerformanceBookingDocument,
-  useBoxOfficePerformanceBookingsQuery
+  useBoxOfficePerformanceBookingsQuery,
+  useCheckInBookingMutation,
+  Scalars
 } from '~~/graphql/codegen/operations';
+
+// Inject performance, provided by base box office page
 const performance = inject(InjectionKeys.boxOffice.performance);
 
 if (!performance)
@@ -189,5 +191,34 @@ async function selectBooking(booking: SimpleBookings[number]) {
 function closeBooking() {
   inspectedObjects.booking = undefined;
   inspectedObjects.ticket = undefined;
+}
+
+// Check in tickets
+async function checkInTickets(
+  bookingReference: string,
+  ticketIds: Scalars['IdInputField'][]
+) {
+  if (!performance)
+    return errorHandler(
+      'No performance was available when running checkInTickets'
+    );
+
+  try {
+    await doMutation(
+      useCheckInBookingMutation({
+        variables: {
+          performanceId: performance?.id,
+          reference: bookingReference,
+          tickets: ticketIds.map((ticketId) => ({
+            ticketId
+          }))
+        }
+      }),
+      'checkInBooking'
+    );
+    // TODO: Success notification, update booking data
+  } catch (e) {
+    // TODO: Handle e
+  }
 }
 </script>

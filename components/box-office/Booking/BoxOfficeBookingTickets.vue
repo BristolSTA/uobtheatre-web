@@ -40,27 +40,18 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  ConcessionTypeNode,
-  SeatGroupNode,
-  TicketNode
-} from '~~/graphql/codegen/operations';
-
-type TicketType = Pick<TicketNode, 'id' | 'checkedInAt'> & {
-  concessionType: Pick<ConcessionTypeNode, 'name'>;
-  seatGroup: Pick<SeatGroupNode, 'name'>;
-};
+import type { IBookingTicketsProp } from '../BoxOfficeSharedTypes';
 
 const emit = defineEmits<{
-  (event: 'selectTicket', ticket: TicketType): void;
+  (event: 'selectTicket', ticket: IBookingTicketsProp): void;
 }>();
 
 defineProps<{
-  tickets: TicketType[];
+  tickets: IBookingTicketsProp[];
   selectedTicketId?: string;
 }>();
 
-function selectTicket(ticket: TicketType) {
+function selectTicket(ticket: IBookingTicketsProp) {
   emit('selectTicket', ticket);
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute -right-1 -top-1 z-10">
+  <div class="absolute -right-5 -top-3 z-10">
     <font-awesome-icon
       icon="times-circle"
       class="text-white text-xl hover:text-gray-400 cursor-pointer"
@@ -14,20 +14,38 @@
       class="w-full text-white"
       @select-ticket="emit('selectTicket', $event)"
     />
-    <h3 class="font-bold text-center">No tickets in booking</h3>
+    <h3 v-else class="font-bold text-center">No tickets in booking</h3>
   </div>
-  <BoxOfficeButton class="bg-sta-green hover:bg-sta-green-dark text-white"
-    >Check In Remaining 4 Tickets</BoxOfficeButton
+  <BoxOfficeButton
+    v-if="ticketsNotCheckedIn"
+    class="bg-sta-green hover:bg-sta-green-dark text-white"
+    @click="
+      ticketsNotCheckedIn ? emit('checkInTickets', ticketsNotCheckedIn) : null
+    "
+    >Check In Remaining
+    {{ ticketsNotCheckedIn.length }} Tickets</BoxOfficeButton
   >
 </template>
 
 <script lang="ts" setup>
-import type { IBookingHeader } from '@/components/box-office/Booking/BoxOfficeBookingHeader.vue';
+import type {
+  IBookingHeaderProp,
+  IBookingTicketsProp
+} from '~~/components/box-office/BoxOfficeSharedTypes';
+
 const props = defineProps<{
-  booking: IBookingHeader;
+  booking: IBookingHeaderProp & { tickets?: IBookingTicketsProp[] | null };
 }>();
+
 const emit = defineEmits<{
-  (event: 'selectTicket', ticket: any): void; //TODO: don't use any
+  (event: 'selectTicket', ticket: IBookingTicketsProp): void;
+  (event: 'checkInTickets', tickets: IBookingTicketsProp[]): void;
   (event: 'close'): void;
 }>();
+
+const ticketsNotCheckedIn = computed(() =>
+  props.booking.tickets?.filter(
+    (ticket: IBookingTicketsProp) => !ticket.checkedInAt
+  )
+);
 </script>

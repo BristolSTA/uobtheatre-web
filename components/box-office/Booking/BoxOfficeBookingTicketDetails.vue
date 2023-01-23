@@ -43,7 +43,7 @@ const props = defineProps<{
   ticket: Pick<TicketNode, 'id' | 'checkedInAt'> & {
     seatGroup: Pick<SeatGroupNode, 'name'>;
     concessionType: Pick<ConcessionTypeNode, 'name'>;
-    checkedInBy?: Pick<ExtendedUserNode, 'firstName' | 'lastName'>;
+    checkedInBy?: Pick<ExtendedUserNode, 'firstName' | 'lastName'> | null;
   };
 }>();
 

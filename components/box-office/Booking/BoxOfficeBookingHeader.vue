@@ -20,24 +20,13 @@
 <script lang="ts">
 import pluralize from 'pluralize';
 import { PropType } from 'vue';
-
-export type IBookingHeader = {
-  reference: string;
-  user?:
-    | {
-        firstName: string;
-        lastName: string;
-      }
-    | null
-    | undefined;
-  tickets: { checkedInAt?: any }[] | null;
-};
+import { IBookingHeaderProp } from '~~/components/box-office/BoxOfficeSharedTypes';
 
 export default defineComponent({
   props: {
     booking: {
       required: true,
-      type: Object as PropType<IBookingHeader>
+      type: Object as PropType<IBookingHeaderProp>
     },
     interactable: {
       type: Boolean,
