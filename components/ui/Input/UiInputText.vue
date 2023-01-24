@@ -24,7 +24,7 @@
 import lo from 'lodash';
 
 import ErrorHelper from '../ErrorHelper.vue';
-import Errors from '@/classes/Errors';
+import Errors from '~~/classes/Errors';
 
 export default {
   name: 'TextInput',

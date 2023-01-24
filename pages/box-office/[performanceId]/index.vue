@@ -1,53 +1,63 @@
 <template>
-  <div class="h-screen bg-sta-gray gap-5 font-body flex flex-col px-12 py-4">
-    <div class="flex-none flex justify-around text-white items-center">
-      <UiClock class="text-4xl" />
-      <div class="bg-sta-rouge-dark h-20 w-80"></div>
-      <NuxtLink class="underline">Exit Box Office</NuxtLink>
-    </div>
-    <div class="flex-none flex justify-between">
+  <div class="h-screen bg-sta-gray font-body flex flex-col px-12 py-4">
+    <BoxOfficeHeader />
+    <div class="flex-none flex justify-between mt-5">
       <NuxtLink
         :href="`/box-office/${performance?.id}/sell`"
-        class="bg-sta-green text-3xl text-white flex items-center justify-center p-3 px-8"
+        class="bg-sta-green text-3xl text-white p-3 px-8"
       >
-        <font-awesome-icon icon="cash-register" class="mr-4" />Sell</NuxtLink
-      >
-      <div class="flex items-center gap-4">
-        <UiInputToggle v-model="autoCheckIn" />
-        <div class="flex flex-col items-center font-bold">
-          <p class="text-white">Auto Check-In</p>
-          <p class="text-sta-gray-lighter">
-            {{ autoCheckIn ? 'Enabled' : 'Disabled' }}
-          </p>
+        <div><font-awesome-icon icon="cash-register" class="mr-2" /> Sell</div>
+        <p class="text-sm">100 available</p>
+      </NuxtLink>
+
+      <BoxOfficeCheckInStatus />
+      <div class="flex-none gap-4 flex">
+        <div class="flex items-center gap-4">
+          <UiInputToggle v-model="autoCheckIn" />
+          <div class="flex flex-col items-center font-bold">
+            <p class="text-white">Auto Check-In</p>
+            <p class="text-sta-gray-lighter">
+              {{ autoCheckIn ? 'Enabled' : 'Disabled' }}
+            </p>
+          </div>
         </div>
+        <NuxtLink
+          :href="`/box-office/${performance?.id}/sell`"
+          class="bg-sta-green text-xl text-white p-4 rounded flex items-center justify-center"
+        >
+          <font-awesome-icon icon="camera" />
+        </NuxtLink>
       </div>
     </div>
     <div class="flex flex-col gap-5 font-body overflow-y-hidden flex-grow">
-      <div class="flex items-end gap-5">
-        <UiInputText
-          v-model="searchText"
-          placeholder="Search for a name, email or booking reference"
-          class="flex-grow"
-        />
-        <UiFormLabel>
-          Filter
-          <template #control>
-            <UiInputSelect
-              v-model="bookingFilter"
-              :options="[
-                { value: null, displayText: 'All' },
-                { value: 'COMPS', displayText: 'Comps Only' },
-                { value: 'NOCHECKIN', displayText: 'Not Checked In' }
-              ]" /></template
-        ></UiFormLabel>
-      </div>
+      <BoxOfficeBookingFilterBar
+        v-model:filter-value="searchFilter"
+        v-model:text-search-value="searchText"
+      />
 
-      <div class="flex-grow flex overflow-hidden gap-5">
+      <UiLoadingContainer
+        :loading="loadingCheckin"
+        class="flex-grow flex overflow-hidden gap-5"
+      >
         <div class="w-1/3">
           <BoxOfficeBookingTicketDetails
             v-if="inspectedObjects.ticket"
             :ticket="inspectedObjects.ticket"
             class="h-full overflow-y-auto"
+            @check-in="
+              inspectedObjects.booking
+                ? checkInTickets(inspectedObjects.booking.reference, [
+                    $event.id
+                  ])
+                : null
+            "
+            @un-check-in="
+              inspectedObjects.booking
+                ? unCheckInTickets(inspectedObjects.booking.reference, [
+                    $event.id
+                  ])
+                : null
+            "
           />
         </div>
         <div
@@ -82,14 +92,15 @@
             </div>
           </UiLoadingContainer>
         </div>
-      </div>
-      <BoxOfficeDesktopCheckin />
+      </UiLoadingContainer>
+      <BoxOfficeDesktopCheckin :state="checkInState" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import InjectionKeys from '@/utils/injection-keys';
+import type { ICheckInIndicator } from '~~/components/box-office/BoxOfficeSharedTypes';
 import {
   BoxOfficePerformanceBookingQuery,
   BoxOfficePerformanceBookingQueryVariables,
@@ -97,7 +108,8 @@ import {
   BoxOfficePerformanceBookingDocument,
   useBoxOfficePerformanceBookingsQuery,
   useCheckInBookingMutation,
-  Scalars
+  Scalars,
+  useUnCheckInBookingMutation
 } from '~~/graphql/codegen/operations';
 
 // Inject performance, provided by base box office page
@@ -106,20 +118,33 @@ const performance = inject(InjectionKeys.boxOffice.performance);
 if (!performance)
   throw createSafeError('There was an issue loading this performance');
 
+const checkInState = reactive<ICheckInIndicator>({
+  success: null,
+  message: null
+});
+
 const autoCheckIn = ref(true);
-const searchText = ref<string>('');
-const bookingFilter = ref<string | null>();
-const offset = ref(0);
 const loadingBooking = ref(false);
+const loadingCheckin = ref(false);
+
+const searchText = ref<string>('');
+const searchFilter = ref<string | null>();
+const searchOffset = ref(0);
 
 const { result: bookingsQueryResult, loading: loadingBookings } =
-  useBoxOfficePerformanceBookingsQuery(() => ({
-    id: performance.id,
-    search: searchText.value,
-    offset: offset.value,
-    checkedIn: bookingFilter.value === 'NOCHECKIN' ? false : null,
-    discount: bookingFilter.value === 'COMPS' ? 1 : null
-  }));
+  useBoxOfficePerformanceBookingsQuery(
+    () => ({
+      id: performance.id,
+      search: searchText.value,
+      offset: searchOffset.value,
+      checkedIn: searchFilter.value === 'NOCHECKIN' ? false : null,
+      discount: searchFilter.value === 'COMPS' ? 1 : null
+    }),
+    {
+      debounce: 400,
+      fetchPolicy: 'cache-and-network'
+    }
+  );
 
 type SimpleBookings = NonNullable<
   NonNullable<
@@ -191,6 +216,97 @@ async function selectBooking(booking: SimpleBookings[number]) {
 function closeBooking() {
   inspectedObjects.booking = undefined;
   inspectedObjects.ticket = undefined;
+  setCheckInState();
+}
+
+function setCheckInState(success?: boolean, message?: string) {
+  checkInState.success = success ?? null;
+  checkInState.message = message ?? null;
+}
+
+async function mutateTicketCheckInState(
+  checkIn: boolean,
+  bookingReference: string,
+  ticketIds: Scalars['IdInputField'][]
+) {
+  loadingCheckin.value = true;
+  setCheckInState();
+  if (!performance)
+    return errorHandler(
+      'No performance was available when running mutateTicketCheckInState'
+    );
+
+  try {
+    let data = undefined;
+
+    // Deal with check in case
+    if (checkIn) {
+      data = await doMutation(
+        useCheckInBookingMutation({
+          variables: {
+            performanceId: performance?.id,
+            reference: bookingReference,
+            tickets: ticketIds.map((ticketId) => ({
+              ticketId
+            }))
+          }
+        }),
+        'checkInBooking'
+      );
+    } else {
+      // Dela with un check in case
+      data = await doMutation(
+        useUnCheckInBookingMutation({
+          variables: {
+            performanceId: performance?.id,
+            reference: bookingReference,
+            tickets: ticketIds.map((ticketId) => ({
+              ticketId
+            }))
+          }
+        }),
+        'uncheckInBooking'
+      );
+    }
+
+    // Replace local booking
+    if (inspectedObjects.booking && data.booking)
+      inspectedObjects.booking = data.booking;
+
+    // Replace local ticket
+    if (ticketIds.length == 1) selectTicket({ id: ticketIds[0] });
+
+    const tickets = ticketIds
+      .map((ticketId) =>
+        inspectedObjects.booking!.tickets!.find(
+          (ticket) => ticket.id == ticketId
+        )
+      )
+      .filter((ticket) => !!ticket);
+
+    setCheckInState(
+      checkIn ? true : undefined,
+      ticketIds.length > 1
+        ? checkIn
+          ? 'Tickets checked in'
+          : 'Tickets un-checked in'
+        : checkIn
+        ? `Checked In: 1x ${tickets[0]?.concessionType.name}`
+        : `Un-Checked In: 1x ${tickets[0]?.concessionType.name}`
+    );
+  } catch (e) {
+    const errors = getValidationErrors(e);
+    setCheckInState(
+      false,
+      (
+        errors?.allErrors
+          .map((error) => error.message)
+          .filter((message) => !!message) as string[]
+      ).join(', ')
+    );
+  } finally {
+    loadingCheckin.value = false;
+  }
 }
 
 // Check in tickets
@@ -198,27 +314,14 @@ async function checkInTickets(
   bookingReference: string,
   ticketIds: Scalars['IdInputField'][]
 ) {
-  if (!performance)
-    return errorHandler(
-      'No performance was available when running checkInTickets'
-    );
+  mutateTicketCheckInState(true, bookingReference, ticketIds);
+}
 
-  try {
-    await doMutation(
-      useCheckInBookingMutation({
-        variables: {
-          performanceId: performance?.id,
-          reference: bookingReference,
-          tickets: ticketIds.map((ticketId) => ({
-            ticketId
-          }))
-        }
-      }),
-      'checkInBooking'
-    );
-    // TODO: Success notification, update booking data
-  } catch (e) {
-    // TODO: Handle e
-  }
+// Un Check in tickets
+async function unCheckInTickets(
+  bookingReference: string,
+  ticketIds: Scalars['IdInputField'][]
+) {
+  mutateTicketCheckInState(false, bookingReference, ticketIds);
 }
 </script>

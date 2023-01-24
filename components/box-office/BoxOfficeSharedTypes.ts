@@ -22,3 +22,9 @@ export type IBookingTicketsProp = Pick<TicketNode, 'id' | 'checkedInAt'> & {
   concessionType: Pick<ConcessionTypeNode, 'name'>;
   seatGroup: Pick<SeatGroupNode, 'name'>;
 };
+
+// The "state" prop on CheckIn Indicator
+export type ICheckInIndicator = {
+  success: boolean | null;
+  message: string | null;
+};

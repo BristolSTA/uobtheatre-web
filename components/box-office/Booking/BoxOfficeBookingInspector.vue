@@ -17,7 +17,7 @@
     <h3 v-else class="font-bold text-center">No tickets in booking</h3>
   </div>
   <BoxOfficeButton
-    v-if="ticketsNotCheckedIn"
+    v-if="ticketsNotCheckedIn?.length"
     class="bg-sta-green hover:bg-sta-green-dark text-white"
     @click="
       ticketsNotCheckedIn ? emit('checkInTickets', ticketsNotCheckedIn) : null

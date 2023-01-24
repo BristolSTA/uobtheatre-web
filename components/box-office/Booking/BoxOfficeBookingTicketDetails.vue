@@ -24,6 +24,7 @@
           ? 'bg-sta-orange hover:bg-sta-orange-dark'
           : 'bg-sta-green hover:bg-sta-green-dark'
       ]"
+      @click="emit(checkedIn ? 'unCheckIn' : 'checkIn', ticket)"
       >{{ checkedIn ? 'Un Check-in' : 'Check In' }}</BoxOfficeButton
     >
   </div>
@@ -39,15 +40,22 @@ import {
   TicketNode
 } from '~~/graphql/codegen/operations';
 
+type Ticket = Pick<TicketNode, 'id' | 'checkedInAt'> & {
+  seatGroup: Pick<SeatGroupNode, 'name'>;
+  concessionType: Pick<ConcessionTypeNode, 'name'>;
+  checkedInBy?: Pick<ExtendedUserNode, 'firstName' | 'lastName'> | null;
+};
+
 const props = defineProps<{
-  ticket: Pick<TicketNode, 'id' | 'checkedInAt'> & {
-    seatGroup: Pick<SeatGroupNode, 'name'>;
-    concessionType: Pick<ConcessionTypeNode, 'name'>;
-    checkedInBy?: Pick<ExtendedUserNode, 'firstName' | 'lastName'> | null;
-  };
+  ticket: Ticket;
 }>();
 
 const now = useClock(5);
+
+const emit = defineEmits<{
+  (event: 'checkIn', ticket: Ticket): void;
+  (event: 'unCheckIn', ticket: Ticket): void;
+}>();
 
 const checkedIn = computed(
   () => !!props.ticket.checkedInAt && !!props.ticket.checkedInBy

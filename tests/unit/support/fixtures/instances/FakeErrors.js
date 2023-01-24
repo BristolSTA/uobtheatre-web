@@ -1,5 +1,5 @@
 import GenericError from '../support/GenericError';
-import Errors from '@/classes/Errors';
+import Errors from '~~/classes/Errors';
 
 /**
  * @param {Array} fields A list of fields to provide field_specific errors for
@@ -10,7 +10,7 @@ export function fakeValidationErrors(fields = ['email', 'password']) {
     GenericError('Some crazy person did something wrong'),
     ...fields.map((field) => {
       return GenericError(`An error on the ${field} field`, field);
-    }),
+    })
   ]);
   return errors;
 }

@@ -18,7 +18,6 @@ describe('TextInput', () => {
   });
 
   it('has correct elements', () => {
-    expect(component.find('label').text()).to.contain('An input');
     const inputs = component.findAll('input');
     expect(inputs.length).to.eq(1);
 

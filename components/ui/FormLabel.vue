@@ -15,7 +15,7 @@
 <script>
 import ErrorHelper from './ErrorHelper.vue';
 import RequiredStar from './Form/RequiredStar.vue';
-import Errors from '@/classes/Errors';
+import Errors from '~~/classes/Errors';
 export default {
   components: { ErrorHelper, RequiredStar },
   props: {
