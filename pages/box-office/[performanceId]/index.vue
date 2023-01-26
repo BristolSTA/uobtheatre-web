@@ -1,18 +1,20 @@
 <template>
-  <div class="h-screen bg-sta-gray font-body flex flex-col px-12 py-4">
+  <div class="h-screen bg-sta-gray font-body flex flex-col px-4 md:px-12 py-4">
     <BoxOfficeHeader />
-    <div class="flex-none flex justify-between mt-5">
+    <div
+      class="flex-none flex flex-col md:flex-row items-center justify-center md:justify-between mt-5"
+    >
       <NuxtLink
         :href="`/box-office/${performance?.id}/sell`"
-        class="bg-sta-green text-3xl text-white p-3 px-8"
+        class="bg-sta-green text-3xl text-white p-3 px-8 hidden md:block"
       >
         <div><font-awesome-icon icon="cash-register" class="mr-2" /> Sell</div>
         <p class="text-sm">100 available</p>
       </NuxtLink>
 
-      <BoxOfficeCheckInStatus />
-      <div class="flex-none gap-4 flex">
-        <div class="flex items-center gap-4">
+      <BoxOfficeCheckInStatus class="w-60" />
+      <div class="flex flex-none gap-4 w-full md:w-auto">
+        <div class="items-center gap-4 hidden md:flex">
           <UiInputToggle v-model="autoCheckIn" />
           <div class="flex flex-col items-center font-bold">
             <p class="text-white">Auto Check-In</p>
@@ -23,9 +25,10 @@
         </div>
         <NuxtLink
           :href="`/box-office/${performance?.id}/sell`"
-          class="bg-sta-green text-xl text-white p-4 rounded flex items-center justify-center"
+          class="bg-sta-green text-white p-2 md:p-4 rounded flex items-center justify-center mt-3 md:mt-0 w-full md:w-auto"
         >
-          <font-awesome-icon icon="camera" />
+          <font-awesome-icon icon="camera" class="text-xl" />
+          <span class="md:hidden ml-4">Scan Tickets</span>
         </NuxtLink>
       </div>
     </div>
@@ -39,7 +42,7 @@
         :loading="loadingCheckin"
         class="flex-grow flex overflow-hidden gap-5"
       >
-        <div class="w-1/3">
+        <div class="w-1/3 hidden md:block">
           <BoxOfficeBookingTicketDetails
             v-if="inspectedObjects.ticket"
             :ticket="inspectedObjects.ticket"
@@ -61,7 +64,7 @@
           />
         </div>
         <div
-          class="flex-grow bg-sta-gray-dark rounded-xl p-5 py-3 flex flex-col relative"
+          class="flex-grow bg-sta-gray-dark rounded-xl p-2 md:p-5 py-3 flex flex-col relative"
         >
           <UiLoadingContainer
             class="h-full"
@@ -93,7 +96,7 @@
           </UiLoadingContainer>
         </div>
       </UiLoadingContainer>
-      <BoxOfficeDesktopCheckin :state="checkInState" />
+      <BoxOfficeDesktopCheckin :state="checkInState" class="hidden md:block" />
     </div>
   </div>
 </template>

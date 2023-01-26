@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="flex justify-between text-white">
-      <span class="uppercase text-3xl truncate tracking-wider">
+      <span class="uppercase text-lg md:text-3xl truncate tracking-wider">
         {{ booking.user?.firstName || 'Unknown' }}
         {{ booking.user?.lastName || 'User' }}
       </span>
-      <span class="font-bold text-3xl">{{ booking.reference }}</span>
+      <span class="font-bold text-lg md:text-3xl">{{ booking.reference }}</span>
     </div>
     <div class="flex justify-between text-sta-gray-lighter font-bold">
       <span>

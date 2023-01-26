@@ -9,7 +9,7 @@
     <div
       v-for="booking in bookings"
       :key="booking.id"
-      class="w-full bg-sta-gray-light hover:bg-sta-orange cursor-pointer p-3"
+      class="w-full bg-sta-gray-light hover:bg-sta-orange cursor-pointer p-1 md:p-3"
       @click="emit('select', booking)"
     >
       <BoxOfficeBookingHeader :booking="booking" />

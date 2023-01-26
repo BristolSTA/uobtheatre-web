@@ -4,7 +4,7 @@
       Check In Progress
       <template #control>
         <div class="flex items-center gap-3">
-          20% <UiProgressBar class="w-40" /> 10/200
+          20% <UiProgressBar /> 10/200
         </div></template
       >
     </UiFormLabel>
