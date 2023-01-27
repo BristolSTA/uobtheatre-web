@@ -12,8 +12,8 @@
               type="button"
               class="btn btn-orange w-full"
               :disabled="!ready"
-              @click.stop="payCard"
-              @keypress.stop="payCard"
+              @click.stop="enabledMethods.card ? payCard() : null"
+              @keypress.stop="enabledMethods.card ? payCard() : null"
             >
               Pay £{{ price }}
             </button>
@@ -24,11 +24,11 @@
         <h2 class="mb-2 text-white text-h2">Pay with a digital wallet</h2>
         <div
           id="sq-gpay-button"
-          @click="square.methods.gpay ? payGPay() : null"
+          @click="enabledMethods.gpay ? payGPay() : null"
         />
         <div
           id="sq-applepay-button"
-          @click="square.methods.applepay ? payApplePay() : null"
+          @click="enabledMethods.applepay ? payApplePay() : null"
         />
       </div>
     </div>
@@ -71,7 +71,13 @@ export default {
       squareErrors: [],
       timer: null,
       ready: false,
-      paying: false
+      paying: false,
+
+      enabledMethods: {
+        card: true,
+        gpay: false,
+        applepay: false
+      }
     };
   },
   watch: {
@@ -142,6 +148,7 @@ export default {
       try {
         // Init GPay
         square.methods.gpay = await square.payments.googlePay(square.request);
+        this.enabledMethods.gpay = true;
         await square.methods.gpay.attach('#sq-gpay-button', {
           buttonColor: 'white'
         });
@@ -156,6 +163,7 @@ export default {
         square.methods.applepay = await square.payments.applePay(
           square.request
         );
+        this.enabledMethods.applepay = true;
       } catch (e) {
         if (e.name !== 'PaymentMethodUnsupportedError') {
           silentErrorHandler(e);
