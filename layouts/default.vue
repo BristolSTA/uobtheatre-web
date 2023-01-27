@@ -26,6 +26,14 @@ router.beforeEach(() => {
 });
 
 function onBoundaryErrorCatch(error: unknown) {
+  if (
+    error &&
+    typeof error == 'object' && // @ts-ignore
+    [404, 401].includes(error?.statusCode)
+  )
+    // Don't log 404s, 401s, etc
+    return;
+
   silentErrorHandler(error);
 }
 </script>

@@ -135,7 +135,7 @@ export default defineNuxtComponent({
   mounted() {
     this.breadcrumbs = [
       { text: 'Whats On', path: '/productions' },
-      { text: this.production.name }
+      { text: this.production?.name }
     ];
   }
 });

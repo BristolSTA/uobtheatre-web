@@ -1,4 +1,6 @@
+import { ApolloLink } from '@apollo/client/core';
 import * as Sentry from '@sentry/browser';
+import { SentryLink } from 'apollo-link-sentry';
 
 export default defineNuxtPlugin((nuxtApp) => {
   const runtimeConfig = useRuntimeConfig();
@@ -10,7 +12,9 @@ export default defineNuxtPlugin((nuxtApp) => {
     tracesSampleRate: 1
   });
 
-  nuxtApp.hook('apollo:error', (error) => {
-    Sentry.captureException(error);
-  });
+  const apollo = useApollo();
+  apollo.clients!.default.link = ApolloLink.from([
+    new SentryLink(),
+    apollo.clients!.default.link
+  ]);
 });

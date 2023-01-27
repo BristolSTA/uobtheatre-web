@@ -1,5 +1,5 @@
 <template>
-  <div class="sm:container">
+  <div v-if="performance" class="sm:container">
     <Head>
       <Title>{{ performance.production.name }} Box Office</Title>
     </Head>
@@ -35,8 +35,8 @@ export default defineNuxtComponent({
     this.breadcrumbs = [
       { text: 'Box Office', path: '/box-office' },
       {
-        text: `${this.performance.production.name} on ${dateFormat(
-          this.performance.start,
+        text: `${this.performance?.production?.name} on ${dateFormat(
+          this.performance?.start,
           'ccc dd MMM T'
         )}`
       }
