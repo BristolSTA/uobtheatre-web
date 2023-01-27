@@ -7,10 +7,10 @@ export const errorHandler = (e) => {
   Sentry.captureException(e);
 };
 
-export const silentErrorHandler = (e) => {
+export const silentErrorHandler = (e, context) => {
   // eslint-disable-next-line no-console
   console.error(e);
-  Sentry.captureException(e);
+  Sentry.captureException(e, context);
 };
 
 export const isInViewport = function (elem) {

@@ -371,7 +371,7 @@ export default {
             imageNode.file,
             key + `_${this.id ?? uuid()}.` + imageNode.file.name.split('.')[1]
           );
-          images[key] = image.global_id;
+          images[key] = image ? image.global_id : null;
         } else {
           images[key] = null;
         }
