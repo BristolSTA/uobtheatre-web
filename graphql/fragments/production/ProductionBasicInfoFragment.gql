@@ -3,7 +3,7 @@ fragment ProductionBasicInfo on ProductionNode {
   name
   subtitle
   description
-  supportEmail
+  contactEmail
   society {
     id
     name
@@ -17,9 +17,7 @@ fragment ProductionBasicInfo on ProductionNode {
     id
     url
   }
-  status {
-    value
-  }
+  status
   ageRating
   slug
   start
@@ -28,6 +26,7 @@ fragment ProductionBasicInfo on ProductionNode {
   contentWarnings {
     information
     warning {
+      id
       shortDescription
       longDescription
     }

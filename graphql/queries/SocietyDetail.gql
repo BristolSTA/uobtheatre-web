@@ -1,4 +1,4 @@
-query society($slug: String!) {
+query societyDetail($slug: String!) {
   society(slug: $slug) {
     name
     id

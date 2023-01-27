@@ -1,27 +1,17 @@
 module.exports = {
   root: true,
-  env: {
-    browser: true,
-    node: true,
-  },
-  ignorePatterns: ['tests/unit/test.spec.example.js'],
+  parser: 'vue-eslint-parser',
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: '@typescript-eslint/parser'
   },
+  plugins: ['unused-imports', 'prettier'],
   extends: [
-    '@nuxtjs',
-    'plugin:prettier/recommended',
+    'plugin:vue/vue3-recommended',
     'plugin:nuxt/recommended',
+    'prettier'
   ],
   rules: {
-    'import/no-named-as-default': 'off',
-  },
-  overrides: [
-    {
-      files: ['*.test.js', '*.spec.js'],
-      rules: {
-        'no-unused-expressions': 'off',
-      },
-    },
-  ],
-}
+    'unused-imports/no-unused-imports': 'error',
+    'vue/multi-word-component-names': 0
+  }
+};

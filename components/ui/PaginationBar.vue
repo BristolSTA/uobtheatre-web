@@ -8,7 +8,7 @@
       class="relative inline-flex items-center px-2 py-2 text-sm font-medium"
       :class="[
         [canGoBackward ? inactiveButtonStyle : disabledButtonStyle],
-        { 'cursor-pointer': canGoBackward },
+        { 'cursor-pointer': canGoBackward }
       ]"
       :disabled="!canGoBackward"
       @click="previousPage"
@@ -29,28 +29,28 @@
         />
       </svg>
     </button>
-    <template v-if="pageDisplay"
-      ><button
+    <template v-if="pageDisplay">
+      <button
         v-for="(page, index) in pageDisplay"
         :key="index"
         :disabled="isNaN(page)"
         class="relative inline-flex items-center px-4 py-2 text-sm font-medium"
         :class="[
           page == currentPage ? activeButtonStyle : inactiveButtonStyle,
-          isNaN(page) ? 'cursor-default' : 'cursor-pointer',
+          isNaN(page) ? 'cursor-default' : 'cursor-pointer'
         ]"
         @click="gotoPage(page)"
         @keypress="gotoPage(page)"
       >
         {{ page }}
-      </button></template
-    >
+      </button>
+    </template>
 
     <button
       class="relative inline-flex items-center px-2 py-2 text-sm font-medium"
       :class="[
         [canGoForward ? inactiveButtonStyle : disabledButtonStyle],
-        { 'cursor-pointer': canGoForward },
+        { 'cursor-pointer': canGoForward }
       ]"
       :disabled="!canGoForward"
       @click="nextPage"
@@ -79,58 +79,59 @@ export default {
   props: {
     disabled: {
       type: Boolean,
-      default: false,
+      default: false
     },
     pageInfo: {
       type: Object,
-      default: null,
+      default: null
     },
     hasNextPage: {
       default: undefined,
-      type: Boolean,
+      type: Boolean
     },
     hasPreviousPage: {
       default: undefined,
-      type: Boolean,
+      type: Boolean
     },
     numberOfPages: {
       default: null,
-      type: Number,
+      type: Number
     },
     currentPage: {
       default: null,
-      type: Number,
+      type: Number
     },
     currentOffset: {
       default: null,
-      type: Number,
+      type: Number
     },
     numberPagesToDisplay: {
       default: 5,
-      type: Number,
+      type: Number
     },
     activeButtonStyle: {
       default:
         'bg-sta-orange text-gray-700 border border-gray-300 focus:outline-none',
-      type: String,
+      type: String
     },
     inactiveButtonStyle: {
       default:
         'bg-white text-gray-700 border border-gray-300 hover:bg-gray-200 focus:outline-none',
-      type: String,
+      type: String
     },
     disabledButtonStyle: {
       default:
         'cursor-default bg-opacity-70 text-gray-300 border border-gray-300',
-      type: String,
-    },
+      type: String
+    }
   },
+  emits: ['previousPage', 'nextPage', 'gotoPage'],
   computed: {
     canGoBackward() {
       return (
         !this.disabled &&
         (this.hasPreviousPage || this.currentPage > 1 || this.currentOffset)
-      )
+      );
     },
     canGoForward() {
       return (
@@ -138,46 +139,61 @@ export default {
         (this.hasNextPage ||
           this.currentPage !== this.numberOfPages ||
           (this.pageInfo && this.pageInfo.hasNextPage))
-      )
+      );
     },
     pageDisplay() {
-      if (!this.numberOfPages) return null
-      let innerLength = this.numberPagesToDisplay - 2
-      const innerMax = this.numberOfPages - 1
-      const innerMin = 2
-      const current = this.currentPage
+      if (!this.numberOfPages) {
+        return null;
+      }
+      let innerLength = this.numberPagesToDisplay - 2;
+      const innerMax = this.numberOfPages - 1;
+      const innerMin = 2;
+      const current = this.currentPage;
 
-      if (innerLength >= innerMax) innerLength = innerMax - 1
-
-      let start = current - Math.floor(innerLength / 2)
-      start = Math.max(start, innerMin)
-      start = Math.min(start, innerMin + innerMax - innerLength - 1)
-      const inner = Array.from({ length: innerLength }, (el, i) => start + i)
-
-      if (inner.length) {
-        if (inner[0] !== 2) inner[0] = '...'
-        if (inner[inner.length - 1] !== this.numberOfPages - 1)
-          inner[inner.length - 1] = '...'
+      if (innerLength >= innerMax) {
+        innerLength = innerMax - 1;
       }
 
-      inner.unshift(1)
-      if (this.numberOfPages > 1) inner.push(this.numberOfPages)
-      return inner
-    },
+      let start = current - Math.floor(innerLength / 2);
+      start = Math.max(start, innerMin);
+      start = Math.min(start, innerMin + innerMax - innerLength - 1);
+      const inner = Array.from({ length: innerLength }, (_, i) => start + i);
+
+      if (inner.length) {
+        if (inner[0] !== 2) {
+          inner[0] = '...';
+        }
+        if (inner[inner.length - 1] !== this.numberOfPages - 1) {
+          inner[inner.length - 1] = '...';
+        }
+      }
+
+      inner.unshift(1);
+      if (this.numberOfPages > 1) {
+        inner.push(this.numberOfPages);
+      }
+      return inner;
+    }
   },
   methods: {
     previousPage() {
-      if (!this.canGoBackward && !this.disabled) return
-      this.$emit('previousPage')
+      if (!this.canGoBackward && !this.disabled) {
+        return;
+      }
+      this.$emit('previousPage');
     },
     nextPage() {
-      if (!this.canGoForward && !this.disabled) return
-      this.$emit('nextPage')
+      if (!this.canGoForward && !this.disabled) {
+        return;
+      }
+      this.$emit('nextPage');
     },
     gotoPage(page) {
-      if (isNaN(page) || this.currentPage === page) return
-      this.$emit('gotoPage', page)
-    },
-  },
-}
+      if (isNaN(page) || this.currentPage === page) {
+        return;
+      }
+      this.$emit('gotoPage', page);
+    }
+  }
+};
 </script>

@@ -1,14 +1,14 @@
-<template functional>
+<template>
   <div class="auth-background h-screen bg-sta-gray">
     <div class="flex items-center justify-center h-full">
-      <slot></slot>
+      <slot />
     </div>
   </div>
 </template>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .auth-background {
-  background-image: url('~@/assets/images/pros-arch-lit.jpg');
+  background-image: url('@/assets/images/pros-arch-lit.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: top center;

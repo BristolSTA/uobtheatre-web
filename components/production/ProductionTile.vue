@@ -1,29 +1,15 @@
 <template>
   <div
-    class="
-      production-tile
-      px-4
-      cursor-pointer
-      transition-all
-      hover:drop-shadow-dark
-      drop-shadow-none
-      filter
-      sm:px-0
-    "
+    class="production-tile px-4 cursor-pointer transition-all hover:drop-shadow-dark drop-shadow-none filter sm:px-0"
   >
     <NuxtLink :to="`/production/${production.slug}`">
-      <img
+      <production-featured-image
         class="max-w-full"
-        :src="production.featuredImage.url"
-        alt="show poster"
+        :image-object="production.featuredImage"
+        alt="Production feature image"
       />
       <h2
-        class="
-          production-title
-          text-sta-orange text-2xl
-          font-semibold
-          transition-colors
-        "
+        class="production-title text-sta-orange text-2xl font-semibold transition-colors"
       >
         {{ production.name }}
       </h2>
@@ -35,21 +21,23 @@
 </template>
 
 <script>
-import { displayStartEnd } from '@/utils'
+import ProductionFeaturedImage from './ProductionFeaturedImage.vue';
+import { displayStartEnd } from '@/utils/datetime';
 export default {
+  components: { ProductionFeaturedImage },
   props: {
     production: {
       required: true,
-      type: Object,
-    },
+      type: Object
+    }
   },
   methods: {
-    displayStartEnd,
-  },
-}
+    displayStartEnd
+  }
+};
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 .production-tile:hover .production-title {
   @apply text-sta-green;
 }

@@ -1,35 +1,30 @@
 <template>
   <div
-    class="
-      p-2
-      px-4
-      bg-sta-gray-dark
-      border-2 border-sta-gray-light
-      sm:p-4 sm:px-8
-      lg:px-12
-    "
+    class="p-2 px-4 bg-sta-gray-dark border-2 border-sta-gray-light sm:p-4 sm:px-8 lg:px-12"
   >
-    <alert :level="status.bannerLevel" :class="status.bannerClass">{{
-      status.bannerText
-    }}</alert>
+    <alert :level="status.bannerLevel" :class="status.bannerClass">
+      {{ status.bannerText }}
+    </alert>
     <div class="flex flex-wrap">
       <div class="flex justify-center w-full md:block md:w-auto">
         <div>
-          <p class="text-h2">{{ production.name }}</p>
+          <p class="text-h2">
+            {{ production.name }}
+          </p>
           <p class="-mt-2 mb-1 text-sta-gray-lighter font-semibold">
             by {{ production.society.name }}
           </p>
           <p class="text-sta-orange">
-            {{ performance.start | dateFormat('cccc d MMM y') }}
+            {{ dateFormat(performance.start, 'cccc d MMM y') }}
           </p>
         </div>
         <div v-if="detailed" class="hidden md:block">
           <div>
             <p class="text-sta-green">
-              Doors Open: {{ performance.doorsOpen | dateFormat('t') }}
+              Doors Open: {{ dateFormat(performance.doorsOpen, 't') }}
             </p>
             <p class="text-sta-rouge">
-              Performance Starts: {{ performance.start | dateFormat('t') }}
+              Performance Starts: {{ dateFormat(performance.start, 't') }}
             </p>
             <icon-list-item icon="clock">
               {{ humanDuration(performance.durationMins) }}
@@ -97,26 +92,11 @@
               <div class="flex items-center text-sta-rouge space-x-2">
                 <span class="relative flex w-3 h-3">
                   <span
-                    class="
-                      absolute
-                      inline-flex
-                      w-full
-                      h-full
-                      bg-sta-rouge
-                      rounded-full
-                      animate-ping
-                    "
-                  ></span>
+                    class="absolute inline-flex w-full h-full bg-sta-rouge rounded-full animate-ping"
+                  />
                   <span
-                    class="
-                      relative
-                      inline-flex
-                      w-3
-                      h-3
-                      bg-sta-rouge
-                      rounded-full
-                    "
-                  ></span>
+                    class="relative inline-flex w-3 h-3 bg-sta-rouge rounded-full"
+                  />
                 </span>
                 <p>Live</p>
               </div>
@@ -129,111 +109,118 @@
 </template>
 
 <script>
-import { DateTime } from 'luxon'
+import { DateTime } from 'luxon';
 
-import IconListItem from '@/components/ui/IconListItem.vue'
-import { humanDuration } from '@/utils'
-import Clock from '@/components/ui/Clock.vue'
-import Alert from '../ui/Alert.vue'
+import Alert from '../ui/Alert.vue';
+import IconListItem from '~~/components/ui/UiIconListItem.vue';
+import { humanDuration, dateFormat } from '@/utils/datetime';
+import Clock from '@/components/ui/Clock.vue';
+import { BoxOfficePerformanceTicketBreakdownDocument } from '~~/graphql/codegen/operations';
 
 export default {
-  name: 'Overview',
   components: {
     IconListItem,
     Clock,
-    Alert,
+    Alert
   },
   props: {
     production: {
       required: true,
-      type: Object,
+      type: Object
     },
     performance: {
       required: true,
-      type: Object,
+      type: Object
     },
     detailed: {
       default: true,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
   data() {
     return {
       ticketBreakdown: {},
-      currentTime: new Date(),
-    }
+      currentTime: new Date()
+    };
   },
   computed: {
     currentTimeLuxon() {
-      return DateTime.fromJSDate(this.currentTime)
+      return DateTime.fromJSDate(this.currentTime);
     },
     performanceDoorsDiffMinutes() {
       return DateTime.fromISO(this.performance.doorsOpen)
         .diff(this.currentTimeLuxon)
-        .as('minutes')
+        .as('minutes');
     },
     performanceStartDiffMinutes() {
       return DateTime.fromISO(this.performance.start)
         .diff(this.currentTimeLuxon)
-        .as('minutes')
+        .as('minutes');
     },
     performanceEndDiffMinutes() {
       return DateTime.fromISO(this.performance.end)
         .diff(this.currentTimeLuxon)
-        .as('minutes')
+        .as('minutes');
     },
     status() {
       // Performance end is in the past
-      if (this.performanceEndDiffMinutes <= 0)
+      if (this.performanceEndDiffMinutes <= 0) {
         return {
           clockClass: null,
           bannerLevel: 'danger',
           bannerText:
-            'This performance is in the past. Are you sure you are viewing the right performance?',
-        }
+            'This performance is in the past. Are you sure you are viewing the right performance?'
+        };
+      }
 
       // Performance has started
-      if (this.performanceStartDiffMinutes <= 0)
+      if (this.performanceStartDiffMinutes <= 0) {
         return {
           clockClass: 'text-sta-rouge',
           bannerLevel: 'danger',
-          bannerText: 'This performance should now have started',
-        }
+          bannerText: 'This performance should now have started'
+        };
+      }
 
       // Performance is starting within 5 minutes
-      if (this.performanceStartDiffMinutes <= 5)
+      if (this.performanceStartDiffMinutes <= 5) {
         return {
           clockClass: 'text-sta-orange animate-pulse',
           bannerLevel: 'warning',
           bannerText: `This performance is due to start in ${humanDuration(
             this.performanceStartDiffMinutes
-          )}`,
-        }
+          )}`
+        };
+      }
 
       // Performance doors are open
-      if (this.performanceDoorsDiffMinutes < 0)
+      if (this.performanceDoorsDiffMinutes < 0) {
         return {
           clockClass: 'text-sta-green',
           bannerLevel: 'success',
-          bannerText: `The doors should now be open (wait for clearance from your stage team)`,
-        }
+          bannerText:
+            'The doors should now be open (wait for clearance from your stage team)'
+        };
+      }
 
       // Performance doors are opening within 5 minutes
-      if (this.performanceDoorsDiffMinutes <= 5)
+      if (this.performanceDoorsDiffMinutes <= 5) {
         return {
           clockClass: 'animate-pulse',
           bannerLevel: 'warning',
           bannerText: `Doors should be opening in ${humanDuration(
             this.performanceDoorsDiffMinutes
-          )} (wait for clearance from your stage team)`,
-        }
+          )} (wait for clearance from your stage team)`
+        };
+      }
 
       // Performance is within 3 hours
       if (this.performanceDoorsDiffMinutes >= 3 * 60) {
         return {
           bannerLevel: 'danger',
-          bannerText: `This performance is over 3 hours away. Are you sure you have the right performance selected?`,
-        }
+          bannerText:
+            'This performance is over 3 hours away. Are you sure you have the right performance selected?'
+        };
       }
 
       // Within 3 hours of start
@@ -242,30 +229,31 @@ export default {
           this.performanceDoorsDiffMinutes
         )}`,
         bannerLevel: '',
-        bannerClass: 'border',
-      }
-    },
+        bannerClass: 'border'
+      };
+    }
   },
   mounted() {
-    this.$apollo.queries.ticketBreakdown.refetch()
+    this.$apollo.queries.ticketBreakdown.refetch();
   },
   methods: {
     humanDuration,
+    dateFormat
   },
   apollo: {
     ticketBreakdown: {
-      query: require('@/graphql/queries/box-office/BoxOfficePerformanceTicketBreakdown.gql'),
+      query: BoxOfficePerformanceTicketBreakdownDocument,
       variables() {
         return {
-          id: this.performance.id,
-        }
+          id: this.performance.id
+        };
       },
       skip() {
-        return !this.detailed
+        return !this.detailed;
       },
       pollInterval: 5000,
-      update: (data) => data.performance.ticketsBreakdown,
-    },
-  },
-}
+      update: (data) => data.performance.ticketsBreakdown
+    }
+  }
+};
 </script>

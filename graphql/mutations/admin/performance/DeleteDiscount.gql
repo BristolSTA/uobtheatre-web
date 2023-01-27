@@ -1,4 +1,4 @@
-mutation deleteDiscount($id: IdInputField!) {
+mutation deleteDiscountMutation($id: IdInputField!) {
   deleteDiscount(id: $id) {
     success
     errors {

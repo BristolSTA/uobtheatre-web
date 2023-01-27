@@ -8,14 +8,7 @@
         <div class="flex-none order-2 md:pl-2 pb-2 sm:b-0">
           <button
             v-if="!editing"
-            class="
-              p-2
-              bg-sta-green
-              hover:bg-sta-green-dark
-              rounded
-              focus:outline-none
-              transition-colors
-            "
+            class="p-2 bg-sta-green hover:bg-sta-green-dark rounded focus:outline-none transition-colors"
             @click="startEditing"
           >
             Alter Check Ins
@@ -23,27 +16,13 @@
           <loading-icon v-else-if="saving" />
           <template v-else>
             <button
-              class="
-                p-2
-                bg-sta-green
-                hover:bg-sta-green-dark
-                rounded
-                focus:outline-none
-                transition-colors
-              "
+              class="p-2 bg-sta-green hover:bg-sta-green-dark rounded focus:outline-none transition-colors"
               @click="updateBookingCheckins"
             >
               Save
             </button>
             <button
-              class="
-                p-2
-                bg-gray-400
-                roundedhover:bg-gray-500
-                rounded
-                focus:outline-none
-                transition-colors
-              "
+              class="p-2 bg-gray-400 roundedhover:bg-gray-500 rounded focus:outline-none transition-colors"
               @click="cancelEdits"
             >
               Cancel
@@ -59,8 +38,8 @@
               <th class="pr-3 sm:pr-4">Ticket ID</th>
               <th class="text-center">Checked In?</th>
             </tr>
-            <template v-for="(seatGroup, i) in seatGroupList">
-              <tr :key="i" class="sm:hidden">
+            <template v-for="(seatGroup, i) in seatGroupList" :key="i">
+              <tr class="sm:hidden">
                 <td colspan="3" class="py-2">
                   <u>
                     <div class="text-center">
@@ -74,20 +53,25 @@
                 v-for="(ticket, n) in sortedTicketArray[i]"
                 :key="i.toString() + n.toString()"
                 :class="{
-                  'bg-sta-orange-dark': highlightTicketId === ticket.id,
+                  'bg-sta-orange-dark': highlightTicketId === ticket.id
                 }"
               >
                 <td class="hidden sm:table-cell pr-4">
-                  <template v-if="n == 0">{{ ticket.seatGroup.name }}</template>
+                  <template v-if="n == 0">
+                    {{ ticket.seatGroup.name }}
+                  </template>
                   <template
                     v-else-if="
                       sortedTicketArray[i][n - 1].seatGroup.name !=
                       ticket.seatGroup.name
                     "
-                    >{{ ticket.seatGroup.name }}</template
                   >
+                    {{ ticket.seatGroup.name }}
+                  </template>
                 </td>
-                <td class="pr-3 sm:">{{ ticket.concessionType.name }}</td>
+                <td class="pr-3 sm:">
+                  {{ ticket.concessionType.name }}
+                </td>
                 <td class="pr-3 sm: font-mono md:text-base text-xs sm:text-sm">
                   {{ ticket.id }}
                 </td>
@@ -102,20 +86,12 @@
                       :class="[
                         (editing ? editingData[ticket.id] : ticket.checkedIn)
                           ? 'text-sta-green'
-                          : 'text-sta-rouge',
+                          : 'text-sta-rouge'
                       ]"
                     />
                     <button
                       v-if="editing && !saving"
-                      class="
-                        flex-none
-                        p-1
-                        bg-sta-orange
-                        hover:bg-sta-orange-dark
-                        rounded
-                        focus:outline-none
-                        transition-colors
-                      "
+                      class="flex-none p-1 bg-sta-orange hover:bg-sta-orange-dark rounded focus:outline-none transition-colors"
                       @click="editingData[ticket.id] = !editingData[ticket.id]"
                     >
                       {{ editingData[ticket.id] ? 'Un-Check In' : 'Check In' }}
@@ -132,72 +108,72 @@
 </template>
 
 <script>
-import lo from 'lodash'
-import Booking from '@/classes/Booking'
+import lo from 'lodash';
+import LoadingIcon from '../ui/UiLoadingIcon.vue';
+import Booking from '@/classes/Booking';
 
-import CheckInMutation from '@/graphql/mutations/box-office/CheckInTickets.gql'
-import UnCheckInMutation from '@/graphql/mutations/box-office/UnCheckInTickets.gql'
-import BoxOfficePerformanceBooking from '@/graphql/queries/box-office/BoxOfficePerformanceBooking.gql'
-import LoadingIcon from '../ui/LoadingIcon.vue'
+import CheckInMutation from '@/graphql/mutations/box-office/CheckInTickets.gql';
+import UnCheckInMutation from '@/graphql/mutations/box-office/UnCheckInTickets.gql';
+import BoxOfficePerformanceBooking from '@/graphql/queries/box-office/BoxOfficePerformanceBooking.gql';
 
 export default {
   components: { LoadingIcon },
   props: {
     booking: {
       required: true,
-      type: Booking,
+      type: Booking
     },
     index: {
       required: true,
-      type: Number,
+      type: Number
     },
     highlightTicketId: {
       default: null,
-      type: [String, Number],
-    },
+      type: [String, Number]
+    }
   },
   data() {
     return {
       editing: false,
       editingData: null,
-      saving: false,
-    }
+      saving: false
+    };
   },
   computed: {
     seatGroupList() {
       return lo
         .uniqBy(this.booking.tickets, (ticket) => ticket.seatGroup.id)
-        .map((ticket) => ticket.seatGroup)
+        .map((ticket) => ticket.seatGroup);
     },
     sortedTicketArray() {
       return Object.values(
         lo.groupBy(this.booking.tickets, (ticket) => ticket.seatGroup.id)
-      )
-    },
+      );
+    }
   },
   methods: {
     startEditing() {
       this.editingData = lo.fromPairs(
         this.booking.tickets.map((ticket) => [ticket.id, ticket.checkedIn])
-      )
-      this.editing = true
+      );
+      this.editing = true;
     },
     async updateBookingCheckins() {
-      this.saving = true
+      this.saving = true;
       const ticketsToCheckIn = this.booking.tickets
         .filter(
           (ticket) => !ticket.checkedIn && this.editingData[ticket.id] === true
         )
         .map((ticket) => {
-          return { ticketId: ticket.id }
-        })
+          return { ticketId: ticket.id };
+        });
       const ticketsToUnCheckIn = this.booking.tickets
         .filter((ticket) => this.editingData[ticket.id] === false)
         .map((ticket) => {
-          return { ticketId: ticket.id }
-        })
+          return { ticketId: ticket.id };
+        });
 
-      const queries = []
+      const queries = [];
 
       if (ticketsToCheckIn.length) {
         queries.push(
@@ -206,10 +182,10 @@ export default {
             variables: {
               reference: this.booking.reference,
               performanceId: this.booking.performance.id,
-              tickets: ticketsToCheckIn,
-            },
+              tickets: ticketsToCheckIn
+            }
           })
-        )
+        );
       }
 
       if (ticketsToUnCheckIn.length) {
@@ -219,29 +195,29 @@ export default {
             variables: {
               reference: this.booking.reference,
               performanceId: this.booking.performance.id,
-              tickets: ticketsToUnCheckIn,
-            },
+              tickets: ticketsToUnCheckIn
+            }
           })
-        )
+        );
       }
 
-      await Promise.all(queries)
+      await Promise.all(queries);
 
       const { data } = await this.$apollo.query({
         query: BoxOfficePerformanceBooking,
         variables: {
           performanceId: this.booking.performance.id,
-          bookingId: this.booking.id,
-        },
-      })
+          bookingId: this.booking.id
+        }
+      });
 
-      this.booking.updateFromAPIData(data.performance.bookings.edges[0].node)
+      this.booking.updateFromAPIData(data.performance.bookings.edges[0].node);
 
-      this.editing = this.saving = false
+      this.editing = this.saving = false;
     },
     cancelEdits() {
-      this.editing = false
-    },
-  },
-}
+      this.editing = false;
+    }
+  }
+};
 </script>

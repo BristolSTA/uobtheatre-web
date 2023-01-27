@@ -4,7 +4,7 @@
       <p
         class="font-semibold"
         :class="{
-          'hover:text-sta-orange transition-colors cursor-pointer': editable,
+          'hover:text-sta-orange transition-colors cursor-pointer': editable
         }"
         @click="editable ? (editing = !editing) : null"
       >
@@ -29,55 +29,58 @@
       <form-label :required="true">
         Name
         <template #control>
-          <t-input
-            :value="name"
+          <UiInputText
+            :model-value="name"
             placeholder="e.g. Student"
-            @input="$emit('update:name', $event)"
+            @update:model-value="$emit('update:name', $event)"
           />
         </template>
       </form-label>
       <form-label>
         Description
         <template #control>
-          <t-input
-            :value="description"
+          <UiInputText
+            :model-value="description"
             placeholder="e.g. Valid ID card required"
-            @input="$emit('update:description', $event)"
+            @update:model-value="
+              $emit('update:description', $event.target.value)
+            "
           />
         </template>
       </form-label>
-      <slot name="editor-footer"></slot>
+      <slot name="editor-footer" />
     </div>
   </div>
 </template>
 
 <script>
-import FormLabel from '@/components/ui/FormLabel.vue'
+import FormLabel from '@/components/ui/FormLabel.vue';
 
 export default {
   components: { FormLabel },
   props: {
     name: {
       required: true,
-      type: String,
+      type: String
     },
     description: {
       default: null,
-      type: String,
+      type: String
     },
     editable: {
       default: false,
-      type: Boolean,
+      type: Boolean
     },
     removable: {
       default: false,
-      type: Boolean,
-    },
-  },
-  data() {
-    return {
-      editing: false,
+      type: Boolean
     }
   },
-}
+  emits: ['remove', 'update:name', 'update:description'],
+  data() {
+    return {
+      editing: false
+    };
+  }
+};
 </script>

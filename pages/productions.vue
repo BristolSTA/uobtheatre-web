@@ -2,9 +2,9 @@
   <div class="container">
     <h1 class="py-4 text-h1">Whats On</h1>
     <infinite-scroll
-      :apollo-query="require('@/graphql/queries/UpcomingProductions.gql')"
+      :apollo-query="upcomingProductionsQuery"
       :apollo-variables="{ now: new Date() }"
-      @newData="handleNewData"
+      @new-data="handleNewData"
     >
       <div
         v-if="productions"
@@ -32,23 +32,28 @@
 </template>
 
 <script>
-import ProductionTile from '@/components/production/ProductionTile.vue'
-import InfiniteScroll from '@/components/ui/InfiniteScroll.vue'
-export default {
+import ProductionTile from '@/components/production/ProductionTile.vue';
+import InfiniteScroll from '@/components/ui/InfiniteScroll.vue';
+import { UpcomingProductionsDocument } from '~~/graphql/codegen/operations';
+
+export default defineNuxtComponent({
   components: { ProductionTile, InfiniteScroll },
   data() {
     return {
       productions: null,
-    }
+      upcomingProductionsQuery: UpcomingProductionsDocument
+    };
   },
   head: {
-    title: 'Upcoming Productions',
+    title: 'Upcoming Productions'
   },
   methods: {
     handleNewData(data) {
-      if (!this.productions) this.productions = []
-      this.productions.push(...data.edges.map((edge) => edge.node))
-    },
-  },
-}
+      if (!this.productions) {
+        this.productions = [];
+      }
+      this.productions.push(...data.edges.map((edge) => edge.node));
+    }
+  }
+});
 </script>

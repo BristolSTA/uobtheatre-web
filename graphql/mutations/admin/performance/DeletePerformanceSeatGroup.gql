@@ -1,4 +1,4 @@
-mutation deletePerformanceSeatGroup($id: IdInputField!) {
+mutation deletePerformanceSeatGroupMutation($id: IdInputField!) {
   deletePerformanceSeatGroup(id: $id) {
     success
     errors {

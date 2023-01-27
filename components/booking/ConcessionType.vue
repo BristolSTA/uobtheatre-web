@@ -29,7 +29,7 @@
             aria-label="number of tickets"
             class="w-12 h-8 text-center text-black bg-white rounded-sm"
             @keypress.stop="
-              if (!/^[0-9]$/i.test($event.key)) $event.preventDefault()
+              if (!/^[0-9]$/i.test($event.key)) $event.preventDefault();
             "
             @input="
               (event) => {
@@ -37,8 +37,8 @@
                   isNaN(event.target.value) ||
                   event.target.value - numTickets > maxAddAllowed
                 )
-                  return
-                $emit('set-tickets', event.target.value)
+                  return;
+                $emit('set-tickets', event.target.value);
               }
             "
           />
@@ -47,7 +47,7 @@
             :class="[
               maxAddAllowed < 1 || !canAddTickets
                 ? 'btn-gray-light'
-                : 'btn-orange',
+                : 'btn-orange'
             ]"
             :disabled="maxAddAllowed < 1 || !canAddTickets"
             @click="addTicket"
@@ -67,35 +67,36 @@ export default {
   props: {
     concessionTypeEdge: {
       required: true,
-      type: Object,
+      type: Object
     },
     currentTickets: {
       required: true,
-      type: Array,
+      type: Array
     },
     maxAddAllowed: {
       required: true,
-      type: Number,
+      type: Number
     },
     canAddTickets: {
       default: true,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
+  emits: ['set-tickets', 'add-ticket', 'remove-ticket'],
   computed: {
     numTickets() {
       return this.currentTickets.filter((ticket) => {
-        return ticket.matches(null, this.concessionTypeEdge.concessionType)
-      }).length
-    },
+        return ticket.matches(null, this.concessionTypeEdge.concessionType);
+      }).length;
+    }
   },
   methods: {
     addTicket() {
-      this.$emit('add-ticket')
+      this.$emit('add-ticket');
     },
     minusTicket() {
-      this.$emit('remove-ticket')
-    },
-  },
-}
+      this.$emit('remove-ticket');
+    }
+  }
+};
 </script>

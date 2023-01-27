@@ -3,7 +3,7 @@ query adminProductionEdit($slug: String!) {
     id
     name
     subtitle
-    supportEmail
+    contactEmail
     society {
       id
       name

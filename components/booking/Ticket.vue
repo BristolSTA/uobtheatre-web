@@ -4,15 +4,16 @@
       {{ performance.production.name }}
     </h1>
     <p>
-      {{ performance.start | dateFormat('EEEE d MMMM kkkk') }}
+      {{ dateFormat(performance.start, 'EEEE d MMMM kkkk') }}
     </p>
     <p>
       <span class="pr-2">
-        Doors: {{ performance.doorsOpen | dateFormat('t') }}
+        Doors:
+        {{ dateFormatLocale(performance.doorsOpen, DateTime.TIME_SIMPLE) }}
       </span>
       |
       <span class="pl-2">
-        Start: {{ performance.start | dateFormat('t') }}
+        Start: {{ dateFormatLocale(performance.start, DateTime.TIME_SIMPLE) }}
       </span>
     </p>
     <div
@@ -20,13 +21,15 @@
       class="flex justify-between w-full font-semibold"
     >
       <p class="pr-1">1x {{ ticket.concessionType.name }}</p>
-      <p class="pl-1 text-right">{{ ticket.seatGroup.name }}</p>
+      <p class="pl-1 text-right">
+        {{ ticket.seatGroup.name }}
+      </p>
     </div>
     <div class="flex flex-grow items-center justify-center py-2 w-full">
       <qrcode-vue
         :value="ticket.generateQRCodeString(reference)"
         level="L"
-        size="240"
+        :size="240"
       />
     </div>
     <p>
@@ -42,40 +45,50 @@
 </template>
 
 <script>
-import lo from 'lodash'
-import QrcodeVue from 'qrcode.vue'
+import lo from 'lodash';
+import QrcodeVue from 'qrcode.vue';
 
-import Ticket from '@/classes/Ticket'
+import Ticket from '@/classes/Ticket';
+import { dateFormat } from '@/utils/datetime';
+import { DateTime } from 'luxon';
 
 export default {
   name: 'Ticket',
   components: {
-    QrcodeVue,
+    QrcodeVue
   },
   props: {
     performance: {
       required: true,
-      type: Object,
+      type: Object
     },
     reference: {
       required: true,
-      type: String,
+      type: String
     },
     ticket: {
       required: true,
-      type: Ticket,
+      type: Ticket
     },
     user: {
       default: null,
-      type: Object,
-    },
+      type: Object
+    }
+  },
+  data() {
+    return {
+      DateTime
+    };
   },
   computed: {
     fullName() {
       return this.user
         ? lo.join([this.user.firstName, this.user.lastName], ' ')
-        : null
-    },
+        : null;
+    }
   },
-}
+  methods: {
+    dateFormat
+  }
+};
 </script>

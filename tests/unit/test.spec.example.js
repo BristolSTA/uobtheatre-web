@@ -1,8 +1,9 @@
 // Copy and rename this file to <testname>.spec.js
-import { expect } from 'chai'
+import { expect, vi } from 'vitest';
+import { mount} from '#testSupport/helpers'
 
 describe('My Component', () => {
-  beforeEach(() => {})
+  beforeEach(() => {});
 
-  it('can do something', () => {})
-})
+  it('can do something', () => {});
+});

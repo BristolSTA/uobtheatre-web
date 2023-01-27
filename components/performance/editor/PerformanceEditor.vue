@@ -1,21 +1,21 @@
+<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div class="space-y-2">
-    <card title="Venue">
-      <t-select
+    <UiCard title="Venue">
+      <UiInputSelect
         placeholder="Select a venue"
         class="mb-4"
-        :value="venue ? venue.id : null"
+        :model-value="performance.venue?.id || ''"
         :disabled="!!performanceSeatGroups.length"
         :options="
           availableVenues.map((venue) => ({
             value: venue.id,
-            text: venue.name,
+            displayText: venue.name
           }))
         "
-        @input="
-          $emit(
-            'update:venue',
-            availableVenues.find((venue) => venue.id === $event)
+        @update:model-value="
+          performance.venue = availableVenues.find(
+            (venue) => venue.id === $event
           )
         "
       />
@@ -24,8 +24,8 @@
         assigned</span
       >
       <error-helper :errors="errors" field-name="venue" />
-    </card>
-    <card title="Timings">
+    </UiCard>
+    <UiCard title="Timings">
       <div class="space-y-4">
         <p>
           <strong>Note:</strong> All times should be in the time local to the
@@ -34,55 +34,42 @@
         <form-label name="doorsOpen" :errors="errors" :required="true">
           Doors Open
           <template #control>
-            <t-datepicker
-              :value="doorsOpen"
-              user-format="Y-m-d H:i"
-              date-format="Z"
-              :timepicker="true"
-              class="text-black"
-              initial-time="00:00:00"
-              @change="$emit('update:doorsOpen', $event)"
+            <VueDatepicker
+              v-model="performance.doorsOpen"
+              :start-time="{ hours: 0, minutes: 0, seconds: 0 }"
+              format="dd/MM/yyyy HH:mm"
             />
           </template>
         </form-label>
         <form-label name="start" :errors="errors" :required="true">
           Performance Starts
           <template #control>
-            <t-datepicker
-              :value="start"
-              user-format="Y-m-d H:i"
-              date-format="Z"
-              :timepicker="true"
-              class="text-black"
-              initial-time="00:00:00"
-              @change="$emit('update:start', $event)"
+            <VueDatepicker
+              v-model="performance.start"
+              :start-time="{ hours: 0, minutes: 0, seconds: 0 }"
+              format="dd/MM/yyyy HH:mm"
             />
           </template>
         </form-label>
         <form-label name="end" :errors="errors" :required="true">
           Performance Ends
           <template #control>
-            <t-datepicker
-              :value="end"
-              user-format="Y-m-d H:i"
-              date-format="Z"
-              :timepicker="true"
-              class="text-black"
-              initial-time="00:00:00"
-              @change="$emit('update:end', $event)"
+            <VueDatepicker
+              v-model="performance.end"
+              :start-time="{ hours: 0, minutes: 0, seconds: 0 }"
+              format="dd/MM/yyyy HH:mm"
             />
           </template>
         </form-label>
         <form-label name="intervalDurationMins" :errors="errors">
           Interval Length
           <template #control>
-            <t-input
-              :value="intervalDurationMins"
+            <UiInputText
+              v-model="performance.intervalDurationMins"
               type="number"
               min="1"
-              @input="$emit('update:intervalDurationMins', $event)"
               @keypress.stop="
-                if (!/^[0-9]$/i.test($event.key)) $event.preventDefault()
+                if (!/^[0-9]$/i.test($event.key)) $event.preventDefault();
               "
             />
           </template>
@@ -92,39 +79,41 @@
           </template>
         </form-label>
       </div>
-    </card>
+    </UiCard>
 
-    <card title="Ticket Options">
+    <UiCard title="Ticket Options">
       <template
         v-if="similarPerformances.length && showTicketsEditor"
         #messageBox
       >
-        <sta-button
+        <UiStaButton
           class="bg-sta-orange hover:bg-sta-orange-dark transition-colors"
           @click="loadTicketOptions"
         >
           Load From Exisiting Performance
-        </sta-button>
+        </UiStaButton>
       </template>
       <template v-if="!showTicketsEditor">
         <p class="text-center">
           Would you like to load ticket options from an exisiting performance?
         </p>
         <div class="flex justify-center gap-4 max-w-xl mx-auto mt-2">
-          <sta-button
+          <UiStaButton
             class="bg-sta-orange hover:bg-sta-orange-dark transition-colors"
             @click="loadTicketOptions"
-            >Load from exisiting</sta-button
           >
-          <sta-button
+            Load from exisiting
+          </UiStaButton>
+          <UiStaButton
             class="bg-sta-gray hover:bg-sta-gray-dark transition-colors"
             @click="ignoredExisitingPerformances = true"
-            >Start from scratch</sta-button
           >
+            Start from scratch
+          </UiStaButton>
         </div>
       </template>
-      <template v-else
-        ><div class="grid gap-4 grid-cols-1 md:grid-cols-2">
+      <template v-else>
+        <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
           <div class="px-2 border border-sta-gray rounded-lg">
             <div class="flex items-center justify-between pt-3">
               <h4 class="text-h4">Seat Groups</h4>
@@ -144,19 +133,21 @@
                 :removable="true"
                 @remove="performanceSeatGroups.splice(index, 1)"
               />
-              <alert v-if="!venue" class="text-sm" level="warning">
+              <alert v-if="!performance.venue" class="text-sm" level="warning">
                 You must select a venue before adding seat groups
               </alert>
               <alert
                 v-if="
-                  venue && selectedSeatGroupCapacities > venue.internalCapacity
+                  performance.venue &&
+                  selectedSeatGroupCapacities >
+                    performance.venue.internalCapacity
                 "
                 class="text-sm"
                 level="warning"
               >
                 <strong>NB:</strong> Venue capacity will limit this
                 performance's capacity automatically to
-                {{ venue.internalCapacity }}
+                {{ performance.venue.internalCapacity }}
               </alert>
             </div>
           </div>
@@ -173,7 +164,10 @@
               <concession-type
                 v-for="discount in singleDiscounts"
                 :key="discount.id"
-                v-bind.sync="discount.requirements[0].concessionType"
+                v-model:name="discount.requirements[0].concessionType.name"
+                v-model:description="
+                  discount.requirements[0].concessionType.description
+                "
                 :removable="true"
                 :editable="true"
                 @remove="deleteConcession(discount)"
@@ -182,8 +176,8 @@
                   v-if="discount.performances.edges.length > 1"
                   #editor-footer
                 >
-                  <alert
-                    >Synced with
+                  <alert>
+                    Synced with
                     {{ discount.performances.edges.length - 1 }} other
                     performances.
                   </alert>
@@ -220,16 +214,13 @@
           />
         </div>
       </template>
-    </card>
-    <card title="Other Details">
+    </UiCard>
+    <UiCard title="Other Details">
       <div class="space-y-4">
         <form-label name="disabled" :errors="errors">
           Disabled
           <template #control>
-            <t-toggle
-              :checked="disabled"
-              @change="$emit('update:disabled', $event)"
-            />
+            <UiInputToggle v-model="performance.disabled" />
           </template>
           <template #helper>
             Disabled performances will not show, and will not be available for
@@ -239,13 +230,12 @@
         <form-label name="capacity" :errors="errors">
           Performance Capacity
           <template #control>
-            <t-input
-              :value="capacity"
+            <UiInputText
+              v-model="performance.capacity"
               type="number"
               min="1"
-              @input="$emit('update:capacity', $event)"
               @keypress.stop="
-                if (!/^[0-9]$/i.test($event.key)) $event.preventDefault()
+                if (!/^[0-9]$/i.test($event.key)) $event.preventDefault();
               "
             />
           </template>
@@ -259,99 +249,66 @@
         <form-label name="description" :errors="errors">
           Description
           <template #control>
-            <t-textarea
-              :value="description"
-              @input="$emit('update:description', $event)"
-            />
+            <UiInputTextArea v-model="performance.description" />
           </template>
         </form-label>
       </div>
-    </card>
+    </UiCard>
   </div>
 </template>
 
 <script>
-import ErrorHelper from '@/components/ui/ErrorHelper.vue'
-import Errors from '@/classes/Errors'
-import { getValidationErrors, performMutation, swal } from '@/utils'
-import StaButton from '@/components/ui/StaButton.vue'
-import Alert from '@/components/ui/Alert.vue'
-import { singleDiscounts as singleDiscountsFn } from '@/utils/performance'
-import Card from '../../ui/Card.vue'
-import FormLabel from '../../ui/FormLabel.vue'
-import SeatGroup from './SeatGroup.vue'
-import ConcessionType from './ConcessionType.vue'
-import PriceMatrix from './PriceMatrix.vue'
+import FormLabel from '../../ui/FormLabel.vue';
+import SeatGroup from './SeatGroup.vue';
+import ConcessionType from './ConcessionType.vue';
+import PriceMatrix from './PriceMatrix.vue';
+import ErrorHelper from '@/components/ui/ErrorHelper.vue';
+import Errors from '@/classes/Errors';
+import { getValidationErrors, performMutation } from '@/utils/api';
+import { swal } from '@/utils/alerts';
+import { dateFormat } from '@/utils/datetime';
+import Alert from '@/components/ui/Alert.vue';
+import { getSingleDiscounts } from '@/utils/performance';
+import VueDatepicker from '@vuepic/vue-datepicker';
+
+import {
+  AdminPerformanceDetailDocument,
+  AdminPerformancesIndexDocument,
+  AdminVenueDetailedDocument,
+  ConcessionTypeMutationDocument,
+  DeleteDiscountMutationDocument,
+  DeletePerformanceSeatGroupMutationDocument,
+  DiscountMutationDocument,
+  DiscountRequirementMutationDocument,
+  PerformanceSeatGroupDocument,
+  VenuesDocument
+} from '@/graphql/codegen/operations';
 
 export default {
   components: {
     FormLabel,
-    Card,
+    VueDatepicker,
     SeatGroup,
     ConcessionType,
     ErrorHelper,
-    StaButton,
     Alert,
-    PriceMatrix,
+    PriceMatrix
   },
   props: {
     performance: {
       default: null,
-      type: Object,
-    },
-    id: {
-      type: String,
-      default: null,
-    },
-    capacity: {
-      type: [Number, String],
-      default: null,
-    },
-    doorsOpen: {
-      type: String,
-      default: null,
-    },
-    start: {
-      type: String,
-      default: null,
-    },
-    production: {
-      type: Object,
-      default: null,
-    },
-    end: {
-      type: String,
-      default: null,
-    },
-    venue: {
-      type: Object,
-      default: null,
+      type: Object
     },
     errors: {
       type: Errors,
-      default: null,
+      default: null
     },
-    discounts: {
+    production: {
       type: Object,
-      default: () => {},
-    },
-    ticketOptions: {
-      type: Array,
-      default: () => [],
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    description: {
-      type: String,
-      default: null,
-    },
-    intervalDurationMins: {
-      type: [Number],
-      default: null,
-    },
+      required: true
+    }
   },
+  emits: ['update:errors'],
   data() {
     return {
       ignoredExisitingPerformances: false,
@@ -361,37 +318,37 @@ export default {
 
       performanceSeatGroups: [],
 
-      deletedDiscounts: [],
-    }
+      deletedDiscounts: []
+    };
   },
   apollo: {
     availableVenues: {
-      query: require('@/graphql/queries/Venues.gql'),
-      update: (data) => data.venues.edges.map((edge) => edge.node),
+      query: VenuesDocument,
+      update: (data) => data.venues.edges.map((edge) => edge.node)
     },
     availableSeatGroups: {
-      query: require('@/graphql/queries/admin/venue/AdminVenueDetailed.gql'),
+      query: AdminVenueDetailedDocument,
       update: (data) => data.venue.seatGroups.edges.map((edge) => edge.node),
       variables() {
         return {
-          slug: this.venue.slug,
-        }
+          slug: this.performance.venue.slug
+        };
       },
       skip() {
-        return !this.venue
-      },
+        return !this.performance.venue;
+      }
     },
     otherPerformances: {
-      query: require('@/graphql/queries/admin/productions/AdminPerformancesIndex.gql'),
+      query: AdminPerformancesIndexDocument,
       update: (data) =>
         data.production.performances.edges.map((edge) => edge.node),
       variables() {
         return {
-          productionId: this.production.id,
-        }
+          productionId: this.production.id
+        };
       },
-      fetchPolicy: 'cache-and-network',
-    },
+      fetchPolicy: 'cache-and-network'
+    }
   },
   computed: {
     remainingSeatGroups() {
@@ -400,27 +357,27 @@ export default {
           !this.currentSeatGroups.find(
             (currentSeatGroup) => currentSeatGroup.id === seatGroup.id
           )
-      )
+      );
     },
     similarPerformances() {
       return this.otherPerformances.filter(
         (performance) =>
           performance.venue.id === this.venue?.id && performance.id !== this.id
-      )
+      );
     },
     currentSeatGroups() {
       return this.performanceSeatGroups.map(
         (ticketOption) => ticketOption.seatGroup
-      )
+      );
     },
     singleDiscounts() {
-      return singleDiscountsFn(this.discounts?.edges || [])
+      return getSingleDiscounts(this.performance.discounts?.edges || []);
     },
     selectedSeatGroupCapacities() {
       return this.performanceSeatGroups.reduce(
         (sum, option) => sum + option.capacity,
         0
-      )
+      );
     },
     showTicketsEditor() {
       return (
@@ -428,15 +385,15 @@ export default {
         this.singleDiscounts.length ||
         this.ignoredExisitingPerformances ||
         !this.similarPerformances.length
-      )
-    },
+      );
+    }
   },
   watch: {
-    ticketOptions: {
+    'performance.ticketOptions': {
       handler(newValue) {
-        this.performanceSeatGroups = [...newValue]
+        if (newValue !== undefined) this.performanceSeatGroups = [...newValue];
       },
-      immediate: true,
+      immediate: true
     },
     similarPerformances(newVal) {
       // If this is a create operation, and there are similar performances
@@ -444,33 +401,37 @@ export default {
         // If no interval has been set yet, but similar performances has an interval, pre-fill with those interval lengths
         const intervalLength = newVal.find(
           (performance) => performance.intervalDurationMins
-        )?.intervalDurationMins
-        if (this.intervalDurationMins === null && intervalLength) {
-          this.$emit('update:intervalDurationMins', intervalLength)
+        )?.intervalDurationMins;
+        if (this.performance.intervalDurationMins === null && intervalLength) {
+          // eslint-disable-next-line vue/no-mutating-props
+          this.performance.intervalDurationMins = intervalLength;
         }
       }
-    },
+    }
   },
   methods: {
     getInputData() {
       const returnObject = {
-        id: this.id,
-        doorsOpen: this.doorsOpen,
+        id: this.performance.id,
+        doorsOpen: this.performance.doorsOpen,
         intervalDurationMins:
-          this.intervalDurationMins === '' ? null : this.intervalDurationMins,
-        start: this.start,
-        end: this.end,
-        venue: this.venue?.id,
-        disabled: this.disabled,
-        description: this.description,
-        capacity: this.capacity === '' ? null : this.capacity,
-      }
+          this.performance.intervalDurationMins === ''
+            ? null
+            : this.performance.intervalDurationMins,
+        start: this.performance.start,
+        end: this.performance.end,
+        venue: this.performance.venue?.id,
+        disabled: !!this.performance.disabled,
+        description: this.performance.description,
+        capacity:
+          this.performance.capacity === '' ? null : this.performance.capacity
+      };
 
       if (!returnObject.id) {
-        delete returnObject.id
+        delete returnObject.id;
       }
 
-      return returnObject
+      return returnObject;
     },
     async loadTicketOptions() {
       const { value } = await swal.fire({
@@ -479,69 +440,70 @@ export default {
           this.similarPerformances.map((performance) => [
             performance.id,
             'Performance at ' +
-              this.$options.filters.dateFormat(
-                performance.start,
-                'EEEE dd MMMM y HH:mm ZZZZ'
-              ),
+              dateFormat(performance.start, 'EEEE dd MMMM y HH:mm ZZZZ')
           ])
         ),
         showCancelButton: true,
-        confirmButtonText: 'Load',
-      })
-      if (!value) return
+        confirmButtonText: 'Load'
+      });
+      if (!value) {
+        return;
+      }
 
       // Load the details
       const { data } = await this.$apollo.query({
-        query: require('@/graphql/queries/admin/productions/AdminPerformanceDetail.gql'),
+        query: AdminPerformanceDetailDocument,
         variables: {
           productionSlug: this.production.slug,
-          performanceId: value,
+          performanceId: value
         },
-        fetchPolicy: 'no-cache',
-      })
+        fetchPolicy: 'no-cache'
+      });
 
       // Delete exisiting performance seat groups
-      const performance = data.production.performances.edges[0].node
-      this.performanceSeatGroups = []
+      const performance = data.production.performances.edges[0].node;
+      this.performanceSeatGroups = [];
 
       // Delete exisiting discounts / concessions
       for (const discount of this.singleDiscounts) {
-        await this.deleteConcession(discount)
+        await this.deleteConcession(discount);
       }
 
-      // For the chosen performancem add seat groups ...
+      // For the chosen performance add seat groups ...
       performance.ticketOptions.forEach((performanceSeatGroup) => {
         this.addSeatGroup(
           performanceSeatGroup.seatGroup,
           performanceSeatGroup.price
-        )
-      })
+        );
+      });
 
       // And concession types...
       for (const edge of performance.discounts.edges) {
         if (
           edge.node.requirements.length > 1 ||
           edge.node.requirements[0].number !== 1
-        )
-          continue
-        const requirement = edge.node.requirements[0]
+        ) {
+          continue;
+        }
+        const requirement = edge.node.requirements[0];
         await this.addNewConcession(
           requirement.concessionType.name,
           requirement.concessionType.description,
           edge.node.percentage,
           requirement.concessionType.id
-        )
+        );
       }
     },
     async saveRelated() {
-      const mutations = []
+      const mutations = [];
       // Process seat group changes
-      const currentSeatGroupIds = this.ticketOptions.map(
-        (ticketOption) => ticketOption.id
-      )
+      const currentSeatGroupIds = this.performance.ticketOptions
+        ? this.performance.ticketOptions.map((ticketOption) => ticketOption.id)
+        : [];
+
       const editedSeatGroupIds = this.performanceSeatGroups.map(
         (performanceSeatGroup) => performanceSeatGroup.id
-      )
+      );
 
       // Delete deleted seat groups
       currentSeatGroupIds
@@ -551,37 +513,39 @@ export default {
             performMutation(
               this.$apollo,
               {
-                mutation: require('@/graphql/mutations/admin/performance/DeletePerformanceSeatGroup.gql'),
+                mutation: DeletePerformanceSeatGroupMutationDocument,
                 variables: {
-                  id: currentId,
-                },
+                  id: currentId
+                }
               },
               'deletePerformanceSeatGroup'
             )
-          )
-        })
+          );
+        });
 
       // Update or add edited ones
       this.performanceSeatGroups.forEach((performanceSeatGroup) => {
         const input = {
           seatGroup: performanceSeatGroup.seatGroup.id,
           performance: this.performance.id,
-          price: performanceSeatGroup.price,
+          price: performanceSeatGroup.price
+        };
+        if (performanceSeatGroup.id) {
+          input.id = performanceSeatGroup.id;
         }
-        if (performanceSeatGroup.id) input.id = performanceSeatGroup.id
         mutations.push(
           performMutation(
             this.$apollo,
             {
-              mutation: require('@/graphql/mutations/admin/performance/PerformanceSeatGroupMutation.gql'),
+              mutation: PerformanceSeatGroupDocument,
               variables: {
-                input,
-              },
+                input
+              }
             },
             'performanceSeatGroup'
           )
-        )
-      })
+        );
+      });
 
       // Delete old discounts
       this.deletedDiscounts
@@ -593,19 +557,19 @@ export default {
               performMutation(
                 this.$apollo,
                 {
-                  mutation: require('@/graphql/mutations/admin/performance/DiscountMutation.gql'),
+                  mutation: DiscountMutationDocument,
                   variables: {
                     input: {
                       id: discount.id,
                       performances: discount.performances.edges
                         .map((edge) => edge.node.id)
-                        .filter((id) => id !== this.performance.id),
-                    },
-                  },
+                        .filter((id) => id !== this.performance.id)
+                    }
+                  }
                 },
                 'discount'
               )
-            )
+            );
           }
 
           // Otherwise, try the delete
@@ -613,18 +577,17 @@ export default {
             performMutation(
               this.$apollo,
               {
-                mutation: require('@/graphql/mutations/admin/performance/DeleteDiscount.gql'),
-                variables: { id: discount.id },
+                mutation: DeleteDiscountMutationDocument,
+                variables: { id: discount.id }
               },
               'deleteDiscount'
             )
-          )
-        })
+          );
+        });
 
       // Create or update concession types
-
-      if (this.discounts?.edges) {
-        this.discounts.edges
+      if (this.performance.discounts?.edges) {
+        this.performance.discounts.edges
           .map((edge) => edge.node)
           .forEach((discount) => {
             mutations.push(
@@ -634,80 +597,85 @@ export default {
                   percentage: discount.percentage,
                   performances: discount.performances.edges.map(
                     (edge) => edge.node.id
-                  ),
+                  )
+                };
+                if (discount.id) {
+                  input.id = discount.id;
                 }
-                if (discount.id) input.id = discount.id
                 performMutation(
                   this.$apollo,
                   {
-                    mutation: require('@/graphql/mutations/admin/performance/DiscountMutation.gql'),
+                    mutation: DiscountMutationDocument,
                     variables: {
-                      input,
-                    },
+                      input
+                    }
                   },
                   'discount'
                 ).then((data) => {
-                  discount.id = data.discount.discount.id
+                  discount.id = data.discount.discount.id;
                   // Create or update the discount requirement & concession
                   discount.requirements.forEach((requirement) => {
                     // Step #1: Concession Type
                     let input = {
                       name: requirement.concessionType.name,
-                      description: requirement.concessionType.description,
-                    }
+                      description: requirement.concessionType.description
+                    };
 
-                    if (requirement.concessionType.id)
-                      input.id = requirement.concessionType.id
+                    if (requirement.concessionType.id) {
+                      input.id = requirement.concessionType.id;
+                    }
 
                     performMutation(
                       this.$apollo,
                       {
-                        mutation: require('@/graphql/mutations/admin/performance/ConcessionTypeMutation.gql'),
+                        mutation: ConcessionTypeMutationDocument,
                         variables: {
-                          input,
-                        },
+                          input
+                        }
                       },
                       'concessionType'
                     )
                       .then((data) => {
                         requirement.concessionType.id =
-                          data.concessionType.concessionType.id
+                          data.concessionType.concessionType.id;
 
                         // Step#2: Update or create the requirement
                         input = {
                           number: requirement.number,
                           concessionType: requirement.concessionType.id,
-                          discount: discount.id,
+                          discount: discount.id
+                        };
+                        if (requirement.id) {
+                          input.id = requirement.id;
                         }
-                        if (requirement.id) input.id = requirement.id
 
                         performMutation(
                           this.$apollo,
                           {
-                            mutation: require('@/graphql/mutations/admin/performance/DiscountRequirementMutation.gql'),
+                            mutation: DiscountRequirementMutationDocument,
                             variables: {
-                              input,
-                            },
+                              input
+                            }
                           },
                           'discountRequirement'
                         )
                           .then(resolve())
-                          .catch((e) => reject(e))
+                          .catch((e) => reject(e));
                       })
-                      .catch((e) => reject(e))
-                  })
-                })
+                      .catch((e) => reject(e));
+                  });
+                });
               })
-            )
-          })
+            );
+          });
       }
 
       try {
-        await Promise.all(mutations)
-        return true
+        await Promise.all(mutations);
+        return true;
       } catch (e) {
-        this.$emit('update:errors', getValidationErrors(e))
-        return false
+        this.$emit('update:errors', getValidationErrors(e));
+        return false;
       }
     },
     async addSeatGroup(sg = null, price = 0) {
@@ -718,23 +686,25 @@ export default {
           inputOptions: Object.fromEntries(
             this.remainingSeatGroups.map((seatGroup) => [
               seatGroup.id,
-              seatGroup.name,
+              seatGroup.name
             ])
           ),
           showCancelButton: true,
-          confirmButtonText: 'Add',
-        })
-        if (!value) return
+          confirmButtonText: 'Add'
+        });
+        if (!value) {
+          return;
+        }
         sg = this.remainingSeatGroups.find(
           (seatGroup) => seatGroup.id === value
-        )
+        );
       }
 
       this.performanceSeatGroups.push({
         seatGroup: sg,
         price,
-        capacity: sg.capacity,
-      })
+        capacity: sg.capacity
+      });
     },
     async addNewConcession(
       name = null,
@@ -742,10 +712,13 @@ export default {
       percentage = 0,
       id = null
     ) {
-      const currentNum = this.discounts?.edges ? this.discounts.edges.length : 0
-      await this.$emit('update:discounts', {
+      const currentNum = this.performance.discounts?.edges
+        ? this.performance.discounts.edges.length
+        : 0;
+      // eslint-disable-next-line vue/no-mutating-props
+      this.performance.discounts = {
         edges: [
-          ...(this.discounts?.edges || []),
+          ...(this.performance.discounts?.edges || []),
           {
             node: {
               percentage,
@@ -756,23 +729,24 @@ export default {
                   concessionType: {
                     id,
                     name: name || `New Concession Type ${currentNum + 1}`,
-                    description,
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      })
+                    description
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      };
     },
     async deleteConcession(discount) {
       // Remove from array
-      await this.$emit('update:discounts', {
-        edges: this.discounts.edges.filter((edge) => edge.node !== discount),
-      })
+      // eslint-disable-next-line vue/no-mutating-props
+      this.performance.discounts = {
+        edges: this.discounts.edges.filter((edge) => edge.node !== discount)
+      };
 
-      this.deletedDiscounts.push(discount)
-    },
-  },
-}
+      this.deletedDiscounts.push(discount);
+    }
+  }
+};
 </script>

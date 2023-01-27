@@ -3,6 +3,6 @@
     <div class="flex justify-start mb-4 md:hidden">
       <font-awesome-icon icon="times" class="fa-2x" @click="$emit('close')" />
     </div>
-    <slot></slot>
+    <slot />
   </nav>
 </template>

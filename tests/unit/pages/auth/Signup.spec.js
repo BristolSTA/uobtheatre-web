@@ -1,43 +1,36 @@
-import { expect } from 'chai'
+import { expect } from 'vitest';
+import { mount } from '#testSupport/helpers';
 
-import AuthBox from '@/components/auth/UserAuthBox.vue'
-import Login from '@/pages/signup'
+import AuthBox from '@/components/auth/AuthBox.vue';
+import Signup from '@/pages/signup.vue';
 
-import { mountWithRouterMock } from '../../helpers'
-
-jest.mock('@/services')
-
-describe('Login', function () {
-  let signupComponent, authBoxComponent
-  let fakeReplace
+describe('Signup', function () {
+  let signupComponent, authBoxComponent, router;
 
   beforeEach(async () => {
-    signupComponent = await mountWithRouterMock(Login, {
-      mocks: {
-        $router: {
-          replace: (fakeReplace = jest.fn()),
-        },
+    signupComponent = await mount(Signup, {
+      shallow: false,
+      global: {
+        stubs: [AuthBox]
       },
-    })
-    authBoxComponent = signupComponent.findComponent(AuthBox)
-  })
+      routeInfo: {}
+    });
+    authBoxComponent = signupComponent.findComponent(AuthBox);
+    router = useRouter();
+  });
 
   it('contains an auth box', () => {
-    expect(authBoxComponent.exists()).to.be.true
-    expect(authBoxComponent.props('login')).to.be.false
-  })
+    expect(authBoxComponent.exists()).to.be.true;
+    expect(authBoxComponent.props('loginMode')).to.be.false;
+  });
 
   it('doesnt react to switch to signup if already on signup', async () => {
-    await authBoxComponent.vm.$emit('go-signup')
-    expect(fakeReplace.mock.calls).to.be.empty
-  })
+    await authBoxComponent.vm.$emit('go-signup');
+    expect(router.replace).not.toHaveBeenCalled();
+  });
 
   it('reacts to switch to login', async () => {
-    await authBoxComponent.vm.$emit('go-login')
-    expect(fakeReplace.mock.calls[0][0]).to.eq('/login')
-  })
-
-  it('redirects if user is already authenticated', () => {
-    expect(Login.middleware).to.include('not-authed')
-  })
-})
+    await authBoxComponent.vm.$emit('go-login');
+    expect(router.replace).toHaveBeenCalledWith('/login');
+  });
+});

@@ -1,9 +1,7 @@
 fragment BasicBookingDetails on BookingNode {
   id
   reference
-  status {
-    description
-  }
+  status
   user {
     id
     firstName

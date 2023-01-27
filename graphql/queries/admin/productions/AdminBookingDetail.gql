@@ -1,5 +1,5 @@
 #import "../../../fragments/booking/BookingWithProductionDetails.gql"
-query bookingDetails($bookingReference: String!) {
+query adminBookingDetail($bookingReference: String!) {
   bookings(reference: $bookingReference) {
     edges {
       node {

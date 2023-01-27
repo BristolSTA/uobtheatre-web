@@ -9,7 +9,7 @@
           : available
           ? 'bg-sta-green'
           : 'bg-sta-gray-dark border-2 border-sta-rouge',
-        available ? 'cursor-pointer' : '',
+        available ? 'cursor-pointer' : ''
       ]"
       @click="onHeaderClick"
       @keypress="onHeaderClick"
@@ -49,7 +49,7 @@
           }}
           remaining in this location
         </template>
-        <template v-else>No more tickets available at this location</template>
+        <template v-else> No more tickets available at this location </template>
       </div>
       <concession-type
         v-for="(concessionTypeEdge, index) in orderedConcessionTypes"
@@ -109,9 +109,9 @@
 </template>
 
 <script>
-import ConcessionType from '@/components/booking/ConcessionType.vue'
-import GroupTicketButton from '@/components/booking/GroupTicketButton.vue'
-import lo from 'lodash'
+import lo from 'lodash';
+import ConcessionType from '@/components/booking/ConcessionType.vue';
+import GroupTicketButton from '@/components/booking/GroupTicketButton.vue';
 
 export default {
   name: 'SeatGroup',
@@ -119,48 +119,49 @@ export default {
   props: {
     expanded: {
       required: true,
-      type: Boolean,
+      type: Boolean
     },
     ticketOption: {
       required: true,
-      type: Object,
+      type: Object
     },
     groupCapacityRemaining: {
       required: true,
-      type: Number,
+      type: Number
     },
     currentTickets: {
       required: true,
-      type: Array,
+      type: Array
     },
     discounts: {
       required: true,
-      type: Array,
+      type: Array
     },
     showCapacities: {
       default: false,
-      type: Boolean,
+      type: Boolean
     },
     canAddTickets: {
       default: true,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
+  emits: ['add-ticket', 'set-tickets', 'remove-ticket', 'select-location'],
   computed: {
     orderedConcessionTypes() {
-      return lo.sortBy(this.ticketOption.concessionTypes, 'price').reverse()
+      return lo.sortBy(this.ticketOption.concessionTypes, 'price').reverse();
     },
     available() {
       return (
         this.groupCapacityRemaining !== 0 ||
         this.currentLocationTickets.length !== 0
-      )
+      );
     },
     currentLocationTickets() {
       return this.currentTickets.filter((ticket) => {
-        return ticket.matches(this.ticketOption.seatGroup)
-      })
-    },
+        return ticket.matches(this.ticketOption.seatGroup);
+      });
+    }
   },
   methods: {
     onAddDiscountTickets(discount) {
@@ -170,14 +171,14 @@ export default {
           this.ticketOption.seatGroup,
           requirement.concessionType,
           requirement.number
-        )
-      })
+        );
+      });
     },
     onHeaderClick() {
       if (this.available) {
-        this.$emit('select-location')
+        this.$emit('select-location');
       }
-    },
-  },
-}
+    }
+  }
+};
 </script>

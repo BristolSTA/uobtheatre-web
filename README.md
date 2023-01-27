@@ -20,9 +20,8 @@ You can run `yarn lint [--fix]` to lint and fix files.
 > By default, you won't be able to test out payments via Square until you add the **sandbox** Square access token to the env file at `.devcontainer/.env` and rebuild the docker container (F1 > Rebuild Container). You will need to get these details from the webmaster.
 
 ## Hints and Tips
-* If you use the supplied Dev Containers, the API is automatically put up with the dev container on port 9000. In this way, you can access the [GraphQLi interface](localhost:9000/graphql/) and the [Django admin panel](localhost:9000/admin/). This project is setup to automatically expect the API to be running at `localhost:9000`. If it is not (or you want to use a different instance), add `API_BASE={API_URL}` into your `.env` file.
 
-
+- If you use the supplied Dev Containers, the API is automatically put up with the dev container on port 9000. In this way, you can access the [GraphQLi interface](localhost:9000/graphql/) and the [Django admin panel](localhost:9000/admin/). This project is setup to automatically expect the API to be running at `localhost:9000`. If it is not (or you want to use a different instance), add `API_BASE={API_URL}` into your `.env` file.
 
 ## Compiling and Deploying 🔨
 

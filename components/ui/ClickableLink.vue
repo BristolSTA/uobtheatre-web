@@ -4,11 +4,11 @@
     @click="$emit('click')"
     @keypress="
       (e) => {
-        e.target.click()
+        e.target.click();
       }
     "
   >
-    <slot></slot>
+    <slot />
   </a>
 </template>
 
@@ -18,8 +18,9 @@ export default {
   props: {
     disabled: {
       default: false,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
-}
+  emits: ['click']
+};
 </script>

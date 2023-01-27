@@ -5,15 +5,7 @@
         <table-head-item class="font-normal relative text-xs xl:text-sm">
           <div style="width: 250px">
             <div
-              class="
-                absolute
-                cell-right-to-left-diagonal
-                p-2
-                pt-4
-                top-0
-                min-h-full
-                w-full
-              "
+              class="absolute cell-right-to-left-diagonal p-2 pt-4 top-0 min-h-full w-full"
             />
             <div class="absolute top-3 right-2 w-20 xl:w-40 text-right">
               Percentage Discount
@@ -31,23 +23,18 @@
         >
           <form-label label-class="">
             {{ discount.requirements[0].concessionType.name }}
-            <badge
+            <UiBadge
               v-if="discount.performances.edges.length > 1"
               class="bg-blue-400"
             >
               <font-awesome-icon icon="sync" />
-            </badge>
+            </UiBadge>
             <template #control>
               <percentage-input
                 v-if="editing"
                 :key="discount.id"
-                :value="discount.percentage * 100"
-                @blur="
-                  (event) => {
-                    discount.percentage = event / 100
-                    discount._percentageModified = true
-                  }
-                "
+                :model-value="discount.percentage * 100"
+                @update:model-value="setDiscountPercentage(discount, $event)"
               />
               <div v-else class="font-bold">
                 {{ discount.percentage * 100 }}%
@@ -73,12 +60,12 @@
                 <div class="w-20">
                   <currency-input
                     :key="performanceSeatGroup.id"
-                    :value="performanceSeatGroup.price / 100"
+                    :model-value="performanceSeatGroup.price / 100"
                     placeholder="Base Price"
-                    @input="
+                    @update:model-value="
                       (event) => {
-                        performanceSeatGroup.price = event * 100
-                        performanceSeatGroup._priceModified = true
+                        performanceSeatGroup.price = event * 100;
+                        performanceSeatGroup._priceModified = true;
                       }
                     "
                   />
@@ -99,7 +86,9 @@
     </safe-table>
     <div v-if="editing" class="m-2 p-2 bg-sta-gray-dark">
       Note:
-      <badge class="bg-blue-400"><font-awesome-icon icon="sync" /></badge>
+      <UiBadge class="bg-blue-400">
+        <font-awesome-icon icon="sync" />
+      </UiBadge>
       Denotates a setting that is synced or shared across multiple performances.
       By changing this, it will change for the other performances too
     </div>
@@ -108,15 +97,15 @@
 
 <script>
 /* eslint-disable vue/no-unused-components */
-import FormLabel from '@/components/ui/FormLabel.vue'
-import Badge from '@/components/ui/Badge.vue'
-import CurrencyInput from '@/components/ui/Inputs/CurrencyInput.vue'
-import PercentageInput from '@/components/ui/Inputs/PercentageInput.vue'
-import { singleDiscounts as singleDiscountsFn } from '@/utils/performance'
-import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue'
-import SafeTable from '@/components/ui/Tables/SafeTable.vue'
-import TableRow from '@/components/ui/Tables/TableRow.vue'
-import TableRowItem from '@/components/ui/Tables/TableRowItem.vue'
+import FormLabel from '@/components/ui/FormLabel.vue';
+import Badge from '~~/components/ui/UiBadge.vue';
+import CurrencyInput from '@/components/ui/Input/CurrencyInput.vue';
+import PercentageInput from '@/components/ui/Input/PercentageInput.vue';
+import { getSingleDiscounts as singleDiscountsFn } from '@/utils/performance';
+import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
+import SafeTable from '@/components/ui/Tables/SafeTable.vue';
+import TableRow from '@/components/ui/Tables/TableRow.vue';
+import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
 export default {
   components: {
     FormLabel,
@@ -126,44 +115,44 @@ export default {
     TableHeadItem,
     SafeTable,
     TableRow,
-    TableRowItem,
+    TableRowItem
   },
   props: {
     editing: {
       default: false,
-      type: Boolean,
+      type: Boolean
     },
     performanceSeatGroups: {
       type: Array,
-      required: true,
+      required: true
     },
     discounts: {
       required: true,
-      type: Array,
-    },
+      type: Array
+    }
   },
   computed: {
     singleDiscounts() {
-      return singleDiscountsFn(this.discounts)
-    },
+      return singleDiscountsFn(this.discounts);
+    }
   },
   watch: {
     performanceSeatGroups: {
       deep: true,
       handler() {
-        this.$forceUpdate()
-      },
-    },
+        this.$forceUpdate();
+      }
+    }
   },
   methods: {
     displayPrice(performanceSeatGroup, discount) {
       // Get the value the API says this should be at the moment
-      const discountConcessionType = discount.requirements[0].concessionType
+      const discountConcessionType = discount.requirements[0].concessionType;
       const currentValue =
         performanceSeatGroup.concessionTypes &&
         performanceSeatGroup.concessionTypes.find((concessionType) => {
-          return concessionType.concessionType.id === discountConcessionType.id
-        })?.price
+          return concessionType.concessionType.id === discountConcessionType.id;
+        })?.price;
 
       if (
         performanceSeatGroup._priceModified ||
@@ -173,10 +162,14 @@ export default {
         return (
           Math.ceil(performanceSeatGroup.price * (1 - discount.percentage)) /
           100
-        ).toFixed(2)
+        ).toFixed(2);
       }
-      return (currentValue / 100).toFixed(2)
+      return (currentValue / 100).toFixed(2);
     },
-  },
-}
+    setDiscountPercentage(discountObject, integerPercentage) {
+      discountObject.percentage = integerPercentage / 100;
+      discountObject._percentageModified = true;
+    }
+  }
+};
 </script>

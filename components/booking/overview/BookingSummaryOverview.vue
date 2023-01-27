@@ -8,7 +8,7 @@
     </template>
     <template #subtitle>
       <p class="font-semibold sm:text-h3">
-        {{ booking.performance.start | dateFormat('EEEE d MMMM kkkk') }}
+        {{ dateFormat(booking.performance.start, 'EEEE d MMMM kkkk') }}
       </p>
     </template>
     <div>
@@ -26,17 +26,21 @@
 </template>
 
 <script>
-import Booking from '@/classes/Booking'
+import OverviewBox from '../../ui/UiCard.vue';
+import Booking from '@/classes/Booking';
+import { dateFormat } from '@/utils/datetime';
 
-import OverviewBox from '../../ui/Card.vue'
 export default {
   name: 'BookingSumamryOverview',
   components: { OverviewBox },
   props: {
     booking: {
       required: true,
-      type: [Booking, Object],
-    },
+      type: [Booking, Object]
+    }
   },
-}
+  methods: {
+    dateFormat
+  }
+};
 </script>

@@ -3,10 +3,10 @@
     <div
       class="flex-none order-1 w-full text-center sm:w-auto lg:mb-0 lg:w-auto"
     >
-      <img
+      <production-poster-image
         ref="poster-image"
         class="inline-block max-h-80"
-        :src="production.posterImage.url"
+        :image-object="production.posterImage"
         alt="show poster"
       />
     </div>
@@ -32,9 +32,9 @@
               unsuitable or distressing to viewers. For more information, please
               contact
               <a
-                :href="`mailto:${production.supportEmail}`"
+                :href="`mailto:${production.contactEmail}`"
                 class="underline"
-                >{{ production.supportEmail }}</a
+                >{{ production.contactEmail }}</a
               >.
             </p>
             <hr class="my-1 border-sta-gray-light" />
@@ -46,32 +46,12 @@
         <button
           v-if="production.contentWarnings.length"
           ref="warnings"
-          class="
-            p-3
-            bg-sta-rouge
-            rounded-md
-            hover:bg-sta-rouge-dark
-            transition-colors
-            scale-110
-            flex
-            gap-2
-            items-center
-            flex-wrap
-            lg:flex-nowrap
-            justify-center
-          "
+          class="p-3 bg-sta-rouge rounded-md hover:bg-sta-rouge-dark transition-colors flex gap-2 items-center flex-wrap lg:flex-nowrap justify-center"
           @click="showContentWarningsDetail = true"
         >
           This production has content warnings.
           <div
-            class="
-              text-right
-              min-w-max
-              flex
-              items-center
-              justify-items-center
-              gap-1
-            "
+            class="text-right min-w-max flex items-center justify-items-center gap-1"
           >
             See More <font-awesome-icon icon="chevron-right" />
           </div>
@@ -102,46 +82,50 @@
 </template>
 
 <script>
-import IconListItem from '@/components/ui/IconListItem.vue'
-import TipTapOutput from '@/components/ui/TipTapOutput.vue'
-import Modal from '../ui/Modal.vue'
-import ContentWarningsDisplay from './content-warnings/ContentWarningsDisplay.vue'
+import Modal from '../ui/Modal.vue';
+import ContentWarningsDisplay from './content-warnings/ContentWarningsDisplay.vue';
+import ProductionPosterImage from './ProductionPosterImage.vue';
+import TipTapOutput from '~~/components/ui/UiTipTapOutput.vue';
+import IconListItem from '~~/components/ui/UiIconListItem.vue';
 export default {
   components: {
     IconListItem,
     TipTapOutput,
     Modal,
     ContentWarningsDisplay,
+    ProductionPosterImage
   },
   props: {
-    production: {
-      required: true,
-      type: Object,
-    },
+    production: { required: true, type: Object }
   },
   data() {
     return {
-      showContentWarningsDetail: false,
-    }
+      showContentWarningsDetail: false
+    };
   },
   computed: {
     medium() {
-      if (!this.production.performances.edges.length) return null
-      if (this.hasOnlinePerformances && this.hasInPersonPerformances)
-        return 'In Person + Online'
-      if (this.hasOnlinePerformances) return 'Online Only'
-      return 'In Person Only'
+      if (!this.production.performances.edges.length) {
+        return null;
+      }
+      if (this.hasOnlinePerformances && this.hasInPersonPerformances) {
+        return 'In Person + Online';
+      }
+      if (this.hasOnlinePerformances) {
+        return 'Online Only';
+      }
+      return 'In Person Only';
     },
     hasOnlinePerformances() {
       return !!this.production.performances.edges.find(
         (edge) => edge.node.isOnline
-      )
+      );
     },
     hasInPersonPerformances() {
       return !!this.production.performances.edges.find(
         (edge) => edge.node.isInperson
-      )
-    },
-  },
-}
+      );
+    }
+  }
+};
 </script>

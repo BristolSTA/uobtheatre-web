@@ -1,7 +1,7 @@
 <template>
   <div class="my-2 px-1 py-2 bg-sta-gray-dark md:p-2">
     <h2 class="flex justify-center mb-2 text-2xl">
-      <slot name="title"></slot>
+      <slot name="title" />
     </h2>
     <table v-if="bookings.length" class="table-auto w-full">
       <tbody>
@@ -19,7 +19,7 @@
                 {{ booking.performance.production.name }}
               </NuxtLink>
               <p class="text-sta-orange">
-                {{ booking.performance.start | dateFormat('d MMMM kkkk') }}
+                {{ dateFormat(booking.performance.start, 'd MMMM kkkk') }}
               </p>
             </div>
           </td>
@@ -43,17 +43,21 @@
 </template>
 
 <script>
+import { dateFormat } from '@/utils/datetime';
 export default {
   name: 'BookingsTable',
   props: {
     bookings: {
       required: true,
-      type: Array,
+      type: Array
     },
     canLoadMore: {
       default: false,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
-}
+  methods: {
+    dateFormat
+  }
+};
 </script>

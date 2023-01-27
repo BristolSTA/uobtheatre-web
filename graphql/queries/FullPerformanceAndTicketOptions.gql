@@ -1,7 +1,7 @@
 #import "../fragments/production/ProductionBasicInfoFragment.gql"
 #import "../fragments/production/ProductionPerformancesFragment.gql"
 #import "../fragments/performance/PerformanceTicketOptionsFragment.gql"
-query performanceTicketOptions($id: ID!) {
+query fullPerformanceAndTicketOptions($id: ID!) {
   performance(id: $id) {
     id
     capacityRemaining
@@ -44,7 +44,7 @@ query performanceTicketOptions($id: ID!) {
       }
     }
     ticketOptions {
-      ...PerformanceTicketOptions
+      ...PerformanceTicketOptionsFragment
     }
   }
 }

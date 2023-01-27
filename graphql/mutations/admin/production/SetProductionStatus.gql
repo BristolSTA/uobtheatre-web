@@ -1,4 +1,8 @@
-mutation setStatus($id: IdInputField!, $status: Status!, $message: String) {
+mutation setProductionStatus(
+  $id: IdInputField!
+  $status: Status!
+  $message: String
+) {
   setProductionStatus(productionId: $id, status: $status, message: $message) {
     success
     errors {

@@ -1,8 +1,0 @@
-[build]
-  # Don't build when the commit comes from dependabot
-  ignore = "git log -1 --pretty=%B | grep dependabot"
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200

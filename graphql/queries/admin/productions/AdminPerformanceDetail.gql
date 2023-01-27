@@ -30,7 +30,7 @@ query adminPerformanceDetail($productionSlug: String!, $performanceId: ID!) {
           capacityRemaining
 
           ticketOptions {
-            ...PerformanceTicketOptions
+            ...PerformanceTicketOptionsFragment
             capacity
             numberTicketsSold
           }
@@ -39,12 +39,6 @@ query adminPerformanceDetail($productionSlug: String!, $performanceId: ID!) {
             totalTicketsSold
           }
           salesBreakdown {
-            netIncome
-            totalSales
-            totalCardSales
-            providerPaymentValue
-            appPaymentValue
-            societyTransferValue
             societyRevenue
           }
 

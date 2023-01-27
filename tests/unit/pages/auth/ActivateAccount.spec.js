@@ -1,88 +1,58 @@
-import { mount } from '@vue/test-utils'
-import { expect } from 'chai'
+import { expect, vi } from 'vitest';
+import { mount } from '#testSupport/helpers';
 
-import { authService } from '@/services'
-import { swalToast } from '@/utils'
-import ActivateAccount from '@/pages/login/activate/_token/index'
-
-import { generateMountOptions } from '../../helpers'
-import GenericApolloResponse from '../../fixtures/support/GenericApolloResponse'
-import GenericMutationResponse from '../../fixtures/support/GenericMutationResponse'
-import GenericError from '../../fixtures/support/GenericError'
-import GenericErrorsResponse from '../../fixtures/support/GenericErrorsResponse'
+import ActivateAccount from '@/pages/login/activate/[token]/index.vue';
+import { swalToast } from '@/utils/alerts';
+import useAuthStore from '@/store/auth';
+import ValidationError from '~~/errors/ValidationError';
+import { flushPromises } from '@vue/test-utils';
 
 describe('Activate Account', function () {
-  let component
+  let component;
 
-  it('redirects if user is already authenticated', () => {
-    expect(ActivateAccount.middleware).to.include('not-authed')
-  })
+  it('activates account with valid token', async () => {
+    const swalToastStub = vi.spyOn(swalToast, 'fire');
+    component = await mount(ActivateAccount, {
+      shallow: false,
+      routeInfo: {
+        params: {
+          token: '1234abcd'
+        }
+      }
+    });
 
-  it('activates account with valid token', () => {
-    let routerPushFake
-    const activateAccountStub = jest.spyOn(authService, 'activateAccount')
-    const swalToastStub = jest.spyOn(swalToast, 'fire')
-    component = mount(
-      ActivateAccount,
-      generateMountOptions(['apollo'], {
-        mocks: {
-          $router: {
-            push: (routerPushFake = jest.fn()),
-          },
-          $route: {
-            params: {
-              token: '1234abcd',
-            },
-          },
-        },
-        apollo: {
-          mutationCallstack: [
-            GenericApolloResponse('verifyAccount', GenericMutationResponse()),
-          ],
-        },
-      })
-    )
+    expect(component.text()).to.contain('Activating your account');
+    expect(component.text()).not.to.contain('error');
 
-    expect(component.text()).to.contain('Activating your account')
-    expect(component.text()).not.to.contain('error')
+    await component.vm.$nextTick();
 
-    return component.vm.$nextTick().then(() => {
-      expect(activateAccountStub.mock.calls).length(1)
-      expect(activateAccountStub.mock.calls[0][1]).includes({
-        token: '1234abcd',
-      })
+    const authStore = useAuthStore();
+    expect(authStore.activateAccount).toHaveBeenCalledWith('1234abcd');
 
-      expect(swalToastStub.mock.calls).length(1)
+    expect(swalToastStub.mock.calls).length(1);
 
-      expect(routerPushFake.mock.calls).length(1)
-      expect(routerPushFake.mock.calls[0][0]).to.eq('/login')
-    })
-  })
+    const router = useRouter();
+    expect(router.push).toHaveBeenCalledWith('/login');
+  });
 
   it('shows error with invalid token', async () => {
-    component = mount(
-      ActivateAccount,
-      generateMountOptions(['apollo'], {
-        mocks: {
-          $route: {
-            params: {
-              token: 'invalidCode',
-            },
-          },
-        },
-        apollo: {
-          mutationCallstack: [
-            GenericApolloResponse(
-              'verifyAccount',
-              GenericErrorsResponse(GenericError('There was an error'))
-            ),
-          ],
-        },
-      })
-    )
+    component = await mount(ActivateAccount, {
+      shallow: false,
+      routeInfo: {
+        params: {
+          token: 'invalidCode'
+        }
+      },
+      preMount: () => {
+        const authStore = useAuthStore();
+        authStore.activateAccount.mockRejectedValueOnce(
+          new ValidationError('There was an error')
+        );
+      }
+    });
 
-    await component.vm.$nextTick()
-    await component.vm.$nextTick()
-    expect(component.text()).to.contain('There was an error')
-  })
-})
+    await flushPromises();
+    await component.vm.$nextTick();
+    expect(component.text()).to.contain('There was an error');
+  });
+});

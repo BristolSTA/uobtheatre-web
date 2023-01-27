@@ -1,67 +1,53 @@
+<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div class="space-y-2">
-    <card title="Basic Details">
+    <UiCard title="Basic Details">
       <div class="space-y-4">
         <form-label :errors="errors" name="name" :required="true">
           Name
           <template #control>
-            <t-input
-              :value="name"
-              placeholder="e.g. My Show"
-              @input="$emit('update:name', $event)"
-            />
+            <UiInputText v-model="production.name" placeholder="e.g. My Show" />
           </template>
         </form-label>
         <p v-if="computedSlug">
           <template v-if="!changingSlug">
             Your production will be at
             {{
-              $router.resolve({ path: `/productions/${computedSlug}` }).route
+              useRouter().resolve({ path: `/productions/${computedSlug}` })
                 .fullPath
             }}
-            <sta-button
-              class="
-                text-sm
-                bg-sta-orange
-                hover:bg-sta-orange-dark
-                transition-colors
-              "
+            <UiStaButton
+              class="text-sm bg-sta-orange hover:bg-sta-orange-dark transition-colors"
               @click="
                 () => {
-                  changingSlug = true
-                  manualSlug = computedSlug
+                  changingSlug = true;
+                  manualSlug = computedSlug;
                 }
               "
-              >Change</sta-button
             >
+              Change
+            </UiStaButton>
           </template>
           <template v-else>
             <div class="flex">
               <form-label class="flex-grow">
                 Slug
-                <t-input
-                  :value="manualSlug"
-                  @input="manualSlug = kebabCase($event)"
+                <UiInputText
+                  :model-value="manualSlug"
+                  @update:model-value="manualSlug = kebabCase($event)"
                 />
               </form-label>
-              <sta-button
-                class="
-                  bg-sta-green
-                  hover:bg-sta-green-dark
-                  transition-colors
-                  lg:mx-8
-                  mx-4
-                  mt-6
-                "
+              <UiStaButton
+                class="bg-sta-green hover:bg-sta-green-dark transition-colors lg:mx-8 mx-4 mt-6"
                 @click="
                   () => {
-                    $emit('update:slug', manualSlug)
-                    changingSlug = false
+                    production.slug = maualSlug;
+                    changingSlug = false;
                   }
                 "
               >
                 Done
-              </sta-button>
+              </UiStaButton>
             </div>
           </template>
           <br />
@@ -69,27 +55,24 @@
         </p>
         <form-label :errors="errors" name="subtitle">
           Subtitle
-          <t-input
-            :value="subtitle"
-            @input="$emit('update:subtitle', $event)"
-          />
-        </form-label>
-        <form-label :errors="errors" name="supportEmail" :required="true">
-          Support Email Address
           <template #control>
-            <t-input
-              :value="supportEmail"
-              @input="$emit('update:supportEmail', $event)"
-            />
+            <UiInputText v-model="production.subtitle" />
+          </template>
+        </form-label>
+        <form-label :errors="errors" name="contactEmail" :required="true">
+          Contact Email Address
+          <template #control>
+            <UiInputText v-model="production.contactEmail" />
+          </template>
+          <template #helper>
+            This email will be shown to people equiring about accessibility and
+            content warnings.
           </template>
         </form-label>
         <form-label :errors="errors" name="description" :required="true">
           Description
           <template #control>
-            <rich-text-input
-              :value="description"
-              @input="$emit('update:description', $event)"
-            />
+            <rich-text-input v-model="production.description" />
           </template>
         </form-label>
         <form-label :errors="errors" name="shortDescription">
@@ -105,15 +88,26 @@
             <div>
               <table class="w-full">
                 <tr
-                  v-for="contentWarning in contentWarnings"
+                  v-for="contentWarning in production.contentWarnings"
                   :key="contentWarning.warning.id"
                 >
-                  <th>{{ contentWarning.warning.shortDescription }}</th>
+                  <th>
+                    {{ contentWarning.warning.shortDescription }}
+                    <p>
+                      <UiStaButton
+                        icon="trash"
+                        :small="true"
+                        colour="rouge"
+                        @click="updateWarnings(contentWarning.warning, false)"
+                      >
+                        Remove
+                      </UiStaButton>
+                    </p>
+                  </th>
                   <td>
-                    <textarea
+                    <UiInputTextArea
                       v-model="contentWarning.information"
                       class="w-full text-black"
-                      type="text"
                       :placeholder="
                         contentWarning.information
                           ? contentWarning.information
@@ -121,19 +115,20 @@
                           ? contentWarning.warning.longDescription
                           : 'You can provide extended information about this content warning here'
                       "
-                    ></textarea>
+                    />
                   </td>
                 </tr>
               </table>
             </div>
             <div>
-              <sta-button
+              <UiStaButton
                 class="bg-sta-green"
                 icon="plus-circle"
                 :small="true"
                 @click="onAddWarning"
-                >Add</sta-button
               >
+                Add
+              </UiStaButton>
             </div>
           </template>
         </form-label>
@@ -144,67 +139,54 @@
             name="ageRating"
           >
             Age Rating
-            <t-input
-              :value="ageRating"
+            <UiInputText
+              v-model="production.ageRating"
               type="number"
               min="4"
               max="18"
-              @input="$emit('update:ageRating', $event)"
               @keypress.stop="
-                if (!/^[0-9]$/i.test($event.key)) $event.preventDefault()
+                if (!/^[0-9]$/i.test($event.key)) $event.preventDefault();
               "
             />
           </form-label>
           <form-label class="flex-grow" :errors="errors" name="facebookEvent">
             Facebook Event Link
-            <t-input
-              :value="facebookEvent"
-              @input="$emit('update:facebookEvent', $event)"
-            />
+            <UiInputText v-model="production.facebookEvent" />
           </form-label>
         </div>
       </div>
-    </card>
-    <card title="Society">
-      <t-select
+    </UiCard>
+    <UiCard title="Society">
+      <UiInputSelect
         placeholder="Select a society"
         class="mb-4"
-        :value="society ? society.id : null"
+        :model-value="production.society?.id || ''"
         :options="
           availableSocieties.map((society) => ({
             value: society.id,
-            text: society.name,
+            displayText: society.name
           }))
         "
-        @input="
-          $emit(
-            'update:society',
-            availableSocieties.find((society) => society.id === $event)
+        @update:model-value="
+          production.society = availableSocieties.find(
+            (society) => society.id === $event
           )
         "
       />
 
       <div
-        v-if="society"
-        class="
-          flex
-          items-center
-          justify-center
-          p-4
-          bg-sta-gray-dark
-          rounded-lg
-          space-x-8
-        "
+        v-if="production.society"
+        class="flex items-center justify-center p-4 bg-sta-gray-dark rounded-lg space-x-8"
       >
-        <img :src="society.logo.url" style="max-width: 100px" />
-        <span class="text-xl font-semibold">{{ society.name }}</span>
+        <img :src="production.society.logo.url" style="max-width: 100px" />
+        <span class="text-xl font-semibold">{{ production.society.name }}</span>
       </div>
       <div v-else>
         <h4 class="font-bold text-lg">No Society Selected</h4>
       </div>
       <error-helper :errors="errors" field-name="society" />
-    </card>
-    <card title="Images">
+    </UiCard>
+    <UiCard title="Images">
       <div class="space-y-4">
         <div class="flex flex-wrap justify-evenly md:flex-nowrap md:space-x-4">
           <form-label :errors="errors" name="featuredImage">
@@ -215,11 +197,11 @@
             </template>
             <template #control>
               <image-input
-                :value="featuredImage ? featuredImage.url : null"
+                :model-value="production.featuredImage?.url"
                 :required-ratio="16 / 9"
                 :min-width="400"
                 :ratio-flexability="0.13"
-                @change="$emit('update:featuredImage', { file: $event })"
+                @change="production.featuredImage = { file: $event }"
               />
             </template>
           </form-label>
@@ -231,10 +213,10 @@
             </template>
             <template #control>
               <image-input
-                :value="posterImage ? posterImage.url : null"
+                :model-value="production.posterImage?.url"
                 :required-ratio="1 / Math.sqrt(2)"
                 :min-width="100"
-                @change="$emit('update:posterImage', { file: $event })"
+                @change="production.posterImage = { file: $event }"
               />
             </template>
           </form-label>
@@ -243,106 +225,55 @@
           Cover Image
           <template #helper>
             A cover image used on the homepage carousel. Should have a ratio of
-            roughly 3:1, with at least 1200px width dimension
+            roughly 3:1, with at least 1200px width dimension. This image should <strong>not</strong> have any text or logos on it.
           </template>
           <template #control>
             <image-input
-              :value="coverImage ? coverImage.url : null"
+              :model-value="production.coverImage?.url"
               :required-ratio="3"
               :min-width="1200"
-              @change="$emit('update:coverImage', { file: $event })"
+              @change="production.coverImage = { file: $event }"
             />
           </template>
         </form-label>
       </div>
-    </card>
+    </UiCard>
   </div>
 </template>
 
 <script>
-import RichTextInput from '@/components/ui/Inputs/RichTextInput.vue'
-import Errors from '@/classes/Errors'
+import { v4 as uuid } from 'uuid';
+import kebabCase from 'lodash/kebabCase';
+import ImageInput from '../../ui/Input/ImageInput.vue';
+import FormLabel from '../../ui/FormLabel.vue';
 
-import imageUpload from '@/services/imageUploadService'
-import { v4 as uuid } from 'uuid'
-import kebabCase from 'lodash/kebabCase'
-import ErrorHelper from '@/components/ui/ErrorHelper.vue'
-import StaButton from '@/components/ui/StaButton.vue'
-import { swal } from '@/utils'
-import ImageInput from '../../ui/Inputs/ImageInput.vue'
-import FormLabel from '../../ui/FormLabel.vue'
-import Card from '../../ui/Card.vue'
+import RichTextInput from '@/components/ui/Input/RichTextInput.vue';
+import Errors from '@/classes/Errors';
+
+import imageUpload from '~~/services/imageUploadService';
+import ErrorHelper from '@/components/ui/ErrorHelper.vue';
+import { swal } from '@/utils/alerts';
+import {
+  WarningsDocument,
+  AdminSocietiesIndexDocument
+} from '@/graphql/codegen/operations';
 
 export default {
   components: {
     FormLabel,
     ImageInput,
-    Card,
     RichTextInput,
-    ErrorHelper,
-    StaButton,
+    ErrorHelper
   },
   props: {
-    id: {
-      type: String,
-      default: null,
-    },
     errors: {
       type: Errors,
-      default: null,
+      default: null
     },
-    name: {
-      type: String,
-      default: null,
-    },
-    subtitle: {
-      type: String,
-      default: null,
-    },
-    supportEmail: {
-      type: String,
-      default: null,
-    },
-    description: {
-      type: String,
-      default: null,
-    },
-    shortDescription: {
-      type: String,
-      default: null,
-    },
-    contentWarnings: {
-      default: () => [],
-      type: Array,
-    },
-    society: {
-      default: null,
+    production: {
       type: Object,
-    },
-    facebookEvent: {
-      default: null,
-      type: String,
-    },
-    ageRating: {
-      default: null,
-      type: [Number, String],
-    },
-    coverImage: {
-      default: null,
-      type: Object,
-    },
-    posterImage: {
-      default: null,
-      type: Object,
-    },
-    featuredImage: {
-      default: null,
-      type: Object,
-    },
-    slug: {
-      default: null,
-      type: String,
-    },
+      required: true
+    }
   },
   data() {
     return {
@@ -351,108 +282,132 @@ export default {
 
       slugManuallyEdited: false,
       changingSlug: false,
-      manualSlug: null,
-    }
+      manualSlug: null
+    };
   },
   apollo: {
     availableWarnings: {
-      query: require('@/graphql/queries/Warnings.gql'),
-      update: (data) => data.warnings.edges.map((edge) => edge.node),
+      query: WarningsDocument,
+      update: (data) => data.warnings.edges.map((edge) => edge.node)
     },
     availableSocieties: {
-      query: require('@/graphql/queries/admin/societies/AdminSocietiesIndex.gql'),
-      update: (data) => data.societies.edges.map((edge) => edge.node),
-    },
+      query: AdminSocietiesIndexDocument,
+      update: (data) => data.societies.edges.map((edge) => edge.node)
+    }
   },
   computed: {
     computedSlug() {
-      return this.slug || kebabCase(this.name)
-    },
+      return this.production.slug || kebabCase(this.production.name);
+    }
   },
   methods: {
     kebabCase,
     async onAddWarning() {
-      const { value } = await swal.fire({
+      const { value: warningId } = await swal.fire({
         input: 'select',
         inputOptions: Object.fromEntries(
           this.availableWarnings
             .filter(
               (warning) =>
-                !this.contentWarnings
+                !this.production.contentWarnings
                   .map((cw) => cw.warning.id)
                   .includes(warning.id)
             )
             .map((warning) => [warning.id, warning.shortDescription])
         ),
         showCancelButton: true,
-        confirmButtonText: 'Add',
-      })
+        confirmButtonText: 'Add'
+      });
 
-      if (!value) return
+      if (!warningId) {
+        return;
+      }
+
+      const warning = this.availableWarnings.find(
+        (warning) => warning.id === warningId
+      );
+
+      const warningDescriptors = [
+        'Contains themes throughout',
+        'Contains references in dialogue',
+        'Contains graphic references in dialogue',
+        'Contains depiction of this trigger'
+      ];
+
+      const { value: descriptorIndex } = await swal.fire({
+        title: `Please choose a description for "<strong>${warning.shortDescription}</strong>"`,
+        text: 'Note that you can provide a custom, more detailed description by clicking the button below',
+        input: 'select',
+        inputOptions: warningDescriptors,
+        showCancelButton: true,
+        cancelButtonText: 'Let me add my own description',
+        inputPlaceholder: 'Select a description',
+        confirmButtonText: 'Finish'
+      });
 
       this.updateWarnings(
-        this.availableWarnings.find((warning) => warning.id === value),
-        true
-      )
+        warning,
+        true,
+        descriptorIndex ? warningDescriptors[descriptorIndex] : null
+      );
     },
-    updateWarnings(warning, include) {
-      return this.$emit(
-        'update:contentWarnings',
-        include
-          ? [...this.contentWarnings, { information: null, warning }]
-          : this.contentWarnings.filter(
-              (currentWarning) => currentWarning.warning.id !== warning.id
-            )
-      )
+    updateWarnings(warning, include, information = null) {
+      // eslint-disable-next-line vue/no-mutating-props
+      this.production.contentWarnings = include
+        ? [...this.production.contentWarnings, { information, warning }]
+        : this.production.contentWarnings.filter(
+            (currentWarning) => currentWarning.warning.id !== warning.id
+          );
     },
     async getInputData() {
       // Upload any new images
       const images = {
-        coverImage: this.coverImage,
-        featuredImage: this.featuredImage,
-        posterImage: this.posterImage,
-      }
+        coverImage: this.production.coverImage,
+        featuredImage: this.production.featuredImage,
+        posterImage: this.production.posterImage
+      };
 
       for (const [key, imageNode] of Object.entries(images)) {
-        if (!imageNode) continue
+        if (!imageNode) {
+          continue;
+        }
         if (imageNode.id) {
-          images[key] = imageNode.id
+          images[key] = imageNode.id;
         } else if (imageNode.file) {
           const image = await imageUpload(
-            this,
             imageNode.file,
             key + `_${this.id ?? uuid()}.` + imageNode.file.name.split('.')[1]
-          )
-          images[key] = image.global_id
+          );
+          images[key] = image.global_id;
         } else {
-          images[key] = null
+          images[key] = null;
         }
       }
 
       const returnObject = {
-        id: this.id,
-        name: this.name,
-        slug: this.slug,
-        subtitle: this.subtitle,
-        description: this.description,
-        shortDescription: this.shortDescription,
-        ageRating: this.ageRating,
-        facebookEvent: this.facebookEvent,
-        // supportEmail: this.supportEmail,
-        contentWarnings: this.contentWarnings.map((cw) => ({
+        id: this.production.id,
+        name: this.production.name,
+        slug: this.production.slug,
+        subtitle: this.production.subtitle,
+        shortDescription: this.production.shortDescription,
+        description: this.production.description,
+        ageRating: this.production.ageRating,
+        facebookEvent: this.production.facebookEvent,
+        contactEmail: this.production.contactEmail,
+        contentWarnings: (this.production.contentWarnings ?? []).map((cw) => ({
           id: cw.warning.id,
-          information: cw.information,
+          information: cw.information
         })),
-        society: this.society?.id,
-        ...images,
-      }
+        society: this.production.society?.id,
+        ...images
+      };
 
       if (!returnObject.id) {
-        delete returnObject.id
+        delete returnObject.id;
       }
 
-      return returnObject
-    },
-  },
-}
+      return returnObject;
+    }
+  }
+};
 </script>

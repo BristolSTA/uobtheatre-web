@@ -17,14 +17,14 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [14]
+        node: [18]
 
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@master
 
       - name: Setup node env 🏗
-        uses: actions/setup-node@v2.3.0
+        uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ matrix.node }}
           check-latest: true
@@ -34,7 +34,7 @@ jobs:
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
       - name: Cache node_modules 📦
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v3.2.3
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -45,8 +45,14 @@ jobs:
       - name: Install dependencies 👨🏻‍💻
         run: yarn
 
+      - name: Load GraphQL Codegen 🕸
+        run: GQL_SCHEMA=https://raw.githubusercontent.com/BristolSTA/uobtheatre-api/dev/schema.graphql yarn codegen
+
       - name: Run linter 👀
-        run: yarn lint
+        run: yarn lint:tsc && yarn lint:js
+
+      - name: Load GraphQL 🕸
+        run: API_BASE=https://staging.api.uobtheatre.com yarn codegen
 
       - name: Run tests 🧪
         run: yarn test:unit --coverage
@@ -56,16 +62,16 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [18.x]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@master
 
       - name: Copy Testing Env ✉
         run: cp .env.test .env
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2.3.0
+        uses: actions/setup-node@v3.6.0
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -74,7 +80,7 @@ jobs:
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
       - name: Cache node_modules 📦
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v3.2.3
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -86,7 +92,7 @@ jobs:
         name: Install Yarn Dependencies 👨🏻‍💻
 
       - name: Authenticate with GitHub Container Registry 🔒
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2.1.0
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
@@ -98,9 +104,15 @@ jobs:
       - name: Start Real API ⭐
         run: docker-compose -f .devcontainer/docker-compose.yml up -d postgres uobtheatre-api
 
+      - name: Wait for API to boot 💫
+        run: node .github/scripts/waiton-api.js http://localhost:9000
+
+      - name: Load GraphQL Codegen 🕸
+        run: API_BASE=http://localhost:9000 yarn codegen
+
       - name: Run End-to-End Tests 🧪
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v5
+        timeout-minutes: 5
         with:
           start: yarn pretest:e2e:ci
           wait-on: 'http://localhost:3000'
-          headless: true

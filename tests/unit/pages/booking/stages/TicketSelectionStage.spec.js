@@ -1,73 +1,83 @@
-import { mount } from '@vue/test-utils'
-import { expect } from 'chai'
+import { expect } from 'vitest';
+import { mount } from '#testSupport/helpers';
 
-import Booking from '@/classes/Booking'
-import Ticket from '@/classes/Ticket'
-import TicketsMatrix from '@/classes/TicketsMatrix'
-import TicketSelectionStage from '@/pages/production/_slug/book/_performanceId/tickets.vue'
-import SelectedTicketsTable from '@/components/booking/SelectedTicketsTable.vue'
-import TicketOptions from '@/components/booking/TicketOptions.vue'
+import Booking from '@/classes/Booking';
+import Ticket from '@/classes/Ticket';
+import TicketsMatrix from '@/classes/TicketsMatrix';
+import TicketSelectionStage from '@/pages/production/[slug]/book/[performanceId]/tickets.vue';
+import SelectedTicketsTable from '@/components/booking/SelectedTicketsTable.vue';
+import TicketOptions from '@/components/booking/TicketOptions.vue';
 
-import FullBooking from '@/tests/unit/fixtures/instances/FullBooking'
-import GenericApolloResponse from '@/tests/unit/fixtures/support/GenericApolloResponse'
-import GenericMutationResponse from '@/tests/unit/fixtures/support/GenericMutationResponse'
-import { generateMountOptions } from '../../../helpers'
+import FullBooking from '#testSupport/fixtures/instances/FullBooking';
+import {
+  GenericApolloResponse,
+  GenericMutationResponse
+} from '#testSupport/helpers/api';
+import { flushPromises } from '@vue/test-utils';
 
 describe('Ticket Selection Stage', () => {
-  let stageComponent
-  let ticketTypes
-  let production
-  let performance
+  let stageComponent;
+  let ticketTypes;
+  let production;
+  let performance;
 
-  beforeEach(() => {
-    const bookingMock = FullBooking()
-    production = bookingMock.performance.production
-    performance = bookingMock.performance
+  async function mountComponent(mutationResponses) {
+    const bookingMock = FullBooking();
+    production = bookingMock.performance.production;
+    performance = bookingMock.performance;
 
-    ticketTypes = new TicketsMatrix(performance)
-    const booking = new Booking()
-    booking.performance = performance
+    ticketTypes = new TicketsMatrix(performance);
+    const booking = new Booking();
+    booking.performance = performance;
 
-    stageComponent = mount(
-      TicketSelectionStage,
-      generateMountOptions(['apollo'], {
-        propsData: {
-          production,
-          booking,
-          ticketMatrix: ticketTypes,
-        },
-      })
-    )
-  })
+    stageComponent = await mount(TicketSelectionStage, {
+      shallow: false,
+      apollo: {
+        mutationResponses
+      },
+      propsData: {
+        production,
+        booking,
+        ticketMatrix: ticketTypes
+      }
+    });
+  }
+
+  beforeEach(async () => {
+    await mountComponent();
+  });
 
   it('displays the available seat locations', () => {
-    expect(stageComponent.findComponent(TicketOptions).exists()).to.be.true
+    expect(stageComponent.findComponent(TicketOptions).exists()).to.be.true;
     expect(
       stageComponent.findComponent(TicketOptions).props('ticketMatrix')
-    ).to.eq(stageComponent.vm.ticketMatrix)
+    ).to.eq(stageComponent.vm.ticketMatrix);
     expect(stageComponent.findComponent(TicketOptions).props('booking')).to.eq(
       stageComponent.vm.booking
-    )
-  })
+    );
+  });
 
   it('reacts to request update event', async () => {
-    expect(stageComponent.vm.booking.dirty).to.be.true
-    stageComponent.vm.$apollo.mock.mutationCallstack.push(
+    await mountComponent([
       GenericApolloResponse(
         'booking',
         GenericMutationResponse({ booking: FullBooking({ tickets: [] }) })
       )
-    )
-    await stageComponent.findComponent(TicketOptions).vm.$emit('request-update')
-    await stageComponent.vm.$nextTick()
+    ]);
+    expect(stageComponent.vm.booking.dirty).to.be.true;
+    await stageComponent
+      .findComponent(TicketOptions)
+      .vm.$emit('request-update');
 
-    expect(stageComponent.vm.booking.dirty).to.be.false
-  })
+    await flushPromises();
+
+    expect(stageComponent.vm.booking.dirty).to.be.false;
+  });
 
   describe('with selected tickets', () => {
     beforeEach(async () => {
-      const booking = new Booking()
-      booking.performance = performance
+      const booking = new Booking();
+      booking.performance = performance;
       booking.tickets = [
         new Ticket(
           performance.ticketOptions[0].seatGroup.id,
@@ -84,22 +94,22 @@ describe('Ticket Selection Stage', () => {
         new Ticket(
           performance.ticketOptions[1].seatGroup.id,
           performance.ticketOptions[0].concessionTypes[1].concessionType.id
-        ),
-      ]
+        )
+      ];
       await stageComponent.setProps({
-        booking,
-      })
-    })
+        booking
+      });
+    });
 
     it('displays selected tickets', () => {
       expect(stageComponent.findComponent(SelectedTicketsTable).exists()).to.be
-        .true
+        .true;
       expect(
         stageComponent.findComponent(SelectedTicketsTable).props('booking')
-      ).to.eq(stageComponent.vm.booking)
+      ).to.eq(stageComponent.vm.booking);
       expect(
         stageComponent.findComponent(SelectedTicketsTable).props('ticketMatrix')
-      ).to.eq(stageComponent.vm.ticketMatrix)
-    })
-  })
-})
+      ).to.eq(stageComponent.vm.ticketMatrix);
+    });
+  });
+});
