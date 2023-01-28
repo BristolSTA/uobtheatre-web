@@ -742,7 +742,9 @@ export default {
       // Remove from array
       // eslint-disable-next-line vue/no-mutating-props
       this.performance.discounts = {
-        edges: this.discounts.edges.filter((edge) => edge.node !== discount)
+        edges: this.performance.discounts.edges.filter(
+          (edge) => edge.node !== discount
+        )
       };
 
       this.deletedDiscounts.push(discount);
