@@ -5,7 +5,7 @@
     min="0"
     max="100"
     max-length="3"
-    :model-value="modelValue"
+    :model-value="String(modelValue)"
     @blur="onBlur"
     @keypress.stop="
       (event) => {
