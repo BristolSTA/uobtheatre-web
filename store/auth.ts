@@ -134,7 +134,7 @@ export default defineStore('auth', {
 
       // Store the new tokens
       await this.setToken(authToken);
-      this.setRefreshToken(refreshToken);
+      await this.setRefreshToken(refreshToken);
       this.queueRefresh();
 
       // Load the user's details

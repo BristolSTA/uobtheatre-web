@@ -118,7 +118,7 @@ export default defineNuxtComponent({
           offset: this.activeBookingsOffset
         };
       },
-      update: (data) => data.me.bookings
+      update: (data) => data.me?.bookings ?? { edges: [] }
     },
     oldBookings: {
       query: CompleteBookingsDocument,
@@ -128,7 +128,7 @@ export default defineNuxtComponent({
           offset: this.oldBookingsOffset
         };
       },
-      update: (data) => data.me.bookings
+      update: (data) => data.me?.bookings ?? { edges: [] }
     }
   }
 });

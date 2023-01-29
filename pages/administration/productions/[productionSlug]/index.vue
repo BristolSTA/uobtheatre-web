@@ -1,5 +1,5 @@
 <template>
-  <AdminPage :title="production.name">
+  <AdminPage :title="production?.name">
     <template #toolbar>
       <UiStaButton
         colour="green"
