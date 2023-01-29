@@ -42,9 +42,7 @@
           <UiInputText
             :model-value="description"
             placeholder="e.g. Valid ID card required"
-            @update:model-value="
-              $emit('update:description', $event.target.value)
-            "
+            @update:model-value="$emit('update:description', $event)"
           />
         </template>
       </form-label>

@@ -31,21 +31,24 @@ import {
   PerformanceByIdQueryVariables
 } from '~~/graphql/codegen/operations';
 
+definePageMeta({
+  validate: (route) => {
+    return !!(
+      route.query.ticketID &&
+      route.query.performanceID &&
+      typeof route.query.performanceID == 'string' &&
+      typeof route.params.reference == 'string'
+    );
+  }
+});
+
 const query = useRoute().query;
-const reference = useRoute().params.reference;
-if (
-  !query.ticketID ||
-  !query.performanceID ||
-  typeof query.performanceID !== 'string' ||
-  typeof reference !== 'string'
-) {
-  throw navigateTo('./', { replace: true });
-}
+const reference = useRoute().params.reference as string;
 
 const { data } = await useAsyncQuery<PerformanceByIdQuery>({
   query: PerformanceByIdDocument,
   variables: {
-    id: query.performanceID
+    id: query.performanceID as string
   } satisfies PerformanceByIdQueryVariables
 });
 
