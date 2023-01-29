@@ -31,9 +31,6 @@ import {
   PerformanceByIdQueryVariables
 } from '~~/graphql/codegen/operations';
 
-const query = useRoute().query;
-const reference = useRoute().params.reference;
-
 definePageMeta({
   validate: (route) => {
     return !!(
@@ -44,6 +41,9 @@ definePageMeta({
     );
   }
 });
+
+const query = useRoute().query;
+const reference = useRoute().params.reference as string;
 
 const { data } = await useAsyncQuery<PerformanceByIdQuery>({
   query: PerformanceByIdDocument,
