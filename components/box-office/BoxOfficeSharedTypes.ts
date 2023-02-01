@@ -1,5 +1,6 @@
 import {
   ConcessionTypeNode,
+  DetailedBookingDetailsFragment,
   SeatGroupNode,
   TicketNode
 } from '~~/graphql/codegen/operations';
@@ -28,3 +29,8 @@ export type ICheckInIndicator = {
   success: boolean | null;
   message: string | null;
 };
+
+// The type of a ticket retrieved using the detailed booking fragment
+export type IDetailedBookingTicket = NonNullable<
+  DetailedBookingDetailsFragment['tickets']
+>[number];

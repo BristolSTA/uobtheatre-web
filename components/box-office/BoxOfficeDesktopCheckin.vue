@@ -1,20 +1,29 @@
 <template>
   <div>
-    <div class="gap-5 flex flex-none bg-sta-gray-dark rounded-xl p-5">
-      <BoxOfficeScanIndicator
-        :state="
-          state.success
-            ? 'success'
-            : state.success === false
-            ? 'warning'
-            : 'waiting'
-        "
-        class="h-28 w-4/12 flex-none text-7xl"
-      />
+    <div class="flex flex-col md:flex-row gap-2 md:gap-5">
       <div
-        class="p-5 border-2 border-white text-white flex items-center justify-center flex-grow text-4xl overflow-clip"
+        class="md:p-5 border-2 border-white text-white flex items-center justify-center flex-grow md:text-4xl overflow-clip md:order-2"
       >
         {{ state.message ?? 'Waiting...' }}
+      </div>
+
+      <div class="flex flex-none rounded-xl md:order-1 gap-5">
+        <BoxOfficeScanIndicator
+          :state="
+            state.success
+              ? 'success'
+              : state.success === false
+              ? 'warning'
+              : 'waiting'
+          "
+          class="h-12 md:h-28 lg:w-64 px-5 flex-grow text-3xl md:text-7xl"
+        />
+        <button
+          v-if="showInformationButton"
+          class="text-white py-2 px-6 rounded bg-sta-green"
+        >
+          <font-awesome-icon icon="info" />
+        </button>
       </div>
     </div>
   </div>
@@ -23,7 +32,13 @@
 <script lang="ts" setup>
 import { ICheckInIndicator } from './BoxOfficeSharedTypes';
 
-defineProps<{
-  state: ICheckInIndicator;
-}>();
+withDefaults(
+  defineProps<{
+    state: ICheckInIndicator;
+    showInformationButton?: boolean;
+  }>(),
+  {
+    showInformationButton: false
+  }
+);
 </script>

@@ -2,6 +2,7 @@ import {
   faArrowRight,
   faChevronDown,
   faChevronLeft,
+  faChevronCircleLeft,
   faChevronRight,
   faCaretSquareRight,
   faChevronUp,
@@ -57,7 +58,9 @@ import {
   faUserPen,
   faBuilding,
   faEllipsis,
-  faCamera
+  faCamera,
+  faInfo,
+  faExclamationCircle
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
@@ -67,6 +70,9 @@ export default {
     faArrowRight,
     faCamera,
     faChevronDown,
+    faInfo,
+    faExclamationCircle,
+    faChevronCircleLeft,
     faChevronLeft,
     faChevronRight,
     faCaretSquareRight,

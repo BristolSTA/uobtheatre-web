@@ -14,15 +14,10 @@
 
       <BoxOfficeCheckInStatus class="w-60" />
       <div class="flex flex-none gap-4 w-full md:w-auto">
-        <div class="items-center gap-4 hidden md:flex">
-          <UiInputToggle v-model="autoCheckIn" />
-          <div class="flex flex-col items-center font-bold">
-            <p class="text-white">Auto Check-In</p>
-            <p class="text-sta-gray-lighter">
-              {{ autoCheckIn ? 'Enabled' : 'Disabled' }}
-            </p>
-          </div>
-        </div>
+        <BoxOfficeAutoCheckInControl
+          v-model="autoCheckIn"
+          class="hidden md:flex"
+        />
         <NuxtLink
           :href="`/box-office/${performance?.id}/scan`"
           class="bg-sta-green text-white p-2 md:p-4 rounded flex items-center justify-center mt-3 md:mt-0 w-full md:w-auto"
@@ -84,7 +79,7 @@
                   inspectedObjects.booking
                     ? checkInTickets(
                         inspectedObjects.booking?.reference,
-                        $event.map((ticket) => ticket.id)
+                        $event.map((ticket) => ticket.id) as AtLeastOneIdInput
                       )
                     : null
                 "
@@ -100,7 +95,10 @@
           </UiLoadingContainer>
         </div>
       </UiLoadingContainer>
-      <BoxOfficeDesktopCheckin :state="checkInState" class="hidden md:block" />
+      <BoxOfficeDesktopCheckin
+        :state="checkInState"
+        class="bg-sta-gray-dark p-4 hidden md:block"
+      />
     </div>
   </div>
 </template>
@@ -113,11 +111,10 @@ import {
   BoxOfficePerformanceBookingQueryVariables,
   BoxOfficePerformanceBookingsQuery,
   BoxOfficePerformanceBookingDocument,
-  useBoxOfficePerformanceBookingsQuery,
-  useCheckInBookingMutation,
-  Scalars,
-  useUnCheckInBookingMutation
+  useBoxOfficePerformanceBookingsQuery
 } from '~~/graphql/codegen/operations';
+import { mutateTicketCheckInState as mutateTicketCheckInStateOperation } from '@/components/box-office/BoxOfficeSharedFunctions';
+import { AtLeastOneIdInput } from '~~/types/generic';
 
 // Inject performance, provided by base box office page
 const performance = inject(InjectionKeys.boxOffice.performance);
@@ -234,7 +231,7 @@ function setCheckInState(success?: boolean, message?: string) {
 async function mutateTicketCheckInState(
   checkIn: boolean,
   bookingReference: string,
-  ticketIds: Scalars['IdInputField'][]
+  ticketIds: AtLeastOneIdInput
 ) {
   loadingCheckin.value = true;
   setCheckInState();
@@ -243,83 +240,31 @@ async function mutateTicketCheckInState(
       'No performance was available when running mutateTicketCheckInState'
     );
 
-  try {
-    let data = undefined;
+  const response = await mutateTicketCheckInStateOperation(
+    performance.id,
+    bookingReference,
+    checkIn,
+    ticketIds
+  );
 
-    // Deal with check in case
-    if (checkIn) {
-      data = await doMutation(
-        useCheckInBookingMutation({
-          variables: {
-            performanceId: performance?.id,
-            reference: bookingReference,
-            tickets: ticketIds.map((ticketId) => ({
-              ticketId
-            }))
-          }
-        }),
-        'checkInBooking'
-      );
-    } else {
-      // Dela with un check in case
-      data = await doMutation(
-        useUnCheckInBookingMutation({
-          variables: {
-            performanceId: performance?.id,
-            reference: bookingReference,
-            tickets: ticketIds.map((ticketId) => ({
-              ticketId
-            }))
-          }
-        }),
-        'uncheckInBooking'
-      );
-    }
+  // Replace local booking
+  if (response.booking) inspectedObjects.booking = response.booking;
 
-    // Replace local booking
-    if (inspectedObjects.booking && data.booking)
-      inspectedObjects.booking = data.booking;
+  // Replace local ticket
+  if (response.ticket) selectTicket(response.ticket);
 
-    // Replace local ticket
-    if (ticketIds.length == 1) selectTicket({ id: ticketIds[0] });
+  setCheckInState(
+    checkIn ? true : response.error ? false : undefined,
+    response.error ?? response.message
+  );
 
-    const tickets = ticketIds
-      .map((ticketId) =>
-        inspectedObjects.booking!.tickets!.find(
-          (ticket) => ticket.id == ticketId
-        )
-      )
-      .filter((ticket) => !!ticket);
-
-    setCheckInState(
-      checkIn ? true : undefined,
-      ticketIds.length > 1
-        ? checkIn
-          ? 'Tickets checked in'
-          : 'Tickets un-checked in'
-        : checkIn
-        ? `Checked In: 1x ${tickets[0]?.concessionType.name}`
-        : `Un-Checked In: 1x ${tickets[0]?.concessionType.name}`
-    );
-  } catch (e) {
-    const errors = getValidationErrors(e);
-    setCheckInState(
-      false,
-      (
-        errors?.allErrors
-          .map((error) => error.message)
-          .filter((message) => !!message) as string[]
-      ).join(', ')
-    );
-  } finally {
-    loadingCheckin.value = false;
-  }
+  loadingCheckin.value = false;
 }
 
 // Check in tickets
 async function checkInTickets(
   bookingReference: string,
-  ticketIds: Scalars['IdInputField'][]
+  ticketIds: AtLeastOneIdInput
 ) {
   mutateTicketCheckInState(true, bookingReference, ticketIds);
 }
@@ -327,7 +272,7 @@ async function checkInTickets(
 // Un Check in tickets
 async function unCheckInTickets(
   bookingReference: string,
-  ticketIds: Scalars['IdInputField'][]
+  ticketIds: AtLeastOneIdInput
 ) {
   mutateTicketCheckInState(false, bookingReference, ticketIds);
 }

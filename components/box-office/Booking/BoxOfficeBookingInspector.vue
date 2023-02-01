@@ -20,7 +20,12 @@
     v-if="ticketsNotCheckedIn?.length"
     class="bg-sta-green hover:bg-sta-green-dark text-white"
     @click="
-      ticketsNotCheckedIn ? emit('checkInTickets', ticketsNotCheckedIn) : null
+      ticketsNotCheckedIn
+        ? emit(
+            'checkInTickets',
+            ticketsNotCheckedIn as AtLeastOneOf<IBookingTicketsProp>
+          )
+        : null
     "
     >Check In Remaining
     {{ ticketsNotCheckedIn.length }} Tickets</BoxOfficeButton
@@ -32,6 +37,7 @@ import type {
   IBookingHeaderProp,
   IBookingTicketsProp
 } from '~~/components/box-office/BoxOfficeSharedTypes';
+import { AtLeastOneOf } from '~~/types/generic';
 
 const props = defineProps<{
   booking: IBookingHeaderProp & { tickets?: IBookingTicketsProp[] | null };
@@ -39,7 +45,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (event: 'selectTicket', ticket: IBookingTicketsProp): void;
-  (event: 'checkInTickets', tickets: IBookingTicketsProp[]): void;
+  (event: 'checkInTickets', tickets: AtLeastOneOf<IBookingTicketsProp>): void;
   (event: 'close'): void;
 }>();
 
