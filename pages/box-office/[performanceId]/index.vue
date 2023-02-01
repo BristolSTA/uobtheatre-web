@@ -24,7 +24,7 @@
           </div>
         </div>
         <NuxtLink
-          :href="`/box-office/${performance?.id}/sell`"
+          :href="`/box-office/${performance?.id}/scan`"
           class="bg-sta-green text-white p-2 md:p-4 rounded flex items-center justify-center mt-3 md:mt-0 w-full md:w-auto"
         >
           <font-awesome-icon icon="camera" class="text-xl" />
@@ -42,7 +42,10 @@
         :loading="loadingCheckin"
         class="flex-grow flex overflow-hidden gap-5"
       >
-        <div class="w-1/3 hidden md:block">
+        <div
+          class="w-full md:w-1/3"
+          :class="{ 'hidden md:block': !inspectedObjects.ticket }"
+        >
           <BoxOfficeBookingTicketDetails
             v-if="inspectedObjects.ticket"
             :ticket="inspectedObjects.ticket"
@@ -64,7 +67,8 @@
           />
         </div>
         <div
-          class="flex-grow bg-sta-gray-dark rounded-xl p-2 md:p-5 py-3 flex flex-col relative"
+          class="flex-grow bg-sta-gray-dark rounded-xl p-2 md:p-5 py-3 flex-col relative"
+          :class="[inspectedObjects.ticket ? 'hidden md:flex' : 'flex']"
         >
           <UiLoadingContainer
             class="h-full"
