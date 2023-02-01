@@ -2,13 +2,15 @@ import * as Sentry from '@sentry/browser';
 
 export const errorHandler = (e) => {
   // eslint-disable-next-line no-console
-  console.error(e);
+  silentErrorHandler(e);
   apiErrorToast.fire();
-  Sentry.captureException(e);
 };
 
-export const silentErrorHandler = (e, context) => {
+export const silentErrorHandler = (e, context = {}) => {
   // eslint-disable-next-line no-console
+  if (e instanceof AxiosError) {
+    context = { extra: e.toJSON(), ...context };
+  }
   console.error(e);
   Sentry.captureException(e, context);
 };
