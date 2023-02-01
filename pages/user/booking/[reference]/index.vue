@@ -3,7 +3,7 @@
     <Head>
       <Title>Booking for {{ production.name }}</Title>
     </Head>
-    <div v-if="booking.performance" class="container">
+    <div v-if="booking?.performance" class="container">
       <alert v-if="booking.status == 'CANCELLED'" level="danger">
         This booking has been cancelled, and is no longer valid
       </alert>
@@ -135,7 +135,7 @@ export default defineNuxtComponent({
   },
   computed: {
     production() {
-      return this.booking.performance
+      return this.booking?.performance
         ? this.booking.performance.production
         : null;
     }

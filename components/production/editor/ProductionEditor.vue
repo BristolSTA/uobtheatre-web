@@ -218,7 +218,7 @@
           Cover Image
           <template #helper>
             A cover image used on the homepage carousel. Should have a ratio of
-            roughly 3:1, with at least 1200px width dimension
+            roughly 3:1, with at least 1200px width dimension. This image should <strong>not</strong> have any text or logos on it.
           </template>
           <template #control>
             <image-input
@@ -371,7 +371,7 @@ export default {
             imageNode.file,
             key + `_${this.id ?? uuid()}.` + imageNode.file.name.split('.')[1]
           );
-          images[key] = image.global_id;
+          images[key] = image ? image.global_id : null;
         } else {
           images[key] = null;
         }

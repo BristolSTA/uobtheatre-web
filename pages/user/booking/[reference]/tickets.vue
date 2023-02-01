@@ -22,36 +22,44 @@
   </div>
 </template>
 
-<script>
+<script lang="ts" setup>
 import TicketClass from '@/classes/Ticket';
 import Ticket from '@/components/booking/Ticket.vue';
-import { PerformanceByIdDocument } from '~~/graphql/codegen/operations';
+import {
+  PerformanceByIdDocument,
+  PerformanceByIdQuery,
+  PerformanceByIdQueryVariables
+} from '~~/graphql/codegen/operations';
 
-export default defineNuxtComponent({
-  components: { Ticket },
-  async asyncData({ app, params, query, redirect }) {
-    if (!query.ticketID || !query.performanceID) {
-      return redirect('./');
-    }
-    const { data } = await useDefaultApolloClient().query({
-      query: PerformanceByIdDocument,
-      variables: {
-        id: query.performanceID
-      }
-    });
-
-    if (!data.performance) {
-      return redirect('./');
-    }
-    const tickets = (
-      Array.isArray(query.ticketID) ? query.ticketID : [query.ticketID]
-    ).map((ticketID) => new TicketClass(null, null, ticketID));
-
-    return {
-      performance: data.performance,
-      reference: useRoute().params.reference,
-      tickets
-    };
+definePageMeta({
+  validate: (route) => {
+    return !!(
+      route.query.ticketID &&
+      route.query.performanceID &&
+      typeof route.query.performanceID == 'string' &&
+      typeof route.params.reference == 'string'
+    );
   }
 });
+
+const query = useRoute().query;
+const reference = useRoute().params.reference as string;
+
+const { data } = await useAsyncQuery<PerformanceByIdQuery>({
+  query: PerformanceByIdDocument,
+  variables: {
+    id: query.performanceID as string
+  } satisfies PerformanceByIdQueryVariables
+});
+
+const performance = data.value?.performance;
+
+if (!performance) {
+  throw navigateTo('./', { replace: true });
+}
+const tickets = (
+  Array.isArray(query.ticketID) ? query.ticketID : [query.ticketID]
+)
+  .filter((ticketID) => typeof ticketID == 'string')
+  .map((ticketID) => new TicketClass({}, {}, ticketID as string));
 </script>

@@ -2695,6 +2695,11 @@
   dependencies:
     throttle-debounce "^3.0.1"
 
+"@vue/apollo-util@^4.0.0-alpha.18":
+  version "4.0.0-alpha.18"
+  resolved "https://registry.yarnpkg.com/@vue/apollo-util/-/apollo-util-4.0.0-alpha.18.tgz#00fe7f5c3e461ed86617c406f5a1c653c0f613f1"
+  integrity sha512-mA22fthOANRC3xPhlKvZq343Ka+tPLLZpWklbtLN38Px8UO8YUiRUshpBYiwQ5JFMxWICUYWQBrpIfBcl7+4FQ==
+
 "@vue/babel-helper-vue-transform-on@^1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@vue/babel-helper-vue-transform-on/-/babel-helper-vue-transform-on-1.0.2.tgz#9b9c691cd06fc855221a2475c3cc831d774bc7dc"
@@ -3203,6 +3208,16 @@ anymatch@^3.0.3, anymatch@^3.1.2, anymatch@~3.1.2:
   dependencies:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
+
+apollo-link-sentry@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/apollo-link-sentry/-/apollo-link-sentry-3.2.1.tgz#02b9e93dc01b2e083a002a82e0ba202788dd22ea"
+  integrity sha512-IHUqCINsYpO6gh4k0ue6X7ybABGNXte6r4aC+iGOuOOzqkZSwQ6xm2r1GW9PcpnwcNaqyUefa4vFj6Zm7gcYlA==
+  dependencies:
+    deepmerge "^4.2.2"
+    dot-prop "^6.0.0"
+    tslib "^2.0.3"
+    zen-observable "^0.8.15"
 
 "aproba@^1.0.3 || ^2.0.0":
   version "2.0.0"
@@ -4754,6 +4769,13 @@ dot-case@^3.0.4:
   dependencies:
     no-case "^3.0.4"
     tslib "^2.0.3"
+
+dot-prop@^6.0.0:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/dot-prop/-/dot-prop-6.0.1.tgz#fc26b3cf142b9e59b74dbd39ed66ce620c681083"
+  integrity sha512-tE7ztYzXHIeyvc7N+hR3oi7FIbf/NIjVP9hmAt3yMXzrQ072/fpjGLx2GxNxGxUl5V73MEqYzioOMoVhGMJ5cA==
+  dependencies:
+    is-obj "^2.0.0"
 
 dot-prop@^7.2.0:
   version "7.2.0"
@@ -6708,6 +6730,11 @@ is-number@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/is-number/-/is-number-7.0.0.tgz#7535345b896734d5f80c4d06c50955527a14f12b"
   integrity sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==
+
+is-obj@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/is-obj/-/is-obj-2.0.0.tgz#473fb05d973705e3fd9620545018ca8e22ef4982"
+  integrity sha512-drqDG3cbczxxEJRoOXcOjtdp1J/lyp1mNn0xaznRs8+muBhgQcrnbspox5X5fOw0HnMnbfDzvnEMEtqDEJEo8w==
 
 is-path-inside@^3.0.2, is-path-inside@^3.0.3:
   version "3.0.3"
@@ -10706,9 +10733,9 @@ typescript@^4.8.4, typescript@^4.9.3:
   integrity sha512-Uz+dTXYzxXXbsFpM86Wh3dKCxrQqUcVMxwU54orwlJjOpO3ao8L7j5lH+dWfTwgCwIuM9GQ2kvVotzYJMXTBZg==
 
 ua-parser-js@^0.7.30:
-  version "0.7.32"
-  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.32.tgz#cd8c639cdca949e30fa68c44b7813ef13e36d211"
-  integrity sha512-f9BESNVhzlhEFf2CHMSj40NWOjYPl1YKYbrvIr/hFTDEmLq7SRbWvm7FcdcpCYT95zrOhC7gZSxjdnnTpBcwVw==
+  version "0.7.33"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.33.tgz#1d04acb4ccef9293df6f70f2c3d22f3030d8b532"
+  integrity sha512-s8ax/CeZdK9R/56Sui0WM6y9OFREJarMRHqLB2EwkovemBxNQ+Bqu8GAsUnVcXKgphb++ghr/B2BZx4mahujPw==
 
 ufo@^0.8.6:
   version "0.8.6"
@@ -11610,7 +11637,7 @@ zen-observable-ts@^1.2.5:
   dependencies:
     zen-observable "0.8.15"
 
-zen-observable@0.8.15:
+zen-observable@0.8.15, zen-observable@^0.8.15:
   version "0.8.15"
   resolved "https://registry.yarnpkg.com/zen-observable/-/zen-observable-0.8.15.tgz#96415c512d8e3ffd920afd3889604e30b9eaac15"
   integrity sha512-PQ2PC7R9rslx84ndNBZB/Dkv8V8fZEpk83RLgXtYd0fwUgEjseMn1Dgajh2x6S8QbZAFa9p2qVCEuYZNgve0dQ==
