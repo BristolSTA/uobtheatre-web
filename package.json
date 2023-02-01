@@ -106,6 +106,6 @@
     "uuid": "^9.0.0",
     "vue-currency-input": "^3.0.1",
     "vue-gtag": "^2.0.1",
-    "vue-qrcode-reader": "^3.1.0"
+    "vue-qrcode-reader": "3.1.0-vue3-compatibility.5"
   }
 }
