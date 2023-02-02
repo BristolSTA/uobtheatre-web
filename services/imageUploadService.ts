@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import useAuthStore from '@/store/auth';
 import { silentErrorHandler } from '~~/utils/misc';
 
@@ -18,10 +18,7 @@ export default async function (file: File, name: string | undefined) {
     });
     return result.data;
   } catch (e) {
-    silentErrorHandler(
-      e,
-      e instanceof AxiosError ? { extra: { response: e.response } } : undefined
-    );
+    silentErrorHandler(e);
     return null;
   }
 }

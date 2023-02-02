@@ -79,7 +79,7 @@ async function savePermissions() {
 
   await Promise.all(mutations);
 
-  if (!errors) {
+  if (!errors.value) {
     successToast.fire({ title: 'Users updated succesfully' });
     refresh();
   }

@@ -135,7 +135,7 @@ export default defineNuxtComponent({
   },
   computed: {
     production() {
-      return this.booking.performance
+      return this.booking?.performance
         ? this.booking.performance.production
         : null;
     }
