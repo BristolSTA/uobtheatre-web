@@ -1,4 +1,5 @@
 import * as Sentry from '@sentry/browser';
+import axios from "axios"
 
 export const errorHandler = (e) => {
   // eslint-disable-next-line no-console
@@ -8,7 +9,7 @@ export const errorHandler = (e) => {
 
 export const silentErrorHandler = (e, context = {}) => {
   // eslint-disable-next-line no-console
-  if (e instanceof AxiosError) {
+  if (axios.isAxiosError(e)) {
     context = { extra: e.toJSON(), ...context };
   }
   console.error(e);
@@ -26,3 +27,4 @@ export const isInViewport = function (elem) {
       (window.innerWidth || document.documentElement.clientWidth)
   );
 };
+)
