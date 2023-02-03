@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/browser';
-import axios from "axios"
+import axios from "axios";
 
 export const errorHandler = (e) => {
   // eslint-disable-next-line no-console
@@ -27,4 +27,4 @@ export const isInViewport = function (elem) {
       (window.innerWidth || document.documentElement.clientWidth)
   );
 };
-)
+
