@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-sta-gray-dark rounded-xl px-5 py-3 flex flex-col gap-2">
+  <div class="flex flex-col gap-2">
     <h2 class="underline text-2xl text-white text-center font-bold">
       <font-awesome-icon
         icon="fa-ticket"
@@ -17,16 +17,14 @@
       </div>
       <p><strong>ID:</strong> {{ ticket.id }}</p>
     </div>
-    <BoxOfficeButton
-      class="text-white mt-auto"
-      :class="[
-        checkedIn
-          ? 'bg-sta-orange hover:bg-sta-orange-dark'
-          : 'bg-sta-green hover:bg-sta-green-dark'
-      ]"
-      @click="emit(checkedIn ? 'unCheckIn' : 'checkIn', ticket)"
-      >{{ checkedIn ? 'Un Check-in' : 'Check In' }}</BoxOfficeButton
-    >
+    <BoxOfficeBookingCheckInButton
+      v-if="allowCheckIn"
+      :check-in="!checkedIn"
+      @check-in="emit('checkIn', { ticket, asyncCompleteCallback: $event })"
+      @un-check-in="
+        emit('unCheckIn', { ticket, asyncCompleteCallback: $event })
+      "
+    />
   </div>
 </template>
 
@@ -46,15 +44,27 @@ type Ticket = Pick<TicketNode, 'id' | 'checkedInAt'> & {
   checkedInBy?: Pick<ExtendedUserNode, 'firstName' | 'lastName'> | null;
 };
 
-const props = defineProps<{
-  ticket: Ticket;
-}>();
+const props = withDefaults(
+  defineProps<{
+    ticket: Ticket;
+    allowCheckIn?: boolean;
+  }>(),
+  {
+    allowCheckIn: false
+  }
+);
 
 const now = useClock(5);
 
 const emit = defineEmits<{
-  (event: 'checkIn', ticket: Ticket): void;
-  (event: 'unCheckIn', ticket: Ticket): void;
+  (
+    event: 'checkIn',
+    payload: { ticket: Ticket; asyncCompleteCallback: () => void }
+  ): void;
+  (
+    event: 'unCheckIn',
+    payload: { ticket: Ticket; asyncCompleteCallback: () => void }
+  ): void;
 }>();
 
 const checkedIn = computed(

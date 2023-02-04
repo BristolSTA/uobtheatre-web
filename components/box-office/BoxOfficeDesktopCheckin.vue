@@ -21,6 +21,7 @@
         <button
           v-if="showInformationButton"
           class="text-white py-2 px-6 rounded bg-sta-green"
+          @click="emit('click-information')"
         >
           <font-awesome-icon icon="info" />
         </button>
@@ -41,4 +42,8 @@ withDefaults(
     showInformationButton: false
   }
 );
+
+const emit = defineEmits<{
+  (event: 'click-information'): void;
+}>();
 </script>

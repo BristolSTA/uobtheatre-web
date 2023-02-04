@@ -40,18 +40,18 @@
 </template>
 
 <script lang="ts" setup>
-import type { IBookingTicketsProp } from '../BoxOfficeSharedTypes';
+import type { IBookingTicketProp } from '../BoxOfficeSharedTypes';
 
 const emit = defineEmits<{
-  (event: 'selectTicket', ticket: IBookingTicketsProp): void;
+  (event: 'selectTicket', ticket: IBookingTicketProp): void;
 }>();
 
 defineProps<{
-  tickets: IBookingTicketsProp[];
+  tickets: IBookingTicketProp[];
   selectedTicketId?: string;
 }>();
 
-function selectTicket(ticket: IBookingTicketsProp) {
+function selectTicket(ticket: IBookingTicketProp) {
   emit('selectTicket', ticket);
 }
 </script>

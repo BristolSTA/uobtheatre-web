@@ -44,7 +44,7 @@
           <BoxOfficeBookingTicketDetails
             v-if="inspectedObjects.ticket"
             :ticket="inspectedObjects.ticket"
-            class="h-full overflow-y-auto"
+            class="h-full overflow-y-auto bg-sta-gray-dark rounded-xl px-5 py-3"
             @check-in="
               inspectedObjects.booking
                 ? checkInTickets(inspectedObjects.booking.reference, [

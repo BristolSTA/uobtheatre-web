@@ -19,7 +19,7 @@ export type IBookingHeaderProp = {
 };
 
 // The "tickets" prop on BookingTickets
-export type IBookingTicketsProp = Pick<TicketNode, 'id' | 'checkedInAt'> & {
+export type IBookingTicketProp = Pick<TicketNode, 'id' | 'checkedInAt'> & {
   concessionType: Pick<ConcessionTypeNode, 'name'>;
   seatGroup: Pick<SeatGroupNode, 'name'>;
 };
@@ -29,6 +29,9 @@ export type ICheckInIndicator = {
   success: boolean | null;
   message: string | null;
 };
+
+// The type of a booking retrieved using the detailed booking fragment
+export type IDetailedBooking = DetailedBookingDetailsFragment;
 
 // The type of a ticket retrieved using the detailed booking fragment
 export type IDetailedBookingTicket = NonNullable<

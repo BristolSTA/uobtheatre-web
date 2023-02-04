@@ -16,42 +16,42 @@
     />
     <h3 v-else class="font-bold text-center">No tickets in booking</h3>
   </div>
-  <BoxOfficeButton
+  <BoxOfficeBookingCheckInButton
     v-if="ticketsNotCheckedIn?.length"
-    class="bg-sta-green hover:bg-sta-green-dark text-white"
-    @click="
+    :check-in="true"
+    :number="ticketsNotCheckedIn.length"
+    @check-in="
       ticketsNotCheckedIn
         ? emit(
             'checkInTickets',
-            ticketsNotCheckedIn as AtLeastOneOf<IBookingTicketsProp>
+            ticketsNotCheckedIn as AtLeastOneOf<IBookingTicketProp>
           )
         : null
     "
-    >Check In Remaining
-    {{ ticketsNotCheckedIn.length }} Tickets</BoxOfficeButton
+  />
   >
 </template>
 
 <script lang="ts" setup>
 import type {
   IBookingHeaderProp,
-  IBookingTicketsProp
+  IBookingTicketProp
 } from '~~/components/box-office/BoxOfficeSharedTypes';
 import { AtLeastOneOf } from '~~/types/generic';
 
 const props = defineProps<{
-  booking: IBookingHeaderProp & { tickets?: IBookingTicketsProp[] | null };
+  booking: IBookingHeaderProp & { tickets?: IBookingTicketProp[] | null };
 }>();
 
 const emit = defineEmits<{
-  (event: 'selectTicket', ticket: IBookingTicketsProp): void;
-  (event: 'checkInTickets', tickets: AtLeastOneOf<IBookingTicketsProp>): void;
+  (event: 'selectTicket', ticket: IBookingTicketProp): void;
+  (event: 'checkInTickets', tickets: AtLeastOneOf<IBookingTicketProp>): void;
   (event: 'close'): void;
 }>();
 
 const ticketsNotCheckedIn = computed(() =>
   props.booking.tickets?.filter(
-    (ticket: IBookingTicketsProp) => !ticket.checkedInAt
+    (ticket: IBookingTicketProp) => !ticket.checkedInAt
   )
 );
 </script>
