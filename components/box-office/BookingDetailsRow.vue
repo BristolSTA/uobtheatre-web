@@ -160,6 +160,8 @@ export default {
     },
     async updateBookingCheckins() {
       this.saving = true;
+
+      const apollo = this.$apollo;
       const ticketsToCheckIn = this.booking.tickets
         .filter(
           (ticket) => !ticket.checkedIn && this.editingData[ticket.id] === true
@@ -177,7 +179,7 @@ export default {
 
       if (ticketsToCheckIn.length) {
         queries.push(
-          this.$apollo.mutate({
+          apollo.mutate({
             mutation: CheckInMutation,
             variables: {
               reference: this.booking.reference,
@@ -190,7 +192,7 @@ export default {
 
       if (ticketsToUnCheckIn.length) {
         queries.push(
-          await this.$apollo.mutate({
+          apollo.mutate({
             mutation: UnCheckInMutation,
             variables: {
               reference: this.booking.reference,
@@ -203,7 +205,7 @@ export default {
 
       await Promise.all(queries);
 
-      const { data } = await this.$apollo.query({
+      const { data } = await apollo.query({
         query: BoxOfficePerformanceBooking,
         variables: {
           performanceId: this.booking.performance.id,
