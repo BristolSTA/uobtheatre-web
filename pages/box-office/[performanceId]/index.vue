@@ -12,7 +12,8 @@
         <p class="text-sm">100 available</p>
       </NuxtLink>
 
-      <BoxOfficeCheckInStatus class="w-60" />
+      <BoxOfficeSchedule />
+      <BoxOfficeCheckInProgress class="w-60" />
       <div class="flex flex-none gap-4 w-full md:w-auto">
         <BoxOfficeAutoCheckInControl
           v-model="autoCheckIn"
