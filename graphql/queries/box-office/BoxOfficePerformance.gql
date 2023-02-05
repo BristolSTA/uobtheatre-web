@@ -18,6 +18,9 @@ query boxOfficePerformance($id: ID!) {
     isOnline
     production {
       ...ProductionBasicInfo
+      posterImage {
+        url
+      }
     }
   }
 }

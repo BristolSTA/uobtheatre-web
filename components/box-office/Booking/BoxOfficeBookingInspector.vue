@@ -29,7 +29,6 @@
         : null
     "
   />
-  >
 </template>
 
 <script lang="ts" setup>
