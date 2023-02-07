@@ -3,11 +3,15 @@
  *
  * @param text Text to be cleaned
  */
-export function oneLiner(text: string): string {
-  return text
+export function oneLiner(htmlText: string): string {
+  let domNode = document.createElement('div');
+  domNode.innerHTML = htmlText
     .replace(/(<([^>]+)>)/gi, '')
     .replace(/([!.?])([A-Z])/g, '$1 $2')
     .replace(/(\.|([^.]))\r?\n/g, '$2. ');
+  let textValue = domNode.textContent;
+  domNode.remove();
+  return textValue ?? '';
 }
 
 /**

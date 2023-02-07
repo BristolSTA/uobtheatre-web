@@ -125,7 +125,7 @@ export default {
   mounted() {
     this.editor = new Editor({
       extensions: [StarterKit],
-      content: this.value,
+      content: this.modelValue,
       editorProps: {
         attributes: {
           class: 'tiptap-output'
