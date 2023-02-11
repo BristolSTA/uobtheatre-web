@@ -1,6 +1,7 @@
 import {
+  BoxOfficePerformanceBookingQuery,
+  BoxOfficePerformanceBookingsQuery,
   ConcessionTypeNode,
-  DetailedBookingDetailsFragment,
   SeatGroupNode,
   TicketNode
 } from '~~/graphql/codegen/operations';
@@ -25,15 +26,27 @@ export type IBookingTicketProp = Pick<TicketNode, 'id' | 'checkedInAt'> & {
 };
 
 // The "state" prop on CheckIn Indicator
-export type ICheckInIndicator = {
+export type ICheckInState = {
   success: boolean | null;
   message: string | null;
 };
 
-// The type of a booking retrieved using the detailed booking fragment
-export type IDetailedBooking = DetailedBookingDetailsFragment;
+export type ISimpleBooking = NonNullable<
+  NonNullable<
+    NonNullable<
+      BoxOfficePerformanceBookingsQuery['performance']
+    >['bookings']['edges'][number]
+  >['node']
+>;
 
-// The type of a ticket retrieved using the detailed booking fragment
+export type IDetailedBooking = NonNullable<
+  NonNullable<
+    NonNullable<
+      BoxOfficePerformanceBookingQuery['performance']
+    >['bookings']['edges'][number]
+  >['node']
+>;
+
 export type IDetailedBookingTicket = NonNullable<
-  DetailedBookingDetailsFragment['tickets']
->[number];
+  NonNullable<IDetailedBooking['tickets']>[number]
+>;

@@ -1,10 +1,9 @@
 import {
   useCheckInBookingMutation,
-  Scalars,
   useUnCheckInBookingMutation,
   DetailedBookingDetailsFragment
 } from '~~/graphql/codegen/operations';
-import type { AtLeastOneIdInput } from '~~/types/generic';
+import type { IdInput } from '~~/types/generic';
 import { IDetailedBookingTicket } from './BoxOfficeSharedTypes';
 
 type IMutateTicketCheckInStateReturn = {
@@ -15,10 +14,10 @@ type IMutateTicketCheckInStateReturn = {
 };
 
 export async function mutateTicketCheckInState(
-  performanceId: Scalars['IdInputField'],
+  performanceId: IdInput,
   bookingReference: string,
   checkIn: boolean,
-  ticketIds: AtLeastOneIdInput,
+  ticketIds: IdInput[],
   withSounds = true
 ): Promise<IMutateTicketCheckInStateReturn> {
   const returnData: IMutateTicketCheckInStateReturn = {

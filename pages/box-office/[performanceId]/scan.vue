@@ -101,7 +101,7 @@
 <script lang="ts" setup>
 import { mutateTicketCheckInState } from '~~/components/box-office/BoxOfficeSharedFunctions';
 import type {
-  ICheckInIndicator,
+  ICheckInState,
   IDetailedBooking,
   IDetailedBookingTicket
 } from '~~/components/box-office/BoxOfficeSharedTypes';
@@ -119,7 +119,7 @@ const viewDetails = ref(false); // Whether to show the ticket details
 const ticket = ref<IDetailedBookingTicket | undefined>(); // Inspected ticket
 const booking = ref<IDetailedBooking | undefined>(); // Inspected ticket
 
-const checkInState = reactive<ICheckInIndicator>({
+const checkInState = reactive<ICheckInState>({
   success: null,
   message: null
 });

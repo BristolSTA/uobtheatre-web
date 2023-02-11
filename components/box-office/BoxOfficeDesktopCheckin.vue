@@ -31,11 +31,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ICheckInIndicator } from './BoxOfficeSharedTypes';
+import { ICheckInState } from './BoxOfficeSharedTypes';
 
 withDefaults(
   defineProps<{
-    state: ICheckInIndicator;
+    state: ICheckInState;
     showInformationButton?: boolean;
   }>(),
   {

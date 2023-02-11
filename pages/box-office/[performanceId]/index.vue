@@ -34,68 +34,19 @@
         v-model:text-search-value="searchText"
       />
 
-      <UiLoadingContainer
-        :loading="loadingCheckin"
-        class="flex-grow flex overflow-hidden gap-5"
-      >
-        <div
-          class="w-full md:w-1/3"
-          :class="{ 'hidden md:block': !inspectedObjects.ticket }"
-        >
-          <BoxOfficeBookingTicketDetails
-            v-if="inspectedObjects.ticket"
-            :ticket="inspectedObjects.ticket"
-            class="h-full overflow-y-auto bg-sta-gray-dark rounded-xl px-5 py-3"
-            @check-in="
-              inspectedObjects.booking
-                ? checkInTickets(inspectedObjects.booking.reference, [
-                    $event.id
-                  ])
-                : null
-            "
-            @un-check-in="
-              inspectedObjects.booking
-                ? unCheckInTickets(inspectedObjects.booking.reference, [
-                    $event.id
-                  ])
-                : null
-            "
-          />
-        </div>
-        <div
-          class="flex-grow bg-sta-gray-dark rounded-xl p-2 md:p-5 py-3 flex-col relative"
-          :class="[inspectedObjects.ticket ? 'hidden md:flex' : 'flex']"
-        >
-          <UiLoadingContainer
-            class="h-full"
-            :loading="loadingBookings || loadingBooking"
-            :hide-content-when-loading="true"
-          >
-            <div class="overflow-y-auto flex flex-col h-full">
-              <BoxOfficeBookingInspector
-                v-if="inspectedObjects.booking"
-                :booking="inspectedObjects.booking"
-                @select-ticket="selectTicket"
-                @check-in-tickets="
-                  inspectedObjects.booking
-                    ? checkInTickets(
-                        inspectedObjects.booking?.reference,
-                        $event.map((ticket) => ticket.id) as AtLeastOneIdInput
-                      )
-                    : null
-                "
-                @close="closeBooking"
-              />
-
-              <BoxOfficeBookingList
-                v-else
-                :bookings="bookings"
-                @select="selectBooking($event)"
-              />
-            </div>
-          </UiLoadingContainer>
-        </div>
-      </UiLoadingContainer>
+      <div class="flex-grow flex overflow-hidden gap-5">
+        <BoxOfficeBookingInspector
+          v-model:selected-booking="selectedBooking"
+          :bookings="bookings"
+          :loading-bookings="loadingBookings || loadingSelectedBooking"
+          :performance-id="performance.id"
+          @starting-check-in="setCheckInState()"
+          @check-in-error="setCheckInState(false, $event)"
+          @checked-in="setCheckInState(true, $event)"
+          @un-checked-in="setCheckInState(undefined, $event)"
+          @update:selected-ticket="selectedTicket = $event"
+        />
+      </div>
       <BoxOfficeDesktopCheckin
         :state="checkInState"
         class="bg-sta-gray-dark p-4 hidden md:block"
@@ -106,16 +57,16 @@
 
 <script lang="ts" setup>
 import InjectionKeys from '@/utils/injection-keys';
-import type { ICheckInIndicator } from '~~/components/box-office/BoxOfficeSharedTypes';
+import type {
+  ICheckInState,
+  IDetailedBooking,
+  IDetailedBookingTicket,
+  ISimpleBooking
+} from '~~/components/box-office/BoxOfficeSharedTypes';
 import {
-  BoxOfficePerformanceBookingQuery,
-  BoxOfficePerformanceBookingQueryVariables,
-  BoxOfficePerformanceBookingsQuery,
-  BoxOfficePerformanceBookingDocument,
+  useBoxOfficePerformanceBookingQuery,
   useBoxOfficePerformanceBookingsQuery
 } from '~~/graphql/codegen/operations';
-import { mutateTicketCheckInState as mutateTicketCheckInStateOperation } from '@/components/box-office/BoxOfficeSharedFunctions';
-import { AtLeastOneIdInput } from '~~/types/generic';
 
 // Inject performance, provided by base box office page
 const performance = inject(InjectionKeys.boxOffice.performance);
@@ -123,14 +74,12 @@ const performance = inject(InjectionKeys.boxOffice.performance);
 if (!performance)
   throw createSafeError('There was an issue loading this performance');
 
-const checkInState = reactive<ICheckInIndicator>({
+const checkInState = reactive<ICheckInState>({
   success: null,
   message: null
 });
 
 const autoCheckIn = ref(true);
-const loadingBooking = ref(false);
-const loadingCheckin = ref(false);
 
 const searchText = ref<string>('');
 const searchFilter = ref<string | null>();
@@ -151,130 +100,47 @@ const { result: bookingsQueryResult, loading: loadingBookings } =
     }
   );
 
-type SimpleBookings = NonNullable<
-  NonNullable<
-    NonNullable<
-      BoxOfficePerformanceBookingsQuery['performance']
-    >['bookings']['edges'][number]
-  >['node']
->[];
-
 const bookings = computed(() =>
   bookingsQueryResult.value
     ? (bookingsQueryResult.value.performance?.bookings.edges
         .map((edge) => edge?.node)
-        .filter((booking) => booking !== null) as SimpleBookings)
+        .filter((booking) => booking !== null) as ISimpleBooking[])
     : []
 );
 
 watch(loadingBookings, (newValue) => {
-  if (newValue == true) closeBooking();
+  if (newValue == true && !loadingSelectedBooking) {
+    selectedBooking.value = undefined;
+    setCheckInState();
+  }
 });
 
-type DeatiledBooking = NonNullable<
-  NonNullable<
-    NonNullable<
-      BoxOfficePerformanceBookingQuery['performance']
-    >['bookings']['edges'][number]
-  >['node']
->;
+const { value: selectedBooking, loading: loadingSelectedBooking } =
+  useQueryBasedState<IDetailedBooking>(
+    'booking',
+    (booking) => booking.id,
+    async (identifier) => {
+      const result = await waitForQuery(
+        useBoxOfficePerformanceBookingQuery({
+          bookingId: identifier,
+          performanceId: performance.id
+        })
+      );
+      return result.data.performance?.bookings.edges[0]?.node || undefined;
+    }
+  );
 
-type Ticket = NonNullable<NonNullable<DeatiledBooking['tickets']>[number]>;
+const { value: selectedTicket } = useQueryBasedState<IDetailedBookingTicket>(
+  'ticket',
+  (ticket) => ticket.id,
+  async () => undefined
+);
 
-const inspectedObjects = reactive<{
-  booking?: DeatiledBooking;
-  ticket?: Ticket;
-}>({
-  booking: undefined,
-  ticket: undefined
-});
-
-// When the user selects a ticket
-function selectTicket(selectedTicket: { id: string }) {
-  inspectedObjects.ticket =
-    inspectedObjects.booking!.tickets!.find(
-      (ticket) => ticket.id == selectedTicket.id
-    ) || undefined;
-}
-
-// When the user selects a booking
-async function selectBooking(booking: SimpleBookings[number]) {
-  if (!performance)
-    return errorHandler(
-      'No performance was available when running selectBooking'
-    );
-  loadingBooking.value = true;
-  const { data } = await useAsyncQuery<BoxOfficePerformanceBookingQuery>({
-    query: BoxOfficePerformanceBookingDocument,
-    variables: {
-      performanceId: performance.id,
-      bookingId: booking.id
-    } satisfies BoxOfficePerformanceBookingQueryVariables
-  });
-  loadingBooking.value = false;
-
-  inspectedObjects.booking =
-    data.value?.performance?.bookings.edges[0]?.node || undefined;
-}
-
-// Close any opened booking
-function closeBooking() {
-  inspectedObjects.booking = undefined;
-  inspectedObjects.ticket = undefined;
-  setCheckInState();
-}
-
-function setCheckInState(success?: boolean, message?: string) {
+function setCheckInState(
+  success: boolean | null = null,
+  message: string | null = null
+) {
   checkInState.success = success ?? null;
   checkInState.message = message ?? null;
-}
-
-async function mutateTicketCheckInState(
-  checkIn: boolean,
-  bookingReference: string,
-  ticketIds: AtLeastOneIdInput
-) {
-  loadingCheckin.value = true;
-  setCheckInState();
-  if (!performance)
-    return errorHandler(
-      'No performance was available when running mutateTicketCheckInState'
-    );
-
-  const response = await mutateTicketCheckInStateOperation(
-    performance.id,
-    bookingReference,
-    checkIn,
-    ticketIds
-  );
-
-  // Replace local booking
-  if (response.booking) inspectedObjects.booking = response.booking;
-
-  // Replace local ticket
-  if (response.ticket) selectTicket(response.ticket);
-
-  setCheckInState(
-    checkIn ? true : response.error ? false : undefined,
-    response.error ?? response.message
-  );
-
-  loadingCheckin.value = false;
-}
-
-// Check in tickets
-async function checkInTickets(
-  bookingReference: string,
-  ticketIds: AtLeastOneIdInput
-) {
-  mutateTicketCheckInState(true, bookingReference, ticketIds);
-}
-
-// Un Check in tickets
-async function unCheckInTickets(
-  bookingReference: string,
-  ticketIds: AtLeastOneIdInput
-) {
-  mutateTicketCheckInState(false, bookingReference, ticketIds);
 }
 </script>
