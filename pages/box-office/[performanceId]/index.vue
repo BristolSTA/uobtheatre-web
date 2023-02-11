@@ -37,6 +37,7 @@
       <div class="flex-grow flex overflow-hidden gap-5">
         <BoxOfficeBookingInspector
           v-model:selected-booking="selectedBooking"
+          :selected-ticket="selectedTicket"
           :bookings="bookings"
           :loading-bookings="loadingBookings || loadingSelectedBooking"
           :performance-id="performance.id"
@@ -44,7 +45,7 @@
           @check-in-error="setCheckInState(false, $event)"
           @checked-in="setCheckInState(true, $event)"
           @un-checked-in="setCheckInState(undefined, $event)"
-          @update:selected-ticket="selectedTicket = $event"
+          @update:selected-ticket="queryTicketId = $event?.id"
         />
       </div>
       <BoxOfficeDesktopCheckin
@@ -60,7 +61,6 @@ import InjectionKeys from '@/utils/injection-keys';
 import type {
   ICheckInState,
   IDetailedBooking,
-  IDetailedBookingTicket,
   ISimpleBooking
 } from '~~/components/box-office/BoxOfficeSharedTypes';
 import {
@@ -130,11 +130,14 @@ const { value: selectedBooking, loading: loadingSelectedBooking } =
     }
   );
 
-const { value: selectedTicket } = useQueryBasedState<IDetailedBookingTicket>(
-  'ticket',
-  (ticket) => ticket.id,
-  async () => undefined
-);
+const queryTicketId = useQueryParam('ticket');
+
+const selectedTicket = computed(() => {
+  console.log(selectedBooking.value);
+  return selectedBooking.value?.tickets?.find(
+    (ticket) => ticket.id === queryTicketId.value
+  );
+});
 
 function setCheckInState(
   success: boolean | null = null,

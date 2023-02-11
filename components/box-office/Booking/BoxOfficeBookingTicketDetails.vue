@@ -19,6 +19,7 @@
     </div>
     <BoxOfficeBookingCheckInButton
       v-if="allowCheckIn"
+      class="mt-auto"
       :check-in="!checkedIn"
       @check-in="emit('checkIn', { ticket, asyncCompleteCallback: $event })"
       @un-check-in="
