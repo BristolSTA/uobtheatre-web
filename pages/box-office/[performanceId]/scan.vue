@@ -2,6 +2,7 @@
   <div class="h-screen">
     <BoxOfficeCameraScanner
       :on="enable"
+      :pause-on-decode="false"
       @ready="ready = true"
       @unable="error = $event"
       @scanned="handleScannedTicket"
@@ -43,50 +44,60 @@
                 class="text-white text-2xl absolute -top-3 right-3 cursor-pointer"
                 @click="closeDetailsView"
               />
-              <BoxOfficeBookingTicketDetails
-                v-if="ticket"
-                :ticket="ticket"
-                :allow-check-in="currentBookingForPerformance"
-                @check-in="
-                  mutateTickets(
-                    true,
-                    [$event.ticket],
-                    $event.asyncCompleteCallback
-                  )
-                "
-                @un-check-in="
-                  mutateTickets(
-                    false,
-                    [$event.ticket],
-                    $event.asyncCompleteCallback
-                  )
-                "
-              />
-              <hr class="my-4 border-black border-2" />
-              <BoxOfficeBookingHeader v-if="booking" :booking="booking" />
-              <PerformanceSummaryPill
-                v-if="!currentBookingForPerformance"
-                :performance="booking?.performance"
-              />
-              <BoxOfficeBookingCheckInButton
-                v-if="
-                  currentBookingForPerformance &&
-                  bookingTicketsNotCheckedIn?.length
-                "
-                :check-in="true"
-                :number="bookingTicketsNotCheckedIn.length"
-                @check-in="
-                  mutateTickets(
-                    true,
-                    bookingTicketsNotCheckedIn as AtLeastOneOf<IDetailedBookingTicket>,
-                    $event
-                  )
-                "
-              />
+              <div class="flex">
+                <BoxOfficeBookingInspector
+                  v-if="performance?.id"
+                  :allow-booking-close="false"
+                  :allow-mutations="currentBookingForPerformance"
+                  :allow-ticket-inspections="false"
+                  :loading-bookings="false"
+                  :performance-id="performance.id"
+                  :selected-booking="booking"
+                  :selected-ticket="ticket"
+                />
+              </div>
+              <div class="md:hidden">
+                <hr
+                  class="my-4 border-sta-gray border-2 rounded-lg lg:hidden"
+                />
+                <div
+                  class="flex flex-col items-center lg:flex-row lg:gap-6 lg:justify-around"
+                >
+                  <BoxOfficeBookingHeader
+                    v-if="booking"
+                    :booking="booking"
+                    class="w-full lg:w-1/2"
+                  />
+
+                  <div
+                    v-if="booking"
+                    class="bg-sta-gray p-2 rounded text-white"
+                  >
+                    <PerformanceSummaryPill
+                      :performance="booking.performance"
+                    />
+                  </div>
+                </div>
+                <BoxOfficeBookingCheckInButton
+                  v-if="
+                    currentBookingForPerformance &&
+                    bookingTicketsNotCheckedIn?.length
+                  "
+                  :check-in="true"
+                  :number="bookingTicketsNotCheckedIn.length"
+                  @check-in="
+                    mutateTickets(
+                      true,
+                      bookingTicketsNotCheckedIn as AtLeastOneOf<IDetailedBookingTicket>,
+                      $event
+                    )
+                  "
+                />
+              </div>
             </div>
           </div>
           <div v-else class="mt-auto bg-black/60 px-6 py-3">
-            <BoxOfficeDesktopCheckin
+            <BoxOfficeScanStatus
               :state="checkInState"
               :show-information-button="!!ticket"
               :show-indicator-always="autoCheckIn"
@@ -101,15 +112,14 @@
 
 <script lang="ts" setup>
 import {
-  mutateTicketCheckInState,
-  retrieveDetailsForTicket
+  handleTicketScan,
+  mutateTicketCheckInState
 } from '~~/components/box-office/BoxOfficeSharedFunctions';
 import type {
   ICheckInState,
   IDetailedBooking,
   IDetailedBookingTicket
 } from '~~/components/box-office/BoxOfficeSharedTypes';
-import { useAdminBookingLookupQuery } from '~~/graphql/codegen/operations';
 import { AtLeastOneIdInput, AtLeastOneOf } from '~~/types/generic';
 
 const performance = inject(injectionKeys.boxOffice.performance);
@@ -147,11 +157,15 @@ function handleInvalidCode() {
   setCheckInState(false, 'Invalid QR Code Scanned');
 }
 
-async function handleScannedTicket(ticketData: {
-  bookingReference: string;
-  ticketId: string;
+async function handleScannedTicket(eventData: {
+  ticketData: {
+    bookingReference: string;
+    ticketId: string;
+  };
 }) {
   if (!performance) return;
+
+  const ticketData = eventData.ticketData;
 
   // If we currently have a ticket selected, make sure it is not this one (prevents double scanning)
   if (ticket.value?.id === ticketData.ticketId) return;
@@ -159,44 +173,25 @@ async function handleScannedTicket(ticketData: {
   // Set a loading state
   setCheckInState(undefined, 'Loading...');
 
-  let response;
-
-  if (autoCheckIn.value) {
-    // Attempt to check in the ticket
-    response = await mutateTicketCheckInState(
-      performance.id,
-      ticketData.bookingReference,
-      true,
-      [ticketData.ticketId]
-    );
-  } else {
-    response = await retrieveDetailsForTicket(
-      performance.id,
-      ticketData.bookingReference,
-      ticketData.ticketId
-    );
-  }
-
-  // If we got an error from the check in operation, load the booking and ticket information to allow the user to interrogate
-  if (response.error) {
-    const { onResult } = useAdminBookingLookupQuery({
-      reference: ticketData.bookingReference
-    });
-
-    onResult((result) => {
-      if (result.data?.bookings?.edges.length) {
-        booking.value = result.data?.bookings?.edges[0]?.node || undefined;
-        ticket.value = booking.value?.tickets?.find(
-          (ticket) => ticket.id === ticketData.ticketId
-        );
-      }
-    });
-  }
+  // Mutate / fetch as required
+  let state = await handleTicketScan(
+    autoCheckIn,
+    performance.id,
+    ticketData.bookingReference,
+    ticketData.ticketId
+  );
 
   // Set the state to update UI
-  setCheckInState(!response.error, response.error ?? response.message);
-  ticket.value = response.ticket;
-  booking.value = response.booking;
+  setCheckInState(
+    autoCheckIn.value
+      ? !state.error
+      : state.error !== undefined
+      ? false
+      : undefined,
+    state.error ?? state.message
+  );
+  ticket.value = state.ticket;
+  booking.value = state.booking;
 }
 
 async function mutateTickets(
@@ -204,14 +199,15 @@ async function mutateTickets(
   tickets: AtLeastOneOf<{ id: string }>,
   callback: () => void
 ) {
-  if (!booking.value) return;
+  if (!booking.value || !performance) return;
 
+  // Set loading state
   setCheckInState(undefined, 'Loading...', false);
 
   const ticketIds = tickets.map((ticket) => ticket.id) as AtLeastOneIdInput;
 
   const response = await mutateTicketCheckInState(
-    booking.value.performance.id,
+    performance.id,
     booking.value?.reference,
     checkIn,
     ticketIds
@@ -224,8 +220,10 @@ async function mutateTickets(
 }
 
 function closeDetailsView() {
-  setCheckInState();
+  setCheckInState(undefined, undefined, true);
   viewDetails.value = false;
+  enable.value = false;
+  nextTick(() => (enable.value = true));
 }
 
 const bookingTicketsNotCheckedIn = computed(() =>

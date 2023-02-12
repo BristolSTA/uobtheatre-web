@@ -1,6 +1,6 @@
 <template>
   <qrcode-stream
-    :camera="!on ? 'off' : 'auto'"
+    :camera="!on || cameraReset ? 'off' : 'auto'"
     :track="onTrackEvent"
     @init="onInit"
     @decode="onDecode"
@@ -17,18 +17,25 @@ import InvalidTicketQRCodeException from '~~/exceptions/InvalidTicketQRCodeExcep
 const props = withDefaults(
   defineProps<{
     on?: boolean;
+    pauseOnDecode?: boolean;
   }>(),
   {
-    on: true
+    on: true,
+    pauseOnDecode: true
   }
 );
+
+const cameraReset = ref(false);
 
 const emit = defineEmits<{
   (event: 'ready'): void;
   (event: 'unable', message: string): void;
   (
     event: 'scanned',
-    data: { bookingReference: string; ticketId: string }
+    data: {
+      ticketData: { bookingReference: string; ticketId: string };
+      reenable: () => void;
+    }
   ): void;
   (event: 'invalidCode'): void;
 }>();
@@ -87,7 +94,15 @@ function onDecode(string: string) {
 
   try {
     const ticketData = Ticket.dataFromQRCode(string);
-    emit('scanned', ticketData);
+    if (props.pauseOnDecode) {
+      cameraReset.value = true;
+    }
+    emit('scanned', {
+      ticketData,
+      reenable: () => {
+        cameraReset.value = false;
+      }
+    });
   } catch (e) {
     if (e instanceof InvalidTicketQRCodeException) return emit('invalidCode');
     throw e;

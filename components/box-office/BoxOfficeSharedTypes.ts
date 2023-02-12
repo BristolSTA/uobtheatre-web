@@ -2,6 +2,9 @@ import {
   BoxOfficePerformanceBookingQuery,
   BoxOfficePerformanceBookingsQuery,
   ConcessionTypeNode,
+  ImageNode,
+  PerformanceNode,
+  ProductionNode,
   SeatGroupNode,
   TicketNode
 } from '~~/graphql/codegen/operations';
@@ -45,6 +48,12 @@ export type ISimpleBooking = NonNullable<
     >['bookings']['edges'][number]
   >['node']
 >;
+
+export type IPerformanceSummary = Pick<PerformanceNode, 'start'> & {
+  production: Pick<ProductionNode, 'name'> & {
+    posterImage?: Pick<ImageNode, 'url'> | null;
+  };
+};
 
 export type IDetailedBooking = NonNullable<
   NonNullable<

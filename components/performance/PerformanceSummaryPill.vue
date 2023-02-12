@@ -29,17 +29,9 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  ImageNode,
-  PerformanceNode,
-  ProductionNode
-} from '~~/graphql/codegen/operations';
+import type { IPerformanceSummary } from '../box-office/BoxOfficeSharedTypes';
 
 defineProps<{
-  performance: Pick<PerformanceNode, 'start'> & {
-    production: Pick<ProductionNode, 'name'> & {
-      posterImage?: Pick<ImageNode, 'url'> | null;
-    };
-  };
+  performance: IPerformanceSummary;
 }>();
 </script>

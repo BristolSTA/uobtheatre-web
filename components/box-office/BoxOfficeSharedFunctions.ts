@@ -1,8 +1,10 @@
 import {
   useCheckInBookingMutation,
   useUnCheckInBookingMutation,
-  useBoxOfficePerformanceBookingQuery
+  useBoxOfficePerformanceBookingQuery,
+  useAdminBookingLookupQuery
 } from '~~/graphql/codegen/operations';
+import type { Ref } from 'vue';
 import type { IdInput } from '~~/types/generic';
 import { IMutateTicketCheckInStateReturn } from './BoxOfficeSharedTypes';
 
@@ -24,7 +26,7 @@ export async function retrieveDetailsForTicket(
     booking,
     ticket,
     error: !booking
-      ? 'Invalid booking reference'
+      ? 'Booking does not exist for this performance'
       : !ticket
       ? 'Invalid ticket ID'
       : undefined,
@@ -108,4 +110,53 @@ export async function mutateTicketCheckInState(
     ).play();
 
   return returnData;
+}
+
+export async function handleTicketScan(
+  doCheckIn: boolean | Ref<boolean>,
+  performanceId: IdInput,
+  bookingReference: string,
+  ticketIds: IdInput[] | IdInput,
+  withSounds: boolean = true
+): Promise<IMutateTicketCheckInStateReturn> {
+  const shouldMutate = unref(doCheckIn);
+  let response;
+
+  if (!Array.isArray(ticketIds)) ticketIds = [ticketIds];
+
+  if (shouldMutate) {
+    // Attempt to check in the ticket
+    response = await mutateTicketCheckInState(
+      performanceId,
+      bookingReference,
+      true,
+      ticketIds,
+      withSounds
+    );
+  } else {
+    // Query the ticket/booking details
+    response = await retrieveDetailsForTicket(
+      performanceId,
+      bookingReference,
+      ticketIds[0]
+    );
+  }
+
+  // If we got an don't have a booking, attempt to load the booking and ticket information from outside the specific performance to allow the user to interrogate
+  if (!response.booking) {
+    const result = await waitForQuery(
+      useAdminBookingLookupQuery({
+        reference: bookingReference
+      })
+    );
+
+    if (result.data?.bookings?.edges.length) {
+      response.booking = result.data?.bookings?.edges[0]?.node || undefined;
+      response.ticket = response.booking?.tickets?.find(
+        (ticket) => ticket.id === ticketIds[0]
+      );
+    }
+  }
+
+  return response;
 }

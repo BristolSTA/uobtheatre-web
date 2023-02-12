@@ -48,7 +48,7 @@
           @update:selected-ticket="queryTicketId = $event?.id"
         />
       </div>
-      <BoxOfficeDesktopCheckin
+      <BoxOfficeScanStatus
         :state="checkInState"
         :show-indicator-always="autoCheckIn"
         class="bg-sta-gray-dark p-4 hidden md:block"
@@ -60,10 +60,7 @@
 <script lang="ts" setup>
 import InjectionKeys from '@/utils/injection-keys';
 import Ticket from '@/classes/Ticket';
-import {
-  mutateTicketCheckInState,
-  retrieveDetailsForTicket
-} from '~~/components/box-office/BoxOfficeSharedFunctions';
+import { handleTicketScan } from '~~/components/box-office/BoxOfficeSharedFunctions';
 import type {
   ICheckInState,
   IDetailedBooking,
@@ -129,27 +126,23 @@ watch(scannedCode, async (newValue) => {
   try {
     const ticketDetails = Ticket.dataFromQRCode(newValue);
 
-    let booking, ticket, error, message;
-    if (autoCheckIn.value) {
-      ({ booking, ticket, error, message } = await mutateTicketCheckInState(
-        performance.id,
-        ticketDetails.bookingReference,
-        true,
-        [ticketDetails.ticketId]
-      ));
-    } else {
-      ({ booking, ticket, error, message } = await retrieveDetailsForTicket(
-        performance.id,
-        ticketDetails.bookingReference,
-        ticketDetails.ticketId
-      ));
-    }
-    selectedBooking.value = booking;
-    queryTicketId.value = ticket?.id;
+    let state = await handleTicketScan(
+      autoCheckIn,
+      performance.id,
+      ticketDetails.bookingReference,
+      ticketDetails.ticketId
+    );
+
+    selectedBooking.value = state.booking;
+    queryTicketId.value = state.ticket?.id;
 
     setCheckInState(
-      autoCheckIn ? !error : error !== undefined ? false : undefined,
-      message ?? error
+      autoCheckIn.value
+        ? !state.error
+        : state.error !== undefined
+        ? false
+        : undefined,
+      state.message ?? state.error
     );
   } catch (e) {
     setCheckInState(false, 'Unable to read QR code');

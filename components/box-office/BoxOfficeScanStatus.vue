@@ -1,15 +1,18 @@
 <template>
   <div>
-    <div class="flex flex-col md:flex-row gap-2 md:gap-5">
+    <div
+      class="flex md:flex-row gap-2 md:gap-5"
+      :class="{ 'flex-col': showIndicator }"
+    >
       <div
-        class="md:p-5 border-2 border-white text-white flex items-center justify-center flex-grow md:text-4xl overflow-clip md:order-2"
+        class="md:p-5 border-2 border-white text-white flex items-center justify-center flex-grow md:text-4xl overflow-clip md:order-2 text-center"
       >
         {{ state.message ?? 'Waiting...' }}
       </div>
 
       <div class="flex flex-none rounded-xl md:order-1 gap-5">
         <BoxOfficeScanIndicator
-          v-if="showIndicatorAlways || !state.success"
+          v-if="showIndicator"
           :state="
             state.success
               ? 'success'
@@ -34,7 +37,7 @@
 <script lang="ts" setup>
 import { ICheckInState } from './BoxOfficeSharedTypes';
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     state: ICheckInState;
     showInformationButton?: boolean;
@@ -49,4 +52,8 @@ withDefaults(
 const emit = defineEmits<{
   (event: 'click-information'): void;
 }>();
+
+const showIndicator = computed(
+  () => props.showIndicatorAlways || props.state.success === false
+);
 </script>

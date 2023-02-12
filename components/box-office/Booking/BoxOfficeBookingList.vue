@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="!bookings.length"
+    v-if="!bookings || !bookings.length"
     class="flex flex-grow items-center justify-center text-white font-bold text-xl"
   >
     No Matching Bookings Found
@@ -24,7 +24,7 @@ import { IBookingHeaderProp } from '../BoxOfficeSharedTypes';
 type Booking = IBookingHeaderProp & Pick<BookingNode, 'id'>;
 
 defineProps<{
-  bookings: Booking[];
+  bookings?: Booking[];
 }>();
 
 const emit = defineEmits<{

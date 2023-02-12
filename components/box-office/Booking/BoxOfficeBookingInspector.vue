@@ -3,38 +3,43 @@
     class="w-full md:w-1/3"
     :class="{ 'hidden md:block': !inspectedObjects.ticket }"
   >
-    <BoxOfficeBookingTicketDetails
+    <div
       v-if="inspectedObjects.ticket"
-      :ticket="inspectedObjects.ticket"
-      :allow-check-in="true"
       class="h-full overflow-y-auto bg-sta-gray-dark rounded-xl px-5 py-3"
-      @check-in="
-        inspectedObjects.booking
-          ? checkInTickets(
-              inspectedObjects.booking.reference,
-              [$event.ticket.id],
-              $event.asyncCompleteCallback
-            )
-          : null
-      "
-      @un-check-in="
-        inspectedObjects.booking
-          ? unCheckInTickets(
-              inspectedObjects.booking.reference,
-              [$event.ticket.id],
-              $event.asyncCompleteCallback
-            )
-          : null
-      "
-    />
+    >
+      <BoxOfficeBookingTicketDetailsHeader />
+      <BoxOfficeBookingTicketDetails
+        :ticket="inspectedObjects!.ticket"
+        :allow-check-in="allowMutations"
+        @check-in="
+          inspectedObjects.booking
+            ? checkInTickets(
+                inspectedObjects.booking.reference,
+                [$event.ticket.id],
+                $event.asyncCompleteCallback
+              )
+            : null
+        "
+        @un-check-in="
+          inspectedObjects.booking
+            ? unCheckInTickets(
+                inspectedObjects.booking.reference,
+                [$event.ticket.id],
+                $event.asyncCompleteCallback
+              )
+            : null
+        "
+      />
+    </div>
   </div>
+
   <div
-    class="flex-grow bg-sta-gray-dark rounded-xl p-2 md:p-5 py-3 flex-col relative"
+    class="flex-grow bg-sta-gray-dark rounded-xl p-2 md:px-5 py-3 flex-col relative"
     :class="[inspectedObjects.ticket ? 'hidden md:flex' : 'flex']"
   >
     <div class="absolute right-0 top-0 z-10">
       <font-awesome-icon
-        v-if="inspectedObjects.booking"
+        v-if="inspectedObjects.booking && allowBookingClose"
         icon="times-circle"
         class="text-white text-xl hover:text-gray-400 cursor-pointer"
         @click="inspectedObjects.booking = undefined"
@@ -52,29 +57,18 @@
           @select="selectBooking($event)"
         />
         <template v-else>
-          <BoxOfficeBookingHeader
+          <BoxOfficeBookingDetails
             :booking="inspectedObjects.booking"
-            class="flex-none"
-          />
-          <div class="flex-grow overflow-y-auto my-2">
-            <BoxOfficeBookingTickets
-              v-if="inspectedObjects.booking.tickets"
-              :tickets="inspectedObjects.booking.tickets"
-              class="w-full text-white"
-              @select-ticket="selectTicket($event)"
-            />
-            <h3 v-else class="font-bold text-center">No tickets in booking</h3>
-          </div>
-          <BoxOfficeBookingCheckInButton
-            v-if="ticketsNotCheckedIn?.length"
-            :check-in="true"
-            :number="ticketsNotCheckedIn.length"
-            @check-in="
-              ticketsNotCheckedIn
+            :allow-mutations="allowMutations"
+            :show-performance-summary="true"
+            :allow-ticket-inspections="allowTicketInspections"
+            @select-ticket="selectTicket($event)"
+            @check-in-tickets="
+              inspectedObjects.booking
                 ? checkInTickets(
-                    inspectedObjects.booking!.reference,
-                    ticketsNotCheckedIn.map((ticket) => ticket.id),
-                    $event
+                    inspectedObjects.booking.reference,
+                    $event.tickets.map((ticket) => ticket.id),
+                    $event.callback
                   )
                 : null
             "
@@ -87,7 +81,6 @@
 
 <script lang="ts" setup>
 import type {
-  IBookingTicketProp,
   IDetailedBooking,
   IDetailedBookingTicket,
   ISimpleBooking
@@ -102,14 +95,27 @@ import { IdInput } from '~~/types/generic';
 
 // Props
 
-const props = defineProps<{
-  performanceId: string;
-  loadingBookings: boolean;
-  bookings: ISimpleBooking[];
+const props = withDefaults(
+  defineProps<{
+    performanceId: string;
+    loadingBookings: boolean;
+    bookings?: ISimpleBooking[];
+    allowBookingClose?: boolean;
+    allowMutations?: boolean;
+    allowTicketInspections?: boolean;
 
-  selectedTicket?: { id: string };
-  selectedBooking?: IDetailedBooking;
-}>();
+    selectedTicket?: { id: string };
+    selectedBooking?: IDetailedBooking;
+  }>(),
+  {
+    allowBookingClose: true,
+    allowMutations: true,
+    allowTicketInspections: true,
+    bookings: undefined,
+    selectedTicket: undefined,
+    selectedBooking: undefined
+  }
+);
 
 // Data
 const loadingBooking = ref(false);
@@ -164,15 +170,6 @@ watch(
     emit('update:selectedTicket', newValue);
   }
 );
-
-// Computed
-const ticketsNotCheckedIn = computed(() =>
-  inspectedObjects.booking?.tickets?.filter(
-    (ticket: IBookingTicketProp) => !ticket.checkedInAt
-  )
-);
-
-// Methods
 
 // When the user selects a ticket
 function selectTicket(selectedTicket: { id: string }) {

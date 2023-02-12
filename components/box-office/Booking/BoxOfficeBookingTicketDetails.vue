@@ -1,13 +1,5 @@
 <template>
   <div class="flex flex-col gap-2">
-    <h2 class="underline text-2xl text-white text-center font-bold">
-      <font-awesome-icon
-        icon="fa-ticket"
-        class="-rotate-45 mr-2"
-      ></font-awesome-icon
-      >Ticket Details
-    </h2>
-    <hr class="border-dashed border-sta-gray-light border" />
     <div class="flex flex-col gap-2 text-white">
       <div v-for="(item, i) in items" :key="i">
         <p class="text-lg">

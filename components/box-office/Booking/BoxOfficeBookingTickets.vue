@@ -28,7 +28,7 @@
           />
         </div>
       </td>
-      <td>
+      <td v-if="allowInspection">
         <UiStaButton
           class="bg-white text-black py-1 font-bold"
           @click="selectTicket(ticket)"
@@ -46,10 +46,17 @@ const emit = defineEmits<{
   (event: 'selectTicket', ticket: IBookingTicketProp): void;
 }>();
 
-defineProps<{
-  tickets: IBookingTicketProp[];
-  selectedTicketId?: string;
-}>();
+withDefaults(
+  defineProps<{
+    tickets: IBookingTicketProp[];
+    selectedTicketId?: string;
+    allowInspection?: boolean;
+  }>(),
+  {
+    allowInspection: true,
+    selectedTicketId: undefined
+  }
+);
 
 function selectTicket(ticket: IBookingTicketProp) {
   emit('selectTicket', ticket);
