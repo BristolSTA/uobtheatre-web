@@ -9,6 +9,7 @@
 
       <div class="flex flex-none rounded-xl md:order-1 gap-5">
         <BoxOfficeScanIndicator
+          v-if="showIndicatorAlways || !state.success"
           :state="
             state.success
               ? 'success'
@@ -37,9 +38,11 @@ withDefaults(
   defineProps<{
     state: ICheckInState;
     showInformationButton?: boolean;
+    showIndicatorAlways?: boolean;
   }>(),
   {
-    showInformationButton: false
+    showInformationButton: false,
+    showIndicatorAlways: true
   }
 );
 

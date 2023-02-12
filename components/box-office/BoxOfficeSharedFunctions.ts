@@ -1,17 +1,36 @@
 import {
   useCheckInBookingMutation,
   useUnCheckInBookingMutation,
-  DetailedBookingDetailsFragment
+  useBoxOfficePerformanceBookingQuery
 } from '~~/graphql/codegen/operations';
 import type { IdInput } from '~~/types/generic';
-import { IDetailedBookingTicket } from './BoxOfficeSharedTypes';
+import { IMutateTicketCheckInStateReturn } from './BoxOfficeSharedTypes';
 
-type IMutateTicketCheckInStateReturn = {
-  ticket?: IDetailedBookingTicket;
-  booking?: DetailedBookingDetailsFragment;
-  error?: string;
-  message?: string;
-};
+export async function retrieveDetailsForTicket(
+  performanceId: IdInput,
+  bookingReference: string,
+  ticketId: IdInput
+): Promise<IMutateTicketCheckInStateReturn> {
+  const result = await waitForQuery(
+    useBoxOfficePerformanceBookingQuery({
+      bookingReference,
+      performanceId
+    })
+  );
+
+  const booking = result.data.performance?.bookings.edges[0]?.node ?? undefined;
+  const ticket = booking?.tickets?.find((ticket) => ticket.id == ticketId);
+  return {
+    booking,
+    ticket,
+    error: !booking
+      ? 'Invalid booking reference'
+      : !ticket
+      ? 'Invalid ticket ID'
+      : undefined,
+    message: 'Ticket Found'
+  };
+}
 
 export async function mutateTicketCheckInState(
   performanceId: IdInput,

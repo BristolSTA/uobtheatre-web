@@ -1,3 +1,4 @@
+import InvalidTicketQRCodeException from '@/exceptions/InvalidTicketQRCodeException';
 export default class {
   seatGroup = {};
   concessionType = {};
@@ -30,11 +31,25 @@ export default class {
   }
 
   static dataFromQRCode(rawQRCode) {
-    const result = JSON.parse(atob(rawQRCode));
-    return {
-      bookingReference: result[0],
-      ticketId: result[1]
-    };
+    try {
+      const result = JSON.parse(atob(rawQRCode));
+
+      return {
+        bookingReference: result[0],
+        ticketId: result[1]
+      };
+    } catch (e) {
+      if (
+        e instanceof SyntaxError ||
+        (e instanceof DOMException &&
+          e.message.includes(
+            'The string to be decoded is not correctly encoded'
+          ))
+      )
+        throw new InvalidTicketQRCodeException();
+
+      throw e;
+    }
   }
 
   /**

@@ -85,10 +85,11 @@
               />
             </div>
           </div>
-          <div v-else-if="autoCheckIn" class="mt-auto bg-black/60 px-6 py-3">
+          <div v-else class="mt-auto bg-black/60 px-6 py-3">
             <BoxOfficeDesktopCheckin
               :state="checkInState"
               :show-information-button="!!ticket"
+              :show-indicator-always="autoCheckIn"
               @click-information="viewDetails = true"
             />
           </div>
@@ -99,7 +100,10 @@
 </template>
 
 <script lang="ts" setup>
-import { mutateTicketCheckInState } from '~~/components/box-office/BoxOfficeSharedFunctions';
+import {
+  mutateTicketCheckInState,
+  retrieveDetailsForTicket
+} from '~~/components/box-office/BoxOfficeSharedFunctions';
 import type {
   ICheckInState,
   IDetailedBooking,
@@ -155,15 +159,23 @@ async function handleScannedTicket(ticketData: {
   // Set a loading state
   setCheckInState(undefined, 'Loading...');
 
-  //TODO: Handle non-auto check in mode
+  let response;
 
-  // Attempt to check in the ticket
-  const response = await mutateTicketCheckInState(
-    performance.id,
-    ticketData.bookingReference,
-    true,
-    [ticketData.ticketId]
-  );
+  if (autoCheckIn.value) {
+    // Attempt to check in the ticket
+    response = await mutateTicketCheckInState(
+      performance.id,
+      ticketData.bookingReference,
+      true,
+      [ticketData.ticketId]
+    );
+  } else {
+    response = await retrieveDetailsForTicket(
+      performance.id,
+      ticketData.bookingReference,
+      ticketData.ticketId
+    );
+  }
 
   // If we got an error from the check in operation, load the booking and ticket information to allow the user to interrogate
   if (response.error) {

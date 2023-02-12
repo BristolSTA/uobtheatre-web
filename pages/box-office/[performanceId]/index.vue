@@ -50,6 +50,7 @@
       </div>
       <BoxOfficeDesktopCheckin
         :state="checkInState"
+        :show-indicator-always="autoCheckIn"
         class="bg-sta-gray-dark p-4 hidden md:block"
       />
     </div>
@@ -58,6 +59,11 @@
 
 <script lang="ts" setup>
 import InjectionKeys from '@/utils/injection-keys';
+import Ticket from '@/classes/Ticket';
+import {
+  mutateTicketCheckInState,
+  retrieveDetailsForTicket
+} from '~~/components/box-office/BoxOfficeSharedFunctions';
 import type {
   ICheckInState,
   IDetailedBooking,
@@ -80,6 +86,8 @@ const checkInState = reactive<ICheckInState>({
 });
 
 const autoCheckIn = ref(true);
+
+const scannedCode = useHardwareScanner();
 
 const searchText = ref<string>('');
 const searchFilter = ref<string | null>();
@@ -115,6 +123,39 @@ watch(loadingBookings, (newValue) => {
   }
 });
 
+watch(scannedCode, async (newValue) => {
+  if (!newValue) return;
+
+  try {
+    const ticketDetails = Ticket.dataFromQRCode(newValue);
+
+    let booking, ticket, error, message;
+    if (autoCheckIn.value) {
+      ({ booking, ticket, error, message } = await mutateTicketCheckInState(
+        performance.id,
+        ticketDetails.bookingReference,
+        true,
+        [ticketDetails.ticketId]
+      ));
+    } else {
+      ({ booking, ticket, error, message } = await retrieveDetailsForTicket(
+        performance.id,
+        ticketDetails.bookingReference,
+        ticketDetails.ticketId
+      ));
+    }
+    selectedBooking.value = booking;
+    queryTicketId.value = ticket?.id;
+
+    setCheckInState(
+      autoCheckIn ? !error : error !== undefined ? false : undefined,
+      message ?? error
+    );
+  } catch (e) {
+    setCheckInState(false, 'Unable to read QR code');
+  }
+});
+
 const { value: selectedBooking, loading: loadingSelectedBooking } =
   useQueryBasedState<IDetailedBooking>(
     'booking',
@@ -133,7 +174,6 @@ const { value: selectedBooking, loading: loadingSelectedBooking } =
 const queryTicketId = useQueryParam('ticket');
 
 const selectedTicket = computed(() => {
-  console.log(selectedBooking.value);
   return selectedBooking.value?.tickets?.find(
     (ticket) => ticket.id === queryTicketId.value
   );

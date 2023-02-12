@@ -12,6 +12,7 @@
 <script lang="ts" setup>
 import { QrcodeStream } from 'vue-qrcode-reader';
 import Ticket from '@/classes/Ticket';
+import InvalidTicketQRCodeException from '~~/exceptions/InvalidTicketQRCodeException';
 
 const props = withDefaults(
   defineProps<{
@@ -88,16 +89,8 @@ function onDecode(string: string) {
     const ticketData = Ticket.dataFromQRCode(string);
     emit('scanned', ticketData);
   } catch (e) {
-    const isAllowedSilentException =
-      e instanceof SyntaxError ||
-      (e instanceof DOMException &&
-        e.message.includes(
-          'The string to be decoded is not correctly encoded'
-        ));
-    emit('invalidCode');
-    if (!isAllowedSilentException) {
-      throw e;
-    }
+    if (e instanceof InvalidTicketQRCodeException) return emit('invalidCode');
+    throw e;
   }
 }
 </script>

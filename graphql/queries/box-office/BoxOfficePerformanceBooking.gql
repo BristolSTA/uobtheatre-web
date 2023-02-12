@@ -1,7 +1,11 @@
-query boxOfficePerformanceBooking($performanceId: ID!, $bookingId: ID!) {
+query boxOfficePerformanceBooking(
+  $performanceId: ID!
+  $bookingId: ID
+  $bookingReference: String
+) {
   performance(id: $performanceId) {
     id
-    bookings(id: $bookingId) {
+    bookings(id: $bookingId, reference: $bookingReference) {
       edges {
         node {
           id

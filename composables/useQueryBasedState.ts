@@ -33,5 +33,5 @@ export default function <T>(
     queryParameter.value = newValue ? identifierCallback(newValue) : undefined;
   });
 
-  return { value, loading: loading };
+  return { value, loading: readonly(loading) };
 }

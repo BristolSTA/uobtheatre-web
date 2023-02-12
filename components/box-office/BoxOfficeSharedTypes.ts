@@ -19,6 +19,13 @@ export type IBookingHeaderProp = {
   tickets?: { checkedInAt?: any }[] | null;
 };
 
+export type IMutateTicketCheckInStateReturn = {
+  ticket?: IDetailedBookingTicket;
+  booking?: IDetailedBooking;
+  error?: string;
+  message?: string;
+};
+
 // The "tickets" prop on BookingTickets
 export type IBookingTicketProp = Pick<TicketNode, 'id' | 'checkedInAt'> & {
   concessionType: Pick<ConcessionTypeNode, 'name'>;
