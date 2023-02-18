@@ -60,8 +60,13 @@
           <BoxOfficeBookingDetails
             :booking="inspectedObjects.booking"
             :allow-mutations="allowMutations"
-            :show-performance-summary="true"
+            :show-performance-summary="
+              showPerformanceSummary ||
+              (showPerformanceSummaryIfDifferent &&
+                inspectedObjects.booking.performance.id !== performanceId)
+            "
             :allow-ticket-inspections="allowTicketInspections"
+            :query-performance-id="performanceId"
             @select-ticket="selectTicket($event)"
             @check-in-tickets="
               inspectedObjects.booking
@@ -103,6 +108,8 @@ const props = withDefaults(
     allowBookingClose?: boolean;
     allowMutations?: boolean;
     allowTicketInspections?: boolean;
+    showPerformanceSummary?: boolean;
+    showPerformanceSummaryIfDifferent?: boolean;
 
     selectedTicket?: { id: string };
     selectedBooking?: IDetailedBooking;
@@ -111,6 +118,8 @@ const props = withDefaults(
     allowBookingClose: true,
     allowMutations: true,
     allowTicketInspections: true,
+    showPerformanceSummary: false,
+    showPerformanceSummaryIfDifferent: true,
     bookings: undefined,
     selectedTicket: undefined,
     selectedBooking: undefined

@@ -5,7 +5,12 @@
       class="flex-grow"
     /><PerformanceSummaryPill
       v-if="showPerformanceSummary && booking.performance"
-      class="text-white hidden md:flex"
+      class="hidden md:flex"
+      :class="[
+        booking.performance.id !== queryPerformanceId
+          ? 'text-sta-rouge'
+          : 'text-white'
+      ]"
       :performance="booking.performance"
     />
   </div>
@@ -35,6 +40,7 @@
 </template>
 
 <script lang="ts" setup>
+import { IdInput } from '~~/types/generic';
 import {
   IBookingHeaderProp,
   IBookingTicketProp,
@@ -45,18 +51,20 @@ const props = withDefaults(
   defineProps<{
     booking: IBookingHeaderProp & {
       tickets?: IBookingTicketProp[] | null;
-      performance?: IPerformanceSummary;
+      performance?: IPerformanceSummary & { id?: IdInput };
     };
     showTickets?: boolean;
     showPerformanceSummary?: boolean;
     allowMutations?: boolean;
     allowTicketInspections?: boolean;
+    queryPerformanceId?: IdInput;
   }>(),
   {
     showTickets: true,
     showPerformanceSummary: false,
     allowMutations: true,
-    allowTicketInspections: true
+    allowTicketInspections: true,
+    queryPerformanceId: undefined
   }
 );
 
