@@ -1,3 +1,3 @@
-<template>Sell Mode</template>
+<template><BoxOfficeLayout>Sell Mode</BoxOfficeLayout></template>
 
 <script lang="ts" setup></script>

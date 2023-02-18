@@ -10,6 +10,9 @@
       <UiProgressBar :percentage="progressPercentage" />
       {{ numTicketsCheckedIn }}/{{ performanceCapacity }}
     </div>
+    <div class="text-sm text-center text-sta-gray-lighter">
+      {{ numTicketsToCheckIn }} to be collected
+    </div>
   </div>
 </template>
 
@@ -35,6 +38,9 @@ const numTicketsCheckedIn = computed(
 );
 const performanceCapacity = computed(
   () => result.value?.performance?.ticketsBreakdown.totalCapacity
+);
+const numTicketsToCheckIn = computed(
+  () => result.value?.performance?.ticketsBreakdown.totalTicketsToCheckIn
 );
 
 const progressPercentage = computed(() =>

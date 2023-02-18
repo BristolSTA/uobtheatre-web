@@ -5,10 +5,11 @@
   >
     <div
       v-if="inspectedObjects.ticket"
-      class="h-full overflow-y-auto bg-sta-gray-dark rounded-xl px-5 py-3"
+      class="h-full overflow-y-auto bg-sta-gray-dark rounded-xl px-5 py-3 flex flex-col"
     >
       <BoxOfficeBookingTicketDetailsHeader />
       <BoxOfficeBookingTicketDetails
+        class="flex-grow"
         :ticket="inspectedObjects!.ticket"
         :allow-check-in="allowMutations"
         @check-in="

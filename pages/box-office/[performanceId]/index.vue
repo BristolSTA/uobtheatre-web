@@ -1,55 +1,60 @@
 <template>
-  <div class="flex flex-col h-full overflow-hidden">
-    <div
-      class="flex-none flex flex-col md:flex-row items-center justify-center md:justify-between mt-5"
-    >
-      <BoxOfficeSellButton :performance-id="performance.id" />
+  <BoxOfficeLayout>
+    <div class="flex flex-col h-full overflow-hidden">
+      <div
+        class="flex-none flex flex-col md:flex-row items-center justify-center md:justify-between mt-5"
+      >
+        <BoxOfficeSellButton :performance-id="performance.id" />
 
-      <BoxOfficeSchedule :performance="performance" />
-      <BoxOfficeCheckInProgress class="w-60" :performance-id="performance.id" />
-      <div class="flex flex-none gap-4 w-full md:w-auto">
-        <BoxOfficeAutoCheckInControl
-          v-model="autoCheckIn"
-          class="hidden md:flex"
-          positive-text-class="text-green-400"
-          negative-text-class="text-red-400"
-        />
-        <NuxtLink
-          :href="`/box-office/${performance?.id}/scan`"
-          class="bg-sta-green text-white p-2 md:p-4 rounded flex items-center justify-center mt-3 md:mt-0 w-full md:w-auto"
-        >
-          <font-awesome-icon icon="camera" class="text-xl" />
-          <span class="md:hidden ml-4">Scan Tickets</span>
-        </NuxtLink>
-      </div>
-    </div>
-    <div class="flex flex-col gap-5 font-body overflow-y-hidden flex-grow">
-      <BoxOfficeBookingFilterBar
-        v-model:filter-value="searchFilter"
-        v-model:text-search-value="searchText"
-      />
-
-      <div class="flex-grow flex overflow-hidden gap-5">
-        <BoxOfficeBookingInspector
-          v-model:selected-booking="selectedBooking"
-          :selected-ticket="selectedTicket"
-          :bookings="bookings"
-          :loading-bookings="loadingBookings || loadingSelectedBooking"
+        <BoxOfficeSchedule :performance="performance" />
+        <BoxOfficeCheckInProgress
+          class="w-60"
           :performance-id="performance.id"
-          @starting-check-in="setCheckInState()"
-          @check-in-error="setCheckInState(false, $event)"
-          @checked-in="setCheckInState(true, $event)"
-          @un-checked-in="setCheckInState(undefined, $event)"
-          @update:selected-ticket="queryTicketId = $event?.id"
+        />
+        <div class="flex flex-none gap-4 w-full md:w-auto">
+          <BoxOfficeAutoCheckInControl
+            v-model="autoCheckIn"
+            class="hidden md:flex"
+            positive-text-class="text-green-400"
+            negative-text-class="text-red-400"
+          />
+          <NuxtLink
+            :href="`/box-office/${performance?.id}/scan`"
+            class="bg-sta-green text-white p-2 md:p-4 rounded flex items-center justify-center mt-3 md:mt-0 w-full md:w-auto"
+          >
+            <font-awesome-icon icon="camera" class="text-xl" />
+            <span class="md:hidden ml-4">Scan Tickets</span>
+          </NuxtLink>
+        </div>
+      </div>
+      <div class="flex flex-col gap-5 font-body overflow-y-hidden flex-grow">
+        <BoxOfficeBookingFilterBar
+          v-model:filter-value="searchFilter"
+          v-model:text-search-value="searchText"
+        />
+
+        <div class="flex-grow flex overflow-hidden gap-5">
+          <BoxOfficeBookingInspector
+            v-model:selected-booking="selectedBooking"
+            :selected-ticket="selectedTicket"
+            :bookings="bookings"
+            :loading-bookings="loadingBookings || loadingSelectedBooking"
+            :performance-id="performance.id"
+            @starting-check-in="setCheckInState()"
+            @check-in-error="setCheckInState(false, $event)"
+            @checked-in="setCheckInState(true, $event)"
+            @un-checked-in="setCheckInState(undefined, $event)"
+            @update:selected-ticket="queryTicketId = $event?.id"
+          />
+        </div>
+        <BoxOfficeScanStatus
+          :state="checkInState"
+          :show-indicator-always="autoCheckIn"
+          class="bg-sta-gray-dark p-4 hidden md:block"
         />
       </div>
-      <BoxOfficeScanStatus
-        :state="checkInState"
-        :show-indicator-always="autoCheckIn"
-        class="bg-sta-gray-dark p-4 hidden md:block"
-      />
     </div>
-  </div>
+  </BoxOfficeLayout>
 </template>
 
 <script lang="ts" setup>
