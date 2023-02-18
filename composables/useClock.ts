@@ -12,5 +12,5 @@ export const useClock = (intervalSeconds = 1) => {
   });
   onUnmounted(() => clearInterval(timer));
 
-  return now;
+  return readonly(now);
 };

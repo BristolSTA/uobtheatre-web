@@ -8,7 +8,7 @@
       <div class="text-lg font-semibold">
         {{ performance.production.name }}
       </div>
-      <div class="text-xs font-semibold">
+      <div class="text-xxs md:text-sm font-semibold text-sta-gray-lighter">
         {{
           dateFormatLocale(performance.start, {
             weekday: 'short',

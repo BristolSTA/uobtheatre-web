@@ -49,7 +49,7 @@ export default <Partial<Config>>{
         40: '0.4'
       },
       fontSize: {
-        xs: '0.5rem',
+        xxs: '0.5rem',
         h1: '2.5rem',
         h2: '2rem',
         h3: '1.5rem',

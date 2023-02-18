@@ -8,7 +8,7 @@
       :performance="performance"
       class="bg-sta-gray-dark rounded-md p-3"
     />
-    <NuxtLink class="underline">Exit Box Office</NuxtLink>
+    <NuxtLink class="underline" to="/box-office">Exit Box Office</NuxtLink>
   </div>
 </template>
 

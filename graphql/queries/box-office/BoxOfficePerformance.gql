@@ -12,6 +12,7 @@ query boxOfficePerformance($id: ID!) {
     doorsOpen
     start
     end
+    intervalDurationMins
     durationMins
     soldOut
     isInperson

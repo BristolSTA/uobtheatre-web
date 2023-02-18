@@ -1,16 +1,9 @@
 <template>
-  <div class="h-screen bg-sta-gray font-body flex flex-col px-4 md:px-12 py-4">
-    <BoxOfficeHeader />
+  <div class="flex flex-col h-full overflow-hidden">
     <div
       class="flex-none flex flex-col md:flex-row items-center justify-center md:justify-between mt-5"
     >
-      <NuxtLink
-        :href="`/box-office/${performance?.id}/sell`"
-        class="bg-sta-green text-3xl text-white p-3 px-8 hidden md:block"
-      >
-        <div><font-awesome-icon icon="cash-register" class="mr-2" /> Sell</div>
-        <p class="text-sm">100 available</p>
-      </NuxtLink>
+      <BoxOfficeSellButton :performance-id="performance.id" />
 
       <BoxOfficeSchedule :performance="performance" />
       <BoxOfficeCheckInProgress class="w-60" :performance-id="performance.id" />
@@ -18,6 +11,8 @@
         <BoxOfficeAutoCheckInControl
           v-model="autoCheckIn"
           class="hidden md:flex"
+          positive-text-class="text-green-400"
+          negative-text-class="text-red-400"
         />
         <NuxtLink
           :href="`/box-office/${performance?.id}/scan`"
