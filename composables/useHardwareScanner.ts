@@ -3,16 +3,29 @@ export default function () {
 
   let code = '';
   let reading = false;
+  let previousKeyShift = false;
 
   function onKeyPress(e: KeyboardEvent) {
+    if (e.key == 'Shift') {
+      previousKeyShift = true;
+      return;
+    }
+
     //usually scanners throw an 'Enter' key at the end of read
     if (e.code === 'Enter') {
       if (code.length > 10) {
+        if (code === scannedValue.value) {
+          scannedValue.value = undefined;
+          setTimeout(() => (scannedValue.value = code), 0.5);
+          return;
+        }
         scannedValue.value = code;
       }
     } else {
-      code += e.key; //while this is not an 'enter' it stores the every key
+      code += previousKeyShift ? e.key.toUpperCase() : e.key; //while this is not an 'enter' it stores the every key
     }
+
+    previousKeyShift = false;
 
     //run a timeout of 200ms at the first read and clear everything
     if (!reading) {

@@ -37,6 +37,9 @@
           <BoxOfficeBookingInspector
             v-model:selected-booking="selectedBooking"
             :selected-ticket="selectedTicket"
+            :allow-mutations="
+              selectedBooking?.performance?.id === performance.id
+            "
             :bookings="bookings"
             :loading-bookings="loadingBookings || loadingSelectedBooking"
             :performance-id="performance.id"
@@ -121,7 +124,10 @@ watch(loadingBookings, (newValue) => {
 });
 
 watch(scannedCode, async (newValue) => {
-  if (!newValue) return;
+  if (!newValue) {
+    setCheckInState();
+    return;
+  }
 
   try {
     const ticketDetails = Ticket.dataFromQRCode(newValue);
@@ -163,6 +169,10 @@ const { value: selectedBooking, loading: loadingSelectedBooking } =
       return result.data.performance?.bookings.edges[0]?.node || undefined;
     }
   );
+
+watch(selectedBooking, (newValue) => {
+  if (newValue === undefined) setCheckInState();
+});
 
 const queryTicketId = useQueryParam('ticket');
 
