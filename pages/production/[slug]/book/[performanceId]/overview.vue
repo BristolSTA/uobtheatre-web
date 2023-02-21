@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import Booking from '@/classes/Booking';
+import Booking from '~~/classes/Booking';
 import BookingPriceOverview from '@/components/booking/overview/BookingPriceOverview.vue';
 import PerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue';
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';

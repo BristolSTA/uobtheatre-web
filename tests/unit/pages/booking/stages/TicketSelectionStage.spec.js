@@ -1,7 +1,7 @@
 import { expect } from 'vitest';
 import { mount } from '#testSupport/helpers';
 
-import Booking from '@/classes/Booking';
+import Booking from '~~/classes/Booking';
 import Ticket from '@/classes/Ticket';
 import TicketsMatrix from '@/classes/TicketsMatrix';
 import TicketSelectionStage from '@/pages/production/[slug]/book/[performanceId]/tickets.vue';

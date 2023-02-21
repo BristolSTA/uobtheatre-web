@@ -64,7 +64,7 @@
 <script>
 import Swal from 'sweetalert2';
 
-import Booking from '@/classes/Booking';
+import Booking from '~~/classes/Booking';
 import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue';
 
 import { getValidationErrors, performMutation } from '~~/utils/api';

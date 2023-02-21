@@ -6,8 +6,8 @@ export default class {
   id = null;
 
   /**
-   * @param {object} seatGroupId Seat Group / Location ID
-   * @param {object} concessionTypeId Concession Type ID
+   * @param {string} seatGroupId Seat Group / Location ID
+   * @param {string} concessionTypeId Concession Type ID
    * @param {string} id Optional ID of ticket in database
    */
   constructor(seatGroupId, concessionTypeId, id = null) {
@@ -55,8 +55,8 @@ export default class {
   /**
    * Returns if this ticket matches the given parameters
    *
-   * @param {object|null} seatGroup Seat Group Data Object
-   * @param {object|null} concessionType Concession Data Object
+   * @param {object|undefined} seatGroup Seat Group Data Object
+   * @param {object|undefined} concessionType Concession Data Object
    * @returns {boolean} True if ticket matches
    */
   matches(seatGroup, concessionType) {

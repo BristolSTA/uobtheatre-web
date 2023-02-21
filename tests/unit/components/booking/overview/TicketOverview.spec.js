@@ -1,7 +1,7 @@
 import { mount, fixTextSpacing } from '#testSupport/helpers';
 import { expect } from 'vitest';
 
-import Booking from '@/classes/Booking';
+import Booking from '~~/classes/Booking';
 import OverviewBox from '~~/components/ui/UiCard.vue';
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
 

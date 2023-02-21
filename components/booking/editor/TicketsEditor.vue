@@ -24,7 +24,7 @@
         :booking="booking"
         :show-capacities="showCapacities"
         :max-tickets="maxTickets"
-        @request-update="$emit('change')"
+        @request-update="emit('change')"
       />
     </div>
     <all-errors-display
@@ -41,50 +41,40 @@
   </div>
 </template>
 
-<script>
+<script lang="ts" setup>
 import TicketOptions from '../TicketOptions.vue';
 import SelectedTicketsTable from '../SelectedTicketsTable.vue';
-import Booking from '@/classes/Booking';
+import Booking from '~~/classes/Booking';
 import TicketsMatrix from '@/classes/TicketsMatrix';
 import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue';
 import Errors from '~~/classes/Errors';
-export default {
-  components: { TicketOptions, AllErrorsDisplay, SelectedTicketsTable },
-  props: {
-    booking: {
-      required: true,
-      type: Booking
-    },
-    ticketsMatrix: {
-      required: true,
-      type: TicketsMatrix
-    },
-    showCapacities: {
-      default: false,
-      type: Boolean
-    },
-    errors: {
-      default: null,
-      type: Errors
-    },
-    showPrices: {
-      default: true,
-      type: Boolean
-    },
-    maxTickets: {
-      default: null,
-      type: Number
-    }
-  },
-  emits: ['change'],
-  computed: {
-    performanceMinsAway() {
-      const timeDiff = new Date(this.booking.performance.start) - Date.now();
-      return Math.round(timeDiff / (1000 * 60));
-    },
-    performanceStarted() {
-      return this.performanceMinsAway < 0;
-    }
+
+const props = withDefaults(
+  defineProps<{
+    booking: Booking;
+    ticketsMatrix: TicketsMatrix;
+    showCapacities?: boolean;
+    errors?: Errors;
+    showPrices?: boolean;
+    maxTickets?: number;
+  }>(),
+  {
+    showCapacities: false,
+    errors: undefined,
+    showPrices: true,
+    maxTickets: undefined
   }
-};
+);
+
+const emit = defineEmits<{
+  (event: 'change'): void;
+}>();
+
+const performanceMinsAway = computed(() => {
+  const timeDiff =
+    new Date(props.booking.performance.start).valueOf() - Date.now();
+  return Math.round(timeDiff / (1000 * 60));
+});
+
+const performanceStarted = computed(() => performanceMinsAway.value < 0);
 </script>

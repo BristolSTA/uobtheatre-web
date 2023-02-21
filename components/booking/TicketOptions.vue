@@ -35,7 +35,7 @@
 <script>
 import lo from 'lodash';
 
-import Booking from '@/classes/Booking';
+import Booking from '~~/classes/Booking';
 import Ticket from '@/classes/Ticket';
 import TicketMatrix from '@/classes/TicketsMatrix';
 import SeatGroup from '@/components/booking/SeatGroup.vue';

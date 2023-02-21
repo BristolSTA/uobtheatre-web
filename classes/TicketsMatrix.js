@@ -55,7 +55,7 @@ export default class {
   }
 
   /**
-   * @param {number} seatGroupId Seat group ID to increase capacity by 1
+   * @param {string} seatGroupId Seat group ID to increase capacity by 1
    */
   incrementSeatGroupCapacity(seatGroupId) {
     const index = this.ticketOptions.findIndex(

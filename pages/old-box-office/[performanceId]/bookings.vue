@@ -117,7 +117,7 @@
 </template>
 
 <script>
-import Booking from '@/classes/Booking.js';
+import Booking from '~~/classes/Booking.js';
 
 import Overview from '@/components/box-office/Overview.vue';
 import BookingRow from '@/components/box-office/BookingRow.vue';

@@ -34,7 +34,7 @@
 
 <script>
 import lo from 'lodash';
-import Booking from '@/classes/Booking';
+import Booking from '~~/classes/Booking';
 import BookingMutation from '@/graphql/mutations/booking/Booking.gql';
 import { performMutation } from '~~/utils/api';
 import TicketsMatrix from '@/classes/TicketsMatrix';

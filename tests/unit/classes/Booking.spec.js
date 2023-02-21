@@ -8,7 +8,7 @@ import BookingFixture from '#testSupport/fixtures/Booking';
 import ConcessionType from '#testSupport/fixtures/ConcessionType';
 import TicketsMatrix from '@/classes/TicketsMatrix';
 import Ticket from '@/classes/Ticket';
-import Booking from '@/classes/Booking';
+import Booking from '~~/classes/Booking';
 describe('Booking Class', () => {
   /** @member {Booking} */
   let booking;
@@ -299,10 +299,7 @@ describe('Booking Class', () => {
 
     booking.priceBreakdown = bookingAPIData.priceBreakdown;
 
-    expect(
-      booking.miscCosts).toEqual(
-      bookingAPIData.priceBreakdown.miscCosts
-    );
+    expect(booking.miscCosts).toEqual(bookingAPIData.priceBreakdown.miscCosts);
   });
   it('can tell if a booking is active', () => {
     booking.updateFromAPIData(bookingAPIData);

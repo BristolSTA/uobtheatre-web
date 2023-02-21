@@ -22,7 +22,7 @@
 import TicketsMatrix from '@/classes/TicketsMatrix';
 import FullPerformanceAndTicketOptions from '@/graphql/queries/FullPerformanceAndTicketOptions.gql';
 import BoxOfficePerformanceBooking from '@/graphql/queries/box-office/BoxOfficePerformanceBooking.gql';
-import Booking from '@/classes/Booking';
+import Booking from '~~/classes/Booking';
 import Overview from '@/components/box-office/Overview.vue';
 import { dateFormat } from '~~/utils/datetime';
 import useBoxOfficeStore from '@/store/box-office';

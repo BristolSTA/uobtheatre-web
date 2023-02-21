@@ -46,7 +46,7 @@
 
 <script>
 import { DateTime } from 'luxon';
-import Booking from '@/classes/Booking';
+import Booking from '~~/classes/Booking';
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
 import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue';
 import CheckInTickets from '@/graphql/mutations/box-office/CheckInTickets.gql';

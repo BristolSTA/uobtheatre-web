@@ -64,7 +64,7 @@
 
 <script>
 import LoadingIcon from '../ui/UiLoadingIcon.vue';
-import Booking from '@/classes/Booking';
+import Booking from '~~/classes/Booking';
 import TicketMatrix from '@/classes/TicketsMatrix';
 
 export default {

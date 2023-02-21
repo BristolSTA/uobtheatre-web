@@ -119,7 +119,7 @@
 
 <script>
 import TextInput from '~~/components/ui/Input/UiInputText.vue';
-import Booking from '@/classes/Booking';
+import Booking from '~~/classes/Booking';
 import BookingPriceOverview from '@/components/booking/overview/BookingPriceOverview.vue';
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
 import PayBooking from '@/graphql/mutations/booking/PayBooking.gql';

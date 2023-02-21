@@ -29,7 +29,7 @@
 
 <script>
 import OverviewBox from '../../ui/UiCard.vue';
-import Booking from '@/classes/Booking';
+import Booking from '~~/classes/Booking';
 
 export default {
   name: 'BookingPriceOverview',
