@@ -1,6 +1,6 @@
 <template>
   <div class="h-screen">
-    <BoxOfficeCameraScanner
+    <UiInputTicketScanner
       :on="enable"
       :pause-on-decode="false"
       @ready="ready = true"

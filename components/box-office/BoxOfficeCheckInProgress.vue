@@ -8,9 +8,12 @@
     <div class="flex items-center gap-3">
       {{ progressPercentage }}%
       <UiProgressBar :percentage="progressPercentage" />
-      {{ numTicketsCheckedIn }}/{{ performanceCapacity }}
+      {{ numTicketsCheckedIn }}/{{ numTicketsSold }}
     </div>
-    <div class="text-sm text-center text-sta-gray-lighter">
+    <div
+      v-if="numTicketsToCheckIn"
+      class="text-sm text-center text-sta-gray-lighter"
+    >
       {{ numTicketsToCheckIn }} to be collected
     </div>
   </div>
@@ -36,8 +39,8 @@ const { result } = useBoxOfficePerformanceTicketBreakdownQuery(
 const numTicketsCheckedIn = computed(
   () => result.value?.performance?.ticketsBreakdown.totalTicketsCheckedIn
 );
-const performanceCapacity = computed(
-  () => result.value?.performance?.ticketsBreakdown.totalCapacity
+const numTicketsSold = computed(
+  () => result.value?.performance?.ticketsBreakdown.totalTicketsSold
 );
 const numTicketsToCheckIn = computed(
   () => result.value?.performance?.ticketsBreakdown.totalTicketsToCheckIn
@@ -45,7 +48,7 @@ const numTicketsToCheckIn = computed(
 
 const progressPercentage = computed(() =>
   Math.floor(
-    (100 * (numTicketsCheckedIn.value ?? 0)) / (performanceCapacity.value ?? 1)
+    (100 * (numTicketsCheckedIn.value ?? 0)) / (numTicketsSold.value ?? 1)
   )
 );
 </script>

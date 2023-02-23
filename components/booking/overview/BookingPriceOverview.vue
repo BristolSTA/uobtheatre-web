@@ -32,7 +32,6 @@ import OverviewBox from '../../ui/UiCard.vue';
 import Booking from '~~/classes/Booking';
 
 export default {
-  name: 'BookingPriceOverview',
   components: { OverviewBox },
   props: {
     booking: {

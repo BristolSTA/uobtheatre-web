@@ -6,7 +6,6 @@
     <seat-group
       v-for="(ticketOption, index) in ticketMatrix.ticketOptions"
       :key="index"
-      class="sm:bg-sta-gray"
       :ticket-option="ticketOption"
       :group-capacity-remaining="
         ticketMatrix.capacityRemainingForSeatGroup(ticketOption.seatGroup.id)

@@ -6,7 +6,7 @@
       >
         <BoxOfficeSellButton :performance-id="performance.id" />
 
-        <BoxOfficeSchedule :performance="performance" />
+        <BoxOfficeSchedule :performance="performance" class="hidden lg:block" />
         <BoxOfficeCheckInProgress
           class="w-60"
           :performance-id="performance.id"

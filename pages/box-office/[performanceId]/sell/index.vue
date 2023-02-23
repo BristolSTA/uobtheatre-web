@@ -3,19 +3,21 @@
     <div class="my-2 p-2">
       <UiLoadingContainer :loading="!ticketMatrix" :show-content="false">
         <template v-if="ticketMatrix">
-          <div class="flex gap-4">
-            <BookingEditorTicketsEditor
-              class="w-full md:w-2/3"
-              :booking="booking"
-              :tickets-matrix="ticketMatrix"
-              :show-capacities="true"
-              :errors="errors"
-              @change="updateApi"
-            />
+          <div class="flex gap-4 flex-col lg:flex-row">
+            <div class="w-full lg:w-2/3">
+              <BookingEditorTicketsEditor
+                class="bg-sta-gray-dark"
+                :booking="booking"
+                :tickets-matrix="ticketMatrix"
+                :show-capacities="true"
+                :errors="errors"
+                @change="updateApi"
+              />
+            </div>
             <div class="text-center flex-grow">
               <div class="bg-sta-gray-light p-4">
                 <BookingSelectedTicketsTable
-                  class="text-white"
+                  class="text-white overflow-auto"
                   row-class="bg-sta-gray-dark"
                   :ticket-matrix="ticketMatrix"
                   :booking="booking"

@@ -1,3 +1,5 @@
 <template>
-  <BoxOfficeLayout><NuxtPage /></BoxOfficeLayout>
+  <BoxOfficeLayout
+    ><div class="overflow-y-auto"><NuxtPage /></div
+  ></BoxOfficeLayout>
 </template>
