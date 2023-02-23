@@ -40,7 +40,7 @@ import BookingStage from '@/classes/BookingStage';
 const stageInfo = new BookingStage({
   name: 'Overview',
   routeName: 'production-slug-book-performanceId-overview',
-  eligable: (_, booking) => !booking.dirty
+  eligable: (_, booking) => !booking.dirty && booking.tickets.length > 0
 });
 
 export default defineNuxtComponent({

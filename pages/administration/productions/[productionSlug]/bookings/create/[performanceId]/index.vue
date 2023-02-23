@@ -1,12 +1,22 @@
 <template>
   <UiCard>
     <loading-container :loading="loading">
+      <BookingSelectedPerformanceBar
+        v-if="booking.performance"
+        :performance="booking.performance"
+      />
       <tickets-editor
         :booking="booking"
         :tickets-matrix="ticketsMatrix"
         :show-capacities="true"
         :show-prices="false"
         :errors="errors"
+      />
+      <BookingSelectedTicketsTable
+        v-if="booking.tickets.length"
+        class="mt-2"
+        :ticket-matrix="ticketsMatrix"
+        :booking="booking"
       />
       <form-label class="py-4" :required="true">
         User Email

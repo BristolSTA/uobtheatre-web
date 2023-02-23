@@ -19,9 +19,7 @@ import UnverifiedLoginError from '~~/errors/auth/UnverifiedLoginError';
 
 let refreshTimer: NodeJS.Timeout | null;
 
-export const foo = 'bar';
-
-export default defineStore('auth', {
+const useAuthStore = defineStore('auth', {
   state: () => ({
     user: null as AuthUserDetailsFragment | null
   }),
@@ -402,3 +400,5 @@ export default defineStore('auth', {
     }
   }
 });
+
+export default useAuthStore;

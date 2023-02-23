@@ -18,11 +18,11 @@ import TicketsMatrix from './TicketsMatrix';
 export default class Booking {
   id?: IdInput;
   reference?: string;
-  performance?: Pick<PerformanceNode, 'id'>;
+  performance?: Pick<PerformanceNode, 'id' | 'start'>;
   transactions: TransactionNode[];
   tickets: Ticket[];
   priceBreakdown?: PriceBreakdownNode;
-  dirty: boolean = true;
+  dirty: boolean = false;
   raw?: object;
   idempotencyKey?: string;
   user?: ExtendedUserNode;

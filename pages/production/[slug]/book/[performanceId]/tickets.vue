@@ -1,5 +1,9 @@
 <template>
   <div v-if="booking.performance && ticketMatrix" class="text-white">
+    <BookingSelectedPerformanceBar
+      v-if="booking.performance"
+      :performance="booking.performance"
+    />
     <tickets-editor
       :tickets-matrix="ticketMatrix"
       :booking="booking"
@@ -7,6 +11,17 @@
       :errors="errors"
       @change="updateAPI"
     />
+    <div
+      v-if="booking.tickets.length"
+      class="mt-2 min-w-1/2 text-center border-4 border-dashed border-sta-gray rounded-md text-white"
+    >
+      <h2 class="text-h2">Selected Tickets</h2>
+
+      <BookingSelectedTicketsTable
+        :ticket-matrix="ticketMatrix"
+        :booking="booking"
+      />
+    </div>
     <div v-if="booking.tickets.length" class="mt-2 text-center">
       <button
         class="btn btn-orange font-semibold"
