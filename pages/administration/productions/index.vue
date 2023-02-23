@@ -128,5 +128,9 @@ const { result: queryResult, loading } = useAdminProductionsQuery(
     } satisfies AdminProductionsQueryVariables)
 );
 
+watch(productionSearchFilter, () => {
+  productionsOffset.value = 0;
+});
+
 const productionsData = computed(() => queryResult.value?.productions);
 </script>
