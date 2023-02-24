@@ -5,6 +5,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
+    "postdeploy": "rm -rf dist/*/*.js.map",
     "postinstall": "nuxt prepare",
     "codegen": "graphql-codegen --config codegen.ts",
     "lint:tsc": "yarn nuxi typecheck",
@@ -14,7 +15,6 @@
     "pretest:e2e:ci": "API_BASE=http://localhost:9000 yarn generate --devtools && yarn preview",
     "test:e2e:silent": "cypress run",
     "test:unit": "vitest",
-    "test": "nuxt test"
   },
   "devDependencies": {
     "@cypress/vue": "^5.0.3",
