@@ -116,3 +116,7 @@ jobs:
         with:
           start: yarn pretest:e2e:ci
           wait-on: 'http://localhost:3000'
+          
+      - name: Sentry Release
+        uses: getsentry/action-release@v1.3.0
+       
