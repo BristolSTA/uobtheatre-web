@@ -117,6 +117,12 @@ jobs:
           start: yarn pretest:e2e:ci
           wait-on: 'http://localhost:3000'
           
-      - name: Sentry Release
-        uses: getsentry/action-release@v1.3.0
+     - uses: actions/checkout@v2
+   
+    - name: Create Sentry release
+      uses: getsentry/action-release@v1
+      env:
+       SENTRY_AUTH_TOKEN: 78dce0a2caf04983959972a895834854f218e35f77344814b6e6f8daf2d48d6c
+       SENTRY_ORG: bristol-sta
+       SENTRY_PROJECT: uobtheatre-frontend
        
