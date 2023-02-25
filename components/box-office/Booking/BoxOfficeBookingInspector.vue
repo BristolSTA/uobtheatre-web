@@ -90,8 +90,8 @@ import type {
   IDetailedBooking,
   IDetailedBookingTicket,
   ISimpleBooking
-} from '~~/components/box-office/BoxOfficeSharedTypes';
-import { mutateTicketCheckInState as mutateTicketCheckInStateOperation } from '~~/components/box-office/BoxOfficeSharedFunctions';
+} from '~~/types/box-office';
+import { mutateTicketCheckInState as mutateTicketCheckInStateOperation } from '~~/services/ticketScanService';
 import {
   BoxOfficePerformanceBookingDocument,
   BoxOfficePerformanceBookingQuery,

@@ -114,12 +114,12 @@
 import {
   handleTicketScan,
   mutateTicketCheckInState
-} from '~~/components/box-office/BoxOfficeSharedFunctions';
+} from '~~/services/ticketScanService';
 import type {
   ICheckInState,
   IDetailedBooking,
   IDetailedBookingTicket
-} from '~~/components/box-office/BoxOfficeSharedTypes';
+} from '~~/types/box-office';
 import { AtLeastOneIdInput, AtLeastOneOf } from '~~/types/generic';
 
 const performance = inject(injectionKeys.boxOffice.performance);

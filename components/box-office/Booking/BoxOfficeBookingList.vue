@@ -19,7 +19,7 @@
 
 <script lang="ts" setup>
 import { BookingNode } from '~~/graphql/codegen/operations';
-import { IBookingHeaderProp } from '../BoxOfficeSharedTypes';
+import { IBookingHeaderProp } from '../../../types/box-office';
 
 type Booking = IBookingHeaderProp & Pick<BookingNode, 'id'>;
 

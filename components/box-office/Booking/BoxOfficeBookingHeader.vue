@@ -20,7 +20,7 @@
 <script lang="ts">
 import pluralize from 'pluralize';
 import { PropType } from 'vue';
-import { IBookingHeaderProp } from '~~/components/box-office/BoxOfficeSharedTypes';
+import { IBookingHeaderProp } from '~~/types/box-office';
 
 export default defineComponent({
   props: {

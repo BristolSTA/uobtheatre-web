@@ -45,7 +45,7 @@ import {
   IBookingHeaderProp,
   IBookingTicketProp,
   IPerformanceSummary
-} from '../BoxOfficeSharedTypes';
+} from '../../../types/box-office';
 
 const props = withDefaults(
   defineProps<{

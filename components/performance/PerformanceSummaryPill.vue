@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { IPerformanceSummary } from '../box-office/BoxOfficeSharedTypes';
+import type { IPerformanceSummary } from '../../types/box-office';
 
 defineProps<{
   performance: IPerformanceSummary;

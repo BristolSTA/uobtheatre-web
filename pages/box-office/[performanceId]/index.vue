@@ -63,12 +63,12 @@
 <script lang="ts" setup>
 import InjectionKeys from '@/utils/injection-keys';
 import Ticket from '@/classes/Ticket';
-import { handleTicketScan } from '~~/components/box-office/BoxOfficeSharedFunctions';
+import { handleTicketScan } from '~~/services/ticketScanService';
 import type {
   ICheckInState,
   IDetailedBooking,
   ISimpleBooking
-} from '~~/components/box-office/BoxOfficeSharedTypes';
+} from '~~/types/box-office';
 import {
   useBoxOfficePerformanceBookingQuery,
   useBoxOfficePerformanceBookingsQuery
