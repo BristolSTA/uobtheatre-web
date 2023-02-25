@@ -14,6 +14,7 @@ export default function () {
     }
 
     //usually scanners throw an 'Enter' key at the end of read
+    console.log(code, e.key);
     if (e.code === 'Enter') {
       if (code.length > 10) {
         if (code === scannedValue.value) {
