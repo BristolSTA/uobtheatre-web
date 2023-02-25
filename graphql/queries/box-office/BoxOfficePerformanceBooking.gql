@@ -10,10 +10,13 @@ query boxOfficePerformanceBooking(
         node {
           id
           reference
+          status
           user {
             firstName
             lastName
           }
+          expired
+          expiresAt
           performance {
             id
             start
@@ -29,9 +32,11 @@ query boxOfficePerformanceBooking(
           tickets {
             id
             seatGroup {
+              id
               name
             }
             concessionType {
+              id
               name
             }
             checkedInAt

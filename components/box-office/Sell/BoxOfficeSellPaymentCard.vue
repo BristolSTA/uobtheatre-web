@@ -107,7 +107,9 @@ import {
   PayBookingMutation,
   useCancelPaymentMutation,
   usePayBookingMutation,
-  useSetBookingUserMutation
+  useSetBookingUserMutation,
+  BookingStatus,
+  useBoxOfficePerformanceBookingQuery
 } from '~~/graphql/codegen/operations';
 import Errors from '~~/classes/Errors';
 import { DateTime } from 'luxon';
@@ -124,6 +126,9 @@ const props = defineProps<{
   booking: Booking;
   userEmail: string;
 }>();
+
+if (!props.booking.id || !props.booking.performance)
+  throw new Error('Booking does not have an ID/performance');
 
 const amountTendered = ref<number | undefined>();
 const paying = ref(false);
@@ -144,6 +149,25 @@ if (
   // This terminal no longer in the list, so we'll get rid
   boxOfficeStore.$patch({ terminalDevice: undefined });
 }
+
+const { onResult: onBookingRefreshResult } =
+  useBoxOfficePerformanceBookingQuery(
+    {
+      bookingId: props.booking.id,
+      performanceId: props.booking.performance?.id
+    },
+    () => ({
+      pollInterval: 1000,
+      enabled: paying.value && paymentMode.value == PaymentProvider['SquarePos']
+    })
+  );
+
+onBookingRefreshResult(({ data }) => {
+  const booking = data.performance?.bookings.edges[0]?.node;
+  if (booking && booking?.status == BookingStatus['Paid']) {
+    bookingCompleted(booking);
+  }
+});
 
 const cashChange = computed(() => {
   if (
@@ -245,6 +269,7 @@ async function pay(method: PaymentProvider | undefined) {
 async function bookingCompleted(
   bookingData: NonNullable<PayBookingMutation['payBooking']>['booking']
 ) {
+  paying.value = false;
   if (bookingData) {
     props.booking.updateFromAPIData(bookingData);
 
