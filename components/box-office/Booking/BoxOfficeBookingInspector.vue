@@ -55,7 +55,9 @@
         <BoxOfficeBookingList
           v-if="!inspectedObjects.booking"
           :bookings="bookings"
-          @select="selectBooking($event)"
+          @select="
+            selectBooking($event as NonNullable<typeof bookings>[number])
+          "
         />
         <template v-else>
           <BoxOfficeBookingDetails
