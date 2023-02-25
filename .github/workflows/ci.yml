@@ -114,5 +114,5 @@ jobs:
         uses: cypress-io/github-action@v5
         timeout-minutes: 5
         with:
-          start: yarn pretest:e2e:ci
+          start: yarn beforetest:e2e:ci
           wait-on: 'http://localhost:3000'

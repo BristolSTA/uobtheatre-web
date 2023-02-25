@@ -4,17 +4,16 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
-    "preview": "nuxt preview",
+    "preview": "npx serve -s .output/public",
     "postinstall": "nuxt prepare",
     "codegen": "graphql-codegen --config codegen.ts",
     "lint:tsc": "yarn nuxi typecheck",
     "lint:js": "eslint --ext '.ts,.js,.vue' .",
-    "pretest:e2e": "yarn generate --devtools && yarn preview",
-    "pretest:e2e:local": "API_BASE=http://uobtheatre-api:8000 yarn generate --devtools && yarn preview",
-    "pretest:e2e:ci": "API_BASE=http://localhost:9000 yarn generate --devtools && yarn preview",
-    "test:e2e:silent": "cypress run",
-    "test:unit": "vitest",
-    "test": "nuxt test"
+    "beforetest:e2e": "nuxt generate --devtools && yarn preview",
+    "beforetest:e2e:local": "API_BASE=http://uobtheatre-api:8000 nuxt generate --devtools && yarn preview",
+    "beforetest:e2e:ci": "API_BASE=http://localhost:9000 nuxt generate --devtools && yarn preview",
+    "test:e2e": "cypress run",
+    "test:unit": "vitest"
   },
   "devDependencies": {
     "@cypress/vue": "^5.0.3",
