@@ -35,7 +35,7 @@
   </div>
 
   <div
-    class="flex-grow bg-sta-gray-dark rounded-xl p-2 md:px-5 py-3 flex-col relative"
+    class="flex-grow bg-sta-gray-dark rounded-xl p-2 md:px-5 py-3 flex-col relative w-full"
     :class="[inspectedObjects.ticket ? 'hidden md:flex' : 'flex']"
   >
     <div class="absolute right-0 top-0 z-10">
