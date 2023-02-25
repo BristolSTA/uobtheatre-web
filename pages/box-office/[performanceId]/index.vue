@@ -87,7 +87,7 @@ const checkInState = reactive<ICheckInState>({
 
 const autoCheckIn = ref(true);
 
-const scannedCode = useHardwareScanner();
+const scannedCode = useHardwareScanner(500, true);
 
 const searchText = ref<string>('');
 const searchFilter = ref<string | null>();
@@ -138,8 +138,7 @@ watch(scannedCode, async (newValue) => {
   }
 
   try {
-    // Conver the scanned text into ticket data
-    console.log(newValue);
+    // Convert the scanned text into ticket data
     const ticketDetails = Ticket.dataFromQRCode(newValue);
 
     // Do the scan action as appropriate

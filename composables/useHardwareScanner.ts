@@ -1,4 +1,7 @@
-export default function () {
+export default function useHardwareScanner(
+  maxInputDelay = 200,
+  checkIsEncoded = false
+) {
   const scannedValue = ref<string | undefined>();
 
   let code = '';
@@ -17,6 +20,14 @@ export default function () {
     console.log(code, e.key);
     if (e.code === 'Enter') {
       if (code.length > 10) {
+        if (checkIsEncoded) {
+          try {
+            atob(code);
+          } catch (e) {
+            return;
+          }
+        }
+
         if (code === scannedValue.value) {
           // If the newly scanned code is equal to the previous scanned value, it will briefly be set to undefined to allow watchers to trigger
           scannedValue.value = undefined;
@@ -39,7 +50,7 @@ export default function () {
       setTimeout(() => {
         code = '';
         reading = false;
-      }, 200);
+      }, maxInputDelay);
     }
   }
 

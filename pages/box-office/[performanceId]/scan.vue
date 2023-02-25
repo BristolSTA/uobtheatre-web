@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen">
+  <div :style="{ height: `${screenHeight}px` }">
     <UiInputTicketScanner
       :on="enable"
       :pause-on-decode="false"
@@ -137,6 +137,8 @@ const checkInState = reactive<ICheckInState>({
   success: null,
   message: null
 });
+
+const screenHeight = useRealScreenHeight();
 
 function setCheckInState(
   success?: boolean,
