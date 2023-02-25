@@ -80,7 +80,7 @@ import {
   getStageIndex
 } from './book/-bookingStages';
 import Booking from '~~/classes/Booking';
-import TicketsMatrix from '@/classes/TicketsMatrix';
+import TicketsMatrix from '~~/classes/TicketsMatrix';
 import BookingNavigation from '@/components/booking/BookingNavigation.vue';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
 import ClickableLink from '@/components/ui/ClickableLink.vue';

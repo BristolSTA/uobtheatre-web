@@ -75,9 +75,10 @@ const { onResult } = useFullPerformanceAndTicketOptionsQuery({
   id: performance.id
 });
 onResult((result) => {
+  if (!result.data.performance || !result.data.performance.ticketOptions)
+    return;
   ticketMatrix.value = new TicketsMatrix(result.data.performance);
-  boxOfficeStore.inProgressBooking.performance =
-    result.data.performance ?? undefined;
+  boxOfficeStore.inProgressBooking.performance = result.data.performance;
 });
 
 async function updateApi() {

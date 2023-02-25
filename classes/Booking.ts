@@ -1,26 +1,17 @@
 import lo from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
-import { DateTime } from 'luxon';
 
 import Ticket from './Ticket';
 import type {
   TransactionNode,
   DetailedBookingDetailsFragment,
   BookingNode,
-  ExtendedUserNode,
   SeatGroupNode,
   ConcessionTypeNode
 } from '~~/graphql/codegen/operations';
 import { IdInput } from '~~/types/generic';
 import TicketsMatrix from './TicketsMatrix';
 
-//| 'tickets' | 'user' | 'transactions'
-// tickets?: BookingTicketDetailsFragment;
-// Pick<BookingNode, 'id' | 'reference'> &
-//   BookingTicketDetailsFragment & {
-//     performance?: RequiredPerformanceData;
-//     priceBreakdown?: AllPriceBreakdownFragment | null;
-//   }
 export default class Booking {
   id?: IdInput;
   reference?: string;
@@ -29,9 +20,9 @@ export default class Booking {
   tickets: Ticket[];
   priceBreakdown?: DetailedBookingDetailsFragment['priceBreakdown'];
   dirty: boolean = false;
-  raw?: object;
+  raw?: DetailedBookingDetailsFragment;
   idempotencyKey?: string;
-  user?: ExtendedUserNode;
+  user?: DetailedBookingDetailsFragment['user'];
 
   constructor() {
     this.tickets = [];
@@ -115,7 +106,8 @@ export default class Booking {
     for (let i = 0; i < number; i++) {
       this.tickets.push(ticket);
       ticketMatrix.decrementPerformanceCapacity();
-      ticketMatrix.decrementSeatGroupCapacity(ticket.seatGroup.id);
+      if (ticket.seatGroup.id)
+        ticketMatrix.decrementSeatGroupCapacity(ticket.seatGroup.id);
     }
     this.dirty = true;
   }
@@ -224,7 +216,7 @@ export default class Booking {
   ticketsTotalPriceEstimate(ticketMatrix: TicketsMatrix) {
     return this.tickets
       .map((ticket) => ticket.price(ticketMatrix.ticketOptions))
-      .reduce((a, b) => a + b, 0);
+      .reduce((a, b) => (a ?? 0) + (b ?? 0), 0);
   }
 
   /**
@@ -234,7 +226,9 @@ export default class Booking {
    * @returns {number} Total price of the booking, in pounds to 2 d.p.
    */
   ticketsTotalPricePoundsEstimate(ticketMatrix: TicketsMatrix) {
-    return (this.ticketsTotalPriceEstimate(ticketMatrix) / 100).toFixed(2);
+    return ((this.ticketsTotalPriceEstimate(ticketMatrix) ?? 0) / 100).toFixed(
+      2
+    );
   }
 
   get allCheckedIn() {
@@ -339,7 +333,7 @@ export default class Booking {
       .values()
       .map((groupedTickets) => {
         const option = ticketMatrix.ticketOptions.find(
-          (option) => option.seatGroup.id === groupedTickets[0].seatGroup.id
+          (option) => option?.seatGroup.id === groupedTickets[0].seatGroup.id
         );
 
         if (!option) {
@@ -349,9 +343,9 @@ export default class Booking {
         }
 
         const seatGroup = option.seatGroup;
-        const concessionTypeEdge = option.concessionTypes.find(
+        const concessionTypeEdge = option.concessionTypes?.find(
           (cocnessionTypeEdge) =>
-            cocnessionTypeEdge.concessionType.id ===
+            cocnessionTypeEdge?.concessionType?.id ===
             groupedTickets[0].concessionType.id
         );
 
@@ -366,7 +360,7 @@ export default class Booking {
           concessionType: concessionTypeEdge.concessionType,
           seatGroup,
           ticketPrice: concessionTypeEdge.price,
-          totalPrice: concessionTypeEdge.price * groupedTickets.length
+          totalPrice: (concessionTypeEdge.price ?? 0) * groupedTickets.length
         };
       })
       .value();
@@ -381,26 +375,15 @@ export default class Booking {
     }
     return (
       this.priceBreakdown.miscCosts?.map((miscCost) => {
-        return Object.assign(miscCost, {
-          valuePounds: (miscCost.value / 100).toFixed(2)
+        return Object.assign(miscCost ?? {}, {
+          valuePounds: ((miscCost?.value ?? 0) / 100).toFixed(2)
         });
       }) ?? []
     );
   }
 
-  /**
-   * @returns {boolean} True if in the future / current day or false
-   */
-  get isActive() {
-    const performanceEndTime = DateTime.fromISO(this.performance.end);
-    return (
-      performanceEndTime > DateTime.local() ||
-      performanceEndTime.hasSame(DateTime.local(), 'day')
-    );
-  }
-
   get status() {
-    if (!this.raw.status) {
+    if (!this.raw?.status) {
       return '';
     }
     return this.raw.status;

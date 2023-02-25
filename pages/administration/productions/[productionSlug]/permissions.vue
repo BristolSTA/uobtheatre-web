@@ -118,7 +118,7 @@ async function setUserPermissions(
   permissions: string[]
 ): Promise<boolean> {
   errors.value = undefined;
-  if (!production) return false;
+  if (!production.value?.id) return false;
   try {
     await doMutation(
       useProductionPermissionsMutationsMutation({

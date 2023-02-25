@@ -50,7 +50,7 @@
 import FullPerformanceAndTicketOptionsQuery from '@/graphql/queries/FullPerformanceAndTicketOptions.gql';
 import BookingMutation from '@/graphql/mutations/booking/Booking.gql';
 import PayBookingMutation from '@/graphql/mutations/booking/PayBooking.gql';
-import TicketsMatrix from '@/classes/TicketsMatrix';
+import TicketsMatrix from '~~/classes/TicketsMatrix';
 import Booking from '~~/classes/Booking';
 import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue';
 

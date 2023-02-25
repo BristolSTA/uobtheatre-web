@@ -3,7 +3,7 @@ import { expect } from 'vitest';
 import FullBooking from '#testSupport/fixtures/instances/FullBooking';
 import SelectedTicketsTable from '@/components/booking/SelectedTicketsTable.vue';
 import Booking from '~~/classes/Booking';
-import TicketsMatrix from '@/classes/TicketsMatrix';
+import TicketsMatrix from '~~/classes/TicketsMatrix';
 
 describe('Selected Tickets Table', () => {
   let component;

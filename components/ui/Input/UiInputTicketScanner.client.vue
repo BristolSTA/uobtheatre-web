@@ -11,7 +11,7 @@
 
 <script lang="ts" setup>
 import { QrcodeStream } from 'vue-qrcode-reader';
-import Ticket from '@/classes/Ticket';
+import Ticket from '~~/classes/Ticket';
 import InvalidTicketQRCodeException from '~~/exceptions/InvalidTicketQRCodeException';
 import { TicketQRCodeData } from '~~/types/ticket';
 

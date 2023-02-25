@@ -4,6 +4,7 @@ import {
   BookingMutation,
   useBookingMutation
 } from '~~/graphql/codegen/operations';
+import { IdInput } from '~~/types/generic';
 
 type IReturn = {
   result?: BookingMutation['booking'];
@@ -23,7 +24,19 @@ export async function upsertBooking(booking: Booking): Promise<IReturn> {
           input: {
             id: booking.id ?? undefined,
             performance: booking.performance?.id,
-            tickets: booking.toAPIData().tickets
+            tickets: booking
+              .toAPIData()
+              .tickets.filter(
+                (ticket) =>
+                  ticket.seatGroupId !== undefined &&
+                  ticket.concessionTypeId !== undefined
+              ) as (Pick<
+              ReturnType<Booking['toAPIData']>['tickets'][number],
+              'id'
+            > & {
+              seatGroupId: IdInput;
+              concessionTypeId: IdInput;
+            })[]
           }
         }
       }),

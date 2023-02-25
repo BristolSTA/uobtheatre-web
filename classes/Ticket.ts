@@ -1,22 +1,37 @@
 import InvalidTicketQRCodeException from '@/exceptions/InvalidTicketQRCodeException';
+import type {
+  ConcessionTypeNode,
+  DetailedBookingDetailsFragment,
+  SeatGroupNode
+} from '~~/graphql/codegen/operations';
+import { IdInput } from '~~/types/generic';
+import { TicketOptions } from '~~/types/performance';
 export default class {
-  seatGroup = {};
-  concessionType = {};
+  seatGroup: Partial<
+    Pick<SeatGroupNode, 'id' | 'name' | 'description' | 'capacity'>
+  > = {};
+  concessionType: Partial<
+    Pick<ConcessionTypeNode, 'id' | 'name' | 'description'>
+  > = {};
   checkedIn = false;
-  id = null;
+  id: IdInput | undefined = undefined;
 
   /**
    * @param {string} seatGroupId Seat Group / Location ID
    * @param {string} concessionTypeId Concession Type ID
    * @param {string} id Optional ID of ticket in database
    */
-  constructor(seatGroupId, concessionTypeId, id = null) {
+  constructor(seatGroupId: IdInput, concessionTypeId: IdInput, id?: IdInput) {
     this.seatGroup.id = seatGroupId;
     this.concessionType.id = concessionTypeId;
     this.id = id;
   }
 
-  static fromAPIData(ticketAPIData) {
+  static fromAPIData(
+    ticketAPIData: NonNullable<
+      DetailedBookingDetailsFragment['tickets']
+    >[number]
+  ) {
     const ticket = new this(
       ticketAPIData.seatGroup.id,
       ticketAPIData.concessionType.id,
@@ -24,13 +39,13 @@ export default class {
     );
     ticket.seatGroup = ticketAPIData.seatGroup;
     ticket.concessionType = ticketAPIData.concessionType;
-    if (ticketAPIData.checkedIn) {
-      ticket.checkedIn = ticketAPIData.checkedIn;
+    if (ticketAPIData.checkedInAt) {
+      ticket.checkedIn = true;
     }
     return ticket;
   }
 
-  static dataFromQRCode(rawQRCode) {
+  static dataFromQRCode(rawQRCode: string) {
     try {
       const result = JSON.parse(atob(rawQRCode));
 
@@ -59,7 +74,7 @@ export default class {
    * @param {object|undefined} concessionType Concession Data Object
    * @returns {boolean} True if ticket matches
    */
-  matches(seatGroup, concessionType) {
+  matches(seatGroup?: { id: IdInput }, concessionType?: { id: IdInput }) {
     const matchesSeatGroup = seatGroup
       ? this.seatGroup.id === seatGroup.id
       : true;
@@ -75,13 +90,15 @@ export default class {
    * @param {object} ticketOptions Raw data from the ticket_types endpoint (i.e. grouped Seat Group -> Concession Types data) which contains the price data
    * @returns {number} Price of the ticket in pennies
    */
-  price(ticketOptions) {
-    return ticketOptions
-      .find((option) => option.seatGroup.id === this.seatGroup.id)
-      .concessionTypes.find(
-        (concessionEdge) =>
-          concessionEdge.concessionType.id === this.concessionType.id
-      ).price;
+  price(ticketOptions: TicketOptions): number | undefined {
+    return (
+      ticketOptions
+        .find((option) => option?.seatGroup.id === this.seatGroup.id)
+        ?.concessionTypes?.find(
+          (concessionEdge) =>
+            concessionEdge?.concessionType?.id === this.concessionType.id
+        )?.price ?? undefined
+    );
   }
 
   /**
@@ -90,17 +107,26 @@ export default class {
    * @param {string} bookingReference Booking Reference
    * @returns {string} Base 64 encoded string
    */
-  generateQRCodeString(bookingReference) {
+  generateQRCodeString(bookingReference: string): string {
     return btoa(JSON.stringify([bookingReference, this.id]));
   }
 
   /**
    * @returns {object} API Data object that represents the ticket
    */
-  get apiData() {
-    const ticketData = {
+  get apiData(): {
+    seatGroupId?: IdInput;
+    concessionTypeId?: IdInput;
+    id?: IdInput;
+  } {
+    const ticketData: {
+      seatGroupId?: IdInput;
+      concessionTypeId?: IdInput;
+      id?: IdInput;
+    } = {
       seatGroupId: this.seatGroup.id,
-      concessionTypeId: this.concessionType.id
+      concessionTypeId: this.concessionType.id,
+      id: undefined
     };
     if (this.id) {
       ticketData.id = this.id;

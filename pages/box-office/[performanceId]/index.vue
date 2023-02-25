@@ -62,7 +62,7 @@
 
 <script lang="ts" setup>
 import InjectionKeys from '@/utils/injection-keys';
-import Ticket from '@/classes/Ticket';
+import Ticket from '~~/classes/Ticket';
 import { handleTicketScan } from '~~/services/ticketScanService';
 import type {
   ICheckInState,

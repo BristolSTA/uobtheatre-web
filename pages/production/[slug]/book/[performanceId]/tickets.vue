@@ -39,7 +39,7 @@
 import lo from 'lodash';
 
 import Booking from '~~/classes/Booking';
-import TicketMatrix from '@/classes/TicketsMatrix';
+import TicketMatrix from '~~/classes/TicketsMatrix';
 import BookingMutation from '@/graphql/mutations/booking/Booking.gql';
 import { getValidationErrors, performMutation } from '~~/utils/api';
 

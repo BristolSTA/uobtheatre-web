@@ -2,8 +2,8 @@ import { expect } from 'vitest';
 import { mount } from '#testSupport/helpers';
 
 import Booking from '~~/classes/Booking';
-import Ticket from '@/classes/Ticket';
-import TicketsMatrix from '@/classes/TicketsMatrix';
+import Ticket from '~~/classes/Ticket';
+import TicketsMatrix from '~~/classes/TicketsMatrix';
 import TicketSelectionStage from '@/pages/production/[slug]/book/[performanceId]/tickets.vue';
 import SelectedTicketsTable from '@/components/booking/SelectedTicketsTable.vue';
 import TicketOptions from '@/components/booking/TicketOptions.vue';

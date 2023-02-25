@@ -2,7 +2,7 @@ import { mount } from '#testSupport/helpers';
 import { expect } from 'vitest';
 
 import PerformanceSeatGroup from '#testSupport/fixtures/PerformanceSeatGroup';
-import Ticket from '@/classes/Ticket';
+import Ticket from '~~/classes/Ticket';
 import ConcessionType from '@/components/booking/ConcessionType.vue';
 
 describe('Concession Type', () => {

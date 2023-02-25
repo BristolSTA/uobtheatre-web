@@ -252,7 +252,11 @@ const useAuthStore = defineStore('auth', {
 
       // If the mutation was not successful, throw the errors
       if (!data.success)
-        throw new ValidationError(Errors.createFromAPI(data.errors));
+        throw new ValidationError(
+          data.errors
+            ? Errors.createFromAPI(data.errors)
+            : 'An unknown error occured'
+        );
     },
 
     /**
@@ -286,7 +290,11 @@ const useAuthStore = defineStore('auth', {
 
       // If the mutation wasn't successful, we'll throw the errors
       if (!data.success) {
-        throw new ValidationError(Errors.createFromAPI(data.errors));
+        throw new ValidationError(
+          data.errors
+            ? Errors.createFromAPI(data.errors)
+            : 'An unknown error occured'
+        );
       }
     },
 
@@ -312,7 +320,11 @@ const useAuthStore = defineStore('auth', {
 
       // If the mutation wasn't successful, we'll throw the errors
       if (!data.success) {
-        throw new ValidationError(Errors.createFromAPI(data.errors));
+        throw new ValidationError(
+          data.errors
+            ? Errors.createFromAPI(data.errors)
+            : 'An unknown error occured'
+        );
       }
     },
 
@@ -353,7 +365,11 @@ const useAuthStore = defineStore('auth', {
 
       // If the mutation wasn't successful, we'll throw the errors
       if (!data.success) {
-        throw new ValidationError(Errors.createFromAPI(data.errors));
+        throw new ValidationError(
+          data.errors
+            ? Errors.createFromAPI(data.errors)
+            : 'An unknown error occured'
+        );
       }
     },
 
