@@ -123,9 +123,11 @@ watch(loadingBookings, (newValue) => {
   }
 });
 
-watch(searchText, () => {
-  // When the search query changes, reset the offset (i.e. pagination) to be 0
+watch([searchText, searchFilter], () => {
+  // When the search query changes, reset the offset (i.e. pagination) to be 0, and close current booking
   searchOffset.value = 0;
+  selectedBooking.value = undefined;
+  setCheckInState();
 });
 
 watch(scannedCode, async (newValue) => {
