@@ -139,6 +139,7 @@ watch(scannedCode, async (newValue) => {
 
   try {
     // Conver the scanned text into ticket data
+    console.log(newValue);
     const ticketDetails = Ticket.dataFromQRCode(newValue);
 
     // Do the scan action as appropriate
