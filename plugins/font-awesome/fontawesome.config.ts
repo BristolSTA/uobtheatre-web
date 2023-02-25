@@ -61,7 +61,8 @@ import {
   faCamera,
   faInfo,
   faExclamationCircle,
-  faArrowLeft
+  faArrowLeft,
+  faArrowsRotate
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
@@ -69,6 +70,7 @@ import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 export default {
   solid: [
     faArrowRight,
+    faArrowsRotate,
     faArrowLeft,
     faCamera,
     faChevronDown,
