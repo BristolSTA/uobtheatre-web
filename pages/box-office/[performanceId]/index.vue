@@ -123,15 +123,23 @@ watch(loadingBookings, (newValue) => {
   }
 });
 
+watch(searchText, () => {
+  // When the search query changes, reset the offset (i.e. pagination) to be 0
+  searchOffset.value = 0;
+});
+
 watch(scannedCode, async (newValue) => {
+  // If the newly scaned code is undefined (i.e. telling us a new code is about to be scanned) reset the state
   if (!newValue) {
     setCheckInState();
     return;
   }
 
   try {
+    // Conver the scanned text into ticket data
     const ticketDetails = Ticket.dataFromQRCode(newValue);
 
+    // Do the scan action as appropriate
     let state = await handleTicketScan(
       autoCheckIn,
       performance.id,
@@ -139,9 +147,11 @@ watch(scannedCode, async (newValue) => {
       ticketDetails.ticketId
     );
 
+    // Update the booking and ticket information
     selectedBooking.value = state.booking;
     queryTicketId.value = state.ticket?.id;
 
+    // Update the UI visual state
     setCheckInState(
       autoCheckIn.value
         ? !state.error

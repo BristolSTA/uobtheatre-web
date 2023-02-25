@@ -18,6 +18,8 @@ query boxOfficePerformanceBooking(
             id
             start
             production {
+              id
+              slug
               name
               posterImage {
                 url

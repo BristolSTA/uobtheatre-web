@@ -9,19 +9,30 @@ import type { IdInput } from '~~/types/generic';
 import { IMutateTicketCheckInStateReturn } from './BoxOfficeSharedTypes';
 
 export async function retrieveDetailsForTicket(
-  performanceId: IdInput,
+  performanceId: IdInput | undefined,
   bookingReference: string,
   ticketId: IdInput
 ): Promise<IMutateTicketCheckInStateReturn> {
-  const result = await waitForQuery(
-    useBoxOfficePerformanceBookingQuery({
-      bookingReference,
-      performanceId
-    })
-  );
+  let booking;
 
-  const booking = result.data.performance?.bookings.edges[0]?.node ?? undefined;
+  if (performanceId) {
+    const result = await waitForQuery(
+      useBoxOfficePerformanceBookingQuery({
+        bookingReference,
+        performanceId
+      })
+    );
+
+    booking = result.data.performance?.bookings.edges[0]?.node ?? undefined;
+  } else {
+    const result = await waitForQuery(
+      useAdminBookingLookupQuery({ reference: bookingReference })
+    );
+    booking = result.data.bookings?.edges[0]?.node ?? undefined;
+  }
+
   const ticket = booking?.tickets?.find((ticket) => ticket.id == ticketId);
+
   return {
     booking,
     ticket,
@@ -114,7 +125,7 @@ export async function mutateTicketCheckInState(
 
 export async function handleTicketScan(
   doCheckIn: boolean | Ref<boolean>,
-  performanceId: IdInput,
+  performanceId: IdInput | undefined,
   bookingReference: string,
   ticketIds: IdInput[] | IdInput,
   withSounds: boolean = true
@@ -124,7 +135,7 @@ export async function handleTicketScan(
 
   if (!Array.isArray(ticketIds)) ticketIds = [ticketIds];
 
-  if (shouldMutate) {
+  if (shouldMutate && performanceId) {
     // Attempt to check in the ticket
     response = await mutateTicketCheckInState(
       performanceId,

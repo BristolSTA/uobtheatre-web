@@ -13,6 +13,7 @@
 import { QrcodeStream } from 'vue-qrcode-reader';
 import Ticket from '@/classes/Ticket';
 import InvalidTicketQRCodeException from '~~/exceptions/InvalidTicketQRCodeException';
+import { TicketQRCodeData } from '~~/types/ticket';
 
 const props = withDefaults(
   defineProps<{
@@ -33,7 +34,7 @@ const emit = defineEmits<{
   (
     event: 'scanned',
     data: {
-      ticketData: { bookingReference: string; ticketId: string };
+      ticketData: TicketQRCodeData;
       reenable: () => void;
     }
   ): void;

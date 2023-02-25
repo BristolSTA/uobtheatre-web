@@ -106,7 +106,7 @@
           </div>
         </template>
       </div>
-    </BoxOfficeCameraScanner>
+    </UiInputTicketScanner>
   </div>
 </template>
 
