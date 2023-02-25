@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import Booking from '@/classes/Booking';
+import Booking from '~~/classes/Booking';
 import Stages, {
   getStageIndex
 } from '@/pages/production/[slug]/book/-bookingStages';

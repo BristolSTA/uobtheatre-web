@@ -1,43 +1,40 @@
 <template>
-  <NuxtPage
-    ref="child"
-    :performance="performance"
-    @hook:mounted="regenerateCrumbsLink"
-  />
+  <NuxtPage />
 </template>
 
-<script>
-import BoxOfficePerformance from '@/graphql/queries/box-office/BoxOfficePerformance.gql';
+<script lang="ts" setup>
+import {
+  BoxOfficePerformanceDocument,
+  BoxOfficePerformanceQuery,
+  BoxOfficePerformanceQueryVariables
+} from '~~/graphql/codegen/operations';
+
+import InjectionKeys from '@/utils/injection-keys';
+
 definePageMeta({
-  middleware: ['authed']
+  middleware: ['authed'],
+  layout: false
 });
 
-export default defineNuxtComponent({
-  async asyncData() {
-    // Execute query
-    const { data } = await useDefaultApolloClient().query({
-      query: BoxOfficePerformance,
-      variables: {
-        id: useRoute().params.performanceId
-      }
-    });
+const performanceId = useRoute().params.performanceId;
 
-    const performance = data.performance;
-    if (!performance) {
-      throw createSafeError({
-        statusCode: 404,
-        message: 'This performance does not exist'
-      });
-    }
-    return {
-      performance
-    };
-  },
-  methods: {
-    regenerateCrumbsLink() {
-      this._computedWatchers.crumbs.run();
-      this.$forceUpdate();
-    }
-  }
-});
+if (typeof performanceId !== 'string')
+  throw createSafeError({ message: 'Only one performance ID can be passed' });
+
+const { data } = await useAsyncQuery<BoxOfficePerformanceQuery>(
+  BoxOfficePerformanceDocument,
+  {
+    id: performanceId
+  } satisfies BoxOfficePerformanceQueryVariables
+);
+
+const performance = data.value?.performance;
+
+if (!performance)
+  throw createSafeError({
+    statusCode: 404,
+    message: 'This performance does not exist'
+  });
+
+provide(InjectionKeys.boxOffice.performance, performance);
 </script>

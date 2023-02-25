@@ -1,5 +1,5 @@
 import { describe, expect, it, beforeEach } from 'vitest';
-import Ticket from '@/classes/Ticket';
+import Ticket from '~~/classes/Ticket';
 describe('Ticket Class', () => {
   /** @member {Ticket} */
   let ticket;

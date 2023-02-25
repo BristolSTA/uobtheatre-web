@@ -46,10 +46,6 @@
     &:focus {
       @apply outline-none;
     }
-    &:hover:not(.disabled),
-    &:hover:not([disabled]) {
-      @apply bg-sta-gray-light;
-    }
   }
 
   .btn-outline {

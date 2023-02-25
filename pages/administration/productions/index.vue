@@ -125,7 +125,7 @@ const { result: queryResult, loading } = useAdminProductionsQuery(
           })
         : null,
       search: productionSearchFilter.value
-    } as AdminProductionsQueryVariables)
+    } satisfies AdminProductionsQueryVariables)
 );
 
 watch(productionSearchFilter, () => {

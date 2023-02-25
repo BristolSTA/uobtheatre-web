@@ -41,7 +41,7 @@
 import { DateTime } from 'luxon';
 
 import OverviewBox from '../../ui/UiCard.vue';
-import Booking from '@/classes/Booking';
+import Booking from '~~/classes/Booking';
 import BookingStatusEnum from '~~/enums/PayableStatusEnum';
 import ProviderNameEnum from '~~/enums/TransactionProviderNameEnum';
 import { dateFormat } from '@/utils/datetime';

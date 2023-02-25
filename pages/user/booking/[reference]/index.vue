@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import Booking from '@/classes/Booking';
+import Booking from '~~/classes/Booking';
 import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue';
 import BookingPerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue';
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';

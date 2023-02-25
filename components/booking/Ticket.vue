@@ -48,7 +48,7 @@
 import lo from 'lodash';
 import QrcodeVue from 'qrcode.vue';
 
-import Ticket from '@/classes/Ticket';
+import Ticket from '~~/classes/Ticket';
 import { dateFormat } from '@/utils/datetime';
 import { DateTime } from 'luxon';
 

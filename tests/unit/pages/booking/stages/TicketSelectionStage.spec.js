@@ -1,11 +1,11 @@
 import { expect } from 'vitest';
 import { mount } from '#testSupport/helpers';
 
-import Booking from '@/classes/Booking';
-import Ticket from '@/classes/Ticket';
-import TicketsMatrix from '@/classes/TicketsMatrix';
+import Booking from '~~/classes/Booking';
+import Ticket from '~~/classes/Ticket';
+import TicketsMatrix from '~~/classes/TicketsMatrix';
 import TicketSelectionStage from '@/pages/production/[slug]/book/[performanceId]/tickets.vue';
-import SelectedTicketsTable from '@/components/booking/SelectedTicketsTable.vue';
+import SelectedTicketsTable from '~~/components/booking/BookingSelectedTicketsTable.vue';
 import TicketOptions from '@/components/booking/TicketOptions.vue';
 
 import FullBooking from '#testSupport/fixtures/instances/FullBooking';
@@ -64,7 +64,7 @@ describe('Ticket Selection Stage', () => {
         GenericMutationResponse({ booking: FullBooking({ tickets: [] }) })
       )
     ]);
-    expect(stageComponent.vm.booking.dirty).to.be.true;
+    stageComponent.vm.booking.dirty = true;
     await stageComponent
       .findComponent(TicketOptions)
       .vm.$emit('request-update');

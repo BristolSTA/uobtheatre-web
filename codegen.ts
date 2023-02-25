@@ -10,7 +10,10 @@ const config: CodegenConfig = {
     './graphql/codegen/operations.ts': {
       plugins: ['typescript', 'typescript-operations', 'typescript-vue-apollo'],
       config: {
-        vueCompositionApiImportFrom: 'vue'
+        vueCompositionApiImportFrom: 'vue',
+        scalars: {
+          IdInputField: 'string'
+        }
       }
     }
   }

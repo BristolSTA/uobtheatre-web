@@ -1,0 +1,8 @@
+query boxOfficePerformanceTicketsAvailable($id: ID!) {
+  performance(id: $id) {
+    id
+    ticketsBreakdown {
+      totalTicketsAvailable
+    }
+  }
+}

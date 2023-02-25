@@ -1,131 +1,102 @@
 <template>
   <AdminPage title="Ticket Lookup">
     <div v-if="!scannedData">
-      <ticket-scanner @scanned="onScan" />
+      <div v-if="!useCameraScanner" class="text-center">
+        <h3 class="text-h3">Scan a ticket with a barcode scanner</h3>
+        <p>or</p>
+        <UiStaButton colour="orange" @click="useCameraScanner = true"
+          >Scan With Camera</UiStaButton
+        >
+      </div>
+      <UiInputTicketScanner
+        v-else
+        @scanned="onScan($event.ticketData)"
+        @invalid-code="onInvalidCode"
+      />
     </div>
     <div v-else class="space-y-2">
       <h2 class="text-h2">Scanned Details</h2>
       Booking Reference: {{ scannedData.bookingReference }} | Ticket ID:
       {{ scannedData.ticketId }}
-      <div
-        class="flex flex-wrap space-x-4 space-y-2 lg:flex-nowrap lg:space-y-0"
-      >
-        <UiCard v-if="ticketDetails" title="Ticket">
-          <table>
-            <table-row>
-              <table-head-item>Seat Group</table-head-item>
-              <table-row-item>
-                {{ ticketDetails.seatGroup.name }}
-              </table-row-item>
-            </table-row>
-            <table-row>
-              <table-head-item>Concession Type</table-head-item>
-              <table-row-item>
-                {{ ticketDetails.concessionType.name }}
-              </table-row-item>
-            </table-row>
-            <table-row>
-              <table-head-item>Checked In</table-head-item>
-              <table-row-item>{{ ticketDetails.checkedIn }}</table-row-item>
-            </table-row>
-          </table>
-        </UiCard>
-        <UiCard v-if="bookingInfo" title="Booking">
-          <table>
-            <table-row>
-              <table-head-item>Performance</table-head-item>
-              <table-row-item>
-                {{ bookingInfo.performance.production.name }} at
-                {{
-                  dateFormat(bookingInfo.performance.start, 'EEEE d MMMM kkkk')
-                }}
-              </table-row-item>
-            </table-row>
-            <table-row>
-              <table-head-item>User</table-head-item>
-              <table-row-item>
-                {{ bookingInfo.user.firstName }}
-                {{ bookingInfo.user.lastName }}
-              </table-row-item>
-            </table-row>
-            <table-row v-if="bookingInfo.creator">
-              <table-head-item>Creator</table-head-item>
-              <table-row-item>
-                {{ bookingInfo.creator.firstName }}
-                {{ bookingInfo.creator.lastName }}
-              </table-row-item>
-            </table-row>
-            <table-row>
-              <table-head-item>View Booking</table-head-item>
-              <table-row-item>
-                <NuxtLink
-                  class="inline-block m-2 ml-0 p-2 bg-sta-green hover:bg-sta-green-dark transition-colors"
-                  :to="`/administration/productions/${bookingInfo.performance.production.slug}/bookings/${bookingInfo.reference}`"
-                >
-                  View Booking
-                </NuxtLink>
-              </table-row-item>
-            </table-row>
-          </table>
-        </UiCard>
+      <p>
+        <UiStaButton colour="orange" @click="scannedData = undefined"
+          >Scan Again</UiStaButton
+        >
+        <UiStaButton
+          v-if="bookingInfo"
+          class="ml-4"
+          colour="green"
+          :to="`/administration/productions/${bookingInfo.performance.production.slug}/bookings/${bookingInfo.reference}`"
+          >View Booking</UiStaButton
+        >
+      </p>
+      <div class="flex flex-wrap gap-4 lg:flex-nowrap lg:space-y-0">
+        <div class="flex-grow">
+          <UiCard v-if="ticket" title="Ticket">
+            <BoxOfficeBookingTicketDetails :ticket="ticket" />
+          </UiCard>
+        </div>
+        <div class="flex-grow">
+          <UiCard v-if="bookingInfo" title="Booking">
+            <BoxOfficeBookingDetails
+              :booking="bookingInfo"
+              :allow-ticket-inspections="false"
+            />
+          </UiCard>
+        </div>
       </div>
     </div>
   </AdminPage>
 </template>
 
-<script>
-import TicketScanner from '@/components/ui/Input/TicketScanner.vue';
-
+<script lang="ts" setup>
 import { errorToast } from '~~/utils/alerts';
-import { dateFormat } from '@/utils/datetime';
-import TableRow from '@/components/ui/Tables/TableRow.vue';
-import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
-import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
-import { AdminBookingLookupDocument } from '@/graphql/codegen/operations';
+import { TicketQRCodeData } from '~~/types/ticket';
+import { handleTicketScan } from '~~/services/ticketScanService';
+import { IDetailedBooking, IDetailedBookingTicket } from '~~/types/box-office';
 
-export default defineNuxtComponent({
-  components: {
-    TicketScanner,
+const ticket = ref<IDetailedBookingTicket | undefined>();
+const bookingInfo = ref<IDetailedBooking | undefined>();
+const scannedData = ref<TicketQRCodeData | undefined>();
+const useCameraScanner = ref(false);
 
-    TableHeadItem,
-    TableRowItem,
-    TableRow
-  },
-  data() {
-    return {
-      ticket: null,
-      scannedData: null,
-      bookingInfo: null
-    };
-  },
-  computed: {
-    ticketDetails() {
-      if (!this.bookingInfo) {
-        return;
-      }
-      return this.bookingInfo.tickets.find(
-        (ticket) => ticket.id === this.scannedData.ticketId
-      );
-    }
-  },
-  methods: {
-    dateFormat,
-    async onScan(e) {
-      this.scannedData = e;
-      this.bookingInfo = null;
-      const { data } = await this.$apollo.query({
-        query: AdminBookingLookupDocument,
-        variables: {
-          reference: this.scannedData.bookingReference
-        }
-      });
-      if (!data.bookings.edges.length) {
-        return errorToast.fire({
-          title: 'A matching booking does not exisit for this reference'
-        });
-      }
-      this.bookingInfo = data.bookings.edges[0].node;
-    }
-  }
+const hardwareScannedDetails = useHardwareTicketScanner();
+
+watch(hardwareScannedDetails.ticketDetails, (newVal) => {
+  if (!newVal) return;
+
+  onScan(newVal);
 });
+
+watch(hardwareScannedDetails.isInvalid, (newVal) => {
+  if (!newVal) return;
+
+  onInvalidCode();
+});
+
+function onInvalidCode() {
+  errorToast.fire({
+    title: 'Invalid ticket QR code scanned'
+  });
+}
+
+async function onScan(ticketData: TicketQRCodeData) {
+  scannedData.value = ticketData;
+  bookingInfo.value = undefined;
+
+  const response = await handleTicketScan(
+    false,
+    undefined,
+    scannedData.value.bookingReference,
+    [scannedData.value.ticketId]
+  );
+  bookingInfo.value = response.booking;
+  ticket.value = response.ticket;
+
+  if (!bookingInfo.value) {
+    return errorToast.fire({
+      title: 'A matching booking does not exisit for this reference'
+    });
+  }
+}
 </script>

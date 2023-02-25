@@ -218,7 +218,7 @@ import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
 import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
 import MenuTile from '@/components/ui/MenuTile.vue';
 import PerformanceStatusBadge from '@/components/performance/PerformanceStatusBadge.vue';
-import TicketsMatrix from '@/classes/TicketsMatrix';
+import TicketsMatrix from '~~/classes/TicketsMatrix';
 import TableRow from '@/components/ui/Tables/TableRow.vue';
 import { performMutation } from '~~/utils/api';
 import { dateFormat } from '@/utils/datetime';

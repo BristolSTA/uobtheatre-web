@@ -1,24 +1,41 @@
+import type { NonFieldError, FieldError } from '~~/graphql/codegen/operations';
+
 /**
  * Errors class for wrapping (validaiton) errors from the API
  */
+type ApiErrors = (NonFieldError | FieldError)[];
+
 export default class {
+  errors: {
+    field_errors: FieldError[];
+    non_field_errors: NonFieldError[];
+  };
+
   /**
    * Create a new Errors instance.
    *
    * @param {?Array} errors Optional GraphQL Errors
    */
-  constructor(errors = []) {
-    this.reset();
+  constructor(errors: ApiErrors = []) {
+    this.errors = {
+      field_errors: [],
+      non_field_errors: []
+    };
+
     if (errors.length) {
       this.record(errors);
     }
   }
 
-  static createFromAPI(errors) {
+  static createFromAPI(errors: ApiErrors) {
     return new this(errors);
   }
 
-  static createFromMessage(message, field = null, code = null) {
+  static createFromMessage(
+    message: string,
+    field: string | null = null,
+    code: string | null = null
+  ) {
     return new this([
       {
         __typename: field ? 'FieldError' : 'NonFieldError',
@@ -45,7 +62,7 @@ export default class {
    * @param {string} field The field name
    * @returns {boolean} Whether the field has errors
    */
-  has(field) {
+  has(field: string) {
     return !!this.errors.field_errors.find((error) => error.field === field);
   }
 
@@ -55,7 +72,7 @@ export default class {
    * @param {string} code The code to search for
    * @returns {boolean}
    */
-  hasCode(code) {
+  hasCode(code: string) {
     return this.allErrors.some((error) => error.code === code);
   }
 
@@ -76,7 +93,7 @@ export default class {
    * @param {string} field The field name
    * @returns {object} The error object
    */
-  first(field) {
+  first(field: string) {
     return this.errors.field_errors.find((error) => error.field === field);
   }
 
@@ -86,7 +103,7 @@ export default class {
    * @param {string} field The field name
    * @returns {Array<object>} List of error objects
    */
-  get(field) {
+  get(field: string) {
     return this.errors.field_errors.filter((error) => error.field === field);
   }
 
@@ -123,14 +140,14 @@ export default class {
    *
    * @param {object} errors GraphQL Errors Object
    */
-  record(errors) {
+  record(errors: ApiErrors) {
     this.errors = {
       field_errors: errors.filter((error) => {
         return error.__typename === 'FieldError';
-      }),
+      }) as FieldError[],
       non_field_errors: errors.filter((error) => {
         return error.__typename === 'NonFieldError' || !error.__typename;
-      })
+      }) as NonFieldError[]
     };
   }
 
@@ -141,7 +158,15 @@ export default class {
    * @param {string} [errorObject.field] The error's field
    * @param {string} [errorObject.code] The error's code
    */
-  push({ message, field, code }) {
+  push({
+    message,
+    field,
+    code
+  }: {
+    message: string;
+    field?: string;
+    code?: string;
+  }) {
     const error = {
       message,
       code,
@@ -159,7 +184,7 @@ export default class {
    *
    * @param {string|null} field The field name. If supplied, will only delete errors for the supplied field
    */
-  clear(field) {
+  clear(field: string) {
     if (field) {
       this.errors.field_errors = this.errors.field_errors.filter(
         (err) => err.field !== field

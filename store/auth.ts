@@ -19,9 +19,7 @@ import UnverifiedLoginError from '~~/errors/auth/UnverifiedLoginError';
 
 let refreshTimer: NodeJS.Timeout | null;
 
-export const foo = 'bar';
-
-export default defineStore('auth', {
+const useAuthStore = defineStore('auth', {
   state: () => ({
     user: null as AuthUserDetailsFragment | null
   }),
@@ -254,7 +252,11 @@ export default defineStore('auth', {
 
       // If the mutation was not successful, throw the errors
       if (!data.success)
-        throw new ValidationError(Errors.createFromAPI(data.errors));
+        throw new ValidationError(
+          data.errors
+            ? Errors.createFromAPI(data.errors)
+            : 'An unknown error occured'
+        );
     },
 
     /**
@@ -288,7 +290,11 @@ export default defineStore('auth', {
 
       // If the mutation wasn't successful, we'll throw the errors
       if (!data.success) {
-        throw new ValidationError(Errors.createFromAPI(data.errors));
+        throw new ValidationError(
+          data.errors
+            ? Errors.createFromAPI(data.errors)
+            : 'An unknown error occured'
+        );
       }
     },
 
@@ -314,7 +320,11 @@ export default defineStore('auth', {
 
       // If the mutation wasn't successful, we'll throw the errors
       if (!data.success) {
-        throw new ValidationError(Errors.createFromAPI(data.errors));
+        throw new ValidationError(
+          data.errors
+            ? Errors.createFromAPI(data.errors)
+            : 'An unknown error occured'
+        );
       }
     },
 
@@ -355,7 +365,11 @@ export default defineStore('auth', {
 
       // If the mutation wasn't successful, we'll throw the errors
       if (!data.success) {
-        throw new ValidationError(Errors.createFromAPI(data.errors));
+        throw new ValidationError(
+          data.errors
+            ? Errors.createFromAPI(data.errors)
+            : 'An unknown error occured'
+        );
       }
     },
 
@@ -402,3 +416,5 @@ export default defineStore('auth', {
     }
   }
 });
+
+export default useAuthStore;

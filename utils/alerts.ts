@@ -35,7 +35,7 @@ export const apiErrorToast = errorToast.mixin({
 });
 export const loadingSwal = swal.mixin({
   didOpen: () => {
-    Swal.showLoading(null);
+    Swal.showLoading(undefined);
   },
   allowOutsideClick: false,
   allowEscapeKey: false

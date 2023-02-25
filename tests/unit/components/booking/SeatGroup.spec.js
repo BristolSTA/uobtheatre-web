@@ -2,7 +2,7 @@ import { mount } from '#testSupport/helpers';
 import { expect } from 'vitest';
 import { fixTextSpacing } from '#testSupport/helpers';
 import Performance from '#testSupport/fixtures/Performance';
-import Ticket from '@/classes/Ticket';
+import Ticket from '~~/classes/Ticket';
 import ConcessionType from '@/components/booking/ConcessionType.vue';
 import GroupTicketButton from '@/components/booking/GroupTicketButton.vue';
 import SeatGroup from '@/components/booking/SeatGroup.vue';

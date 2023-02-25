@@ -35,11 +35,16 @@ import {
 } from '~~/graphql/codegen/operations';
 import Errors from '~~/classes/Errors';
 
+const productionSlug = useRoute().params.productionSlug;
+
+if (typeof productionSlug !== 'string')
+  throw createSafeError({ message: 'Only one slug can be passed' });
+
 const { data, refresh } = await useAsyncQuery<AdminProductionPermissionsQuery>({
   query: AdminProductionPermissionsDocument,
   variables: {
-    slug: useRoute().params.productionSlug
-  } as AdminProductionPermissionsQueryVariables,
+    slug: productionSlug
+  } satisfies AdminProductionPermissionsQueryVariables,
   cache: false
 });
 
@@ -113,7 +118,7 @@ async function setUserPermissions(
   permissions: string[]
 ): Promise<boolean> {
   errors.value = undefined;
-  if (!production) return false;
+  if (!production.value?.id) return false;
   try {
     await doMutation(
       useProductionPermissionsMutationsMutation({

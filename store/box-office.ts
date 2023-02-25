@@ -2,17 +2,19 @@ import Cookie from 'js-cookie';
 import { defineStore } from 'pinia';
 import {
   useDeleteBookingMutation,
-  BoxOfficePaymentDevicesQuery
+  BoxOfficePaymentDevicesQuery,
+  SquarePaymentDevice
 } from '@/graphql/codegen/operations';
 import { BoxOfficePaymentDevicesDocument } from '~~/graphql/codegen/operations';
+import Booking from '~~/classes/Booking';
 
 const locationCookieKey = 'uobtheatre-boxoffice-location';
 
-export default defineStore('box-office', {
+const useBoxOfficeStore = defineStore('box-office', {
   state: () => ({
     locationId: undefined as string | undefined,
-    terminalDevice: undefined as string | undefined,
-    inProgressBookingID: undefined as string | undefined
+    terminalDevice: undefined as SquarePaymentDevice | undefined,
+    inProgressBooking: new Booking() as Booking
   }),
   actions: {
     /**
@@ -26,14 +28,16 @@ export default defineStore('box-office', {
      * Cancels the booking that is currently in progress
      */
     async cancelInProgressBooking() {
-      const { mutate } = useDeleteBookingMutation({
-        variables: {
-          bookingId: this.inProgressBookingID
-        }
-      });
+      if (this.inProgressBooking.id) {
+        const { mutate } = useDeleteBookingMutation({
+          variables: {
+            bookingId: this.inProgressBooking.id
+          }
+        });
+        await mutate();
+      }
 
-      await mutate();
-      this.locationId = undefined;
+      this.inProgressBooking = new Booking();
     },
 
     /**
@@ -66,7 +70,9 @@ export default defineStore('box-office', {
 
       return data.value.paymentDevices.filter(
         (device) => device && device.locationId === this.locationId
-      );
+      ) as NonNullable<typeof data.value.paymentDevices[number]>[];
     }
   }
 });
+
+export default useBoxOfficeStore;

@@ -1,42 +1,42 @@
 <template>
-  <label :for="inputId">
-    <span v-if="showLabel" class="text-white text-xs font-semibold">{{
-      name
-    }}</span>
+  <div>
     <input
       :id="inputId"
       ref="input"
       class="px-2 py-2 w-full text-black rounded-sm focus:outline-none rounded"
-      v-bind="$attrs"
       :class="inputClass"
       :name="inputId"
       :type="type"
       :value="modelValue"
       :autocomplete="autocomplete"
       :required="required"
+      :placeholder="placeholder"
       @input="onInput"
       @focus="$emit('focus', $event)"
       @blur="$emit('blur', $event)"
       @change="$emit('change', $event)"
     />
     <error-helper :errors="errors" :field-name="inputId" />
-  </label>
+  </div>
 </template>
 
 <script>
 import lo from 'lodash';
 
 import ErrorHelper from '../ErrorHelper.vue';
-import Errors from '@/classes/Errors';
+import Errors from '~~/classes/Errors';
 
 export default {
   name: 'TextInput',
   components: { ErrorHelper },
-  inheritAttrs: false,
   props: {
     modelValue: {
       default: null,
       type: [String]
+    },
+    placeholder: {
+      default: null,
+      type: String
     },
     inputClass: {
       default: null,

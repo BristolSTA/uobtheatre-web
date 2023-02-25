@@ -27,7 +27,7 @@
 
 <script>
 import OverviewBox from '../../ui/UiCard.vue';
-import Booking from '@/classes/Booking';
+import Booking from '~~/classes/Booking';
 import { dateFormat } from '@/utils/datetime';
 
 export default {

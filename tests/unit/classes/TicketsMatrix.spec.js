@@ -1,6 +1,6 @@
 import { describe, expect, it, beforeEach } from 'vitest';
 import Performance from '#testSupport/fixtures/Performance';
-import TicketsMatrix from '@/classes/TicketsMatrix';
+import TicketsMatrix from '~~/classes/TicketsMatrix';
 
 describe('TicketsMatrix', () => {
   let matrix;

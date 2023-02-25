@@ -46,7 +46,7 @@
 
 <script>
 import BookingStage from '@/classes/BookingStage';
-import Booking from '@/classes/Booking';
+import Booking from '~~/classes/Booking';
 
 import ContentWarningsDisplay from '@/components/production/content-warnings/ContentWarningsDisplay.vue';
 

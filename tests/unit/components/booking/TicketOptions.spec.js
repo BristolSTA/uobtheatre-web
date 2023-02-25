@@ -4,9 +4,9 @@ import lo from 'lodash';
 import FullBooking from '#testSupport/fixtures/instances/FullBooking';
 import TicketOptions from '@/components/booking/TicketOptions.vue';
 import SeatGroup from '@/components/booking/SeatGroup.vue';
-import Booking from '@/classes/Booking';
-import TicketsMatrix from '@/classes/TicketsMatrix';
-import Ticket from '@/classes/Ticket';
+import Booking from '~~/classes/Booking';
+import TicketsMatrix from '~~/classes/TicketsMatrix';
+import Ticket from '~~/classes/Ticket';
 
 describe('Ticket Options', () => {
   let component;

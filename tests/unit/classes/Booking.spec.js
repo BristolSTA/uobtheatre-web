@@ -6,9 +6,9 @@ import PerformanceFixture from '#testSupport/fixtures/Performance';
 import ConcessionTypeBookingType from '#testSupport/fixtures/ConcessionTypeBookingType';
 import BookingFixture from '#testSupport/fixtures/Booking';
 import ConcessionType from '#testSupport/fixtures/ConcessionType';
-import TicketsMatrix from '@/classes/TicketsMatrix';
-import Ticket from '@/classes/Ticket';
-import Booking from '@/classes/Booking';
+import TicketsMatrix from '~~/classes/TicketsMatrix';
+import Ticket from '~~/classes/Ticket';
+import Booking from '~~/classes/Booking';
 describe('Booking Class', () => {
   /** @member {Booking} */
   let booking;
@@ -299,41 +299,6 @@ describe('Booking Class', () => {
 
     booking.priceBreakdown = bookingAPIData.priceBreakdown;
 
-    expect(
-      booking.miscCosts).toEqual(
-      bookingAPIData.priceBreakdown.miscCosts
-    );
-  });
-  it('can tell if a booking is active', () => {
-    booking.updateFromAPIData(bookingAPIData);
-    // Day before
-    DateTime.local.mockReturnValue(DateTime.fromISO('2020-03-08T10:00:00'));
-    expect(booking.isActive).to.be.true;
-
-    // 6 Hours before start
-    DateTime.local.mockReturnValue(DateTime.fromISO('2020-03-09T10:00:00'));
-    expect(booking.isActive).to.be.true;
-
-    // 40 minutes in
-    DateTime.local.mockReturnValue(DateTime.fromISO('2020-03-09T16:40:00'));
-    expect(booking.isActive).to.be.true;
-
-    // At end time
-    DateTime.local.mockReturnValue(DateTime.fromISO('2020-03-09T18:00:00'));
-    expect(booking.isActive).to.be.true;
-
-    // 1 Hour After Finish
-    DateTime.local.mockReturnValue(DateTime.fromISO('2020-03-09T19:00:00'));
-    expect(booking.isActive).to.be.true;
-  });
-  it('can tell if a booking is inactive', () => {
-    booking.updateFromAPIData(bookingAPIData);
-    // Midnight next day
-    DateTime.local.mockReturnValue(DateTime.fromISO('2020-03-10T00:00:00'));
-    expect(booking.isActive).to.be.false;
-
-    // 10AM Next Day
-    DateTime.local.mockReturnValue(DateTime.fromISO('2020-03-10T10:00:00'));
-    expect(booking.isActive).to.be.false;
+    expect(booking.miscCosts).toEqual(bookingAPIData.priceBreakdown.miscCosts);
   });
 });

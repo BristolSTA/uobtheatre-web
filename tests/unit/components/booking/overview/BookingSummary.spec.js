@@ -1,7 +1,7 @@
 import { mount } from '#testSupport/helpers';
 import { expect } from 'vitest';
 import { NuxtLinkStub } from '#testSupport/stubs';
-import Booking from '@/classes/Booking';
+import Booking from '~~/classes/Booking';
 import BookingSummaryOverview from '@/components/booking/overview/BookingSummaryOverview.vue';
 import OverviewBox from '~~/components/ui/UiCard.vue';
 

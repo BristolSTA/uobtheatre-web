@@ -1,11 +1,50 @@
-#import "../../fragments/booking/DetailedBookingDetails.gql"
-query boxOfficePerformanceBooking($performanceId: ID!, $bookingId: ID!) {
+query boxOfficePerformanceBooking(
+  $performanceId: ID!
+  $bookingId: ID
+  $bookingReference: String
+) {
   performance(id: $performanceId) {
     id
-    bookings(id: $bookingId) {
+    bookings(id: $bookingId, reference: $bookingReference) {
       edges {
         node {
-          ...DetailedBookingDetails
+          id
+          reference
+          status
+          user {
+            firstName
+            lastName
+          }
+          expired
+          expiresAt
+          performance {
+            id
+            start
+            production {
+              id
+              slug
+              name
+              posterImage {
+                url
+              }
+            }
+          }
+          tickets {
+            id
+            seatGroup {
+              id
+              name
+            }
+            concessionType {
+              id
+              name
+            }
+            checkedInAt
+            checkedInBy {
+              firstName
+              lastName
+            }
+          }
         }
       }
     }

@@ -6,7 +6,6 @@
     <seat-group
       v-for="(ticketOption, index) in ticketMatrix.ticketOptions"
       :key="index"
-      class="sm:bg-sta-gray"
       :ticket-option="ticketOption"
       :group-capacity-remaining="
         ticketMatrix.capacityRemainingForSeatGroup(ticketOption.seatGroup.id)
@@ -35,9 +34,9 @@
 <script>
 import lo from 'lodash';
 
-import Booking from '@/classes/Booking';
-import Ticket from '@/classes/Ticket';
-import TicketMatrix from '@/classes/TicketsMatrix';
+import Booking from '~~/classes/Booking';
+import Ticket from '~~/classes/Ticket';
+import TicketMatrix from '~~/classes/TicketsMatrix';
 import SeatGroup from '@/components/booking/SeatGroup.vue';
 
 export default {
