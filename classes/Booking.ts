@@ -4,24 +4,30 @@ import { DateTime } from 'luxon';
 
 import Ticket from './Ticket';
 import type {
-  PerformanceNode,
   TransactionNode,
+  DetailedBookingDetailsFragment,
   BookingNode,
   ExtendedUserNode,
-  PriceBreakdownNode,
   SeatGroupNode,
   ConcessionTypeNode
 } from '~~/graphql/codegen/operations';
 import { IdInput } from '~~/types/generic';
 import TicketsMatrix from './TicketsMatrix';
 
+//| 'tickets' | 'user' | 'transactions'
+// tickets?: BookingTicketDetailsFragment;
+// Pick<BookingNode, 'id' | 'reference'> &
+//   BookingTicketDetailsFragment & {
+//     performance?: RequiredPerformanceData;
+//     priceBreakdown?: AllPriceBreakdownFragment | null;
+//   }
 export default class Booking {
   id?: IdInput;
   reference?: string;
-  performance?: Pick<PerformanceNode, 'id' | 'start'>;
+  performance?: Pick<BookingNode['performance'], 'id' | 'start'>;
   transactions: TransactionNode[];
   tickets: Ticket[];
-  priceBreakdown?: PriceBreakdownNode;
+  priceBreakdown?: DetailedBookingDetailsFragment['priceBreakdown'];
   dirty: boolean = false;
   raw?: object;
   idempotencyKey?: string;
@@ -40,7 +46,7 @@ export default class Booking {
    * @returns {Booking} A Booking Instance
    * @static
    */
-  static fromAPIData(bookingData: BookingNode) {
+  static fromAPIData(bookingData: DetailedBookingDetailsFragment) {
     const booking = new this();
     booking.updateFromAPIData(bookingData);
     return booking;
@@ -51,7 +57,7 @@ export default class Booking {
    *
    * @param {object} bookingData API Booking Data
    */
-  updateFromAPIData(bookingData: BookingNode) {
+  updateFromAPIData(bookingData: DetailedBookingDetailsFragment) {
     this.raw = bookingData;
     if (bookingData.priceBreakdown) {
       this.priceBreakdown = bookingData.priceBreakdown;

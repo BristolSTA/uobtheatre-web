@@ -14,7 +14,7 @@
 
       <div
         class="p-3 bg-sta-gray-dark rounded border"
-        :class="{ 'border-sta-orange': !validEmail }"
+        :class="[!validEmail ? 'border-sta-orange' : 'border-transparent']"
       >
         <h2 class="text-center text-h2 text-white">Customer Details</h2>
         <UiFormLabel>
@@ -35,12 +35,11 @@
         </UiFormLabel>
       </div>
 
-      <div
-        class="p-3 bg-sta-gray-dark rounded border"
-        :class="{ 'border-sta-orange': validEmail }"
-      >
-        <h2 class="text-center text-h2 text-white">Payment</h2>
-      </div>
+      <BoxOfficeSellPaymentCard
+        v-if="validEmail"
+        :booking="booking"
+        :user-email="customerEmail"
+      />
     </div>
   </div>
 </template>

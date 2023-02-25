@@ -35,5 +35,3 @@ export async function upsertBooking(booking: Booking): Promise<IReturn> {
 
   return returnData;
 }
-
-export async function deleteBooking();

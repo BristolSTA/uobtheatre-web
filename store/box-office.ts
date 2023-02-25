@@ -2,7 +2,8 @@ import Cookie from 'js-cookie';
 import { defineStore } from 'pinia';
 import {
   useDeleteBookingMutation,
-  BoxOfficePaymentDevicesQuery
+  BoxOfficePaymentDevicesQuery,
+  SquarePaymentDevice
 } from '@/graphql/codegen/operations';
 import { BoxOfficePaymentDevicesDocument } from '~~/graphql/codegen/operations';
 import Booking from '~~/classes/Booking';
@@ -12,7 +13,7 @@ const locationCookieKey = 'uobtheatre-boxoffice-location';
 const useBoxOfficeStore = defineStore('box-office', {
   state: () => ({
     locationId: undefined as string | undefined,
-    terminalDevice: undefined as string | undefined,
+    terminalDevice: undefined as SquarePaymentDevice | undefined,
     inProgressBooking: new Booking() as Booking
   }),
   actions: {
@@ -69,7 +70,7 @@ const useBoxOfficeStore = defineStore('box-office', {
 
       return data.value.paymentDevices.filter(
         (device) => device && device.locationId === this.locationId
-      );
+      ) as NonNullable<typeof data.value.paymentDevices[number]>[];
     }
   }
 });
