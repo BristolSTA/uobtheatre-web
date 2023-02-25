@@ -112,7 +112,7 @@ jobs:
 
       - name: Run End-to-End Tests 🧪
         uses: cypress-io/github-action@v5
-        timeout-minutes: 5
+        timeout-minutes: 7
         with:
           start: yarn beforetest:e2e:ci
           wait-on: 'http://localhost:3000'

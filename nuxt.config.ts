@@ -120,5 +120,9 @@ export default defineNuxtConfig({
       types: ['node', '@types/lodash'],
       exclude: ['../graphql/codegen/operations.ts']
     }
+  },
+
+  sourcemap: {
+    client: true
   }
 });

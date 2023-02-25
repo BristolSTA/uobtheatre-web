@@ -5,6 +5,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "npx serve -s .output/public",
+    "postdeploy": "rm -rf dist/*/*.js.map",
     "postinstall": "nuxt prepare",
     "codegen": "graphql-codegen --config codegen.ts",
     "lint:tsc": "yarn nuxi typecheck",
