@@ -163,6 +163,7 @@ watch(scannedCode, async (newValue) => {
       state.message ?? state.error
     );
   } catch (e) {
+    silentErrorHandler(e);
     setCheckInState(false, 'Unable to read QR code');
   }
 });
