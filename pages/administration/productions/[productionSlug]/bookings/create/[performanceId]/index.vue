@@ -1,12 +1,22 @@
 <template>
   <UiCard>
     <loading-container :loading="loading">
+      <BookingSelectedPerformanceBar
+        v-if="booking.performance"
+        :performance="booking.performance"
+      />
       <tickets-editor
         :booking="booking"
         :tickets-matrix="ticketsMatrix"
         :show-capacities="true"
         :show-prices="false"
         :errors="errors"
+      />
+      <BookingSelectedTicketsTable
+        v-if="booking.tickets.length"
+        class="mt-2"
+        :ticket-matrix="ticketsMatrix"
+        :booking="booking"
       />
       <form-label class="py-4" :required="true">
         User Email
@@ -40,8 +50,8 @@
 import FullPerformanceAndTicketOptionsQuery from '@/graphql/queries/FullPerformanceAndTicketOptions.gql';
 import BookingMutation from '@/graphql/mutations/booking/Booking.gql';
 import PayBookingMutation from '@/graphql/mutations/booking/PayBooking.gql';
-import TicketsMatrix from '@/classes/TicketsMatrix';
-import Booking from '@/classes/Booking';
+import TicketsMatrix from '~~/classes/TicketsMatrix';
+import Booking from '~~/classes/Booking';
 import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue';
 
 import FormLabel from '@/components/ui/FormLabel.vue';

@@ -263,7 +263,7 @@ import SeatGroup from './SeatGroup.vue';
 import ConcessionType from './ConcessionType.vue';
 import PriceMatrix from './PriceMatrix.vue';
 import ErrorHelper from '@/components/ui/ErrorHelper.vue';
-import Errors from '@/classes/Errors';
+import Errors from '~~/classes/Errors';
 import { getValidationErrors, performMutation } from '@/utils/api';
 import { swal } from '@/utils/alerts';
 import { dateFormat } from '@/utils/datetime';

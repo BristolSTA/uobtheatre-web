@@ -64,7 +64,7 @@
 <script>
 import Swal from 'sweetalert2';
 
-import Booking from '@/classes/Booking';
+import Booking from '~~/classes/Booking';
 import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue';
 
 import { getValidationErrors, performMutation } from '~~/utils/api';
@@ -79,7 +79,7 @@ import { recordPaymentEvent, recordEvent, events } from '~~/utils/analytics';
 const stageInfo = new BookingStage({
   name: 'Payment',
   routeName: 'production-slug-book-performanceId-pay',
-  eligable: (_, booking) => !booking.dirty
+  eligable: (_, booking) => !booking.dirty && booking.tickets.length > 0
 });
 
 export default defineNuxtComponent({

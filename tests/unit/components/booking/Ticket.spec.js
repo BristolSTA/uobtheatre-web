@@ -3,7 +3,7 @@ import { expect } from 'vitest';
 import QrcodeVue from 'qrcode.vue';
 
 import BookingFixture from '#testSupport/fixtures/Booking';
-import Booking from '@/classes/Booking';
+import Booking from '~~/classes/Booking';
 import Ticket from '@/components/booking/Ticket.vue';
 
 describe('Ticket component', function () {

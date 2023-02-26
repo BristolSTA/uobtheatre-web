@@ -47,7 +47,7 @@ Add `--watch` to automatically re-run tests as you change files
 
 ### End-to-end tests
 
-Start the server with `yarn pretest:e2e:local` (for testing with the local docker live api).
+Start the server with `yarn beforetest:e2e:local` (for testing with the local docker live api).
 
 Then run:
 

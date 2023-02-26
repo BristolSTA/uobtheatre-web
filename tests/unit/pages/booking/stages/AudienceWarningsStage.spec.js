@@ -1,7 +1,7 @@
 import { expect } from 'vitest';
 import { mount } from '#testSupport/helpers';
 
-import BookingCls from '@/classes/Booking';
+import BookingCls from '~~/classes/Booking';
 
 import AudienceWarningsStage from '@/pages/production/[slug]/book/[performanceId]/warnings.vue';
 import Production from '#testSupport/fixtures/Production';

@@ -7,7 +7,7 @@ import {
   GenericError
 } from '#testSupport/helpers/api';
 
-import Booking from '@/classes/Booking';
+import Booking from '~~/classes/Booking';
 import PagementStage from '@/pages/production/[slug]/book/[performanceId]/pay.vue';
 
 import Payment from '#testSupport/fixtures/Payment';

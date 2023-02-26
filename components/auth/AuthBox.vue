@@ -217,7 +217,7 @@ import { catchOnly, getValidationErrors } from '@/utils/api';
 import { swalToast, successToast } from '@/utils/alerts';
 import ValidationError from '~~/errors/ValidationError';
 import UnverifiedLoginError from '@/errors/auth/UnverifiedLoginError';
-import Errors from '@/classes/Errors';
+import Errors from '~~/classes/Errors';
 
 defineProps({
   loginMode: { type: Boolean, default: true }

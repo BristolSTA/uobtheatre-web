@@ -1,5 +1,5 @@
 import { describe, expect, it, beforeEach } from 'vitest';
-import Errors from '@/classes/Errors';
+import Errors from '~~/classes/Errors';
 
 describe('Errors', () => {
   let errors;

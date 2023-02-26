@@ -2,6 +2,7 @@ import {
   faArrowRight,
   faChevronDown,
   faChevronLeft,
+  faChevronCircleLeft,
   faChevronRight,
   faCaretSquareRight,
   faChevronUp,
@@ -55,7 +56,13 @@ import {
   faFileExport,
   faRightToBracket,
   faUserPen,
-  faBuilding
+  faBuilding,
+  faEllipsis,
+  faCamera,
+  faInfo,
+  faExclamationCircle,
+  faArrowLeft,
+  faArrowsRotate
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
@@ -63,7 +70,13 @@ import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 export default {
   solid: [
     faArrowRight,
+    faArrowsRotate,
+    faArrowLeft,
+    faCamera,
     faChevronDown,
+    faInfo,
+    faExclamationCircle,
+    faChevronCircleLeft,
     faChevronLeft,
     faChevronRight,
     faCaretSquareRight,
@@ -118,7 +131,8 @@ export default {
     faImage,
     faTrash,
     faMobileAlt,
-    faFileExport
+    faFileExport,
+    faEllipsis
   ],
   brands: [faFacebook]
 };

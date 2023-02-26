@@ -241,7 +241,7 @@ import ImageInput from '../../ui/Input/ImageInput.vue';
 import FormLabel from '../../ui/FormLabel.vue';
 
 import RichTextInput from '@/components/ui/Input/RichTextInput.vue';
-import Errors from '@/classes/Errors';
+import Errors from '~~/classes/Errors';
 
 import imageUpload from '~~/services/imageUploadService';
 import ErrorHelper from '@/components/ui/ErrorHelper.vue';

@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts" setup>
-import TicketClass from '@/classes/Ticket';
+import TicketClass from '~~/classes/Ticket';
 import Ticket from '@/components/booking/Ticket.vue';
 import {
   PerformanceByIdDocument,
@@ -61,5 +61,5 @@ const tickets = (
   Array.isArray(query.ticketID) ? query.ticketID : [query.ticketID]
 )
   .filter((ticketID) => typeof ticketID == 'string')
-  .map((ticketID) => new TicketClass({}, {}, ticketID as string));
+  .map((ticketID) => new TicketClass('', '', ticketID ?? ''));
 </script>

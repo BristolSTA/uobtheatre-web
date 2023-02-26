@@ -1,5 +1,5 @@
 <template>
-  <NuxtLayout>
+  <NuxtLayout name="default">
     <LayoutErrorPageInner :error="error" />
   </NuxtLayout>
 </template>

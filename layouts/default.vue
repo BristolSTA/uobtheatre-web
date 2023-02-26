@@ -1,7 +1,6 @@
 <template>
   <div class="flex flex-col h-screen font-body">
-    <NuxtLoadingIndicator color="#FF9F1C" :height="5" />
-    <LayoutNavBar />
+    <LayoutNavBar v-if="!boxOfficeStore.lockdownMode" />
     <UiBreadcrumbs v-if="navStore.breadcrumbs" :crumbs="navStore.breadcrumbs" />
     <main class="flex-1 pb-2 text-white bg-sta-gray">
       <NuxtErrorBoundary @error="onBoundaryErrorCatch">
@@ -11,16 +10,18 @@
         /></template>
       </NuxtErrorBoundary>
     </main>
-    <LayoutFooterBar />
+    <LayoutFooterBar v-if="!boxOfficeStore.lockdownMode" />
   </div>
 </template>
 
 <script setup lang="ts">
 import useNavStore from '@/store/nav';
 import { silentErrorHandler } from '@/utils/misc';
+import useBoxOfficeStore from '~~/store/box-office';
 
 const router = useRouter();
 const navStore = useNavStore();
+const boxOfficeStore = useBoxOfficeStore();
 router.beforeEach(() => {
   navStore.breadcrumbs = undefined;
 });

@@ -40,7 +40,7 @@ import BookingPerformanceOverview from '@/components/booking/overview/Performanc
 import VenueOverview from '@/components/booking/overview/VenueOverview.vue';
 import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue';
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
-import Booking from '@/classes/Booking';
+import Booking from '~~/classes/Booking';
 
 import TableRow from '@/components/ui/Tables/TableRow.vue';
 import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
