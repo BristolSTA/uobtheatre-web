@@ -206,7 +206,7 @@ const useAuthStore = defineStore('auth', {
     async logout(broadcast = true) {
       // Check they are allowed to logout
       const boxOfficeStore = useBoxOfficeStore();
-      if (boxOfficeStore.restrictLogout) return;
+      if (boxOfficeStore.lockdownMode) return;
 
       const runtimeConfig = useRuntimeConfig();
 
