@@ -260,7 +260,6 @@ async function pay(method: PaymentProvider | undefined) {
     return bookingCompleted(data.booking);
   } catch (e) {
     errors.value = getValidationErrors(e);
-  } finally {
     props.booking.refreshIdempotencyKey();
     paying.value = false;
   }
