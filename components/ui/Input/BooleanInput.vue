@@ -3,13 +3,13 @@
     <input
       v-if="!disabled"
       type="checkbox"
-      :checked="checked"
-      @change="$emit('change', $event)"
+      :checked="modelValue"
+      @change="$emit('update:modelValue', $event.target.checked)"
     />
     <font-awesome-icon
       v-else
-      :icon="checked ? 'check-circle' : 'times-circle'"
-      :class="checked ? 'text-sta-green' : 'text-sta-rouge'"
+      :icon="modelValue ? 'check-circle' : 'times-circle'"
+      :class="modelValue ? 'text-sta-green' : 'text-sta-rouge'"
     />
   </div>
 </template>
@@ -17,7 +17,7 @@
 <script>
 export default {
   props: {
-    checked: {
+    modelValue: {
       type: Boolean,
       required: true
     },
@@ -26,6 +26,6 @@ export default {
       default: false
     }
   },
-  emits: ['change']
+  emits: ['update:modelValue']
 };
 </script>

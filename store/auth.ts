@@ -16,6 +16,7 @@ import {
 import Errors from '~~/classes/Errors';
 import ValidationError from '~~/errors/ValidationError';
 import UnverifiedLoginError from '~~/errors/auth/UnverifiedLoginError';
+import useBoxOfficeStore from './box-office';
 
 let refreshTimer: NodeJS.Timeout | null;
 
@@ -203,6 +204,10 @@ const useAuthStore = defineStore('auth', {
      * @param broadcast bool If true, we'll broadcast the logout to other windows on this PC (so if they log out in one tab, it will log them out in all tabs on that PC.)
      */
     async logout(broadcast = true) {
+      // Check they are allowed to logout
+      const boxOfficeStore = useBoxOfficeStore();
+      if (boxOfficeStore.restrictLogout) return;
+
       const runtimeConfig = useRuntimeConfig();
 
       // Wipe store

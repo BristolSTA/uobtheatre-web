@@ -11,6 +11,12 @@
         <UiInputText v-model="locationId" />
       </template>
     </form-label>
+    <form-label>
+      Lockdown Mode
+      <template #control>
+        <UiInputBooleanInput v-model="lockdownMode" />
+      </template>
+    </form-label>
     <button
       class="inline-block p-3 mt-4 transition-colors bg-sta-green hover:bg-sta-green-dark"
       @click="save"
@@ -30,9 +36,14 @@ const boxOfficeStore = useBoxOfficeStore();
 definePageMeta({ head: ['authed', 'can-boxoffice'] });
 
 const locationId = ref<string | undefined>(boxOfficeStore.locationId);
+const lockdownMode = ref(boxOfficeStore.lockdownMode);
 
 function save() {
-  boxOfficeStore.setDeviceLocation(locationId.value);
+  boxOfficeStore.$patch({
+    locationId: locationId.value,
+    lockdownMode: lockdownMode.value
+  });
+  boxOfficeStore.saveState();
   successToast.fire({ title: 'Saved' });
 }
 </script>

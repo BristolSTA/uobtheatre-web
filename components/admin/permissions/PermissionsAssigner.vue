@@ -39,11 +39,11 @@
             class="border border-sta-gray-light"
           >
             <boolean-input
-              :checked="
+              :model-value="
                 assignedUser.assignedPermissions.includes(permission.name)
               "
               :disabled="!permission.userCanAssign"
-              @change="togglePermission(assignedUser, permission)"
+              @update:model-value="togglePermission(assignedUser, permission)"
             />
           </table-row-item>
         </table-row>

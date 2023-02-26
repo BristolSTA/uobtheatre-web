@@ -9,9 +9,11 @@ import { BoxOfficePaymentDevicesDocument } from '~~/graphql/codegen/operations';
 import Booking from '~~/classes/Booking';
 
 const locationCookieKey = 'uobtheatre-boxoffice-location';
+const lockdownModeStorageKey = 'uobtheatre-boxoffice-lockdown-mode';
 
 const useBoxOfficeStore = defineStore('box-office', {
   state: () => ({
+    lockdownMode: false,
     locationId: undefined as string | undefined,
     terminalDevice: undefined as SquarePaymentDevice | undefined,
     inProgressBooking: new Booking() as Booking
@@ -22,6 +24,19 @@ const useBoxOfficeStore = defineStore('box-office', {
      */
     rememberState() {
       this.locationId = Cookie.get(locationCookieKey);
+      this.lockdownMode =
+        window.localStorage.getItem(lockdownModeStorageKey) === 'true' ?? false;
+    },
+
+    /**
+     * Save persistant state
+     */
+    saveState() {
+      this.setDeviceLocation(this.locationId);
+      window.localStorage.setItem(
+        lockdownModeStorageKey,
+        new Boolean(this.lockdownMode).toString()
+      );
     },
 
     /**
@@ -70,7 +85,7 @@ const useBoxOfficeStore = defineStore('box-office', {
 
       return data.value.paymentDevices.filter(
         (device) => device && device.locationId === this.locationId
-      ) as NonNullable<typeof data.value.paymentDevices[number]>[];
+      ) as NonNullable<(typeof data.value.paymentDevices)[number]>[];
     }
   }
 });
