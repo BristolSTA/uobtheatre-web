@@ -1,3 +1,5 @@
+import { DateTime } from 'luxon';
+
 export default function useHardwareScanner(
   maxInputDelay = 200,
   checkIsEncoded = false
@@ -7,6 +9,7 @@ export default function useHardwareScanner(
   let code = '';
   let reading = false;
   let previousKeyShift = false;
+  let lastScanAt: DateTime | undefined = undefined;
 
   function onKeyPress(e: KeyboardEvent) {
     // Some of the scanners truely replicate a keyboard by pressing / holding shift before typing an uppercase letter
@@ -17,7 +20,6 @@ export default function useHardwareScanner(
     }
 
     //usually scanners throw an 'Enter' key at the end of read
-    console.log(code, e.key);
     if (e.code === 'Enter') {
       if (code.length > 10) {
         if (checkIsEncoded) {
@@ -28,6 +30,10 @@ export default function useHardwareScanner(
           }
         }
 
+        // If the last scan was within 1000, we will assume a double enter
+        if (lastScanAt && lastScanAt.diffNow().toMillis() > -1000) return;
+
+        lastScanAt = DateTime.now();
         if (code === scannedValue.value) {
           // If the newly scanned code is equal to the previous scanned value, it will briefly be set to undefined to allow watchers to trigger
           scannedValue.value = undefined;
