@@ -55,9 +55,11 @@
         <BoxOfficeBookingList
           v-if="!inspectedObjects.booking"
           :bookings="bookings"
+          :pagination-info="bookingsPageInfo"
           @select="
             selectBooking($event as NonNullable<typeof bookings>[number])
           "
+          @update:offset="$emit('update:bookingsOffset', $event)"
         />
         <template v-else>
           <BoxOfficeBookingDetails
@@ -99,7 +101,7 @@ import {
   BoxOfficePerformanceBookingQuery,
   BoxOfficePerformanceBookingQueryVariables
 } from '~~/graphql/codegen/operations';
-import { IdInput } from '~~/types/generic';
+import { IdInput, PaginationInfo } from '~~/types/generic';
 
 // Props
 
@@ -108,6 +110,7 @@ const props = withDefaults(
     performanceId: string;
     loadingBookings: boolean;
     bookings?: ISimpleBooking[];
+    bookingsPageInfo?: PaginationInfo;
     allowBookingClose?: boolean;
     allowMutations?: boolean;
     allowTicketInspections?: boolean;
@@ -124,6 +127,7 @@ const props = withDefaults(
     showPerformanceSummary: false,
     showPerformanceSummaryIfDifferent: true,
     bookings: undefined,
+    bookingsPageInfo: undefined,
     selectedTicket: undefined,
     selectedBooking: undefined
   }
@@ -149,6 +153,7 @@ const emit = defineEmits<{
   (event: 'startingCheckIn'): void;
   (event: 'update:selectedBooking', booking?: IDetailedBooking): void;
   (event: 'update:selectedTicket', ticket?: IDetailedBookingTicket): void;
+  (event: 'update:bookingsOffset', offset: number): void;
 }>();
 
 // Watchers
