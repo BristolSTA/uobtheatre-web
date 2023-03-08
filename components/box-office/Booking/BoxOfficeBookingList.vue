@@ -14,20 +14,45 @@
     >
       <BoxOfficeBookingHeader :booking="booking" />
     </div>
+    <UiPaginationBar
+      v-if="paginationInfo"
+      class="mx-auto"
+      :has-next-page="paginationInfo.hasNextPage"
+      :current-offset="paginationInfo.currentOffset"
+      @next-page="
+        emit(
+          'update:offset',
+          paginationInfo
+            ? paginationInfo.currentOffset + paginationInfo?.pageMaxLength
+            : 0
+        )
+      "
+      @previous-page="
+        emit(
+          'update:offset',
+          paginationInfo
+            ? paginationInfo.currentOffset - paginationInfo?.pageMaxLength
+            : 0
+        )
+      "
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { BookingNode } from '~~/graphql/codegen/operations';
+import { PaginationInfo } from '~~/types/generic';
 import { IBookingHeaderProp } from '../../../types/box-office';
 
 type Booking = IBookingHeaderProp & Pick<BookingNode, 'id'>;
 
 defineProps<{
   bookings?: Booking[];
+  paginationInfo?: PaginationInfo;
 }>();
 
 const emit = defineEmits<{
   (event: 'select', booking: Booking): void;
+  (event: 'update:offset', offset: number): void;
 }>();
 </script>

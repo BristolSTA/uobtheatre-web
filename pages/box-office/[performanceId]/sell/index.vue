@@ -1,7 +1,15 @@
 <template>
   <div>
-    <div class="my-2 p-2">
-      <UiLoadingContainer :loading="!ticketMatrix" :show-content="false">
+    <div>
+      <button class="text-white hover:text-gray-300 font-bold" @click="cancel">
+        <font-awesome-icon icon="arrow-left" /> Cancel
+      </button>
+    </div>
+    <div class="my-2 py-2">
+      <UiLoadingContainer
+        :loading="!ticketMatrix"
+        :hide-content-when-loading="true"
+      >
         <template v-if="ticketMatrix">
           <div class="flex gap-4 flex-col lg:flex-row">
             <div class="w-full lg:w-2/3">
@@ -67,6 +75,7 @@ const errors = ref<Errors | undefined>();
 const interactionTimer = debounce(updateApi, 2 * 1000);
 
 const boxOfficeStore = useBoxOfficeStore();
+const router = useRouter();
 
 const booking = computed(() => boxOfficeStore.inProgressBooking);
 
@@ -100,11 +109,11 @@ async function updateApi() {
 }
 
 function pay() {
-  useRouter().push(`/box-office/${performance?.id}/sell/pay`);
+  router.push(`/box-office/${performance?.id}/sell/pay`);
 }
 
 function cancel() {
   boxOfficeStore.cancelInProgressBooking();
-  useRouter().push(`/box-office/${performance?.id}`);
+  router.push(`/box-office/${performance?.id}`);
 }
 </script>

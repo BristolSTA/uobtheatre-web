@@ -12,6 +12,11 @@ const cssFiles = [
 if (process.env.MODE !== 'test') cssFiles.push('@/assets/styles/app.scss');
 
 export default defineNuxtConfig({
+  // Enable experimental features
+  experimental: {
+    emitRouteChunkError: 'reload'
+  },
+
   // Define aliases
   alias: {
     '#testSupport': 'tests/unit/support',
