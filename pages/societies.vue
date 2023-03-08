@@ -3,7 +3,9 @@
     <div class="container">
       <h1 class="py-4 text-h1">Societies</h1>
       <infinite-scroll :apollo-query="query" @new-data="handleNewData">
-        <div class="grid gap-4 grid-cols-1 mb-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div
+          class="grid gap-4 mb-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+        >
           <society-tile
             v-for="(society, index) in societies"
             :key="index"
