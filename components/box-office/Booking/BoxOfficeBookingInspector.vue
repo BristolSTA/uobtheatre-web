@@ -5,8 +5,15 @@
   >
     <div
       v-if="inspectedObjects.ticket"
-      class="h-full overflow-y-auto bg-sta-gray-dark rounded-xl px-5 py-3 flex flex-col"
+      class="h-full relative overflow-y-auto bg-sta-gray-dark rounded-xl px-5 py-3 flex flex-col"
     >
+      <div class="absolute right-0 top-0 z-10">
+        <font-awesome-icon
+          icon="times-circle"
+          class="text-white text-xl hover:text-gray-400 cursor-pointer"
+          @click="inspectedObjects.ticket = undefined"
+        />
+      </div>
       <BoxOfficeBookingTicketDetailsHeader />
       <BoxOfficeBookingTicketDetails
         class="flex-grow"
@@ -55,9 +62,11 @@
         <BoxOfficeBookingList
           v-if="!inspectedObjects.booking"
           :bookings="bookings"
+          :pagination-info="bookingsPageInfo"
           @select="
             selectBooking($event as NonNullable<typeof bookings>[number])
           "
+          @update:offset="$emit('update:bookingsOffset', $event)"
         />
         <template v-else>
           <BoxOfficeBookingDetails
@@ -99,7 +108,7 @@ import {
   BoxOfficePerformanceBookingQuery,
   BoxOfficePerformanceBookingQueryVariables
 } from '~~/graphql/codegen/operations';
-import { IdInput } from '~~/types/generic';
+import { IdInput, PaginationInfo } from '~~/types/generic';
 
 // Props
 
@@ -108,6 +117,7 @@ const props = withDefaults(
     performanceId: string;
     loadingBookings: boolean;
     bookings?: ISimpleBooking[];
+    bookingsPageInfo?: PaginationInfo;
     allowBookingClose?: boolean;
     allowMutations?: boolean;
     allowTicketInspections?: boolean;
@@ -124,6 +134,7 @@ const props = withDefaults(
     showPerformanceSummary: false,
     showPerformanceSummaryIfDifferent: true,
     bookings: undefined,
+    bookingsPageInfo: undefined,
     selectedTicket: undefined,
     selectedBooking: undefined
   }
@@ -149,6 +160,7 @@ const emit = defineEmits<{
   (event: 'startingCheckIn'): void;
   (event: 'update:selectedBooking', booking?: IDetailedBooking): void;
   (event: 'update:selectedTicket', ticket?: IDetailedBookingTicket): void;
+  (event: 'update:bookingsOffset', offset: number): void;
 }>();
 
 // Watchers

@@ -36,19 +36,21 @@ const { result } = useBoxOfficePerformanceTicketBreakdownQuery(
   }
 );
 
-const numTicketsCheckedIn = computed(
-  () => result.value?.performance?.ticketsBreakdown.totalTicketsCheckedIn
+const numTicketsCheckedIn = computed<number>(
+  () => result.value?.performance?.ticketsBreakdown.totalTicketsCheckedIn ?? 0
 );
-const numTicketsSold = computed(
-  () => result.value?.performance?.ticketsBreakdown.totalTicketsSold
+const numTicketsSold = computed<number>(
+  () => result.value?.performance?.ticketsBreakdown.totalTicketsSold ?? 0
 );
-const numTicketsToCheckIn = computed(
-  () => result.value?.performance?.ticketsBreakdown.totalTicketsToCheckIn
+const numTicketsToCheckIn = computed<number>(
+  () => result.value?.performance?.ticketsBreakdown.totalTicketsToCheckIn ?? 0
 );
 
-const progressPercentage = computed(() =>
-  Math.floor(
-    (100 * (numTicketsCheckedIn.value ?? 0)) / (numTicketsSold.value ?? 1)
-  )
+const progressPercentage = computed<number>(() =>
+  numTicketsSold.value
+    ? Math.floor(
+        (100 * (numTicketsCheckedIn.value ?? 0)) / (numTicketsSold.value ?? 1)
+      )
+    : 0
 );
 </script>

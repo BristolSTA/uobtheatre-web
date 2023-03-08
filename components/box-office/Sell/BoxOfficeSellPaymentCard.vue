@@ -169,7 +169,7 @@ onBookingRefreshResult(({ data }) => {
   }
 });
 
-const cashChange = computed(() => {
+const cashChange = computed<string>(() => {
   if (
     !amountTendered.value ||
     amountTendered.value < +props.booking.totalPricePounds

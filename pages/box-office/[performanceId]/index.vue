@@ -41,6 +41,7 @@
               selectedBooking?.performance?.id === performance.id
             "
             :bookings="bookings"
+            :bookings-page-info="bookingsPaginationInfo"
             :loading-bookings="loadingBookings || loadingSelectedBooking"
             :performance-id="performance.id"
             @starting-check-in="setCheckInState()"
@@ -48,6 +49,7 @@
             @checked-in="setCheckInState(true, $event)"
             @un-checked-in="setCheckInState(undefined, $event)"
             @update:selected-ticket="queryTicketId = $event?.id"
+            @update:bookings-offset="searchOffset = $event"
           />
         </div>
         <BoxOfficeScanStatus
@@ -73,6 +75,7 @@ import {
   useBoxOfficePerformanceBookingQuery,
   useBoxOfficePerformanceBookingsQuery
 } from '~~/graphql/codegen/operations';
+import { PaginationInfo } from '~~/types/generic';
 
 // Inject performance, provided by base box office page
 const performance = inject(InjectionKeys.boxOffice.performance);
@@ -115,6 +118,14 @@ const bookings = computed(() =>
         .filter((booking) => booking !== null) as ISimpleBooking[])
     : []
 );
+
+const bookingsPaginationInfo = computed<PaginationInfo>(() => ({
+  currentOffset: searchOffset.value,
+  pageMaxLength: 10,
+  hasNextPage:
+    bookingsQueryResult.value?.performance?.bookings.pageInfo.hasNextPage ??
+    false
+}));
 
 watch(loadingBookings, (newValue) => {
   if (newValue == true && !loadingSelectedBooking) {

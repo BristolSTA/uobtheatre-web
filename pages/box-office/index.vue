@@ -61,11 +61,10 @@
     </loading-container>
     <div class="flex gap-4">
       <div class="flex flex-col justify-center mt-2 gap-y-2">
-        <UiInputSelect v-model="selectedDate" :options="dateOptions" />
         <VueDatepicker
-          v-if="!selectedDate"
-          v-model="datePickerDate"
+          v-model="selectedDate"
           format="dd/MM/yyyy"
+          placeholder="Today"
           :required="true"
           :enable-time-picker="false"
           :start-time="{ hours: 0, minutes: 0, seconds: 0 }"
@@ -102,18 +101,15 @@ useHead({
   title: 'Select Box Office Performance'
 });
 
-const dateToSearch = computed(() => {
-  return selectedDate.value
-    ? selectedDate.value
-    : DateTime.fromJSDate(datePickerDate.value).toISODate();
-});
-
-const selectedDate = ref<string | undefined>();
-const datePickerDate = ref<Date>(DateTime.now().startOf('day').toJSDate());
-const dateOptions = ref<{ value: string | null; displayText: string }[]>([]);
+const selectedDate = ref<Date | undefined>();
+const today = ref(DateTime.now().startOf('day'));
 const optionsTimer = setInterval(updateDateOptions, 60 * 60 * 1000);
 
-updateDateOptions();
+const dateToSearch = computed(() => {
+  return selectedDate.value
+    ? DateTime.fromJSDate(selectedDate.value).toISODate()
+    : today.value.toISODate();
+});
 
 onUnmounted(() => {
   clearInterval(optionsTimer);
@@ -145,20 +141,11 @@ function selectPerformance(performanceId: IdInput) {
 }
 
 function updateDateOptions() {
-  selectedDate.value = DateTime.now().toISODate();
-  datePickerDate.value = DateTime.now().toJSDate();
-  dateOptions.value = [
-    { value: DateTime.now().toISODate(), displayText: 'Today' },
-    {
-      value: DateTime.now().plus({ days: 1 }).toISODate(),
-      displayText: 'Tomorrow'
-    },
-    { value: null, displayText: 'Custom' }
-  ];
+  today.value = DateTime.now().startOf('day');
 }
 
 function refresh() {
-  if (!datePickerDate.value) updateDateOptions();
+  updateDateOptions();
   refetchPerformances();
 }
 </script>
