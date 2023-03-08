@@ -6,7 +6,10 @@
       </button>
     </div>
     <div class="my-2 py-2">
-      <UiLoadingContainer :loading="!ticketMatrix" :show-content="false">
+      <UiLoadingContainer
+        :loading="!ticketMatrix"
+        :hide-content-when-loading="true"
+      >
         <template v-if="ticketMatrix">
           <div class="flex gap-4 flex-col lg:flex-row">
             <div class="w-full lg:w-2/3">
