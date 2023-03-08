@@ -5,8 +5,15 @@
   >
     <div
       v-if="inspectedObjects.ticket"
-      class="h-full overflow-y-auto bg-sta-gray-dark rounded-xl px-5 py-3 flex flex-col"
+      class="h-full relative overflow-y-auto bg-sta-gray-dark rounded-xl px-5 py-3 flex flex-col"
     >
+      <div class="absolute right-0 top-0 z-10">
+        <font-awesome-icon
+          icon="times-circle"
+          class="text-white text-xl hover:text-gray-400 cursor-pointer"
+          @click="inspectedObjects.ticket = undefined"
+        />
+      </div>
       <BoxOfficeBookingTicketDetailsHeader />
       <BoxOfficeBookingTicketDetails
         class="flex-grow"
