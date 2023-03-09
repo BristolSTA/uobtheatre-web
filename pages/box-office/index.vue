@@ -102,13 +102,14 @@ useHead({
 });
 
 const selectedDate = ref<Date | undefined>();
-const today = ref(DateTime.now().startOf('day'));
-const optionsTimer = setInterval(updateDateOptions, 60 * 60 * 1000);
+const today = ref<DateTime | undefined>();
+updateDateOptions();
+const optionsTimer = setInterval(updateDateOptions, 10 * 1000);
 
 const dateToSearch = computed(() => {
   return selectedDate.value
     ? DateTime.fromJSDate(selectedDate.value).toISODate()
-    : today.value.toISODate();
+    : today.value?.toISODate() ?? DateTime.now().toISODate();
 });
 
 onUnmounted(() => {
@@ -124,7 +125,7 @@ const {
     date: dateToSearch.value
   }),
   {
-    fetchPolicy: 'cache-and-network'
+    fetchPolicy: 'network-only'
   }
 );
 
