@@ -24,16 +24,17 @@ import { productionsOnNow } from '~~/utils/production';
 
 
 const route = useRoute()
+const now = useClock(60*60)
 
 const { result: venueProductionsData } = useVenueUpcomingProductionsQuery(() => ({
   slug: route.params.venueSlug,
-  now: DateTime.now()
+  now: now.value
 }), {
   pollInterval: 60 * 60 * 1000 // Every hour
 })
 
 const performance = computed(() => {
-  const productions = productionsOnNow(venueProductionsData.value.venue.productions, { minutesBefore: 60 })
+  const productions = productionsOnNow(venueProductionsData.value.venue.productions, { minutesBefore: 60, now })
   return productions[0].performances.edges[0].node
 })
 
