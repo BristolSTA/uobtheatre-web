@@ -95,6 +95,7 @@ import WelcomeScreen from '@/components/publicity-screens/WelcomeScreen.vue';
 import PleaseWaitScreen from '@/components/publicity-screens/PleaseWaitScreen.vue';
 import ConfectionaryStoreMarketingScreen from '@/components/publicity-screens/ConfectionaryStoreMarketingScreen.vue';
 import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue';
+import { productionsOnNow as productionsOnNowFn } from '~~/utils/production';
 definePageMeta({
   layout: 'publicity-screen'
 });
@@ -145,21 +146,9 @@ export default defineNuxtComponent({
       if (!this.now) {
         return [];
       }
-      return this.productions.filter((production) => {
-        if (!production?.performances?.edges?.length) {
-          return false;
-        }
-        const doorsOpenTime = DateTime.fromISO(
-          production.performances.edges[0].node.doorsOpen
-        );
-        const startTime = DateTime.fromISO(
-          production.performances.edges[0].node.start
-        );
-        return (
-          production.performances.edges.length &&
-          doorsOpenTime.minus({ minutes: 20 }) <= this.now &&
-          startTime > this.now
-        );
+      return productionsOnNowFn(this.productions, {
+        now: this.now,
+        beforeStartOnly: true
       });
     },
     currentScreen() {
