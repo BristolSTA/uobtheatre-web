@@ -20,6 +20,7 @@ query boxOfficePerformanceBooking(
           performance {
             id
             start
+            doorsOpen
             production {
               id
               slug

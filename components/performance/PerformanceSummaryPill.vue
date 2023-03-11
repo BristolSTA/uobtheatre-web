@@ -8,7 +8,10 @@
       <div class="text-lg font-semibold">
         {{ performance.production.name }}
       </div>
-      <div class="text-xxs md:text-sm font-semibold text-sta-gray-lighter">
+      <div
+        class="text-xxs md:text-sm font-semibold"
+        :class="dateTimeTextColour"
+      >
         {{
           dateFormatLocale(performance.start, {
             weekday: 'short',
@@ -31,7 +34,13 @@
 <script lang="ts" setup>
 import type { IPerformanceSummary } from '../../types/box-office';
 
-defineProps<{
-  performance: IPerformanceSummary;
-}>();
+withDefaults(
+  defineProps<{
+    performance: IPerformanceSummary;
+    dateTimeTextColour?: string;
+  }>(),
+  {
+    dateTimeTextColour: 'text-sta-gray-lighter'
+  }
+);
 </script>
