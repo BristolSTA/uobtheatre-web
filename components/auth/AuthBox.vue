@@ -123,6 +123,7 @@
         <template #control>
           <UiInputText
             v-model="signUpDetails.fullName"
+            name="Full Name"
             autocomplete="name"
             required
             @blur="guessNameParts" /></template
@@ -241,6 +242,8 @@ import trim from 'lodash/trim';
 import LoadingIcon from '../ui/UiLoadingIcon.vue';
 import ClickableLink from '@/components/ui/ClickableLink.vue';
 import ErrorHelper from '@/components/ui/ErrorHelper.vue';
+
+import UiFormLabel from '@/components/ui/FormLabel.vue';
 
 import useAuthStore from '@/store/auth';
 import { catchOnly, getValidationErrors } from '@/utils/api';
