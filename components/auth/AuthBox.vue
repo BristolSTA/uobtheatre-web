@@ -47,24 +47,31 @@
       >
         Resend Verification Email?
       </span>
-      <UiInputText
-        v-model="email"
-        name="Email"
-        type="email"
-        autocomplete="email username"
-        required
-        data-test="email-input"
-        :errors="loginErrors"
-      />
-      <UiInputText
-        v-model="password"
-        name="Password"
-        type="password"
-        autocomplete="current-password"
-        required
-        data-test="password-input"
-        :errors="loginErrors"
-      />
+      <UiFormLabel>
+        Email
+        <template #control>
+          <UiInputText
+            v-model="email"
+            name="Email"
+            type="email"
+            autocomplete="email username"
+            required
+            data-test="email-input"
+            :errors="loginErrors" /></template
+      ></UiFormLabel>
+
+      <UiFormLabel>
+        Password
+        <template #control>
+          <UiInputText
+            v-model="password"
+            name="Password"
+            type="password"
+            autocomplete="current-password"
+            required
+            data-test="password-input"
+            :errors="loginErrors" /></template
+      ></UiFormLabel>
       <label for="remember_me" class="flex items-center space-x-2">
         <input
           id="remember_me"
@@ -106,40 +113,56 @@
       @submit.prevent="attemptSignup"
     >
       <UiNonFieldError :errors="signupErrors" />
-      <UiInputText
+
+      <UiFormLabel
         v-if="
           (!signUpDetails.firstName || !signUpDetails.lastName) && !signupErrors
         "
-        v-model="signUpDetails.fullName"
-        name="Full Name"
-        autocomplete="name"
-        required
-        @blur="guessNameParts"
-      />
+      >
+        Full Name
+        <template #control>
+          <UiInputText
+            v-model="signUpDetails.fullName"
+            name="Full Name"
+            autocomplete="name"
+            required
+            @blur="guessNameParts" /></template
+      ></UiFormLabel>
       <div v-else class="flex flex-col space-y-2">
-        <UiInputText
-          v-model="signUpDetails.firstName"
-          name="First Name"
-          autocomplete="given-name"
-          :errors="signupErrors"
-          required
-        />
-        <UiInputText
-          v-model="signUpDetails.lastName"
-          name="Last Name"
-          autocomplete="family-name"
-          required
-          :errors="signupErrors"
-        />
+        <UiFormLabel>
+          First Name
+          <template #control>
+            <UiInputText
+              v-model="signUpDetails.firstName"
+              name="First Name"
+              autocomplete="given-name"
+              :errors="signupErrors"
+              required
+            /> </template
+        ></UiFormLabel>
+        <UiFormLabel>
+          Last Name
+          <template #control>
+            <UiInputText
+              v-model="signUpDetails.lastName"
+              name="Last Name"
+              autocomplete="family-name"
+              required
+              :errors="signupErrors" /></template
+        ></UiFormLabel>
       </div>
-      <UiInputText
-        v-model="email"
-        name="Email"
-        type="email"
-        autocomplete="username email"
-        :errors="signupErrors"
-        required
-      />
+
+      <UiFormLabel>
+        Email
+        <template #control>
+          <UiInputText
+            v-model="email"
+            name="Email"
+            type="email"
+            autocomplete="username email"
+            :errors="signupErrors"
+            required /></template
+      ></UiFormLabel>
       <NuxtLink
         v-if="signupErrors && signupErrors.hasCode('unique')"
         to="/login/forgot"
@@ -147,24 +170,32 @@
       >
         Request password reset?
       </NuxtLink>
-      <UiInputText
-        v-model="password"
-        name="Password"
-        type="password"
-        :errors="signupErrors"
-        error-key="password1"
-        autocomplete="new-password"
-        required
-      />
-      <UiInputText
-        v-model="signUpDetails.confirmedPassword"
-        name="Confirm Password"
-        type="password"
-        :errors="signupErrors"
-        autocomplete="new-password"
-        error-key="password2"
-        required
-      />
+
+      <UiFormLabel>
+        Password
+        <template #control>
+          <UiInputText
+            v-model="password"
+            name="Password"
+            type="password"
+            :errors="signupErrors"
+            error-key="password1"
+            autocomplete="new-password"
+            required /></template
+      ></UiFormLabel>
+
+      <UiFormLabel>
+        Confirm Password
+        <template #control>
+          <UiInputText
+            v-model="signUpDetails.confirmedPassword"
+            name="Confirm Password"
+            type="password"
+            :errors="signupErrors"
+            autocomplete="new-password"
+            error-key="password2"
+            required /></template
+      ></UiFormLabel>
       <label for="accept_terms" class="flex items-center space-x-2">
         <input
           id="accept_terms"
@@ -211,6 +242,8 @@ import trim from 'lodash/trim';
 import LoadingIcon from '../ui/UiLoadingIcon.vue';
 import ClickableLink from '@/components/ui/ClickableLink.vue';
 import ErrorHelper from '@/components/ui/ErrorHelper.vue';
+
+import UiFormLabel from '@/components/ui/FormLabel.vue';
 
 import useAuthStore from '@/store/auth';
 import { catchOnly, getValidationErrors } from '@/utils/api';
