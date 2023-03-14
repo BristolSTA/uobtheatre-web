@@ -9,9 +9,9 @@ export function excerptFromDescription(description: string) {
 
 type ProductionsOnNowProductionType = {
   performances: {
-    edges: {
-      node: Pick<PerformanceNode, 'doorsOpen' | 'start' | 'end'>;
-    }[];
+    edges: Array<{
+      node?: Pick<PerformanceNode, 'doorsOpen' | 'start' | 'end'> | null;
+    } | null>;
   };
 };
 
