@@ -2,7 +2,8 @@ import InvalidTicketQRCodeException from '@/exceptions/InvalidTicketQRCodeExcept
 import type {
   ConcessionTypeNode,
   DetailedBookingDetailsFragment,
-  SeatGroupNode
+  SeatGroupNode,
+  ExtendedUserNode
 } from '~~/graphql/codegen/operations';
 import { IdInput } from '~~/types/generic';
 import { TicketOptions } from '~~/types/performance';
@@ -14,6 +15,7 @@ export default class {
     Pick<ConcessionTypeNode, 'id' | 'name' | 'description'>
   > = {};
   checkedIn = false;
+  checkedInBy?: Pick<ExtendedUserNode, 'firstName' | 'lastName'> | null;
   id: IdInput | undefined = undefined;
 
   /**
@@ -41,6 +43,9 @@ export default class {
     ticket.concessionType = ticketAPIData.concessionType;
     if (ticketAPIData.checkedInAt) {
       ticket.checkedIn = true;
+    }
+    if (ticketAPIData.checkedInBy) {
+      ticket.checkedInBy = ticketAPIData.checkedInBy;
     }
     return ticket;
   }

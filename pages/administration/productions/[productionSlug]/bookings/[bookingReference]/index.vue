@@ -15,6 +15,22 @@
         </table-row>
       </table>
     </UiCard>
+    <UiCard title="Ticket Inspection" class="mb-4">
+      <table>
+        <table-row>
+          <table-head-item>Ticket ID</table-head-item>
+          <table-row-item>Seat Group</table-row-item>
+          <table-row-item>Concession Type</table-row-item>
+          <table-row-item>Last Checked By</table-row-item>
+        </table-row>
+        <table-row v-for="x in booking.tickets" :key="x">
+          <table-head-item>{{ x.id }}</table-head-item>
+          <table-row-item>{{ x.seatGroup.name }}</table-row-item>
+          <table-row-item>{{ x.concessionType.name }}</table-row-item>
+          <table-row-item></table-row-item>
+        </table-row>
+      </table>
+    </UiCard>
     <div class="grid gap-4 grid-cols-1 lg:grid-cols-3">
       <booking-performance-overview
         class="lg:col-span-2"
@@ -106,7 +122,8 @@ export default defineNuxtComponent({
           'Owned By',
           `${this.rawBooking.user.firstName} ${this.rawBooking.user.lastName} (Email: ${this.rawBooking.user.email})`
         ],
-        ['Admin Discount', this.rawBooking.adminDiscountPercentage * 100 + '%']
+        ['Admin Discount', this.rawBooking.adminDiscountPercentage * 100 + '%'],
+        ['Last Check In', this.rawBooking.tickets[1].checkedIn]
       ];
     }
   }
