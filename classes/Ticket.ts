@@ -15,7 +15,10 @@ export default class {
     Pick<ConcessionTypeNode, 'id' | 'name' | 'description'>
   > = {};
   checkedIn = false;
-  checkedInBy?: Pick<ExtendedUserNode, 'firstName' | 'lastName'> | null;
+  checkedInAt?: any;
+  checkedInBy?: Partial<
+    Pick<ExtendedUserNode, 'id' | 'firstName' | 'lastName'>
+  >;
   id: IdInput | undefined = undefined;
 
   /**
@@ -30,9 +33,7 @@ export default class {
   }
 
   static fromAPIData(
-    ticketAPIData: NonNullable<
-      DetailedBookingDetailsFragment['tickets']
-    >[number]
+    ticketAPIData: DetailedBookingDetailsFragment['tickets'][number]
   ) {
     const ticket = new this(
       ticketAPIData.seatGroup.id,
@@ -43,6 +44,7 @@ export default class {
     ticket.concessionType = ticketAPIData.concessionType;
     if (ticketAPIData.checkedInAt) {
       ticket.checkedIn = true;
+      ticket.checkedInAt = ticketAPIData.checkedInAt;
     }
     if (ticketAPIData.checkedInBy) {
       ticket.checkedInBy = ticketAPIData.checkedInBy;

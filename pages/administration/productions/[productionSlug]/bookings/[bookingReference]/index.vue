@@ -21,13 +21,25 @@
           <table-head-item>Ticket ID</table-head-item>
           <table-row-item>Seat Group</table-row-item>
           <table-row-item>Concession Type</table-row-item>
-          <table-row-item>Last Checked By</table-row-item>
+          <table-row-item>Checked In</table-row-item>
+          <table-row-item v-if="anyTicketsChecked(booking)"
+            >Checked In By</table-row-item
+          >
+          <table-row-item v-if="anyTicketsChecked(booking)"
+            >Checked In At</table-row-item
+          >
         </table-row>
-        <table-row v-for="x in booking.tickets" :key="x">
-          <table-head-item>{{ x.id }}</table-head-item>
-          <table-row-item>{{ x.seatGroup.name }}</table-row-item>
-          <table-row-item>{{ x.concessionType.name }}</table-row-item>
-          <table-row-item></table-row-item>
+        <table-row v-for="ticket in booking.tickets" :key="ticket">
+          <table-head-item>{{ ticket.id }}</table-head-item>
+          <table-row-item>{{ ticket.seatGroup.name }}</table-row-item>
+          <table-row-item>{{ ticket.concessionType.name }}</table-row-item>
+          <table-row-item>{{ checkedInShow(ticket) }}</table-row-item>
+          <table-row-item v-if="anyTicketsChecked(booking)">{{
+            checkedInByDisplay(ticket)
+          }}</table-row-item>
+          <table-row-item v-if="anyTicketsChecked(booking)">{{
+            checkedInAtDisplay(ticket)
+          }}</table-row-item>
         </table-row>
       </table>
     </UiCard>
@@ -65,6 +77,9 @@ import BookingStatusEnum from '~~/enums/PayableStatusEnum';
 
 import { dateFormat } from '@/utils/datetime';
 import { AdminBookingDetailDocument } from '~~/graphql/codegen/operations';
+import { DateTime } from 'luxon';
+
+const now = useClock(5);
 
 export default defineNuxtComponent({
   components: {
@@ -122,9 +137,39 @@ export default defineNuxtComponent({
           'Owned By',
           `${this.rawBooking.user.firstName} ${this.rawBooking.user.lastName} (Email: ${this.rawBooking.user.email})`
         ],
-        ['Admin Discount', this.rawBooking.adminDiscountPercentage * 100 + '%'],
-        ['Last Check In', this.rawBooking.tickets[1].checkedIn]
+        ['Admin Discount', this.rawBooking.adminDiscountPercentage * 100 + '%']
       ];
+    }
+  },
+  methods: {
+    anyTicketsChecked(booking) {
+      for (const ticket of booking.tickets) {
+        if (ticket.checkedIn) {
+          return true;
+        }
+      }
+      return false;
+    },
+    checkedInShow(ticket) {
+      if (ticket.checkedIn) {
+        return 'Yes';
+      } else {
+        return 'No';
+      }
+    },
+    checkedInByDisplay(ticket) {
+      if (ticket.checkedIn) {
+        return ticket.checkedInBy.firstName + ' ' + ticket.checkedInBy.lastName;
+      } else {
+        return 'N/A';
+      }
+    },
+    checkedInAtDisplay(ticket) {
+      if (ticket.checkedIn) {
+        return DateTime.fromISO(ticket.checkedInAt).toHTTP();
+      } else {
+        return 'N/A';
+      }
     }
   }
 });
