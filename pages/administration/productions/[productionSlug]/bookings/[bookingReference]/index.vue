@@ -15,6 +15,36 @@
         </table-row>
       </table>
     </UiCard>
+    <UiCard title="Ticket Inspection" class="mb-4">
+      <table>
+        <table-row>
+          <table-head-item>Ticket ID</table-head-item>
+          <table-head-item>Seat Group</table-head-item>
+          <table-head-item>Concession Type</table-head-item>
+          <table-head-item>Checked In</table-head-item>
+          <table-head-item v-if="anyTicketsChecked"
+            >Checked In By</table-head-item
+          >
+          <table-head-item v-if="anyTicketsChecked"
+            >Checked In At</table-head-item
+          >
+        </table-row>
+        <table-row v-for="ticket in booking.tickets" :key="ticket.id">
+          <table-row-item>{{ ticket.id }}</table-row-item>
+          <table-row-item>{{ ticket.seatGroup.name }}</table-row-item>
+          <table-row-item>{{ ticket.concessionType.name }}</table-row-item>
+          <table-row-item>{{ ticket.checkedIn ? 'Yes' : 'No' }}</table-row-item>
+          <table-row-item v-if="anyTicketsChecked">{{
+            ticket.checkedIn
+              ? `${ticket.checkedInBy.firstName} ${ticket.checkedInBy.lastName}`
+              : 'N/A'
+          }}</table-row-item>
+          <table-row-item v-if="anyTicketsChecked">{{
+            ticket.checkedIn ? ticket.checkedInAt.toHTTP() : 'N/A'
+          }}</table-row-item>
+        </table-row>
+      </table>
+    </UiCard>
     <div class="grid gap-4 grid-cols-1 lg:grid-cols-3">
       <booking-performance-overview
         class="lg:col-span-2"
@@ -108,6 +138,9 @@ export default defineNuxtComponent({
         ],
         ['Admin Discount', this.rawBooking.adminDiscountPercentage * 100 + '%']
       ];
+    },
+    anyTicketsChecked() {
+      return this.booking.tickets.some((ticket) => ticket.checkedIn);
     }
   }
 });
