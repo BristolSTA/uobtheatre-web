@@ -22,22 +22,24 @@
           <table-row-item>Seat Group</table-row-item>
           <table-row-item>Concession Type</table-row-item>
           <table-row-item>Checked In</table-row-item>
-          <table-row-item v-if="anyTicketsChecked(booking)"
+          <table-row-item v-if="anyTicketsChecked"
             >Checked In By</table-row-item
           >
-          <table-row-item v-if="anyTicketsChecked(booking)"
+          <table-row-item v-if="anyTicketsChecked"
             >Checked In At</table-row-item
           >
         </table-row>
-        <table-row v-for="ticket in booking.tickets" :key="ticket">
+        <table-row v-for="ticket in booking.tickets" :key="ticket.id">
           <table-head-item>{{ ticket.id }}</table-head-item>
           <table-row-item>{{ ticket.seatGroup.name }}</table-row-item>
           <table-row-item>{{ ticket.concessionType.name }}</table-row-item>
-          <table-row-item>{{ checkedInShow(ticket) }}</table-row-item>
-          <table-row-item v-if="anyTicketsChecked(booking)">{{
-            checkedInByDisplay(ticket)
+          <table-row-item>{{ ticket.checkedIn ? `Yes` : `No` }}</table-row-item>
+          <table-row-item v-if="anyTicketsChecked">{{
+            ticket.checkedIn
+              ? `${ticket.checkedInBy.firstName} ${ticket.checkedInBy.lastName}`
+              : `N/A`
           }}</table-row-item>
-          <table-row-item v-if="anyTicketsChecked(booking)">{{
+          <table-row-item v-if="anyTicketsChecked">{{
             checkedInAtDisplay(ticket)
           }}</table-row-item>
         </table-row>
@@ -78,8 +80,6 @@ import BookingStatusEnum from '~~/enums/PayableStatusEnum';
 import { dateFormat } from '@/utils/datetime';
 import { AdminBookingDetailDocument } from '~~/graphql/codegen/operations';
 import { DateTime } from 'luxon';
-
-const now = useClock(5);
 
 export default defineNuxtComponent({
   components: {
@@ -139,37 +139,16 @@ export default defineNuxtComponent({
         ],
         ['Admin Discount', this.rawBooking.adminDiscountPercentage * 100 + '%']
       ];
+    },
+    anyTicketsChecked() {
+      return this.booking.tickets.some((ticket) => ticket.checkedIn);
     }
   },
   methods: {
-    anyTicketsChecked(booking) {
-      for (const ticket of booking.tickets) {
-        if (ticket.checkedIn) {
-          return true;
-        }
-      }
-      return false;
-    },
-    checkedInShow(ticket) {
-      if (ticket.checkedIn) {
-        return 'Yes';
-      } else {
-        return 'No';
-      }
-    },
-    checkedInByDisplay(ticket) {
-      if (ticket.checkedIn) {
-        return ticket.checkedInBy.firstName + ' ' + ticket.checkedInBy.lastName;
-      } else {
-        return 'N/A';
-      }
-    },
     checkedInAtDisplay(ticket) {
-      if (ticket.checkedIn) {
-        return DateTime.fromISO(ticket.checkedInAt).toHTTP();
-      } else {
-        return 'N/A';
-      }
+      return ticket.checkedIn
+        ? `${DateTime.fromISO(ticket.checkedInAt).toHTTP()}`
+        : `N/A`;
     }
   }
 });
