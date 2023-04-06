@@ -19,25 +19,25 @@
       <table>
         <table-row>
           <table-head-item>Ticket ID</table-head-item>
-          <table-row-item>Seat Group</table-row-item>
-          <table-row-item>Concession Type</table-row-item>
-          <table-row-item>Checked In</table-row-item>
-          <table-row-item v-if="anyTicketsChecked"
-            >Checked In By</table-row-item
+          <table-head-item>Seat Group</table-head-item>
+          <table-head-item>Concession Type</table-head-item>
+          <table-head-item>Checked In</table-head-item>
+          <table-head-item v-if="anyTicketsChecked"
+            >Checked In By</table-head-item
           >
-          <table-row-item v-if="anyTicketsChecked"
-            >Checked In At</table-row-item
+          <table-head-item v-if="anyTicketsChecked"
+            >Checked In At</table-head-item
           >
         </table-row>
         <table-row v-for="ticket in booking.tickets" :key="ticket.id">
-          <table-head-item>{{ ticket.id }}</table-head-item>
+          <table-row-item>{{ ticket.id }}</table-row-item>
           <table-row-item>{{ ticket.seatGroup.name }}</table-row-item>
           <table-row-item>{{ ticket.concessionType.name }}</table-row-item>
-          <table-row-item>{{ ticket.checkedIn ? `Yes` : `No` }}</table-row-item>
+          <table-row-item>{{ ticket.checkedIn ? 'Yes' : 'No' }}</table-row-item>
           <table-row-item v-if="anyTicketsChecked">{{
             ticket.checkedIn
               ? `${ticket.checkedInBy.firstName} ${ticket.checkedInBy.lastName}`
-              : `N/A`
+              : 'N/A'
           }}</table-row-item>
           <table-row-item v-if="anyTicketsChecked">{{
             checkedInAtDisplay(ticket)
@@ -147,8 +147,8 @@ export default defineNuxtComponent({
   methods: {
     checkedInAtDisplay(ticket) {
       return ticket.checkedIn
-        ? `${DateTime.fromISO(ticket.checkedInAt).toHTTP()}`
-        : `N/A`;
+        ? DateTime.fromISO(ticket.checkedInAt).toHTTP()
+        : 'N/A';
     }
   }
 });
