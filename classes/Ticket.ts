@@ -7,6 +7,8 @@ import type {
 } from '~~/graphql/codegen/operations';
 import { IdInput } from '~~/types/generic';
 import { TicketOptions } from '~~/types/performance';
+import { DateTime } from 'luxon';
+
 export default class {
   seatGroup: Partial<
     Pick<SeatGroupNode, 'id' | 'name' | 'description' | 'capacity'>
@@ -15,7 +17,7 @@ export default class {
     Pick<ConcessionTypeNode, 'id' | 'name' | 'description'>
   > = {};
   checkedIn = false;
-  checkedInAt?: any;
+  checkedInAt?: DateTime;
   checkedInBy?: Partial<
     Pick<ExtendedUserNode, 'id' | 'firstName' | 'lastName'>
   >;
@@ -44,7 +46,7 @@ export default class {
     ticket.concessionType = ticketAPIData.concessionType;
     if (ticketAPIData.checkedInAt) {
       ticket.checkedIn = true;
-      ticket.checkedInAt = ticketAPIData.checkedInAt;
+      ticket.checkedInAt = DateTime.fromISO(ticketAPIData.checkedInAt);
     }
     if (ticketAPIData.checkedInBy) {
       ticket.checkedInBy = ticketAPIData.checkedInBy;

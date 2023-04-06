@@ -40,7 +40,7 @@
               : 'N/A'
           }}</table-row-item>
           <table-row-item v-if="anyTicketsChecked">{{
-            checkedInAtDisplay(ticket)
+            ticket.checkedIn ? ticket.checkedInAt.toHTTP() : 'N/A'
           }}</table-row-item>
         </table-row>
       </table>
@@ -79,7 +79,6 @@ import BookingStatusEnum from '~~/enums/PayableStatusEnum';
 
 import { dateFormat } from '@/utils/datetime';
 import { AdminBookingDetailDocument } from '~~/graphql/codegen/operations';
-import { DateTime } from 'luxon';
 
 export default defineNuxtComponent({
   components: {
@@ -142,13 +141,6 @@ export default defineNuxtComponent({
     },
     anyTicketsChecked() {
       return this.booking.tickets.some((ticket) => ticket.checkedIn);
-    }
-  },
-  methods: {
-    checkedInAtDisplay(ticket) {
-      return ticket.checkedIn
-        ? DateTime.fromISO(ticket.checkedInAt).toHTTP()
-        : 'N/A';
     }
   }
 });
