@@ -17,9 +17,8 @@
     </UiCard>
     <UiCard title="Ticket Inspection" class="mb-4">
       <UiTablesPaginatedTable
-        v-model:offset="ticketInspectionOffset"
+        :offset="0"
         :items="booking.tickets"
-        :max-per-page="10"
         :page-info="{}"
       >
         <template #head>
@@ -90,8 +89,6 @@ import BookingStatusEnum from '~~/enums/PayableStatusEnum';
 
 import { dateFormat } from '@/utils/datetime';
 import { AdminBookingDetailDocument } from '~~/graphql/codegen/operations';
-
-const ticketInspectionOffset = ref(0);
 
 export default defineNuxtComponent({
   components: {
