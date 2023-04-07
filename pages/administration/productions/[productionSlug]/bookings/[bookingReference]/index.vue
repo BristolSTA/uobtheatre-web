@@ -16,34 +16,44 @@
       </table>
     </UiCard>
     <UiCard title="Ticket Inspection" class="mb-4">
-      <table>
-        <table-row>
-          <table-head-item>Ticket ID</table-head-item>
-          <table-head-item>Seat Group</table-head-item>
-          <table-head-item>Concession Type</table-head-item>
-          <table-head-item>Checked In</table-head-item>
-          <table-head-item v-if="anyTicketsChecked"
-            >Checked In By</table-head-item
+      <UiTablesPaginatedTable
+        :offset="0"
+        :items="booking.tickets"
+        :page-info="{}"
+      >
+        <template #head>
+          <UiTablesTableHeadItem>Ticket ID</UiTablesTableHeadItem>
+          <UiTablesTableHeadItem>Seat Group</UiTablesTableHeadItem>
+          <UiTablesTableHeadItem>Concession Type</UiTablesTableHeadItem>
+          <UiTablesTableHeadItem>Checked In</UiTablesTableHeadItem>
+          <UiTablesTableHeadItem v-if="anyTicketsChecked"
+            >Checked In By</UiTablesTableHeadItem
           >
-          <table-head-item v-if="anyTicketsChecked"
-            >Checked In At</table-head-item
+          <UiTablesTableHeadItem v-if="anyTicketsChecked"
+            >Checked In At</UiTablesTableHeadItem
           >
-        </table-row>
-        <table-row v-for="ticket in booking.tickets" :key="ticket.id">
-          <table-row-item>{{ ticket.id }}</table-row-item>
-          <table-row-item>{{ ticket.seatGroup.name }}</table-row-item>
-          <table-row-item>{{ ticket.concessionType.name }}</table-row-item>
-          <table-row-item>{{ ticket.checkedIn ? 'Yes' : 'No' }}</table-row-item>
-          <table-row-item v-if="anyTicketsChecked">{{
+        </template>
+        <UiTablesTableRow v-for="ticket in booking.tickets" :key="ticket.id">
+          <UiTablesTableRowItem>{{ ticket.id }}</UiTablesTableRowItem>
+          <UiTablesTableRowItem>{{
+            ticket.seatGroup.name
+          }}</UiTablesTableRowItem>
+          <UiTablesTableRowItem>{{
+            ticket.concessionType.name
+          }}</UiTablesTableRowItem>
+          <UiTablesTableRowItem>{{
+            ticket.checkedIn ? 'Yes' : 'No'
+          }}</UiTablesTableRowItem>
+          <UiTablesTableRowItem v-if="anyTicketsChecked">{{
             ticket.checkedIn
               ? `${ticket.checkedInBy.firstName} ${ticket.checkedInBy.lastName}`
               : 'N/A'
-          }}</table-row-item>
-          <table-row-item v-if="anyTicketsChecked">{{
+          }}</UiTablesTableRowItem>
+          <UiTablesTableRowItem v-if="anyTicketsChecked">{{
             ticket.checkedIn ? ticket.checkedInAt.toHTTP() : 'N/A'
-          }}</table-row-item>
-        </table-row>
-      </table>
+          }}</UiTablesTableRowItem>
+        </UiTablesTableRow>
+      </UiTablesPaginatedTable>
     </UiCard>
     <div class="grid gap-4 grid-cols-1 lg:grid-cols-3">
       <booking-performance-overview
