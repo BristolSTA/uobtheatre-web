@@ -41,7 +41,7 @@
                 class="bg-sta-green hover:bg-sta-green-dark transition-colors lg:mx-8 mx-4 mt-6"
                 @click="
                   () => {
-                    production.slug = maualSlug;
+                    production.slug = manualSlug;
                     changingSlug = false;
                   }
                 "
@@ -218,7 +218,8 @@
           Cover Image
           <template #helper>
             A cover image used on the homepage carousel. Should have a ratio of
-            roughly 3:1, with at least 1200px width dimension. This image should <strong>not</strong> have any text or logos on it.
+            roughly 3:1, with at least 1200px width dimension. This image should
+            <strong>not</strong> have any text or logos on it.
           </template>
           <template #control>
             <image-input
