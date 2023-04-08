@@ -15,6 +15,46 @@
         </table-row>
       </table>
     </UiCard>
+    <UiCard title="Ticket Inspection" class="mb-4">
+      <UiTablesPaginatedTable
+        :offset="0"
+        :items="booking.tickets"
+        :page-info="{}"
+      >
+        <template #head>
+          <UiTablesTableHeadItem>Ticket ID</UiTablesTableHeadItem>
+          <UiTablesTableHeadItem>Seat Group</UiTablesTableHeadItem>
+          <UiTablesTableHeadItem>Concession Type</UiTablesTableHeadItem>
+          <UiTablesTableHeadItem>Checked In</UiTablesTableHeadItem>
+          <UiTablesTableHeadItem v-if="anyTicketsChecked"
+            >Checked In By</UiTablesTableHeadItem
+          >
+          <UiTablesTableHeadItem v-if="anyTicketsChecked"
+            >Checked In At</UiTablesTableHeadItem
+          >
+        </template>
+        <UiTablesTableRow v-for="ticket in booking.tickets" :key="ticket.id">
+          <UiTablesTableRowItem>{{ ticket.id }}</UiTablesTableRowItem>
+          <UiTablesTableRowItem>{{
+            ticket.seatGroup.name
+          }}</UiTablesTableRowItem>
+          <UiTablesTableRowItem>{{
+            ticket.concessionType.name
+          }}</UiTablesTableRowItem>
+          <UiTablesTableRowItem>{{
+            ticket.checkedIn ? 'Yes' : 'No'
+          }}</UiTablesTableRowItem>
+          <UiTablesTableRowItem v-if="anyTicketsChecked">{{
+            ticket.checkedIn
+              ? `${ticket.checkedInBy.firstName} ${ticket.checkedInBy.lastName}`
+              : 'N/A'
+          }}</UiTablesTableRowItem>
+          <UiTablesTableRowItem v-if="anyTicketsChecked">{{
+            ticket.checkedIn ? ticket.checkedInAt.toHTTP() : 'N/A'
+          }}</UiTablesTableRowItem>
+        </UiTablesTableRow>
+      </UiTablesPaginatedTable>
+    </UiCard>
     <div class="grid gap-4 grid-cols-1 lg:grid-cols-3">
       <booking-performance-overview
         class="lg:col-span-2"
@@ -108,6 +148,9 @@ export default defineNuxtComponent({
         ],
         ['Admin Discount', this.rawBooking.adminDiscountPercentage * 100 + '%']
       ];
+    },
+    anyTicketsChecked() {
+      return this.booking.tickets.some((ticket) => ticket.checkedIn);
     }
   }
 });
