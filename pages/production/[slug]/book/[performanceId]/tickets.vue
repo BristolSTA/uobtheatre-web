@@ -22,11 +22,27 @@
         :booking="booking"
       />
     </div>
+    <div class="space-y-4">
+      <UiFormLabel>
+        Accessibility Requirements
+        <template #control>
+          <UiInputText
+            v-model="booking.accessabilityInfo"
+            name="Accessibility Requirements"
+            type="accessibility"
+            placeholder="e.g. Wheelchair seat required"
+            :errors="errors"
+            required /></template
+      ></UiFormLabel>
+    </div>
     <div v-if="booking.tickets.length" class="mt-2 text-center">
       <button
         class="btn btn-orange font-semibold"
         :disabled="booking.dirty"
-        @click="$emit('next-stage')"
+        @click="
+          $emit('next-stage');
+          updateAPI();
+        "
         @keypress="$emit('next-stage')"
       >
         Next
@@ -94,7 +110,8 @@ export default defineNuxtComponent({
               variables: {
                 input: {
                   performance: this.booking.performance.id,
-                  tickets: this.booking.toAPIData().tickets
+                  tickets: this.booking.toAPIData().tickets,
+                  accessibilityInfo: this.booking.accessabilityInfo
                 }
               }
             },
@@ -111,7 +128,8 @@ export default defineNuxtComponent({
               variables: {
                 input: {
                   id: this.booking.id,
-                  tickets: this.booking.toAPIData().tickets
+                  tickets: this.booking.toAPIData().tickets,
+                  accessibilityInfo: this.booking.accessabilityInfo
                 }
               }
             },

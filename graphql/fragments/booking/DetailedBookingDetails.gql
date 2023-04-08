@@ -7,6 +7,7 @@ fragment DetailedBookingDetails on BookingNode {
   expired
   expiresAt
   status
+  accessibilityInfo
   user {
     id
     firstName
