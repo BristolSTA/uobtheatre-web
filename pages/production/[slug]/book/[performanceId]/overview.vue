@@ -14,6 +14,10 @@
         <user-overview />
       </div>
       <tickets-overview :booking="booking" />
+      <accessibility-overview
+        v-if="booking.accessibilityInfo"
+        :booking="booking"
+      />
       <booking-price-overview :booking="booking" />
     </div>
     <div class="mt-4 text-center">
@@ -34,6 +38,7 @@ import Booking from '~~/classes/Booking';
 import BookingPriceOverview from '@/components/booking/overview/BookingPriceOverview.vue';
 import PerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue';
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
+import AccessibilityOverview from '@/components/booking/overview/AccessibilityOverview.vue';
 import UserOverview from '@/components/booking/overview/UserOverview.vue';
 import VenueOverview from '@/components/booking/overview/VenueOverview.vue';
 
@@ -51,6 +56,7 @@ export default defineNuxtComponent({
     BookingPerformanceOverview: PerformanceOverview,
     UserOverview,
     TicketsOverview,
+    AccessibilityOverview,
     BookingPriceOverview
   },
   props: {

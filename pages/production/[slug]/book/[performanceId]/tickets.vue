@@ -27,7 +27,7 @@
         Accessibility Requirements
         <template #control>
           <UiInputText
-            v-model="booking.accessabilityInfo"
+            v-model="booking.accessibilityInfo"
             name="Accessibility Requirements"
             type="accessibility"
             placeholder="e.g. Wheelchair seat required"
@@ -111,7 +111,7 @@ export default defineNuxtComponent({
                 input: {
                   performance: this.booking.performance.id,
                   tickets: this.booking.toAPIData().tickets,
-                  accessibilityInfo: this.booking.accessabilityInfo
+                  accessibilityInfo: this.booking.accessibilityInfo
                 }
               }
             },
@@ -129,7 +129,7 @@ export default defineNuxtComponent({
                 input: {
                   id: this.booking.id,
                   tickets: this.booking.toAPIData().tickets,
-                  accessibilityInfo: this.booking.accessabilityInfo
+                  accessibilityInfo: this.booking.accessibilityInfo
                 }
               }
             },
