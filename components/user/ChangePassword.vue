@@ -2,7 +2,7 @@
   <loading-container :loading="loading" class="text-center">
     <h3 class="text-h3">Change your password</h3>
     <form
-      class="flex flex-col p-6 pt-0 space-y-2"
+      class="flex flex-col p-6 pt-2 space-y-2"
       @submit.prevent="attemptChange"
     >
       <UiNonFieldError :errors="errors" />

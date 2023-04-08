@@ -4,7 +4,7 @@
     <loading-container :loading="loading">
       <UiNonFieldError :errors="errors" />
       <form
-        class="flex flex-col p-6 pt-0 space-y-2"
+        class="flex flex-col p-6 pt-2 space-y-2"
         @submit.prevent="addNewEmail"
       >
         <text-input
@@ -13,6 +13,7 @@
           type="email"
           placeholder="New Email"
           :errors="errors"
+          error-key="email"
           required
         />
         <text-input
@@ -21,14 +22,9 @@
           type="password"
           placeholder="Password"
           :errors="errors"
+          error-key="email"
           required
         />
-        <div
-          v-if="errors && errors.has('email')"
-          class="text-sta-rouge text-sm font-semibold"
-        >
-          <p>Error: {{ errors.first('email').message }}</p>
-        </div>
         <button class="btn btn-green">Send Verification Email</button>
       </form>
       <button
