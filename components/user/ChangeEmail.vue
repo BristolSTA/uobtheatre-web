@@ -7,11 +7,11 @@
         class="flex flex-col p-6 pt-0 space-y-2"
         @submit.prevent="addNewEmail"
       >
-        Enter the new email you wish to switch to, and your password.
         <text-input
           v-model="email"
           name="New Email"
           type="email"
+          placeholder="New Email"
           :errors="errors"
           required
         />
@@ -19,9 +19,16 @@
           v-model="password"
           name="Password"
           type="password"
+          placeholder="Password"
           :errors="errors"
           required
         />
+        <div
+          v-if="errors && errors.has('email')"
+          class="text-sta-rouge text-sm font-semibold"
+        >
+          <p>Error: {{ errors.first('email').message }}</p>
+        </div>
         <button class="btn btn-green">Send Verification Email</button>
       </form>
       <button
