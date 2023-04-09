@@ -95,7 +95,7 @@
           <p class="mt-2">
             Want to delete your account? Get in touch at
             <!-- eslint-disable-next-line vue/no-v-html -->
-            <span v-html="appConfig.support_email" />
+            <span v-html="appConfig.supportEmail" />
           </p>
         </div>
       </form>

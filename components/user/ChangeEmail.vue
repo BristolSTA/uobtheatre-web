@@ -4,22 +4,25 @@
     <loading-container :loading="loading">
       <UiNonFieldError :errors="errors" />
       <form
-        class="flex flex-col p-6 pt-0 space-y-2"
+        class="flex flex-col p-6 pt-2 space-y-2"
         @submit.prevent="addNewEmail"
       >
-        Enter the new email you wish to switch to, and your password.
         <text-input
           v-model="email"
           name="New Email"
           type="email"
+          placeholder="New Email"
           :errors="errors"
+          error-key="email"
           required
         />
         <text-input
           v-model="password"
           name="Password"
           type="password"
+          placeholder="Password"
           :errors="errors"
+          error-key="password"
           required
         />
         <button class="btn btn-green">Send Verification Email</button>
