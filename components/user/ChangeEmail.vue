@@ -22,7 +22,7 @@
           type="password"
           placeholder="Password"
           :errors="errors"
-          error-key="email"
+          error-key="password"
           required
         />
         <button class="btn btn-green">Send Verification Email</button>
