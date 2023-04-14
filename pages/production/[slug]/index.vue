@@ -20,12 +20,6 @@
       Loading Production...
     </div>
     <template v-else>
-      <!-- <div
-        v-if="production.status == 'DRAFT'"
-        class="bg-sta-orange font-semibold text-center w-full py-1"
-      >
-        WARNING: You are viewing a draft version of this production
-      </div> -->
       <production-draft-warning-banner :production="production" />
       <production-banner
         class="pb-12 pt-6"
