@@ -20,6 +20,7 @@
       Loading Production...
     </div>
     <template v-else>
+      <production-draft-warning-banner :production="production" />
       <production-banner
         class="pb-12 pt-6"
         :production="production"
@@ -72,6 +73,7 @@ import ProductionCastCredits from '@/components/production/ProductionCastCredits
 import ProductionPerformances from '@/components/production/ProductionPerformances.vue';
 import ProductionPageQuery from '@/graphql/queries/ProductionBySlug.gql';
 import ProductionOverview from '@/components/production/ProductionOverview.vue';
+import ProductionDraftWarningBanner from '@/components/production/ProductionDraftWarningBanner.vue';
 import ClickableLink from '@/components/ui/ClickableLink.vue';
 
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
@@ -84,7 +86,8 @@ export default defineNuxtComponent({
     ProductionPerformances,
     ProductionOverview,
     ClickableLink,
-    ProductionBanner
+    ProductionBanner,
+    ProductionDraftWarningBanner
   },
   async asyncData() {
     // Execute query

@@ -3,6 +3,7 @@
     <Head>
       <Title>Book {{ production.name }}</Title>
     </Head>
+    <production-draft-warning-banner :production="production" />
     <div class="container">
       <production-banner
         class="pb-2 md:pb-8"
@@ -85,6 +86,7 @@ import BookingNavigation from '@/components/booking/BookingNavigation.vue';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
 import ClickableLink from '@/components/ui/ClickableLink.vue';
 import DeleteBookingMutation from '@/graphql/mutations/booking/DeleteBooking.gql';
+import ProductionDraftWarningBanner from '@/components/production/ProductionDraftWarningBanner.vue';
 import { swal } from '~~/utils/alerts';
 
 import ProductionBasicInfoFragment from '@/graphql/fragments/production/ProductionBasicInfoFragment.gql';
@@ -104,6 +106,7 @@ definePageMeta({
 export default defineNuxtComponent({
   components: {
     BookingNavigation,
+    ProductionDraftWarningBanner,
     ProductionBanner,
     ClickableLink,
     TimeRemainingCountdown

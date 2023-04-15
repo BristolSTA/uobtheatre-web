@@ -2,7 +2,7 @@ query productionBySlug($slug: String!) {
   production(slug: $slug) {
     id
     name
-    id
+    status
     subtitle
     description
     contactEmail
