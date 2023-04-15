@@ -41,6 +41,19 @@
       </UiCarousel>
     </div>
 
+    <div v-if="!!userTodaysBookings?.length" class="container mt-4 text-white">
+      <h1 class="text-h1">My Bookings Today</h1>
+      <div class="flex flex-wrap justify-center">
+        <div
+          v-for="(booking, index) in userTodaysBookings"
+          :key="index"
+          class="performance p-2 w-full md:w-1/2 xl:w-1/3"
+        >
+          <booking-summary-overview class="h-full" :booking="booking" />
+        </div>
+      </div>
+    </div>
+
     <div ref="whatson" class="container mt-4 text-white">
       <h1 class="text-h1">What's On</h1>
       <div
@@ -112,9 +125,16 @@
 
 <script setup lang="ts">
 import take from 'lodash/take';
-import { useHomepageUpcomingProductionsQuery } from '@/graphql/codegen/operations';
+import {
+  useHomepageUpcomingProductionsQuery,
+  useCompleteBookingsQuery
+} from '@/graphql/codegen/operations';
+import BookingSummaryOverview from '@/components/booking/overview/BookingSummaryOverview.vue';
 import { oneLiner, truncate } from '@/utils/lang';
 import { displayStartEnd } from '@/utils/datetime';
+import { DateTime } from 'luxon';
+import useAuthStore from '@/store/auth';
+const authStore = useAuthStore();
 
 // Set SEO data
 const appConfig = useAppConfig();
@@ -124,19 +144,42 @@ useHead({
 });
 
 // Fetch upcoming productions (without blocking)
-const { result } = useHomepageUpcomingProductionsQuery({
+const { result: productionsResult } = useHomepageUpcomingProductionsQuery({
   now: new Date()
 });
 
 const upcomingProductions = computed(() =>
-  result.value?.productions
-    ? result.value.productions.edges.map((edge) => edge!.node)
+  productionsResult.value?.productions
+    ? productionsResult.value.productions.edges.map((edge) => edge!.node)
     : []
 );
 
 const upcomingProductionsToDisplay = computed(() =>
   take(upcomingProductions.value, 4)
 );
+
+// Fetch user upcoming bookings
+const { result: userBookingsResult } = useCompleteBookingsQuery(
+  {
+    active: true
+  },
+  { enabled: authStore.isLoggedIn }
+);
+
+const userTodaysBookings = computed(() => {
+  const today = DateTime.now();
+  const todayBookings = userBookingsResult.value?.me?.bookings?.edges
+    .map((edge) => edge!.node)
+    .filter((booking) => {
+      let bookingDate = DateTime.fromISO(booking?.performance.start);
+      return (
+        bookingDate.hasSame(today, 'day') &&
+        bookingDate.hasSame(today, 'month') &&
+        bookingDate.hasSame(today, 'year')
+      );
+    });
+  return todayBookings;
+});
 
 // Define banner productions
 const bannerProductions = computed(() =>
