@@ -29,21 +29,34 @@ query upcomingBookings(
           user {
             id
             firstName
-            lastName
           }
           performance {
             id
             start
-            end
             doorsOpen
             production {
               id
               name
               slug
+              posterImage {
+                id
+                url
+              }
+              featuredImage {
+                id
+                url
+              }
+              society {
+                id
+                name
+                slug
+              }
             }
             venue {
               id
               name
+              slug
+              publiclyListed
             }
           }
           ...BookingTicketDetails
