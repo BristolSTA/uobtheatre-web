@@ -1,0 +1,54 @@
+#import "../../fragments/booking/BookingTicketDetails.gql"
+query upcomingBookings(
+  $afterCursor: String
+  $active: Boolean = true
+  $orderBy: String = "start"
+  $offset: Int
+  $max: Int = 4
+) {
+  me {
+    id
+    bookings(
+      statusIn: ["PAID"]
+      first: $max
+      orderBy: $orderBy
+      active: $active
+      offset: $offset
+      after: $afterCursor
+    ) {
+      pageInfo {
+        hasNextPage
+        startCursor
+        endCursor
+      }
+      edges {
+        node {
+          id
+          reference
+          status
+          user {
+            id
+            firstName
+            lastName
+          }
+          performance {
+            id
+            start
+            end
+            doorsOpen
+            production {
+              id
+              name
+              slug
+            }
+            venue {
+              id
+              name
+            }
+          }
+          ...BookingTicketDetails
+        }
+      }
+    }
+  }
+}

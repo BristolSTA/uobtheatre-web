@@ -43,15 +43,7 @@
 
     <div v-if="!!userTodaysBookings?.length" class="container mt-4 text-white">
       <h1 class="text-h1">My Bookings Today</h1>
-      <div class="flex flex-wrap justify-center">
-        <div
-          v-for="(booking, index) in userTodaysBookings"
-          :key="index"
-          class="performance p-2 w-full md:w-1/2 xl:w-1/3"
-        >
-          <booking-summary-overview class="h-full" :booking="booking" />
-        </div>
-      </div>
+      <BookingHomepageOverview :bookings="userTodaysBookings" />
     </div>
 
     <div ref="whatson" class="container mt-4 text-white">
@@ -127,9 +119,8 @@
 import take from 'lodash/take';
 import {
   useHomepageUpcomingProductionsQuery,
-  useCompleteBookingsQuery
+  useUpcomingBookingsQuery
 } from '@/graphql/codegen/operations';
-import BookingSummaryOverview from '@/components/booking/overview/BookingSummaryOverview.vue';
 import { oneLiner, truncate } from '@/utils/lang';
 import { displayStartEnd } from '@/utils/datetime';
 import { DateTime } from 'luxon';
@@ -159,26 +150,28 @@ const upcomingProductionsToDisplay = computed(() =>
 );
 
 // Fetch user upcoming bookings
-const { result: userBookingsResult } = useCompleteBookingsQuery(
+const { result: userBookingsResult } = useUpcomingBookingsQuery(
   {
-    active: true
+    active: true,
+    orderBy: 'start'
   },
   { enabled: authStore.isLoggedIn }
 );
 
 const userTodaysBookings = computed(() => {
   const today = DateTime.now();
-  const todayBookings = userBookingsResult.value?.me?.bookings?.edges
-    .map((edge) => edge!.node)
-    .filter((booking) => {
-      let bookingDate = DateTime.fromISO(booking?.performance.start);
-      return (
-        bookingDate.hasSame(today, 'day') &&
-        bookingDate.hasSame(today, 'month') &&
-        bookingDate.hasSame(today, 'year')
-      );
-    });
-  return todayBookings;
+  const todayBookings =
+    userBookingsResult.value?.me?.bookings?.edges
+      .map((edge) => edge!.node)
+      .filter((booking) => {
+        let bookingDate = DateTime.fromISO(booking?.performance.start);
+        return (
+          bookingDate.hasSame(today, 'day') &&
+          bookingDate.hasSame(today, 'month') &&
+          bookingDate.hasSame(today, 'year')
+        );
+      }) ?? [];
+  return todayBookings.filter(isNonNullable);
 });
 
 // Define banner productions
