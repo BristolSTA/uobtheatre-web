@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div id="splashscreen">
+    <div
+      id="splashscreen"
+      :class="[!!userTodaysBookings?.length ? 'hidden lg:block' : '']"
+    >
       <div
         v-if="!bannerProductions.length"
         class="flex items-center bg-black bg-opacity-40"
@@ -41,10 +44,9 @@
       </UiCarousel>
     </div>
 
-    <div v-if="!!userTodaysBookings?.length" class="container mt-4 text-white">
-      <h1 class="text-h1">My Bookings Today</h1>
+    <template v-if="!!userTodaysBookings?.length">
       <BookingHomepageOverview :bookings="userTodaysBookings" />
-    </div>
+    </template>
 
     <div ref="whatson" class="container mt-4 text-white">
       <h1 class="text-h1">What's On</h1>
