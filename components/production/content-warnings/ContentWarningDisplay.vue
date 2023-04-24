@@ -19,7 +19,7 @@
           v-if="expandable"
           class="rounded px-1"
           :class="{
-            'border group-hover:border-0 bg-white text-gray-700': !expanded
+            'bg-white text-gray-700': !expanded
           }"
         >
           <span v-if="!expanded">See Details</span>
