@@ -126,7 +126,7 @@ const userDropdownComponent = ref(null);
 const authStore = useAuthStore();
 const appConfig = useAppConfig();
 const navItems = [
-  [{ path: '/productions' }, 'Whats On'],
+  [{ path: '/productions' }, 'What\'s On'],
   [{ path: '/societies' }, 'Societies']
 ];
 const open = ref(false);
