@@ -30,7 +30,7 @@ describe('Breadcrumbs', () => {
   });
 
   it('has corrct text', () => {
-    expect(breadcrumbsComponent.text()).to.contain('What's On');
+    expect(breadcrumbsComponent.text()).to.contain('What\'s On');
     expect(breadcrumbsComponent.text()).to.contain('Legally Ginger');
     expect(breadcrumbsComponent.text()).to.contain('Book');
   });
