@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1 class="py-4 text-h1">Whats On</h1>
+    <h1 class="py-4 text-h1">What's On</h1>
     <infinite-scroll
       :apollo-query="upcomingProductionsQuery"
       :apollo-variables="{ now: new Date() }"
