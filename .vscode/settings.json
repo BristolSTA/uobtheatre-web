@@ -9,5 +9,8 @@
   "path-intellisense.mappings": {
     "@": "${workspaceRoot}"
   },
-  "eslint.format.enable": true
+  "eslint.format.enable": true,
+  "githubPullRequests.ignoredPullRequestBranches": [
+    "develop"
+  ]
 }
