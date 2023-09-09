@@ -38,6 +38,18 @@
         <NuxtLink to="/administration/finance-reports">
           <div class="p-2 bg-sta-green">Finance Reporting</div>
         </NuxtLink>
+        <NuxtLink to="/administration/tools/transfers">
+          <div class="p-2 bg-sta-green">Ticket Transfers</div>
+        </NuxtLink>
+        <NuxtLink to="/administration/tools/permissions">
+          <div class="p-2 bg-sta-green">Permission Managment</div>
+        </NuxtLink>
+        <NuxtLink to="/administration/tools/sta-internal">
+          <div class="p-2 bg-sta-green">STA Dashboard</div>
+        </NuxtLink>
+        <NuxtLink to="/administration/tools/new-venue">
+          <div class="p-2 bg-sta-green">New Venue</div>
+        </NuxtLink>
       </div>
     </div>
   </div>
