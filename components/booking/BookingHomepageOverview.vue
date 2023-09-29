@@ -7,55 +7,59 @@
         <div
           v-for="(booking, index) in props.bookings"
           :key="index"
-          class="w-full flex flex-col-reverse lg:flex-row lg:bg-sta-gray-light lg:p-2 rounded-lg"
+          class="lg:w-2/3 lg:p-4 py-4 lg:py-2"
         >
-          <div class="px-2 pt-0">
-            <div class="hidden lg:block pb-4">
-              <span class="text-h1">{{
-                booking.performance.production.name
-              }}</span>
-              <p class="-mt-2 mb-1 text-sta-gray-lighter font-semibold">
-                by
-                <NuxtLink
-                  class="hover:text-gray-400 text-sta-gray-lighter font"
-                  :to="`/society/${booking.performance.production.society?.slug}`"
-                >
-                  {{ booking.performance.production.society?.name }}
-                </NuxtLink>
+          <div
+            class="w-full h-full flex flex-col-reverse lg:flex-row lg:bg-sta-gray-light lg:p-2 rounded-lg"
+          >
+            <div class="px-2 pt-0 lg:flex lg:flex-col lg:w-2/3">
+              <div class="hidden lg:block pb-4">
+                <span class="text-h1">{{
+                  booking.performance.production.name
+                }}</span>
+                <p class="-mt-2 mb-1 text-sta-gray-lighter font-semibold">
+                  by
+                  <NuxtLink
+                    class="hover:text-gray-400 text-sta-gray-lighter font"
+                    :to="`/society/${booking.performance.production.society?.slug}`"
+                  >
+                    {{ booking.performance.production.society?.name }}
+                  </NuxtLink>
+                </p>
+              </div>
+              <NuxtLink
+                v-if="booking.performance.venue?.publiclyListed"
+                class="hover:text-gray-300 font-semibold text-2xl"
+                :to="`/venue/${booking.performance.venue?.slug}`"
+              >
+                {{ booking.performance.venue?.name }}
+              </NuxtLink>
+              <p class="text-sta-orange text-xl">
+                Doors Open: {{ dateFormat(booking.performance.doorsOpen, 'T') }}
               </p>
+              <p class="text-sta-rouge text-xl hidden lg:block pb-4">
+                Performance Starts:
+                {{ dateFormat(booking.performance.start, 'T') }}
+              </p>
+              <NuxtLink
+                class="flex btn btn-green mt-2 w-full justify-center text-h4"
+                :to="`/user/booking/${booking.reference}?toTickets`"
+              >
+                View Booking &amp; Tickets
+              </NuxtLink>
             </div>
-            <NuxtLink
-              v-if="booking.performance.venue?.publiclyListed"
-              class="hover:text-gray-300 font-semibold text-2xl"
-              :to="`/venue/${booking.performance.venue?.slug}`"
-            >
-              {{ booking.performance.venue?.name }}
-            </NuxtLink>
-            <p class="text-sta-orange text-xl">
-              Doors Open: {{ dateFormat(booking.performance.doorsOpen, 'T') }}
-            </p>
-            <p class="text-sta-rouge text-xl hidden lg:block pb-4">
-              Performance Starts:
-              {{ dateFormat(booking.performance.start, 'T') }}
-            </p>
-            <NuxtLink
-              class="flex btn btn-green mt-2 w-full justify-center text-h4"
-              :to="`/user/booking/${booking.reference}?toTickets`"
-            >
-              View Booking &amp; Tickets
-            </NuxtLink>
-          </div>
-          <div>
-            <div class="py-2 px-14 hidden justify-center lg:flex">
-              <ProductionPosterImage
-                :image-object="booking.performance.production.posterImage"
-                style="max-height: 400px"
-              />
-            </div>
-            <div class="py-2 px-4 lg:hidden justify-center flex">
-              <ProductionFeaturedImage
-                :image-object="booking.performance.production.featuredImage"
-              />
+            <div class="lg:flex lg:items-center">
+              <div class="py-2 px-4 hidden justify-center lg:flex">
+                <ProductionPosterImage
+                  :image-object="booking.performance.production.posterImage"
+                  style="max-height: 400px"
+                />
+              </div>
+              <div class="py-2 px-4 lg:hidden justify-center flex">
+                <ProductionFeaturedImage
+                  :image-object="booking.performance.production.featuredImage"
+                />
+              </div>
             </div>
           </div>
         </div>
