@@ -92,7 +92,7 @@ function registerApolloStub(mountingOptions: ApolloMountingOptions) {
   vi.stubGlobal('useAsyncQuery', async (opt: any) => {
     const response = await mockClient.query(opt);
     return {
-      data: ref(response.data)
+      data: ref(response?.data)
     };
   });
 
@@ -103,7 +103,7 @@ function registerApolloStub(mountingOptions: ApolloMountingOptions) {
       useApolloClient() //@ts-ignore
         .client.query(...args)
         .then((result) => {
-          useQueryResult.value = result.data;
+          useQueryResult.value = result?.data;
         });
       return {
         result: useQueryResult
