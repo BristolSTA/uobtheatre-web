@@ -22,7 +22,10 @@ describe('Home', function () {
           GenericApolloResponse(
             'productions',
             GenericNodeConnection(queryEdgeResponse)
-          )
+          ),
+          GenericApolloResponse('me', {
+            bookings: GenericNodeConnection()
+          })
         ]
       }
     }));
