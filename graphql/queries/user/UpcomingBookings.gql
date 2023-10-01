@@ -1,4 +1,3 @@
-#import "../../fragments/booking/BookingTicketDetails.gql"
 query upcomingBookings(
   $afterCursor: String
   $active: Boolean = true
@@ -59,7 +58,6 @@ query upcomingBookings(
               publiclyListed
             }
           }
-          ...BookingTicketDetails
         }
       }
     }
