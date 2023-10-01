@@ -20,7 +20,7 @@
               First Name
             </th>
             <td class="pb-2">
-              <p v-if="!editing">
+              <p v-if="!editing" class="capitalize">
                 {{ user.firstName }}
               </p>
               <text-input
@@ -37,7 +37,7 @@
           <tr class="pb-4">
             <th class="pb-2 pr-6 text-sta-orange">Last Name</th>
             <td class="pb-2">
-              <p v-if="!editing">
+              <p v-if="!editing" class="capitalize">
                 {{ user.lastName }}
               </p>
               <text-input

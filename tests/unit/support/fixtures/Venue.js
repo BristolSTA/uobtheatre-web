@@ -18,9 +18,9 @@ export default (
       description: 'not the anson rooms',
       address: Address(),
       image: {
-        url: 'http://pathto.example/venue-image.png',
+        url: 'http://pathto.example/venue-image.png'
       },
-      publicalyListed: true,
+      publiclyListed: true,
       slug: 'anson-theatre',
       seatGroups: GenericConnection(),
       performances: GenericConnection(
@@ -28,7 +28,7 @@ export default (
       ),
       productions: GenericConnection(
         includeProduction ? [ProductionNode()] : []
-      ),
+      )
     },
     overrides
   );
