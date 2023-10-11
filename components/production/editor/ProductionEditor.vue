@@ -75,6 +75,13 @@
             <rich-text-input v-model="production.description" />
           </template>
         </form-label>
+        <form-label :errors="errors" name="shortDescription">
+          Shortdescription
+          <t-input
+            :value="shortDescription"
+            @input="$emit('update:shortDescription', $event)"
+          />
+        </form-label>
         <form-label :errors="errors" name="warnings">
           Content Warnings
           <template #control>
@@ -383,6 +390,7 @@ export default {
         name: this.production.name,
         slug: this.production.slug,
         subtitle: this.production.subtitle,
+        shortDescription: this.production.shortDescription,
         description: this.production.description,
         ageRating: this.production.ageRating,
         facebookEvent: this.production.facebookEvent,
