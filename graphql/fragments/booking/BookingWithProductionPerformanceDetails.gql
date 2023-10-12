@@ -16,6 +16,11 @@ fragment BookingWithProductionPerformanceDetails on BookingNode {
       id
       name
     }
+    checkedInAt
+    checkedInBy {
+      firstName
+      lastName
+    }
   }
   performance {
     id
