@@ -57,7 +57,13 @@
         <UiTablesTableRowItem v-else> Sold Out! </UiTablesTableRowItem>
       </UiTablesTableRow>
     </UiTablesPaginatedTable>
-    <UiStaButton colour="orange" @click="doTransfers(transferTargetPerformance)"
+    <UiStaButton v-if="!transferTargetPerformance" colour="grey"
+      >Initiate Transfer</UiStaButton
+    >
+    <UiStaButton
+      v-else
+      colour="orange"
+      @click="doTransfers(transferTargetPerformance)"
       >Initiate Transfer</UiStaButton
     >
   </overview-box>
