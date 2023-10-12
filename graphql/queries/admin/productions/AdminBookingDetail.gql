@@ -1,9 +1,9 @@
-#import "../../../fragments/booking/BookingWithProductionDetails.gql"
+#import "../../../fragments/booking/BookingWithProductionPerformanceDetails.gql"
 query adminBookingDetail($bookingReference: String!) {
   bookings(reference: $bookingReference) {
     edges {
       node {
-        ...BookingWithProductionDetails
+        ...BookingWithProductionPerformanceDetails
         createdAt
         updatedAt
         creator {

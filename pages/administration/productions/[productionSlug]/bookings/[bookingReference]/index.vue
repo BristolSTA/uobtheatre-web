@@ -8,12 +8,27 @@
       :show-detailed-info="false"
     />
     <UiCard title="Admin Information" class="mb-4">
-      <table>
+      <table class="table-auto w-full text-left mb-2">
         <table-row v-for="(row, index) in adminInfo" :key="index">
           <table-head-item>{{ row[0] }}</table-head-item>
           <table-row-item>{{ row[1] }}</table-row-item>
         </table-row>
       </table>
+      <UiStaButton
+        v-if="!showTransferWindow"
+        class="bg-sta-orange hover:bg-sta-orange-dark transition-colors mr-2"
+        @click="(showTransferWindow = true), initiateTransfer"
+        >Initiate Transfer</UiStaButton
+      >
+      <UiStaButton
+        v-if="showTransferWindow"
+        class="bg-sta-rouge hover:bg-sta-rouge-dark transition-colors"
+        @click="showTransferWindow = false"
+        >Cancel Transfer</UiStaButton
+      >
+    </UiCard>
+    <UiCard v-if="showTransferWindow" title="Ticket Transfer" class="mb-4">
+      <transfer-window :old-booking="booking" :production="production" />
     </UiCard>
     <UiCard title="Ticket Inspection" class="mb-4">
       <UiTablesPaginatedTable
@@ -78,6 +93,7 @@
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
 import BookingPerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue';
 import VenueOverview from '@/components/booking/overview/VenueOverview.vue';
+import TransferWindow from '@/components/booking/overview/TransferWindow.vue';
 import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue';
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
 import Booking from '~~/classes/Booking';
@@ -95,6 +111,7 @@ export default defineNuxtComponent({
     ProductionBanner,
     BookingPerformanceOverview,
     VenueOverview,
+    TransferWindow,
     PaymentOverview,
     TicketsOverview,
     TableHeadItem,
@@ -152,6 +169,12 @@ export default defineNuxtComponent({
     anyTicketsChecked() {
       return this.booking.tickets.some((ticket) => ticket.checkedIn);
     }
+  },
+  data() {
+    return {
+      showTransferWindow: false,
+      productionPerformanceData: null
+    };
   }
 });
 </script>

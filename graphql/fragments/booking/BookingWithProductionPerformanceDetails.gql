@@ -1,0 +1,89 @@
+#import "./AllPriceBreakdown.gql"
+fragment BookingWithProductionPerformanceDetails on BookingNode {
+  id
+  reference
+  status
+  priceBreakdown {
+    ...AllPriceBreakdown
+  }
+  tickets {
+    id
+    seatGroup {
+      id
+      name
+    }
+    concessionType {
+      id
+      name
+    }
+  }
+  performance {
+    id
+    production {
+      id
+      name
+      slug
+      subtitle
+      society {
+        id
+        name
+        slug
+        logo {
+          id
+          url
+        }
+      }
+      featuredImage {
+        id
+        url
+      }
+      performances {
+        edges {
+          node {
+            id
+            venue {
+              id
+              name
+              slug
+            }
+            disabled
+            description
+            doorsOpen
+            start
+            end
+            durationMins
+            soldOut
+            isInperson
+            isOnline
+            isBookable
+            capacityRemaining
+          }
+        }
+      }
+    }
+    start
+    end
+    doorsOpen
+    durationMins
+    intervalDurationMins
+    venue {
+      id
+      slug
+    }
+  }
+  transactions {
+    edges {
+      node {
+        id
+        createdAt
+        type
+        providerName
+        providerTransactionId
+        providerFee
+        value
+        cardBrand
+        last4
+      }
+    }
+  }
+}
