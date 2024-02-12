@@ -17,7 +17,7 @@
       <UiStaButton
         v-if="!showTransferWindow"
         class="bg-sta-orange hover:bg-sta-orange-dark transition-colors mr-2"
-        @click="(showTransferWindow = true), initiateTransfer"
+        @click="getProductions"
         >Initiate Transfer</UiStaButton
       >
       <UiStaButton
@@ -28,7 +28,7 @@
       >
     </UiCard>
     <UiCard v-if="showTransferWindow" title="Ticket Transfer" class="mb-4">
-      <transfer-window :old-booking="booking" :production="production" />
+      <transfer-window :old-booking="booking" :performances="performances" />
     </UiCard>
     <UiCard title="Ticket Inspection" class="mb-4">
       <UiTablesPaginatedTable
@@ -105,6 +105,7 @@ import BookingStatusEnum from '~~/enums/PayableStatusEnum';
 
 import { dateFormat } from '@/utils/datetime';
 import { AdminBookingDetailDocument } from '~~/graphql/codegen/operations';
+import ProductionPerformancesFragment from '@/graphql/fragments/production/ProductionPerformancesFragment.gql';
 
 export default defineNuxtComponent({
   components: {
@@ -139,6 +140,29 @@ export default defineNuxtComponent({
       booking: Booking.fromAPIData(rawBooking),
       rawBooking
     };
+  },
+  methods: {
+    async getProductions() {
+      window.alert('Started fetching');
+      const { data } = await useAsyncQuery({
+        query: gql`
+          query production($slug: String!) {
+            production(slug: $slug) {
+              ...ProductionPerformances
+            }
+          }
+          ${ProductionPerformancesFragment}
+        `,
+        variables: {
+          slug: this.booking.performance.production.slug
+        }
+      });
+      //TODO: Clean this to return a list of type Performance
+      this.performances = data.value.production.performances.edges;
+      window.alert(JSON.stringify(data.value.production));
+      // window.alert('Finished fetching');
+      this.showTransferWindow = true;
+    }
   },
   computed: {
     production() {

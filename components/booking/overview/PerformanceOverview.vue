@@ -26,6 +26,9 @@
         </template>
       </icon-list-item>
     </div>
+    <div>
+      <editor-button />
+    </div>
   </overview-box>
 </template>
 
@@ -33,12 +36,13 @@
 import { DateTime } from 'luxon';
 import OverviewBox from '../../ui/UiCard.vue';
 import IconListItem from '~~/components/ui/UiIconListItem.vue';
+import EditorButton from '~~/components/ui/Input/EditorButton.vue';
 
 import { humanDuration, humanDayTime, dateFormat } from '@/utils/datetime';
 
 export default {
   name: 'PerformanceOverviewBox',
-  components: { OverviewBox, IconListItem },
+  components: { OverviewBox, IconListItem, EditorButton },
   props: {
     production: {
       required: true,

@@ -1,6 +1,9 @@
 <template>
   <overview-box>
+    <!-- TODO: Fix this to look better! -->
+    <p v-if="pending">PENDING</p>
     <UiTablesPaginatedTable
+      v-if="!pending"
       :offset="0"
       :items="performances"
       :page-info="{}"
@@ -82,20 +85,16 @@ export default {
       required: true,
       type: Booking
     },
-    production: {
+    performances: {
       required: true,
-      type: Object
+      // TODO: Fix this later!
+      type: [Object]
     }
   },
   data() {
     return {
       transferTargetPerformance: null
     };
-  },
-  computed: {
-    performances() {
-      return this.production.performances.edges.map((edge) => edge.node);
-    }
   },
   methods: {
     doTransfers(targetProduction) {
