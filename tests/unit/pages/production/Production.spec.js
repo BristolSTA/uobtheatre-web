@@ -8,13 +8,15 @@ import ProductionCastCredits from '@/components/production/ProductionCastCredits
 import ProductionOverview from '@/components/production/ProductionOverview.vue';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
 import ProductionPerformances from '@/components/production/ProductionPerformances.vue';
+import ProductionDraftWarningBannerVue from '@/components/production/ProductionDraftWarningBanner.vue';
 
 describe('Production', function () {
   let productionPageComponent,
     headerComponent,
     castCreditsComponent,
     performancesComponent,
-    overviewComponent;
+    overviewComponent,
+    draftWarningBannerComponent;
 
   beforeEach(async () => {
     productionPageComponent = await mount(ProductionPage, {
@@ -39,6 +41,9 @@ describe('Production', function () {
     performancesComponent = productionPageComponent.findComponent(
       ProductionPerformances
     );
+    draftWarningBannerComponent = productionPageComponent.findComponent(
+      ProductionDraftWarningBannerVue
+    );
   };
 
   it('contains the correct components', () => {
@@ -46,6 +51,7 @@ describe('Production', function () {
 
     expect(headerComponent.exists()).to.be.true;
     expect(overviewComponent.exists()).to.be.true;
+    expect(draftWarningBannerComponent.exists()).to.be.true;
     expect(performancesComponent.exists()).to.be.true;
 
     expect(headerComponent.props('production').name).to.eq('Legally Ginger');

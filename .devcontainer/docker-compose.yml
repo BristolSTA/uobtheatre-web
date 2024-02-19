@@ -32,13 +32,11 @@ services:
     command: /bin/sh -c "/start --single-seed-e2e"
 
   phppgadmin:
-    image: docker.io/bitnami/phppgadmin:7
+    image: adminer
     ports:
       - '8090:8080'
     environment:
-      DATABASE_HOST: postgres
-      POSTGRESQL_USERNAME: postgres
-      POSTGRESQL_PASSWORD: postgres
+      ADMINER_DEFAULT_SERVER: postgres
     depends_on:
       - postgres
 
