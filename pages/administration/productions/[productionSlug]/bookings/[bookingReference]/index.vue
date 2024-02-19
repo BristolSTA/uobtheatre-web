@@ -97,6 +97,7 @@ import TransferWindow from '@/components/booking/overview/TransferWindow.vue';
 import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue';
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
 import Booking from '~~/classes/Booking';
+import ProductionPerformances from '~~/classes/ProductionPerformances';
 
 import TableRow from '@/components/ui/Tables/TableRow.vue';
 import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
@@ -106,6 +107,7 @@ import BookingStatusEnum from '~~/enums/PayableStatusEnum';
 import { dateFormat } from '@/utils/datetime';
 import { AdminBookingDetailDocument } from '~~/graphql/codegen/operations';
 import ProductionPerformancesFragment from '@/graphql/fragments/production/ProductionPerformancesFragment.gql';
+import PerformanceFragment from '@/graphql/fragments/performance/PerformanceFragment.gql';
 
 export default defineNuxtComponent({
   components: {
@@ -143,7 +145,7 @@ export default defineNuxtComponent({
   },
   methods: {
     async getProductions() {
-      window.alert('Started fetching');
+      // Get the data of all other performances
       const { data } = await useAsyncQuery({
         query: gql`
           query production($slug: String!) {
@@ -152,15 +154,19 @@ export default defineNuxtComponent({
             }
           }
           ${ProductionPerformancesFragment}
+          ${PerformanceFragment}
         `,
         variables: {
           slug: this.booking.performance.production.slug
         }
       });
-      //TODO: Clean this to return a list of type Performance
-      this.performances = data.value.production.performances.edges;
-      window.alert(JSON.stringify(data.value.production));
-      // window.alert('Finished fetching');
+
+      //TODO: Convert this into a list of perfomances
+      this.performances = ProductionPerformances.fromAPIData(
+        data.value.production
+      ).performances;
+
+      // Show the transfer window
       this.showTransferWindow = true;
     }
   },

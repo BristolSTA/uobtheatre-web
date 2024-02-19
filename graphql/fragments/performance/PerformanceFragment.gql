@@ -1,0 +1,18 @@
+fragment PerformanceFragment on PerformanceNode {
+  id
+  venue {
+    id
+    name
+    slug
+  }
+  disabled
+  description
+  doorsOpen
+  start
+  end
+  durationMins
+  soldOut
+  isInperson
+  isOnline
+  isBookable
+}
