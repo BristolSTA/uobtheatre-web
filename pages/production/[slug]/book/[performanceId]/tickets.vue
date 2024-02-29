@@ -23,27 +23,20 @@
       />
     </div>
     <div class="space-y-4">
-      <UiFormLabel>
-        Accessibility Requirements
-        <template #control>
-          <UiInputText
-            v-model="booking.accessibilityInfo"
-            name="Accessibility Requirements"
-            type="accessibility"
-            placeholder="e.g. Wheelchair seat required"
-            :errors="errors"
-            required /></template
-      ></UiFormLabel>
+      <BookingAccessibilityInput :booking="booking" />
     </div>
     <div v-if="booking.tickets.length" class="mt-2 text-center">
       <button
         class="btn btn-orange font-semibold"
         :disabled="booking.dirty"
         @click="
-          $emit('next-stage');
           updateAPI();
+          $emit('next-stage');
         "
-        @keypress="$emit('next-stage')"
+        @keypress="
+          updateAPI();
+          $emit('next-stage');
+        "
       >
         Next
         <font-awesome-icon class="ml-2" icon="arrow-right" />

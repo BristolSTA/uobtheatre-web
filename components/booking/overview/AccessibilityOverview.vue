@@ -11,8 +11,6 @@
 </template>
 
 <script>
-import lo from 'lodash';
-
 import OverviewBox from '../../ui/UiCard.vue';
 import Booking from '~~/classes/Booking';
 
@@ -23,14 +21,6 @@ export default {
     booking: {
       required: true,
       type: Booking
-    }
-  },
-  computed: {
-    seatGroupedTickets() {
-      return lo.groupBy(
-        this.booking.ticketOverview(),
-        (concessionTickets) => concessionTickets.seatGroup.id
-      );
     }
   }
 };
