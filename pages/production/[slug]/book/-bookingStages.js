@@ -8,6 +8,7 @@ const stages = [
   PickPerformanceStage,
   AudienceWarningsStage,
   TicketSelectionStage,
+  // AccessibilityStage,
   OverviewStage,
   PaymentStage
 ];
