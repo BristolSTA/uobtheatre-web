@@ -20,6 +20,7 @@
       <BookingSelectedTicketsTable
         :ticket-matrix="ticketMatrix"
         :booking="booking"
+        :errors="errors"
       />
     </div>
     <div class="space-y-4">

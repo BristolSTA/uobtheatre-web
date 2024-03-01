@@ -13,7 +13,11 @@
           required
       /></template>
       <template #helper>
-        If you choose to enter any accessibility requirements.
+        Any accessibility requirements you chose to share with us will be
+        communicated by email to the production team. We cannot guarantee that
+        your requirements can be met, though a member of the team will be in
+        touch to discuss your needs if required. If you have any questions,
+        please support@uobtheatre.com.
       </template>
     </form-label>
   </UiCard>
@@ -21,6 +25,7 @@
 
 <script>
 import Booking from '~~/classes/Booking';
+import Errors from '~~/classes/Errors';
 import FormLabel from '../ui/FormLabel.vue';
 
 export default {
@@ -32,6 +37,10 @@ export default {
     booking: {
       required: true,
       type: Booking
+    },
+    errors: {
+      type: Errors,
+      default: null
     }
   }
 };
