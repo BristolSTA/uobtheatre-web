@@ -3,6 +3,7 @@ fragment BookingWithProductionDetails on BookingNode {
   id
   reference
   status
+  accessibilityInfo
   priceBreakdown {
     ...AllPriceBreakdown
   }
