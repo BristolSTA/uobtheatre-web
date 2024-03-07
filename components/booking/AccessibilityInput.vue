@@ -1,7 +1,22 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <UiCard title="Accessibility Details">
-    <form-label :errors="errors" name="accessibilityInfo">
+  <UiCard title="Booking Accessibility">
+    <form for="accessibility_input" class="flex items-center space-x-2">
+      <input
+        id="accessibility_input"
+        v-model="accessibilityInput"
+        type="checkbox"
+        class="border-sta-grey w-5 h-5 border rounded-sm focus:outline-none"
+      />
+      <span class="text-white text-xs font-semibold"
+        >I have additional accessibility needs</span
+      >
+    </form>
+    <form-label
+      v-if="accessibilityInput"
+      :errors="errors"
+      name="accessibilityInfo"
+    >
       Accessibility Requirements
       <template #control>
         <UiInputText
@@ -42,6 +57,11 @@ export default {
       type: Errors,
       default: null
     }
+  },
+  data() {
+    return {
+      accessibilityInput: false
+    };
   }
 };
 </script>
