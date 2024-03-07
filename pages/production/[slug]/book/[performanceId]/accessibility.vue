@@ -1,42 +1,23 @@
 <template>
   <div v-if="booking.performance && ticketMatrix" class="text-white">
-    <BookingSelectedPerformanceBar
-      v-if="booking.performance"
-      :performance="booking.performance"
-    />
-    <div
-      v-if="booking.tickets.length"
-      class="mt-2 min-w-1/2 text-center border-4 border-dashed border-sta-gray rounded-md text-white"
-    >
-      <h2 class="text-h2">Selected Tickets</h2>
-
-      <BookingSelectedTicketsTable
-        :ticket-matrix="ticketMatrix"
-        :booking="booking"
-      />
+    <div class="mb-4">
+      <VenueAccessibility :venue-data="booking.performance.venue.slug" />
     </div>
-    <div class="space-y-4">
-      <UiFormLabel>
-        Accessibility Requirements
-        <template #control>
-          <UiInputText
-            v-model="booking.accessibilityInfo"
-            name="Accessibility Requirements"
-            type="accessibility"
-            placeholder="e.g. Wheelchair seat required"
-            :errors="errors"
-            required /></template
-      ></UiFormLabel>
+    <div class="mb-4">
+      <AccessibilityInput :booking="booking" />
     </div>
     <div v-if="booking.tickets.length" class="mt-2 text-center">
       <button
         class="btn btn-orange font-semibold"
         :disabled="booking.dirty"
         @click="
-          $emit('next-stage');
           updateAPI();
+          $emit('next-stage');
         "
-        @keypress="$emit('next-stage')"
+        @keypress="
+          updateAPI();
+          $emit('next-stage');
+        "
       >
         Next
       </button>
@@ -53,18 +34,20 @@ import BookingMutation from '@/graphql/mutations/booking/Booking.gql';
 import { getValidationErrors, performMutation } from '~~/utils/api';
 
 import BookingStage from '@/classes/BookingStage';
-import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue';
+import AccessibilityInput from '@/components/booking/AccessibilityInput.vue';
+import VenueAccessibility from '@/components/venue/VenueAccessibility.vue';
 import { recordEvent, events } from '~~/utils/analytics';
 const stageInfo = new BookingStage({
   name: 'Accessibility Information',
-  routeName: 'production-slug-book-performanceId-access',
+  routeName: 'production-slug-book-performanceId-accessibility',
   eligable: (_, booking) => !booking.dirty && booking.tickets.length > 0
 });
 
 export default defineNuxtComponent({
   stageInfo,
   components: {
-    TicketsEditor
+    AccessibilityInput,
+    VenueAccessibility
   },
   props: {
     production: {
