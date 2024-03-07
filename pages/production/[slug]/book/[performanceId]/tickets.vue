@@ -23,21 +23,12 @@
         :errors="errors"
       />
     </div>
-    <div class="space-y-4">
-      <BookingAccessibilityInput :booking="booking" />
-    </div>
     <div v-if="booking.tickets.length" class="mt-2 text-center">
       <button
         class="btn btn-orange font-semibold"
         :disabled="booking.dirty"
-        @click="
-          updateAPI();
-          $emit('next-stage');
-        "
-        @keypress="
-          updateAPI();
-          $emit('next-stage');
-        "
+        @click="$emit('next-stage')"
+        @keypress="$emit('next-stage')"
       >
         Next
       </button>
@@ -103,8 +94,7 @@ export default defineNuxtComponent({
               variables: {
                 input: {
                   performance: this.booking.performance.id,
-                  tickets: this.booking.toAPIData().tickets,
-                  accessibilityInfo: this.booking.accessibilityInfo
+                  tickets: this.booking.toAPIData().tickets
                 }
               }
             },
@@ -121,8 +111,7 @@ export default defineNuxtComponent({
               variables: {
                 input: {
                   id: this.booking.id,
-                  tickets: this.booking.toAPIData().tickets,
-                  accessibilityInfo: this.booking.accessibilityInfo
+                  tickets: this.booking.toAPIData().tickets
                 }
               }
             },
