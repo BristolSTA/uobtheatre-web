@@ -7,6 +7,7 @@ fragment ProductionPerformances on ProductionNode {
           id
           name
           slug
+          accessibilityInfo
         }
         disabled
         description
