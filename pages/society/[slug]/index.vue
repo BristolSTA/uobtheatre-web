@@ -12,7 +12,7 @@
       }"
     />
     <div>
-      <h1 class="container pt-8 text-left text-h1">
+      <h1 class="container py-6 text-left text-h1">
         {{ society.name }}
       </h1>
     </div>
