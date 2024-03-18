@@ -4,6 +4,7 @@ query venuePageDetails($slug: String!) {
     name
     internalCapacity
     description
+    accessibilityInfo
     image {
       url
     }
