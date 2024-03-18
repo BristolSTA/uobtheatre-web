@@ -1,8 +1,16 @@
 <template>
   <div class="h-full text-white bg-sta-gray">
     <Head>
-      <Title>{{ venue.name }}</Title>
+      <Title>{{ venue?.name ?? 'Loading...' }}</Title>
     </Head>
+    <div
+      v-if="banner"
+      ref="banner"
+      class="min-h-25vh 2xl:min-h-40vh bg-cover bg-center"
+      :style="{
+        'background-image': banner
+      }"
+    />
     <h1 class="container py-6 text-left text-h1">
       {{ venue.name }}
     </h1>
@@ -24,6 +32,9 @@
           :alt="`${venue.name} image`"
         />
       </div>
+    </div>
+    <div class="flex flex-wrap items-center justify-center">
+      <VenueAccessibility :venue-data="venue" />
     </div>
     <div class="flex flex-wrap items-center justify-center">
       <div
@@ -73,60 +84,81 @@
         "
         class="flex justify-center w-full h-96 lg:mb-4 lg:w-3/5"
       >
-        <UiMap class="w-full" data-test="map" @initalised="initMap" />
+        <UiMap
+          v-if="venue !== null"
+          class="w-full"
+          data-test="map"
+          @initalised="initMap"
+        />
       </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import {
-  VenuePageDetailsDocument,
-  VenuePageDetailsQuery,
-  VenuePageDetailsQueryVariables
-} from '@/graphql/codegen/operations';
-import { Ref } from 'vue';
+<script>
+import VenuePageDetails from '@/graphql/queries/venue/VenuePageDetails.gql';
 
 import L from 'leaflet';
 
-const slug = useRoute().params.slug;
+export default defineNuxtComponent({
+  async asyncData() {
+    const { data } = await useAsyncQuery({
+      query: VenuePageDetails,
+      variables: {
+        slug: useRoute().params.slug
+      }
+    });
 
-if (typeof slug !== 'string')
-  throw createSafeError({ message: 'Only one slug can be passed' });
+    const venue = data._rawValue.venue;
+    if (!venue) {
+      throw createSafeError({
+        statusCode: 404,
+        message: 'This venue does not exist'
+      });
+    }
 
-const { data } = await useAsyncQuery<VenuePageDetailsQuery>(
-  VenuePageDetailsDocument,
-  { slug } satisfies VenuePageDetailsQueryVariables
-);
-
-if (!data.value?.venue) {
-  throw createSafeError({
-    statusCode: 404,
-    message: 'This venue does not exist'
-  });
-}
-
-const venue = data.value.venue;
-
-const googleMapsLink = computed(
-  () =>
-    `https://maps.google.com/?q=${venue.name}` +
-    (venue.address ? `,${venue.address.street},${venue.address.city}` : '')
-);
-
-function initMap(mapRef: Ref<L.Map>) {
-  if (!venue.address.latitude || !venue.address.longitude) return;
-  const map = mapRef.value.setView(
-    [venue.address.latitude, venue.address.longitude],
-    14
-  );
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(map);
-  L.popup({ closeButton: false })
-    .setLatLng(L.latLng(venue.address.latitude, venue.address.longitude))
-    .setContent(`${venue.name}`)
-    .openOn(map);
-}
+    return {
+      venue
+    };
+  },
+  data() {
+    return {
+      venue: null
+    };
+  },
+  methods: {
+    initMap(mapRef) {
+      if (!this.venue.address.latitude || !this.venue.address.longitude) return;
+      const map = mapRef.value.setView(
+        [this.venue.address.latitude, this.venue.address.longitude],
+        14
+      );
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+      L.popup({ closeButton: false })
+        .setLatLng(
+          L.latLng(this.venue.address.latitude, this.venue.address.longitude)
+        )
+        .setContent(`${this.venue.name}`)
+        .openOn(map);
+    }
+  },
+  computed: {
+    banner() {
+      return this.venue?.image?.url ? `url("${this.venue.image.url}")` : null;
+    },
+    googleMapsLink() {
+      if (!this.venue.address) return '';
+      const address = this.venue.address;
+      return (
+        `https://maps.google.com/?q=${this.venue.name}` +
+        (this.venue.address
+          ? `,${this.venue.address.street},${this.venue.address.city}`
+          : '')
+      );
+    }
+  }
+});
 </script>
