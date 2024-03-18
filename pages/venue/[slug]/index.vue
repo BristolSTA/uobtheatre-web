@@ -1,8 +1,16 @@
 <template>
   <div class="h-full text-white bg-sta-gray">
     <Head>
-      <Title>{{ venue.name }}</Title>
+      <Title>{{ venue?.name ?? 'Loading...' }}</Title>
     </Head>
+    <div
+      v-if="banner"
+      ref="banner"
+      class="min-h-25vh 2xl:min-h-40vh bg-cover bg-center"
+      :style="{
+        'background-image': banner
+      }"
+    />
     <h1 class="container py-6 text-left text-h1">
       {{ venue.name }}
     </h1>
@@ -145,6 +153,9 @@ export default defineNuxtComponent({
     }
   },
   computed: {
+    banner() {
+      return this.venue?.image?.url ? `url("${this.venue.image.url}")` : null;
+    },
     googleMapsLink() {
       if (!this.venue.address) return '';
       const address = this.venue.address;
