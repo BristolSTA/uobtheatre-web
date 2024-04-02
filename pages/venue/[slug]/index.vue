@@ -11,86 +11,98 @@
         'background-image': banner
       }"
     />
-    <h1 class="container py-6 text-left text-h1">
-      {{ venue.name }}
-    </h1>
-    <div
-      class="flex flex-wrap items-center justify-center mt-2 lg:mb-8 lg:px-8"
-    >
-      <UiTipTapOutput
-        v-if="venue.description"
-        class="px-6 w-full text-justify lg:block lg:px-2 lg:w-1/2"
-        :html="venue.description"
-      />
+    <div class="grid gap-4 grid-cols-1 lg:grid-cols-5 lg:grid-rows-5">
       <div
-        v-if="venue.image.url"
-        class="w-full max-w-2xl h-full md:m-4 lg:w-2/3"
+        class="lg:col-start-1 lg:col-span-3 lg:row-start-1 bg-sta-gray-light"
       >
-        <img
-          data-test="image"
-          class="p-3 w-full md:p-0"
-          :src="venue.image.url"
-          :alt="`${venue.name} image`"
-        />
+        <!-- Title -->
+        <h1 class="container py-6 text-left text-h1">
+          {{ venue.name }}
+        </h1>
       </div>
-    </div>
-    <div class="flex flex-wrap items-center justify-center">
-      <VenueAccessibility :venue-data="venue" />
-    </div>
-    <div class="flex flex-wrap items-center justify-center">
       <div
-        class="flex justify-center p-4 w-full bg-sta-gray-dark lg:order-last lg:ml-4 lg:w-1/4"
+        class="lg:col-start-1 lg:col-span-3 lg:row-start-2 lg:row-span-2 bg-sta-rouge"
       >
-        <div>
-          <h2 class="text-sta-orange text-3xl font-semibold">Venue Info:</h2>
-          <table class="table-auto">
-            <tbody>
-              <tr>
-                <th class="align-top pb-2 pr-2">Capacity:</th>
-                <td class="align-top">Max {{ venue.internalCapacity }}</td>
-              </tr>
-              <tr>
-                <th class="align-top pr-2">Address:</th>
-                <td class="align-top">
-                  <div v-if="venue.address" data-test="address-details">
-                    <p v-if="venue.address.buildingName">
-                      {{ venue.address.buildingName }}
-                    </p>
-                    <p>
-                      <template v-if="venue.address.buildingNumber">
-                        {{ venue.address.buildingNumber }}
-                      </template>
-                      {{ venue.address.street }}
-                    </p>
-                    <p>
-                      {{ venue.address.city }}, {{ venue.address.postcode }}
-                    </p>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="text-sta-orange text-sm font-semibold">
-            <a target="_blank" :href="googleMapsLink">
-              <UiIconListItem icon="map-marked-alt">
-                Open in Google Maps
-              </UiIconListItem>
-            </a>
+        <!-- Show Carrosel -->
+      </div>
+      <div class="lg:col-start-4 lg:col-span-2 lg:row-start-1 lg:row-span-5">
+        <!-- Banner Information Section -->
+        <div
+          class="flex flex-col flex-wrap items-center justify-center bg-sta-gray-dark"
+        >
+          <div class="flex justify-center p-4 w-11/12 bg-sta-gray-light">
+            <div>
+              <h2 class="text-sta-orange text-3xl font-semibold">
+                Venue Info:
+              </h2>
+              <table class="table-auto">
+                <tbody>
+                  <tr>
+                    <th class="align-top pb-2 pr-2">Capacity:</th>
+                    <td class="align-top">Max {{ venue.internalCapacity }}</td>
+                  </tr>
+                  <tr>
+                    <th class="align-top pr-2">Address:</th>
+                    <td class="align-top">
+                      <div v-if="venue.address" data-test="address-details">
+                        <p v-if="venue.address.buildingName">
+                          {{ venue.address.buildingName }}
+                        </p>
+                        <p>
+                          <template v-if="venue.address.buildingNumber">
+                            {{ venue.address.buildingNumber }}
+                          </template>
+                          {{ venue.address.street }}
+                        </p>
+                        <p>
+                          {{ venue.address.city }}, {{ venue.address.postcode }}
+                        </p>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="text-sta-orange text-sm font-semibold">
+                <a target="_blank" :href="googleMapsLink">
+                  <UiIconListItem icon="map-marked-alt">
+                    Open in Google Maps
+                  </UiIconListItem>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div
+            v-if="
+              venue.address && venue.address.latitude && venue.address.longitude
+            "
+            class="flex justify-center w-11/12 h-96 lg:mb-4"
+          >
+            <UiMap
+              v-if="venue !== null"
+              class="w-full"
+              data-test="map"
+              @initalised="initMap"
+            />
+          </div>
+          <div class="flex flex-wrap items-center justify-center">
+            <VenueAccessibility :venue-data="venue" />
           </div>
         </div>
       </div>
       <div
-        v-if="
-          venue.address && venue.address.latitude && venue.address.longitude
-        "
-        class="flex justify-center w-full h-96 lg:mb-4 lg:w-3/5"
+        class="lg:col-start-1 lg:col-span-2 lg:row-start-4 lg:row-span-2 bg-sta-orange flex flex-wrap items-center justify-center"
       >
-        <UiMap
-          v-if="venue !== null"
-          class="w-full"
-          data-test="map"
-          @initalised="initMap"
+        <!-- Description -->
+        <UiTipTapOutput
+          class="px-6 w-full text-justify lg:block lg:px-2 lg:w-1/2"
+          :html="venue.description"
         />
+      </div>
+      <div
+        class="lg:col-start-3 lg:row-start-4 lg:row-span-2 bg-sta-green flex flex-wrap items-center justify-center"
+      >
+        <!-- Past Shows -->
+        <p>Past Shows Here</p>
       </div>
     </div>
   </div>
