@@ -1,0 +1,29 @@
+#import "../../../fragments/booking/BasicBookingDetails.gql"
+query adminBookings(
+  $offset: Int
+  $status: String
+  $search: String
+) {
+  bookings(
+    first: 10
+    orderBy: "-start"
+    offset: $offset
+    status: $status
+    search: $search
+  ) {
+    pageInfo {
+      hasNextPage
+    }
+    edges {
+      node {
+        ...BasicBookingDetails
+        createdAt
+        creator {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+}

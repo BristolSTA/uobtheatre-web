@@ -10,8 +10,8 @@
     <sidebar-item icon="theater-masks" href="/administration/productions">
       Productions
     </sidebar-item>
-    <sidebar-item icon="ticket" href="/administration/tools/ticket-lookup">
-      All Tickets
+    <sidebar-item icon="ticket" href="/administration/tools/booking-lookup">
+      All Bookings
     </sidebar-item>
     <sidebar-item icon="money-bill" href="/administration/finance-reports">
       Finance Reports
