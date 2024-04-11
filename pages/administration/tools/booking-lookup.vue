@@ -113,18 +113,13 @@ export default defineNuxtComponent(
     SortIcon
   },
   async asyncData() {
-    // window.alert("inAsyncDataFunction");
-    // Execute query to get all bookings
     const { data } = await useDefaultApolloClient().query({
       query: AdminBookingsQuery,
     });
 
-    // window.alert(JSON.stringify(data));
-
    return data.bookings;
   },
   data() {
-    // window.alert("in data function");
     return {
       bookings: [],
       bookingsPageInfo: {},
@@ -141,8 +136,6 @@ export default defineNuxtComponent(
     bookings: {
       query: AdminBookingsQuery,
       variables() {
-        // window.alert("In variables");
-        // window.alert(JSON.stringify(this.bookings));
         return {
           offset: this.bookingsOffset,
           productionSearch: this.bookingsSearch,
@@ -152,8 +145,6 @@ export default defineNuxtComponent(
       },
       fetchPolicy: 'cache-and-network',
       update(data) {
-        // window.alert("In update");
-        // window.alert(JSON.stringify(data.bookings));
         const bookings = data.bookings.edges;
         if (!bookings.length) {
           return [];
@@ -162,8 +153,6 @@ export default defineNuxtComponent(
       },
       debounce: 600,
       result(result) {
-        // window.alert("In result");
-        // window.alert(JSON.stringify(result.data));
         if (!result.data) {
           return;
         }
