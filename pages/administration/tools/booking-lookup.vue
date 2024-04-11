@@ -1,10 +1,13 @@
 <template>
   <AdminPage title="Bookings Lookup">
     <div class="flex items-end space-x-4">
-      <div><UiInputText v-model="bookingsSearch" placeholder="Search" /></div>
+      <div><UiInputText v-model="bookingsSearch"
+                        placeholder="Search by Production" /></div>
       <div>
         <label>Status</label
-        ><UiInputSelect
+        >
+        <!-- TODO: This definitely isn't working! -->
+        <UiInputSelect
           v-model="bookingsStatus"
           :options="[
             { displayText: 'All', value: null },
@@ -23,15 +26,26 @@
           :loading="$apollo.queries.bookings.loading"
           empty-text="No bookings found"
       >
-        <!--//TODO:Add sorting-->
         <template #head>
           <table-head-item>Name</table-head-item>
           <table-head-item>Quantity</table-head-item>
           <table-head-item>Production</table-head-item>
-          <table-head-item>Date</table-head-item>
+          <table-head-item>
+            Date<sort-icon
+              v-model="bookingsOrderBy"
+              :must-sort="false"
+              sort-field="start"
+          />
+          </table-head-item>
           <table-head-item>Time</table-head-item>
           <table-head-item>Status</table-head-item>
-          <table-head-item>Created</table-head-item>
+          <table-head-item>
+            Created<sort-icon
+              v-model="bookingsOrderBy"
+              :must-sort="true"
+              sort-field="-createdAt"
+          />
+          </table-head-item>
         </template>
 
         <table-row
@@ -120,8 +134,6 @@ export default defineNuxtComponent(
       bookingsOrderBy: null,
       bookingsStatus: null,
 
-      production: null,
-
       BookingStatusEnum
     };
   },
@@ -133,7 +145,10 @@ export default defineNuxtComponent(
         // window.alert("In variables");
         // window.alert(JSON.stringify(this.bookings));
         return {
-          bookings:this.bookings
+          offset: this.bookingsOffset,
+          productionSearch: this.bookingsSearch,
+          orderBy: this.bookingsOrderBy,
+          bookingsStatus: this.bookingsStatus,
         };
       },
       fetchPolicy: 'cache-and-network',

@@ -2,14 +2,16 @@
 query adminBookings(
   $offset: Int
   $status: String
-  $search: String
+  $productionSearch: String
+  $orderBy: String
 ) {
   bookings(
     first: 10
-    orderBy: "-start"
     offset: $offset
     status: $status
-    search: $search
+    productionSearch: $productionSearch
+    orderBy: $orderBy
+    expired: false
   ) {
     pageInfo {
       hasNextPage
