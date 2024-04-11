@@ -6,7 +6,6 @@
       <div>
         <label>Status</label
         >
-        <!-- TODO: This definitely isn't working! -->
         <UiInputSelect
           v-model="bookingsStatus"
           :options="[
@@ -148,7 +147,7 @@ export default defineNuxtComponent(
           offset: this.bookingsOffset,
           productionSearch: this.bookingsSearch,
           orderBy: this.bookingsOrderBy,
-          bookingsStatus: this.bookingsStatus,
+          status: this.bookingsStatus,
         };
       },
       fetchPolicy: 'cache-and-network',
