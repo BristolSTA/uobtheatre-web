@@ -3,6 +3,7 @@ query adminBookings(
   $offset: Int
   $status: String
   $productionSearch: String
+  $userSearch: String
   $orderBy: String
 ) {
   bookings(
@@ -11,6 +12,7 @@ query adminBookings(
     status: $status
     productionSearch: $productionSearch
     orderBy: $orderBy
+    search: $userSearch
     expired: false
   ) {
     pageInfo {

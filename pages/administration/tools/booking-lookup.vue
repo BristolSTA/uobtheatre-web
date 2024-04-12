@@ -2,7 +2,11 @@
   <AdminPage title="Bookings Lookup">
     <div class="flex items-end space-x-4">
       <div><UiInputText v-model="bookingsSearch"
-                        placeholder="Search by Production" /></div>
+                        placeholder="Search by Production" />
+      </div>
+      <div>
+      <UiInputText v-model="userSearch"
+                        placeholder="Search by User" /></div>
       <div>
         <label>Status</label
         >
@@ -125,6 +129,7 @@ export default defineNuxtComponent(
       bookingsPageInfo: {},
       bookingsOffset: 0,
       bookingsSearch: null,
+      userSearch: null,
       bookingsOrderBy: null,
       bookingsStatus: null,
 
@@ -139,6 +144,7 @@ export default defineNuxtComponent(
         return {
           offset: this.bookingsOffset,
           productionSearch: this.bookingsSearch,
+          userSearch: this.userSearch,
           orderBy: this.bookingsOrderBy,
           status: this.bookingsStatus,
         };
