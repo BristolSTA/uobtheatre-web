@@ -3,7 +3,8 @@
     <div class="flex items-end space-x-4">
       <div>
         <label>User</label>
-        <UiInputText v-model="userSearch"
+        <UiInputText
+            v-model="userSearch"
                      placeholder="Filter by user" />
       </div>
       <div>
@@ -186,11 +187,6 @@ export default defineNuxtComponent(
         },
         productions: {
           query: AdminProductionsQuery,
-          variables() {
-            return {
-
-            };
-          },
           fetchPolicy: 'cache-and-network',
           update(data) {
             const productions = data.productions.edges;
