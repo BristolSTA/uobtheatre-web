@@ -1,23 +1,39 @@
 <template>
   <AdminPage title="Bookings Lookup">
     <div class="flex items-end space-x-4">
-      <div><UiInputText v-model="bookingsSearch"
-                        placeholder="Search by Production" />
+      <div>
+        <label>User</label>
+        <UiInputText v-model="userSearch"
+                     placeholder="Filter by user" />
       </div>
       <div>
-      <UiInputText v-model="userSearch"
-                        placeholder="Search by User" /></div>
-      <div>
-        <label>Status</label
-        >
+        <!-- Show the productions filter if we have any. If not, disable the
+        filter.-->
+        <label>Production</label>
         <UiInputSelect
-          v-model="bookingsStatus"
-          :options="[
+            v-if="!$apollo.queries.productions.loading && productions.length
+            > 0"
+            v-model="bookingsSearch"
+            :options="productions"
+        />
+        <UiInputSelect
+            v-else
+            v-model="bookingsSearch"
+            :disabled="true"
+            :options="[
+            { displayText: 'All', value: null }]"
+        />
+      </div>
+      <div>
+        <label>Status</label>
+        <UiInputSelect
+            v-model="bookingsStatus"
+            :options="[
             { displayText: 'All', value: null },
             { displayText: 'In Progress', value: 'IN_PROGRESS' },
             { displayText: 'Paid', value: 'PAID' }
           ]"
-      />
+        />
       </div>
     </div>
     <UiCard class="mt-4">
@@ -95,6 +111,7 @@
 <script>
 import AdminBookingsQuery from
       '~/graphql/queries/admin/bookings/AdminBookingsIndex.gql';
+import AdminProductionsQuery from '~/graphql/queries/admin/productions/AdminProductionsIndex.gql'
 
 import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue';
 import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
@@ -108,68 +125,114 @@ import { dateFormat } from '@/utils/datetime';
 
 export default defineNuxtComponent(
     {
-  components: {
-    PaginatedTable,
-    TableHeadItem,
-    TableRow,
-    TableRowItem,
+      components: {
+        PaginatedTable,
+        TableHeadItem,
+        TableRow,
+        TableRowItem,
 
-    SortIcon
-  },
-  async asyncData() {
-    const { data } = await useDefaultApolloClient().query({
-      query: AdminBookingsQuery,
-    });
+        SortIcon
+      },
+      async asyncData() {
+        const { data } = await useDefaultApolloClient().query({
+          query: AdminBookingsQuery,
+        });
 
-   return data.bookings;
-  },
-  data() {
-    return {
-      bookings: [],
-      bookingsPageInfo: {},
-      bookingsOffset: 0,
-      bookingsSearch: null,
-      userSearch: null,
-      bookingsOrderBy: null,
-      bookingsStatus: null,
-
-      BookingStatusEnum
-    };
-  },
-
-  apollo: {
-    bookings: {
-      query: AdminBookingsQuery,
-      variables() {
+        return data.bookings;
+      },
+      data() {
         return {
-          offset: this.bookingsOffset,
-          productionSearch: this.bookingsSearch,
-          userSearch: this.userSearch,
-          orderBy: this.bookingsOrderBy,
-          status: this.bookingsStatus,
+          bookings: [],
+          productions: [],
+          bookingsPageInfo: {},
+          bookingsOffset: 0,
+          bookingsSearch: null,
+          userSearch: null,
+          bookingsOrderBy: null,
+          bookingsStatus: null,
+
+          BookingStatusEnum
         };
       },
-      fetchPolicy: 'cache-and-network',
-      update(data) {
-        const bookings = data.bookings.edges;
-        if (!bookings.length) {
-          return [];
-        }
-        return bookings.map((edge) => edge.node);
-      },
-      debounce: 600,
-      result(result) {
-        if (!result.data) {
-          return;
-        }
-        this.bookingsPageInfo =
-            result.data.bookings.pageInfo;
-      }
-    }
-  },
 
-  methods: {
-    dateFormat
-  }
-});
+      apollo: {
+        bookings: {
+          query: AdminBookingsQuery,
+          variables() {
+            return {
+              offset: this.bookingsOffset,
+              productionSearch: this.bookingsSearch,
+              userSearch: this.userSearch,
+              orderBy: this.bookingsOrderBy,
+              status: this.bookingsStatus,
+            };
+          },
+          fetchPolicy: 'cache-and-network',
+          update(data) {
+            const bookings = data.bookings.edges;
+            if (!bookings.length) {
+              return [];
+            }
+            return bookings.map((edge) => edge.node);
+          },
+          debounce: 600,
+          result(result) {
+            if (!result.data) {
+              return;
+            }
+            this.bookingsPageInfo =
+                result.data.bookings.pageInfo;
+          }
+        },
+        productions: {
+          query: AdminProductionsQuery,
+          variables() {
+            return {
+
+            };
+          },
+          fetchPolicy: 'cache-and-network',
+          update(data) {
+            const productions = data.productions.edges;
+            if (!productions.length) {
+              return [];
+            }
+            return productions.map((edge) => edge.node);
+          },
+          debounce: 600,
+          result(result) {
+            if (!result.data) {
+              return;
+            }
+
+            // Get the list of productions from the visible bookings
+            // Sort the productions alphabetically by name
+            let prodArray =
+                // Get the productions
+                result.data.productions.edges.map((edge) => edge.node.name)
+                    .sort()
+                    // Convert the name of each production into an option for a UIInputSelect
+                    .map((name) => {
+                      let option = {};
+                      option.displayText = name;
+                      option.value = name;
+                      return option;
+                    });
+
+            // Create an empty option, which shows all productions
+            let emptyOption = {};
+            emptyOption.displayText = "All";
+            emptyOption.value = null;
+
+            prodArray.unshift(emptyOption);
+
+            this.productions = prodArray;
+          }
+        }
+      },
+
+      methods: {
+        dateFormat
+      }
+    });
 </script>
