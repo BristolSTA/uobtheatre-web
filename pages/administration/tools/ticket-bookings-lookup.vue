@@ -1,5 +1,5 @@
 <template>
-  <AdminPage title="Ticket & Bookings Lookup">
+  <AdminPage title="Tickets & Bookings">
     <div class="flex items-end space-x-4">
       <div>
         <label>User</label>
