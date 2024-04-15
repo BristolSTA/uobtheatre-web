@@ -1,5 +1,5 @@
 <template>
-  <AdminPage title="Ticket & Bookings Lookup">
+  <AdminPage title="Bookings Lookup">
     <div class="flex items-end space-x-4">
       <div>
         <label>User</label>
@@ -106,61 +106,10 @@
         </table-row>
       </paginated-table>
     </UiCard>
-
-    <div class="space-y-2" />
-        <h1 class="text-h1">Check by Barcode</h1>
-    <div class="space-y-2" />
-    <div v-if="!scannedData">
-      <div v-if="!useCameraScanner" class="text-center">
-        <h3 class="text-h3">Scan a ticket with a barcode scanner</h3>
-        <p>or</p>
-        <UiStaButton colour="orange" @click="useCameraScanner = true"
-        >Scan With Camera</UiStaButton
-        >
-      </div>
-      <UiInputTicketScanner
-          v-else
-          @scanned="onScan($event.ticketData)"
-          @invalid-code="onInvalidCode"
-      />
-    </div>
-    <div v-else class="space-y-2">
-      <h2 class="text-h2">Scanned Details</h2>
-      Booking Reference: {{ scannedData.bookingReference }} | Ticket ID:
-      {{ scannedData.ticketId }}
-      <p>
-        <UiStaButton colour="orange" @click="scannedData = undefined"
-        >Scan Again</UiStaButton
-        >
-        <UiStaButton
-            v-if="bookingInfo"
-            class="ml-4"
-            colour="green"
-            :to="`/administration/productions/${bookingInfo.performance.production.slug}/bookings/${bookingInfo.reference}`"
-        >View Booking</UiStaButton
-        >
-      </p>
-      <div class="flex flex-wrap gap-4 lg:flex-nowrap lg:space-y-0">
-        <div class="flex-grow">
-          <UiCard v-if="ticket" title="Ticket">
-            <BoxOfficeBookingTicketDetails :ticket="ticket" />
-          </UiCard>
-        </div>
-        <div class="flex-grow">
-          <UiCard v-if="bookingInfo" title="Booking">
-            <BoxOfficeBookingDetails
-                :booking="bookingInfo"
-                :allow-ticket-inspections="false"
-            />
-          </UiCard>
-        </div>
-      </div>
-    </div>
   </AdminPage>
 </template>
 
 <script>
-// Bookings Table
 import AdminBookingsQuery from
       '~/graphql/queries/admin/bookings/AdminBookingsIndex.gql';
 import AdminProductionsQuery from '~/graphql/queries/admin/productions/AdminProductionsIndex.gql'
@@ -175,57 +124,6 @@ import SortIcon from '@/components/ui/SortIcon.vue';
 import BookingStatusEnum from '~~/enums/PayableStatusEnum';
 import { dateFormat } from '@/utils/datetime';
 
-// Ticket Scanner
-import { errorToast } from "~~/utils/alerts"
-import { handleTicketScan } from "~~/services/ticketScanService"
-
-const ticket = ref()
-const bookingInfo = ref()
-const scannedData = ref()
-const useCameraScanner = ref(false)
-
-// Code for Ticket Scanner
-const hardwareScannedDetails = useHardwareTicketScanner()
-
-watch(hardwareScannedDetails.ticketDetails, newVal => {
-  if (!newVal) return
-
-  onScan(newVal)
-})
-
-watch(hardwareScannedDetails.isInvalid, newVal => {
-  if (!newVal) return
-
-  onInvalidCode()
-})
-
-function onInvalidCode() {
-  errorToast.fire({
-    title: "Invalid ticket QR code scanned"
-  })
-}
-
-async function onScan(ticketData) {
-  scannedData.value = ticketData
-  bookingInfo.value = undefined
-
-  const response = await handleTicketScan(
-      false,
-      undefined,
-      scannedData.value.bookingReference,
-      [scannedData.value.ticketId]
-  )
-  bookingInfo.value = response.booking
-  ticket.value = response.ticket
-
-  if (!bookingInfo.value) {
-    return errorToast.fire({
-      title: "A matching booking does not exist for this reference"
-    })
-  }
-}
-
-// Booking Table Component
 export default defineNuxtComponent(
     {
       components: {
