@@ -31,5 +31,6 @@ fragment ProductionBasicInfo on ProductionNode {
       longDescription
     }
   }
+  productionAlert
   isBookable
 }
