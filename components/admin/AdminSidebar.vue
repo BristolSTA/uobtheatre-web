@@ -11,7 +11,7 @@
       Productions
     </sidebar-item>
     <sidebar-item icon="ticket" href="/administration/tools/ticket-bookings-lookup">
-      Tickets & Bookings
+      Ticket & Bookings Lookup
     </sidebar-item>
     <sidebar-item icon="money-bill" href="/administration/finance-reports">
       Finance Reports
