@@ -134,6 +134,18 @@
             </div>
           </template>
         </form-label>
+        <form-label :errors="errors" name="productionAlert">
+          Production Warnings
+          <template #control>
+            <UiInputText v-model="production.productionAlert" />
+          </template>
+          <template #helper>
+            Production warnings are displayed alongside content warnings when a
+            user is booking a ticket. Only use this field for information that
+            is essential for users to view, but that cannot otherwise be
+            conveyed through content warnings.
+          </template>
+        </form-label>
         <div class="flex items-end">
           <form-label
             class="lg:w-1/4 w-1/5 mr-4"
