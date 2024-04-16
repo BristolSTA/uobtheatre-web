@@ -58,7 +58,9 @@
           </template>
         </UiCarousel>
       </div>
-      <div class="lg:col-start-4 lg:col-span-2 lg:row-start-2 lg:row-span-2">
+      <div
+        class="lg:col-start-4 lg:col-span-2 lg:row-start-2 lg:row-span-2 lg:sticky lg:top-4"
+      >
         <!-- Banner Information Section -->
         <div class="flex flex-col flex-wrap items-center justify-center">
           <div class="flex justify-center w-full p-4 bg-sta-gray-light">
@@ -275,9 +277,9 @@ export default defineNuxtComponent({
         .filter((production) => production.end);
     },
     pastProductions() {
-      return this.venue.productions.edges
-        .map((edge) => edge.node)
-        .filter((production) => production.end);
+      return this.productions.filter(
+        (production) => new Date(production.end) < new Date()
+      );
     }
   }
 });
