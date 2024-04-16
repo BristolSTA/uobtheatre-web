@@ -77,7 +77,9 @@
               :alt="`${society.name} logo`"
             />
           </div>
-          <div class="flex justify-center w-full p-4 bg-sta-gray-light">
+          <div
+            class="flex justify-center w-full lg:w-3/4 p-4 bg-sta-gray-light"
+          >
             <div>
               <h2 class="text-sta-orange text-3xl font-semibold">
                 Society Info:
