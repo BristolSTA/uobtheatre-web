@@ -25,7 +25,7 @@ describe('Society page', function () {
                 Production({
                   name: 'Bins',
                   slug: 'bins',
-                  isBookable: true,
+                  isBookable: false,
                   end: '2020-10-18T00:00:00'
                 }),
                 Production({
@@ -77,20 +77,22 @@ describe('Society page', function () {
 
   describe('society production list', () => {
     let links;
+    let table;
     let tableRows;
     beforeEach(() => {
-      tableRows = societyPageComponent.findAll('tr');
-      links = societyPageComponent.findAllComponents(NuxtLinkStub);
+      table = societyPageComponent.find({ ref: 'production-list' });
+      tableRows = table.findAll('tr');
+      links = table.findAllComponents(NuxtLinkStub);
     });
 
     it('correct number of productions', () => {
       expect(tableRows.length).to.equal(2);
-      expect(links.length).to.equal(3);
+      expect(links.length).to.equal(2);
     });
 
     it('table rows have correct text', () => {
       expect(tableRows.at(0).text()).to.contain('Bins');
-      expect(tableRows.at(0).text()).to.contain('Book Now');
+      expect(tableRows.at(0).text()).to.contain('October 2020');
 
       expect(tableRows.at(1).text()).to.contain('Centuary');
       expect(tableRows.at(1).text()).to.contain('October 2019');
@@ -98,8 +100,7 @@ describe('Society page', function () {
 
     it('has correct links', () => {
       expect(links.at(0).attributes('to')).to.equal('/production/bins');
-      expect(links.at(1).attributes('to')).to.equal('/production/bins/book');
-      expect(links.at(2).attributes('to')).to.equal('/production/centuary');
+      expect(links.at(1).attributes('to')).to.equal('/production/centuary');
     });
   });
 
