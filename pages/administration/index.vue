@@ -32,8 +32,8 @@
         <NuxtLink to="/administration/productions">
           <div class="p-2 bg-sta-green">Your Live Productions</div>
         </NuxtLink>
-        <NuxtLink to="/administration/tools/ticket-lookup">
-          <div class="p-2 bg-sta-green">Ticket & Booking Lookup</div>
+        <NuxtLink to="/administration/tools/booking-lookup">
+          <div class="p-2 bg-sta-green">Booking Lookup</div>
         </NuxtLink>
         <NuxtLink to="/administration/finance-reports">
           <div class="p-2 bg-sta-green">Finance Reporting</div>
