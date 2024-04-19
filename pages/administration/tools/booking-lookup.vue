@@ -14,12 +14,32 @@
         <UiInputSelect
             v-if="!$apollo.queries.productions.loading && productions.length
             > 0"
-            v-model="bookingsSearch"
+            v-model="productionSlug"
+            nullify-value="performanceId"
             :options="productions"
         />
         <UiInputSelect
             v-else
-            v-model="bookingsSearch"
+            v-model="productionSlug"
+            nullify-value="performanceId"
+            :disabled="true"
+            :options="[
+            { displayText: 'All', value: null }]"
+        />
+      </div>
+      <div>
+        <!-- Show the performances filter if we have any for a selected
+        production. If not, disable the filter.-->
+        <label>Performance</label>
+        <UiInputSelect
+            v-if="productionSlug && !$apollo.queries.performances.loading &&
+          performances.length > 0 && !disablePerformanceDropdown"
+            v-model="performanceId"
+            :options="performances"
+        />
+        <UiInputSelect
+            v-else
+            v-model="performanceId"
             :disabled="true"
             :options="[
             { displayText: 'All', value: null }]"
@@ -113,6 +133,8 @@
 import AdminBookingsQuery from
       '~/graphql/queries/admin/bookings/AdminBookingsIndex.gql';
 import AdminProductionsQuery from '~/graphql/queries/admin/productions/AdminProductionsIndex.gql'
+import AdminPerformancesIndex from
+      '~/graphql/queries/admin/productions/AdminPerformancesIndex.gql'
 
 import PaginatedTable from '@/components/ui/Tables/PaginatedTable.vue';
 import TableHeadItem from '@/components/ui/Tables/TableHeadItem.vue';
@@ -122,7 +144,7 @@ import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
 import SortIcon from '@/components/ui/SortIcon.vue';
 
 import BookingStatusEnum from '~~/enums/PayableStatusEnum';
-import { dateFormat } from '@/utils/datetime';
+import { dateFormat, duration } from '@/utils/datetime';
 
 export default defineNuxtComponent(
     {
@@ -144,13 +166,16 @@ export default defineNuxtComponent(
       data() {
         return {
           bookings: [],
-          productions: [],
           bookingsPageInfo: {},
           bookingsOffset: 0,
-          bookingsSearch: null,
-          userSearch: null,
           bookingsOrderBy: null,
           bookingsStatus: null,
+          disablePerformanceDropdown: true,
+          performances: [],
+          performanceId: null,
+          productions: [],
+          productionSlug: null,
+          userSearch: null,
 
           BookingStatusEnum
         };
@@ -160,9 +185,19 @@ export default defineNuxtComponent(
         bookings: {
           query: AdminBookingsQuery,
           variables() {
+            // If switching production, we need to nullify the performanceID to
+            // stop errors
+            if(this.productionSlug !== this.oldProduction){
+              this.performanceId = null;
+              // Also set the performances to be loading, so as to disable that
+              // dropdown until they've actually loaded (which will have to wait
+              // until after this request has completed).
+              this.disablePerformanceDropdown = true;
+            }
             return {
               offset: this.bookingsOffset,
-              productionSearch: this.bookingsSearch,
+              productionSlug: this.productionSlug,
+              performanceId: this.performanceId,
               userSearch: this.userSearch,
               orderBy: this.bookingsOrderBy,
               status: this.bookingsStatus,
@@ -201,17 +236,18 @@ export default defineNuxtComponent(
               return;
             }
 
-            // Get the list of productions from the visible bookings
+            // Get the list of all productions
             // Sort the productions alphabetically by name
             let prodArray =
                 // Get the productions
-                result.data.productions.edges.map((edge) => edge.node.name)
-                    .sort()
+                result.data.productions.edges.map((edge) => edge.node)
+                    // Sort these productions alphabetically by name
+                    .sort((a,b) => a.name.localeCompare(b.name))
                     // Convert the name of each production into an option for a UIInputSelect
-                    .map((name) => {
+                    .map((node) => {
                       let option = {};
-                      option.displayText = name;
-                      option.value = name;
+                      option.displayText = node.name;
+                      option.value = node.slug;
                       return option;
                     });
 
@@ -224,11 +260,68 @@ export default defineNuxtComponent(
 
             this.productions = prodArray;
           }
+        },
+        performances: {
+          query: AdminPerformancesIndex,
+          variables(){
+            return {
+              productionSlug: this.productionSlug,
+            };
+          },
+          fetchPolicy: 'cache-and-network',
+          update(data) {
+            const performances = data.production.performances.edges;
+            if (!performances.length) {
+              return [];
+            }
+            return performances.map((edge) => edge.node);
+          },
+          debounce: 600,
+          result(result) {
+            if (!result.data) {
+              return;
+            }
+
+            // Get the list of performances for the selected production
+            // Sort the performances by time
+            let perfArray =
+                // Get the performances
+                result.data.production.performances.edges.map((edge) =>
+                    edge.node)
+                    // Sort the performances by time, based on the start times
+                    .sort((a, b) => duration(a.start, b.start).as('milliseconds'))
+                    // Convert each performance node into an option for a UIInputSelect
+                    .map((node) => {
+                      let option = {};
+                      option.displayText = dateFormat(node.start,
+                          'dd MMM y - HH:mm ZZZZ');
+                      option.value = node.id;
+                      return option;
+                    });
+
+            // Create an empty option, which shows all performances
+            let emptyOption = {};
+            emptyOption.displayText = "All";
+            emptyOption.value = null;
+
+            perfArray.unshift(emptyOption);
+
+            this.performances = perfArray;
+
+            // We use this so that if we switch from one production to another,
+            // we remember to nullify the performanceID to stop errors
+            this.oldProduction = this.productionSlug;
+            this.disablePerformanceDropdown = false;
+          },
+          skip() {
+            return !this.productionSlug;
+          }
         }
       },
 
       methods: {
-        dateFormat
+        dateFormat,
+        duration
       }
     });
 </script>
