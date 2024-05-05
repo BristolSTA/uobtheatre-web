@@ -28,7 +28,8 @@ export default (
       ),
       productions: GenericConnection(
         includeProduction ? [ProductionNode()] : []
-      )
+      ),
+      accessibilityInfo: 'Wheelchair access available'
     },
     overrides
   );
