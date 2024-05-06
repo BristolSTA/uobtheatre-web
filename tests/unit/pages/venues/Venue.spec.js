@@ -1,6 +1,6 @@
 import { expect } from 'vitest';
-
 import { fixTextSpacing, mount } from '#testSupport/helpers';
+import { NuxtLinkStub } from '#testSupport/stubs';
 import {
   GenericApolloResponse,
   GenericNodeConnection
@@ -19,7 +19,8 @@ describe('Venue page', function () {
   let accessibilityInfoContainer;
 
   async function mountComponent(
-    addressChanges = {}
+    addressChanges = {},
+    includeAccessibilityInfo = true
   ) {
     venuePageComponent = await mount(Venue, {
       shallow: false,
@@ -31,23 +32,28 @@ describe('Venue page', function () {
         queryResponses: [
           GenericApolloResponse(
             'venue',
-            FakeVenue({
-              address: FakeAddress(addressChanges),
-              productions: GenericNodeConnection([
-                Production({
-                  name: 'Bins',
-                  slug: 'bins',
-                  isBookable: false,
-                  end: '2020-10-18T00:00:00'
-                }),
-                Production({
-                  name: 'Centuary',
-                  slug: 'centuary',
-                  isBookable: false,
-                  end: '2019-10-19T00:00:00'
-                })
-              ])
-            })
+            FakeVenue(
+              {
+                address: FakeAddress(addressChanges),
+                productions: GenericNodeConnection([
+                  Production({
+                    name: 'Bins',
+                    slug: 'bins',
+                    isBookable: false,
+                    end: '2020-10-18T00:00:00'
+                  }),
+                  Production({
+                    name: 'Centuary',
+                    slug: 'centuary',
+                    isBookable: false,
+                    end: '2019-10-19T00:00:00'
+                  })
+                ])
+              },
+              undefined,
+              undefined,
+              includeAccessibilityInfo
+            )
           )
         ]
       },
@@ -133,16 +139,40 @@ describe('Venue page', function () {
     });
 
     it('displays default text if no accessibility info present', async () => {
-      await mountComponent(
-        ({},
-        {
-          accessibilityInfo: null
-        })
-      );
+      await mountComponent(undefined, false);
       console.log(accessibilityInfoContainer.text());
       expect(accessibilityInfoContainer.text()).to.contain(
         'No accessibility information available for this venue'
       );
+    });
+  });
+
+  describe('venue production list', () => {
+    let links;
+    let table;
+    let tableRows;
+    beforeEach(() => {
+      table = venuePageComponent.find({ ref: 'production-list' });
+      tableRows = table.findAll('tr');
+      links = table.findAllComponents(NuxtLinkStub);
+    });
+
+    it('correct number of productions', () => {
+      expect(tableRows.length).to.equal(2);
+      expect(links.length).to.equal(2);
+    });
+
+    it('table rows have correct text', () => {
+      expect(tableRows.at(0).text()).to.contain('Bins');
+      expect(tableRows.at(0).text()).to.contain('October 2020');
+
+      expect(tableRows.at(1).text()).to.contain('Centuary');
+      expect(tableRows.at(1).text()).to.contain('October 2019');
+    });
+
+    it('has correct links', () => {
+      expect(links.at(0).attributes('to')).to.equal('/production/bins');
+      expect(links.at(1).attributes('to')).to.equal('/production/centuary');
     });
   });
 
