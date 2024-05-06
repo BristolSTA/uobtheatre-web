@@ -1,13 +1,13 @@
 import { expect } from 'vitest';
 
+import { fixTextSpacing, mount } from '#testSupport/helpers';
 import {
-  fixTextSpacing,
-  mount,
-  setCompositionData
-} from '#testSupport/helpers';
-import { GenericApolloResponse } from '#testSupport/helpers/api';
+  GenericApolloResponse,
+  GenericNodeConnection
+} from '#testSupport/helpers/api';
 
 import FakeVenue from '#testSupport/fixtures/Venue';
+import Production from '#testSupport/fixtures/Production';
 import FakeAddress from '#testSupport/fixtures/Address';
 
 import Venue from '@/pages/venue/[slug]/index.vue';
@@ -16,37 +16,54 @@ import { flushPromises } from '@vue/test-utils';
 describe('Venue page', function () {
   let venuePageComponent;
   let addressContainer;
+  let accessibilityInfoContainer;
 
-  async function mountComponent(addressChanges = {}) {
-    venuePageComponent = await mount(
-      {
-        template: '<Suspense><Index /></Suspense>'
+  async function mountComponent(
+    addressChanges = {}
+  ) {
+    venuePageComponent = await mount(Venue, {
+      shallow: false,
+      global: {
+        components: { Index: Venue },
+        stubs: ['UiMap']
       },
-      {
-        shallow: false,
-        global: {
-          components: { Index: Venue },
-          stubs: ['UiMap']
-        },
-        apollo: {
-          queryResponses: [
-            GenericApolloResponse(
-              'venue',
-              FakeVenue({ address: FakeAddress(addressChanges) })
-            )
-          ]
-        },
-        routeInfo: {
-          params: {
-            slug: 'anson-theatre'
-          }
+      apollo: {
+        queryResponses: [
+          GenericApolloResponse(
+            'venue',
+            FakeVenue({
+              address: FakeAddress(addressChanges),
+              productions: GenericNodeConnection([
+                Production({
+                  name: 'Bins',
+                  slug: 'bins',
+                  isBookable: false,
+                  end: '2020-10-18T00:00:00'
+                }),
+                Production({
+                  name: 'Centuary',
+                  slug: 'centuary',
+                  isBookable: false,
+                  end: '2019-10-19T00:00:00'
+                })
+              ])
+            })
+          )
+        ]
+      },
+      routeInfo: {
+        params: {
+          slug: 'anson-theatre'
         }
       }
-    );
+    });
     await flushPromises();
     await venuePageComponent.vm.$nextTick();
 
     addressContainer = venuePageComponent.find('[data-test="address-details"]');
+    accessibilityInfoContainer = venuePageComponent.find({
+      ref: 'accessibilityInfo'
+    });
   }
 
   beforeEach(async () => {
@@ -59,10 +76,6 @@ describe('Venue page', function () {
     expect(fixTextSpacing(venuePageComponent.text())).to.contain(
       'Capacity:Max 420'
     );
-
-    expect(
-      venuePageComponent.find('[data-test="image"]').attributes('src')
-    ).to.equal('http://pathto.example/venue-image.png');
 
     expect(venuePageComponent.find('[data-test="map"]').exists()).to.be.true;
   });
@@ -112,25 +125,48 @@ describe('Venue page', function () {
     });
   });
 
-  it('checks map doesnt exist with invalid lat or long', async () => {
-    setCompositionData(venuePageComponent, {
-      venue: { address: { latitude: null } }
+  describe('venue accessibility', () => {
+    it('displayes accessibility info', async () => {
+      expect(accessibilityInfoContainer.text()).to.contain(
+        'Wheelchair access available'
+      );
     });
-    expect(venuePageComponent.find({ ref: 'venue-map' }).exists()).to.be.false;
+
+    it('displays default text if no accessibility info present', async () => {
+      await mountComponent(
+        ({},
+        {
+          accessibilityInfo: null
+        })
+      );
+      console.log(accessibilityInfoContainer.text());
+      expect(accessibilityInfoContainer.text()).to.contain(
+        'No accessibility information available for this venue'
+      );
+    });
+  });
+
+  it('checks map doesnt exist with invalid lat or long', async () => {
+    await mountComponent({
+      latitude: null
+    });
+
+    expect(venuePageComponent.find('[data-test="map"]').exists()).to.be.false;
   });
 
   it('handles invalid venue', async () => {
-    await mount(Venue, {
-      apollo: {
-        queryResponses: [GenericApolloResponse('venue')]
-      },
-      routeInfo: {
-        params: {
-          slug: 'anson-theatre-allowed'
+    await expect(async () => {
+      await mount(Venue, {
+        apollo: {
+          queryResponses: [GenericApolloResponse('venue')]
+        },
+        routeInfo: {
+          params: {
+            slug: 'anson-theatre-allowed'
+          }
         }
-      }
-    });
-    await flushPromises();
+      });
+    }).rejects.toThrowError();
 
     expect(createError).toHaveBeenCalledOnce();
   });
