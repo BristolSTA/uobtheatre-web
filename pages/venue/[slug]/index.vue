@@ -119,13 +119,12 @@
             />
           </div>
           <div class="flex justify-center w-full p-4 bg-sta-gray-light">
-            <div>
+            <div ref="accessibilityInfo">
               <h2 class="text-sta-orange text-3xl font-semibold">
                 Accessibility Info:
               </h2>
               <div class="mt-2 text-white">
-                <loading-icon v-if="!venue" />
-                <p v-else-if="venue.accessibilityInfo">
+                <p v-if="venue.accessibilityInfo">
                   {{ venue.accessibilityInfo }}
                 </p>
                 <p v-else class="font-semibold">
@@ -198,7 +197,7 @@ export default defineNuxtComponent({
       }
     });
 
-    const venue = data._rawValue.venue;
+    const venue = data.value.venue;
     if (!venue) {
       throw createSafeError({
         statusCode: 404,
@@ -262,8 +261,6 @@ export default defineNuxtComponent({
       return this.venue?.image?.url ? `url("${this.venue.image.url}")` : null;
     },
     googleMapsLink() {
-      if (!this.venue.address) return '';
-      const address = this.venue.address;
       return (
         `https://maps.google.com/?q=${this.venue.name}` +
         (this.venue.address
