@@ -6,7 +6,8 @@ import ProductionNode from './Production.js';
 export default (
   overrides = {},
   includePerformance = false,
-  includeProduction = true
+  includeProduction = true,
+  includeAccessibilityInfo = true
 ) => {
   return Object.assign(
     {
@@ -29,7 +30,9 @@ export default (
       productions: GenericConnection(
         includeProduction ? [ProductionNode()] : []
       ),
-      accessibilityInfo: 'Wheelchair access available'
+      accessibilityInfo: includeAccessibilityInfo
+        ? 'Wheelchair access available'
+        : null
     },
     overrides
   );
