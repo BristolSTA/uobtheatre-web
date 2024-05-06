@@ -24,13 +24,20 @@ describe('Audience Warnings Stage', () => {
     });
 
     it('doesnt display any production description', () => {
-      expect(warningComponent.text()).to.not.contain('Performance Information');
+      expect(warningComponent.text()).to.not.contain(
+        'Performance-Specific Information'
+      );
       expect(warningComponent.text()).to.not.contain(
         'the performance description'
       );
     });
 
-    it('displays the warnings', () => {
+    it('displays the production warning', () => {
+      expect(warningComponent.text()).to.contain('Production Warnings');
+      expect(warningComponent.text()).to.contain('This is a production alert.');
+    });
+
+    it('displays the content warnings', () => {
       expect(warningComponent.text()).to.contain('Strobe Lighting');
       expect(warningComponent.text()).to.contain('Nudity');
     });
@@ -46,18 +53,30 @@ describe('Audience Warnings Stage', () => {
       warningComponent = await mount(AudienceWarningsStage, {
         shallow: false,
         propsData: {
-          production: Production({ contentWarnings: [] }),
+          production: Production({
+            contentWarnings: [],
+            productionAlert: null
+          }),
           booking: BookingCls.fromAPIData(Booking())
         }
       });
     });
 
     it('displays the production description', () => {
-      expect(warningComponent.text()).to.contain('Performance Information');
+      expect(warningComponent.text()).to.contain(
+        'Performance-Specific Information'
+      );
       expect(warningComponent.text()).to.contain('the performance description');
     });
 
-    it('doesnt display any warnings', () => {
+    it('doesnt display the production warning', () => {
+      expect(warningComponent.text()).to.not.contain('Production Warnings');
+      expect(warningComponent.text()).to.not.contain(
+        'This is a production alert.'
+      );
+    });
+
+    it('doesnt display any content warnings', () => {
       expect(warningComponent.text()).to.not.contain('Strobe Lighting');
       expect(warningComponent.text()).to.not.contain('Nudity');
     });
