@@ -91,6 +91,7 @@ import { dateFormat } from '@/utils/datetime';
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue';
 import VueDatepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
 import { useBoxOfficePerformancesQuery } from '~~/graphql/codegen/operations';
 import { IdInput } from '~~/types/generic';
 definePageMeta({

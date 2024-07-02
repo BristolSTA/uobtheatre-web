@@ -270,6 +270,7 @@ import { dateFormat } from '@/utils/datetime';
 import Alert from '@/components/ui/Alert.vue';
 import { getSingleDiscounts } from '@/utils/performance';
 import VueDatepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
 
 import {
   AdminPerformanceDetailDocument,

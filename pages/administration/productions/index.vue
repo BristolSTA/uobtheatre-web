@@ -94,6 +94,7 @@ import {
 } from '@/graphql/codegen/operations';
 import { displayStartEnd } from '~~/utils/datetime';
 import VueDatepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
 import { DateTime } from 'luxon';
 
 const productionsOffset = ref(0);
