@@ -1,7 +1,7 @@
 <template>
   <div>
     <NuxtLink
-      :href="`/box-office/${performance.id}/sell`"
+      :href="`/box-office/${performance?.id}/sell`"
       class="text-white hover:text-gray-300 font-bold"
       ><font-awesome-icon icon="arrow-left" /> Edit Booking</NuxtLink
     >

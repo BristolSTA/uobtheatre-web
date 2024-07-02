@@ -232,7 +232,9 @@ export default async function (
   if (preMount) preMount();
 
   let dataOpt = vtuMountOptions.data ? vtuMountOptions.data() : {};
+  // @ts-ignore
   if (component.asyncData) {
+    // @ts-ignore
     const data = await component.asyncData();
     Object.assign(dataOpt, data);
   }

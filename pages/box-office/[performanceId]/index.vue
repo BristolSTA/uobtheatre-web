@@ -4,12 +4,12 @@
       <div
         class="flex-none flex flex-col md:flex-row items-center justify-center md:justify-between mt-5"
       >
-        <BoxOfficeSellButton :performance-id="performance.id" />
+        <BoxOfficeSellButton :performance-id="performance?.id" />
 
         <BoxOfficeSchedule :performance="performance" class="hidden lg:block" />
         <BoxOfficeCheckInProgress
           class="w-60"
-          :performance-id="performance.id"
+          :performance-id="performance?.id"
         />
         <div class="flex flex-none gap-4 w-full md:w-auto">
           <BoxOfficeAutoCheckInControl
@@ -38,12 +38,12 @@
             v-model:selected-booking="selectedBooking"
             :selected-ticket="selectedTicket"
             :allow-mutations="
-              selectedBooking?.performance?.id === performance.id
+              selectedBooking?.performance?.id === performance?.id
             "
             :bookings="bookings"
             :bookings-page-info="bookingsPaginationInfo"
             :loading-bookings="loadingBookings || loadingSelectedBooking"
-            :performance-id="performance.id"
+            :performance-id="performance?.id"
             @starting-check-in="setCheckInState()"
             @check-in-error="setCheckInState(false, $event)"
             @checked-in="setCheckInState(true, $event)"
