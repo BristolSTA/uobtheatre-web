@@ -5,12 +5,13 @@
 
 version: 2
 updates:
-  - package-ecosystem: 'yarn'
+  - package-ecosystem: 'npm'
     directory: '/' # Location of package manifests
     schedule:
       interval: 'daily'
     assignees:
       - 'happynth'
+    target-branch: 'dependabot/develop'
     groups:
       vue:
         patterns:
