@@ -62,7 +62,7 @@
     "vite-plugin-eslint": "^1.8.1",
     "vitest": "^0.25.6",
     "vue-tsc": "^2.0.24",
-    "webpack": "^5.76.0"
+    "webpack": "^5.92.1"
   },
   "dependencies": {
     "@apollo/client": "^3.7.1",
