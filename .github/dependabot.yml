@@ -5,38 +5,36 @@
 
 version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "/" # Location of package manifests
+  - package-ecosystem: 'yarn'
+    directory: '/' # Location of package manifests
     schedule:
-      interval: "daily"
+      interval: 'daily'
     assignees:
-      - "happynth"
-    reviewers:
-      - "happynth"
+      - 'happynth'
     groups:
       vue:
         patterns:
-          - "@vue/*"
-          - "vue-*"
-          - "vue"
+          - '@vue/*'
+          - 'vue-*'
+          - 'vue'
       eslint:
         patterns:
-          - "@typescript-eslint/*"
-          - "eslint-*"
-          - "eslint"
-          - "prettier"
+          - '@typescript-eslint/*'
+          - 'eslint-*'
+          - 'eslint'
+          - 'prettier'
       fortawesome:
         patterns:
-          - "@fortawesome/*"
+          - '@fortawesome/*'
       tiptap:
         patterns:
-          - "@tiptap/*"
+          - '@tiptap/*'
       nuxt:
         patterns:
-          - "@nuxt/*"
-          - "nuxt-*"
-          - "nuxt"
+          - '@nuxt/*'
+          - 'nuxt-*'
+          - 'nuxt'
       typescript:
         patterns:
-          - "@types/*"
-          - "typescript"
+          - '@types/*'
+          - 'typescript'
