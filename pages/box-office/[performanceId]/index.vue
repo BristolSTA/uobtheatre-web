@@ -6,7 +6,7 @@
       >
         <!-- @vue-expect-error Expect comment on performance being possibly undefined, resolved by createSafeError below -->
         <BoxOfficeSellButton :performance-id="performance.id" />
-
+        <!-- @vue-expect-error Expect comment on performance being possibly undefined, resolved by createSafeError below -->
         <BoxOfficeSchedule :performance="performance" class="hidden lg:block" />
         <!-- @vue-expect-error Expect comment on performance being possibly undefined, resolved by createSafeError below -->
         <BoxOfficeCheckInProgress
