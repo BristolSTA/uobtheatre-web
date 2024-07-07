@@ -78,7 +78,7 @@ import {
   useBoxOfficePerformanceBookingQuery,
   useBoxOfficePerformanceBookingsQuery
 } from '~~/graphql/codegen/operations';
-import { PaginationInfo } from '~~/types/generic';
+import type { PaginationInfo } from '~~/types/generic';
 
 // Inject performance, provided by base box office page
 const performance = inject(InjectionKeys.boxOffice.performance);

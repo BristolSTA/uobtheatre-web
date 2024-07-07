@@ -5,8 +5,8 @@
 <script lang="ts" setup>
 import {
   BoxOfficePerformanceDocument,
-  BoxOfficePerformanceQuery,
-  BoxOfficePerformanceQueryVariables
+  type BoxOfficePerformanceQuery,
+  type BoxOfficePerformanceQueryVariables
 } from '~~/graphql/codegen/operations';
 
 import InjectionKeys from '@/utils/injection-keys';

@@ -106,12 +106,12 @@ import type {
   ISimpleBooking
 } from '~~/types/box-office';
 import { mutateTicketCheckInState as mutateTicketCheckInStateOperation } from '~~/services/ticketScanService';
-import {
-  BoxOfficePerformanceBookingDocument,
+import { BoxOfficePerformanceBookingDocument } from '~~/graphql/codegen/operations';
+import type {
   BoxOfficePerformanceBookingQuery,
   BoxOfficePerformanceBookingQueryVariables
 } from '~~/graphql/codegen/operations';
-import { IdInput, PaginationInfo } from '~~/types/generic';
+import type { IdInput, PaginationInfo } from '~~/types/generic';
 
 // Props
 

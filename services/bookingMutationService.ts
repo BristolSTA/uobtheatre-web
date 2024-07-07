@@ -1,10 +1,8 @@
 import Booking from '~~/classes/Booking';
 import Errors from '~~/classes/Errors';
-import {
-  BookingMutation,
-  useBookingMutation
-} from '~~/graphql/codegen/operations';
-import { IdInput } from '~~/types/generic';
+import { useBookingMutation } from '~~/graphql/codegen/operations';
+import type { BookingMutation } from '~~/graphql/codegen/operations';
+import type { IdInput } from '~~/types/generic';
 
 type IReturn = {
   result?: BookingMutation['booking'];

@@ -14,13 +14,13 @@ if (process.env.MODE !== 'test') cssFiles.push('@/assets/styles/app.scss');
 export default defineNuxtConfig({
   // Enable experimental features
   experimental: {
-    emitRouteChunkError: 'reload'
+    emitRouteChunkError: 'automatic'
   },
 
   // Define aliases
   alias: {
-    '#testSupport': 'tests/unit/support',
-    '#testSupport/*': 'tests/unit/support/*'
+    '#testSupport': './tests/unit/support',
+    '#testSupport/*': './tests/unit/support/*'
   },
 
   // Define third party plugins/modules we are using
@@ -30,6 +30,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: publicConfig()
   },
+
   // Define app confiugration
   app: {
     head: {
@@ -122,12 +123,13 @@ export default defineNuxtConfig({
   // Configure Typescript
   typescript: {
     tsConfig: {
-      types: ['node', '@types/lodash'],
       exclude: ['../graphql/codegen/operations.ts']
     }
   },
 
   sourcemap: {
     client: true
-  }
+  },
+
+  compatibilityDate: '2024-07-07'
 });

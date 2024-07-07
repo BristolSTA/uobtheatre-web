@@ -120,7 +120,7 @@ import type {
   IDetailedBooking,
   IDetailedBookingTicket
 } from '~~/types/box-office';
-import { AtLeastOneIdInput, AtLeastOneOf } from '~~/types/generic';
+import type { AtLeastOneIdInput, AtLeastOneOf } from '~~/types/generic';
 
 const performance = inject(injectionKeys.boxOffice.performance);
 
