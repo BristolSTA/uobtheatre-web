@@ -1,6 +1,6 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 import publicConfig from './config.public';
-import eslintPlugin from 'vite-plugin-eslint';
+import eslintPlugin from 'vite-plugin-eslint2';
 
 // Define CSS Files to Bundle
 const cssFiles = [

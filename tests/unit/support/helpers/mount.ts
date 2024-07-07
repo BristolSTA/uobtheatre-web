@@ -1,7 +1,7 @@
 import { mount as vtuMount } from '@vue/test-utils';
 import type { Router, _RouteLocationBase } from 'vue-router';
 import { vi } from 'vitest';
-import { useApollo as originalUseApollo } from '@nuxtjs/apollo/dist/runtime/composables';
+import { useApollo as originalUseApollo } from '#imports';
 import { merge } from 'lodash';
 import { createTestingPinia } from '@pinia/testing';
 import publicConfig from '@/config.public';
