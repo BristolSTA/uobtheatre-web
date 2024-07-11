@@ -40,8 +40,8 @@
 </template>
 
 <script lang="ts" setup>
-import { IdInput } from '~~/types/generic';
-import {
+import type { IdInput } from '~~/types/generic';
+import type {
   IBookingHeaderProp,
   IBookingTicketProp,
   IPerformanceSummary

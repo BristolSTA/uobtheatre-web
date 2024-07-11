@@ -14,7 +14,7 @@ if (process.env.MODE !== 'test') cssFiles.push('@/assets/styles/app.scss');
 export default defineNuxtConfig({
   // Enable experimental features
   experimental: {
-    emitRouteChunkError: 'reload'
+    emitRouteChunkError: 'automatic'
   },
 
   // Define aliases
@@ -123,7 +123,6 @@ export default defineNuxtConfig({
   // Configure Typescript
   typescript: {
     tsConfig: {
-      types: ['node', '@types/lodash'],
       exclude: ['../graphql/codegen/operations.ts']
     }
   },

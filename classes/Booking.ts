@@ -9,7 +9,7 @@ import type {
   SeatGroupNode,
   ConcessionTypeNode
 } from '~~/graphql/codegen/operations';
-import { IdInput } from '~~/types/generic';
+import type { IdInput } from '~~/types/generic';
 import TicketsMatrix from './TicketsMatrix';
 
 export default class Booking {

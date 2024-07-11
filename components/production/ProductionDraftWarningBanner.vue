@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import ProductionStatusEnum from '~~/enums/ProductionStatusEnum';
-import { ProductionNode } from '~~/graphql/codegen/operations';
+import type { ProductionNode } from '~~/graphql/codegen/operations';
 
 const props = defineProps<{
   production: Pick<ProductionNode, 'status'>;

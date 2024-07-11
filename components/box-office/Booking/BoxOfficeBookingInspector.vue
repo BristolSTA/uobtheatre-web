@@ -108,10 +108,10 @@ import type {
 import { mutateTicketCheckInState as mutateTicketCheckInStateOperation } from '~~/services/ticketScanService';
 import {
   BoxOfficePerformanceBookingDocument,
-  BoxOfficePerformanceBookingQuery,
-  BoxOfficePerformanceBookingQueryVariables
+  type BoxOfficePerformanceBookingQuery,
+  type BoxOfficePerformanceBookingQueryVariables
 } from '~~/graphql/codegen/operations';
-import { IdInput, PaginationInfo } from '~~/types/generic';
+import type { IdInput, PaginationInfo } from '~~/types/generic';
 
 // Props
 
