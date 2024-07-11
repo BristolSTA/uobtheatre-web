@@ -51,9 +51,12 @@
 
 <script lang="ts" setup>
 import { errorToast } from '~~/utils/alerts';
-import { TicketQRCodeData } from '~~/types/ticket';
+import type { TicketQRCodeData } from '~~/types/ticket';
 import { handleTicketScan } from '~~/services/ticketScanService';
-import { IDetailedBooking, IDetailedBookingTicket } from '~~/types/box-office';
+import type {
+  IDetailedBooking,
+  IDetailedBookingTicket
+} from '~~/types/box-office';
 
 const ticket = ref<IDetailedBookingTicket | undefined>();
 const bookingInfo = ref<IDetailedBooking | undefined>();

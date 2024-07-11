@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ICheckInState } from '../../types/box-office';
+import type { ICheckInState } from '../../types/box-office';
 
 const props = withDefaults(
   defineProps<{

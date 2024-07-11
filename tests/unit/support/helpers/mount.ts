@@ -1,5 +1,5 @@
 import { mount as vtuMount } from '@vue/test-utils';
-import { Router, _RouteLocationBase } from 'vue-router';
+import type { Router, _RouteLocationBase } from 'vue-router';
 import { vi } from 'vitest';
 import { useApollo as originalUseApollo } from '@nuxtjs/apollo/dist/runtime/composables';
 import { merge } from 'lodash';

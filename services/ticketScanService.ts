@@ -6,7 +6,7 @@ import {
 } from '~~/graphql/codegen/operations';
 import type { Ref } from 'vue';
 import type { IdInput } from '~~/types/generic';
-import { IMutateTicketCheckInStateReturn } from '../types/box-office';
+import type { IMutateTicketCheckInStateReturn } from '../types/box-office';
 
 export async function retrieveDetailsForTicket(
   performanceId: IdInput | undefined,

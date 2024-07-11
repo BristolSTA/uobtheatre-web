@@ -1,8 +1,8 @@
-import { UseMutationReturn, UseQueryReturn } from '@vue/apollo-composable';
-import { GqlErrorUnion } from '@/graphql/codegen/operations';
+import type { UseMutationReturn, UseQueryReturn } from '@vue/apollo-composable';
+import type { GqlErrorUnion } from '@/graphql/codegen/operations';
 import Errors from '~~/classes/Errors';
 import ValidationError from '~~/errors/ValidationError';
-import { ApolloQueryResult } from '@apollo/client';
+import type { ApolloQueryResult, OperationVariables } from '@apollo/client';
 // TODO: Type all the things
 /**
  * Catches only the given error(s). Otherwise, throws.
@@ -102,7 +102,7 @@ export const doMutation = async <
   return mutationResponse;
 };
 
-export const waitForQuery = <TQuery, TVars>(
+export const waitForQuery = <TQuery, TVars extends OperationVariables>(
   useQueryReturn: UseQueryReturn<TQuery, TVars>
 ): Promise<ApolloQueryResult<TQuery>> => {
   const { onResult } = useQueryReturn;

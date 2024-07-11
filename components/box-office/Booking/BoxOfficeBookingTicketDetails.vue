@@ -24,7 +24,7 @@
 <script lang="ts" setup>
 import humanizeDuration from 'humanize-duration';
 import { DateTime } from 'luxon';
-import {
+import type {
   ConcessionTypeNode,
   ExtendedUserNode,
   SeatGroupNode,

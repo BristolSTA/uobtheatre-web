@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import ProductionStatusEnum from '~~/enums/ProductionStatusEnum';
-import { ProductionNode } from '~~/graphql/codegen/operations';
+import type { ProductionNode } from '~~/graphql/codegen/operations';
 
 type ProductionProps = Pick<ProductionNode, 'isBookable' | 'status'>;
 
