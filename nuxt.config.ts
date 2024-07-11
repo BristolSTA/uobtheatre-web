@@ -1,6 +1,6 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 import publicConfig from './config.public';
-import eslintPlugin from 'vite-plugin-eslint';
+import eslintPlugin from 'vite-plugin-eslint2';
 
 // Define CSS Files to Bundle
 const cssFiles = [
@@ -19,8 +19,8 @@ export default defineNuxtConfig({
 
   // Define aliases
   alias: {
-    '#testSupport': 'tests/unit/support',
-    '#testSupport/*': 'tests/unit/support/*'
+    '#testSupport': './tests/unit/support',
+    '#testSupport/*': './tests/unit/support/*'
   },
 
   // Define third party plugins/modules we are using
@@ -30,6 +30,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: publicConfig()
   },
+
   // Define app confiugration
   app: {
     head: {
@@ -129,5 +130,7 @@ export default defineNuxtConfig({
 
   sourcemap: {
     client: true
-  }
+  },
+
+  compatibilityDate: '2024-07-11'
 });
