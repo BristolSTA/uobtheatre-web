@@ -113,7 +113,7 @@ export default {
 
       const config = useRuntimeConfig();
 
-      // eslint-disable-next-line no-undef
+       
       square.payments = Square.payments(
         config.public.services.square.applicationId,
         config.public.services.square.locationId
