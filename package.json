@@ -90,7 +90,7 @@
     "graphql-tag": "^2.12.6",
     "humanize-duration": "^3.32.1",
     "js-cookie": "^3.0.1",
-    "jwt-decode": "^3.1.2",
+    "jwt-decode": "^4.0.0",
     "leaflet": "^1.9.2",
     "lodash": "^4.17.21",
     "luxon": "^3.2.1",
