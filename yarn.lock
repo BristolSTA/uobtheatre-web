@@ -1856,16 +1856,16 @@
     auto-bind "~4.0.0"
     tslib "~2.6.0"
 
-"@graphql-codegen/typescript-vue-apollo-smart-ops@^2.3.5":
-  version "2.3.6"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-vue-apollo-smart-ops/-/typescript-vue-apollo-smart-ops-2.3.6.tgz#f50ac8b352819aded5b121de28043670f78ad032"
-  integrity sha512-Rru34qKU5xfB9RWAHbqLoPE9Ek6iQprjqdCoAgoS2nlBPlPjP9Ta9NLiLS8EaHtxpT/OGnfLAkqpvyKMnOenCA==
+"@graphql-codegen/typescript-vue-apollo-smart-ops@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-vue-apollo-smart-ops/-/typescript-vue-apollo-smart-ops-3.0.0.tgz#97230b5ff1c6eff511750d87d9464cc1cdcf70b5"
+  integrity sha512-DG2vfs7Ck5xX8F0cqH5xoEqIlvy7oOtcK7bMC0LJOjMhrrIjLYLCtC5yQPoDcqrwxDYwcv2lBV37fUiafbpFlA==
   dependencies:
-    "@graphql-codegen/plugin-helpers" "^2.7.2"
+    "@graphql-codegen/plugin-helpers" "^3.0.0"
     "@graphql-codegen/visitor-plugin-common" "2.13.1"
     auto-bind "~4.0.0"
-    change-case-all "1.0.14"
-    tslib "~2.4.0"
+    change-case-all "1.0.15"
+    tslib "~2.6.0"
 
 "@graphql-codegen/typescript-vue-apollo@^4.1.1":
   version "4.1.1"
