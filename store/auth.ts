@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import cookie from 'js-cookie';
-import jwtDecode, { type JwtPayload } from 'jwt-decode';
+import { jwtDecode, type JwtPayload } from 'jwt-decode';
 import {
   useLoginMutationMutation,
   useRefreshTokenMutationMutation,
