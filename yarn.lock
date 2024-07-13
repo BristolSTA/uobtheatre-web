@@ -3344,14 +3344,6 @@
     is-reference "1.2.1"
     magic-string "^0.30.3"
 
-"@rollup/plugin-graphql@^2.0.2":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@rollup/plugin-graphql/-/plugin-graphql-2.0.3.tgz#35fea077e225e2982ce8483dd6c381e8cca03aea"
-  integrity sha512-IuuELo+0t29adRuLVg8izBFiUXFSFw8BmezespscynRfvfXSOV0S7g8RzQt75VzP6KHHVmNmlAgz+8qlkLur3w==
-  dependencies:
-    "@rollup/pluginutils" "^5.0.1"
-    graphql-tag "^2.12.6"
-
 "@rollup/plugin-graphql@^2.0.4":
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-graphql/-/plugin-graphql-2.0.4.tgz#240aee16b4be10f3e9f879b6146af689cc10e07c"
