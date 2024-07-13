@@ -74,7 +74,7 @@
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@pinia/nuxt": "^0.5.1",
     "@popperjs/core": "^2.11.8",
-    "@sentry/browser": "^7.17.2",
+    "@sentry/browser": "^7.118.0",
     "@tiptap/pm": "^2.4.0",
     "@tiptap/starter-kit": "^2.4.0",
     "@tiptap/vue-3": "^2.4.0",
