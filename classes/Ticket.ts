@@ -56,7 +56,9 @@ export default class {
 
   static dataFromQRCode(rawQRCode: string) {
     try {
-      const result = JSON.parse(atob(rawQRCode));
+      const result = JSON.parse(
+        Buffer.from(rawQRCode, 'base64').toString('ascii')
+      );
 
       return {
         bookingReference: result[0],
@@ -117,7 +119,9 @@ export default class {
    * @returns {string} Base 64 encoded string
    */
   generateQRCodeString(bookingReference: string): string {
-    return btoa(JSON.stringify([bookingReference, this.id]));
+    return Buffer.from(JSON.stringify([bookingReference, this.id])).toString(
+      'base64'
+    );
   }
 
   /**
