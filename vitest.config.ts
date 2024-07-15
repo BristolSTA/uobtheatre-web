@@ -18,7 +18,7 @@ export const alias: Record<string, string> = {
   '@/': r('./'),
   '@@/': r('./'),
   '#testSupport': r('./tests/unit/support'),
-  '#tailwind-config': r('./.nuxt/tailwind.config.cjs'),
+  '#tailwind-config': r('./tailwind.config'),
   assets: r('./assets'),
   public: r('./public')
 };
