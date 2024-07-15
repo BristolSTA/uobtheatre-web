@@ -4867,10 +4867,10 @@ anymatch@^3.0.3, anymatch@^3.1.3, anymatch@~3.1.2:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-apollo-link-sentry@^3.2.1:
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/apollo-link-sentry/-/apollo-link-sentry-3.2.2.tgz#d2f109bf8d967ca4b4a272a14961e0a8e7c6e2d6"
-  integrity sha512-HxE/5zL1H52vuIOmoskNXoa5BowjuuMfDyI2fdxL7s0UbhoQhuDwyKhtXFkYtnBmsqj40OwYne2UDGy+Mk7muA==
+apollo-link-sentry@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/apollo-link-sentry/-/apollo-link-sentry-3.3.0.tgz#af6927c8a5896915c08a8afe56e9fa7e199294fe"
+  integrity sha512-wLffWmo5sRw3rHN1Ck6azM0oxObvtaBBf3AC8cLX4SxhyjmkRIagGDji6CFkyAhxupPz0b9/H1u4Ocx+63lNug==
   dependencies:
     deepmerge "^4.2.2"
     dot-prop "^6.0.0"
