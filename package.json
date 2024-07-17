@@ -10,6 +10,8 @@
     "codegen": "graphql-codegen --config codegen.ts",
     "lint:tsc": "yarn nuxi typecheck",
     "lint:js": "eslint .",
+    "prettier:check": "prettier . --check",
+    "prettier:write": "prettier . --write",
     "beforetest:e2e": "nuxt generate --devtools && yarn preview",
     "beforetest:e2e:local": "API_BASE=http://uobtheatre-api:8000 nuxt generate --devtools && yarn preview",
     "beforetest:e2e:ci": "API_BASE=http://localhost:9000 nuxt generate --devtools && yarn preview",

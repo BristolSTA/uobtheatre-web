@@ -109,7 +109,7 @@ const optionsTimer = setInterval(updateDateOptions, 10 * 1000);
 const dateToSearch = computed(() => {
   return selectedDate.value
     ? DateTime.fromJSDate(selectedDate.value).toISODate()
-    : today.value?.toISODate() ?? DateTime.now().toISODate();
+    : (today.value?.toISODate() ?? DateTime.now().toISODate());
 });
 
 onUnmounted(() => {

@@ -85,8 +85,6 @@
 </template>
 
 <script>
- 
-
 export default defineNuxtComponent({
   head: {
     title: 'Terms and Conditions'

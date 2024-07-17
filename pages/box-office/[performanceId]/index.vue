@@ -172,8 +172,8 @@ watch(scannedCode, async (newValue) => {
       autoCheckIn.value
         ? !state.error
         : state.error !== undefined
-        ? false
-        : undefined,
+          ? false
+          : undefined,
       state.message ?? state.error
     );
   } catch (e) {

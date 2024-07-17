@@ -1,14 +1,12 @@
 import * as Sentry from '@sentry/browser';
-import axios from "axios";
+import axios from 'axios';
 
 export const errorHandler = (e) => {
-   
   silentErrorHandler(e);
   apiErrorToast.fire();
 };
 
 export const silentErrorHandler = (e, context = {}) => {
-   
   if (axios.isAxiosError(e)) {
     context = { extra: e.toJSON(), ...context };
   }
@@ -27,4 +25,3 @@ export const isInViewport = function (elem) {
       (window.innerWidth || document.documentElement.clientWidth)
   );
 };
-

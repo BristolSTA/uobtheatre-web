@@ -113,7 +113,6 @@ export default {
 
       const config = useRuntimeConfig();
 
-       
       square.payments = Square.payments(
         config.public.services.square.applicationId,
         config.public.services.square.locationId

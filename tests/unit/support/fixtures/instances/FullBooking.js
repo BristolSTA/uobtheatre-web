@@ -18,54 +18,54 @@ export default (overrides = {}) => {
 
   const adult = ConcessionType({
     name: 'Adult',
-    description: null,
+    description: null
   });
   const adultBookingType = ConcessionTypeBookingType({
-    concessionType: adult,
+    concessionType: adult
   });
   const student = ConcessionType({
     name: 'Student',
     id: 2,
-    description: 'Valid ID NOT required',
+    description: 'Valid ID NOT required'
   });
   const studentBookingType = ConcessionTypeBookingType({
     concessionType: student,
     price: 800,
-    pricePounds: '8.00',
+    pricePounds: '8.00'
   });
 
   const mehSeatGroup = SeatGroup({
     name: 'The Meh Seats',
     id: 2,
-    description: null,
+    description: null
   });
 
   bookingdata.performance.ticketOptions = [
     PerformanceSeatGroup({
       capacityRemaining: 10,
-      concessionTypes: [adultBookingType, studentBookingType],
+      concessionTypes: [adultBookingType, studentBookingType]
     }),
     PerformanceSeatGroup({
       capacityRemaining: 11,
       seatGroup: mehSeatGroup,
-      concessionTypes: [adultBookingType, studentBookingType],
-    }),
+      concessionTypes: [adultBookingType, studentBookingType]
+    })
   ];
 
   bookingdata.tickets = [
     Ticket({ id: 7 }),
     Ticket({
-      id: 8,
+      id: 8
     }),
     Ticket({
       id: 9,
-      concessionType: student,
+      concessionType: student
     }),
     Ticket({
       id: 10,
       seatGroup: mehSeatGroup,
-      concessionType: student,
-    }),
+      concessionType: student
+    })
   ];
 
   bookingdata.priceBreakdown.tickets = [
@@ -73,21 +73,21 @@ export default (overrides = {}) => {
       ticketPrice: 300,
       number: 2,
       concessionType: adult,
-      totalPrice: 600,
+      totalPrice: 600
     }),
     PriceBreakdownTicket({
       ticketPrice: 800,
       number: 1,
       concessionType: student,
-      totalPrice: 800,
+      totalPrice: 800
     }),
     PriceBreakdownTicket({
       ticketPrice: 800,
       number: 1,
       seatGroup: mehSeatGroup,
       concessionType: student,
-      totalPrice: 100,
-    }),
+      totalPrice: 100
+    })
   ];
 
   return Object.assign(bookingdata, overrides);

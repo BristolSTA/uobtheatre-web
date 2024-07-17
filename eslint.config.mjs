@@ -1,5 +1,5 @@
 import unusedImports from 'eslint-plugin-unused-imports';
-import prettier from 'eslint-plugin-prettier';
+import eslintConfigPrettier from 'eslint-config-prettier';
 import parser from 'vue-eslint-parser';
 import pluginVue from 'eslint-plugin-vue';
 import path from 'node:path';
@@ -7,7 +7,6 @@ import { fileURLToPath } from 'node:url';
 import js from '@eslint/js';
 import { FlatCompat } from '@eslint/eslintrc';
 
-// eslint-disable-next-line
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const compat = new FlatCompat({
@@ -20,12 +19,10 @@ export default [
   {
     ignores: ['./graphql/codegen/*', './tests/unit/test.spec.example.js']
   },
-  ...compat.extends('prettier'),
   ...pluginVue.configs['flat/recommended'],
   {
     plugins: {
-      'unused-imports': unusedImports,
-      prettier
+      'unused-imports': unusedImports
     },
 
     languageOptions: {
@@ -44,5 +41,6 @@ export default [
     },
 
     files: ['**/*.ts', '**/*.js', '**/*.vue']
-  }
+  },
+  eslintConfigPrettier
 ];
