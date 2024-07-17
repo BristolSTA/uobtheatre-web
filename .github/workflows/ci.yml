@@ -53,6 +53,9 @@ jobs:
       - name: Run linter 👀
         run: yarn lint:tsc && yarn lint:js
 
+      - name: Check Prettier ✨
+        run: yarn prettier:check
+
       - name: Load GraphQL 🕸
         run: API_BASE=https://staging.api.uobtheatre.com yarn codegen
 
