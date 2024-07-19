@@ -78,7 +78,7 @@
 <script lang="ts" setup>
 import humanizeDuration from 'humanize-duration';
 import { DateTime, Duration } from 'luxon';
-import { PerformanceNode } from '~~/graphql/codegen/operations';
+import type { PerformanceNode } from '~~/graphql/codegen/operations';
 
 const props = defineProps<{
   performance: Pick<

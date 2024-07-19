@@ -3,7 +3,7 @@ import type {
   PerformanceNode,
   FullPerformanceAndTicketOptionsQuery
 } from '~~/graphql/codegen/operations';
-import { IdInput } from '~~/types/generic';
+import type { IdInput } from '~~/types/generic';
 
 type Discounts = NonNullable<
   FullPerformanceAndTicketOptionsQuery['performance']

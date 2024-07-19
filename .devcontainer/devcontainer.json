@@ -5,18 +5,21 @@
   "service": "uobtheatre-web",
   "workspaceFolder": "/workspace/uobtheatre-web",
   // Add the IDs of extensions you want installed when the container is created.
-  "extensions": [
-    "dbaeumer.vscode-eslint",
-    "bradlc.vscode-tailwindcss",
-    "christian-kohler.path-intellisense",
-    "esbenp.prettier-vscode",
-    "apollographql.vscode-apollo",
-    "gruntfuggly.todo-tree",
-    "eamodio.gitlens",
-    "Vue.vscode-typescript-vue-plugin",
-    "Vue.volar",
-    "csstools.postcss"
-  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "bradlc.vscode-tailwindcss",
+        "christian-kohler.path-intellisense",
+        "esbenp.prettier-vscode",
+        "apollographql.vscode-apollo",
+        "gruntfuggly.todo-tree",
+        "eamodio.gitlens",
+        "Vue.vscode-typescript-vue-plugin",
+        "csstools.postcss"
+      ]
+    }
+  },
   "initializeCommand": "cp -n .devcontainer/.env.example .devcontainer/.env && docker-compose -f .devcontainer/docker-compose.yml pull uobtheatre-api",
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],

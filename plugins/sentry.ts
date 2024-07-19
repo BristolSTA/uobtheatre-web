@@ -4,7 +4,7 @@ import { SentryLink } from 'apollo-link-sentry';
 
 export default defineNuxtPlugin((nuxtApp) => {
   const runtimeConfig = useRuntimeConfig();
-  const environment = nuxtApp.$config.ENV;
+  const environment = nuxtApp.$config.ENV as string;
   Sentry.init({
     dsn: runtimeConfig.public.services.sentry.dsn,
     environment,

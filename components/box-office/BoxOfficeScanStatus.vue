@@ -17,8 +17,8 @@
             state.success
               ? 'success'
               : state.success === false
-              ? 'warning'
-              : 'waiting'
+                ? 'warning'
+                : 'waiting'
           "
           class="h-12 md:h-20 lg:w-64 px-5 flex-grow text-3xl md:text-7xl"
         />
@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ICheckInState } from '../../types/box-office';
+import type { ICheckInState } from '../../types/box-office';
 
 const props = withDefaults(
   defineProps<{

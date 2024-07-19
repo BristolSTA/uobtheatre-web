@@ -18,7 +18,7 @@ export const alias: Record<string, string> = {
   '@/': r('./'),
   '@@/': r('./'),
   '#testSupport': r('./tests/unit/support'),
-  '#tailwind-config': r('./.nuxt/tailwind.config.cjs'),
+  '#tailwind-config': r('./tailwind.config'),
   assets: r('./assets'),
   public: r('./public')
 };
@@ -44,9 +44,7 @@ export default defineConfig({
     setupFiles: ['tests/unit/support/setup.ts'], // Register files to be run at the start of each test file
     restoreMocks: true,
     coverage: {
-      exclude: [
-        'graphql/codegen/**'
-      ]
+      exclude: ['./graphql/codegen/**']
     }
-  },
+  }
 });

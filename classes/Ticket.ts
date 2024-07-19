@@ -5,8 +5,8 @@ import type {
   SeatGroupNode,
   ExtendedUserNode
 } from '~~/graphql/codegen/operations';
-import { IdInput } from '~~/types/generic';
-import { TicketOptions } from '~~/types/performance';
+import type { IdInput } from '~~/types/generic';
+import type { TicketOptions } from '~~/types/performance';
 import { DateTime } from 'luxon';
 
 export default class {
@@ -56,7 +56,9 @@ export default class {
 
   static dataFromQRCode(rawQRCode: string) {
     try {
-      const result = JSON.parse(atob(rawQRCode));
+      const result = JSON.parse(
+        Buffer.from(rawQRCode, 'base64').toString('utf-8')
+      );
 
       return {
         bookingReference: result[0],
@@ -117,7 +119,9 @@ export default class {
    * @returns {string} Base 64 encoded string
    */
   generateQRCodeString(bookingReference: string): string {
-    return btoa(JSON.stringify([bookingReference, this.id]));
+    return Buffer.from(JSON.stringify([bookingReference, this.id])).toString(
+      'base64'
+    );
   }
 
   /**

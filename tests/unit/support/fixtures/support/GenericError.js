@@ -8,7 +8,7 @@ export default (
     __typename: field ? 'FieldError' : 'NonFieldError',
     message,
     field,
-    code,
+    code
   };
   return Object.assign(baseObj, overrides);
 };

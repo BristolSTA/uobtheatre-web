@@ -1,6 +1,7 @@
 import { mount as vtuMount } from '@vue/test-utils';
-import { Router, _RouteLocationBase } from 'vue-router';
+import type { Router, _RouteLocationBase } from 'vue-router';
 import { vi } from 'vitest';
+//@ts-ignore TODO: Remove this ignore when @nuxtjs/apollo is updated to support bundler - see Issue #474
 import { useApollo as originalUseApollo } from '@nuxtjs/apollo/dist/runtime/composables';
 import { merge } from 'lodash';
 import { createTestingPinia } from '@pinia/testing';

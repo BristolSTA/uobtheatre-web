@@ -92,7 +92,7 @@ import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue';
 import VueDatepicker from '@vuepic/vue-datepicker';
 import { useBoxOfficePerformancesQuery } from '~~/graphql/codegen/operations';
-import { IdInput } from '~~/types/generic';
+import type { IdInput } from '~~/types/generic';
 definePageMeta({
   middleware: ['authed', 'can-boxoffice']
 });
@@ -109,7 +109,7 @@ const optionsTimer = setInterval(updateDateOptions, 10 * 1000);
 const dateToSearch = computed(() => {
   return selectedDate.value
     ? DateTime.fromJSDate(selectedDate.value).toISODate()
-    : today.value?.toISODate() ?? DateTime.now().toISODate();
+    : (today.value?.toISODate() ?? DateTime.now().toISODate());
 });
 
 onUnmounted(() => {

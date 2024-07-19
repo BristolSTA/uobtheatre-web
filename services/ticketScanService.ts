@@ -6,7 +6,7 @@ import {
 } from '~~/graphql/codegen/operations';
 import type { Ref } from 'vue';
 import type { IdInput } from '~~/types/generic';
-import { IMutateTicketCheckInStateReturn } from '../types/box-office';
+import type { IMutateTicketCheckInStateReturn } from '../types/box-office';
 
 export async function retrieveDetailsForTicket(
   performanceId: IdInput | undefined,
@@ -39,8 +39,8 @@ export async function retrieveDetailsForTicket(
     error: !booking
       ? 'Booking does not exist for this performance'
       : !ticket
-      ? 'Invalid ticket ID'
-      : undefined,
+        ? 'Invalid ticket ID'
+        : undefined,
     message: 'Ticket Found'
   };
 }
@@ -106,8 +106,8 @@ export async function mutateTicketCheckInState(
           ? 'Tickets checked in'
           : 'Tickets un-checked in'
         : checkIn
-        ? `Checked In: 1x ${returnData.ticket?.concessionType.name}`
-        : `Un-Checked In: 1x ${returnData.ticket?.concessionType.name}`;
+          ? `Checked In: 1x ${returnData.ticket?.concessionType.name}`
+          : `Un-Checked In: 1x ${returnData.ticket?.concessionType.name}`;
   } catch (e) {
     const errors = getValidationErrors(e);
     returnData.error = errors

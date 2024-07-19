@@ -5,8 +5,8 @@
       loading
         ? 'bg-sta-gray-light cursor-not-allowed'
         : checkIn
-        ? 'bg-sta-green hover:bg-sta-green-dark'
-        : 'bg-sta-orange hover:bg-sta-orange-dark'
+          ? 'bg-sta-green hover:bg-sta-green-dark'
+          : 'bg-sta-orange hover:bg-sta-orange-dark'
     ]"
     @click="onClick"
     ><template v-if="!loading">{{ buttonText }}</template

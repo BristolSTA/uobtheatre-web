@@ -82,10 +82,10 @@
 <script setup lang="ts">
 import {
   VenuePageDetailsDocument,
-  VenuePageDetailsQuery,
-  VenuePageDetailsQueryVariables
+  type VenuePageDetailsQuery,
+  type VenuePageDetailsQueryVariables
 } from '@/graphql/codegen/operations';
-import { Ref } from 'vue';
+import type { Ref } from 'vue';
 
 import L from 'leaflet';
 

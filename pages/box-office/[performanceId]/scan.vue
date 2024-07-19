@@ -120,7 +120,7 @@ import type {
   IDetailedBooking,
   IDetailedBookingTicket
 } from '~~/types/box-office';
-import { AtLeastOneIdInput, AtLeastOneOf } from '~~/types/generic';
+import type { AtLeastOneIdInput, AtLeastOneOf } from '~~/types/generic';
 
 const performance = inject(injectionKeys.boxOffice.performance);
 
@@ -188,8 +188,8 @@ async function handleScannedTicket(eventData: {
     autoCheckIn.value
       ? !state.error
       : state.error !== undefined
-      ? false
-      : undefined,
+        ? false
+        : undefined,
     state.error ?? state.message
   );
   ticket.value = state.ticket;

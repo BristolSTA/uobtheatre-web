@@ -105,8 +105,8 @@
                         contentWarning.information
                           ? contentWarning.information
                           : contentWarning.warning.longDescription
-                          ? contentWarning.warning.longDescription
-                          : 'You can provide extended information about this content warning here'
+                            ? contentWarning.warning.longDescription
+                            : 'You can provide extended information about this content warning here'
                       "
                     />
                   </td>
