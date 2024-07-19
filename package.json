@@ -83,7 +83,7 @@
     "@vue/apollo-composable": "^4.0.2",
     "@vue/apollo-option": "^4.0.0",
     "@vue/apollo-util": "^4.0.0-beta.6",
-    "@vuepic/vue-datepicker": "9.0.0",
+    "@vuepic/vue-datepicker": "9.0.1",
     "apollo-link-sentry": "^3.3.0",
     "axios": "^1.7.2",
     "body-scroll-lock": "^4.0.0-beta.0",
