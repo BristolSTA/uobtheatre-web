@@ -57,7 +57,7 @@ export default class {
   static dataFromQRCode(rawQRCode: string) {
     try {
       const result = JSON.parse(
-        Buffer.from(rawQRCode, 'base64').toString('ascii')
+        Buffer.from(rawQRCode, 'base64').toString('utf-8')
       );
 
       return {
