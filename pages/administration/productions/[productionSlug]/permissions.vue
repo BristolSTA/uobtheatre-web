@@ -29,8 +29,8 @@ import { loadingSwal, successToast } from '~~/utils/alerts';
 import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue';
 import {
   AdminProductionPermissionsDocument,
-  AdminProductionPermissionsQuery,
-  AdminProductionPermissionsQueryVariables,
+  type AdminProductionPermissionsQuery,
+  type AdminProductionPermissionsQueryVariables,
   useProductionPermissionsMutationsMutation
 } from '~~/graphql/codegen/operations';
 import Errors from '~~/classes/Errors';

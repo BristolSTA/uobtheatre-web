@@ -9,7 +9,7 @@ export default (overrides = {}) => {
       percentage: 0.1,
       performances: GenericConnection(),
       seatGroup: SeatGroup(),
-      requirements: [DiscountRequirement()],
+      requirements: [DiscountRequirement()]
     },
     overrides
   );

@@ -9,7 +9,7 @@ export default (overrides = {}) => {
       booking: null,
       concessionType: ConcessionType(),
       seat: null,
-      checkedIn: false,
+      checkedIn: false
     },
     overrides
   );

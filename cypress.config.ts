@@ -10,8 +10,7 @@ export default defineConfig({
   e2e: {
     baseUrl: 'http://localhost:3000',
     watchForFileChanges: false,
-    videoUploadOnPasses: false,
-    supportFile: 'tests/e2e/support/index.js',
-    specPattern: 'tests/e2e/specs/**/*.cy.js'
+    supportFile: './tests/e2e/support/index.js',
+    specPattern: './tests/e2e/specs/**/*.cy.js'
   }
 });

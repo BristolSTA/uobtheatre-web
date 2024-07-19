@@ -101,10 +101,10 @@
 <script lang="ts" setup>
 import Booking from '~~/classes/Booking';
 import useBoxOfficeStore from '~~/store/box-office';
-import { IdInput } from '~~/types/generic';
+import type { IdInput } from '~~/types/generic';
 import {
   PaymentProvider,
-  PayBookingMutation,
+  type PayBookingMutation,
   useCancelPaymentMutation,
   usePayBookingMutation,
   useSetBookingUserMutation,

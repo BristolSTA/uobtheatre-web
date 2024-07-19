@@ -2,8 +2,8 @@ import Cookie from 'js-cookie';
 import { defineStore } from 'pinia';
 import {
   useDeleteBookingMutation,
-  BoxOfficePaymentDevicesQuery,
-  SquarePaymentDevice
+  type BoxOfficePaymentDevicesQuery,
+  type SquarePaymentDevice
 } from '@/graphql/codegen/operations';
 import { BoxOfficePaymentDevicesDocument } from '~~/graphql/codegen/operations';
 import Booking from '~~/classes/Booking';
@@ -25,7 +25,7 @@ const useBoxOfficeStore = defineStore('box-office', {
     rememberState() {
       this.locationId = Cookie.get(locationCookieKey);
       this.lockdownMode =
-        window.localStorage.getItem(lockdownModeStorageKey) === 'true' ?? false;
+        window.localStorage.getItem(lockdownModeStorageKey) === 'true';
     },
 
     /**

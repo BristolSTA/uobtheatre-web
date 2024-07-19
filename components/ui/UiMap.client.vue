@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import L from 'leaflet';
-import { Ref } from 'vue';
+import type { Ref } from 'vue';
 const map = ref<HTMLDivElement | undefined>(undefined);
 const leafletMapInstance = ref<L.Map | undefined>(undefined);
 const emit = defineEmits<{

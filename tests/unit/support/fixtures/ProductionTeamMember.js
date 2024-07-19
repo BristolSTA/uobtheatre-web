@@ -4,7 +4,7 @@ export default (overrides = {}) => {
       id: 1,
       name: 'Alexis Toof',
       role: 'Producer',
-      production: null,
+      production: null
     },
     overrides
   );
