@@ -1,17 +1,18 @@
 <template>
   <div v-if="!maintenanceBannerDismissed" class="antialiased bg-sta-gray-light">
-    <div class="bg-sta-rouge-dark h-2" />
+    <div class="h-2" :class="[typeConfig.accentBar]" />
     <div class="flex gap-2 p-2 items-start justify-center text-white min-h-24">
       <div>
         <!-- Icon Slot -->
         <font-awesome-icon
-          class="text-sta-rouge-dark rounded text-h2 p-2"
-          icon="circle-exclamation"
+          class="rounded text-h2 p-2"
+          :class="[typeConfig.iconColour]"
+          :icon="typeConfig.icon"
         />
       </div>
       <div class="max-w-6xl">
         <!-- Main Information Slot -->
-        <h3 class="text-h3 md:text-h2">Site Maintenance</h3>
+        <h3 class="text-h3 md:text-h2">Upcoming Site Maintenance</h3>
         <p class="pb-2">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in
           facilisis mauris. Fusce enim purus, bibendum sit amet neque sit amet,
@@ -27,39 +28,66 @@
           <span>Now</span>
         </div>
         <div class="pb-2">
-          <span class="font-semibold">Duration: </span>
-          <span>Forever</span>
+          <p><strong>Duration: </strong>Forever</p>
         </div>
       </div>
       <div>
         <!-- Icon Slot -->
         <UiStaButton
-          class="text-h2 hover:text-sta-rouge-dark -my-2"
+          class="text-h2 -my-2"
+          :class="['hover:' + typeConfig.iconColour]"
           icon="circle-xmark"
+          :disabled="preventDismiss"
           @click="dismissBanner"
         />
       </div>
     </div>
-    <div class="bg-sta-rouge-dark h-2" />
+    <div class="h-2" :class="[typeConfig.accentBar]" />
   </div>
 </template>
 
 <script>
 import cookie from 'js-cookie';
 
+const typeMap = {
+  maintenance: {
+    accentBar: 'bg-sta-orange-dark',
+    iconColour: 'text-sta-orange-dark',
+    icon: 'triangle-exclamation'
+  },
+  information: {
+    accentBar: 'bg-sta-orange-dark',
+    iconColour: 'text-sta-orange-dark',
+    icon: 'circle-info'
+  },
+  alert: {
+    accentBar: 'bg-sta-rouge-dark',
+    iconColour: 'text-sta-rouge-dark',
+    icon: 'circle-exclamation'
+  }
+};
+
 export default {
   name: 'LayoutMaintenanceBanner',
   data() {
     return {
-      maintenanceBannerDismissed: false
+      maintenanceBannerDismissed: false,
+      type: 'alert',
+      preventDismiss: false
     };
   },
+  computed: {
+    typeConfig() {
+      return typeMap[this.type] || {};
+    }
+  },
   mounted() {
-    console.log('mounted');
+    // Need to store the alert's id in the cookie to check if it's been superceded
     this.maintenanceBannerDismissed =
       cookie.get('maintenanceBannerDismissed') === 'true';
   },
   methods: {
+    // Set the cookie for the duration of the maintenance event (EventEnd - Today)
     dismissBanner() {
       this.maintenanceBannerDismissed = true;
       cookie.set('maintenanceBannerDismissed', 'true', { expires: 1 });
