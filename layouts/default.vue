@@ -1,6 +1,7 @@
 <template>
   <div class="flex flex-col h-screen font-body">
     <LayoutNavBar v-if="!boxOfficeStore.lockdownMode" />
+    <LayoutMaintenanceBanner />
     <UiBreadcrumbs v-if="navStore.breadcrumbs" :crumbs="navStore.breadcrumbs" />
     <main class="flex-1 pb-2 text-white bg-sta-gray">
       <NuxtErrorBoundary @error="onBoundaryErrorCatch">
