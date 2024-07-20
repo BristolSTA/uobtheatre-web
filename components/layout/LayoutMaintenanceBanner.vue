@@ -1,5 +1,5 @@
 <template>
-  <div class="antialiased bg-sta-gray-light">
+  <div v-if="!maintenanceBannerDismissed" class="antialiased bg-sta-gray-light">
     <div class="bg-sta-rouge-dark h-2" />
     <div class="flex gap-2 p-2 items-start justify-center text-white min-h-24">
       <div>
@@ -11,9 +11,7 @@
       </div>
       <div class="max-w-6xl">
         <!-- Main Information Slot -->
-        <h3 class="text-h3 md:text-h2" :class="{ hidden: test }">
-          Site Maintenance
-        </h3>
+        <h3 class="text-h3 md:text-h2">Site Maintenance</h3>
         <p class="pb-2">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in
           facilisis mauris. Fusce enim purus, bibendum sit amet neque sit amet,
@@ -47,11 +45,25 @@
 </template>
 
 <script>
+import cookie from 'js-cookie';
+
 export default {
   name: 'LayoutMaintenanceBanner',
-  data() {},
+  data() {
+    return {
+      maintenanceBannerDismissed: false
+    };
+  },
+  mounted() {
+    console.log('mounted');
+    this.maintenanceBannerDismissed =
+      cookie.get('maintenanceBannerDismissed') === 'true';
+  },
   methods: {
-    dismissBanner() {}
+    dismissBanner() {
+      this.maintenanceBannerDismissed = true;
+      cookie.set('maintenanceBannerDismissed', 'true', { expires: 1 });
+    }
   }
 };
 </script>
