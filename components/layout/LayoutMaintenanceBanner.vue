@@ -12,7 +12,7 @@
       </div>
       <div class="max-w-6xl">
         <!-- Main Information Slot -->
-        <h3 class="text-h3 md:text-h2">Upcoming Site Maintenance</h3>
+        <h3 class="text-h3 md:text-h2">{{ typeConfig.titleText }}</h3>
         <p class="pb-2">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in
           facilisis mauris. Fusce enim purus, bibendum sit amet neque sit amet,
@@ -50,20 +50,29 @@
 import cookie from 'js-cookie';
 
 const typeMap = {
-  maintenance: {
+  upcomingMaintenance: {
     accentBar: 'bg-sta-orange-dark',
     iconColour: 'text-sta-orange-dark',
-    icon: 'triangle-exclamation'
+    icon: 'triangle-exclamation',
+    titleText: 'Upcoming Site Maintenance'
+  },
+  ongoingMaintenance: {
+    accentBar: 'bg-sta-rouge-dark',
+    iconColour: 'text-sta-rouge-dark',
+    icon: 'circle-exclamation',
+    titleText: 'Ongoing Site Maintenance'
   },
   information: {
     accentBar: 'bg-sta-orange-dark',
     iconColour: 'text-sta-orange-dark',
-    icon: 'circle-info'
+    icon: 'circle-info',
+    titleText: 'Important Site Information'
   },
   alert: {
     accentBar: 'bg-sta-rouge-dark',
     iconColour: 'text-sta-rouge-dark',
-    icon: 'circle-exclamation'
+    icon: 'circle-exclamation',
+    titleText: 'Urgent Site Alert'
   }
 };
 
@@ -72,7 +81,7 @@ export default {
   data() {
     return {
       maintenanceBannerDismissed: false,
-      type: 'alert',
+      type: 'information',
       preventDismiss: false
     };
   },
