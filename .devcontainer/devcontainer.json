@@ -15,7 +15,7 @@
         "apollographql.vscode-apollo",
         "gruntfuggly.todo-tree",
         "eamodio.gitlens",
-        "Vue.vscode-typescript-vue-plugin",
+        "Vue.volar",
         "csstools.postcss"
       ]
     }

@@ -60,6 +60,7 @@ export default <Partial<Config>>{
         rsm: '2vw'
       },
       minWidth: {
+        '2/3': '66%',
         '1/2': '50%',
         '1/3': '33%'
       },
