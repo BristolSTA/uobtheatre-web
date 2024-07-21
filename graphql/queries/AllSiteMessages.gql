@@ -1,0 +1,23 @@
+query allSiteMessages($afterCursor: String) {
+  siteMessages(first: 9, after: $afterCursor) {
+    edges {
+      node {
+        id
+        message
+        active
+        indefiniteOverride
+        displayStart
+        eventStart
+        eventEnd
+        eventDuration
+        creator {
+          id
+          firstName
+          lastName
+        }
+        type
+        dismissalPolicy
+      }
+    }
+  }
+}
