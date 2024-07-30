@@ -63,7 +63,7 @@
     "unplugin-auto-import": "^0.18.2",
     "unplugin-vue-components": "^0.27.3",
     "vite-plugin-eslint2": "^4.4.0",
-    "vitest": "^0.25.6",
+    "vitest": "^2.0.4",
     "vue-tsc": "^2.0.29",
     "webpack": "^5.93.0"
   },
