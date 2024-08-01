@@ -100,6 +100,25 @@ const typeMap = {
 
 export default {
   name: 'LayoutMaintenanceBanner',
+  async asyncData() {
+    const { data } = await useAsyncQuery({
+      query: AllSiteMessagesDocument
+    });
+
+    const siteMessages = data.siteMessages;
+    if (siteMessages) {
+      siteMessages = siteMessages.edges
+        .map((edge) => edge.node)
+        .filter((message) => (message.displayStart < Date.now() && message.eventEnd > Date.now()))
+      console.log(this.siteMessages);
+    }
+
+    this.loading = false;
+
+    return {
+      siteMessages
+    };
+  },
   data() {
     return {
       maintenanceBannerDismissed: false,
@@ -124,24 +143,10 @@ export default {
     // Set the cookie for the duration of the maintenance event (EventEnd - Today)
     dismissBanner() {
       this.maintenanceBannerDismissed = true;
-      cookie.set('maintenanceBannerDismissed', 'true', { expires: 1 });
+      const dismissalTime = this.siteMessages.eventEnd - Date.now();
+      cookie.set('maintenanceBannerDismissed', 'true', { expires: dismissalTime });
     },
-    humanizeDuration,
-    async runQuery() {
-      this.loading = true;
-
-      const client = useDefaultApolloClient();
-      const { data } = await client.query({
-        query: AllSiteMessagesDocument
-      });
-
-      if (data.siteMessages) {
-        this.siteMessages = data.siteMessages.edges[0].node;
-        console.log(this.siteMessages);
-      }
-
-      this.loading = false;
-    }
+    humanizeDuration
   }
 };
 </script>
