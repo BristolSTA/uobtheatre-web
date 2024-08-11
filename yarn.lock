@@ -3217,13 +3217,13 @@
     tslib "^2.4.1"
     webcrypto-core "^1.7.4"
 
-"@pinia/nuxt@^0.5.2":
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/@pinia/nuxt/-/nuxt-0.5.2.tgz#c48def0fe7ad61810987436584783ff7e7f6a340"
-  integrity sha512-YvQqcv1LehSnH1OTC+9wU53UK+UxB45+vJXpc/RljJiSAfbEVGE+3NZ8WRsWC+YvL7A3FgtbmeuqhGka0lANJA==
+"@pinia/nuxt@^0.5.3":
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/@pinia/nuxt/-/nuxt-0.5.3.tgz#d9de0653e36011d859e42917480b09c814ab6197"
+  integrity sha512-AEuHEcaxZdAl73qUOco1TpOGjcmn83nJlYORZ63zhufSCVMj28lPq15ZnfhhofwBh5IjkT/lB7d8Ff958LajDQ==
   dependencies:
     "@nuxt/kit" "^3.9.0"
-    pinia ">=2.2.0"
+    pinia "2.2.1"
 
 "@pinia/testing@^0.1.5":
   version "0.1.5"
@@ -10882,7 +10882,7 @@ pify@^2.2.0, pify@^2.3.0:
   resolved "https://registry.yarnpkg.com/pify/-/pify-2.3.0.tgz#ed141a6ac043a849ea588498e7dca8b15330e90c"
   integrity sha512-udgsAY+fTnvv7kI7aaxbqwWNb0AHiB0qBO89PZKPkoTmGOgdbrHDKD+0B2X4uTfJ/FT1R09r9gTsjUjNJotuog==
 
-pinia@>=2.2.0, pinia@^2.2.1:
+pinia@2.2.1, pinia@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/pinia/-/pinia-2.2.1.tgz#7cf860f6a23981c23e58605cee45496ce46d15d1"
   integrity sha512-ltEU3xwiz5ojVMizdP93AHi84Rtfz0+yKd8ud75hr9LVyWX2alxp7vLbY1kFm7MXFmHHr/9B08Xf8Jj6IHTEiQ==
