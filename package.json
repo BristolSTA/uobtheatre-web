@@ -85,7 +85,7 @@
     "@vue/apollo-util": "^4.0.0-beta.6",
     "@vuepic/vue-datepicker": "9.0.1",
     "apollo-link-sentry": "^3.3.0",
-    "axios": "^1.7.2",
+    "axios": "^1.7.3",
     "body-scroll-lock": "^4.0.0-beta.0",
     "dayjs": "^1.11.12",
     "graphql": "^16.9.0",
