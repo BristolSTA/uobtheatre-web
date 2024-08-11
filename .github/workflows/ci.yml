@@ -107,7 +107,7 @@ jobs:
         run: cp .devcontainer/.env.example .devcontainer/.env
 
       - name: Start Real API ⭐
-        run: docker-compose -f .devcontainer/docker-compose.yml up -d postgres uobtheatre-api
+        run: docker compose -f .devcontainer/docker-compose.yml up -d postgres uobtheatre-api
 
       - name: Wait for API to boot 💫
         run: node .github/scripts/waiton-api.js http://localhost:9000
