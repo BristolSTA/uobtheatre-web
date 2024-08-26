@@ -4215,10 +4215,10 @@
     local-pkg "^0.5.0"
     magic-string-ast "^0.6.0"
 
-"@vue/apollo-composable@^4.0.1", "@vue/apollo-composable@^4.2.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@vue/apollo-composable/-/apollo-composable-4.2.0.tgz#eef39b8ecf006f444be68e1876d638aadf783e92"
-  integrity sha512-FvELy3N0L1R+Hvs6v4/OSjV5YDK1smYI4k9r0Zfzezo2uQYi1AYRzkgTYrG43MhDVs9/L85NEszfdMISacO/Iw==
+"@vue/apollo-composable@^4.0.1", "@vue/apollo-composable@^4.2.1":
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/@vue/apollo-composable/-/apollo-composable-4.2.1.tgz#acc46e71f52bec60ec91fd059753a3cdfee75b86"
+  integrity sha512-9PZ/pSl4Miqgg9uUOkAbg38ALyjm1j7QL9iZeppgUCBcJI3Sa7SA3LOCB2IV1jYsLjXuKVMHh2cwHJE1wzhfSA==
   dependencies:
     throttle-debounce "^5.0.0"
     ts-essentials "^9.4.0"
