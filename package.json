@@ -80,7 +80,7 @@
     "@tiptap/pm": "^2.6.6",
     "@tiptap/starter-kit": "^2.6.6",
     "@tiptap/vue-3": "^2.6.6",
-    "@vue/apollo-composable": "^4.2.0",
+    "@vue/apollo-composable": "^4.2.1",
     "@vue/apollo-option": "^4.2.0",
     "@vue/apollo-util": "^4.0.0-beta.6",
     "@vuepic/vue-datepicker": "9.0.2",
