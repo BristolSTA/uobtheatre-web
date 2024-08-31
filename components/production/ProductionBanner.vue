@@ -101,6 +101,7 @@ import lo from 'lodash';
 
 import ProductionFeaturedImage from './ProductionFeaturedImage.vue';
 import IconListItem from '~~/components/ui/UiIconListItem.vue';
+import { displayStartEnd } from '@/utils/datetime';
 
 const emit = defineEmits<{
   (event: 'on-buy-tickets-click'): void;
