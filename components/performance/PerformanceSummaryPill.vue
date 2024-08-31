@@ -33,6 +33,7 @@
 
 <script lang="ts" setup>
 import type { IPerformanceSummary } from '../../types/box-office';
+import { dateFormatLocale } from '@/utils/datetime';
 
 withDefaults(
   defineProps<{

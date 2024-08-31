@@ -1,13 +1,6 @@
 <template>
   <AuthPageTemplate>
-    <AuthBox
-      :login-mode="false"
-      @go-login="
-        () => {
-          useRouter().replace('/login');
-        }
-      "
-    />
+    <AuthBox :login-mode="false" @go-login="goLogin" />
   </AuthPageTemplate>
 </template>
 
@@ -15,6 +8,10 @@
 definePageMeta({
   middleware: 'not-authed'
 });
+
+const goLogin = () => {
+  useRouter().replace('/login');
+};
 
 useHead({
   title: 'Sign Up'
