@@ -10,6 +10,9 @@ require('dotenv').config({ path: path.resolve(process.cwd(), '.env.test') });
 vi.stubGlobal('defineNuxtComponent', (opts: any) => opts);
 vi.stubGlobal('definePageMeta', vi.fn());
 
+// Stub out "defineAppConfig" for helpers/mount.ts
+vi.stubGlobal('defineAppConfig', (options: any) => options);
+
 // Globally stub the font awesome icon component
 config.global.stubs = {
   'font-awesome-icon': true,
