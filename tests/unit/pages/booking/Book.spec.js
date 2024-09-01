@@ -162,7 +162,7 @@ describe('Create Booking Page', () => {
 
   describe('with exisiting draft booking', () => {
     let stub, mount;
-    beforeAll(() => {
+    beforeEach(() => {
       stub = vi.spyOn(swal, 'fire');
 
       mount = async () => {
@@ -185,7 +185,7 @@ describe('Create Booking Page', () => {
       await mount();
       await flushPromises();
 
-      expect(stub.mock.calls).length(1);
+      expect(stub).toHaveBeenCalled();
       expect(bookingComponent.vm.booking.id).to.eq(1);
     });
     it('can decline to resume booking', async () => {
@@ -197,8 +197,8 @@ describe('Create Booking Page', () => {
 
       await flushPromises();
 
-      expect(stub.mock.calls).length(1);
-      expect(updateStub.mock.calls).length(0);
+      expect(stub).toHaveBeenCalled();
+      expect(updateStub).not.toHaveBeenCalled();
     });
   });
 

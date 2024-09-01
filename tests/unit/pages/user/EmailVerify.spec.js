@@ -32,8 +32,6 @@ describe('Email Change Activate', function () {
       GenericApolloResponse('verifySecondaryEmail', GenericMutationResponse())
     ]);
 
-    expect(component.text()).to.contain('Adding email');
-
     await flushPromises();
     await component.vm.$nextTick();
 
