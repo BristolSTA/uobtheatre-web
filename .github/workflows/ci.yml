@@ -5,10 +5,12 @@ on:
     branches:
       - main
       - develop
+      - dependabot/develop
   pull_request:
     branches:
       - main
       - develop
+      - dependabot/develop
 
 jobs:
   unit:

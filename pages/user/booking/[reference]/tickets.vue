@@ -11,6 +11,7 @@
     <div
       class="grid gap-4 grid-cols-1 2xl:grid-cols-4 px-4 py-4 bg-sta-gray-dark sm:grid-cols-2 xl:grid-cols-3"
     >
+      <!-- @vue-expect-error Expect comment on performance being possibly undefined, resolved by navigateTo below -->
       <ticket
         v-for="(ticket, index) in tickets"
         :key="index"

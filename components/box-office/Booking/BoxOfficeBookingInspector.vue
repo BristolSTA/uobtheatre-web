@@ -84,7 +84,10 @@
               inspectedObjects.booking
                 ? checkInTickets(
                     inspectedObjects.booking.reference,
-                    $event.tickets.map((ticket) => ticket.id),
+                    $event.tickets.map(
+                      // @ts-ignore
+                      (ticket) => ticket.id
+                    ),
                     $event.callback
                   )
                 : null
