@@ -4,11 +4,8 @@
       <div
         class="flex-none flex flex-col md:flex-row items-center justify-center md:justify-between mt-5"
       >
-        <!-- @vue-expect-error Expect comment on performance being possibly undefined, resolved by createSafeError below -->
         <BoxOfficeSellButton :performance-id="performance.id" />
-        <!-- @vue-expect-error Expect comment on performance being possibly undefined, resolved by createSafeError below -->
         <BoxOfficeSchedule :performance="performance" class="hidden lg:block" />
-        <!-- @vue-expect-error Expect comment on performance being possibly undefined, resolved by createSafeError below -->
         <BoxOfficeCheckInProgress
           class="w-60"
           :performance-id="performance.id"
@@ -36,7 +33,6 @@
         />
 
         <div class="flex-grow flex overflow-hidden gap-5">
-          <!-- @vue-expect-error Expect comment on performance being possibly undefined, resolved by createSafeError below -->
           <BoxOfficeBookingInspector
             v-model:selected-booking="selectedBooking"
             :selected-ticket="selectedTicket"
