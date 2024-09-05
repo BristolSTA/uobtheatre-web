@@ -12708,10 +12708,10 @@ swap-case@^2.0.2:
   dependencies:
     tslib "^2.0.3"
 
-sweetalert2@^11.13.1:
-  version "11.13.1"
-  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.13.1.tgz#d8cd329171fd98b9647b4b525ac8fd703b0a7805"
-  integrity sha512-YO6StPWC+6WmXJbPDHIiOhi5ZNU9Lb2XnWo3odKGwbFOtfCOBqzExNcLK85HS2GzIMjpl8Wl6CLiMQdhRXHN0g==
+sweetalert2@^11.13.2:
+  version "11.13.2"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.13.2.tgz#e44aea1f08552949115565ef7660fd7a8d989377"
+  integrity sha512-Q361QVJrDce3pA+46m2JmfDQyxxlmVE6t7ScoMwubm2PQKTlUqaMpzWq/DZRSPL8Sg2hUCzUAXQ9dwMPnbsy7Q==
 
 symbol-observable@^4.0.0:
   version "4.0.0"
