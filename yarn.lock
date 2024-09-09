@@ -13716,10 +13716,10 @@ vue-gtag@^2.0.1:
   resolved "https://registry.yarnpkg.com/vue-gtag/-/vue-gtag-2.0.1.tgz#d4dc1b9cf79809c37ce844824c0f7fa97af520dd"
   integrity sha512-aM4A58FVL0wV2ptYi+xzAjeg+pQVRyUcfBc5UkXAwQrR4t3WBhor50Izp2I+3Oo7+l+vWJ7u78DGcNzReb8S/A==
 
-vue-qrcode-reader@5.5.7:
-  version "5.5.7"
-  resolved "https://registry.yarnpkg.com/vue-qrcode-reader/-/vue-qrcode-reader-5.5.7.tgz#144ff82868c6e7baea4b7691cc4427d6cfe6ab8f"
-  integrity sha512-aflcKS6sQ5CDlmoyAaJJQ3OFeMcdnF6RRO2zHBlmKkHKL5nwPt+ayl/TCw+LvUBXhmfR3kNtPC5oJtgk9TcrBw==
+vue-qrcode-reader@5.5.8:
+  version "5.5.8"
+  resolved "https://registry.yarnpkg.com/vue-qrcode-reader/-/vue-qrcode-reader-5.5.8.tgz#d82ab7896aefe0d277b5f49d8b3599b95dbbab65"
+  integrity sha512-pZStGd/+afFMJ51IOwJzG7Lm3+gsuwl9oaM8R3/eMarUHFrgbs0AVvuyDXLIaISV/A2eMOHDlkc3sZSQ6jbZrQ==
   dependencies:
     barcode-detector "2.2.2"
     webrtc-adapter "8.2.3"
