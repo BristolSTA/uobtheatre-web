@@ -82,8 +82,9 @@
 </template>
 
 <script setup lang="ts">
-import { UpcomingBookingsQuery } from '~~/graphql/codegen/operations';
+import type { UpcomingBookingsQuery } from '~~/graphql/codegen/operations';
 import useAuthStore from '@/store/auth';
+import { dateFormat } from '@/utils/datetime';
 const authStore = useAuthStore();
 
 type BookingData = NonNullable<

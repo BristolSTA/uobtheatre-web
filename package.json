@@ -17,7 +17,7 @@
     "beforetest:e2e:ci": "API_BASE=http://localhost:9000 nuxt generate --devtools && yarn preview",
     "test:e2e": "cypress run",
     "test:unit": "vitest",
-    "pr": "yarn lint:tsc && yarn lint:js && yarn prettier:check && yarn test:unit"
+    "pr": "yarn lint:tsc && yarn lint:js && yarn prettier:check && yarn test:unit --coverage"
   },
   "devDependencies": {
     "@cypress/vue": "^6.0.1",
