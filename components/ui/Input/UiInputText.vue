@@ -32,7 +32,7 @@ export default {
   props: {
     modelValue: {
       default: null,
-      type: [String]
+      type: [String, null]
     },
     placeholder: {
       default: null,
@@ -53,7 +53,8 @@ export default {
     autocomplete: {
       required: false,
       validator: () => true,
-      default: null
+      default: null,
+      type: String
     },
     errors: {
       required: false,

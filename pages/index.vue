@@ -55,6 +55,7 @@
         >
           <NuxtLink :to="`/production/${production!.slug}`">
             <ProductionFeaturedImage
+              v-if="production!.featuredImage"
               :image-object="production!.featuredImage"
               :alt="`${production!.name} feature image`"
               class="inline-block"
