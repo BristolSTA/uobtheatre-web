@@ -31,6 +31,7 @@
             @click="selectPerformance(performance.id)"
           >
             <production-featured-image
+              v-if="performance.production.featuredImage"
               :image-object="performance.production.featuredImage"
               class="w-full"
             />
