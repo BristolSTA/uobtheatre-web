@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div id="splashscreen">
+    <div
+      id="splashscreen"
+      :class="[!!userTodaysBookings?.length ? 'hidden md:block' : '']"
+    >
       <div
         v-if="!bannerProductions.length"
         class="flex items-center bg-black bg-opacity-40"
@@ -40,6 +43,10 @@
         </template>
       </UiCarousel>
     </div>
+
+    <template v-if="!!userTodaysBookings?.length">
+      <BookingHomepageOverview :bookings="userTodaysBookings" />
+    </template>
 
     <div ref="whatson" class="container mt-4 text-white">
       <h1 class="text-h1">What's On</h1>
@@ -112,9 +119,15 @@
 
 <script setup lang="ts">
 import take from 'lodash/take';
-import { useHomepageUpcomingProductionsQuery } from '@/graphql/codegen/operations';
+import {
+  useHomepageUpcomingProductionsQuery,
+  useUpcomingBookingsQuery
+} from '@/graphql/codegen/operations';
 import { oneLiner, truncate } from '@/utils/lang';
 import { displayStartEnd } from '@/utils/datetime';
+import { DateTime } from 'luxon';
+import useAuthStore from '@/store/auth';
+const authStore = useAuthStore();
 
 // Set SEO data
 const appConfig = useAppConfig();
@@ -124,19 +137,44 @@ useHead({
 });
 
 // Fetch upcoming productions (without blocking)
-const { result } = useHomepageUpcomingProductionsQuery({
+const { result: productionsResult } = useHomepageUpcomingProductionsQuery({
   now: new Date()
 });
 
 const upcomingProductions = computed(() =>
-  result.value?.productions
-    ? result.value.productions.edges.map((edge) => edge!.node)
+  productionsResult.value?.productions
+    ? productionsResult.value.productions.edges.map((edge) => edge!.node)
     : []
 );
 
 const upcomingProductionsToDisplay = computed(() =>
   take(upcomingProductions.value, 4)
 );
+
+// Fetch user upcoming bookings
+const { result: userBookingsResult } = useUpcomingBookingsQuery(
+  {
+    active: true,
+    orderBy: 'start'
+  },
+  { enabled: authStore.isLoggedIn }
+);
+
+const userTodaysBookings = computed(() => {
+  const today = DateTime.now();
+  const todayBookings =
+    userBookingsResult.value?.me?.bookings?.edges
+      .map((edge) => edge!.node)
+      .filter((booking) => {
+        let bookingDate = DateTime.fromISO(booking?.performance.start);
+        return (
+          bookingDate.hasSame(today, 'day') &&
+          bookingDate.hasSame(today, 'month') &&
+          bookingDate.hasSame(today, 'year')
+        );
+      }) ?? [];
+  return todayBookings.filter(isNonNullable);
+});
 
 // Define banner productions
 const bannerProductions = computed(() =>

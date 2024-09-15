@@ -1,0 +1,65 @@
+query upcomingBookings(
+  $afterCursor: String
+  $active: Boolean = true
+  $orderBy: String = "start"
+  $offset: Int
+  $max: Int = 4
+) {
+  me {
+    id
+    bookings(
+      statusIn: ["PAID"]
+      first: $max
+      orderBy: $orderBy
+      active: $active
+      offset: $offset
+      after: $afterCursor
+    ) {
+      pageInfo {
+        hasNextPage
+        startCursor
+        endCursor
+      }
+      edges {
+        node {
+          id
+          reference
+          status
+          user {
+            id
+            firstName
+          }
+          performance {
+            id
+            start
+            doorsOpen
+            production {
+              id
+              name
+              slug
+              posterImage {
+                id
+                url
+              }
+              featuredImage {
+                id
+                url
+              }
+              society {
+                id
+                name
+                slug
+              }
+            }
+            venue {
+              id
+              name
+              slug
+              publiclyListed
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -45,7 +45,9 @@
           {{ item[1] }}
         </NuxtLink>
         <dropdown-nav-item v-if="authStore.user" ref="userDropdownComponent">
-          Hi, {{ authStore.user.firstName }}
+          <span class="capitalize pr-1">
+            Hi, {{ authStore.user.firstName }}
+          </span>
           <span role="img">👋</span>
           <template #content>
             <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
