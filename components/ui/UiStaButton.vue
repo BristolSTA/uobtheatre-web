@@ -7,7 +7,13 @@
     :disabled="disabled"
     @click="$emit('click')"
   >
-    <font-awesome-icon v-if="icon" :icon="icon" class="mr-2" />
+    <!-- A button can contain a font-awesome icon passed as a prop.
+    If the button is only an icon (i.e. has no slot), the icon will be centred, otherwise offset. -->
+    <font-awesome-icon
+      v-if="icon"
+      :icon="icon"
+      :class="{ 'mr-2': $slots.default }"
+    />
     <slot />
   </component>
 </template>

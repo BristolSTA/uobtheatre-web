@@ -2,7 +2,7 @@
   <div>
     <div
       id="splashscreen"
-      :class="[!!userTodaysBookings?.length ? 'hidden lg:block' : '']"
+      :class="[!!userTodaysBookings?.length ? 'hidden md:block' : '']"
     >
       <div
         v-if="!bannerProductions.length"
