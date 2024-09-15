@@ -19,26 +19,11 @@ describe('Homepage upcoming booking component', function () {
       shallow: false,
       props: {
         bookings: [booking]
-      },
-      pinia: {
-        initialState: {
-          auth: {
-            user: {
-              firstName: 'Joe',
-              lastName: 'Bloggs',
-              email: 'joe.bloggs@example.org'
-            }
-          }
-        }
       }
     });
   });
 
   describe('booking homepage overview component', () => {
-    it('has the user name', () => {
-      expect(bookingHomepageOverviewComponent.text()).to.contain('Hey Joe');
-    });
-
     it('has the correct performance information', () => {
       expect(bookingHomepageOverviewComponent.text()).to.contain(
         'Legally Ginger'
@@ -105,17 +90,6 @@ describe('Homepage upcoming booking component', function () {
         shallow: false,
         props: {
           bookings: [booking, booking]
-        },
-        pinia: {
-          initialState: {
-            auth: {
-              user: {
-                firstName: 'Joe',
-                lastName: 'Bloggs',
-                email: 'joe.bloggs@example.org'
-              }
-            }
-          }
         }
       });
 

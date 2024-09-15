@@ -100,13 +100,12 @@
 
 <script>
 import useAuthStore from '@/store/auth';
-import Booking from '~/classes/Booking';
 import { swalToast } from '@/utils/alerts';
 
 export default {
   props: {
     bookings: {
-      type: Booking,
+      type: Array,
       required: true
     }
   },
