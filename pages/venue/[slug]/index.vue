@@ -10,6 +10,7 @@
       class="flex flex-wrap items-center justify-center mt-2 lg:mb-8 lg:px-8"
     >
       <UiTipTapOutput
+        v-if="venue.description"
         class="px-6 w-full text-justify lg:block lg:px-2 lg:w-1/2"
         :html="venue.description"
       />
