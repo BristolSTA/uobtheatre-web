@@ -17,7 +17,11 @@ const compat = new FlatCompat({
 
 export default [
   {
-    ignores: ['./graphql/codegen/*', './tests/unit/test.spec.example.js']
+    ignores: [
+      './graphql/codegen/*',
+      './coverage/*',
+      './tests/unit/test.spec.example.js'
+    ]
   },
   ...pluginVue.configs['flat/recommended'],
   {
