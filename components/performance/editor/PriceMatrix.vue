@@ -55,7 +55,11 @@
         >
           <form-label label-class="text-sta-orange">
             <!-- Display 'Base Price' if only one seatGroup, otherwise the seatGroup name -->
-            {{ performanceSeatGroups.length === 1 ? 'Base Price' : performanceSeatGroup.seatGroup.name }}
+            {{
+              performanceSeatGroups.length === 1
+                ? 'Base Price'
+                : performanceSeatGroup.seatGroup.name
+            }}
             <template #control>
               <div v-if="editing" class="flex justify-center">
                 <div class="w-20">
