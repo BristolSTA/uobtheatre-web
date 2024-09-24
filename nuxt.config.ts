@@ -24,7 +24,7 @@ export default defineNuxtConfig({
   },
 
   // Define third party plugins/modules we are using
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/apollo', '@pinia/nuxt'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/apollo', '@pinia/nuxt', '@nuxt/ui'],
 
   // Define the runtime config
   runtimeConfig: {
