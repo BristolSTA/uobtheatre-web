@@ -205,7 +205,7 @@
             v-if="!singleDiscounts.some((discount) => discount.percentage == 0)"
             class="p-4 text-white bg-sta-rouge"
           >
-            You need to add least one ticket type with a 0% discount (e.g.
+            You need to add at least one ticket type with a 0% discount (e.g.
             'General Admission').
           </div>
           <price-matrix
