@@ -1,14 +1,12 @@
-name: ci
+name: ci-main
 
 on:
   push:
     branches:
-      - develop
-      - dependabot/develop
+      - main
   pull_request:
     branches:
-      - develop
-      - dependabot/develop
+      - main
 
 jobs:
   unit:
@@ -46,7 +44,7 @@ jobs:
         run: yarn
 
       - name: Load GraphQL Codegen 🕸
-        run: GQL_SCHEMA=https://raw.githubusercontent.com/BristolSTA/uobtheatre-api/dev/schema.graphql yarn codegen
+        run: GQL_SCHEMA=https://raw.githubusercontent.com/BristolSTA/uobtheatre-api/main/schema.graphql yarn codegen
 
       - name: Run linter 👀
         run: yarn lint:tsc && yarn lint:js
@@ -55,7 +53,7 @@ jobs:
         run: yarn prettier:check
 
       - name: Load GraphQL 🕸
-        run: API_BASE=https://staging.api.uobtheatre.com yarn codegen
+        run: API_BASE=https://api.uobtheatre.com yarn codegen
 
       - name: Run tests 🧪
         run: yarn test:unit --coverage
