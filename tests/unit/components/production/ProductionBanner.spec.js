@@ -241,7 +241,7 @@ describe('ProductionBanner', function () {
     ]);
 
     expect(fixTextSpacing(headerContainer.text())).to.contain(
-      duration ? '2 hours inc. interval' : '2 hours'
+      duration ? '2 hours (inc. interval)' : '2 hours'
     );
   });
 

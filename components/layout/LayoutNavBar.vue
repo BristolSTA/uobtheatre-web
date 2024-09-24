@@ -50,7 +50,7 @@
           </span>
           <span role="img">👋</span>
           <template #content>
-            <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
+            <div class="grid gap-4 grid-cols-1 md:grid-cols-2 text-gray-900">
               <dropdown-item
                 v-if="authStore.hasPermission('admin_open')"
                 title="Admin"

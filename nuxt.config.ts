@@ -24,7 +24,13 @@ export default defineNuxtConfig({
   },
 
   // Define third party plugins/modules we are using
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/apollo', '@pinia/nuxt'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/apollo', '@pinia/nuxt', '@nuxt/ui'],
+
+  // Override @nuxt/ui's lightmode/darkmode features because our website is not cut out for it
+  // See https://github.com/BristolSTA/uobtheatre-web/issues/620
+  colorMode: {
+    preference: 'light'
+  },
 
   // Define the runtime config
   runtimeConfig: {

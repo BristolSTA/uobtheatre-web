@@ -68,7 +68,7 @@
                 .find((node: any) => node.intervalDurationMins)
             "
           >
-            <small>inc. interval</small>
+            <small>(inc. interval)</small>
           </template>
         </icon-list-item>
         <icon-list-item v-if="production.isBookable" icon="ticket">
@@ -77,8 +77,14 @@
             <span class="font-semibold">
               £{{ (production.minSeatPrice / 100).toFixed(2) }}
             </span>
-            <br />
-            <small>(exc. fees)</small>
+            <UTooltip class="pl-1" :popper="{ arrow: true }">
+              <template #text>
+                <span>10% + £1 to cover fees and support student theatre.</span>
+              </template>
+              <small
+                >(exc. fees)<font-awesome-icon icon="circle-info" class="ml-1"
+              /></small>
+            </UTooltip>
           </template>
           <template v-else> Free tickets </template>
         </icon-list-item>
