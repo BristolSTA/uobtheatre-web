@@ -2770,10 +2770,10 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
-"@rollup/pluginutils@^5.0.1", "@rollup/pluginutils@^5.1.0":
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/@rollup/pluginutils/-/pluginutils-5.1.0.tgz#7e53eddc8c7f483a4ad0b94afb1f7f5fd3c771e0"
-  integrity sha512-XTIWOPPcpvyKI6L1NHo0lFlCyznUEyPmPY1mc3KpPVDYulHSTvyeLNVW00QTLIAFNhR3kYnJTQHeGqU4M3n09g==
+"@rollup/pluginutils@^5.0.1", "@rollup/pluginutils@^5.1.0", "@rollup/pluginutils@^5.1.2":
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/@rollup/pluginutils/-/pluginutils-5.1.2.tgz#d3bc9f0fea4fd4086aaac6aa102f3fa587ce8bd9"
+  integrity sha512-/FIdS3PyZ39bjZlwqFnWqCOVnW7o963LtKMwQOD0NhQqw22gSr2YY1afu3FxRip4ZCZNsD5jq6Aaz6QV3D/Njw==
   dependencies:
     "@types/estree" "^1.0.0"
     estree-walker "^2.0.2"
@@ -12746,12 +12746,12 @@ vite-plugin-checker@^0.8.0:
     vscode-languageserver-textdocument "^1.0.1"
     vscode-uri "^3.0.2"
 
-vite-plugin-eslint2@^4.4.1:
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/vite-plugin-eslint2/-/vite-plugin-eslint2-4.4.1.tgz#ef27740e86ec9ecca1daa31148a32b6c240c7f61"
-  integrity sha512-z0Eu/d+VeeVNrnFG8QqQbGlWxrXi8JQvO79OVWX4t6nBHUWxCBHLqev1CYQDPzd+50vs9e2MHaBhcNpNE7D1bQ==
+vite-plugin-eslint2@^4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/vite-plugin-eslint2/-/vite-plugin-eslint2-4.4.2.tgz#cc25aab7d16703ae20f62ec7a0046d232d9792f4"
+  integrity sha512-QR+coY+88bnGco0xbDzzOEQYm2WndmEG5WK3i3UqzODnn6dY4/O4Ckl3MExCJzxIDIHM/KMMo8DS7S3JkXtBFg==
   dependencies:
-    "@rollup/pluginutils" "^5.1.0"
+    "@rollup/pluginutils" "^5.1.2"
     chokidar "^3.6.0"
     debug "^4.3.7"
 
