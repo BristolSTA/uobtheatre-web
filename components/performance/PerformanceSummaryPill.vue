@@ -1,6 +1,7 @@
 <template>
   <div class="flex gap-x-3 items-center">
     <ProductionPosterImage
+      v-if="performance.production.posterImage"
       :image-object="performance.production.posterImage"
       class="h-16"
     />
@@ -33,6 +34,7 @@
 
 <script lang="ts" setup>
 import type { IPerformanceSummary } from '../../types/box-office';
+import { dateFormatLocale } from '@/utils/datetime';
 
 withDefaults(
   defineProps<{

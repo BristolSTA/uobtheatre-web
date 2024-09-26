@@ -5,7 +5,6 @@
         class="flex-none flex flex-col md:flex-row items-center justify-center md:justify-between mt-5"
       >
         <BoxOfficeSellButton :performance-id="performance.id" />
-
         <BoxOfficeSchedule :performance="performance" class="hidden lg:block" />
         <BoxOfficeCheckInProgress
           class="w-60"
@@ -75,7 +74,7 @@ import {
   useBoxOfficePerformanceBookingQuery,
   useBoxOfficePerformanceBookingsQuery
 } from '~~/graphql/codegen/operations';
-import { PaginationInfo } from '~~/types/generic';
+import type { PaginationInfo } from '~~/types/generic';
 
 // Inject performance, provided by base box office page
 const performance = inject(InjectionKeys.boxOffice.performance);
@@ -169,8 +168,8 @@ watch(scannedCode, async (newValue) => {
       autoCheckIn.value
         ? !state.error
         : state.error !== undefined
-        ? false
-        : undefined,
+          ? false
+          : undefined,
       state.message ?? state.error
     );
   } catch (e) {

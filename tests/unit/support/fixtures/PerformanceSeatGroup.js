@@ -8,7 +8,7 @@ export default (overrides = {}) => {
       seatGroup: SeatGroup(),
       capacity: 100,
       capacityRemaining: 30,
-      concessionTypes: [ConcessionTypeBookingType()],
+      concessionTypes: [ConcessionTypeBookingType()]
     },
     overrides
   );

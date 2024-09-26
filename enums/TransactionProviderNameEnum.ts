@@ -1,7 +1,7 @@
 import BaseEnum from './BaseEnum';
 
 export default class extends BaseEnum {
-  nameMap = {
+  override nameMap = {
     CASH: 'Cash',
     CARD: 'Card',
     SQUARE_POS: 'Square Point of Sale',

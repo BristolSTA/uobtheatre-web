@@ -13,7 +13,7 @@
 import { QrcodeStream } from 'vue-qrcode-reader';
 import Ticket from '~~/classes/Ticket';
 import InvalidTicketQRCodeException from '~~/exceptions/InvalidTicketQRCodeException';
-import { TicketQRCodeData } from '~~/types/ticket';
+import type { TicketQRCodeData } from '~~/types/ticket';
 
 const props = withDefaults(
   defineProps<{

@@ -1,6 +1,6 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 import publicConfig from './config.public';
-import eslintPlugin from 'vite-plugin-eslint';
+import eslintPlugin from 'vite-plugin-eslint2';
 
 // Define CSS Files to Bundle
 const cssFiles = [
@@ -14,22 +14,29 @@ if (process.env.MODE !== 'test') cssFiles.push('@/assets/styles/app.scss');
 export default defineNuxtConfig({
   // Enable experimental features
   experimental: {
-    emitRouteChunkError: 'reload'
+    emitRouteChunkError: 'automatic'
   },
 
   // Define aliases
   alias: {
-    '#testSupport': 'tests/unit/support',
-    '#testSupport/*': 'tests/unit/support/*'
+    '#testSupport': './tests/unit/support',
+    '#testSupport/*': './tests/unit/support/*'
   },
 
   // Define third party plugins/modules we are using
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/apollo', '@pinia/nuxt'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/apollo', '@pinia/nuxt', '@nuxt/ui'],
+
+  // Override @nuxt/ui's lightmode/darkmode features because our website is not cut out for it
+  // See https://github.com/BristolSTA/uobtheatre-web/issues/620
+  colorMode: {
+    preference: 'light'
+  },
 
   // Define the runtime config
   runtimeConfig: {
     public: publicConfig()
   },
+
   // Define app confiugration
   app: {
     head: {
@@ -122,12 +129,13 @@ export default defineNuxtConfig({
   // Configure Typescript
   typescript: {
     tsConfig: {
-      types: ['node', '@types/lodash'],
       exclude: ['../graphql/codegen/operations.ts']
     }
   },
 
   sourcemap: {
     client: true
-  }
+  },
+
+  compatibilityDate: '2024-07-11'
 });

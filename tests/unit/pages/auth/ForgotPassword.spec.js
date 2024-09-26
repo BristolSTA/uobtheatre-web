@@ -8,13 +8,15 @@ import useAuthStore from '@/store/auth';
 import ValidationError from '~~/errors/ValidationError';
 
 describe('Request Password Reset Page', function () {
-  let forgotPasswordComponent;
+  let forgotPasswordComponent, swalStub;
 
   describe('without reset token', () => {
-    const swalStub = vi.spyOn(swal, 'fire');
-
     beforeEach(async () => {
+      swalStub = vi.spyOn(swal, 'fire');
       forgotPasswordComponent = await mount(ForgotPassword, { shallow: false });
+    });
+
+    afterEach(() => {
       swalStub.mockClear();
     });
 
@@ -71,10 +73,10 @@ describe('Reset Password Page', () => {
   });
 
   describe('with reset token', () => {
-    const swalToastStub = vi.spyOn(swalToast, 'fire');
+    let swalToastStub;
 
     beforeEach(async () => {
-      swalToastStub.mockClear();
+      swalToastStub = vi.spyOn(swalToast, 'fire');
       component = await mount(ForgotPasswordWithToken, {
         shallow: false,
         routeInfo: {
@@ -83,6 +85,10 @@ describe('Reset Password Page', () => {
           }
         }
       });
+    });
+
+    afterEach(() => {
+      swalToastStub.mockClear();
     });
 
     it('shows errors', async () => {
@@ -114,7 +120,7 @@ describe('Reset Password Page', () => {
         'example1234',
         'example1234'
       );
-      expect(swalToastStub.mock.calls).length(1);
+      expect(swalToastStub).toHaveBeenCalledOnce();
       const router = useRouter();
       expect(router.replace).toHaveBeenCalledWith('/login');
     });

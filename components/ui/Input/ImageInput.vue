@@ -22,13 +22,13 @@
             {{ error }}
           </error-helper>
           <button
-            class="p-1 bg-sta-orange hover:bg-sta-orange-dark rounded transition-colors"
+            class="p-1 mr-0.5 bg-sta-orange hover:bg-sta-orange-dark rounded transition-colors"
             @click="file = null"
           >
             Remove
           </button>
           <button
-            class="p-1 bg-sta-orange hover:bg-sta-orange-dark rounded transition-colors"
+            class="p-1 ml-0.5 bg-sta-orange hover:bg-sta-orange-dark rounded transition-colors"
             @click="$refs.fileInput.click()"
           >
             Replace

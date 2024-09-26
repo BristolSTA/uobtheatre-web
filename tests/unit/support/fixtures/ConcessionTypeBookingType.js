@@ -5,7 +5,7 @@ export default (overrides = {}) => {
     {
       concessionType: ConcessionType(),
       price: 1000,
-      pricePounds: '10.00',
+      pricePounds: '10.00'
     },
     overrides
   );

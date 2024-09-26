@@ -15,7 +15,7 @@ export default (
       capacity: 100,
       seats: null,
       isInternal: false,
-      tickets: includeTickets ? GenericNodeConnection() : null,
+      tickets: includeTickets ? GenericNodeConnection() : null
     },
     overrides
   );

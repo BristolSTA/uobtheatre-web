@@ -15,7 +15,7 @@ export default (overrides = {}) => {
       pk: null,
       archieved: false,
       verified: true,
-      secondaryEmail: null,
+      secondaryEmail: null
     },
     overrides
   );

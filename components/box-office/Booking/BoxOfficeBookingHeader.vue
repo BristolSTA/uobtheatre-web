@@ -19,8 +19,8 @@
 
 <script lang="ts">
 import pluralize from 'pluralize';
-import { PropType } from 'vue';
-import { IBookingHeaderProp } from '~~/types/box-office';
+import type { PropType } from 'vue';
+import type { IBookingHeaderProp } from '~~/types/box-office';
 
 export default defineComponent({
   props: {

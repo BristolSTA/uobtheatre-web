@@ -90,7 +90,7 @@
 <script setup lang="ts">
 import {
   useAdminProductionsQuery,
-  AdminProductionsQueryVariables
+  type AdminProductionsQueryVariables
 } from '@/graphql/codegen/operations';
 import { displayStartEnd } from '~~/utils/datetime';
 import VueDatepicker from '@vuepic/vue-datepicker';
@@ -125,7 +125,7 @@ const { result: queryResult, loading } = useAdminProductionsQuery(
           })
         : null,
       search: productionSearchFilter.value
-    } satisfies AdminProductionsQueryVariables)
+    }) satisfies AdminProductionsQueryVariables
 );
 
 watch(productionSearchFilter, () => {

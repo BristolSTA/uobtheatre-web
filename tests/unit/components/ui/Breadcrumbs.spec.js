@@ -14,7 +14,7 @@ describe('Breadcrumbs', () => {
     breadcrumbsComponent = await mount(Breadcrumbs, {
       props: {
         crumbs: [
-          { text: 'Whats On', path: '/productions' },
+          { text: "What's On", path: '/productions' },
           {
             text: 'Legally Ginger',
             path: '/productions/legally-ginger'
@@ -30,7 +30,7 @@ describe('Breadcrumbs', () => {
   });
 
   it('has corrct text', () => {
-    expect(breadcrumbsComponent.text()).to.contain('Whats On');
+    expect(breadcrumbsComponent.text()).to.contain("What's On");
     expect(breadcrumbsComponent.text()).to.contain('Legally Ginger');
     expect(breadcrumbsComponent.text()).to.contain('Book');
   });

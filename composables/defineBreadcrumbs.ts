@@ -1,5 +1,5 @@
-import useNavStore, { Breadcrumb } from '@/store/nav';
-import { Ref, ComputedRef, isRef } from 'vue';
+import useNavStore, { type Breadcrumb } from '@/store/nav';
+import { type Ref, type ComputedRef, isRef } from 'vue';
 
 export const defineBreadcrumbs = (
   breadcrumbGenerator:

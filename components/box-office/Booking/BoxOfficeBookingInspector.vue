@@ -84,7 +84,10 @@
               inspectedObjects.booking
                 ? checkInTickets(
                     inspectedObjects.booking.reference,
-                    $event.tickets.map((ticket) => ticket.id),
+                    $event.tickets.map(
+                      // @ts-ignore
+                      (ticket) => ticket.id
+                    ),
                     $event.callback
                   )
                 : null
@@ -105,10 +108,10 @@ import type {
 import { mutateTicketCheckInState as mutateTicketCheckInStateOperation } from '~~/services/ticketScanService';
 import {
   BoxOfficePerformanceBookingDocument,
-  BoxOfficePerformanceBookingQuery,
-  BoxOfficePerformanceBookingQueryVariables
+  type BoxOfficePerformanceBookingQuery,
+  type BoxOfficePerformanceBookingQueryVariables
 } from '~~/graphql/codegen/operations';
-import { IdInput, PaginationInfo } from '~~/types/generic';
+import type { IdInput, PaginationInfo } from '~~/types/generic';
 
 // Props
 
