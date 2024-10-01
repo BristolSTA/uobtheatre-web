@@ -76,7 +76,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/vue-fontawesome": "^3.0.8",
-    "@pinia/nuxt": "^0.5.4",
+    "@pinia/nuxt": "^0.5.5",
     "@popperjs/core": "^2.11.8",
     "@sentry/browser": "^7.119.0",
     "@tiptap/pm": "^2.7.4",
