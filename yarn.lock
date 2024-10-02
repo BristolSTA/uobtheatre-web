@@ -10820,7 +10820,7 @@ pify@^2.2.0, pify@^2.3.0:
   resolved "https://registry.yarnpkg.com/pify/-/pify-2.3.0.tgz#ed141a6ac043a849ea588498e7dca8b15330e90c"
   integrity sha512-udgsAY+fTnvv7kI7aaxbqwWNb0AHiB0qBO89PZKPkoTmGOgdbrHDKD+0B2X4uTfJ/FT1R09r9gTsjUjNJotuog==
 
-pinia@^2.2.2, pinia@^2.2.3:
+pinia@^2.2.3:
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/pinia/-/pinia-2.2.3.tgz#f71fb2ce00e134db4e0470ee00b313e5077313e7"
   integrity sha512-t2X9y1FT0h5zHmi9PsVr0LMNC0DXdPiYxX6zM5IyZHoWFjLq/LGpM1OVpGhXTPHjUh0XaFlsQd3GvPvGGNLQnw==
@@ -13493,13 +13493,12 @@ vite-plugin-checker@^0.8.0:
     vscode-languageserver-textdocument "^1.0.1"
     vscode-uri "^3.0.2"
 
-vite-plugin-eslint2@^4.4.2:
-  version "4.4.2"
-  resolved "https://registry.yarnpkg.com/vite-plugin-eslint2/-/vite-plugin-eslint2-4.4.2.tgz#cc25aab7d16703ae20f62ec7a0046d232d9792f4"
-  integrity sha512-QR+coY+88bnGco0xbDzzOEQYm2WndmEG5WK3i3UqzODnn6dY4/O4Ckl3MExCJzxIDIHM/KMMo8DS7S3JkXtBFg==
+vite-plugin-eslint2@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/vite-plugin-eslint2/-/vite-plugin-eslint2-5.0.0.tgz#436925830e81a958580e369bd84533c5b6e634e0"
+  integrity sha512-ouhakMbS3HU7rIp1BLS1LyMTnxXbUKMzxOFMYTR1e16dtx2v1jaLxNwF2sJ2pyblPQIHo+cwjBT9yGQlitPb8w==
   dependencies:
     "@rollup/pluginutils" "^5.1.2"
-    chokidar "^3.6.0"
     debug "^4.3.7"
 
 vite-plugin-inspect@^0.8.7:
