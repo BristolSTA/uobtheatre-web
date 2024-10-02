@@ -2649,10 +2649,10 @@
     "@nuxt/kit" "^3.9.0"
     pinia "^2.2.3"
 
-"@pinia/testing@^0.1.5":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@pinia/testing/-/testing-0.1.5.tgz#3d43de8b0fea102e4bd6188f219ebe4d241a29e5"
-  integrity sha512-AcGzuotkzhRoF00htuxLfIPBBHVE6HjjB3YC5Y3os8vRgKu6ipknK5GBQq9+pduwYQhZ+BcCZDC9TyLAUlUpoQ==
+"@pinia/testing@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@pinia/testing/-/testing-0.1.6.tgz#5237b7a3697e27e90290a06a14b375a0fb6a4b54"
+  integrity sha512-Q40s3kpjXpjmcnc61l84wyG83yVmkBi5rRdSoPpwQoRfSnNKKr52XjFFt6hP8iBxehYS9NR+D57T1uzgnEVPHg==
   dependencies:
     vue-demi "^0.14.10"
 
