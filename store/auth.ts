@@ -347,7 +347,8 @@ const useAuthStore = defineStore('auth', {
       lastName: string,
       email: string,
       password: string,
-      confirmedPassword: string
+      confirmedPassword: string,
+      turnstileToken: string
     ) {
       const { mutate } = useRegisterUserMutationMutation({
         variables: {
@@ -355,7 +356,8 @@ const useAuthStore = defineStore('auth', {
           lastName,
           email,
           password,
-          confirmedPassword
+          confirmedPassword,
+          turnstileToken
         }
       });
 

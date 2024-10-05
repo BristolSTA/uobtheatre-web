@@ -133,6 +133,11 @@ export default defineNuxtConfig({
     }
   },
 
+  // Configure Turnstile
+  turnstile: {
+    siteKey: '0x4AAAAAAAvESgDAdQmTrSaO',
+  },
+
   sourcemap: {
     client: true
   },

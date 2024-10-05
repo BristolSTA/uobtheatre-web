@@ -220,6 +220,7 @@
         </span>
         <error-helper :errors="signupErrors" field-name="acceptedTerms" />
       </label>
+      <NuxtTurnstile v-model="turnstileToken" />
       <button
         class="btn btn-orange btn-outline w-full text-center text-xl font-semibold"
         :disabled="!acceptedTerms"
@@ -270,6 +271,7 @@ const signUpDetails = reactive({
 
 const email = ref<string | undefined>(undefined);
 const password = ref<string | undefined>(undefined);
+const turnstileToken = ref<string | undefined>(undefined);
 
 const acceptedTerms = ref(false);
 const rememberMe = ref(false);
@@ -382,7 +384,8 @@ async function attemptSignup() {
       signUpDetails.lastName,
       email.value,
       password.value,
-      signUpDetails.confirmedPassword
+      signUpDetails.confirmedPassword,
+      turnstileToken.value
     );
 
     swalToast.fire({
