@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-80 bg-sta-gray shadow-2xl">
+  <div class="relative w-88 bg-sta-gray shadow-2xl">
     <div role="navigation" class="flex items-center space-x-1">
       <button
         class="py-3 w-1/2 font-semibold rounded-none focus:outline-none"
@@ -106,7 +106,6 @@
         </NuxtLink>
       </p>
     </form>
-
     <form
       v-else
       class="flex flex-col p-6 space-y-2"
@@ -220,7 +219,11 @@
         </span>
         <error-helper :errors="signupErrors" field-name="acceptedTerms" />
       </label>
-      <NuxtTurnstile v-model="turnstileToken" />
+      <NuxtTurnstile
+        v-model="turnstileToken"
+        size="flexible"
+        class="text-center"
+      />
       <button
         class="btn btn-orange btn-outline w-full text-center text-xl font-semibold"
         :disabled="!acceptedTerms"
@@ -377,6 +380,16 @@ async function attemptSignup() {
     ]);
     return (loading.value = false);
   }
+  if (!turnstileToken.value || turnstileToken.value === '') {
+    signupErrors.value.record([
+      {
+        message: 'Please complete Turnstile verification',
+        field: 'turnstileToken',
+        __typename: 'FieldError'
+      }
+    ]);
+    return (loading.value = false);
+  }
 
   try {
     await authStore.register(
@@ -428,3 +441,9 @@ async function resendVerificationEmail() {
   }
 }
 </script>
+
+<style scoped>
+.w-88 {
+  width: 22rem;
+}
+</style>
