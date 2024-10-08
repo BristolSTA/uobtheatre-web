@@ -383,7 +383,7 @@ async function attemptSignup() {
   if (!turnstileToken.value || turnstileToken.value === '') {
     signupErrors.value.record([
       {
-        message: 'Please complete Turnstile verification',
+        message: "Please confirm you're not a robot",
         field: 'turnstileToken',
         __typename: 'FieldError'
       }
