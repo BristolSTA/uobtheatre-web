@@ -23,7 +23,7 @@
     "@cypress/vue": "^6.0.1",
     "@eslint/eslintrc": "^3.1.0",
     "@eslint/js": "^9.12.0",
-    "@graphql-codegen/cli": "5.0.2",
+    "@graphql-codegen/cli": "5.0.3",
     "@graphql-codegen/gql-tag-operations-preset": "^2.1.0",
     "@graphql-codegen/typescript-vue-apollo": "^4.1.1",
     "@graphql-codegen/typescript-vue-apollo-smart-ops": "^3.0.0",
