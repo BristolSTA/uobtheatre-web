@@ -21,7 +21,7 @@
           {{ society.name }}
         </h1>
       </div>
-      <div class="lg:col-start-1 lg:col-span-3 lg:row-start-2">
+      <div class="lg:col-start-1 lg:col-span-3 lg:row-start-2 rounded">
         <div
           v-if="!bannerProductions.length"
           class="flex items-center bg-black bg-opacity-40"
@@ -78,13 +78,13 @@
             />
           </div>
           <div
-            class="flex justify-center w-full lg:w-3/4 p-4 bg-sta-gray-light"
+            class="flex justify-center w-full lg:w-3/4 p-4 bg-sta-gray-light rounded-lg"
           >
             <div>
               <h2 class="text-sta-orange text-3xl font-semibold">
                 Society Info:
               </h2>
-              <table class="table-auto">
+              <table class="table-auto mt-2">
                 <tbody>
                   <tr>
                     <th class="align-top pb-2 pr-2">Website:</th>
