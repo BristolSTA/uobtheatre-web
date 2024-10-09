@@ -177,13 +177,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import {
-  VenuePageDetailsDocument,
-  type VenuePageDetailsQuery,
-  type VenuePageDetailsQueryVariables
-} from '@/graphql/codegen/operations';
-import type { Ref } from 'vue';
+<script>
 import VenuePageDetails from '@/graphql/queries/venue/VenuePageDetails.gql';
 
 import L from 'leaflet';
