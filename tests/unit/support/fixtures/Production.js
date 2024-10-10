@@ -41,6 +41,7 @@ export default (overrides = {}, includePerformance = false) => {
         { warning: { shortDescription: 'Strobe Lighting' } },
         { warning: { shortDescription: 'Nudity' } }
       ],
+      productionAlert: 'This is a production alert.',
       performances: includePerformance
         ? GenericNodeConnection([Performance()])
         : GenericNodeConnection()
