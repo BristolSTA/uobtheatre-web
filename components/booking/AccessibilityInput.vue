@@ -31,8 +31,8 @@
         Any accessibility requirements you chose to share with us will be
         communicated by email to the production team. We cannot guarantee that
         your requirements can be met, though a member of the team will be in
-        touch to discuss your needs if required. If you have any questions,
-        please support@uobtheatre.com.
+        touch to discuss your requirements if needed. If you have any questions,
+        please email support@uobtheatre.com.
       </template>
     </form-label>
   </UiCard>

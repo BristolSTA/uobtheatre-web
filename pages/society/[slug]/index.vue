@@ -78,6 +78,7 @@
             />
           </div>
           <div
+            v-if="society.website || society.contact"
             class="flex justify-center w-full lg:w-3/4 p-4 bg-sta-gray-light rounded-lg"
           >
             <div>
@@ -86,9 +87,9 @@
               </h2>
               <table class="table-auto mt-2">
                 <tbody>
-                  <tr>
+                  <tr v-if="society.website">
                     <th class="align-top pb-2 pr-2">Website:</th>
-                    <td v-if="society.website" class="align-top">
+                    <td class="align-top">
                       <a
                         :href="society.website"
                         target="_blank"
@@ -98,11 +99,10 @@
                         {{ society.website }}
                       </a>
                     </td>
-                    <td v-else class="align-top">No Website Listed</td>
                   </tr>
-                  <tr>
+                  <tr v-if="society.contact">
                     <th class="align-top pr-2">Contact:</th>
-                    <td v-if="society.contact" class="align-top">
+                    <td class="align-top">
                       <a
                         :href="`mailto:${society.contact}`"
                         target="_blank"
@@ -112,7 +112,6 @@
                         {{ society.contact }}
                       </a>
                     </td>
-                    <td v-else class="align-top">No Email Listed</td>
                   </tr>
                 </tbody>
               </table>
