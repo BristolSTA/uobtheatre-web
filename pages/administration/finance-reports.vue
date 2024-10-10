@@ -64,6 +64,10 @@ import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 import { GenerateReportDocument } from '~~/graphql/codegen/operations';
 import VueDatepicker from '@vuepic/vue-datepicker';
 
+definePageMeta({
+  middleware: ['authed', 'finance']
+});
+
 export default defineNuxtComponent({
   components: { AllErrorsDisplay, FormLabel, LoadingContainer, VueDatepicker },
   data() {

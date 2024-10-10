@@ -24,7 +24,14 @@ export default defineNuxtConfig({
   },
 
   // Define third party plugins/modules we are using
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/apollo', '@pinia/nuxt', '@nuxt/ui'],
+  modules: [
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/apollo',
+    '@pinia/nuxt',
+    '@nuxt/ui',
+    '@nuxt/scripts',
+    '@nuxtjs/turnstile'
+  ],
 
   // Override @nuxt/ui's lightmode/darkmode features because our website is not cut out for it
   // See https://github.com/BristolSTA/uobtheatre-web/issues/620
@@ -34,7 +41,14 @@ export default defineNuxtConfig({
 
   // Define the runtime config
   runtimeConfig: {
-    public: publicConfig()
+    public: publicConfig(),
+    turnstile: {
+      // The Turnstile dummy secret key - defaults every Turnstile request to pass
+      // And outputs the dummy key XXXX.DUMMY.TOKEN.XXXX
+      // See https://developers.cloudflare.com/turnstile/troubleshooting/testing/
+      // Overriden by NUXT_TURNSTILE_SECRET_KEY in .env
+      secretKey: '1x0000000000000000000000000000000AA'
+    }
   },
 
   // Define app confiugration
@@ -131,6 +145,15 @@ export default defineNuxtConfig({
     tsConfig: {
       exclude: ['../graphql/codegen/operations.ts']
     }
+  },
+
+  // Configure Turnstile
+  turnstile: {
+    // The Turnstile dummy testing key - defaults every Turnstile request to pass
+    // And outputs the dummy key XXXX.DUMMY.TOKEN.XXXX
+    // See https://developers.cloudflare.com/turnstile/troubleshooting/testing/
+    // Overriden by NUXT_PUBLIC_TURNSTILE_SITE_KEY in .env
+    siteKey: '1x00000000000000000000AA'
   },
 
   sourcemap: {

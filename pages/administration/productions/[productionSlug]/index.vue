@@ -21,45 +21,47 @@
       <div class="flex flex-wrap justify-around space-y-4">
         <UiCard title="Summary" class="max-w-2xl">
           <table class="table-auto w-full">
-            <tr>
-              <table-head-item>Status</table-head-item>
-              <table-row-item>
-                <ProductionStatusBadge :production="production" />
-                <p class="text-sm">
-                  {{ statusDescription }}
-                </p>
-              </table-row-item>
-            </tr>
-            <tr>
-              <table-head-item>Society</table-head-item>
-              <table-row-item> {{ production.society.name }} </table-row-item>
-            </tr>
-            <tr v-if="production.totalCapacity && production.salesBreakdown">
-              <table-head-item>Ticket Sales</table-head-item>
-              <table-row-item>
-                {{ production.totalTicketsSold }} of
-                {{ production.totalCapacity }} ({{
-                  Math.floor(
-                    (100 * production.totalTicketsSold) /
+            <tbody>
+              <tr>
+                <table-head-item>Status</table-head-item>
+                <table-row-item>
+                  <ProductionStatusBadge :production="production" />
+                  <p class="text-sm">
+                    {{ statusDescription }}
+                  </p>
+                </table-row-item>
+              </tr>
+              <tr>
+                <table-head-item>Society</table-head-item>
+                <table-row-item> {{ production.society.name }} </table-row-item>
+              </tr>
+              <tr v-if="production.totalCapacity && production.salesBreakdown">
+                <table-head-item>Ticket Sales</table-head-item>
+                <table-row-item>
+                  {{ production.totalTicketsSold }} of
+                  {{ production.totalCapacity }} ({{
+                    Math.floor(
+                      (100 * production.totalTicketsSold) /
+                        production.totalCapacity
+                    )
+                  }}%)
+                  <progress-bar
+                    :percentage="
+                      (100 * production.totalTicketsSold) /
                       production.totalCapacity
-                  )
-                }}%)
-                <progress-bar
-                  :percentage="
-                    (100 * production.totalTicketsSold) /
-                    production.totalCapacity
-                  "
-                />
-              </table-row-item>
-            </tr>
-            <tr v-if="production.salesBreakdown">
-              <table-head-item>Net Society Revenue</table-head-item>
-              <table-row-item>
-                £{{
-                  (production.salesBreakdown.societyRevenue / 100).toFixed(2)
-                }}
-              </table-row-item>
-            </tr>
+                    "
+                  />
+                </table-row-item>
+              </tr>
+              <tr v-if="production.salesBreakdown">
+                <table-head-item>Net Society Revenue</table-head-item>
+                <table-row-item>
+                  £{{
+                    (production.salesBreakdown.societyRevenue / 100).toFixed(2)
+                  }}
+                </table-row-item>
+              </tr>
+            </tbody>
           </table>
         </UiCard>
         <div>
