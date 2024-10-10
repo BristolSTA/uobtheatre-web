@@ -12,7 +12,7 @@
             {{ booking.accessibilityInfo }}
           </p>
           <UiStaButton
-            class="bg-sta-orange hover:bg-sta-orange-dark transition-colors lg:mx-8 mx-4"
+            class="bg-sta-orange hover:bg-sta-orange-dark transition-colors mx-2"
             @click="
               () => {
                 changingAccessibility = true;
@@ -35,7 +35,7 @@
             />
           </form-label>
           <UiStaButton
-            class="bg-sta-green hover:bg-sta-green-dark transition-colors lg:mx-8 mx-4"
+            class="bg-sta-green hover:bg-sta-green-dark transition-colors mx-2"
             @click="
               () => {
                 booking.accessibilityInfo = newAccessibility;
