@@ -408,6 +408,7 @@ export default {
         ageRating: this.production.ageRating,
         facebookEvent: this.production.facebookEvent,
         contactEmail: this.production.contactEmail,
+        productionAlert: this.production.productionAlert,
         contentWarnings: (this.production.contentWarnings ?? []).map((cw) => ({
           id: cw.warning.id,
           information: cw.information
