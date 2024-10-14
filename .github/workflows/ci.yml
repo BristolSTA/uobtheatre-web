@@ -7,6 +7,7 @@ on:
     branches: [main, develop, dependabot/develop]
 
 env:
+  # Note: The schema is dev (rather than develop) because that is the branch name on the API repo
   SCHEMA_VERSION: "${{ github.ref == 'refs/heads/main' && 'main' || 'dev' }}"
 
 jobs:
