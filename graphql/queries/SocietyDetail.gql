@@ -14,7 +14,7 @@ query societyDetail($slug: String!) {
     }
     website
     contact
-    productions(orderBy: "-start", first: 4) {
+    productions(orderBy: "-start") {
       pageInfo {
         hasNextPage
         endCursor
@@ -23,9 +23,19 @@ query societyDetail($slug: String!) {
         node {
           id
           name
+          slug
+          start
           end
           isBookable
-          slug
+          featuredImage {
+            url
+          }
+          coverImage {
+            url
+          }
+          society {
+            name
+          }
         }
       }
     }

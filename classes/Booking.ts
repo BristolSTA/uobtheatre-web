@@ -23,6 +23,7 @@ export default class Booking {
   raw?: DetailedBookingDetailsFragment;
   idempotencyKey?: string;
   user?: DetailedBookingDetailsFragment['user'];
+  accessibilityInfo?: string;
 
   constructor() {
     this.tickets = [];
@@ -66,6 +67,9 @@ export default class Booking {
     }
     if (bookingData.user) {
       this.user = bookingData.user;
+    }
+    if (bookingData.accessibilityInfo) {
+      this.accessibilityInfo = bookingData.accessibilityInfo;
     }
     if (bookingData.transactions && bookingData.transactions.edges.length) {
       this.transactions = bookingData.transactions.edges
