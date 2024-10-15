@@ -2,6 +2,7 @@
   <div>
     <safe-table
       v-if="assignedUsers.length"
+      id="existingUserPermissionTable"
       table-class="border border-sta-gray-light border-collapse"
     >
       <thead>
@@ -25,13 +26,15 @@
           <table-row-item>
             {{ assignedUser.user.firstName }} {{ assignedUser.user.lastName }}
             <br />
-            <UiStaButton
-              :small="true"
-              class="bg-sta-rouge hover:bg-sta-rouge-dark transition-colors mt-2"
-              @click="removeUser(assignedUser)"
-            >
-              Remove
-            </UiStaButton>
+            <div id="removeUser">
+              <UiStaButton
+                :small="true"
+                class="bg-sta-rouge hover:bg-sta-rouge-dark transition-colors mt-2"
+                @click="removeUser(assignedUser)"
+              >
+                Remove
+              </UiStaButton>
+            </div>
           </table-row-item>
           <table-row-item
             v-for="(permission, apIndex) in assignablePermissions"
@@ -39,6 +42,7 @@
             class="border border-sta-gray-light"
           >
             <boolean-input
+              id="permissionInput"
               :model-value="
                 assignedUser.assignedPermissions.includes(permission.name)
               "
@@ -53,13 +57,22 @@
       <form-label :required="true">
         User Email Address
         <template #control>
-          <input v-model="newUser.email" type="email" class="text-black" />
+          <input
+            id="email"
+            v-model="newUser.email"
+            type="email"
+            class="text-black"
+          />
         </template>
         <template #helper>
           This user must have an account on this site
         </template>
       </form-label>
-      <safe-table class="my-4" table-class="border border-sta-gray-light">
+      <safe-table
+        id="newUserPermissionTable"
+        class="my-4"
+        table-class="border border-sta-gray-light"
+      >
         <thead>
           <table-row :striped="false" class="bg-sta-gray-light text-center">
             <table-head-item
@@ -88,6 +101,7 @@
         </tbody>
       </safe-table>
       <UiStaButton
+        id="addNewUser"
         class="bg-sta-green hover:bg-sta-green-dark transition-colors"
         :disabled="!newUser.email"
         @click="addNewUser"

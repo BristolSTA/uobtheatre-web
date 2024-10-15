@@ -1,40 +1,71 @@
-name: ci
+name: CI
 
 on:
   push:
-    branches:
-      - develop
-      - dependabot/develop
+    branches: [main, develop, dependabot/develop]
   pull_request:
-    branches:
-      - develop
-      - dependabot/develop
+    branches: [main, develop, dependabot/develop]
+
+env:
+  # Note: The schema is dev (rather than develop) because that is the branch name on the API repo
+  # If this is a push to main or a pull request targeting main, use the main schema
+  SCHEMA_VERSION: "${{ github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'pull_request' && github.base_ref == 'main' && 'main' || 'dev' }}"
 
 jobs:
-  unit:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        node: [20]
+  test:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@master
 
       - name: Setup node env 🏗
-        uses: actions/setup-node@v4.0.3
+        uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 20
           check-latest: true
 
       - name: Get yarn cache directory path 🛠
         id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
 
       - name: Cache node_modules 📦
-        uses: actions/cache@v4.0.2
+        uses: actions/cache@v4
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies 👨🏻‍💻
+        run: yarn
+
+      - name: Load GraphQL 🕸
+        run: API_BASE=https://staging.api.uobtheatre.com yarn codegen
+
+      - name: Run tests 🧪
+        run: yarn test:unit --coverage
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@master
+
+      - name: Setup node env 🏗
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          check-latest: true
+
+      - name: Get yarn cache directory path 🛠
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache node_modules 📦
+        uses: actions/cache@v4
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -46,7 +77,7 @@ jobs:
         run: yarn
 
       - name: Load GraphQL Codegen 🕸
-        run: GQL_SCHEMA=https://raw.githubusercontent.com/BristolSTA/uobtheatre-api/dev/schema.graphql yarn codegen
+        run: GQL_SCHEMA=https://raw.githubusercontent.com/BristolSTA/uobtheatre-api/${{ env.SCHEMA_VERSION }}/schema.graphql yarn codegen
 
       - name: Run linter 👀
         run: yarn lint:tsc && yarn lint:js
@@ -54,36 +85,28 @@ jobs:
       - name: Check Prettier ✨
         run: yarn prettier:check
 
-      - name: Load GraphQL 🕸
-        run: API_BASE=https://staging.api.uobtheatre.com yarn codegen
-
-      - name: Run tests 🧪
-        run: yarn test:unit --coverage
-
   e2e:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [20.x]
-
     steps:
-      - uses: actions/checkout@master
+      - name: Checkout 🛎
+        uses: actions/checkout@master
 
       - name: Copy Testing Env ✉
         run: cp .env.test .env
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4.0.3
+      - name: Setup node env 🏗
+        uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20
+          check-latest: true
 
       - name: Get yarn cache directory path 🛠
         id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
 
       - name: Cache node_modules 📦
-        uses: actions/cache@v4.0.2
+        uses: actions/cache@v4
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -91,11 +114,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      - run: yarn
-        name: Install Yarn Dependencies 👨🏻‍💻
+      - name: Install Yarn Dependencies 👨🏻‍💻
+        run: yarn
 
       - name: Authenticate with GitHub Container Registry 🔒
-        uses: docker/login-action@v3.2.0
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
@@ -114,7 +137,7 @@ jobs:
         run: API_BASE=http://localhost:9000 yarn codegen
 
       - name: Run End-to-End Tests 🧪
-        uses: cypress-io/github-action@v6.7.1
+        uses: cypress-io/github-action@v6
         timeout-minutes: 7
         with:
           start: yarn beforetest:e2e:ci
