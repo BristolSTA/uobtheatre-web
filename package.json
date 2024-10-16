@@ -27,7 +27,7 @@
     "@graphql-codegen/gql-tag-operations-preset": "^2.1.0",
     "@graphql-codegen/typescript-vue-apollo": "^4.1.1",
     "@graphql-codegen/typescript-vue-apollo-smart-ops": "^3.0.0",
-    "@nuxt/scripts": "^0.9.4",
+    "@nuxt/scripts": "^0.9.5",
     "@nuxt/ui": "^2.18.7",
     "@nuxtjs/apollo": "^5.0.0-alpha.14",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
