@@ -262,7 +262,7 @@
           Relaxed Performance
           <template #control>
             <UiInputToggle v-model="performance.isRelaxed" />
-            </template>
+          </template>
           <template #helper>
             Show a relaxed performance message on the performance overview.
           </template>
