@@ -25,6 +25,7 @@ query adminPerformanceDetail($productionSlug: String!, $performanceId: ID!) {
           soldOut
           isOnline
           isInperson
+          isRelaxed
           isBookable
           capacity
           capacityRemaining
