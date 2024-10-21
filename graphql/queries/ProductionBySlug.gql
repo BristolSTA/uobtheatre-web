@@ -60,6 +60,7 @@ query productionBySlug($slug: String!) {
           intervalDurationMins
           isOnline
           isInperson
+          isRelaxed
           ticketsBreakdown {
             totalCapacity
           }
