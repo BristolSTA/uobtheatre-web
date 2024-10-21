@@ -26,11 +26,6 @@
         inc. interval
       </template>
     </div>
-    <div>
-      <p v-if="performance.isRelaxed">
-        Relaxed performance
-      </p>
-    </div>
     <div class="text-sm font-semibold">
       <p v-if="!performance.isBookable">No Tickets Available</p>
       <p v-else>Tickets Available</p>
