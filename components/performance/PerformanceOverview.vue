@@ -26,11 +26,26 @@
         inc. interval
       </template>
     </div>
+    <button
+      v-if="performance.isRelaxed"
+      ref="categories"
+      class="text-left"
+      @click="showRelaxedCategoriesDetail = true"
+    >
+      <span class="hover:text-gray-200">{{ thisRelaxedName }} Performance</span>
+    </button>
+    <relaxed-categories-display
+      v-if="showRelaxedCategoriesDetail"
+      :relaxed-categories="
+              performance.relaxedCategories"
+      :this-relaxed-name="thisRelaxedName"
+      @close="showRelaxedCategoriesDetail = false"
+    />
+    <div class="flex-grow" />
     <div class="text-sm font-semibold">
       <p v-if="!performance.isBookable">No Tickets Available</p>
       <p v-else>Tickets Available</p>
     </div>
-    <div class="flex-grow" />
     <button
       v-if="!performance.isBookable"
       class="btn btn-rouge btn-outline disabled mt-4 w-2/3 text-center font-semibold"
@@ -53,8 +68,14 @@
 
 <script>
 import { humanDuration, dateFormat } from '@/utils/datetime';
+import Modal from '~/components/ui/Modal.vue';
+import RelaxedCategoriesDisplay from '~/components/performance/relaxed-categories/RelaxedCategoriesDisplay.vue';
 
 export default {
+  components: {
+    Modal,
+    RelaxedCategoriesDisplay,
+  },
   props: {
     performance: {
       required: true,
@@ -66,12 +87,20 @@ export default {
     }
   },
   emits: ['select'],
+  data() {
+    return {
+      showRelaxedCategoriesDetail: false
+    };
+  },
   computed: {
     disabledReason() {
       if (this.performance.soldOut) {
         return 'SOLD OUT';
       }
       return 'Unavailable';
+    },
+    thisRelaxedName() {
+      return this.performance.relaxedName ? this.performance.relaxedName : 'Relaxed';
     }
   },
   methods: {
