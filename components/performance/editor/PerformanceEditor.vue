@@ -258,6 +258,15 @@
             booking a ticket for this performance.
           </template>
         </form-label>
+        <form-label name="isRelaxed" :errors="errors">
+          Relaxed Performance
+          <template #control>
+            <UiInputToggle v-model="performance.isRelaxed" />
+            </template>
+          <template #helper>
+            Show a relaxed performance message on the performance overview.
+          </template>
+        </form-label>
       </div>
     </UiCard>
   </div>
@@ -289,9 +298,11 @@ import {
   PerformanceSeatGroupDocument,
   VenuesDocument
 } from '@/graphql/codegen/operations';
+import UiInputToggle from '../../ui/Input/UiInputToggle.vue';
 
 export default {
   components: {
+    UiInputToggle,
     FormLabel,
     VueDatepicker,
     SeatGroup,
@@ -428,6 +439,7 @@ export default {
         end: this.performance.end,
         venue: this.performance.venue?.id,
         disabled: !!this.performance.disabled,
+        isRelaxed: this.performance.isRelaxed,
         description: this.performance.description,
         capacity:
           this.performance.capacity === '' ? null : this.performance.capacity
