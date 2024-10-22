@@ -13477,10 +13477,10 @@ vite-plugin-checker@^0.8.0:
     vscode-languageserver-textdocument "^1.0.1"
     vscode-uri "^3.0.2"
 
-vite-plugin-eslint2@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/vite-plugin-eslint2/-/vite-plugin-eslint2-5.0.0.tgz#436925830e81a958580e369bd84533c5b6e634e0"
-  integrity sha512-ouhakMbS3HU7rIp1BLS1LyMTnxXbUKMzxOFMYTR1e16dtx2v1jaLxNwF2sJ2pyblPQIHo+cwjBT9yGQlitPb8w==
+vite-plugin-eslint2@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/vite-plugin-eslint2/-/vite-plugin-eslint2-5.0.1.tgz#f07e4c02b29a4db8bdc863206722c1dae31bda50"
+  integrity sha512-Pr/Df4mpYtKoYOFMRQonoDE/SH56ah2cbtjyQmRveh+Wz2pgk/RfTM3ApZ6xrAEpmIyBctfy5JoBmcWmikKTlg==
   dependencies:
     "@rollup/pluginutils" "^5.1.2"
     debug "^4.3.7"
