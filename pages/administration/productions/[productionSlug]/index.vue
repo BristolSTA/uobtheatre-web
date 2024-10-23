@@ -206,16 +206,17 @@ export default defineNuxtComponent({
   },
   async asyncData() {
     // Execute query
-    const { data } = await useAsyncQuery({
+    console.log('Fetching production');
+    const { data } = await useDefaultApolloClient().query({
       query: AdminProductionShowQuery,
       variables: {
         slug: useRoute().params.productionSlug
       },
       fetchPolicy: 'no-cache'
     });
-
-    const production = computed(() => data.value.production);
-    if (!production.value) {
+    const production = data.production;
+    console.log('Fetched production');
+    if (!production) {
       throw createSafeError({
         statusCode: 404,
         message: 'This production does not exist'
@@ -243,7 +244,7 @@ export default defineNuxtComponent({
         };
       },
       update: (data) => data.production.performances,
-      fetchPolicy: 'cache-and-network'
+      fetchPolicy: 'no-cache'
     }
   },
   computed: {

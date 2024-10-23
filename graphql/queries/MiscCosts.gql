@@ -1,0 +1,13 @@
+query miscCosts {
+  miscCosts {
+    edges {
+      node {
+        id
+        name
+        description
+        percentage
+        value
+      }
+    }
+  }
+}

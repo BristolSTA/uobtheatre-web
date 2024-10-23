@@ -245,8 +245,108 @@ describe('ProductionBanner', function () {
     );
   });
 
+  describe('Production Fee Display', function () {
+    it('doesnt display fees if none exist', async () => {
+      await createWithPerformances([]);
+
+      expect(headerContainer.vm.miscCostsDisplay).to.equal('');
+      expect(headerContainer.text()).to.not.contain('(exc. fees)');
+    });
+
+    it('doesnt display if tickets are free', async () => {
+      await createWithPerformances(
+        [{}],
+        [
+          {
+            id: 1,
+            name: 'Booking Fee',
+            description: 'Supports theatre maintainance and website',
+            percentage: 0.05
+          }
+        ],
+        {
+          minSeatPrice: null
+        }
+      );
+
+      expect(headerContainer.text()).to.not.contain('(exc. fees)');
+    });
+
+    it('calculates correct fee with only a percentage', async () => {
+      await createWithPerformances(
+        [{}],
+        [
+          {
+            id: 1,
+            name: 'Booking Fee',
+            description: 'Supports theatre maintainance and website',
+            percentage: 0.05
+          }
+        ]
+      );
+
+      expect(headerContainer.vm.miscCostsDisplay).to.equal('5%');
+      expect(headerContainer.text()).to.contain('(exc. fees)');
+    });
+
+    it('calculates correct fee with only a fixed fee', async () => {
+      await createWithPerformances(
+        [{}],
+        [
+          {
+            id: 1,
+            name: 'Booking Fee',
+            description: 'Supports theatre maintainance and website',
+            value: 100
+          }
+        ]
+      );
+      console.log(headerContainer.vm.miscCosts);
+      console.log(headerContainer.html());
+
+      expect(headerContainer.vm.miscCostsDisplay).to.equal('£1');
+      expect(headerContainer.text()).to.contain('(exc. fees)');
+    });
+
+    it('calculates correct fee with', async () => {
+      await createWithPerformances(
+        [
+          {
+            venue: {
+              name: 'The Newer Vic',
+              slug: 'the-newer-vic',
+              publiclyListed: true
+            },
+            isInperson: true
+          }
+        ],
+        [
+          {
+            id: 1,
+            name: 'Theatre Improvement Levy',
+            description: 'Makes the STA stonks',
+            percentage: 0.05,
+            fee: null
+          },
+          {
+            id: 2,
+            name: 'Booking Fee',
+            description: 'Oh no Square charges us money',
+            percentage: null,
+            value: 100
+          }
+        ]
+      );
+      console.log(headerContainer.vm.miscCosts);
+
+      expect(headerContainer.vm.miscCostsDisplay).to.equal('5% + £1');
+      expect(headerContainer.text()).to.contain('(exc. fees)');
+    });
+  });
+
   const createWithPerformances = async (
     performances,
+    miscCostsData = [],
     productionOverrides,
     showBuyTicketsButton = true,
     showDetailedInfo = true
@@ -262,6 +362,11 @@ describe('ProductionBanner', function () {
         production,
         showBuyTicketsButton,
         showDetailedInfo
+      },
+      data() {
+        return {
+          miscCosts: miscCostsData
+        };
       }
     });
   };
