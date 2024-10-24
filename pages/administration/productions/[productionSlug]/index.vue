@@ -206,16 +206,15 @@ export default defineNuxtComponent({
   },
   async asyncData() {
     // Execute query
-    console.log('Fetching production');
     const { data } = await useDefaultApolloClient().query({
       query: AdminProductionShowQuery,
       variables: {
         slug: useRoute().params.productionSlug
       },
-      fetchPolicy: 'no-cache'
+      fetchPolicy: 'no-cache',
+      server: false
     });
     const production = data.production;
-    console.log('Fetched production');
     if (!production) {
       throw createSafeError({
         statusCode: 404,
@@ -381,6 +380,16 @@ export default defineNuxtComponent({
           },
           'setProductionStatus'
         );
+
+        const { data } = await useDefaultApolloClient().query({
+          query: AdminProductionShowQuery,
+          variables: {
+            slug: useRoute().params.productionSlug
+          },
+          fetchPolicy: 'no-cache'
+        });
+
+        this.production = data.production;
       } catch (e) {
         const errors = getValidationErrors(e);
         swal.fire({
@@ -391,7 +400,7 @@ export default defineNuxtComponent({
         });
         return;
       }
-      await refreshNuxtData();
+
       successToast.fire({ title: 'Status updated' });
     }
   }

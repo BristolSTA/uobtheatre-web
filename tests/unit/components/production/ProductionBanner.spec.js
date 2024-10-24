@@ -327,7 +327,6 @@ describe('ProductionBanner', function () {
             }
           ]
         );
-        console.log(headerContainer.vm.miscCosts);
 
         expect(headerContainer.vm.miscCostsDisplay).to.equal(expected);
         expect(headerContainer.text()).to.contain('(exc. fees)');

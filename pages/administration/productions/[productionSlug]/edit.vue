@@ -54,7 +54,6 @@ export default defineNuxtComponent({
       this.errors = null;
       loadingSwal.fire();
       try {
-        console.log('Performing mutation');
         await performMutation(
           this.$apollo,
           {
@@ -65,8 +64,6 @@ export default defineNuxtComponent({
           },
           'production'
         );
-        console.log('Performed mutation');
-        console.log('Performing query');
         const { data } = await this.$apollo.query({
           query: AdminProductionEditQuery,
           variables: {
@@ -74,12 +71,7 @@ export default defineNuxtComponent({
           },
           fetchPolicy: 'no-cache'
         });
-        console.log('Performed query');
         this.production = data.production;
-        console.log(
-          'Rerouting to: ' +
-            `/administration/productions/${this.production.slug}`
-        );
         useRouter().navigateTo(
           `/administration/productions/${this.production.slug}`
         );
