@@ -36,7 +36,7 @@ export default defineConfig({
       dts: false,
       vueTemplate: true
     }), // Auto imports vue composable functions (ref, reactive, etc)
-    Components({ dirs: ['components'], dts: false }) // Replicates Nuxt's auto component importing,
+    Components({ dirs: 'components', dts: false }) // Replicates Nuxt's auto component importing,
   ],
   test: {
     globals: true,
