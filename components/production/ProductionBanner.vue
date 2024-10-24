@@ -196,8 +196,6 @@ export default {
         0
       );
 
-      console.log(totalPercentage, totalValue);
-
       // Returns the total percentage and value of all misc costs in format totalPercentage + totalValue, but hide each if the value is 0
       // If the total value is greater than 100 (i.e. £1), it is displayed in pounds, otherwise displayed in pence
       return `${totalPercentage ? `${totalPercentage}%` : ''}${

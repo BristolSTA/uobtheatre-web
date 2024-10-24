@@ -4,7 +4,7 @@ export default (overrides = {}) => {
       id: 1,
       name: 'Booking Fee',
       description: 'Supports theatre maintainance and website',
-      percentage: 0.05
+      value: 5
     },
     overrides
   );
