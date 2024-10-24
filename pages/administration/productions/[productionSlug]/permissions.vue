@@ -144,7 +144,6 @@ export default defineNuxtComponent({
         fetchPolicy: 'no-cache'
       });
       this.production = data.production;
-      console.log(this.production);
 
       if (!this.production) {
         throw createSafeError({
