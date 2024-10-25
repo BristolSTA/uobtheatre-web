@@ -2,7 +2,7 @@
 
 These steps are to ensure you correctly make a PR. _Please delete them before submitting the PR!_
 
-1. For almost all development, you should be targeting `develop` rather than `master`. Only releases target `master`!
+1. For almost all development, you should be targeting `develop` rather than `main`. Only releases target `main`!
 2. Give your PR a descriptive name, and prefix that name with one of the following options:
    - `fix:` for bug fixes
    - `feat:` for new features
