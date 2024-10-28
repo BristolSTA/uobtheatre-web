@@ -35,6 +35,9 @@
         <NuxtLink to="/administration/tools/booking-lookup">
           <div class="p-2 bg-sta-green">Booking Lookup</div>
         </NuxtLink>
+        <NuxtLink to="/administration/tools/ticket-scan">
+          <div class="p-2 bg-sta-green">Scan a Ticket</div>
+        </NuxtLink>
         <NuxtLink
           v-if="authStore.hasPermission('finance_reports')"
           to="/administration/finance-reports"

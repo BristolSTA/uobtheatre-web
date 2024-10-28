@@ -14,6 +14,12 @@
       All Bookings
     </sidebar-item>
     <sidebar-item
+      icon="magnifying-glass"
+      href="/administration/tools/ticket-scan"
+    >
+      Scan a Ticket
+    </sidebar-item>
+    <sidebar-item
       v-if="authStore.hasPermission('finance_reports')"
       icon="money-bill"
       href="/administration/finance-reports"
