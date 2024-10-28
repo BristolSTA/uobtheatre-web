@@ -16,7 +16,8 @@
 </template>
 
 <script lang="ts" setup>
-import { PerformanceNode } from '~~/graphql/codegen/operations';
+import type { PerformanceNode } from '~~/graphql/codegen/operations';
+import { dateFormat } from '@/utils/datetime';
 
 const props = withDefaults(
   defineProps<{

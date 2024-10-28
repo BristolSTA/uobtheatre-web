@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia';
 import cookie from 'js-cookie';
-import jwtDecode, { JwtPayload } from 'jwt-decode';
+import { jwtDecode, type JwtPayload } from 'jwt-decode';
 import {
   useLoginMutationMutation,
   useRefreshTokenMutationMutation,
   LoadUserDetailsDocument,
-  AuthUserDetailsFragment,
-  LoadUserDetailsQuery,
+  type AuthUserDetailsFragment,
+  type LoadUserDetailsQuery,
   useRequestPasswordResetMutationMutation,
   useResetPasswordMutationMutation,
   useActiveAccountMutationMutation,
@@ -347,7 +347,8 @@ const useAuthStore = defineStore('auth', {
       lastName: string,
       email: string,
       password: string,
-      confirmedPassword: string
+      confirmedPassword: string,
+      turnstileToken: string
     ) {
       const { mutate } = useRegisterUserMutationMutation({
         variables: {
@@ -355,7 +356,8 @@ const useAuthStore = defineStore('auth', {
           lastName,
           email,
           password,
-          confirmedPassword
+          confirmedPassword,
+          turnstileToken
         }
       });
 

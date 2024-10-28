@@ -13,7 +13,11 @@
     <sidebar-item icon="ticket" href="/administration/tools/booking-lookup">
       All Bookings
     </sidebar-item>
-    <sidebar-item icon="money-bill" href="/administration/finance-reports">
+    <sidebar-item
+      v-if="authStore.hasPermission('finance_reports')"
+      icon="money-bill"
+      href="/administration/finance-reports"
+    >
       Finance Reports
     </sidebar-item>
   </sidebar>
@@ -22,9 +26,16 @@
 <script>
 import Sidebar from '../ui/Nav/Sidebar.vue';
 import SidebarItem from '../ui/Nav/SidebarItem.vue';
+import useAuthStore from '@/store/auth';
+
 export default {
   components: { Sidebar, SidebarItem },
   emits: ['close'],
+  data() {
+    return {
+      authStore: useAuthStore()
+    };
+  },
   watch: {
     $route() {
       this.$emit('close');

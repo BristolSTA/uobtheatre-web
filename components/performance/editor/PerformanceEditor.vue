@@ -153,7 +153,7 @@
           </div>
           <div class="px-2 border border-sta-gray rounded-lg">
             <div class="flex items-center justify-between pt-3">
-              <h4 class="text-h4">Concessions</h4>
+              <h4 class="text-h4">Ticket Types</h4>
               <font-awesome-icon
                 icon="plus-circle"
                 class="cursor-pointer text-lg hover:text-gray-300"
@@ -187,25 +187,26 @@
           </div>
         </div>
 
-        <h4 class="mt-6 text-h4">Ticket Pricing</h4>
+        <h4 class="mt-6 text-h4">Ticket Types</h4>
         <div
           v-if="!performanceSeatGroups.length"
           class="p-4 text-white bg-sta-rouge"
         >
-          Please add at least one seat group
+          You need to add at least one seat group.
         </div>
         <div
           v-else-if="!singleDiscounts.length"
           class="p-4 text-white bg-sta-rouge"
         >
-          Please add at least one concession type
+          You need to add at least one ticket type (e.g. 'General Admission').
         </div>
         <div v-else class="max-w-full overflow-x-auto">
           <div
             v-if="!singleDiscounts.some((discount) => discount.percentage == 0)"
             class="p-4 text-white bg-sta-rouge"
           >
-            You need at least one concession type with 0% discount.
+            You need to add at least one ticket type with a 0% discount (e.g.
+            'General Admission').
           </div>
           <price-matrix
             :discounts="performance.discounts.edges"
@@ -247,9 +248,14 @@
           </template>
         </form-label>
         <form-label name="description" :errors="errors">
-          Description
+          Performance Description
           <template #control>
             <UiInputTextArea v-model="performance.description" />
+          </template>
+          <template #helper>
+            Optionally, add a description unique to this performance (e.g.
+            'Relaxed Performance'). Users will be shown this description when
+            booking a ticket for this performance.
           </template>
         </form-label>
       </div>

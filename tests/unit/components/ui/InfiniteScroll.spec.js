@@ -9,17 +9,18 @@ vi.mock('@/utils/misc.js', () => ({
 }));
 
 describe('Infinite Scroll', () => {
-  let infiniteScrollComponent, apolloQueryMock, promiseResolve;
+  let infiniteScrollComponent,
+    apolloQueryMock,
+    promiseResolve,
+    addEventListenerSpy,
+    removeEventListenerSpy;
   const fakeQuery = {
     some: 'GQL Tag query'
   };
-  vi.spyOn(window, 'addEventListener');
-  vi.spyOn(window, 'removeEventListener');
 
   beforeEach(async () => {
-    // Reset mocks
-    window.addEventListener.mockClear();
-    window.removeEventListener.mockClear();
+    addEventListenerSpy = vi.spyOn(window, 'addEventListener');
+    removeEventListenerSpy = vi.spyOn(window, 'removeEventListener');
     infiniteScrollComponent = await mount(InfiniteScroll, {
       apollo: {
         queryMockFn: (apolloQueryMock = vi.fn(
@@ -35,17 +36,25 @@ describe('Infinite Scroll', () => {
     });
   });
 
+  afterEach(() => {
+    // Reset mocks
+    addEventListenerSpy.mockClear();
+    removeEventListenerSpy.mockClear();
+  });
+
   it('registers scroll callback on mount', () => {
-    expect(window.addEventListener.mock.calls[0][0]).to.eq('scroll');
-    expect(window.addEventListener.mock.calls[0][1]).to.eq(
+    expect(addEventListenerSpy).toHaveBeenCalled();
+    expect(addEventListenerSpy.mock.calls[0][0]).to.eq('scroll');
+    expect(addEventListenerSpy.mock.calls[0][1]).to.eq(
       infiniteScrollComponent.vm.handleScroll
     );
   });
 
   it('removes scroll callback on destory', () => {
     infiniteScrollComponent.unmount();
-    expect(window.removeEventListener.mock.calls[0][0]).to.eq('scroll');
-    expect(window.removeEventListener.mock.calls[0][1]).to.eq(
+    expect(removeEventListenerSpy).toHaveBeenCalled();
+    expect(removeEventListenerSpy.mock.calls[0][0]).to.eq('scroll');
+    expect(removeEventListenerSpy.mock.calls[0][1]).to.eq(
       infiniteScrollComponent.vm.handleScroll
     );
   });

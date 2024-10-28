@@ -1,5 +1,5 @@
 import { NuxtLinkStub } from '#testSupport/stubs';
-import { expect } from 'vitest';
+import { expect, vi } from 'vitest';
 
 import { fixTextSpacing, mount } from '#testSupport/helpers';
 import {
@@ -11,10 +11,16 @@ import Carousel from '@/components/ui/UiCarousel.vue';
 import Home from '@/pages/index.vue';
 import { flushPromises } from '@vue/test-utils';
 
+import Booking from '~~/classes/Booking';
+import FullBooking from '#testSupport/fixtures/instances/FullBooking';
+import BookingHomepageOverview from '~~/components/booking/BookingHomepageOverview.vue';
+
 describe('Home', function () {
   let homepageComponent;
 
   async function mountComponent(queryEdgeResponse = []) {
+    const bookingdata = FullBooking();
+    const booking = Booking.fromAPIData(bookingdata);
     return (homepageComponent = await mount(Home, {
       shallow: false,
       apollo: {
@@ -22,7 +28,10 @@ describe('Home', function () {
           GenericApolloResponse(
             'productions',
             GenericNodeConnection(queryEdgeResponse)
-          )
+          ),
+          GenericApolloResponse('me', {
+            bookings: GenericNodeConnection([booking])
+          })
         ]
       }
     }));
@@ -82,6 +91,34 @@ describe('Home', function () {
       expect(
         homepageComponent.findAllComponents(NuxtLinkStub).at(0).attributes('to')
       ).to.equal('/production/legally-ginger');
+    });
+  });
+
+  describe('Upcoming Bookings', () => {
+    beforeEach(async () => {
+      vi.useFakeTimers();
+    });
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it('Has no upcoming bookings', async () => {
+      const date = new Date('2020-03-08T10:00:00');
+      vi.setSystemTime(date);
+      homepageComponent = await mountComponent();
+
+      expect(homepageComponent.findComponent(BookingHomepageOverview).exists())
+        .to.be.false;
+    });
+
+    it('Has upcoming bookings', async () => {
+      const date = new Date('2020-03-09T10:00:00');
+      vi.setSystemTime(date);
+      homepageComponent = await mountComponent();
+      await homepageComponent.vm.$nextTick();
+
+      expect(homepageComponent.findComponent(BookingHomepageOverview).exists())
+        .to.be.true;
     });
   });
 

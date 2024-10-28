@@ -4,6 +4,7 @@ mutation registerUserMutation(
   $email: String!
   $password: String!
   $confirmedPassword: String!
+  $turnstileToken: String!
 ) {
   register(
     firstName: $firstName
@@ -11,6 +12,7 @@ mutation registerUserMutation(
     email: $email
     password1: $password
     password2: $confirmedPassword
+    turnstileToken: $turnstileToken
   ) {
     success
     errors {

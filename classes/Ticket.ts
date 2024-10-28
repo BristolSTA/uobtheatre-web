@@ -5,8 +5,8 @@ import type {
   SeatGroupNode,
   ExtendedUserNode
 } from '~~/graphql/codegen/operations';
-import { IdInput } from '~~/types/generic';
-import { TicketOptions } from '~~/types/performance';
+import type { IdInput } from '~~/types/generic';
+import type { TicketOptions } from '~~/types/performance';
 import { DateTime } from 'luxon';
 
 export default class {

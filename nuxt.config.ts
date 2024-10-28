@@ -1,6 +1,6 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 import publicConfig from './config.public';
-import eslintPlugin from 'vite-plugin-eslint';
+import eslintPlugin from 'vite-plugin-eslint2';
 
 // Define CSS Files to Bundle
 const cssFiles = [
@@ -14,22 +14,43 @@ if (process.env.MODE !== 'test') cssFiles.push('@/assets/styles/app.scss');
 export default defineNuxtConfig({
   // Enable experimental features
   experimental: {
-    emitRouteChunkError: 'reload'
+    emitRouteChunkError: 'automatic'
   },
 
   // Define aliases
   alias: {
-    '#testSupport': 'tests/unit/support',
-    '#testSupport/*': 'tests/unit/support/*'
+    '#testSupport': './tests/unit/support',
+    '#testSupport/*': './tests/unit/support/*'
   },
 
   // Define third party plugins/modules we are using
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/apollo', '@pinia/nuxt'],
+  modules: [
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/apollo',
+    '@pinia/nuxt',
+    '@nuxt/ui',
+    '@nuxt/scripts',
+    '@nuxtjs/turnstile'
+  ],
+
+  // Override @nuxt/ui's lightmode/darkmode features because our website is not cut out for it
+  // See https://github.com/BristolSTA/uobtheatre-web/issues/620
+  colorMode: {
+    preference: 'light'
+  },
 
   // Define the runtime config
   runtimeConfig: {
-    public: publicConfig()
+    public: publicConfig(),
+    turnstile: {
+      // The Turnstile dummy secret key - defaults every Turnstile request to pass
+      // And outputs the dummy key XXXX.DUMMY.TOKEN.XXXX
+      // See https://developers.cloudflare.com/turnstile/troubleshooting/testing/
+      // Overriden by NUXT_TURNSTILE_SECRET_KEY in .env
+      secretKey: '1x0000000000000000000000000000000AA'
+    }
   },
+
   // Define app confiugration
   app: {
     head: {
@@ -122,12 +143,22 @@ export default defineNuxtConfig({
   // Configure Typescript
   typescript: {
     tsConfig: {
-      types: ['node', '@types/lodash'],
       exclude: ['../graphql/codegen/operations.ts']
     }
   },
 
+  // Configure Turnstile
+  turnstile: {
+    // The Turnstile dummy testing key - defaults every Turnstile request to pass
+    // And outputs the dummy key XXXX.DUMMY.TOKEN.XXXX
+    // See https://developers.cloudflare.com/turnstile/troubleshooting/testing/
+    // Overriden by NUXT_PUBLIC_TURNSTILE_SITE_KEY in .env
+    siteKey: '1x00000000000000000000AA'
+  },
+
   sourcemap: {
     client: true
-  }
+  },
+
+  compatibilityDate: '2024-07-11'
 });

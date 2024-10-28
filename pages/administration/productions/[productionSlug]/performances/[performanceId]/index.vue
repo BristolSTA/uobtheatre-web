@@ -25,44 +25,46 @@
     <div class="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
       <UiCard title="Summary" class="max-w-2xl">
         <table class="table-auto w-full">
-          <tr>
-            <table-head-item :text-left="false"> Status </table-head-item>
-            <table-row-item>
-              <performance-status-badge :performance="performance" />
-            </table-row-item>
-          </tr>
-          <tr>
-            <table-head-item :text-left="false"> Venue </table-head-item>
-            <table-row-item>
-              {{ performance.venue.name }}
-            </table-row-item>
-          </tr>
-          <tr>
-            <table-head-item :text-left="false"> Doors Open </table-head-item>
-            <table-row-item>
-              {{ dateFormat(performance.doorsOpen, 'dd MM y T ZZZZ') }}
-            </table-row-item>
-          </tr>
-          <tr>
-            <table-head-item :text-left="false"> Starts </table-head-item>
-            <table-row-item>
-              {{ dateFormat(performance.start, 'dd MM y T ZZZZ') }}
-            </table-row-item>
-          </tr>
-          <tr v-if="performance.intervalDurationMins">
-            <table-head-item :text-left="false">
-              Interval Length
-            </table-head-item>
-            <table-row-item>
-              {{ performance.intervalDurationMins }} minutes
-            </table-row-item>
-          </tr>
-          <tr>
-            <table-head-item :text-left="false"> Ends </table-head-item>
-            <table-row-item>
-              {{ dateFormat(performance.end, 'dd MM y T ZZZZ') }}
-            </table-row-item>
-          </tr>
+          <tbody>
+            <tr>
+              <table-head-item :text-left="false"> Status </table-head-item>
+              <table-row-item>
+                <performance-status-badge :performance="performance" />
+              </table-row-item>
+            </tr>
+            <tr>
+              <table-head-item :text-left="false"> Venue </table-head-item>
+              <table-row-item>
+                {{ performance.venue.name }}
+              </table-row-item>
+            </tr>
+            <tr>
+              <table-head-item :text-left="false"> Doors Open </table-head-item>
+              <table-row-item>
+                {{ dateFormat(performance.doorsOpen, 'dd MM y T ZZZZ') }}
+              </table-row-item>
+            </tr>
+            <tr>
+              <table-head-item :text-left="false"> Starts </table-head-item>
+              <table-row-item>
+                {{ dateFormat(performance.start, 'dd MM y T ZZZZ') }}
+              </table-row-item>
+            </tr>
+            <tr v-if="performance.intervalDurationMins">
+              <table-head-item :text-left="false">
+                Interval Length
+              </table-head-item>
+              <table-row-item>
+                {{ performance.intervalDurationMins }} minutes
+              </table-row-item>
+            </tr>
+            <tr>
+              <table-head-item :text-left="false"> Ends </table-head-item>
+              <table-row-item>
+                {{ dateFormat(performance.end, 'dd MM y T ZZZZ') }}
+              </table-row-item>
+            </tr>
+          </tbody>
         </table>
       </UiCard>
       <UiCard
@@ -70,46 +72,51 @@
         title="Sales Overview"
       >
         <table class="table-auto w-full">
-          <!-- <tr>
+          <tbody>
+            <!-- <tr>
             <table-head-item :text-left="false">Paid Bookings</table-head-item>
             <table-row-item>100 TODO</table-row-item>
           </tr> -->
-          <tr>
-            <table-head-item :text-left="false"> Ticket Sales </table-head-item>
-            <table-row-item>
-              {{ performance.ticketsBreakdown.totalTicketsSold }} tickets sold |
-              {{
-                (
-                  (100 * performance.ticketsBreakdown.totalTicketsSold) /
-                  performance.ticketsBreakdown.totalCapacity
-                ).toFixed(0)
-              }}%<br />
-              <small
-                >(of
-                {{ performance.ticketsBreakdown.totalCapacity }} performance
-                capacity)
-              </small>
-              <progress-bar
-                :percentage="
-                  Math.min(
-                    100,
+            <tr>
+              <table-head-item :text-left="false">
+                Ticket Sales
+              </table-head-item>
+              <table-row-item>
+                {{ performance.ticketsBreakdown.totalTicketsSold }} tickets sold
+                |
+                {{
+                  (
                     (100 * performance.ticketsBreakdown.totalTicketsSold) /
-                      performance.ticketsBreakdown.totalCapacity
-                  )
-                "
-              />
-            </table-row-item>
-          </tr>
-          <tr v-if="performance.salesBreakdown">
-            <table-head-item :text-left="false">
-              Performance Net Society Revenue
-            </table-head-item>
-            <table-row-item>
-              £{{
-                (performance.salesBreakdown.societyRevenue / 100).toFixed(2)
-              }}
-            </table-row-item>
-          </tr>
+                    performance.ticketsBreakdown.totalCapacity
+                  ).toFixed(0)
+                }}%<br />
+                <small
+                  >(of
+                  {{ performance.ticketsBreakdown.totalCapacity }} performance
+                  capacity)
+                </small>
+                <progress-bar
+                  :percentage="
+                    Math.min(
+                      100,
+                      (100 * performance.ticketsBreakdown.totalTicketsSold) /
+                        performance.ticketsBreakdown.totalCapacity
+                    )
+                  "
+                />
+              </table-row-item>
+            </tr>
+            <tr v-if="performance.salesBreakdown">
+              <table-head-item :text-left="false">
+                Performance Net Society Revenue
+              </table-head-item>
+              <table-row-item>
+                £{{
+                  (performance.salesBreakdown.societyRevenue / 100).toFixed(2)
+                }}
+              </table-row-item>
+            </tr>
+          </tbody>
         </table>
       </UiCard>
     </div>

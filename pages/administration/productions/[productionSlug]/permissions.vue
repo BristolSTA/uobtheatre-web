@@ -3,6 +3,7 @@
     <template #toolbar>
       <UiStaButton
         v-if="production?.assignedUsers?.length"
+        id="savePermissions"
         class="bg-sta-green hover:bg-sta-green-dark transition-colors"
         icon="save"
         @click="savePermissions"
@@ -20,120 +21,143 @@
   </AdminPage>
 </template>
 
-<script lang="ts" setup>
+<script>
 import Swal from 'sweetalert2';
 
 import PermissionsAssigner from '@/components/admin/permissions/PermissionsAssigner.vue';
-import { getValidationErrors } from '~~/utils/api';
+import { getValidationErrors, performMutation } from '~~/utils/api';
 import { loadingSwal, successToast } from '~~/utils/alerts';
 import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue';
 import {
   AdminProductionPermissionsDocument,
-  AdminProductionPermissionsQuery,
-  AdminProductionPermissionsQueryVariables,
-  useProductionPermissionsMutationsMutation
+  ProductionPermissionsMutationsDocument
 } from '~~/graphql/codegen/operations';
-import Errors from '~~/classes/Errors';
 
-const productionSlug = useRoute().params.productionSlug;
+export default defineNuxtComponent({
+  components: {
+    PermissionsAssigner,
+    AllErrorsDisplay
+  },
+  async asyncData() {
+    // Execute query
+    const { data } = await useDefaultApolloClient().query({
+      query: AdminProductionPermissionsDocument,
+      variables: {
+        slug: useRoute().params.productionSlug
+      },
+      fetchPolicy: 'no-cache'
+    });
 
-if (typeof productionSlug !== 'string')
-  throw createSafeError({ message: 'Only one slug can be passed' });
+    const production = data.production;
 
-const { data, refresh } = await useAsyncQuery<AdminProductionPermissionsQuery>({
-  query: AdminProductionPermissionsDocument,
-  variables: {
-    slug: productionSlug
-  } satisfies AdminProductionPermissionsQueryVariables,
-  cache: false
-});
-
-const production = computed(() => data.value?.production);
-
-if (!production.value) {
-  throw createSafeError({
-    statusCode: 404,
-    message: 'This production does not exist'
-  });
-}
-if (production?.value?.assignedUsers === null) {
-  throw createSafeError({
-    statusCode: 401,
-    message: 'You do not have permission to alter permissions'
-  });
-}
-
-const errors = ref<Errors | undefined>(undefined);
-
-async function savePermissions() {
-  const changedUsers = production.value?.assignedUsers
-    ? production.value.assignedUsers.filter((user: any) => user?.modified)
-    : [];
-
-  const mutations: (boolean | Promise<boolean>)[] = changedUsers.map(
-    (assignedUser) => {
-      if (!assignedUser?.user) return false;
-      return setUserPermissions(
-        assignedUser.user.email,
-        (assignedUser.assignedPermissions?.filter(
-          (perm) => perm !== null
-        ) as string[]) ?? []
-      );
+    if (!production) {
+      throw createSafeError({
+        statusCode: 404,
+        message: 'This production does not exist'
+      });
     }
-  );
+    if (production.assignedUsers === null) {
+      throw createSafeError({
+        statusCode: 401,
+        message: 'You do not have permission to alter permissions'
+      });
+    }
 
-  await Promise.all(mutations);
+    return {
+      production
+    };
+  },
+  data() {
+    return {
+      production: null,
+      errors: null
+    };
+  },
+  methods: {
+    async savePermissions() {
+      const changedUsers = this.production?.assignedUsers
+        ? this.production.assignedUsers.filter((user) => user?.modified)
+        : [];
 
-  if (!errors.value) {
-    successToast.fire({ title: 'Users updated succesfully' });
-    refresh();
-  }
-}
+      const mutations = changedUsers.map((assignedUser) => {
+        if (!assignedUser?.user) return false;
+        return this.setUserPermissions(
+          assignedUser.user.email,
+          assignedUser.assignedPermissions?.filter((perm) => perm !== null) ??
+            []
+        );
+      });
 
-interface IPermissionUser {
-  email: string;
-  permissions: string[];
-}
+      await Promise.all(mutations);
 
-async function addUserPermissions(newUser: IPermissionUser) {
-  loadingSwal.fire();
-  if (!(await setUserPermissions(newUser.email, newUser.permissions))) {
-    return Swal.close();
-  }
-  successToast.fire({ title: 'User has been added' });
-  refresh();
-}
-
-async function removeUserPermissions(assignedUser: { user: IPermissionUser }) {
-  loadingSwal.fire();
-  if (!(await setUserPermissions(assignedUser.user.email, []))) {
-    return Swal.close();
-  }
-  successToast.fire({ title: 'User has been removed' });
-  refresh();
-}
-
-async function setUserPermissions(
-  email: string,
-  permissions: string[]
-): Promise<boolean> {
-  errors.value = undefined;
-  if (!production.value?.id) return false;
-  try {
-    await doMutation(
-      useProductionPermissionsMutationsMutation({
+      if (!this.errors) {
+        await this.refresh();
+        successToast.fire({ title: 'Users updated succesfully' });
+      }
+    },
+    async addUserPermissions(newUser) {
+      loadingSwal.fire();
+      if (
+        !(await this.setUserPermissions(newUser.email, newUser.permissions))
+      ) {
+        return Swal.close();
+      }
+      await this.refresh();
+      successToast.fire({ title: 'User has been added' });
+    },
+    async removeUserPermissions(assignedUser) {
+      loadingSwal.fire();
+      if (!(await this.setUserPermissions(assignedUser.user.email, []))) {
+        return Swal.close();
+      }
+      await this.refresh();
+      successToast.fire({ title: 'User has been removed' });
+    },
+    async setUserPermissions(email, permissions) {
+      this.errors = null;
+      if (!this.production.id) return false;
+      try {
+        await performMutation(
+          this.$apollo,
+          {
+            mutation: ProductionPermissionsMutationsDocument,
+            variables: {
+              productionId: this.production.id,
+              userEmail: email,
+              permissions
+            }
+          },
+          'productionPermissions'
+        );
+      } catch (e) {
+        this.errors = getValidationErrors(e);
+        return false;
+      }
+      return true;
+    },
+    async refresh() {
+      const { data } = await this.$apollo.query({
+        query: AdminProductionPermissionsDocument,
         variables: {
-          productionId: production.value?.id,
-          userEmail: email,
-          permissions
-        }
-      }),
-      'productionPermissions'
-    );
-  } catch (e) {
-    errors.value = getValidationErrors(e);
-    return false;
+          slug: useRoute().params.productionSlug
+        },
+        fetchPolicy: 'no-cache'
+      });
+      this.production = data.production;
+
+      if (!this.production) {
+        throw createSafeError({
+          statusCode: 404,
+          message: 'This production does not exist'
+        });
+      }
+      if (this.production.assignedUsers === null) {
+        throw createSafeError({
+          statusCode: 401,
+          message: 'You do not have permission to alter permissions'
+        });
+      }
+    }
   }
-  return true;
-}
+});
 </script>

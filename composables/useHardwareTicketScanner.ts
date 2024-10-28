@@ -1,4 +1,4 @@
-import { TicketQRCodeData } from '~~/types/ticket';
+import type { TicketQRCodeData } from '~~/types/ticket';
 import Ticket from '~~/classes/Ticket';
 import InvalidTicketQRCodeException from '~~/exceptions/InvalidTicketQRCodeException';
 

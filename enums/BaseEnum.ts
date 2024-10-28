@@ -1,4 +1,4 @@
-import { Dictionary } from 'ts-essentials';
+import type { Dictionary } from 'ts-essentials';
 
 export function getEnumTextUsingMap(
   enumValue: string,

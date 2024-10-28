@@ -15,72 +15,74 @@
     <loading-container v-else :loading="loading" class="text-center">
       <form @submit.prevent="attemptUserUpdate">
         <table class="align-text-top m-4 mx-auto text-left">
-          <tr>
-            <th class="pb-2 pr-6 text-sta-orange" style="min-width: 8rem">
-              First Name
-            </th>
-            <td class="pb-2">
-              <p v-if="!editing">
-                {{ user.firstName }}
-              </p>
-              <text-input
-                v-else
-                v-model="firstName"
-                name="firstName"
-                :show-label="false"
-                autocomplete="given-name"
-                :errors="errors"
-                required
-              />
-            </td>
-          </tr>
-          <tr class="pb-4">
-            <th class="pb-2 pr-6 text-sta-orange">Last Name</th>
-            <td class="pb-2">
-              <p v-if="!editing">
-                {{ user.lastName }}
-              </p>
-              <text-input
-                v-else
-                v-model="lastName"
-                name="lastName"
-                :show-label="false"
-                autocomplete="family-name"
-                required
-                :errors="errors"
-              />
-            </td>
-          </tr>
-          <tr class="pb-4">
-            <th class="pb-2 pr-6 text-sta-orange">Email</th>
-            <td class="pb-2">
-              <p v-if="!editing" class="break-all">
-                {{ user.email }}
-              </p>
-              <button
-                v-else
-                class="btn btn-orange btn-outline px-2 py-1"
-                @click="editingEmail = true"
-                @keypress="editingEmail = true"
-              >
-                Change Email
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <th class="pb-2 pr-6 text-sta-orange">Password</th>
-            <td class="pb-2">
-              <template v-if="!editing"> ************ </template>
-              <button
-                v-else
-                class="btn btn-orange btn-outline px-2 py-1"
-                @click="editingPassword = true"
-                @keypress="editingPassword = true"
-              >
-                Change Password
-              </button>
-            </td>
-          </tr>
+          <tbody>
+            <tr>
+              <th class="pb-2 pr-6 text-sta-orange" style="min-width: 8rem">
+                First Name
+              </th>
+              <td class="pb-2">
+                <p v-if="!editing" class="capitalize">
+                  {{ user.firstName }}
+                </p>
+                <text-input
+                  v-else
+                  v-model="firstName"
+                  name="firstName"
+                  :show-label="false"
+                  autocomplete="given-name"
+                  :errors="errors"
+                  required
+                />
+              </td>
+            </tr>
+            <tr class="pb-4">
+              <th class="pb-2 pr-6 text-sta-orange">Last Name</th>
+              <td class="pb-2">
+                <p v-if="!editing" class="capitalize">
+                  {{ user.lastName }}
+                </p>
+                <text-input
+                  v-else
+                  v-model="lastName"
+                  name="lastName"
+                  :show-label="false"
+                  autocomplete="family-name"
+                  required
+                  :errors="errors"
+                />
+              </td>
+            </tr>
+            <tr class="pb-4">
+              <th class="pb-2 pr-6 text-sta-orange">Email</th>
+              <td class="pb-2">
+                <p v-if="!editing" class="break-all">
+                  {{ user.email }}
+                </p>
+                <button
+                  v-else
+                  class="btn btn-orange btn-outline px-2 py-1"
+                  @click="editingEmail = true"
+                  @keypress="editingEmail = true"
+                >
+                  Change Email
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <th class="pb-2 pr-6 text-sta-orange">Password</th>
+              <td class="pb-2">
+                <template v-if="!editing"> ************ </template>
+                <button
+                  v-else
+                  class="btn btn-orange btn-outline px-2 py-1"
+                  @click="editingPassword = true"
+                  @keypress="editingPassword = true"
+                >
+                  Change Password
+                </button>
+              </td>
+            </tr>
+          </tbody>
         </table>
         <div v-if="editing" class="m-4 text-center">
           <UiNonFieldError class="pb-2" :errors="errors" />

@@ -1,14 +1,12 @@
 import { mount as vtuMount } from '@vue/test-utils';
-import { Router, _RouteLocationBase } from 'vue-router';
+import type { Router, _RouteLocationBase } from 'vue-router';
 import { vi } from 'vitest';
-import { useApollo as originalUseApollo } from '@nuxtjs/apollo/dist/runtime/composables';
+//@ts-ignore TODO: Remove this ignore when @nuxtjs/apollo is updated to support bundler - see Issue #474
+import type { useApollo as originalUseApollo } from '@nuxtjs/apollo/dist/runtime/composables';
 import { merge } from 'lodash';
 import { createTestingPinia } from '@pinia/testing';
 import publicConfig from '@/config.public';
 
-//@ts-ignore
-globalThis.defineAppConfig = (options: any) => options;
-// vi.stubGlobal('defineAppConfig', (options: any) => options);
 import appConfig from '@/app.config';
 
 interface ApolloMountingOptions {
@@ -94,7 +92,7 @@ function registerApolloStub(mountingOptions: ApolloMountingOptions) {
   vi.stubGlobal('useAsyncQuery', async (opt: any) => {
     const response = await mockClient.query(opt);
     return {
-      data: ref(response.data)
+      data: ref(response?.data)
     };
   });
 
@@ -105,7 +103,7 @@ function registerApolloStub(mountingOptions: ApolloMountingOptions) {
       useApolloClient() //@ts-ignore
         .client.query(...args)
         .then((result) => {
-          useQueryResult.value = result.data;
+          useQueryResult.value = result?.data;
         });
       return {
         result: useQueryResult
@@ -232,7 +230,9 @@ export default async function (
   if (preMount) preMount();
 
   let dataOpt = vtuMountOptions.data ? vtuMountOptions.data() : {};
+  // @ts-ignore
   if (component.asyncData) {
+    // @ts-ignore
     const data = await component.asyncData();
     Object.assign(dataOpt, data);
   }

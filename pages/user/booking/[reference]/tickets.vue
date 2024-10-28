@@ -27,8 +27,8 @@ import TicketClass from '~~/classes/Ticket';
 import Ticket from '@/components/booking/Ticket.vue';
 import {
   PerformanceByIdDocument,
-  PerformanceByIdQuery,
-  PerformanceByIdQueryVariables
+  type PerformanceByIdQuery,
+  type PerformanceByIdQueryVariables
 } from '~~/graphql/codegen/operations';
 
 definePageMeta({

@@ -5,18 +5,18 @@ export default (overrides = {}) => {
       updatedAt: '2020-05-08T14:00:00.000',
       id: 1,
       type: {
-        paymentType: 'PAYMENT',
+        paymentType: 'PAYMENT'
       },
       providerPaymentId: '1234',
       provider: {
-        value: 'SQUARE_ONLINE',
+        value: 'SQUARE_ONLINE'
       },
       value: '1265',
       currency: 'GBP',
       cardBrand: 'VISA',
       last4: '4441',
       url: 'String',
-      payObject: null, // TODO
+      payObject: null // TODO
     },
     overrides
   );

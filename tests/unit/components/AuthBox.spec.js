@@ -172,6 +172,8 @@ describe('AuthBox', async function () {
         shallow: false,
         routeInfo: {}
       });
+      // Set the turnstile token to a dummy value
+      authBoxComponent.vm.turnstileToken = 'XXXX.DUMMY.TOKEN.XXXX';
     });
 
     it('top nav button shows signup as active', () => {
@@ -230,7 +232,8 @@ describe('AuthBox', async function () {
         'Bloggs',
         'joe.bloggs@example.org',
         '12345678',
-        '12345678'
+        '12345678',
+        'XXXX.DUMMY.TOKEN.XXXX'
       );
 
       expect(router.push).toBeCalledWith('/');

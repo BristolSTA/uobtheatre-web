@@ -85,8 +85,6 @@
 </template>
 
 <script>
-/* eslint-disable vue/no-v-html */
-
 export default defineNuxtComponent({
   head: {
     title: 'Terms and Conditions'

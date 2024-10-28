@@ -21,7 +21,7 @@
 
 <script lang="ts" setup>
 import { useBoxOfficePerformanceTicketBreakdownQuery } from '~~/graphql/codegen/operations';
-import { IdInput } from '~~/types/generic';
+import type { IdInput } from '~~/types/generic';
 
 const props = defineProps<{
   performanceId: IdInput;

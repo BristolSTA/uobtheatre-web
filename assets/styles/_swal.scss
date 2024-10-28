@@ -1,12 +1,11 @@
 // Fix issue with Sweetalert2 text colour
 .swal2-container {
-    // Fix issue with Sweetalert2 text colour   
-    .text-white {
-        color: white !important;
-    }
+  // Fix issue with Sweetalert2 text colour
+  .text-white {
+    color: white !important;
+  }
 
-    .swal2-select {
-        @apply bg-white;
-    }
+  .swal2-select {
+    @apply bg-white;
+  }
 }
-

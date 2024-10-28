@@ -8,7 +8,7 @@ export default (overrides = {}) => {
       city: 'London',
       postcode: 'BS69 420',
       latitude: '123.4567',
-      longitude: '987.654',
+      longitude: '987.654'
     },
     overrides
   );

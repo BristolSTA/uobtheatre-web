@@ -10,15 +10,15 @@ export default (overrides = {}, includeProductions = false) => {
       name: 'STA',
       description: 'We do it in the dark',
       logo: {
-        url: 'http://pathto.example/logo-image.png',
+        url: 'http://pathto.example/logo-image.png'
       },
       banner: {
-        url: 'http://pathto.example/society-banner.png',
+        url: 'http://pathto.example/society-banner.png'
       },
       slug: 'sta',
       productions: includeProductions
         ? GenericNodeConnection([Production()])
-        : GenericNodeConnection(),
+        : GenericNodeConnection()
     },
     overrides
   );

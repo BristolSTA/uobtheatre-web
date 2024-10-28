@@ -26,3 +26,5 @@ graphql/codegen/operations.ts
 
 # Cypress files
 cypress
+
+bin/

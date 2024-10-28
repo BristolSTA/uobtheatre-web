@@ -40,9 +40,9 @@
 </template>
 
 <script lang="ts" setup>
-import { BookingNode } from '~~/graphql/codegen/operations';
-import { PaginationInfo } from '~~/types/generic';
-import { IBookingHeaderProp } from '../../../types/box-office';
+import type { BookingNode } from '~~/graphql/codegen/operations';
+import type { PaginationInfo } from '~~/types/generic';
+import type { IBookingHeaderProp } from '../../../types/box-office';
 
 type Booking = IBookingHeaderProp & Pick<BookingNode, 'id'>;
 
