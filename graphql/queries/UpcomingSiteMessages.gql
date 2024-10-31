@@ -1,5 +1,14 @@
-query allSiteMessages($afterCursor: String) {
-  siteMessages(first: 9, after: $afterCursor) {
+query upcomingSiteMessages($afterCursor: String) {
+  siteMessages(
+    first: 1
+    orderBy: "display_start"
+    after: $afterCursor
+    toDisplay: true
+  ) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
     edges {
       node {
         id

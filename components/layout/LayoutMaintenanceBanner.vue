@@ -68,7 +68,7 @@
 
 <script>
 import cookie from 'js-cookie';
-import { AllSiteMessagesDocument } from '~/graphql/codegen/operations';
+import { UpcomingSiteMessagesDocument } from '~/graphql/codegen/operations';
 import humanizeDuration from 'humanize-duration';
 
 const typeMap = {
@@ -100,32 +100,13 @@ const typeMap = {
 
 export default {
   name: 'LayoutMaintenanceBanner',
-  async asyncData() {
-    const { data } = await useAsyncQuery({
-      query: AllSiteMessagesDocument
-    });
-
-    const siteMessages = data.siteMessages;
-    if (siteMessages) {
-      siteMessages = siteMessages.edges
-        .map((edge) => edge.node)
-        .filter((message) => (message.displayStart < Date.now() && message.eventEnd > Date.now()))
-      console.log(this.siteMessages);
-    }
-
-    this.loading = false;
-
-    return {
-      siteMessages
-    };
-  },
   data() {
     return {
       maintenanceBannerDismissed: false,
       type: 'INFORMATION',
       preventDismiss: false,
       loading: true,
-      siteMessages: []
+      siteMessages: null
     };
   },
   computed: {
@@ -137,14 +118,37 @@ export default {
     // Need to store the alert's id in the cookie to check if it's been superceded
     this.maintenanceBannerDismissed =
       cookie.get('maintenanceBannerDismissed') === 'true';
-    this.runQuery();
+    this.loadSiteMessageData();
   },
   methods: {
+    async loadSiteMessageData() {
+      this.loading = true;
+
+      const { data } = await this.$apollo.query({
+        query: UpcomingSiteMessagesDocument
+      });
+
+      console.log(data);
+
+      const siteMessagesData = data.siteMessages;
+      if (siteMessagesData) {
+        this.siteMessages = siteMessagesData.edges
+          .map((edge) => edge.node)
+          .filter((node) => {
+            return node.activeDisplay;
+          })[0];
+        console.log(this.siteMessages);
+      }
+
+      this.loading = false;
+    },
     // Set the cookie for the duration of the maintenance event (EventEnd - Today)
     dismissBanner() {
       this.maintenanceBannerDismissed = true;
       const dismissalTime = this.siteMessages.eventEnd - Date.now();
-      cookie.set('maintenanceBannerDismissed', 'true', { expires: dismissalTime });
+      cookie.set('maintenanceBannerDismissed', 'true', {
+        expires: dismissalTime
+      });
     },
     humanizeDuration
   }
