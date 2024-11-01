@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="!maintenanceBannerDismissed && !loading"
+    v-if="siteMessage && !loading && !maintenanceBannerDismissed"
     class="antialiased bg-sta-gray-light"
   >
     <div class="h-2" :class="[typeConfig.accentBar]" />
@@ -17,12 +17,12 @@
         <!-- Main Information Slot -->
         <h3 class="text-h3 md:text-h2">{{ typeConfig.titleText }}</h3>
         <p class="pb-2">
-          {{ siteMessages.message }}
+          {{ siteMessage.message }}
         </p>
         <div class="pb-2">
           <span class="font-semibold">Date: </span>
           <span>{{
-            dateFormatLocale(siteMessages.eventStart, {
+            dateFormatLocale(siteMessage.eventStart, {
               weekday: 'long',
               day: 'numeric',
               month: 'long',
@@ -33,7 +33,7 @@
         <div class="pb-2">
           <span class="font-semibold">Time: </span>
           <span>{{
-            dateFormatLocale(siteMessages.eventStart, {
+            dateFormatLocale(siteMessage.eventStart, {
               hour: 'numeric',
               minute: 'numeric',
               timeZoneName: 'short'
@@ -44,7 +44,7 @@
           <p>
             <strong>Duration: </strong>
             {{
-              humanizeDuration(siteMessages.eventDuration * 60 * 1000, {
+              humanizeDuration(siteMessage.eventDuration * 60 * 1000, {
                 units: ['d', 'h', 'm']
               })
             }}
@@ -106,18 +106,20 @@ export default {
       type: 'INFORMATION',
       preventDismiss: false,
       loading: true,
-      siteMessages: null
+      siteMessage: null,
+      dismissedIds: []
     };
   },
   computed: {
     typeConfig() {
-      return typeMap[this.siteMessages.type] || {};
+      return typeMap[this.siteMessage.type] || {};
     }
   },
   mounted() {
     // Need to store the alert's id in the cookie to check if it's been superceded
-    this.maintenanceBannerDismissed =
-      cookie.get('maintenanceBannerDismissed') === 'true';
+    this.dismissedIds = cookie.get('maintenanceBannerDismissed')
+      ? cookie.get('maintenanceBannerDismissed').split(',')
+      : [];
     this.loadSiteMessageData();
   },
   methods: {
@@ -130,25 +132,32 @@ export default {
 
       console.log(data);
 
-      const siteMessagesData = data.siteMessages;
-      if (siteMessagesData) {
-        this.siteMessages = siteMessagesData.edges
+      const siteMessages = data.siteMessages;
+      if (siteMessages) {
+        this.siteMessage = siteMessages.edges
           .map((edge) => edge.node)
           .filter((node) => {
-            return node.activeDisplay;
+            return node.toDisplay && !this.dismissedIds.includes(node.id);
           })[0];
-        console.log(this.siteMessages);
       }
 
       this.loading = false;
     },
-    // Set the cookie for the duration of the maintenance event (EventEnd - Today)
     dismissBanner() {
       this.maintenanceBannerDismissed = true;
-      const dismissalTime = this.siteMessages.eventEnd - Date.now();
-      cookie.set('maintenanceBannerDismissed', 'true', {
-        expires: dismissalTime
-      });
+      const dismissalTime = this.siteMessage.eventEnd - Date.now();
+
+      // If a cookie has already been sent, append the new id to the list
+      if (this.dismissedIds) {
+        this.dismissedIds.push(this.siteMessage.id);
+        cookie.set('maintenanceBannerDismissed', dismissedIds.join(','), {
+          expires: dismissalTime
+        });
+      } else {
+        cookie.set('maintenanceBannerDismissed', this.siteMessage.id, {
+          expires: dismissalTime
+        });
+      }
     },
     humanizeDuration
   }
