@@ -11440,10 +11440,10 @@ pure-rand@^6.0.0:
   resolved "https://registry.yarnpkg.com/pure-rand/-/pure-rand-6.1.0.tgz#d173cf23258231976ccbdb05247c9787957604f2"
   integrity sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA==
 
-qrcode.vue@^3.5.1:
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/qrcode.vue/-/qrcode.vue-3.5.1.tgz#40553568bd68425f248087841fbfc930d98def80"
-  integrity sha512-Mek5hpUgYP2KsRW4mnyPMUttknuXSe37UorUzymYi3rr/74rV0aTvejl2gF2phrxwAEm6zhpSvkGzIxftxj5Tg==
+qrcode.vue@^3.6.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/qrcode.vue/-/qrcode.vue-3.6.0.tgz#d940fe96712922232aa19892bdd68793e62c73e7"
+  integrity sha512-vQcl2fyHYHMjDO1GguCldJxepq2izQjBkDEEu9NENgfVKP6mv/e2SU62WbqYHGwTgWXLhxZ1NCD1dAZKHQq1fg==
 
 qs@6.13.0:
   version "6.13.0"
