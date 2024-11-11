@@ -5,6 +5,7 @@ query adminBookings(
   $productionSlug: String
   $performanceId: String
   $userSearch: String
+  $creatorSearch: String
   $orderBy: String
 ) {
   bookings(
@@ -15,6 +16,7 @@ query adminBookings(
     performanceId: $performanceId
     orderBy: $orderBy
     search: $userSearch
+    creatorSearch: $creatorSearch
     expired: false
   ) {
     pageInfo {
