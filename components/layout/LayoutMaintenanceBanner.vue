@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="siteMessage && !loading && !maintenanceBannerDismissed"
+    v-if="siteMessage && !maintenanceBannerDismissed"
     class="antialiased bg-sta-gray-light"
   >
     <div class="h-2" :class="[typeConfig.accentBar]" />
@@ -20,20 +20,13 @@
           {{ siteMessage.message }}
         </p>
         <div class="pb-2">
-          <span class="font-semibold">Date: </span>
+          <strong>{{ isOngoing ? 'Started At' : 'Starting At' }}: </strong>
           <span>{{
             dateFormatLocale(siteMessage.eventStart, {
               weekday: 'long',
               day: 'numeric',
               month: 'long',
-              year: 'numeric'
-            })
-          }}</span>
-        </div>
-        <div class="pb-2">
-          <span class="font-semibold">Time: </span>
-          <span>{{
-            dateFormatLocale(siteMessage.eventStart, {
+              year: 'numeric',
               hour: 'numeric',
               minute: 'numeric',
               timeZoneName: 'short'
@@ -41,20 +34,21 @@
           }}</span>
         </div>
         <div class="pb-2">
-          <p>
-            <strong>Duration: </strong>
+          <strong>Duration: </strong>
+          <span v-if="!siteMessage.indefiniteOverride">
             {{
               humanizeDuration(siteMessage.eventDuration * 60 * 1000, {
                 units: ['d', 'h', 'm']
               })
             }}
-          </p>
+          </span>
+          <span v-else>Ongoing</span>
         </div>
       </div>
       <div>
         <!-- Icon Slot -->
         <UiStaButton
-          class="text-h2 -my-2"
+          class="text-h2 -my-2 hover:text-sta-rouge-dark"
           :class="['hover:' + typeConfig.iconColour]"
           icon="circle-xmark"
           :disabled="preventDismiss"
@@ -70,31 +64,44 @@
 import cookie from 'js-cookie';
 import { UpcomingSiteMessagesDocument } from '~/graphql/codegen/operations';
 import humanizeDuration from 'humanize-duration';
+import { DateTime } from 'luxon';
 
 const typeMap = {
   upcomingMaintenance: {
     accentBar: 'bg-sta-orange-dark',
     iconColour: 'text-sta-orange-dark',
     icon: 'triangle-exclamation',
-    titleText: 'Upcoming Site Maintenance'
+    titleText: 'Upcoming Maintenance'
   },
   ongoingMaintenance: {
     accentBar: 'bg-sta-rouge-dark',
     iconColour: 'text-sta-rouge-dark',
     icon: 'circle-exclamation',
-    titleText: 'Ongoing Site Maintenance'
+    titleText: 'Ongoing Maintenance'
   },
-  INFORMATION: {
+  upcomingInformation: {
     accentBar: 'bg-sta-orange-dark',
     iconColour: 'text-sta-orange-dark',
     icon: 'circle-info',
-    titleText: 'Important Site Information'
+    titleText: 'Important Information'
   },
-  ALERT: {
+  ongoingInformation: {
+    accentBar: 'bg-sta-orange-dark',
+    iconColour: 'text-sta-orange-dark',
+    icon: 'circle-info',
+    titleText: 'Important Information'
+  },
+  upcomingAlert: {
     accentBar: 'bg-sta-rouge-dark',
     iconColour: 'text-sta-rouge-dark',
     icon: 'circle-exclamation',
-    titleText: 'Urgent Site Alert'
+    titleText: 'Urgent Upcoming Alert'
+  },
+  ongoingAlert: {
+    accentBar: 'bg-sta-rouge-dark',
+    iconColour: 'text-sta-rouge-dark',
+    icon: 'circle-exclamation',
+    titleText: 'Urgent Ongoing Alert'
   }
 };
 
@@ -103,16 +110,20 @@ export default {
   data() {
     return {
       maintenanceBannerDismissed: false,
-      type: 'INFORMATION',
       preventDismiss: false,
-      loading: true,
       siteMessage: null,
       dismissedIds: []
     };
   },
   computed: {
+    isOngoing() {
+      return this.siteMessage.eventStart < DateTime.now().toISO();
+    },
     typeConfig() {
-      return typeMap[this.siteMessage.type] || {};
+      // Combine type and if its ongoing (e.g. ongoingMaintenance, upcomingAlert)
+      return typeMap[
+        `${this.isOngoing ? 'ongoing' : 'upcoming'}${this.siteMessage.type.charAt(0)}${this.siteMessage.type.slice(1).toLowerCase()}`
+      ];
     }
   },
   mounted() {
@@ -124,13 +135,9 @@ export default {
   },
   methods: {
     async loadSiteMessageData() {
-      this.loading = true;
-
       const { data } = await this.$apollo.query({
         query: UpcomingSiteMessagesDocument
       });
-
-      console.log(data);
 
       const siteMessages = data.siteMessages;
       if (siteMessages) {
@@ -139,18 +146,20 @@ export default {
           .filter((node) => {
             return node.toDisplay && !this.dismissedIds.includes(node.id);
           })[0];
-      }
 
-      this.loading = false;
+        if (this.siteMessage && this.siteMessage.dismissalPolicy === 'BANNED') {
+          this.preventDismiss = true;
+        }
+      }
     },
     dismissBanner() {
       this.maintenanceBannerDismissed = true;
       const dismissalTime = this.siteMessage.eventEnd - Date.now();
 
-      // If a cookie has already been sent, append the new id to the list
+      // If a cookie has already been sent, append the new id to the list, otherwise create the cookie
       if (this.dismissedIds) {
         this.dismissedIds.push(this.siteMessage.id);
-        cookie.set('maintenanceBannerDismissed', dismissedIds.join(','), {
+        cookie.set('maintenanceBannerDismissed', this.dismissedIds.join(','), {
           expires: dismissalTime
         });
       } else {

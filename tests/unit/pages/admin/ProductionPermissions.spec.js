@@ -4,7 +4,7 @@ import { GenericApolloResponse } from '#testSupport/helpers/api';
 import { flushPromises } from '@vue/test-utils';
 
 import ProductionPermissionPage from '@/pages/administration/productions/[productionSlug]/permissions.vue';
-import ProductionPermissions from '../../support/fixtures/ProductionPermissions';
+import ProductionPermissions from '../../support/fixtures/ProductionPermissions.js';
 import PermissionsAssigner from '@/components/admin/permissions/PermissionsAssigner.vue';
 import AdminPage from '@/components/admin/AdminPage.vue';
 import GenericMutationResponse from '#testSupport/fixtures/support/GenericMutationResponse';
