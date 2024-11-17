@@ -3,7 +3,8 @@ query upcomingSiteMessages($now: DateTime, $afterCursor: String) {
     first: 1
     orderBy: "display_start"
     after: $afterCursor
-    displayStart_Gte: $now
+    displayStart_Lte: $now
+    end_Gte: $now
   ) {
     pageInfo {
       hasNextPage

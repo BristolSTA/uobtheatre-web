@@ -8,6 +8,7 @@
       <div>
         <!-- Icon Slot -->
         <font-awesome-icon
+          id="maintenanceBannerIcon"
           class="rounded text-h2 p-2"
           :class="[typeConfig.iconColour]"
           :icon="typeConfig.icon"
@@ -136,7 +137,10 @@ export default {
   methods: {
     async loadSiteMessageData() {
       const { data } = await this.$apollo.query({
-        query: UpcomingSiteMessagesDocument
+        query: UpcomingSiteMessagesDocument,
+        variables: {
+          now: new Date()
+        }
       });
 
       const siteMessages = data.siteMessages;
