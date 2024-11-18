@@ -90,7 +90,7 @@ async function cameraOn(promise: Promise<any>) {
     emit('unable', errorMessage);
   }
 }
-function onDetect(string: string) {
+function onDetect(string: [string]) {
   new Audio('/audio/beep_single.mp3').play();
 
   try {
