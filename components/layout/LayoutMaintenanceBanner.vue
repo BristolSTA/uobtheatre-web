@@ -17,11 +17,11 @@
       <div class="max-w-6xl min-w-2/3 xl:min-w-1/2">
         <!-- Main Information Slot -->
         <h3 class="text-h3 md:text-h2">{{ typeConfig.titleText }}</h3>
-        <p class="pb-2">
+        <p class="pb-2 md:text-lg">
           {{ siteMessage.message }}
         </p>
         <div class="pb-2">
-          <strong>{{ isOngoing ? 'Started At' : 'Starting At' }}: </strong>
+          <strong>{{ isOngoing ? 'Started On' : 'Starting On' }}: </strong>
           <span>{{
             dateFormatLocale(siteMessage.eventStart, {
               weekday: 'long',
@@ -35,15 +35,15 @@
           }}</span>
         </div>
         <div class="pb-2">
-          <strong>Duration: </strong>
           <span v-if="!siteMessage.indefiniteOverride">
+            <strong>Expected Duration:</strong>
             {{
               humanizeDuration(siteMessage.eventDuration * 60 * 1000, {
                 units: ['d', 'h', 'm']
               })
             }}
           </span>
-          <span v-else>Ongoing</span>
+          <span v-else> <strong>Duration: </strong>Ongoing</span>
         </div>
       </div>
       <div>
@@ -85,7 +85,7 @@ const typeMap = {
     accentBar: 'bg-sta-orange-dark',
     iconColour: 'text-sta-orange-dark',
     icon: 'circle-info',
-    titleText: 'Important Information'
+    titleText: 'Important Future Information'
   },
   ongoingInformation: {
     accentBar: 'bg-sta-orange-dark',
@@ -97,13 +97,13 @@ const typeMap = {
     accentBar: 'bg-sta-rouge-dark',
     iconColour: 'text-sta-rouge-dark',
     icon: 'circle-exclamation',
-    titleText: 'Urgent Upcoming Alert'
+    titleText: 'Urgent Future Alert'
   },
   ongoingAlert: {
     accentBar: 'bg-sta-rouge-dark',
     iconColour: 'text-sta-rouge-dark',
     icon: 'circle-exclamation',
-    titleText: 'Urgent Ongoing Alert'
+    titleText: 'Urgent Alert'
   }
 };
 
@@ -114,7 +114,8 @@ export default {
       maintenanceBannerDismissed: false,
       preventDismiss: false,
       siteMessage: null,
-      dismissedIds: []
+      dismissedIds: [],
+      typeMap: typeMap
     };
   },
   computed: {

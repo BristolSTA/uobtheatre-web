@@ -69,44 +69,7 @@ describe('Maintenance Banner', () => {
         // If ongoing is true, date eventStart
         await createWithMessage({ type: type }, ongoing);
 
-        const typeMap = {
-          upcomingMaintenance: {
-            accentBar: 'bg-sta-orange-dark',
-            iconColour: 'text-sta-orange-dark',
-            icon: 'triangle-exclamation',
-            titleText: 'Upcoming Maintenance'
-          },
-          ongoingMaintenance: {
-            accentBar: 'bg-sta-rouge-dark',
-            iconColour: 'text-sta-rouge-dark',
-            icon: 'circle-exclamation',
-            titleText: 'Ongoing Maintenance'
-          },
-          upcomingInformation: {
-            accentBar: 'bg-sta-orange-dark',
-            iconColour: 'text-sta-orange-dark',
-            icon: 'circle-info',
-            titleText: 'Important Information'
-          },
-          ongoingInformation: {
-            accentBar: 'bg-sta-orange-dark',
-            iconColour: 'text-sta-orange-dark',
-            icon: 'circle-info',
-            titleText: 'Important Information'
-          },
-          upcomingAlert: {
-            accentBar: 'bg-sta-rouge-dark',
-            iconColour: 'text-sta-rouge-dark',
-            icon: 'circle-exclamation',
-            titleText: 'Urgent Upcoming Alert'
-          },
-          ongoingAlert: {
-            accentBar: 'bg-sta-rouge-dark',
-            iconColour: 'text-sta-rouge-dark',
-            icon: 'circle-exclamation',
-            titleText: 'Urgent Ongoing Alert'
-          }
-        };
+        const typeMap = maintenanceBannerComponent.vm.$data.typeMap;
         // Combine type and if its ongoing (e.g. ongoingMaintenance, upcomingAlert)
         const typeMapType = `${ongoing ? 'ongoing' : 'upcoming'}${type.charAt(0)}${type.slice(1).toLowerCase()}`;
 
@@ -117,8 +80,8 @@ describe('Maintenance Banner', () => {
     );
 
     it.each([
-      ["'started at' for ongoing messages", 'Started At:', true],
-      ["'starting at' for upcomong messages", 'Starting At:', false]
+      ["'started on' for ongoing messages", 'Started On:', true],
+      ["'starting on' for upcomong messages", 'Starting On:', false]
     ])('correctly shows %s', async (testName, expectedText, ongoing) => {
       await createWithMessage({}, ongoing);
 
@@ -128,7 +91,9 @@ describe('Maintenance Banner', () => {
     it('correctly shows the duration for finite events', async () => {
       await createWithMessage();
 
-      expect(maintenanceBannerComponent.text()).toContain('Duration: 22 hours');
+      expect(maintenanceBannerComponent.text()).toContain(
+        'Expected Duration: 22 hours'
+      );
     });
 
     it("correctly shows 'ongoing' for indefinite events", async () => {
