@@ -49,6 +49,7 @@
       <div>
         <!-- Icon Slot -->
         <UiStaButton
+          id="maintenanceBannerDismiss"
           class="text-h2 -my-2 hover:text-sta-rouge-dark"
           :class="['hover:' + typeConfig.iconColour]"
           icon="circle-xmark"
@@ -148,7 +149,9 @@ export default {
         this.siteMessage = siteMessages.edges
           .map((edge) => edge.node)
           .filter((node) => {
-            return node.toDisplay && !this.dismissedIds.includes(node.id);
+            return (
+              node.toDisplay && !this.dismissedIds.includes(String(node.id))
+            );
           })[0];
 
         if (this.siteMessage && this.siteMessage.dismissalPolicy === 'BANNED') {

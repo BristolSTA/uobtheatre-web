@@ -136,15 +136,69 @@ describe('Maintenance Banner', () => {
 
       expect(maintenanceBannerComponent.text()).toContain('Duration: Ongoing');
     });
-
-    //it('dismissal', () => {
-    //  expect(maintenanceBannerComponent.text()).toContain('Test message');
-    //});
   });
 
-  afterEach(() => {
-    // Clean up the component after each test.
-    maintenanceBannerComponent = null;
+  describe('dismissal behaviour', () => {
+    let dismissButton;
+
+    const findElements = () => {
+      dismissButton = maintenanceBannerComponent.find(
+        'button#maintenanceBannerDismiss'
+      );
+    };
+
+    it('cannot dismiss banner when dismissal banned', async () => {
+      await createWithMessage({ dismissalPolicy: 'BANNED' });
+
+      findElements();
+      dismissButton.trigger('click');
+
+      expect(maintenanceBannerComponent.vm.$data.preventDismiss).toBe(true);
+      expect(
+        maintenanceBannerComponent.vm.$data.maintenanceBannerDismissed
+      ).toBe(false);
+    });
+
+    it('dismissed the banner', async () => {
+      await createWithMessage();
+
+      expect(
+        maintenanceBannerComponent.vm.$data.maintenanceBannerDismissed
+      ).toBe(false);
+
+      findElements();
+      dismissButton.trigger('click');
+
+      expect(
+        maintenanceBannerComponent.vm.$data.maintenanceBannerDismissed
+      ).toBe(true);
+      // Order matters here! The cookie is set for the next test
+    });
+
+    it('sets cookies, and it does not appear if id in cookies', async () => {
+      // Order matters here! The cookie is set in the previous test.
+      await createWithMessage({ dismissalPolicy: 'BANNED' });
+
+      expect(maintenanceBannerComponent.exists()).toBe(true);
+      expect(maintenanceBannerComponent.text()).not.toContain(
+        SiteMessage().message
+      );
+    });
+
+    it('appears if a different id is in cookies', async () => {
+      // Order matters here! The cookie is set in the previous tests.
+      await createWithMessage({ id: 2 });
+
+      expect(maintenanceBannerComponent.exists()).toBe(true);
+      expect(maintenanceBannerComponent.text()).toContain(
+        SiteMessage().message
+      );
+    });
+
+    afterEach(() => {
+      // Clean up the compqonent after each test.
+      maintenanceBannerComponent = null;
+    });
   });
 
   /**
