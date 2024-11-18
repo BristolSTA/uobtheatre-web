@@ -8,10 +8,42 @@ import { GenericNodeConnection } from '../../support/helpers/api';
 describe('Maintenance Banner', () => {
   let maintenanceBannerComponent;
 
-  it('displays the maintenance banner', async () => {
+  it('displays the maintenance banner when it has data', async () => {
     await createWithMessage();
 
     expect(maintenanceBannerComponent.exists()).toBe(true);
+    expect(maintenanceBannerComponent.text()).toContain(SiteMessage().message);
+  });
+
+  it('does not display the maintenance banner when no event exists', async () => {
+    maintenanceBannerComponent = await mount(MaintenanceBanner, {
+      shallow: false,
+      global: {
+        mocks: {
+          $apollo: {
+            query: vi.fn().mockResolvedValue({
+              data: {
+                siteMessages: null
+              }
+            })
+          }
+        }
+      }
+    });
+
+    expect(maintenanceBannerComponent.exists()).toBe(true);
+    expect(maintenanceBannerComponent.text()).not.toContain(
+      SiteMessage().message
+    );
+  });
+
+  it('does not display the maintenance banner when there are no active events', async () => {
+    await createWithMessage({ active: false, toDisplay: false });
+
+    expect(maintenanceBannerComponent.exists()).toBe(true);
+    expect(maintenanceBannerComponent.text()).not.toContain(
+      SiteMessage().message
+    );
   });
 
   describe('maintenance banner component', () => {
@@ -77,7 +109,6 @@ describe('Maintenance Banner', () => {
         };
         // Combine type and if its ongoing (e.g. ongoingMaintenance, upcomingAlert)
         const typeMapType = `${ongoing ? 'ongoing' : 'upcoming'}${type.charAt(0)}${type.slice(1).toLowerCase()}`;
-        console.log(typeMapType);
 
         const icon = maintenanceBannerComponent.find('#maintenanceBannerIcon');
 
@@ -85,17 +116,30 @@ describe('Maintenance Banner', () => {
       }
     );
 
-    it('sharted at / starting at', () => {
-      expect(maintenanceBannerComponent.text()).toContain('Test message');
+    it.each([
+      ["'started at' for ongoing messages", 'Started At:', true],
+      ["'starting at' for upcomong messages", 'Starting At:', false]
+    ])('correctly shows %s', async (testName, expectedText, ongoing) => {
+      await createWithMessage({}, ongoing);
+
+      expect(maintenanceBannerComponent.text()).toContain(expectedText);
     });
 
-    it('duration / ongoing', () => {
-      expect(maintenanceBannerComponent.text()).toContain('Test message');
+    it('correctly shows the duration for finite events', async () => {
+      await createWithMessage();
+
+      expect(maintenanceBannerComponent.text()).toContain('Duration: 22 hours');
     });
 
-    it('dismissal', () => {
-      expect(maintenanceBannerComponent.text()).toContain('Test message');
+    it("correctly shows 'ongoing' for indefinite events", async () => {
+      await createWithMessage({ indefiniteOverride: true });
+
+      expect(maintenanceBannerComponent.text()).toContain('Duration: Ongoing');
     });
+
+    //it('dismissal', () => {
+    //  expect(maintenanceBannerComponent.text()).toContain('Test message');
+    //});
   });
 
   afterEach(() => {
@@ -107,12 +151,13 @@ describe('Maintenance Banner', () => {
    * Asynchronously creates and mounts the MaintenanceBanner component with a mocked Apollo query.
    *
    * @param {Object} overrides - An object containing properties to override in the SiteMessage.
+   * @param {Boolean} ongoing - Whether the message is ongoing.
    * @returns {Promise<void>} A promise that resolves when the component is mounted.
    *
    * @example
    * await createWithMessage({ message: 'Site is under maintenance' });
    */
-  const createWithMessage = async (overrides) => {
+  const createWithMessage = async (overrides, ongoing) => {
     maintenanceBannerComponent = await mount(MaintenanceBanner, {
       shallow: false,
       global: {
@@ -121,7 +166,7 @@ describe('Maintenance Banner', () => {
             query: vi.fn().mockResolvedValue({
               data: {
                 siteMessages: GenericNodeConnection(
-                  Array(1).fill(SiteMessage(overrides))
+                  Array(1).fill(SiteMessage(overrides, ongoing))
                 )
               }
             })
