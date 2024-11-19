@@ -53,13 +53,18 @@ export default {
     classes() {
       const arr = [];
       arr.push(!this.small ? 'p-2' : 'p-1 text-sm');
+      arr.push(
+        Array.isArray(this.colour)
+          ? `bg-${this.colour[0]}`
+          : `bg-sta-${this.colour}`
+      );
       if (this.disabled) {
-        arr.push('cursor-not-allowed bg-gray-600');
+        arr.push('cursor-not-allowed');
       } else if (this.colour) {
         arr.push(
           Array.isArray(this.colour)
-            ? `bg-${this.colour[0]} hover:bg-${this.colour[1]}`
-            : `bg-sta-${this.colour} hover:bg-sta-${this.colour}-dark`
+            ? `hover:bg-${this.colour[1]}`
+            : `hover:bg-sta-${this.colour}-dark`
         );
       }
       return arr;
