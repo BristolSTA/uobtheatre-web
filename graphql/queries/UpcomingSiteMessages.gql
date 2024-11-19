@@ -1,6 +1,6 @@
 query upcomingSiteMessages($now: DateTime, $afterCursor: String) {
   siteMessages(
-    first: 1
+    first: 5
     orderBy: "display_start"
     after: $afterCursor
     displayStart_Lte: $now

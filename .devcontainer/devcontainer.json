@@ -14,7 +14,6 @@
         "esbenp.prettier-vscode",
         "apollographql.vscode-apollo",
         "gruntfuggly.todo-tree",
-        "eamodio.gitlens",
         "Vue.volar",
         "csstools.postcss"
       ]
