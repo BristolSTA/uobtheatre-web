@@ -54,10 +54,10 @@ export default class {
     return ticket;
   }
 
-  static dataFromQRCode(rawQRCode: string) {
+  static dataFromQRCode(detectedCodes: [string]) {
     try {
-      const result = JSON.parse(atob(rawQRCode));
-
+      const rawValue = JSON.parse(JSON.stringify(detectedCodes[0])).rawValue;
+      const result = JSON.parse(atob(rawValue));
       return {
         bookingReference: result[0],
         ticketId: result[1]

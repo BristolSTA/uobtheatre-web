@@ -117,12 +117,6 @@ describe('Home', function () {
       homepageComponent = await mountComponent();
       await homepageComponent.vm.$nextTick();
 
-      console.log(homepageComponent.vm.userBookingsResult.me?.bookings?.edges);
-      console.log(
-        homepageComponent.vm.userBookingsResult.me?.bookings?.edges[0].node
-          .performance.start
-      );
-
       expect(homepageComponent.findComponent(BookingHomepageOverview).exists())
         .to.be.true;
     });
