@@ -56,7 +56,6 @@ export default class {
 
   static dataFromQRCode(detectedCodes: [string]) {
     try {
-      console.log(JSON.stringify(detectedCodes));
       const rawValue = JSON.parse(JSON.stringify(detectedCodes[0])).rawValue;
       const result = JSON.parse(atob(rawValue));
       return {
