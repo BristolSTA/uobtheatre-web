@@ -141,6 +141,9 @@ watch([searchText, searchFilter], () => {
 });
 
 watch(scannedCode, async (newValue) => {
+  // Handles QR code scanning with physical scanners
+  // Mobile scanning is handled by the UiInputTicketScanner component
+
   // If the newly scaned code is undefined (i.e. telling us a new code is about to be scanned) reset the state
   if (!newValue) {
     setCheckInState();
@@ -149,8 +152,7 @@ watch(scannedCode, async (newValue) => {
 
   try {
     // Convert the scanned text into ticket data
-    const rawValue = JSON.parse(JSON.stringify(newValue[0])).rawValue;
-    const ticketDetails = Ticket.dataFromQRCode(rawValue);
+    const ticketDetails = Ticket.dataFromQRCode(newValue);
 
     // Do the scan action as appropriate
     let state = await handleTicketScan(
