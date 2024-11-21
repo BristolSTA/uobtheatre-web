@@ -4,11 +4,37 @@ query venuePageDetails($slug: String!) {
     name
     internalCapacity
     description
+    accessibilityInfo
     image {
       url
     }
     address {
       ...AddressFields
+    }
+    productions(orderBy: "-start") {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          id
+          name
+          slug
+          start
+          end
+          isBookable
+          featuredImage {
+            url
+          }
+          coverImage {
+            url
+          }
+          society {
+            name
+          }
+        }
+      }
     }
   }
 }
