@@ -149,7 +149,8 @@ watch(scannedCode, async (newValue) => {
 
   try {
     // Convert the scanned text into ticket data
-    const ticketDetails = Ticket.dataFromQRCode([newValue]);
+    const rawValue = JSON.parse(JSON.stringify(newValue[0])).rawValue;
+    const ticketDetails = Ticket.dataFromQRCode(rawValue);
 
     // Do the scan action as appropriate
     let state = await handleTicketScan(
