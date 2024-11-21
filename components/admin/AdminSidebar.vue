@@ -10,6 +10,15 @@
     <sidebar-item icon="theater-masks" href="/administration/productions">
       Productions
     </sidebar-item>
+    <sidebar-item icon="ticket" href="/administration/tools/booking-lookup">
+      All Bookings
+    </sidebar-item>
+    <sidebar-item
+      icon="magnifying-glass"
+      href="/administration/tools/ticket-scan"
+    >
+      Scan a Ticket
+    </sidebar-item>
     <sidebar-item
       v-if="authStore.hasPermission('finance_reports')"
       icon="money-bill"

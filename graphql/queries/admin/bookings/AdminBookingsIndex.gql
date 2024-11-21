@@ -1,0 +1,37 @@
+#import "../../../fragments/booking/BasicBookingDetails.gql"
+query adminBookings(
+  $offset: Int
+  $status: String
+  $productionSlug: String
+  $performanceId: String
+  $userSearch: String
+  $creatorSearch: String
+  $orderBy: String
+) {
+  bookings(
+    first: 10
+    offset: $offset
+    status: $status
+    productionSlug: $productionSlug
+    performanceId: $performanceId
+    orderBy: $orderBy
+    search: $userSearch
+    creatorSearch: $creatorSearch
+    expired: false
+  ) {
+    pageInfo {
+      hasNextPage
+    }
+    edges {
+      node {
+        ...BasicBookingDetails
+        createdAt
+        creator {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+}

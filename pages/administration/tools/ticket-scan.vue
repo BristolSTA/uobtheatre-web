@@ -1,5 +1,5 @@
 <template>
-  <AdminPage title="Ticket Lookup">
+  <AdminPage title="Scan a Ticket">
     <div v-if="!scannedData">
       <div v-if="!useCameraScanner" class="text-center">
         <h3 class="text-h3">Scan a ticket with a barcode scanner</h3>
