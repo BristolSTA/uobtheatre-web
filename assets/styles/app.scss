@@ -1,16 +1,17 @@
-@import './_tiptap';
-@import './_swal';
-@import './_table';
-@import './_datepicker';
-@import './_misc';
+@use "sass:string";
+@use '_tiptap';
+@use '_swal';
+@use '_table';
+@use '_datepicker';
+@use '_misc';
 @import '@fortawesome/fontawesome-svg-core/styles.css';
 
 @function str-replace($string, $search, $replace: '') {
-  $index: str-index($string, $search);
+  $index: string.index($string, $search);
   @if $index {
-    @return str-slice($string, 1, $index - 1) + $replace +
+    @return string.slice($string, 1, $index - 1) + $replace +
       str-replace(
-        str-slice($string, $index + str-length($search)),
+        string.slice($string, $index + string.length($search)),
         $search,
         $replace
       );
@@ -63,7 +64,7 @@
     }
     .btn-#{$color}:hover:not(.disabled):not([disabled]) {
       $hov-color: 'bg-sta-#{$color}-dark';
-      @if (str-index($color, '-light')) {
+      @if (string.index($color, '-light')) {
         $new-col: str-replace($color, '-light', '');
         $hov-color: 'bg-sta-#{$new-col}-dark';
       }
