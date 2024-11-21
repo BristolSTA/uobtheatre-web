@@ -12,7 +12,7 @@ export default function useHardwareTicketScanner() {
     if (!value) return (ticketDetails.value = undefined);
 
     try {
-      ticketDetails.value = Ticket.dataFromQRCode([value]);
+      ticketDetails.value = Ticket.dataFromQRCode(value);
     } catch (e) {
       if (e instanceof InvalidTicketQRCodeException) {
         return (isInvalid.value = true);

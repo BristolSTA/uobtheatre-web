@@ -94,7 +94,8 @@ function onDetect(string: [string]) {
   new Audio('/audio/beep_single.mp3').play();
 
   try {
-    const ticketData = Ticket.dataFromQRCode(string);
+    const rawValue = JSON.parse(JSON.stringify(string[0])).rawValue;
+    const ticketData = Ticket.dataFromQRCode(rawValue);
     if (props.pauseOnDecode) {
       cameraReset.value = true;
     }
