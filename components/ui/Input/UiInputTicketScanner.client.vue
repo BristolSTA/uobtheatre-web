@@ -2,8 +2,8 @@
   <qrcode-stream
     :camera="!on || cameraReset ? 'off' : 'auto'"
     :track="onTrackEvent"
-    @init="onInit"
-    @decode="onDecode"
+    @camera-on="cameraOn"
+    @detect="onDetect"
   >
     <slot />
   </qrcode-stream>
@@ -56,7 +56,7 @@ function onTrackEvent(detectedCodes: any, ctx: any) {
   }
 }
 
-async function onInit(promise: Promise<any>) {
+async function cameraOn(promise: Promise<any>) {
   try {
     await promise;
     emit('ready');
@@ -90,11 +90,12 @@ async function onInit(promise: Promise<any>) {
     emit('unable', errorMessage);
   }
 }
-function onDecode(string: string) {
+function onDetect(string: [string]) {
   new Audio('/audio/beep_single.mp3').play();
 
   try {
-    const ticketData = Ticket.dataFromQRCode(string);
+    const rawValue = JSON.parse(JSON.stringify(string[0])).rawValue;
+    const ticketData = Ticket.dataFromQRCode(rawValue);
     if (props.pauseOnDecode) {
       cameraReset.value = true;
     }

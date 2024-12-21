@@ -1,0 +1,34 @@
+query upcomingSiteMessages($now: DateTime, $afterCursor: String) {
+  siteMessages(
+    first: 5
+    orderBy: "display_start"
+    after: $afterCursor
+    displayStart_Lte: $now
+    end_Gte: $now
+  ) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    edges {
+      node {
+        id
+        message
+        active
+        indefiniteOverride
+        displayStart
+        eventStart
+        eventEnd
+        eventDuration
+        creator {
+          id
+          firstName
+          lastName
+        }
+        type
+        dismissalPolicy
+        toDisplay
+      }
+    }
+  }
+}

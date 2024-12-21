@@ -67,11 +67,12 @@ export default defineNuxtComponent({
         const { data } = await this.$apollo.query({
           query: AdminProductionEditQuery,
           variables: {
-            slug: this.production.slug
-          }
+            slug: await this.production.slug
+          },
+          fetchPolicy: 'no-cache'
         });
         this.production = data.production;
-        useRouter().replace(
+        useRouter().navigateTo(
           `/administration/productions/${this.production.slug}`
         );
         successToast.fire({ title: 'Production Updated' });
