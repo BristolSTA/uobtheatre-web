@@ -25,6 +25,9 @@
           inc. {{ performance.intervalDurationMins }} min interval
         </template>
       </icon-list-item>
+      <icon-list-item v-if="performance.isRelaxed" icon="circle-info">
+        Relaxed performance
+      </icon-list-item>
     </div>
   </overview-box>
 </template>
