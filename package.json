@@ -66,7 +66,7 @@
     "unplugin-vue-components": "^0.27.5",
     "vite-plugin-eslint2": "^5.0.3",
     "vitest": "^2.0.5",
-    "vue-tsc": "^2.1.10",
+    "vue-tsc": "^2.2.0",
     "webpack": "^5.97.1"
   },
   "dependencies": {
@@ -115,7 +115,7 @@
     "uuid": "^11.0.3",
     "vue-currency-input": "^3.1.0",
     "vue-gtag": "^2.0.1",
-    "vue-qrcode-reader": "5.5.11"
+    "vue-qrcode-reader": "5.6.0"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
