@@ -28,10 +28,10 @@
   resolved "https://registry.yarnpkg.com/@antfu/utils/-/utils-0.7.10.tgz#ae829f170158e297a9b6a28f161a8e487d00814d"
   integrity sha512-+562v9k4aI80m1+VuMHehNJWLOFjBnXn3tdOitzD0il5b7smkSBal4+a3oKiQTbrwMmN/TBUMDvbdoWDehgOww==
 
-"@apollo/client@^3.12.3", "@apollo/client@^3.9.5":
-  version "3.12.3"
-  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.12.3.tgz#0d252749baad8328e06883fe118dc7e73e3bbb1f"
-  integrity sha512-KZ5zymRdb8bMbGUb1wP2U04ff7qIGgaC1BCdCVC+IPFiXkxEhHBc5fDEQOwAUT+vUo9KbBh3g7QK/JCOswn59w==
+"@apollo/client@^3.12.8", "@apollo/client@^3.9.5":
+  version "3.12.8"
+  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.12.8.tgz#99670386104f77ceba03f7e3dc0d91813f03cd3c"
+  integrity sha512-053z5eCM7zNl81Lxs/SqHv8e+x3sszrtmGS2TNuPW0ZTZzmKATMsIsoblx1Kt0E67Ze3jb99JSPiQHG9ozGc3g==
   dependencies:
     "@graphql-typed-document-node/core" "^3.1.1"
     "@wry/caches" "^1.0.0"
@@ -42,7 +42,6 @@
     optimism "^0.18.0"
     prop-types "^15.7.2"
     rehackt "^0.1.0"
-    response-iterator "^0.2.6"
     symbol-observable "^4.0.0"
     ts-invariant "^0.10.3"
     tslib "^2.3.0"
@@ -12386,11 +12385,6 @@ resolve@^1.1.7, resolve@^1.10.0, resolve@^1.10.1, resolve@^1.20.0, resolve@^1.22
     is-core-module "^2.13.0"
     path-parse "^1.0.7"
     supports-preserve-symlinks-flag "^1.0.0"
-
-response-iterator@^0.2.6:
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/response-iterator/-/response-iterator-0.2.6.tgz#249005fb14d2e4eeb478a3f735a28fd8b4c9f3da"
-  integrity sha512-pVzEEzrsg23Sh053rmDUvLSkGXluZio0qu8VT6ukrYuvtjVfCbDZH9d6PGXb8HZfzdNZt8feXv/jvUzlhRgLnw==
 
 restore-cursor@^3.1.0:
   version "3.1.0"
