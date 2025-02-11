@@ -14470,10 +14470,10 @@ vue-component-type-helpers@^2.0.0:
   resolved "https://registry.yarnpkg.com/vue-component-type-helpers/-/vue-component-type-helpers-2.1.6.tgz#f350515b252ed9e76960ac51f135636f8baef3fe"
   integrity sha512-ng11B8B/ZADUMMOsRbqv0arc442q7lifSubD0v8oDXIFoMg/mXwAPUunrroIDkY+mcD0dHKccdaznSVp8EoX3w==
 
-vue-currency-input@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/vue-currency-input/-/vue-currency-input-3.1.0.tgz#869a89bbbb98cc8e483cb410adbdd0f8d6eb1d74"
-  integrity sha512-XZ8bg61zRNJjRDo7I4K0UAah9qtkipexRcn/h9MzEqZQ9gVZWABObgN+042UchmCTiwSfsjGOd6DZGzd/TUUMA==
+vue-currency-input@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/vue-currency-input/-/vue-currency-input-3.2.1.tgz#61a6fdf2b80e3f1b21017a1eec614893766cb30f"
+  integrity sha512-Osfxzdu5cdZSCS4Cm0vuk7LwNeSdHWGIWK8gtDBC1kU0UtAKz7iU/8dyJ0KDJKxbAYiKeovoQTRfYxCH82I0EA==
 
 vue-demi@>=0.14.10, vue-demi@^0.14.10, vue-demi@^0.14.6:
   version "0.14.10"
@@ -14498,15 +14498,15 @@ vue-eslint-parser@^9.4.3:
     lodash "^4.17.21"
     semver "^7.3.6"
 
-vue-gtag@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/vue-gtag/-/vue-gtag-2.0.1.tgz#d4dc1b9cf79809c37ce844824c0f7fa97af520dd"
-  integrity sha512-aM4A58FVL0wV2ptYi+xzAjeg+pQVRyUcfBc5UkXAwQrR4t3WBhor50Izp2I+3Oo7+l+vWJ7u78DGcNzReb8S/A==
+vue-gtag@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/vue-gtag/-/vue-gtag-2.0.2.tgz#fb418f05249533b68208feb9949187bd60ddc01c"
+  integrity sha512-zt4eRApwxm/+qEAZ1AMia94OaCwo5m4XgVMha19i/FG8fI/OtiLoQsL4C9aptTo1/m6d3iwdGsWZ3/Ffx/etvw==
 
-vue-qrcode-reader@5.5.11:
-  version "5.5.11"
-  resolved "https://registry.yarnpkg.com/vue-qrcode-reader/-/vue-qrcode-reader-5.5.11.tgz#84b3abf54471e4dfc39d7e5959a741bd0f4137c3"
-  integrity sha512-Ec/bVML1jgxSX+usbgdcXGhOFEFo4EzApCO2CNT1YK0Dcb0Mp7ASygz78RJJs22SU2oI7vz9iJDyr4ucSDTvjQ==
+vue-qrcode-reader@5.7.0:
+  version "5.7.0"
+  resolved "https://registry.yarnpkg.com/vue-qrcode-reader/-/vue-qrcode-reader-5.7.0.tgz#ba22dd6ea6c17d7788506f9be3fa7f3fb8b4b9bb"
+  integrity sha512-NuLBK3madyMhM35n2libd0i5GH3Rcvq2d7qB1Qyf5FqdIdC6GaMEC8Wi8v0HFuv5V5aptOLhHVBfSczBpO3lvA==
   dependencies:
     barcode-detector "2.2.2"
     webrtc-adapter "8.2.3"
