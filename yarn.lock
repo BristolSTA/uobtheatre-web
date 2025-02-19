@@ -2699,15 +2699,15 @@
     ufo "^1.5.4"
     unctx "^2.4.1"
 
-"@nuxtjs/turnstile@^0.9.11":
-  version "0.9.11"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/turnstile/-/turnstile-0.9.11.tgz#0d479a2aee8c67cc988630a132212f8f962a6285"
-  integrity sha512-kE2n1UZdpyw6XHVUMi8Ru0TG0RbB/2myN/ssM0oXPDnrAXUxeOA3DHq/9ejIVnu2kxJZsngAQM3cnmuDTIuUFw==
+"@nuxtjs/turnstile@^0.9.12":
+  version "0.9.12"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/turnstile/-/turnstile-0.9.12.tgz#3cb34db0cd9e07cab8b46c07b6ccc23efda37dd6"
+  integrity sha512-/GRvI2ahQtHBoKLAErIt1p3zomm2vduLFwqQjiINaNbEIbm8mPsrNDVhPSlocdHJkASpBs+0GnYXZzJLfjatEA==
   dependencies:
     "@nuxt/kit" "^3.13.2"
     "@types/cloudflare-turnstile" "0.2.2"
     defu "^6.1.4"
-    pathe "^1.1.2"
+    pathe "^2.0.0"
 
 "@one-ini/wasm@0.1.1":
   version "0.1.1"
