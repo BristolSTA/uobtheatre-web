@@ -915,10 +915,10 @@
     tunnel-agent "^0.6.0"
     uuid "^8.3.2"
 
-"@cypress/vue@^6.0.1":
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/@cypress/vue/-/vue-6.0.1.tgz#a6087b9b2a320db28525a51d0c14684b9908c4d6"
-  integrity sha512-pXzy6ZsYzWORHqSeXticZgZn9st22Rv1WSeWLYSrilz1+Zxe1qcdn9812qYY1v23nlikgOktvQYbMFQhv0FZSA==
+"@cypress/vue@^6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@cypress/vue/-/vue-6.0.2.tgz#b015c24c6ae79686928e8dc3bbcc3b4bc23fef18"
+  integrity sha512-To+Ik4CnhTPMmDh7VGpl5k0Z1LuE0xrI0j6LF7QyjROY2bkQwUE50WTmVPCz/Dvez9WrVpkJjRmflR5KlVmGiQ==
 
 "@cypress/xvfb@^1.2.4":
   version "1.2.4"
