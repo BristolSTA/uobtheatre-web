@@ -4411,10 +4411,10 @@
     js-beautify "^1.14.9"
     vue-component-type-helpers "^2.0.0"
 
-"@vuepic/vue-datepicker@10.0.0":
-  version "10.0.0"
-  resolved "https://registry.yarnpkg.com/@vuepic/vue-datepicker/-/vue-datepicker-10.0.0.tgz#46b88a7b82a76ce6e2576581cc086543161a6e62"
-  integrity sha512-ujlk3ahftVQpyCJ8hq7TmOOHrf/XFJI1ZcAh/FRB5Ci62Vq5HmHf6xux5KVi5SPUFRTJY78m+uDhYy1M+8RZ9w==
+"@vuepic/vue-datepicker@11.0.1":
+  version "11.0.1"
+  resolved "https://registry.yarnpkg.com/@vuepic/vue-datepicker/-/vue-datepicker-11.0.1.tgz#c5793d8728f0906417ef06a2f04b7cf5019d83a0"
+  integrity sha512-xtGbgZAftBiU1H8pwM54vOCutLzEHsHiolRuDn+memTjqpfzT0x1Ml1tykJ53PLvdkCTyb6sB+1muv5Gsd4nQA==
   dependencies:
     date-fns "^4.1.0"
 
