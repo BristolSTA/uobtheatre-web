@@ -2518,13 +2518,13 @@
     pathe "^2.0.2"
     std-env "^3.8.0"
 
-"@nuxt/scripts@^0.10.3":
-  version "0.10.3"
-  resolved "https://registry.yarnpkg.com/@nuxt/scripts/-/scripts-0.10.3.tgz#68283de9ca8bedb9a518c5e91413e87a2ada1cfa"
-  integrity sha512-1Bmv0205PXcg2Z0qjC0cb5Qtkv1QEQSG31+32R6h9s4aMAciiXAC8CXltUO6KC97FSvSy4WUpLHjMddYHqtjyg==
+"@nuxt/scripts@^0.10.5":
+  version "0.10.5"
+  resolved "https://registry.yarnpkg.com/@nuxt/scripts/-/scripts-0.10.5.tgz#3414b4454c072abdfa047793a8ff09357e2d105b"
+  integrity sha512-MZTGWN/kjkKBZzuJssIrzHO9evMWtceaLowF9R7FMZjACFLYWqnf127EP/2pzDfwii5+NkZUe5mfyeIDxXbkUw==
   dependencies:
     "@nuxt/kit" "^3.15.4"
-    "@vueuse/core" "^12.5.0"
+    "@vueuse/core" "^12.7.0"
     consola "^3.4.0"
     defu "^6.1.4"
     h3 "^1.15.0"
@@ -2534,12 +2534,12 @@
     pathe "^2.0.3"
     pkg-types "^1.3.1"
     semver "^7.7.1"
-    sirv "^3.0.0"
+    sirv "^3.0.1"
     std-env "^3.8.0"
     ufo "^1.5.4"
     unplugin "^2.2.0"
     unstorage "^1.14.4"
-    valibot "^1.0.0-rc.0"
+    valibot "^1.0.0-rc.1"
 
 "@nuxt/telemetry@^2.6.4":
   version "2.6.4"
@@ -4435,7 +4435,7 @@
     "@vueuse/shared" "12.5.0"
     vue "^3.5.13"
 
-"@vueuse/core@^12.4.0", "@vueuse/core@^12.5.0":
+"@vueuse/core@^12.4.0", "@vueuse/core@^12.7.0":
   version "12.7.0"
   resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-12.7.0.tgz#b9c3880e9c01d9db86029c6a58412f1b1922497e"
   integrity sha512-jtK5B7YjZXmkGNHjviyGO4s3ZtEhbzSgrbX+s5o+Lr8i2nYqNyHuPVOeTdM1/hZ5Tkxg/KktAuAVDDiHMraMVA==
@@ -12068,10 +12068,10 @@ simple-git@^3.27.0:
     "@kwsites/promise-deferred" "^1.1.1"
     debug "^4.3.5"
 
-sirv@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/sirv/-/sirv-3.0.0.tgz#f8d90fc528f65dff04cb597a88609d4e8a4361ce"
-  integrity sha512-BPwJGUeDaDCHihkORDchNyyTvWFhcusy1XMmhEVTQTwGeybFbp8YEmB+njbPnth1FibULBSBVwCQni25XlCUDg==
+sirv@^3.0.0, sirv@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/sirv/-/sirv-3.0.1.tgz#32a844794655b727f9e2867b777e0060fbe07bf3"
+  integrity sha512-FoqMu0NCGBLCcAkS1qA+XJIQTR6/JHfQXl+uGteNCQ76T91DMUjPa9xfmeqMY3z80nLSg9yQmNjK0Px6RWsH/A==
   dependencies:
     "@polka/url" "^1.0.0-next.24"
     mrmime "^2.0.0"
@@ -13309,7 +13309,7 @@ v8-to-istanbul@^9.0.1:
     "@types/istanbul-lib-coverage" "^2.0.1"
     convert-source-map "^2.0.0"
 
-valibot@^1.0.0-rc.0:
+valibot@^1.0.0-rc.1:
   version "1.0.0-rc.1"
   resolved "https://registry.yarnpkg.com/valibot/-/valibot-1.0.0-rc.1.tgz#3cc518f5d17d7a6c5b364ae576559da9c427dcca"
   integrity sha512-bTHNpeeQ403xS7qGHF/tw3EC/zkZOU5VdkfIsmRDu1Sp+BJNTNCm6m5HlwOgyW/03lofP+uQiq3R+Poo9wiCEg==
