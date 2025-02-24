@@ -96,6 +96,7 @@ export default defineNuxtComponent({
     // Execute query
     const { data } = await useDefaultApolloClient().query({
       query: AdminProductionLookupQuery,
+      notifyOnNetworkStatusChange: true,
       variables: {
         slug: useRoute().params.productionSlug
       }

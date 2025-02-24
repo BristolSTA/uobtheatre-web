@@ -75,6 +75,7 @@ export default defineNuxtComponent({
           take: 8
         };
       },
+      notifyOnNetworkStatusChange: true,
       update: (data) => data.production.performances
     }
   },

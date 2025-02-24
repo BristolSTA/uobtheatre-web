@@ -72,9 +72,7 @@ export default defineNuxtComponent({
           fetchPolicy: 'no-cache'
         });
         this.production = data.production;
-        useRouter().navigateTo(
-          `/administration/productions/${this.production.slug}`
-        );
+        useRouter().push(`/administration/productions/${this.production.slug}`);
         successToast.fire({ title: 'Production Updated' });
       } catch (e) {
         this.errors = getValidationErrors(e);
