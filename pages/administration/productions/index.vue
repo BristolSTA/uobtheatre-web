@@ -125,7 +125,10 @@ const { result: queryResult, loading } = useAdminProductionsQuery(
           })
         : null,
       search: productionSearchFilter.value
-    }) satisfies AdminProductionsQueryVariables
+    }) satisfies AdminProductionsQueryVariables,
+  {
+    fetchPolicy: 'cache-and-network'
+  }
 );
 
 watch(productionSearchFilter, () => {

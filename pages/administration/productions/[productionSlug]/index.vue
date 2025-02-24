@@ -243,6 +243,7 @@ export default defineNuxtComponent({
         };
       },
       update: (data) => data.production.performances,
+      notifyOnNetworkStatusChange: true,
       fetchPolicy: 'no-cache'
     }
   },
