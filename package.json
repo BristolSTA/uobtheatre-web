@@ -20,7 +20,7 @@
     "pr": "yarn lint:tsc && yarn lint:js && yarn prettier:check && yarn test:unit --coverage"
   },
   "devDependencies": {
-    "@cypress/vue": "^6.0.1",
+    "@cypress/vue": "^6.0.2",
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.17.0",
     "@graphql-codegen/cli": "5.0.5",
