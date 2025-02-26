@@ -6,26 +6,24 @@
       Accessibility Info
     </template>
     <div class="p-2 px-4 bg-sta-gray rounded">
-      <template v-if="!changingAccessibility">
-        <div class="flex">
+      <div class="flex h-10">
+        <template v-if="!changingAccessibility">
           <p class="flex-grow py-2">
             {{ booking.accessibilityInfo }}
           </p>
           <UiStaButton
-            class="bg-sta-orange hover:bg-sta-orange-dark transition-colors mx-2"
+            class="bg-sta-orange hover:bg-sta-orange-dark transition-colors ml-2"
             @click="
               () => {
-                changingAccessibility = true;
                 newAccessibility = booking.accessibilityInfo;
+                changingAccessibility = true;
               }
             "
           >
             Edit
           </UiStaButton>
-        </div>
-      </template>
-      <template v-else>
-        <div class="flex">
+        </template>
+        <template v-else>
           <form-label class="flex-grow">
             <UiInputText
               v-model="newAccessibility"
@@ -35,21 +33,41 @@
             />
           </form-label>
           <UiStaButton
-            class="bg-sta-green hover:bg-sta-green-dark transition-colors mx-2"
+            class="bg-sta-green hover:bg-sta-green-dark transition-colors ml-2"
+            :disabled="!accessibilityChanged"
             @click="
               () => {
                 if (booking.accessibilityInfo !== newAccessibility) {
-                  booking.accessibilityInfo = newAccessibility;
-                  updateAPI();
+                  updateAPI(newAccessibility);
                 }
-                changingAccessibility = false;
               }
             "
           >
             Save
           </UiStaButton>
-        </div>
-      </template>
+          <UiStaButton
+            class="bg-sta-rouge hover:bg-sta-rouge-dark transition-colors mx-2"
+            @click="
+              () => {
+                newAccessibility = '';
+                updateAPI(newAccessibility);
+              }
+            "
+          >
+            Remove
+          </UiStaButton>
+          <UiStaButton
+            class="bg-sta-orange hover:bg-sta-orange-dark transition-colors"
+            @click="
+              () => {
+                changingAccessibility = false;
+              }
+            "
+          >
+            Cancel
+          </UiStaButton>
+        </template>
+      </div>
     </div>
   </overview-box>
 </template>
@@ -80,10 +98,30 @@ export default {
       errors: null
     };
   },
+  computed: {
+    accessibilityChanged() {
+      return this.booking.accessibilityInfo !== this.newAccessibility;
+    }
+  },
   methods: {
-    async updateAPI() {
+    async updateAPI(newAccessibility) {
       try {
+        if (newAccessibility === '') {
+          const swalArgs = {
+            title: 'Are you sure?',
+            text: `Are you sure you remove the accessibility information from this booking?`,
+            showCancelButton: true,
+            showConfirmButton: true
+          };
+
+          const { isConfirmed } = await swal.fire(swalArgs);
+          if (!isConfirmed) {
+            return;
+          }
+        }
+
         loadingSwal.fire();
+
         if (this.booking.id) {
           // We have a booking, lets update it
           const data = await performMutation(
@@ -92,13 +130,16 @@ export default {
               mutation: UpdateBookingAccessibilityInfo,
               variables: {
                 id: this.booking.id,
-                accessibilityInfo: this.booking.accessibilityInfo
+                accessibilityInfo: newAccessibility
               }
             },
             'updateBookingAccessibilityInfo'
           );
         }
         Swal.close();
+        this.changingAccessibility = false;
+        // eslint-disable-next-line vue/no-mutating-props
+        this.booking.accessibilityInfo = newAccessibility;
         successToast.fire({ title: 'Accessibility information updated' });
       } catch (e) {
         this.errors = getValidationErrors(e);
