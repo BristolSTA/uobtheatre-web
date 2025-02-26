@@ -38,8 +38,10 @@
             class="bg-sta-green hover:bg-sta-green-dark transition-colors mx-2"
             @click="
               () => {
-                booking.accessibilityInfo = newAccessibility;
-                updateAPI();
+                if (booking.accessibilityInfo !== newAccessibility) {
+                  booking.accessibilityInfo = newAccessibility;
+                  updateAPI();
+                }
                 changingAccessibility = false;
               }
             "
