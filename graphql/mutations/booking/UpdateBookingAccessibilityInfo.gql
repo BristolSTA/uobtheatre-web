@@ -1,0 +1,20 @@
+mutation updateBookingAccessibilityInfo(
+  $id: IdInputField!
+  $accessibilityInfo: String
+) {
+  updateBookingAccessibilityInfo(
+    bookingId: $id
+    accessibilityInfo: $accessibilityInfo
+  ) {
+    success
+    errors {
+      ... on NonFieldError {
+        message
+      }
+      ... on FieldError {
+        message
+        field
+      }
+    }
+  }
+}
