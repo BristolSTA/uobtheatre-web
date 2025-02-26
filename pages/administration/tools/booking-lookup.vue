@@ -10,14 +10,27 @@
         <UiInputToggle v-model="searchByCreator" />
       </div>
       <div>
-        <!-- Show the productions filter if we have any. If not, disable the
-        filter.-->
+        <!-- Show the productions filter if we have any. If there are 5 or fewer productions, this is a dropdown.
+         Otherwise, disable the filter.-->
         <label>Production</label>
         <UiInputSelect
-          v-if="!$apollo.queries.productions.loading && productions.length > 0"
+          v-if="
+            !$apollo.queries.productions.loading &&
+            productions.length > 0 &&
+            productions.length <= 5
+          "
           v-model="productionSlug"
           nullify-value="performanceId"
           :options="productions"
+        />
+        <UiInputText
+          v-else-if="
+            !$apollo.queries.productions.loading &&
+            productions.length > 0 &&
+            !productionSlug
+          "
+          v-model="productionName"
+          placeholder="Filter by production"
         />
         <UiInputSelect
           v-else
@@ -175,9 +188,11 @@ export default defineNuxtComponent({
       bookingsOrderBy: null,
       bookingsStatus: null,
       disablePerformanceDropdown: true,
+      oldSlug: null,
       performances: [],
       performanceId: null,
       productions: [],
+      productionName: null,
       productionSlug: null,
       user: null,
       searchByCreator: false,
@@ -193,16 +208,26 @@ export default defineNuxtComponent({
       variables() {
         // If switching production, we need to nullify the performanceID to
         // stop errors
-        if (this.productionSlug !== this.oldProduction) {
+        if (this.productionSlug !== this.oldSlug) {
           this.performanceId = null;
           // Also set the performances to be loading, so as to disable that
           // dropdown until they've actually loaded (which will have to wait
           // until after this request has completed).
           this.disablePerformanceDropdown = true;
+
+          // If we're going from a production slug to the "all" value (i.e. null),
+          // we should nullify the production name search field too
+          if (!this.productionSlug) {
+            this.productionName = null;
+            this.oldSlug = null;
+          }
         }
         return {
           offset: this.bookingsOffset,
+          // Only have one production slug or production search query
+          oldSlug: this.oldSlug,
           productionSlug: this.productionSlug,
+          productionSearch: this.productionSlug ? null : this.productionName,
           performanceId: this.performanceId,
           userSearch: !this.searchByCreator ? this.user : null,
           creatorSearch: this.searchByCreator ? this.user : null,
@@ -228,6 +253,9 @@ export default defineNuxtComponent({
     },
     productions: {
       query: AdminProductionsQuery,
+      variables() {
+        return { search: this.productionName };
+      },
       fetchPolicy: 'cache-and-network',
       update(data) {
         const productions = data.productions.edges;
@@ -271,9 +299,7 @@ export default defineNuxtComponent({
     performances: {
       query: AdminPerformancesIndex,
       variables() {
-        return {
-          productionSlug: this.productionSlug
-        };
+        return { productionSlug: this.productionSlug };
       },
       fetchPolicy: 'cache-and-network',
       update(data) {
@@ -319,7 +345,7 @@ export default defineNuxtComponent({
 
         // We use this so that if we switch from one production to another,
         // we remember to nullify the performanceID to stop errors
-        this.oldProduction = this.productionSlug;
+        this.oldSlug = this.productionSlug;
         this.disablePerformanceDropdown = false;
       },
       skip() {
@@ -328,9 +354,6 @@ export default defineNuxtComponent({
     }
   },
 
-  methods: {
-    dateFormat,
-    duration
-  }
+  methods: { dateFormat, duration }
 });
 </script>

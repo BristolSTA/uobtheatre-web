@@ -2,6 +2,7 @@
 query adminBookings(
   $offset: Int
   $status: String
+  $productionSearch: String
   $productionSlug: String
   $performanceId: String
   $userSearch: String
@@ -12,10 +13,11 @@ query adminBookings(
     first: 10
     offset: $offset
     status: $status
+    productionSearch: $productionSearch
     productionSlug: $productionSlug
     performanceId: $performanceId
     orderBy: $orderBy
-    search: $userSearch
+    userSearch: $userSearch
     creatorSearch: $creatorSearch
     expired: false
   ) {
