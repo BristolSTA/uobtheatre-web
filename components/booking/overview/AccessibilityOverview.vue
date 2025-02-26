@@ -93,7 +93,7 @@ export default {
                 accessibilityInfo: this.booking.accessibilityInfo
               }
             },
-            'updateBookingAccessibilityInfos'
+            'updateBookingAccessibilityInfo'
           );
         }
         Swal.close();
