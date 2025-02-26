@@ -68,7 +68,10 @@
           :options="[
             { displayText: 'All', value: null },
             { displayText: 'In Progress', value: 'IN_PROGRESS' },
-            { displayText: 'Paid', value: 'PAID' }
+            { displayText: 'Paid', value: 'PAID' },
+            { displayText: 'Refunded', value: 'REFUNDED' },
+            { displayText: 'Locked', value: 'LOCKED' },
+            { displayText: 'Cancelled', value: 'CANCELLED' }
           ]"
         />
       </div>
