@@ -55,7 +55,7 @@
 <script>
 import OverviewBox from '../../ui/UiCard.vue';
 import Booking from '~~/classes/Booking';
-import BookingMutation from '@/graphql/mutations/booking/Booking.gql';
+import UpdateBookingAccessibilityInfo from '~~/graphql/mutations/booking/UpdateBookingAccessibilityInfo.gql';
 import { getValidationErrors, performMutation } from '~~/utils/api';
 
 import FormLabel from '../../ui/FormLabel.vue';
@@ -83,12 +83,10 @@ export default {
           const data = await performMutation(
             this.$apollo,
             {
-              mutation: BookingMutation,
+              mutation: UpdateBookingAccessibilityInfo,
               variables: {
-                input: {
-                  id: this.booking.id,
-                  accessibilityInfo: this.booking.accessibilityInfo
-                }
+                id: this.booking.id,
+                accessibilityInfo: this.booking.accessibilityInfo
               }
             },
             'booking'
