@@ -103,7 +103,7 @@ describe('Ticket Class', () => {
   });
 
   it('can get data from a QR code', () => {
-    expect(Ticket.dataFromQRCode('WyJhYmNkMTIzNCIsMl0')).to.include({
+    expect(Ticket.dataFromQRCode('WyJhYmNkMTIzNCIsMl0=')).to.include({
       bookingReference: 'abcd1234',
       ticketId: 2
     });

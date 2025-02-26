@@ -334,6 +334,11 @@ describe('ProductionBanner', function () {
     );
   });
 
+  afterEach(() => {
+    // Clean up the component after each test.
+    headerContainer = null;
+  });
+
   const createWithPerformances = async (
     performances,
     miscCostsData = [],
