@@ -6,13 +6,13 @@
       Accessibility Info
     </template>
     <div class="p-2 px-4 bg-sta-gray rounded">
-      <div class="flex h-10">
+      <div class="sm:flex">
         <template v-if="!changingAccessibility">
           <p class="flex-grow py-2">
             {{ booking.accessibilityInfo }}
           </p>
           <UiStaButton
-            class="bg-sta-orange hover:bg-sta-orange-dark transition-colors ml-2"
+            class="bg-sta-orange hover:bg-sta-orange-dark transition-colors sm:ml-2"
             @click="
               () => {
                 newAccessibility = booking.accessibilityInfo;
@@ -32,40 +32,42 @@
               required
             />
           </form-label>
-          <UiStaButton
-            class="bg-sta-green hover:bg-sta-green-dark transition-colors ml-2"
-            :disabled="!accessibilityChanged"
-            @click="
-              () => {
-                if (booking.accessibilityInfo !== newAccessibility) {
+          <div class="pt-2 sm:p-0">
+            <UiStaButton
+              class="bg-sta-green hover:bg-sta-green-dark transition-colors sm:ml-2"
+              :disabled="!accessibilityChanged"
+              @click="
+                () => {
+                  if (booking.accessibilityInfo !== newAccessibility) {
+                    updateAPI(newAccessibility);
+                  }
+                }
+              "
+            >
+              Save
+            </UiStaButton>
+            <UiStaButton
+              class="bg-sta-rouge hover:bg-sta-rouge-dark transition-colors mx-2"
+              @click="
+                () => {
+                  newAccessibility = '';
                   updateAPI(newAccessibility);
                 }
-              }
-            "
-          >
-            Save
-          </UiStaButton>
-          <UiStaButton
-            class="bg-sta-rouge hover:bg-sta-rouge-dark transition-colors mx-2"
-            @click="
-              () => {
-                newAccessibility = '';
-                updateAPI(newAccessibility);
-              }
-            "
-          >
-            Remove
-          </UiStaButton>
-          <UiStaButton
-            class="bg-sta-orange hover:bg-sta-orange-dark transition-colors"
-            @click="
-              () => {
-                changingAccessibility = false;
-              }
-            "
-          >
-            Cancel
-          </UiStaButton>
+              "
+            >
+              Remove
+            </UiStaButton>
+            <UiStaButton
+              class="bg-sta-orange hover:bg-sta-orange-dark transition-colors"
+              @click="
+                () => {
+                  changingAccessibility = false;
+                }
+              "
+            >
+              Cancel
+            </UiStaButton>
+          </div>
         </template>
       </div>
     </div>
