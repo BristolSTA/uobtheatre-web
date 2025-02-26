@@ -53,10 +53,13 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2';
+
 import OverviewBox from '../../ui/UiCard.vue';
 import Booking from '~~/classes/Booking';
 import UpdateBookingAccessibilityInfo from '~~/graphql/mutations/booking/UpdateBookingAccessibilityInfo.gql';
 import { getValidationErrors, performMutation } from '~~/utils/api';
+import { successToast } from '~~/utils/alerts';
 
 import FormLabel from '../../ui/FormLabel.vue';
 
@@ -78,6 +81,7 @@ export default {
   methods: {
     async updateAPI() {
       try {
+        loadingSwal.fire();
         if (this.booking.id) {
           // We have a booking, lets update it
           const data = await performMutation(
@@ -89,13 +93,13 @@ export default {
                 accessibilityInfo: this.booking.accessibilityInfo
               }
             },
-            'booking'
+            'updateBookingAccessibilityInfos'
           );
-          this.booking.updateFromAPIData(data.booking.booking);
         }
+        Swal.close();
+        successToast.fire({ title: 'Accessibility information updated' });
       } catch (e) {
         this.errors = getValidationErrors(e);
-        return;
       }
     }
   }
