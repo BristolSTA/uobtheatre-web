@@ -17,6 +17,7 @@
       <accessibility-overview
         v-if="booking.accessibilityInfo"
         :booking="booking"
+        :allow-edit="false"
       />
       <booking-price-overview :booking="booking" />
     </div>

@@ -12,6 +12,7 @@
             {{ booking.accessibilityInfo }}
           </p>
           <UiStaButton
+            v-if="allowEdit"
             class="bg-sta-orange hover:bg-sta-orange-dark transition-colors sm:ml-2"
             @click="
               () => {
@@ -91,7 +92,12 @@ export default {
   props: {
     booking: {
       required: true,
-      type: Booking
+      type: Booking,
+      required: true
+    },
+    allowEdit: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
