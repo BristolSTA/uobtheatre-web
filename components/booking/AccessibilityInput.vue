@@ -60,7 +60,7 @@ export default {
   },
   data() {
     return {
-      accessibilityInput: false
+      accessibilityInput: !!this.booking.accessibilityInfo
     };
   }
 };
