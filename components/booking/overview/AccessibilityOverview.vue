@@ -26,12 +26,27 @@
         </template>
         <template v-else>
           <form-label class="flex-grow">
-            <UiInputText
-              v-model="newAccessibility"
-              placeholder="e.g. Wheelchair seat required"
-              :errors="errors"
-              required
-            />
+            <template #control>
+              <UiInputText
+                v-model="newAccessibility"
+                placeholder="e.g. Wheelchair seat required"
+                :errors="errors"
+                required
+              />
+            </template>
+            <template #helperAfter>
+              Any accessibility requirements you chose to share with us will be
+              communicated by email to the production team. We cannot guarantee
+              that your requirements can be met, though a member of the team
+              will be in touch to discuss your requirements if needed. If you
+              have any questions, please email
+              <a
+                href="mailto:
+          support@uobtheatre.com"
+                class="underline"
+                >support@uobtheatre.com</a
+              >.
+            </template>
           </form-label>
           <div class="pt-2 sm:p-0">
             <UiStaButton

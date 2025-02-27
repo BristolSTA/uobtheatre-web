@@ -32,7 +32,10 @@
         communicated by email to the production team. We cannot guarantee that
         your requirements can be met, though a member of the team will be in
         touch to discuss your requirements if needed. If you have any questions,
-        please email support@uobtheatre.com.
+        please email
+        <a href="mailto:support@uobtheatre.com" class="underline">
+          support@uobtheatre.com </a
+        >.
       </template>
     </form-label>
   </UiCard>
