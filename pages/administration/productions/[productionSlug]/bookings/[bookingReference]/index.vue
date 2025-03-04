@@ -55,12 +55,6 @@
         </UiTablesTableRow>
       </UiTablesPaginatedTable>
     </UiCard>
-    <div class="mb-4">
-      <accessibility-overview
-        v-if="booking.accessibilityInfo"
-        :booking="booking"
-      />
-    </div>
     <div class="grid gap-4 grid-cols-1 lg:grid-cols-3">
       <booking-performance-overview
         class="lg:col-span-2"
@@ -72,6 +66,11 @@
         :venue-data="booking.performance.venue.slug"
         :online="booking.performance.isOnline"
         :in-person="booking.performance.isInperson"
+      />
+      <accessibility-overview class="lg:col-span-2" :booking="booking" />
+      <VenueAccessibility
+        :venue-data="booking.performance.venue.slug"
+        class="lg:col-span-1"
       />
       <payment-overview class="lg:col-span-1" :booking="booking" />
       <tickets-overview class="lg:col-span-2" :booking="booking" />
@@ -153,8 +152,7 @@ export default defineNuxtComponent({
           'Owned By',
           `${this.rawBooking.user.firstName} ${this.rawBooking.user.lastName} (Email: ${this.rawBooking.user.email})`
         ],
-        ['Admin Discount', this.rawBooking.adminDiscountPercentage * 100 + '%'],
-        ['Accessibility Information', this.rawBooking.accessibilityInfo]
+        ['Admin Discount', this.rawBooking.adminDiscountPercentage * 100 + '%']
       ];
     },
     anyTicketsChecked() {
