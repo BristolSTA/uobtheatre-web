@@ -130,7 +130,7 @@
                   {{ venue.accessibilityInfo }}
                 </p>
                 <p v-else class="font-semibold">
-                  No accessibility information available for this venue
+                  No accessibility information has been listed for this venue
                 </p>
               </div>
             </div>
