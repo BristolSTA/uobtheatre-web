@@ -40,11 +40,7 @@
           :online="booking.performance.isOnline"
           :in-person="booking.performance.isInperson"
         />
-        <accessibility-overview
-          v-if="booking.accessibilityInfo"
-          class="lg:col-span-2"
-          :booking="booking"
-        />
+        <accessibility-overview class="lg:col-span-2" :booking="booking" />
         <VenueAccessibility
           v-if="booking.performance"
           :venue-data="booking.performance.venue.slug"

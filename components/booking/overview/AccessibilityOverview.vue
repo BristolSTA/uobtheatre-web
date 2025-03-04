@@ -3,7 +3,7 @@
   <overview-box>
     <template #title>
       <font-awesome-icon icon="info" class="mr-2" />
-      Accessibility Info
+      Booking Accessibility
     </template>
     <template #toolbar>
       <UiStaButton
@@ -15,7 +15,8 @@
           }
         "
       >
-        Edit
+        <p v-if="booking.accessibilityInfo">Edit</p>
+        <p v-else>Add</p>
       </UiStaButton>
       <UiStaButton
         v-if="changingAccessibility"
@@ -56,13 +57,14 @@
       </UiStaButton>
     </template>
     <div class="p-2 px-4 bg-sta-gray rounded">
-      <template v-if="!changingAccessibility">
-        <p class="flex-grow py-2">
+      <div v-if="!changingAccessibility">
+        <p v-if="booking.accessibilityInfo" class="py-2">
           {{ booking.accessibilityInfo }}
         </p>
-      </template>
-      <template v-else>
-        <form-label class="flex-grow">
+        <p v-else class="py-2">No accessibility information provided</p>
+      </div>
+      <div v-else>
+        <form-label>
           <template #control>
             <UiInputTextArea
               v-model="newAccessibility"
@@ -84,7 +86,7 @@
             >.
           </template>
         </form-label>
-      </template>
+      </div>
     </div>
   </overview-box>
 </template>
@@ -132,7 +134,23 @@ export default {
         if (newAccessibility === '') {
           const swalArgs = {
             title: 'Are you sure?',
-            text: `Are you sure you remove the accessibility information from this booking?`,
+            text: `Are you sure you want to remove the accessibility information from this booking?`,
+            showCancelButton: true,
+            showConfirmButton: true
+          };
+
+          const { isConfirmed } = await swal.fire(swalArgs);
+          if (!isConfirmed) {
+            return;
+          }
+        } else if (this.booking.accessibilityInfo === '') {
+          const swalArgs = {
+            title: 'Are you sure?',
+            text: `Are you sure you to add accessibility information from this booking?
+            Any accessibility requirements you chose to share with us will be
+            communicated by email to the production team. We cannot guarantee
+            that your requirements can be met, though a member of the team will
+            be in touch to discuss your requirements if needed.`,
             showCancelButton: true,
             showConfirmButton: true
           };

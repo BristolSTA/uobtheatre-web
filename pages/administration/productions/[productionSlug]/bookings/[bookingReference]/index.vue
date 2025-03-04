@@ -154,7 +154,7 @@ export default defineNuxtComponent({
           `${this.rawBooking.user.firstName} ${this.rawBooking.user.lastName} (Email: ${this.rawBooking.user.email})`
         ],
         ['Admin Discount', this.rawBooking.adminDiscountPercentage * 100 + '%'],
-        ['Accessibility Info', this.rawBooking.accessibilityInfo]
+        ['Accessibility Information', this.rawBooking.accessibilityInfo]
       ];
     },
     anyTicketsChecked() {
