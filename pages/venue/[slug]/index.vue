@@ -123,7 +123,7 @@
           <div class="flex justify-center w-full px-4 pt-2 pb-4">
             <div ref="accessibilityInfo">
               <h2 class="text-sta-orange text-3xl font-semibold">
-                Accessibility Info:
+                Accessibility Information:
               </h2>
               <div class="mt-2 text-white">
                 <p v-if="venue.accessibilityInfo">
