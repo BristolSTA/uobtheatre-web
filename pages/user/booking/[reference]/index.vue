@@ -42,10 +42,14 @@
         />
         <accessibility-overview
           v-if="booking.accessibilityInfo"
-          class="lg:col-span-3"
+          class="lg:col-span-2"
           :booking="booking"
         />
-
+        <VenueAccessibility
+          v-if="booking.performance"
+          :venue-data="booking.performance.venue.slug"
+          class="lg:col-span-1"
+        />
         <payment-overview class="lg:col-span-1" :booking="booking" />
         <tickets-overview class="lg:col-span-2" :booking="booking" />
       </div>

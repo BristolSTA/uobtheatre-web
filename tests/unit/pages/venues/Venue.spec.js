@@ -142,7 +142,7 @@ describe('Venue page', function () {
       await mountComponent(undefined, false);
       console.log(accessibilityInfoContainer.text());
       expect(accessibilityInfoContainer.text()).to.contain(
-        'No accessibility information available for this venue'
+        'No accessibility information has been listed for this venue'
       );
     });
   });
