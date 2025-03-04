@@ -5,87 +5,86 @@
       <font-awesome-icon icon="info" class="mr-2" />
       Accessibility Info
     </template>
+    <template #toolbar>
+      <UiStaButton
+        v-if="allowEdit && !changingAccessibility"
+        class="bg-sta-orange hover:bg-sta-orange-dark transition-colors"
+        @click="
+          () => {
+            changingAccessibility = true;
+          }
+        "
+      >
+        Edit
+      </UiStaButton>
+      <UiStaButton
+        v-if="changingAccessibility"
+        class="bg-sta-green hover:bg-sta-green-dark transition-colors"
+        :disabled="!accessibilityChanged"
+        @click="
+          () => {
+            if (booking.accessibilityInfo !== newAccessibility) {
+              updateAPI(newAccessibility);
+            }
+          }
+        "
+      >
+        Save
+      </UiStaButton>
+      <UiStaButton
+        v-if="changingAccessibility"
+        class="bg-sta-rouge hover:bg-sta-rouge-dark transition-colors"
+        @click="
+          () => {
+            newAccessibility = '';
+            updateAPI(newAccessibility);
+          }
+        "
+      >
+        Remove
+      </UiStaButton>
+      <UiStaButton
+        v-if="changingAccessibility"
+        class="bg-sta-orange hover:bg-sta-orange-dark transition-colors"
+        @click="
+          () => {
+            changingAccessibility = false;
+          }
+        "
+      >
+        Cancel
+      </UiStaButton>
+    </template>
     <div class="p-2 px-4 bg-sta-gray rounded">
-      <div class="sm:flex">
-        <template v-if="!changingAccessibility">
-          <p class="flex-grow py-2">
-            {{ booking.accessibilityInfo }}
-          </p>
-          <UiStaButton
-            v-if="allowEdit"
-            class="bg-sta-orange hover:bg-sta-orange-dark transition-colors sm:ml-2"
-            @click="
-              () => {
-                newAccessibility = booking.accessibilityInfo;
-                changingAccessibility = true;
-              }
-            "
-          >
-            Edit
-          </UiStaButton>
-        </template>
-        <template v-else>
-          <form-label class="flex-grow">
-            <template #control>
-              <UiInputText
-                v-model="newAccessibility"
-                placeholder="e.g. Wheelchair seat required"
-                :errors="errors"
-                required
-              />
-            </template>
-            <template #helperAfter>
-              Any accessibility requirements you chose to share with us will be
-              communicated by email to the production team. We cannot guarantee
-              that your requirements can be met, though a member of the team
-              will be in touch to discuss your requirements if needed. If you
-              have any questions, please email
-              <a
-                href="mailto:
+      <template v-if="!changingAccessibility">
+        <p class="flex-grow py-2">
+          {{ booking.accessibilityInfo }}
+        </p>
+      </template>
+      <template v-else>
+        <form-label class="flex-grow">
+          <template #control>
+            <UiInputTextArea
+              v-model="newAccessibility"
+              placeholder="e.g. Wheelchair seat required"
+              required
+            />
+          </template>
+          <template #helperAfter>
+            Any accessibility requirements you chose to share with us will be
+            communicated by email to the production team. We cannot guarantee
+            that your requirements can be met, though a member of the team will
+            be in touch to discuss your requirements if needed. If you have any
+            questions, please email
+            <a
+              href="mailto:
           support@uobtheatre.com"
-                class="underline"
-                >support@uobtheatre.com</a
-              >.
-            </template>
-          </form-label>
-          <div class="pt-2 sm:p-0">
-            <UiStaButton
-              class="bg-sta-green hover:bg-sta-green-dark transition-colors sm:ml-2"
-              :disabled="!accessibilityChanged"
-              @click="
-                () => {
-                  if (booking.accessibilityInfo !== newAccessibility) {
-                    updateAPI(newAccessibility);
-                  }
-                }
-              "
-            >
-              Save
-            </UiStaButton>
-            <UiStaButton
-              class="bg-sta-rouge hover:bg-sta-rouge-dark transition-colors mx-2"
-              @click="
-                () => {
-                  newAccessibility = '';
-                  updateAPI(newAccessibility);
-                }
-              "
-            >
-              Remove
-            </UiStaButton>
-            <UiStaButton
-              class="bg-sta-orange hover:bg-sta-orange-dark transition-colors"
-              @click="
-                () => {
-                  changingAccessibility = false;
-                }
-              "
-            >
-              Cancel
-            </UiStaButton>
-          </div>
-        </template>
-      </div>
+              class="underline"
+              >support@uobtheatre.com</a
+            >.
+          </template>
+        </form-label>
+      </template>
     </div>
   </overview-box>
 </template>
@@ -117,6 +116,7 @@ export default {
   },
   data() {
     return {
+      newAccessibility: this.booking.accessibilityInfo,
       changingAccessibility: false,
       errors: null
     };
