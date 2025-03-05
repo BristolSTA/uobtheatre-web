@@ -40,7 +40,11 @@
           :online="booking.performance.isOnline"
           :in-person="booking.performance.isInperson"
         />
-        <accessibility-overview class="lg:col-span-2" :booking="booking" />
+        <accessibility-overview
+          class="lg:col-span-2"
+          :booking="booking"
+          :allow-edit="upcomingEvent"
+        />
         <VenueAccessibility
           v-if="booking.performance"
           :venue-data="booking.performance.venue.slug"
@@ -145,6 +149,9 @@ export default defineNuxtComponent({
       return this.booking?.performance
         ? this.booking.performance.production
         : null;
+    },
+    upcomingEvent() {
+      return this.booking.performance.doorsOpen > new Date().toISOString();
     }
   },
   methods: {

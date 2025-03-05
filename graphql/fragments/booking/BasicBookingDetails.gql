@@ -11,6 +11,7 @@ fragment BasicBookingDetails on BookingNode {
     id
     start
     end
+    doorsOpen
     production {
       id
       name
