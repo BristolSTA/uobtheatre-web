@@ -124,7 +124,7 @@
           </table-row-item>
           <table-row-item>
             {{ booking.tickets.length }} ticket{{
-              booking.tickets.length > 1 ? 's' : ''
+              booking.tickets.length != 1 ? 's' : ''
             }}
           </table-row-item>
           <table-row-item>
