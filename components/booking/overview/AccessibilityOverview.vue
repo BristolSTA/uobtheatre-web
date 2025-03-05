@@ -183,6 +183,8 @@ export default {
         this.booking.accessibilityInfo = newAccessibility;
         successToast.fire({ title: 'Accessibility information updated' });
       } catch (e) {
+        Swal.close();
+        errorToast.fire({ title: 'Error updating accessibility information' });
         this.errors = getValidationErrors(e);
       }
     }
