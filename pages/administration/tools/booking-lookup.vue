@@ -10,8 +10,7 @@
         <UiInputToggle v-model="searchByCreator" />
       </div>
       <div>
-        <!-- Show the productions filter if we have any. If there are 5 or fewer productions, this is a dropdown.
-         Otherwise, disable the filter.-->
+        <!-- Show the productions filter if we have any. -->
         <label>Production</label>
         <UiInputSelect
           v-if="
@@ -23,21 +22,18 @@
           nullify-value="performanceId"
           :options="productions"
         />
+        <!-- If our productions are loading, have a greyed out text box -->
         <UiInputText
-          v-else-if="
-            !$apollo.queries.productions.loading &&
-            productions.length > 0 &&
-            !productionSlug
-          "
+          v-else-if="$apollo.queries.productions.loading"
           v-model="productionName"
+          disabled="true"
           placeholder="Filter by production"
         />
-        <UiInputSelect
+        <!-- Otherwise, show a text box -->
+        <UiInputText
           v-else
-          v-model="productionSlug"
-          nullify-value="performanceId"
-          :disabled="true"
-          :options="[{ displayText: 'All', value: null }]"
+          v-model="productionName"
+          placeholder="Filter by production"
         />
       </div>
       <div>
@@ -209,6 +205,7 @@ export default defineNuxtComponent({
     bookings: {
       query: AdminBookingsQuery,
       variables() {
+        // alert(`${JSON.stringify(this.productions)}`);
         // If switching production, we need to nullify the performanceID to
         // stop errors
         if (this.productionSlug !== this.oldSlug) {
@@ -289,12 +286,15 @@ export default defineNuxtComponent({
               return option;
             });
 
-        // Create an empty option, which shows all productions
-        let emptyOption = {};
-        emptyOption.displayText = 'All';
-        emptyOption.value = null;
+        // Create an empty option, which shows all productions,
+        // only if we have more than one production
+        if (prodArray.length > 0) {
+          let emptyOption = {};
+          emptyOption.displayText = 'All';
+          emptyOption.value = null;
 
-        prodArray.unshift(emptyOption);
+          prodArray.unshift(emptyOption);
+        }
 
         this.productions = prodArray;
       }
