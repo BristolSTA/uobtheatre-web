@@ -151,6 +151,8 @@ export default defineNuxtComponent({
         : null;
     },
     upcomingEvent() {
+      // Accessibility info can't be changed on past performances
+      // If you want to change this, you'll need to change the API mutation
       return this.booking.performance.doorsOpen > new Date().toISOString();
     }
   },
