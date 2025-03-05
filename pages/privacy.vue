@@ -276,7 +276,7 @@ export default defineNuxtComponent({
             },
             {
               purpose:
-                'Aiding production teams and venue staff to cater for accessibility needs. Accessibility information you disclose will be deleted within 60 days of the production ending',
+                'Aiding production teams and venue staff to cater for accessibility needs',
               basis: 'Legitimate interests',
               data: ['User Accessibility Information']
             }
