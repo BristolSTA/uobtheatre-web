@@ -67,17 +67,17 @@
         >
           <div class="flex justify-center w-full px-4 pt-4 pb-2">
             <div>
-              <h2 class="text-sta-orange text-3xl font-semibold">
+              <h2 class="text-sta-orange text-center text-3xl font-semibold">
                 Venue Info:
               </h2>
               <table class="table-auto">
                 <tbody>
-                  <tr>
-                    <th class="align-top pb-2 pr-2">Capacity:</th>
+                  <tr class="pb-2">
+                    <th class="align-top text-right pr-2">Capacity:</th>
                     <td class="align-top">Max {{ venue.internalCapacity }}</td>
                   </tr>
                   <tr>
-                    <th class="align-top pr-2">Address:</th>
+                    <th class="align-top text-right pr-2">Address:</th>
                     <td class="align-top">
                       <div v-if="venue.address" data-test="address-details">
                         <p v-if="venue.address.buildingName">
@@ -96,11 +96,36 @@
                       </div>
                     </td>
                   </tr>
+                  <tr v-if="venue.email">
+                    <th class="align-top text-right pr-2">Email:</th>
+                    <td class="align-top">
+                      <a :href="`mailto:${venue.email}`">{{ venue.email }}</a>
+                    </td>
+                  </tr>
+                  <tr v-if="venue.website">
+                    <th class="align-top text-right pr-2">Website:</th>
+                    <td class="align-top">
+                      <a :href="venue.website" target="_blank">{{
+                        venue.website
+                      }}</a>
+                    </td>
+                  </tr>
+                  <tr v-if="venue.address.what3words">
+                    <th class="align-top pr-2">what3words:</th>
+                    <td class="align-top text-sta-orange">
+                      <a
+                        target="_blank"
+                        :href="`https://what3words.com/${venue.address.what3words}`"
+                      >
+                        ///{{ venue.address.what3words }}
+                      </a>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
               <div class="text-sta-orange text-sm font-semibold">
                 <a target="_blank" :href="googleMapsLink">
-                  <UiIconListItem icon="map-marked-alt">
+                  <UiIconListItem class="justify-center" icon="map-marked-alt">
                     Open in Google Maps
                   </UiIconListItem>
                 </a>
