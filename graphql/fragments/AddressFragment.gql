@@ -5,6 +5,7 @@ fragment AddressFields on AddressNode {
   street
   city
   postcode
+  what3words
   latitude
   longitude
 }
