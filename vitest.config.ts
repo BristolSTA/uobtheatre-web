@@ -44,7 +44,24 @@ export default defineConfig({
     setupFiles: ['tests/unit/support/setup.ts'], // Register files to be run at the start of each test file
     restoreMocks: true,
     coverage: {
-      exclude: ['./graphql/codegen/**']
+      include: [
+        'classes/**',
+        'components/**',
+        'composables/**',
+        'enums/**',
+        'errors/**',
+        'exceptions/**',
+        'layouts/**',
+        'middleware/**',
+        'pages/**',
+        'plugins/**',
+        'services/**',
+        'store/**',
+        'utils/**'
+      ],
+      thresholds: {
+        lines: 51.16
+      }
     }
   }
 });
