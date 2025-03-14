@@ -133,6 +133,24 @@ describe('Venue page', function () {
 
       expect(fixTextSpacing(addressContainer.text())).to.contain('Queens Road');
     });
+
+    // what3words
+    it('shows what3words', async () => {
+      await mountComponent();
+
+      expect(venueInfoContainer.text()).to.contain(
+        'what3words: ///example.example.example'
+      );
+    });
+
+    // no what3words
+    it('does not show what3words if not present', async () => {
+      await mountComponent({
+        what3words: null
+      });
+
+      expect(venueInfoContainer.text()).to.not.contain('what3words:');
+    });
   });
 
   describe('venue contact details', () => {
