@@ -66,7 +66,7 @@
           class="flex flex-col flex-wrap items-center justify-center bg-sta-gray-light rounded-lg"
         >
           <div class="flex justify-center w-full px-4 pt-4 pb-2">
-            <div>
+            <div ref="venueInfo">
               <h2 class="text-sta-orange text-center text-3xl font-semibold">
                 Venue Info:
               </h2>

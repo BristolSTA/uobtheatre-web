@@ -17,10 +17,12 @@ describe('Venue page', function () {
   let venuePageComponent;
   let addressContainer;
   let accessibilityInfoContainer;
+  let venueInfoContainer;
 
   async function mountComponent(
     addressChanges = {},
-    includeAccessibilityInfo = true
+    includeAccessibilityInfo = true,
+    overrides = {}
   ) {
     venuePageComponent = await mount(Venue, {
       shallow: false,
@@ -48,7 +50,8 @@ describe('Venue page', function () {
                     isBookable: false,
                     end: '2019-10-19T00:00:00'
                   })
-                ])
+                ]),
+                ...overrides
               },
               undefined,
               undefined,
@@ -70,6 +73,7 @@ describe('Venue page', function () {
     accessibilityInfoContainer = venuePageComponent.find({
       ref: 'accessibilityInfo'
     });
+    venueInfoContainer = venuePageComponent.find({ ref: 'venueInfo' });
   }
 
   beforeEach(async () => {
@@ -128,6 +132,27 @@ describe('Venue page', function () {
       });
 
       expect(fixTextSpacing(addressContainer.text())).to.contain('Queens Road');
+    });
+  });
+
+  describe('venue contact details', () => {
+    it('has the correct contact details', async () => {
+      expect(venueInfoContainer.text()).to.contain(
+        'Website:http://uobtheatre.com'
+      );
+      expect(venueInfoContainer.text()).to.contain(
+        'Email:support@uobtheatre.com'
+      );
+    });
+
+    it('does not display contact details if not present', async () => {
+      await mountComponent({}, true, {
+        website: null,
+        email: null
+      });
+
+      expect(venueInfoContainer.text()).to.not.contain('Website:');
+      expect(venueInfoContainer.text()).to.not.contain('Email:');
     });
   });
 
