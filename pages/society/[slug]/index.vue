@@ -21,47 +21,6 @@
           {{ society.name }}
         </h1>
       </div>
-      <div class="lg:col-start-1 lg:col-span-3 lg:row-start-2 rounded">
-        <div
-          v-if="!bannerProductions.length"
-          class="flex items-center bg-black bg-opacity-40"
-          style="min-height: 20vh"
-        >
-          <div class="container px-4 text-white text-center text-2xl lg:w-2/3">
-            No Upcoming Productions
-          </div>
-        </div>
-        <UiCarousel
-          v-else:
-          :carousel-items="bannerProductions"
-          :always-display-arrows="true"
-        >
-          <template #default="slotProps">
-            <div class="flex items-center h-full bg-black bg-opacity-40">
-              <NuxtLink
-                class="container px-4 md:pl-12 lg:pl-4 lg:w-2/3"
-                :to="`/production/${slotProps.carouselItem.text.slug}`"
-              >
-                <div class="text-2xl">
-                  {{ slotProps.carouselItem.text.society.name }}
-                </div>
-                <div class="text-h1">
-                  {{ slotProps.carouselItem.text.name }}
-                </div>
-                <div class="text-2xl">
-                  {{
-                    displayStartEnd(
-                      slotProps.carouselItem.text.start,
-                      slotProps.carouselItem.text.end,
-                      'd MMMM'
-                    )
-                  }}
-                </div>
-              </NuxtLink>
-            </div>
-          </template>
-        </UiCarousel>
-      </div>
       <div
         class="lg:col-start-4 lg:col-span-2 lg:row-start-2 lg:row-span-2 lg:sticky lg:top-4"
       >
@@ -119,41 +78,86 @@
           </div>
         </div>
       </div>
-      <div class="lg:col-start-1 lg:col-span-3 lg:row-start-3">
-        <!-- Description -->
-        <UiTipTapOutput
-          class="p-4 w-full text-justify lg:block"
-          :html="society.description"
-        />
-      </div>
-      <div
-        v-if="pastProductions.length"
-        class="lg:col-start-1 lg:col-span-3 lg:row-start-4"
-      >
-        <!-- Past Shows -->
-        <div ref="production-list" class="flex-none container">
-          <div class="w-full bg-sta-gray-dark">
-            <h2 class="flex justify-center mb-2 text-2xl">Past Productions</h2>
-            <table class="table-auto w-full">
-              <tbody>
-                <tr
-                  v-for="(production, index) in pastProductions"
-                  :key="index"
-                  class="even:bg-sta-gray odd:bg-sta-gray-light"
+      <div class="lg:col-start-1 lg:col-span-3 lg:row-start-2 rounded">
+        <div>
+          <!-- Banner Carousel -->
+          <div
+            v-if="!bannerProductions.length"
+            class="flex items-center bg-black bg-opacity-40"
+            style="min-height: 20vh"
+          >
+            <div
+              class="container px-4 text-white text-center text-2xl lg:w-2/3"
+            >
+              No Upcoming Productions
+            </div>
+          </div>
+          <UiCarousel
+            v-else:
+            :carousel-items="bannerProductions"
+            :always-display-arrows="true"
+          >
+            <template #default="slotProps">
+              <div class="flex items-center h-full bg-black bg-opacity-40">
+                <NuxtLink
+                  class="container px-4 md:pl-12 lg:pl-4 lg:w-2/3"
+                  :to="`/production/${slotProps.carouselItem.text.slug}`"
                 >
-                  <td
-                    class="pl-4 py-2 hover:text-gray-300 text-xl font-semibold"
+                  <div class="text-2xl">
+                    {{ slotProps.carouselItem.text.society.name }}
+                  </div>
+                  <div class="text-h1">
+                    {{ slotProps.carouselItem.text.name }}
+                  </div>
+                  <div class="text-2xl">
+                    {{
+                      displayStartEnd(
+                        slotProps.carouselItem.text.start,
+                        slotProps.carouselItem.text.end,
+                        'd MMMM'
+                      )
+                    }}
+                  </div>
+                </NuxtLink>
+              </div>
+            </template>
+          </UiCarousel>
+        </div>
+        <div>
+          <!-- Description -->
+          <UiTipTapOutput
+            class="p-4 w-full text-justify lg:block"
+            :html="society.description"
+          />
+        </div>
+        <div v-if="pastProductions.length">
+          <!-- Past Shows -->
+          <div ref="production-list" class="flex-none container">
+            <div class="w-full bg-sta-gray-dark">
+              <h2 class="flex justify-center mb-2 text-2xl">
+                Past Productions
+              </h2>
+              <table class="table-auto w-full">
+                <tbody>
+                  <tr
+                    v-for="(production, index) in pastProductions"
+                    :key="index"
+                    class="even:bg-sta-gray odd:bg-sta-gray-light"
                   >
-                    <NuxtLink :to="`/production/${production.slug}`">
-                      {{ production.name }}
-                    </NuxtLink>
-                  </td>
-                  <td class="px-4 text-right">
-                    {{ dateFormat(production.end, 'MMMM y') }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                    <td
+                      class="pl-4 py-2 hover:text-gray-300 text-xl font-semibold"
+                    >
+                      <NuxtLink :to="`/production/${production.slug}`">
+                        {{ production.name }}
+                      </NuxtLink>
+                    </td>
+                    <td class="px-4 text-right">
+                      {{ dateFormat(production.end, 'MMMM y') }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
