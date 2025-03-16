@@ -3989,26 +3989,26 @@
     pathe "^2.0.2"
     picomatch "^4.0.2"
 
-"@vue/apollo-composable@^4.0.1", "@vue/apollo-composable@^4.2.1":
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/@vue/apollo-composable/-/apollo-composable-4.2.1.tgz#acc46e71f52bec60ec91fd059753a3cdfee75b86"
-  integrity sha512-9PZ/pSl4Miqgg9uUOkAbg38ALyjm1j7QL9iZeppgUCBcJI3Sa7SA3LOCB2IV1jYsLjXuKVMHh2cwHJE1wzhfSA==
+"@vue/apollo-composable@^4.0.1", "@vue/apollo-composable@^4.2.2":
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/@vue/apollo-composable/-/apollo-composable-4.2.2.tgz#96278e420daa6fe66d54d04efb90e52ef49b306a"
+  integrity sha512-5j+Jl07Gemz5vmuS8u/FfWtYgr04Rh0rjQ5HBv6DZDP7d+pvQfsCIRgX5adJoZJcznJLsQ0JupO/mZmRCBWGaQ==
   dependencies:
     throttle-debounce "^5.0.0"
     ts-essentials "^9.4.0"
     vue-demi "^0.14.6"
 
-"@vue/apollo-option@^4.0.0", "@vue/apollo-option@^4.2.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@vue/apollo-option/-/apollo-option-4.2.0.tgz#c81dd22198680953063276a83a4ebcb1baf9bd93"
-  integrity sha512-JYqtSY+dHoOM10o2L+EVY+nDxsmT9lb1Z3Z7VBzBQ3f0np+A1TFldZw9gYNbSS6QYgyGw376+Z/EtOqJ9JoaZw==
+"@vue/apollo-option@^4.0.0", "@vue/apollo-option@^4.2.2":
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/@vue/apollo-option/-/apollo-option-4.2.2.tgz#a385a81edce24f71b5320caa95e4d53bf19cf43a"
+  integrity sha512-70yKre9/cLV5Ye98x1gCcT3217mpYnWd3tp6gQCNHJSLtXvHs2J6kqNGJM7Xi1FYlHfhkElRklkixAdnh7OamQ==
   dependencies:
     throttle-debounce "^5.0.0"
 
-"@vue/apollo-util@^4.0.0-beta.6":
-  version "4.0.0-beta.6"
-  resolved "https://registry.yarnpkg.com/@vue/apollo-util/-/apollo-util-4.0.0-beta.6.tgz#5977365c858f58b000c5c62d97337b0eeff426e8"
-  integrity sha512-2QsiJ77eLInd7Wu3I2eGD4OLJrqImXBoVMlgxjLPgRHru1h5Uf+sGow23/99lGy/5Ao+TNqAZp6RGnLdJqo5tw==
+"@vue/apollo-util@^4.2.2":
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/@vue/apollo-util/-/apollo-util-4.2.2.tgz#fc93193911ed097bae763c7333fba7cfbfc9b2ba"
+  integrity sha512-ZE0V2bJvVQ96xUxlrrew2A7jWWX7getK+mkUGZS5yA/Rl65ez6OGiXaMwLmR92r3hsj+juDIO3WDZziB4hPWcw==
 
 "@vue/babel-helper-vue-transform-on@1.2.5":
   version "1.2.5"
@@ -4198,10 +4198,10 @@
   dependencies:
     rfdc "^1.4.1"
 
-"@vue/language-core@2.2.4":
-  version "2.2.4"
-  resolved "https://registry.yarnpkg.com/@vue/language-core/-/language-core-2.2.4.tgz#5cad43a4cd6f388bebc3e8c6f303df489f5e8829"
-  integrity sha512-eGGdw7eWUwdIn9Fy/irJ7uavCGfgemuHQABgJ/hU1UgZFnbTg9VWeXvHQdhY+2SPQZWJqWXvRWIg67t4iWEa+Q==
+"@vue/language-core@2.2.8":
+  version "2.2.8"
+  resolved "https://registry.yarnpkg.com/@vue/language-core/-/language-core-2.2.8.tgz#05befa390399fbd4409bc703ee0520b8ac1b7088"
+  integrity sha512-rrzB0wPGBvcwaSNRriVWdNAbHQWSf0NlGqgKHK5mEkXpefjUlVRP62u03KvwZpvKVjRnBIQ/Lwre+Mx9N6juUQ==
   dependencies:
     "@volar/language-core" "~2.4.11"
     "@vue/compiler-dom" "^3.5.0"
@@ -13390,13 +13390,13 @@ vue-router@^4.5.0:
   dependencies:
     "@vue/devtools-api" "^6.6.4"
 
-vue-tsc@^2.2.4:
-  version "2.2.4"
-  resolved "https://registry.yarnpkg.com/vue-tsc/-/vue-tsc-2.2.4.tgz#1e87eebbdde3078333304b9e5499b67157040305"
-  integrity sha512-3EVHlxtpMXcb5bCaK7QDFTbEkMusDfVk0HVRrkv5hEb+Clpu9a96lKUXJAeD/akRlkoA4H8MCHgBDN19S6FnzA==
+vue-tsc@^2.2.8:
+  version "2.2.8"
+  resolved "https://registry.yarnpkg.com/vue-tsc/-/vue-tsc-2.2.8.tgz#7c8e1bd9333d25241a7f9988eedf08c65483158c"
+  integrity sha512-jBYKBNFADTN+L+MdesNX/TB3XuDSyaWynKMDgR+yCSln0GQ9Tfb7JS2lr46s2LiFUT1WsmfWsSvIElyxzOPqcQ==
   dependencies:
     "@volar/typescript" "~2.4.11"
-    "@vue/language-core" "2.2.4"
+    "@vue/language-core" "2.2.8"
 
 vue@^3.5.13:
   version "3.5.13"
