@@ -68,6 +68,31 @@ describe('Production Overview', function () {
     );
   });
 
+  it.each([
+    [true, 1, 'an alert and a content warning'],
+    [true, 0, 'an alert'],
+    [false, 2, 'content warnings']
+  ])(
+    'shows the correct warning button text',
+    async (hasAlert, numWarnings, expectedText) => {
+      await createWithPerformances([], {
+        __dont_factory: ['contentWarnings'],
+        productionAlert: hasAlert ? 'An alert' : null,
+        contentWarnings: numWarnings
+          ? Array(numWarnings).fill({
+              warning: { shortDescription: 'Strobe Lighting' }
+            })
+          : []
+      });
+
+      // correct warnings
+      const warnings = overviewContainer.find({ ref: 'warnings' });
+      console.log(warnings.text());
+      expect(warnings.exists()).to.be.true;
+      expect(warnings.text()).to.contain(expectedText);
+    }
+  );
+
   it('shows the correct medium for online and no show warnings', async () => {
     await createWithPerformances(
       [
@@ -80,6 +105,7 @@ describe('Production Overview', function () {
       {
         __dont_factory: ['contentWarnings'],
         contentWarnings: [],
+        productionAlert: null,
         ageRating: null,
         facebookEvent: null
       }
@@ -115,6 +141,89 @@ describe('Production Overview', function () {
   it('handles having no performances', async () => {
     await createWithPerformances([]);
     expect(overviewContainer.text()).not.to.contain('Medium');
+  });
+
+  describe('the show warnings modal', () => {
+    it('shows only content warnings if only content warnings', async () => {
+      await createWithPerformances([], {
+        __dont_factory: ['contentWarnings'],
+        contentWarnings: [
+          { warning: { shortDescription: 'Strobe Lighting' } },
+          { warning: { shortDescription: 'Nudity' } }
+        ],
+        productionAlert: null
+      });
+
+      await overviewContainer.find({ ref: 'warnings' }).trigger('click');
+
+      const warningModal = overviewContainer.find({ ref: 'warning-modal' });
+      expect(warningModal.exists()).to.be.true;
+
+      // correct warning text
+      expect(warningModal.text()).to.contain('Content Warnings');
+      expect(warningModal.text()).to.contain('Strobe Lighting');
+      expect(warningModal.text()).to.contain('Nudity');
+
+      // no production alerts
+      expect(warningModal.text()).not.to.contain('Production Alert');
+    });
+
+    it('shows only production alerts if only production alerts', async () => {
+      await createWithPerformances([], {
+        __dont_factory: ['contentWarnings'],
+        productionAlert: 'This is a production alert.',
+        contentWarnings: []
+      });
+
+      await overviewContainer.find({ ref: 'warnings' }).trigger('click');
+
+      const warningModal = overviewContainer.find({ ref: 'warning-modal' });
+      expect(warningModal.exists()).to.be.true;
+
+      // correct warning text
+      expect(warningModal.text()).to.contain('This is a production alert.');
+
+      // no content warnings
+      expect(warningModal.text()).not.to.contain('Content Warnings');
+    });
+
+    it('shows both production alerts and content warnings', async () => {
+      await createWithPerformances([], {
+        __dont_factory: ['contentWarnings'],
+        productionAlert: 'This is a production alert.',
+        contentWarnings: [
+          { warning: { shortDescription: 'Strobe Lighting' } },
+          { warning: { shortDescription: 'Nudity' } }
+        ]
+      });
+
+      await overviewContainer.find({ ref: 'warnings' }).trigger('click');
+
+      const warningModal = overviewContainer.find({ ref: 'warning-modal' });
+      expect(warningModal.exists()).to.be.true;
+
+      // correct warning text
+      expect(warningModal.text()).to.contain('Content Warnings');
+      expect(warningModal.text()).to.contain('Strobe Lighting');
+      expect(warningModal.text()).to.contain('Nudity');
+      expect(warningModal.text()).to.contain('Production Alert');
+      expect(warningModal.text()).to.contain('This is a production alert.');
+    });
+
+    it('links to the production email for further help', async () => {
+      await createWithPerformances([], {
+        contactEmail: 'example@email.com'
+      });
+
+      await overviewContainer.find({ ref: 'warnings' }).trigger('click');
+
+      const warningModal = overviewContainer.find({ ref: 'warning-modal' });
+      expect(warningModal.exists()).to.be.true;
+
+      const emailLink = warningModal.find('a');
+      expect(emailLink.exists()).to.be.true;
+      expect(emailLink.attributes('href')).to.equal('mailto:example@email.com');
+    });
   });
 
   const createWithPerformances = async (performances, productionOverrides) => {

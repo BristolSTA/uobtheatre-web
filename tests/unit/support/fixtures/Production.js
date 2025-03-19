@@ -19,6 +19,7 @@ export default (overrides = {}, includePerformance = false) => {
       ageRating: 18,
       facebookEvent: 'https://facebook.com/legally-ginger',
       description: 'The description of the show.',
+      contactEmail: 'example@email.com',
       start: '2020-11-14T00:00:00.000',
       end: '2020-11-18T00:00:00.000',
       minSeatPrice: 120,

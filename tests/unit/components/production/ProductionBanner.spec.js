@@ -139,6 +139,13 @@ describe('ProductionBanner', function () {
     expect(headerContainer.findAllComponents(NuxtLinkStub).length).to.equal(2);
   });
 
+  it('links to the production when prop set', async () => {
+    await createWithPerformances([], [], {}, true, true, true);
+    expect(
+      headerContainer.findAllComponents(NuxtLinkStub).at(0).attributes('to')
+    ).to.equal('/production/legally-ginger');
+  });
+
   it('shows venue overflow', async () => {
     await createWithPerformances([
       {
@@ -219,6 +226,19 @@ describe('ProductionBanner', function () {
     );
     expect(headerContainer.find('button').exists()).to.be.false;
   });
+
+  it.each([
+    [true, 'Get Tickets'],
+    [false, 'Buy Tickets']
+  ])(
+    'shows buy tickets button with correct wording for free tickets',
+    async (free, text) => {
+      await createWithPerformances([{}], [], {
+        minSeatPrice: free ? null : 120
+      });
+      expect(headerContainer.find('button').text()).to.equal(text);
+    }
+  );
 
   it('doesnt show buy tickets button when told to not be present', async () => {
     await createWithPerformances([{}], [], {}, false);
@@ -344,7 +364,8 @@ describe('ProductionBanner', function () {
     miscCostsData = [],
     productionOverrides,
     showBuyTicketsButton = true,
-    showDetailedInfo = true
+    showDetailedInfo = true,
+    clickableProductionName = false
   ) => {
     const production = Production(productionOverrides);
     production.performances = GenericNodeConnection(
@@ -356,7 +377,8 @@ describe('ProductionBanner', function () {
       props: {
         production,
         showBuyTicketsButton,
-        showDetailedInfo
+        showDetailedInfo,
+        clickableProductionName
       },
       data() {
         return {

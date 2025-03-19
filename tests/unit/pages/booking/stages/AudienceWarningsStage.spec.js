@@ -32,8 +32,8 @@ describe('Audience Warnings Stage', () => {
       );
     });
 
-    it('displays the production warning', () => {
-      expect(warningComponent.text()).to.contain('Production Warnings');
+    it('displays the production alert', () => {
+      expect(warningComponent.text()).to.contain('Production Alert');
       expect(warningComponent.text()).to.contain('This is a production alert.');
     });
 
@@ -69,8 +69,8 @@ describe('Audience Warnings Stage', () => {
       expect(warningComponent.text()).to.contain('the performance description');
     });
 
-    it('doesnt display the production warning', () => {
-      expect(warningComponent.text()).to.not.contain('Production Warnings');
+    it('doesnt display the production alert', () => {
+      expect(warningComponent.text()).to.not.contain('Production Alert');
       expect(warningComponent.text()).to.not.contain(
         'This is a production alert.'
       );
