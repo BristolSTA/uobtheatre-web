@@ -13,15 +13,26 @@
       </template>
       {{ booking.performance.description }}
     </UiCard>
-    <div v-if="production.productionAlert" class="w-full p-6 pt-3 text-white">
+    <div v-if="production.productionAlert" class="w-full p-3 px-6 text-white">
       <h3 class="text-h3 font-semibold">
         <font-awesome-icon icon="exclamation-triangle" class="text-sta-rouge" />
-        Production Warnings
+        Production Alert
       </h3>
-      <hr class="my-2 border-sta-gray-light" />
-      <p>{{ production.productionAlert }}</p>
+      <p>
+        {{
+          /[.!?]$/.test(production.productionAlert)
+            ? production.productionAlert
+            : production.productionAlert + '.'
+        }}
+        For more information, please contact
+        <a :href="`mailto:${production.contactEmail}`" class="underline">{{
+          production.contactEmail
+        }}</a
+        >.
+      </p>
+      <hr class="mt-2 border-sta-gray-light" />
     </div>
-    <div class="mb-2 p-6 pt-3 text-white">
+    <div class="p-3 px-6 text-white">
       <h3 class="text-h3 font-semibold">
         <font-awesome-icon icon="exclamation-triangle" class="text-sta-rouge" />
         Content Warnings
@@ -41,7 +52,7 @@
     </div>
     <div>
       <button
-        class="btn btn-rouge btn-outline"
+        class="mt-2 btn btn-rouge btn-outline"
         @click="onUnderstood"
         @keypress="onUnderstood"
       >

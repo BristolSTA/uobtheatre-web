@@ -2,7 +2,7 @@
   <div
     class="flex flex-wrap items-center justify-center space-x-0 md:space-x-10"
   >
-    <div class="relative inline-block m-8 w-full max-w-xl md:w-2/3">
+    <div class="relative inline-block m-2 w-full max-w-xl md:w-2/3">
       <production-featured-image
         data-test="featured-image"
         class="p-4 w-full sm:p-8"
@@ -21,7 +21,14 @@
       class="flex flex-col items-center px-10 w-full text-center text-white md:block md:w-auto md:max-w-md md:text-left"
     >
       <span class="font-semibold">
-        <span class="text-h2">{{ production.name }}</span>
+        <NuxtLink
+          v-if="clickableProductionName"
+          class="hover:text-gray-300"
+          :to="`/production/${production.slug}`"
+        >
+          <span class="text-h2">{{ production.name }}</span>
+        </NuxtLink>
+        <span v-else class="text-h2">{{ production.name }}</span>
         <p class="-mt-2 mb-1 text-sta-gray-lighter">
           by
           <NuxtLink
@@ -99,7 +106,7 @@
         @click="$emit('on-buy-tickets-click')"
         @keypress="$emit('on-buy-tickets-click')"
       >
-        Buy Tickets
+        {{ production.minSeatPrice ? 'Buy' : 'Get' }} Tickets
       </button>
     </div>
   </div>
@@ -130,6 +137,10 @@ export default {
     },
     showDetailedInfo: {
       default: true,
+      type: Boolean
+    },
+    clickableProductionName: {
+      default: false,
       type: Boolean
     }
   },
