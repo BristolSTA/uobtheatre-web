@@ -113,7 +113,7 @@
     "prosemirror-view": "^1.38.1",
     "qrcode.vue": "^3.6.0",
     "sweetalert2": "^11.15.10",
-    "uuid": "^11.0.3",
+    "uuid": "^11.1.0",
     "vue-currency-input": "^3.2.1",
     "vue-gtag": "2.0.1",
     "vue-qrcode-reader": "5.7.1"
