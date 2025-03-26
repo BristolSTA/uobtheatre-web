@@ -89,6 +89,10 @@ export default defineNuxtComponent({
     ProductionBanner,
     ProductionDraftWarningBanner
   },
+  setup() {
+    const { breadcrumbs } = defineBreadcrumbs();
+    return { breadcrumbs };
+  },
   async asyncData() {
     // Execute query
     const result = await useAsyncQuery({
@@ -130,10 +134,6 @@ export default defineNuxtComponent({
           this.production.productionTeam.length
       );
     }
-  },
-  setup() {
-    const { breadcrumbs } = defineBreadcrumbs();
-    return { breadcrumbs };
   },
   mounted() {
     this.breadcrumbs = [

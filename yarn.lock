@@ -2948,15 +2948,15 @@
     ufo "^1.5.4"
     unctx "^2.4.1"
 
-"@nuxtjs/turnstile@^0.9.12":
-  version "0.9.12"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/turnstile/-/turnstile-0.9.12.tgz#3cb34db0cd9e07cab8b46c07b6ccc23efda37dd6"
-  integrity sha512-/GRvI2ahQtHBoKLAErIt1p3zomm2vduLFwqQjiINaNbEIbm8mPsrNDVhPSlocdHJkASpBs+0GnYXZzJLfjatEA==
+"@nuxtjs/turnstile@^0.9.16":
+  version "0.9.16"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/turnstile/-/turnstile-0.9.16.tgz#b894fb58915891f3336686df7be06c236fb943e2"
+  integrity sha512-lx+CBgdBJ8wALZzVwlcDCWcHIJHFoXLVQnBKgCVnt0fPDz+8rSMY/p8jRW3TamFrPTxE3HdwEwXLotlPfLQVTQ==
   dependencies:
-    "@nuxt/kit" "^3.13.2"
+    "@nuxt/kit" "^3.16.0"
     "@types/cloudflare-turnstile" "0.2.2"
     defu "^6.1.4"
-    pathe "^2.0.0"
+    pathe "^2.0.3"
 
 "@one-ini/wasm@0.1.1":
   version "0.1.1"
@@ -4662,10 +4662,10 @@
   dependencies:
     rfdc "^1.4.1"
 
-"@vue/language-core@2.2.8":
-  version "2.2.8"
-  resolved "https://registry.yarnpkg.com/@vue/language-core/-/language-core-2.2.8.tgz#05befa390399fbd4409bc703ee0520b8ac1b7088"
-  integrity sha512-rrzB0wPGBvcwaSNRriVWdNAbHQWSf0NlGqgKHK5mEkXpefjUlVRP62u03KvwZpvKVjRnBIQ/Lwre+Mx9N6juUQ==
+"@vue/language-core@2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@vue/language-core/-/language-core-2.2.2.tgz#aa0e916bf18434077887e8ba269729b45564f625"
+  integrity sha512-QotO41kurE5PLf3vrNgGTk3QswO2PdUFjBwNiOi7zMmGhwb25PSTh9hD1MCgKC06AVv+8sZQvlL3Do4TTVHSiQ==
   dependencies:
     "@volar/language-core" "~2.4.11"
     "@vue/compiler-dom" "^3.5.0"
@@ -11215,7 +11215,7 @@ pathe@^1.1.1, pathe@^1.1.2:
   resolved "https://registry.yarnpkg.com/pathe/-/pathe-1.1.2.tgz#6c4cb47a945692e48a1ddd6e4094d170516437ec"
   integrity sha512-whLdWMYL2TwI08hn8/ZqAbrVemu0LNaNNJZX73O6qaIdCTfXutsLhMkjdENX0qhsQ9uIimo4/aQOmXkoon2nDQ==
 
-pathe@^2.0.0, pathe@^2.0.1, pathe@^2.0.2, pathe@^2.0.3:
+pathe@^2.0.1, pathe@^2.0.2, pathe@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/pathe/-/pathe-2.0.3.tgz#3ecbec55421685b70a9da872b2cff3e1cbed1716"
   integrity sha512-WUjGcAqP1gQacoQe+OBJsFA7Ld4DyXuUIjZ5cc75cLHvJ7dtNsTugphxIADwspS+AraAUePCKrSVtPLFj/F88w==
@@ -14028,13 +14028,13 @@ vue-router@^4.5.0:
   dependencies:
     "@vue/devtools-api" "^6.6.4"
 
-vue-tsc@^2.2.8:
-  version "2.2.8"
-  resolved "https://registry.yarnpkg.com/vue-tsc/-/vue-tsc-2.2.8.tgz#7c8e1bd9333d25241a7f9988eedf08c65483158c"
-  integrity sha512-jBYKBNFADTN+L+MdesNX/TB3XuDSyaWynKMDgR+yCSln0GQ9Tfb7JS2lr46s2LiFUT1WsmfWsSvIElyxzOPqcQ==
+vue-tsc@2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/vue-tsc/-/vue-tsc-2.2.2.tgz#7e3c43dbd3ca3a38e0f04a864bd114ba31098b90"
+  integrity sha512-1icPKkxAA5KTAaSwg0wVWdE48EdsH8fgvcbAiqojP4jXKl6LEM3soiW1aG/zrWrFt8Mw1ncG2vG1PvpZpVfehA==
   dependencies:
     "@volar/typescript" "~2.4.11"
-    "@vue/language-core" "2.2.8"
+    "@vue/language-core" "2.2.2"
 
 vue@^3.4.5, vue@^3.5.13:
   version "3.5.13"

@@ -75,13 +75,14 @@ export default defineNuxtComponent({
       type: Booking
     }
   },
+  emits: ['mounted', 'next-stage'],
+  mounted() {
+    this.$emit('mounted', stageInfo);
+  },
   methods: {
     onUnderstood() {
       this.$emit('next-stage');
     }
-  },
-  mounted() {
-    this.$emit('mounted', stageInfo);
   }
 });
 </script>
