@@ -142,6 +142,10 @@ export default defineNuxtComponent({
 
     return next();
   },
+  setup() {
+    const { breadcrumbs } = defineBreadcrumbs();
+    return { breadcrumbs };
+  },
   async asyncData() {
     const { data } = await useDefaultApolloClient().query({
       query: gql`
@@ -171,13 +175,6 @@ export default defineNuxtComponent({
       production
     };
   },
-  head() {
-    return {
-      script: [
-        { src: useRuntimeConfig().public.services.square.script, defer: 'true' }
-      ]
-    };
-  },
   data() {
     return {
       booking: new Booking(),
@@ -187,9 +184,17 @@ export default defineNuxtComponent({
       paid: false
     };
   },
-  setup() {
-    const { breadcrumbs } = defineBreadcrumbs();
-    return { breadcrumbs };
+  head() {
+    return {
+      script: [
+        { src: useRuntimeConfig().public.services.square.script, defer: 'true' }
+      ]
+    };
+  },
+  computed: {
+    currentStageIndex() {
+      return getStageIndex(this.currentStage);
+    }
   },
   mounted() {
     this.breadcrumbs = [
@@ -200,11 +205,6 @@ export default defineNuxtComponent({
       },
       { text: 'Book' }
     ];
-  },
-  computed: {
-    currentStageIndex() {
-      return getStageIndex(this.currentStage);
-    }
   },
   methods: {
     bookingExpired() {

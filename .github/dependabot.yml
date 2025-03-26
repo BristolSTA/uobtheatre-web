@@ -9,9 +9,9 @@ updates:
     directory: '/' # Location of package manifests
     schedule:
       interval: 'daily'
-    assignees:
-      - 'happynth'
     target-branch: 'dependabot/develop'
+    reviewers:
+      - 'HappyNTH'
     groups:
       vue:
         patterns:

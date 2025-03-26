@@ -6,7 +6,7 @@ import GenericNodeConnection from '#testSupport/fixtures/support/GenericNodeConn
 import Production from '#testSupport/fixtures/Production.js';
 import Performance from '#testSupport/fixtures/Performance.js';
 import ProductionPerformances from '@/components/production/ProductionPerformances.vue';
-import PerformanceOverview from '@/components/performance/PerformanceOverview.vue';
+import PerformanceOverview from '@/components/performance/PerformanceTile.vue';
 
 describe('Production Performances', function () {
   let performancesContainer;
@@ -66,6 +66,7 @@ describe('Production Performances', function () {
     });
 
     it('displays the correct number of performance overviews', () => {
+      console.log(performancesContainer.html());
       const overviews =
         performancesContainer.findAllComponents(PerformanceOverview);
       const production = performancesContainer.vm.production;

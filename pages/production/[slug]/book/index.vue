@@ -24,6 +24,7 @@ export default defineNuxtComponent({
       type: Object
     }
   },
+  emits: ['select-performance', 'mounted'],
   computed: {
     availablePerformances() {
       return this.production.performances.edges
