@@ -75,6 +75,15 @@
             <rich-text-input v-model="production.description" />
           </template>
         </form-label>
+        <form-label :errors="errors" name="shortDescription">
+          Short Description
+          <template #control>
+            <UiInputText v-model="production.shortDescription" />
+          </template>
+          <template #helper>
+            This will be shown in place of the description on the front page.
+          </template>
+        </form-label>
         <form-label :errors="errors" name="warnings">
           Content Warnings
           <template #control>

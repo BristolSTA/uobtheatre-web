@@ -171,6 +171,34 @@ describe('Home', function () {
         'flex-row-reverse'
       );
     });
+
+    it('correctly truncates descriptions', async () => {
+      await seedProductions();
+
+      const whatsOnProductions = homepageComponent
+        .find({
+          ref: 'whatson'
+        })
+        .findAll('.production-feature');
+
+      // Description 1 is short, so it should be displayed in full
+      expect(whatsOnProductions.at(0).findAll('p').at(1).text()).to.contain(
+        'The description of the show.'
+      );
+
+      // Description 3 is over 230 characters, so it should be truncated
+      expect(whatsOnProductions.at(2).findAll('p').at(1).text()).to.contain(
+        'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsa...'
+      );
+      expect(
+        whatsOnProductions.at(2).findAll('p').at(1).text()
+      ).to.be.length.lessThanOrEqual(233);
+
+      // Description 4 has a short description, so that should be selected
+      expect(whatsOnProductions.at(3).findAll('p').at(1).text()).to.contain(
+        'A short desc.'
+      );
+    });
   });
 
   const seedProductions = async () => {
@@ -183,8 +211,14 @@ describe('Home', function () {
       }),
       // Seed a production that can be featured
       Production({ id: 2, start: '2020-11-14', end: '2020-11-18' }),
-      Production({ id: 3, start: '2020-11-14', end: '2020-11-18' }),
-      Production({ id: 4 })
+      Production({
+        id: 3,
+        start: '2020-11-14',
+        end: '2020-11-18',
+        description:
+          'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?'
+      }),
+      Production({ id: 4, shortDescription: 'A short desc.' })
     ]);
     await flushPromises();
   };

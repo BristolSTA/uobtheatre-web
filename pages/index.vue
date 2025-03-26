@@ -83,8 +83,15 @@
           <p class="font-semibold text-sta-orange">
             {{ displayStartEnd(production!.start, production!.end, 'd MMMM') }}
           </p>
-          <p>
-            {{ truncate(oneLiner(production!.description || ''), 230) }}
+          <p ref="description">
+            {{
+              truncate(
+                oneLiner(
+                  production!.shortDescription || production!.description || ''
+                ),
+                230
+              )
+            }}
           </p>
           <NuxtLink
             :to="`/production/${production!.slug}`"
