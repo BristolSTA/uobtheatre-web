@@ -14,7 +14,6 @@
         <label>Production</label>
         <UiInputSelect
           v-if="
-            !$apollo.queries.productions.loading &&
             productions.length > 0 &&
             productions.length <= 5
           "
@@ -24,7 +23,7 @@
         />
         <!-- If our productions are loading, have a greyed out text box -->
         <UiInputText
-          v-else-if="$apollo.queries.productions.loading"
+          v-else-if="productionName == null && loading"
           v-model="productionName"
           disabled="true"
           placeholder="Filter by production"
@@ -43,7 +42,7 @@
         <UiInputSelect
           v-if="
             productionSlug &&
-            !$apollo.queries.performances.loading &&
+            !loading &&
             performances.length > 0 &&
             !disablePerformanceDropdown
           "
@@ -78,7 +77,7 @@
         :page-info="bookingsPageInfo"
         :items="bookings"
         :max-per-page="10"
-        :loading="$apollo.queries.bookings.loading"
+        :loading="loading"
         empty-text="No bookings found"
       >
         <template #head>
@@ -197,6 +196,8 @@ export default defineNuxtComponent({
       searchByCreator: false,
       creatorSearch: null,
 
+      loading: true,
+
       BookingStatusEnum
     };
   },
@@ -205,7 +206,7 @@ export default defineNuxtComponent({
     bookings: {
       query: AdminBookingsQuery,
       variables() {
-        // alert(`${JSON.stringify(this.productions)}`);
+        this.loading = true;
         // If switching production, we need to nullify the performanceID to
         // stop errors
         if (this.productionSlug !== this.oldSlug) {
@@ -232,7 +233,8 @@ export default defineNuxtComponent({
           userSearch: !this.searchByCreator ? this.user : null,
           creatorSearch: this.searchByCreator ? this.user : null,
           orderBy: this.bookingsOrderBy,
-          status: this.bookingsStatus
+          status: this.bookingsStatus,
+          loading: false
         };
       },
       fetchPolicy: 'cache-and-network',
@@ -246,14 +248,17 @@ export default defineNuxtComponent({
       debounce: 600,
       result(result) {
         if (!result.data) {
+          this.loading = false;
           return;
         }
         this.bookingsPageInfo = result.data.bookings.pageInfo;
+        this.loading = false;
       }
     },
     productions: {
       query: AdminProductionsQuery,
       variables() {
+        this.loading = true;
         return { search: this.productionName };
       },
       fetchPolicy: 'cache-and-network',
@@ -267,6 +272,7 @@ export default defineNuxtComponent({
       debounce: 600,
       result(result) {
         if (!result.data) {
+          this.loading = false;
           return;
         }
 
@@ -297,11 +303,13 @@ export default defineNuxtComponent({
         }
 
         this.productions = prodArray;
+        this.loading = false;
       }
     },
     performances: {
       query: AdminPerformancesIndex,
       variables() {
+        this.loading = true;
         return { productionSlug: this.productionSlug };
       },
       fetchPolicy: 'cache-and-network',
@@ -350,6 +358,7 @@ export default defineNuxtComponent({
         // we remember to nullify the performanceID to stop errors
         this.oldSlug = this.productionSlug;
         this.disablePerformanceDropdown = false;
+        this.loading = false;
       },
       skip() {
         return !this.productionSlug;
