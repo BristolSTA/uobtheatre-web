@@ -98,7 +98,7 @@
     "jwt-decode": "^4.0.0",
     "leaflet": "^1.9.4",
     "lodash": "^4.17.21",
-    "luxon": "^3.5.0",
+    "luxon": "^3.6.0",
     "pinia": "^3.0.1",
     "pluralize": "^8.0.0",
     "prosemirror-commands": "^1.7.0",
