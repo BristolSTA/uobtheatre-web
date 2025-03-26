@@ -129,9 +129,6 @@ export default defineNuxtComponent({
       society: null
     };
   },
-  methods: {
-    dateFormat
-  },
   computed: {
     banner() {
       return this.society?.banner?.url
@@ -143,6 +140,9 @@ export default defineNuxtComponent({
         .map((edge) => edge.node)
         .filter((production) => production.end);
     }
+  },
+  methods: {
+    dateFormat
   }
 });
 </script>

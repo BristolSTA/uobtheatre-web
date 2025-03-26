@@ -58,6 +58,7 @@ export default defineNuxtComponent({
       type: Booking
     }
   },
+  emits: ['next-stage', 'mounted'],
   mounted() {
     this.$emit('mounted', stageInfo);
   }
