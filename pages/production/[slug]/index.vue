@@ -125,7 +125,9 @@ export default defineNuxtComponent({
       return this.$route;
     },
     shortDescription() {
-      return excerptFromDescription(this.production.description);
+      return excerptFromDescription(
+        this.production.shortDescription || this.production.description
+      );
     },
     hasCastCrew() {
       return Boolean(

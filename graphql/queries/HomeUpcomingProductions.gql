@@ -7,7 +7,7 @@ query homepageUpcomingProductions($now: DateTime) {
         slug
         subtitle
         description
-        shortdescription
+        shortDescription
         featuredImage {
           id
           url

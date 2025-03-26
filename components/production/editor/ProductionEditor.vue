@@ -76,11 +76,13 @@
           </template>
         </form-label>
         <form-label :errors="errors" name="shortDescription">
-          Shortdescription
-          <t-input
-            :value="shortDescription"
-            @input="$emit('update:shortDescription', $event)"
-          />
+          Short Description
+          <template #control>
+            <UiInputText v-model="production.shortDescription" />
+          </template>
+          <template #helper>
+            This will be shown in place of the description on the front page.
+          </template>
         </form-label>
         <form-label :errors="errors" name="warnings">
           Content Warnings
