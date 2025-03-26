@@ -125,7 +125,8 @@
         </div>
         <div>
           <!-- Description -->
-          <UiTipTapOutput
+          <tip-tap-output
+            v-if="society.description"
             class="p-4 w-full text-justify lg:block"
             :html="society.description"
           />

@@ -262,25 +262,6 @@ export default defineNuxtComponent({
       bannerProductions: null
     };
   },
-  methods: {
-    initMap(mapRef) {
-      if (!this.venue.address.latitude || !this.venue.address.longitude) return;
-      const map = mapRef.value.setView(
-        [this.venue.address.latitude, this.venue.address.longitude],
-        14
-      );
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map);
-      L.popup({ closeButton: false })
-        .setLatLng(
-          L.latLng(this.venue.address.latitude, this.venue.address.longitude)
-        )
-        .setContent(`${this.venue.name}`)
-        .openOn(map);
-    }
-  },
   computed: {
     banner() {
       return this.venue?.image?.url ? `url("${this.venue.image.url}")` : null;
@@ -302,6 +283,25 @@ export default defineNuxtComponent({
       return this.productions.filter(
         (production) => new Date(production.end) < new Date()
       );
+    }
+  },
+  methods: {
+    initMap(mapRef) {
+      if (!this.venue.address.latitude || !this.venue.address.longitude) return;
+      const map = mapRef.value.setView(
+        [this.venue.address.latitude, this.venue.address.longitude],
+        14
+      );
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+      L.popup({ closeButton: false })
+        .setLatLng(
+          L.latLng(this.venue.address.latitude, this.venue.address.longitude)
+        )
+        .setContent(`${this.venue.name}`)
+        .openOn(map);
     }
   }
 });
