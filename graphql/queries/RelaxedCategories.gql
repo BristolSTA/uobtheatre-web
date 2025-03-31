@@ -1,0 +1,14 @@
+query relaxedCategories {
+  relaxedCategories {
+    edges {
+      node {
+        id
+        shortDescription
+        longDescription
+        helpText
+        defaultRelaxed
+        defaultSensoryFriendly
+      }
+    }
+  }
+}
