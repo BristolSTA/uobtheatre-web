@@ -120,4 +120,42 @@ describe('Performance Overview', () => {
       duration ? '2 hours inc. interval' : '2 hours'
     );
   });
+
+  it('shows relaxed performance', async () => {
+    await performanceOverviewComponent.setProps({
+      performance: Performance({ isRelaxed: true })
+    });
+
+    expect(performanceOverviewComponent.text().to.contain('Relaxed Performance'));
+  });
+
+  it('shows relaxed performance with custom name', async () => {
+    await performanceOverviewComponent.setProps({
+      performance: Performance({
+        isRelaxed: true,
+        relaxedName: 'Party'
+      })
+    });
+
+    expect(performanceOverviewComponent.text().to.contain('Party Performance'));
+  });
+
+  it('doesn\'t show relaxed if not relaxed', async () => {
+    await performanceOverviewComponent.setProps({
+      performance: Performance({ isRelaxed: false })
+    });
+
+    expect(performanceOverviewComponent.text().to.not.contain('Relaxed Performance'));
+  });
+
+  it('doesn\'t show custom relaxed name if not relaxed', async () => {
+    await performanceOverviewComponent.setProps({
+      performance: Performance({
+        isRelaxed: false,
+        relaxedName: 'Friendly'
+      })
+    });
+
+    expect(performanceOverviewComponent.text().to.not.contain('Friendly Performance'));
+  });
 });
