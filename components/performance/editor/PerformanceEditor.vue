@@ -230,8 +230,8 @@
         Pre-filled options
         <template #control>
           <div class="space-x-4 py-2">
-            <button @click="selectDefaultRelaxedCategories" class="p-2 bg-sta-green">Relaxed Performance</button>
-            <button @click="selectDefaultSensoryFriendlyRelaxedCategories" class="p-2 bg-sta-green">Sensory Friendly Performance</button>
+            <button class="p-2 bg-sta-green" @click="selectDefaultRelaxedCategories">Relaxed Performance</button>
+            <button class="p-2 bg-sta-green" @click="selectDefaultSensoryFriendlyRelaxedCategories">Sensory Friendly Performance</button>
           </div>
         </template>
         <template #helper>
@@ -263,9 +263,9 @@
           </table-head-item>
         </table-row>
         <table-row
-          :striped="false"
           v-for="rc in allRelaxedCategories"
           :key="rc.id"
+          :striped="false"
           class="border-sta-gray-dark border-2"
         >
           <table-row-item class="max-w-lg border-sta-gray-dark border-r-2">

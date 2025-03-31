@@ -87,12 +87,12 @@ export default {
       type: String
     }
   },
+  emits: ['select'],
   data() {
     return {
       showRelaxedCategoriesDetail: false
     };
   },
-  emits: ['select'],
   computed: {
     disabledReason() {
       if (this.performance.soldOut) {
