@@ -844,11 +844,15 @@ export default {
       this.deletedDiscounts.push(discount);
     },
     selectDefaultRelaxedCategories() {
+      // eslint-disable-next-line vue/no-mutating-props
       this.performance.relaxedName = "Relaxed";
+      // eslint-disable-next-line vue/no-mutating-props
       this.performance.relaxedCategories = this.allRelaxedCategories.map((rc) => (rc.defaultRelaxed ? rc : false)).filter((rc) => rc);
     },
     selectDefaultSensoryFriendlyRelaxedCategories() {
+      // eslint-disable-next-line vue/no-mutating-props
       this.performance.relaxedName = "Sensory Friendly";
+      // eslint-disable-next-line vue/no-mutating-props
       this.performance.relaxedCategories = this.allRelaxedCategories.map((rc) => (rc.defaultSensoryFriendly ? rc : false)).filter((rc) => rc);
     },
     relaxedCategorySelectionToggle(category) {
@@ -856,8 +860,10 @@ export default {
         (rc) => rc.id === category.id
       );
       if (index === -1) {
+        // eslint-disable-next-line vue/no-mutating-props
         this.performance.relaxedCategories.push(category);
       } else {
+        // eslint-disable-next-line vue/no-mutating-props
         this.performance.relaxedCategories.splice(index, 1);
       }
     }
