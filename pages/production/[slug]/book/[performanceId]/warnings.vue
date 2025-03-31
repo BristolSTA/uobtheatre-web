@@ -13,17 +13,6 @@
       </template>
       {{ booking.performance.description }}
     </UiCard>
-    <UiCard
-      v-if="booking.performance.isRelaxed"
-      class="w-full mb-2"
-    >
-      <template #subtitle>
-        <span class="text-xl">Relaxed Performance</span>
-      </template>
-      This performance has been adapted to be more accessible. If you have any questions about this specific relaxed performance, please contact <a :href="`mailto:${production.contactEmail}`" class="underline">
-        {{ production.contactEmail }}
-      </a>.
-    </UiCard>
     <div class="mb-2 p-6 pt-3 text-white">
       <h3 class="text-h3 font-semibold">
         <font-awesome-icon icon="exclamation-triangle" class="text-sta-rouge" />
