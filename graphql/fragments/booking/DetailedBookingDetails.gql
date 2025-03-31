@@ -31,6 +31,12 @@ fragment DetailedBookingDetails on BookingNode {
     end
     doorsOpen
     isRelaxed
+    relaxedName
+    relaxedCategories {
+      id
+      shortDescription
+      longDescription
+    }
     venue {
       id
       slug
