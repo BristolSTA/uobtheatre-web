@@ -18,6 +18,12 @@ fragment ProductionPerformances on ProductionNode {
         isInperson
         isOnline
         isRelaxed
+        relaxedName
+        relaxedCategories {
+          id
+          shortDescription
+          longDescription
+        }
         isBookable
       }
     }

@@ -61,6 +61,12 @@ query productionBySlug($slug: String!) {
           isOnline
           isInperson
           isRelaxed
+          relaxedName
+          relaxedCategories {
+            id
+            shortDescription
+            longDescription
+          }
           ticketsBreakdown {
             totalCapacity
           }
