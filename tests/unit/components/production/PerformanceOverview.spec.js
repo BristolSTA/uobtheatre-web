@@ -126,7 +126,7 @@ describe('Performance Overview', () => {
       performance: Performance({ isRelaxed: true })
     });
 
-    expect(performanceOverviewComponent.text().to.contain('Relaxed Performance'));
+    expect(performanceOverviewComponent.text()).to.contain('Relaxed Performance');
   });
 
   it('shows relaxed performance with custom name', async () => {
@@ -137,7 +137,7 @@ describe('Performance Overview', () => {
       })
     });
 
-    expect(performanceOverviewComponent.text().to.contain('Party Performance'));
+    expect(performanceOverviewComponent.text()).to.contain('Party Performance');
   });
 
   it('doesn\'t show relaxed if not relaxed', async () => {
@@ -145,7 +145,7 @@ describe('Performance Overview', () => {
       performance: Performance({ isRelaxed: false })
     });
 
-    expect(performanceOverviewComponent.text().to.not.contain('Relaxed Performance'));
+    expect(performanceOverviewComponent.text()).to.not.contain('Relaxed Performance');
   });
 
   it('doesn\'t show custom relaxed name if not relaxed', async () => {
@@ -156,6 +156,6 @@ describe('Performance Overview', () => {
       })
     });
 
-    expect(performanceOverviewComponent.text().to.not.contain('Friendly Performance'));
+    expect(performanceOverviewComponent.text()).to.not.contain('Friendly Performance');
   });
 });
