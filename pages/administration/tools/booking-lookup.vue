@@ -73,6 +73,7 @@
     </div>
     <UiCard class="mt-4">
       <paginated-table
+        id="bookingsTable"
         v-model:offset="bookingsOffset"
         :page-info="bookingsPageInfo"
         :items="bookings"
@@ -202,6 +203,7 @@ export default defineNuxtComponent({
     };
   },
 
+  //  https://apollo.vuejs.org/api/smart-query.html
   apollo: {
     bookings: {
       query: AdminBookingsQuery,
