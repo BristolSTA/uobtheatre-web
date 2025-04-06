@@ -82,7 +82,6 @@ function onInvalidCode() {
 }
 
 async function onScan(ticketData: TicketQRCodeData) {
-  console.log('Scanned data:', ticketData);
   scannedData.value = ticketData;
   bookingInfo.value = undefined;
 
