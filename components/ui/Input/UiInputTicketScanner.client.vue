@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import { QrcodeStream } from 'vue-qrcode-reader';
+import { QrcodeStream, type DetectedBarcode } from 'vue-qrcode-reader';
 import Ticket from '~~/classes/Ticket';
 import InvalidTicketQRCodeException from '~~/exceptions/InvalidTicketQRCodeException';
 import type { TicketQRCodeData } from '~~/types/ticket';
@@ -80,11 +80,14 @@ async function cameraOn(c: MediaTrackCapabilities) {
     emit('unable', errorMessage);
   }
 }
-function onDetect(detectedCodes: { rawValue: string }[]) {
+function onDetect(detectedCodes: DetectedBarcode[]) {
   new Audio('/audio/beep_single.mp3').play();
-
   try {
-    const rawValue = `${JSON.stringify(detectedCodes.map((code) => code.rawValue))} ${new Date().getTime()}`;
+    let rawValue = detectedCodes[0].rawValue;
+    // Strip " from the start and end of the string
+    if (rawValue.startsWith('"') && rawValue.endsWith('"')) {
+      rawValue = rawValue.slice(1, -1);
+    }
     const ticketData = Ticket.dataFromQRCode(rawValue);
     if (props.pauseOnDecode) {
       cameraReset.value = true;
