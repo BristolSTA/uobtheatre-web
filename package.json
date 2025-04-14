@@ -59,7 +59,7 @@
     "nuxt": "^3.16.1",
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",
-    "sass": "^1.86.0",
+    "sass": "^1.86.3",
     "tailwindcss": "^3.4.15",
     "typescript": "^5.8.3",
     "unplugin-auto-import": "^19.1.1",
