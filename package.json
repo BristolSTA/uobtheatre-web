@@ -99,7 +99,7 @@
     "leaflet": "^1.9.4",
     "lodash": "^4.17.21",
     "luxon": "^3.6.1",
-    "pinia": "^3.0.1",
+    "pinia": "^3.0.2",
     "pluralize": "^8.0.0",
     "prosemirror-commands": "^1.7.0",
     "prosemirror-dropcursor": "^1.6.1",
