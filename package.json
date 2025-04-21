@@ -71,7 +71,7 @@
     "webpack": "^5.98.0"
   },
   "dependencies": {
-    "@apollo/client": "^3.13.7",
+    "@apollo/client": "^3.13.8",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-brands-svg-icons": "^6.7.2",
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
