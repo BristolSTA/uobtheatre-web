@@ -32,20 +32,10 @@ describe('Create Booking Page', () => {
     bookingComponent = await mount(Book, {
       shallow: false,
       routeInfo: {
-        params: Object.assign(
-          {},
-          {
-            slug: 'legally-ginger'
-          },
-          routeParams
-        )
+        params: Object.assign({}, { slug: 'legally-ginger' }, routeParams)
       },
-      apollo: {
-        queryResponses
-      },
-      global: {
-        components: { NuxtPage: fakePage ?? generateFakeNuxtPage() }
-      }
+      apollo: { queryResponses },
+      global: { components: { NuxtPage: fakePage ?? generateFakeNuxtPage() } }
     });
   }
 
@@ -74,9 +64,7 @@ describe('Create Booking Page', () => {
   });
 
   it('has a nuxt child', async () => {
-    await bookingComponent.setData({
-      ticketMatrix: 'fakeMatrix'
-    });
+    await bookingComponent.setData({ ticketMatrix: 'fakeMatrix' });
 
     const nuxtChild = bookingComponent.findComponent({ name: 'NuxtPage' });
     expect(nuxtChild.exists()).to.be.true;
@@ -88,9 +76,7 @@ describe('Create Booking Page', () => {
   it('reacts to the child emitting select performance event', async () => {
     const childComponent = bookingComponent.findComponent({ name: 'NuxtPage' });
 
-    await childComponent.vm.$emit('select-performance', {
-      id: 1
-    });
+    await childComponent.vm.$emit('select-performance', { id: 1 });
 
     expect(bookingComponent.vm.booking.performance.id).to.eq(1);
 
@@ -98,10 +84,7 @@ describe('Create Booking Page', () => {
     expect(router.push).toHaveBeenCalledWith({
       hash: '#booking-view',
       name: 'production-slug-book-performanceId-warnings',
-      params: {
-        slug: 'legally-ginger',
-        performanceId: 1
-      }
+      params: { slug: 'legally-ginger', performanceId: 1 }
     });
   });
 
@@ -116,10 +99,7 @@ describe('Create Booking Page', () => {
     expect(router.push).toHaveBeenCalledWith({
       hash: '#booking-view',
       name: 'production-slug-book-performanceId-tickets',
-      params: {
-        slug: 'legally-ginger',
-        performanceId: null
-      }
+      params: { slug: 'legally-ginger', performanceId: null }
     });
   });
 
@@ -127,9 +107,7 @@ describe('Create Booking Page', () => {
     beforeEach(async () => {
       await mountComponent({ performanceId: 1 }, [
         GenericApolloResponse('production', Production({}, true)),
-        GenericApolloResponse('me', {
-          bookings: GenericNodeConnection()
-        }),
+        GenericApolloResponse('me', { bookings: GenericNodeConnection() }),
         GenericApolloResponse('performance', Performance())
       ]);
 
@@ -152,10 +130,7 @@ describe('Create Booking Page', () => {
       expect(router.push).toHaveBeenCalledWith({
         name: 'production-slug-book-performanceId-warnings',
         hash: '#booking-view',
-        params: {
-          performanceId: 1,
-          slug: 'legally-ginger'
-        }
+        params: { performanceId: 1, slug: 'legally-ginger' }
       });
     });
   });
@@ -228,10 +203,7 @@ describe('Create Booking Page', () => {
       expect(router.replace).toHaveBeenCalledWith({
         hash: '#booking-view',
         name: 'production-slug-book-performanceId-tickets',
-        params: {
-          slug: 'legally-ginger',
-          performanceId: 1
-        }
+        params: { slug: 'legally-ginger', performanceId: 1 }
       });
       mock.mockReset();
     });
@@ -250,10 +222,7 @@ describe('Create Booking Page', () => {
       expect(router.push).toHaveBeenCalledWith({
         hash: '#booking-view',
         name: 'production-slug-book',
-        params: {
-          slug: 'legally-ginger',
-          performanceId: 1
-        }
+        params: { slug: 'legally-ginger', performanceId: 1 }
       });
       shouldBeUsedMock.mockReset();
       eligableMock.mockReset();

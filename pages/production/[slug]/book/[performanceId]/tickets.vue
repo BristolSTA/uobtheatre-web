@@ -70,6 +70,7 @@ export default defineNuxtComponent({
       default: null
     }
   },
+  emits: ['next-stage', 'mounted'],
   data() {
     return {
       interaction_timer: lo.debounce(this.updateAPI, 2 * 1000),

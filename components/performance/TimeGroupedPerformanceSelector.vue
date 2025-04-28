@@ -11,7 +11,7 @@
       <div
         class="grid gap-2 grid-cols-1 sm:grid-cols-2 lg:gap-4 xl:grid-cols-3 2xl:grid-cols-4"
       >
-        <performance-overview
+        <performance-tile
           v-for="(performance, index) in performanceGroup"
           :key="index"
           class="performance"
@@ -19,7 +19,7 @@
           @select="$emit('select-performance', performance)"
         >
           <template #select-button> Select </template>
-        </performance-overview>
+        </performance-tile>
       </div>
     </div>
   </div>
@@ -29,9 +29,9 @@
 import lo from 'lodash';
 import { DateTime } from 'luxon';
 import { humanDayTime } from '@/utils/datetime';
-import PerformanceOverview from '@/components/performance/PerformanceOverview.vue';
+import PerformanceTile from '@/components/performance/PerformanceTile.vue';
 export default {
-  components: { PerformanceOverview },
+  components: { PerformanceTile },
   props: {
     performances: {
       type: Array,

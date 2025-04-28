@@ -78,9 +78,7 @@ watch(hardwareScannedDetails.isInvalid, (newVal) => {
 });
 
 function onInvalidCode() {
-  errorToast.fire({
-    title: 'Invalid ticket QR code scanned'
-  });
+  errorToast.fire({ title: 'Invalid ticket QR code scanned' });
 }
 
 async function onScan(ticketData: TicketQRCodeData) {

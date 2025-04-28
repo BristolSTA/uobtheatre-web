@@ -100,6 +100,12 @@ export default defineNuxtComponent({
     Ticket,
     Alert
   },
+  setup() {
+    defineBreadcrumbs([
+      { text: 'My Account', path: '/user' },
+      { text: 'Booking Details' }
+    ]);
+  },
   async asyncData() {
     const { data } = await useDefaultApolloClient().query({
       query: UserCompletedBookingDocument,
@@ -126,12 +132,6 @@ export default defineNuxtComponent({
       expanded: false,
       authStore: useAuthStore()
     };
-  },
-  setup() {
-    defineBreadcrumbs([
-      { text: 'My Account', path: '/user' },
-      { text: 'Booking Details' }
-    ]);
   },
   computed: {
     production() {

@@ -57,10 +57,7 @@ export default class {
   static dataFromQRCode(rawValue: string) {
     try {
       const result = JSON.parse(atob(rawValue));
-      return {
-        bookingReference: result[0],
-        ticketId: result[1]
-      };
+      return { bookingReference: result[0], ticketId: result[1] };
     } catch (e) {
       if (
         e instanceof SyntaxError ||

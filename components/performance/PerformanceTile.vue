@@ -55,6 +55,7 @@
 import { humanDuration, dateFormat } from '@/utils/datetime';
 
 export default {
+  name: 'PerformanceOverviewTile',
   props: {
     performance: {
       required: true,

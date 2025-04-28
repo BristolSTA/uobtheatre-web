@@ -89,6 +89,10 @@ export default defineNuxtComponent({
     ProductionBanner,
     ProductionDraftWarningBanner
   },
+  setup() {
+    const { breadcrumbs } = defineBreadcrumbs();
+    return { breadcrumbs };
+  },
   async asyncData() {
     // Execute query
     const result = await useAsyncQuery({
@@ -121,7 +125,9 @@ export default defineNuxtComponent({
       return this.$route;
     },
     shortDescription() {
-      return excerptFromDescription(this.production.description);
+      return excerptFromDescription(
+        this.production.shortDescription || this.production.description
+      );
     },
     hasCastCrew() {
       return Boolean(
@@ -130,10 +136,6 @@ export default defineNuxtComponent({
           this.production.productionTeam.length
       );
     }
-  },
-  setup() {
-    const { breadcrumbs } = defineBreadcrumbs();
-    return { breadcrumbs };
   },
   mounted() {
     this.breadcrumbs = [

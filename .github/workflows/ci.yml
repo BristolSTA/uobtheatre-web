@@ -9,7 +9,7 @@ on:
 env:
   # Note: The schema is dev (rather than develop) because that is the branch name on the API repo
   # If this is a push to main or a pull request targeting main, use the main schema
-  SCHEMA_VERSION: "${{ github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'pull_request' && github.base_ref == 'main' && 'main' || 'dev' }}"
+  SCHEMA_VERSION: "${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && 'main' || github.event_name == 'pull_request' && github.base_ref == 'main' && 'main' || 'dev' }}"
 
 jobs:
   test:
