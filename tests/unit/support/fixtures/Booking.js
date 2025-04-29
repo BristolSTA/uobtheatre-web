@@ -12,6 +12,7 @@ export default (overrides = {}) => {
       updatedAt: '2021-05-08T16:00:00.000',
       reference: 'yOIYg6Co8vGR',
       user: UserNode(),
+      creator: UserNode(),
       performance: PerformanceNode(),
       status: 'PAID',
       tickets: [Ticket()],
