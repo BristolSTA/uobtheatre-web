@@ -2788,10 +2788,10 @@
     ufo "^1.5.4"
     unctx "^2.4.1"
 
-"@nuxtjs/turnstile@^0.9.16":
-  version "0.9.16"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/turnstile/-/turnstile-0.9.16.tgz#b894fb58915891f3336686df7be06c236fb943e2"
-  integrity sha512-lx+CBgdBJ8wALZzVwlcDCWcHIJHFoXLVQnBKgCVnt0fPDz+8rSMY/p8jRW3TamFrPTxE3HdwEwXLotlPfLQVTQ==
+"@nuxtjs/turnstile@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/turnstile/-/turnstile-1.0.0.tgz#449427afc8a8b975b130b4a37761ec0f23e77425"
+  integrity sha512-PZq1p+IErOgC1G2Lak37C58NQX9iAt77PoqAFwujFnWFuRelhhPhijKTGISyHdW/IbGxK0vIGoWvWquPGa4pkA==
   dependencies:
     "@nuxt/kit" "^3.16.0"
     "@types/cloudflare-turnstile" "0.2.2"
