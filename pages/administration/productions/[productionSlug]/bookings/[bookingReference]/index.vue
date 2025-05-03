@@ -67,7 +67,11 @@
         :online="booking.performance.isOnline"
         :in-person="booking.performance.isInperson"
       />
-
+      <accessibility-overview class="lg:col-span-2" :booking="booking" />
+      <VenueAccessibility
+        :venue-data="booking.performance.venue.slug"
+        class="lg:col-span-1"
+      />
       <payment-overview class="lg:col-span-1" :booking="booking" />
       <tickets-overview class="lg:col-span-2" :booking="booking" />
     </div>
@@ -80,6 +84,7 @@ import BookingPerformanceOverview from '@/components/booking/overview/Performanc
 import VenueOverview from '@/components/booking/overview/VenueOverview.vue';
 import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue';
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
+import AccessibilityOverview from '@/components/booking/overview/AccessibilityOverview.vue';
 import Booking from '~~/classes/Booking';
 
 import TableRow from '@/components/ui/Tables/TableRow.vue';
@@ -97,6 +102,7 @@ export default defineNuxtComponent({
     VenueOverview,
     PaymentOverview,
     TicketsOverview,
+    AccessibilityOverview,
     TableHeadItem,
     TableRowItem,
     TableRow
