@@ -25,6 +25,9 @@
           inc. {{ performance.intervalDurationMins }} min interval
         </template>
       </icon-list-item>
+      <icon-list-item v-if="performance.isRelaxed" icon="circle-info">
+        {{ thisRelaxedName }} Performance
+      </icon-list-item>
     </div>
   </overview-box>
 </template>
@@ -52,6 +55,9 @@ export default {
   computed: {
     startTime() {
       return DateTime.fromISO(this.performance.start);
+    },
+    thisRelaxedName() {
+      return this.performance.relaxedName ? this.performance.relaxedName : 'Relaxed';
     }
   },
   methods: {
