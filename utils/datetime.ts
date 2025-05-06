@@ -1,5 +1,7 @@
 import humanizeDuration from 'humanize-duration';
-import { DateTime } from 'luxon';
+import { DateTime, Settings } from 'luxon';
+
+Settings.defaultZone = 'Europe/London';
 
 /**
  * Calculates the duration, in ms, between two date times
