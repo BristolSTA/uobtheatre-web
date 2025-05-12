@@ -1,4 +1,6 @@
 import { expect, vi } from 'vitest';
+import MatchMediaMock from 'vitest-matchmedia-mock';
+
 import { mount } from '#testSupport/helpers';
 
 import ChangePassword from '@/components/user/ChangePassword.vue';
@@ -11,6 +13,10 @@ import { swalToast } from '~/utils/alerts';
 import { flushPromises } from '@vue/test-utils';
 
 describe('Change Password', () => {
+  beforeEach(async () => {
+    new MatchMediaMock();
+  });
+
   it('can update their password', async () => {
     const component = await mount(ChangePassword, {
       shallow: false,
