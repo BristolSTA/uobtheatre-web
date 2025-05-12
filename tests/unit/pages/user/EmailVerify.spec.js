@@ -1,4 +1,6 @@
 import { expect } from 'vitest';
+import MatchMediaMock from 'vitest-matchmedia-mock';
+
 import { mount } from '#testSupport/helpers';
 
 import {
@@ -11,6 +13,10 @@ import { flushPromises } from '@vue/test-utils';
 import EmailChangeActivate from '@/pages/user/email-verify/[token]/index.vue';
 
 describe('Email Change Activate', function () {
+  beforeEach(async () => {
+    new MatchMediaMock();
+  });
+
   let component;
 
   const mountComponent = async (apolloResponses) => {
