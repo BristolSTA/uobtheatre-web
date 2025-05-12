@@ -1,5 +1,6 @@
 import { mount } from '#testSupport/helpers';
 import { expect } from 'vitest';
+import MatchMediaMock from 'vitest-matchmedia-mock';
 import { flushPromises } from '@vue/test-utils';
 
 import TextInput from '~~/components/ui/Input/UiInputText.vue';
@@ -14,6 +15,7 @@ describe('User Details', () => {
   let userDetailsComponent;
 
   beforeEach(async () => {
+    new MatchMediaMock();
     userDetailsComponent = await mount(UserDetails, {
       shallow: false,
       props: {
