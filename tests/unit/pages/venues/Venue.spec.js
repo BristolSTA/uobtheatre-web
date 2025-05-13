@@ -155,11 +155,9 @@ describe('Venue page', function () {
 
   describe('venue contact details', () => {
     it('has the correct contact details', async () => {
+      expect(venueInfoContainer.text()).to.contain('Website:uobtheatre.com');
       expect(venueInfoContainer.text()).to.contain(
-        'Website:http://uobtheatre.com'
-      );
-      expect(venueInfoContainer.text()).to.contain(
-        'Email:support@uobtheatre.com'
+        'Contact:support@uobtheatre.com'
       );
     });
 
