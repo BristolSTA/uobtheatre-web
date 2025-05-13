@@ -8,6 +8,8 @@ fragment DetailedBookingDetails on BookingNode {
   expiresAt
   status
   accessibilityInfo
+  previousAccessibilityInfo
+  accessibilityInfoUpdatedAt
   user {
     id
     firstName

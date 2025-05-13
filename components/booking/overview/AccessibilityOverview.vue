@@ -58,10 +58,30 @@
     </template>
     <div class="p-2 px-4 bg-sta-gray rounded">
       <div v-if="!changingAccessibility">
+        <p
+          v-if="showPrevious && booking.previousAccessibilityInfo"
+          class="text-s text-sta-orange"
+        >
+          Current accessibility information:
+        </p>
         <p v-if="booking.accessibilityInfo" class="py-2">
           {{ booking.accessibilityInfo }}
         </p>
         <p v-else class="py-2">No accessibility information provided</p>
+        <div v-if="showPrevious && booking.previousAccessibilityInfo">
+          <p class="text-s text-sta-orange">
+            Previous accessibility information
+            {{
+              booking.accessibilityInfoUpdatedAt
+                ? `(last updated ${new Date(booking.accessibilityInfoUpdatedAt).toLocaleString()})`
+                : ''
+            }}:
+          </p>
+          <p v-if="booking.previousAccessibilityInfo" class="py-2">
+            {{ booking.previousAccessibilityInfo }}
+          </p>
+          <p v-else class="py-2">No previous accessibility information</p>
+        </div>
       </div>
       <div v-else>
         <form-label>
@@ -112,6 +132,10 @@ export default {
     allowEdit: {
       type: Boolean,
       default: true
+    },
+    showPrevious: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -145,7 +169,7 @@ export default {
           const swalArgs = {
             title: 'Are you sure?',
             text: `Any accessibility requirements you chose to share with us will be made
-            available via email and the website to the production team and website
+            available to the production team and website
             staff. Any information you provide will be deleted shortly after the
             event. We cannot guarantee that your requirements can be met, though a
             member of the team will be in touch to discuss your requirements if
