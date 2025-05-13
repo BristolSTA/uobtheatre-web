@@ -30,16 +30,51 @@
         >
           <div class="flex justify-center w-full px-4 pt-4 pb-2">
             <div ref="venueInfo">
-              <h2 class="text-sta-orange text-3xl font-semibold">
-                Venue Info:
+              <h2 class="text-sta-orange text-3xl font-semibold text-center">
+                Venue Information
               </h2>
-              <table class="table-auto">
+              <table class="table-auto mt-2">
                 <tbody>
                   <tr class="pb-2">
                     <th class="align-top text-right pr-2">Capacity:</th>
                     <td class="align-top">Max {{ venue.internalCapacity }}</td>
                   </tr>
-                  <tr>
+                  <tr v-if="venue.website">
+                    <th class="align-top text-right pr-2">Website:</th>
+                    <td
+                      class="align-top text-sta-orange hover:text-sta-orange-dark"
+                    >
+                      <a
+                        :href="venue.website"
+                        target="_blank"
+                        title="Opens in a new tab"
+                      >
+                        {{ website }}
+                      </a>
+                    </td>
+                  </tr>
+                  <tr v-if="venue.email">
+                    <th class="align-top text-right pr-2">Contact:</th>
+                    <td
+                      class="align-top text-sta-orange hover:text-sta-orange-dark"
+                    >
+                      <a :href="`mailto:${venue.email}`">{{ venue.email }}</a>
+                    </td>
+                  </tr>
+                  <tr v-if="venue.address.what3words">
+                    <th class="align-top pr-2">what3words:</th>
+                    <td
+                      class="align-top text-sta-orange hover:text-sta-orange-dark"
+                    >
+                      <a
+                        target="_blank"
+                        :href="`https://what3words.com/${venue.address.what3words}`"
+                      >
+                        ///{{ venue.address.what3words }}
+                      </a>
+                    </td>
+                  </tr>
+                  <tr class="py-2">
                     <th class="align-top text-right pr-2">Address:</th>
                     <td class="align-top">
                       <div v-if="venue.address" data-test="address-details">
@@ -57,31 +92,6 @@
                           {{ venue.address.postcode }}
                         </p>
                       </div>
-                    </td>
-                  </tr>
-                  <tr v-if="venue.email">
-                    <th class="align-top text-right pr-2">Email:</th>
-                    <td class="align-top">
-                      <a :href="`mailto:${venue.email}`">{{ venue.email }}</a>
-                    </td>
-                  </tr>
-                  <tr v-if="venue.website">
-                    <th class="align-top text-right pr-2">Website:</th>
-                    <td class="align-top">
-                      <a :href="venue.website" target="_blank">{{
-                        venue.website
-                      }}</a>
-                    </td>
-                  </tr>
-                  <tr v-if="venue.address.what3words">
-                    <th class="align-top pr-2">what3words:</th>
-                    <td class="align-top text-sta-orange">
-                      <a
-                        target="_blank"
-                        :href="`https://what3words.com/${venue.address.what3words}`"
-                      >
-                        ///{{ venue.address.what3words }}
-                      </a>
                     </td>
                   </tr>
                 </tbody>
@@ -110,8 +120,8 @@
           </div>
           <div class="flex justify-center w-full px-4 pt-2 pb-4">
             <div ref="accessibilityInfo">
-              <h2 class="text-sta-orange text-3xl font-semibold">
-                Accessibility Information:
+              <h2 class="text-sta-orange text-3xl font-semibold text-center">
+                Accessibility Information
               </h2>
               <div class="mt-2 text-white">
                 <p v-if="venue.accessibilityInfo">
@@ -283,6 +293,17 @@ export default defineNuxtComponent({
       return this.productions.filter(
         (production) => new Date(production.end) < new Date()
       );
+    },
+    website() {
+      if (!this.venue?.website) return null;
+      let website = this.venue.website;
+      if (this.venue.website.startsWith('http://')) {
+        return this.venue.website.slice(7);
+      } else if (this.venue.website.startsWith('https://')) {
+        return this.venue.website.slice(8);
+      } else {
+        return this.venue.website;
+      }
     }
   },
   methods: {

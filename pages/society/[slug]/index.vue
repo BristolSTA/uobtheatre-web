@@ -41,13 +41,13 @@
             class="flex justify-center w-full lg:w-3/4 p-4 bg-sta-gray-light rounded-lg"
           >
             <div>
-              <h2 class="text-sta-orange text-3xl font-semibold">
-                Society Info:
+              <h2 class="text-sta-orange text-3xl font-semibold text-center">
+                Society Information
               </h2>
               <table class="table-auto mt-2">
                 <tbody>
                   <tr v-if="society.website">
-                    <th class="align-top pb-2 pr-2">Website:</th>
+                    <th class="align-top pr-2">Website:</th>
                     <td class="align-top">
                       <a
                         :href="society.website"
