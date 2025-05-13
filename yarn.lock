@@ -15307,15 +15307,15 @@ vue-eslint-parser@^9.4.3:
     lodash "^4.17.21"
     semver "^7.3.6"
 
-vue-gtag@2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/vue-gtag/-/vue-gtag-2.0.1.tgz#d4dc1b9cf79809c37ce844824c0f7fa97af520dd"
-  integrity sha512-aM4A58FVL0wV2ptYi+xzAjeg+pQVRyUcfBc5UkXAwQrR4t3WBhor50Izp2I+3Oo7+l+vWJ7u78DGcNzReb8S/A==
+vue-gtag@3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/vue-gtag/-/vue-gtag-3.5.0.tgz#2851af0a5f035452f3cc28c4d20b6ebc78da76a2"
+  integrity sha512-eycDX/wg0iQSxSMn8dm+oQ7HxfHxzMxF7UPzqVlE8MaDqS8p9iTmjIyZfurMN5Jb8n4bcZMK08pEydSu2wR22w==
 
-vue-qrcode-reader@5.7.1:
-  version "5.7.1"
-  resolved "https://registry.yarnpkg.com/vue-qrcode-reader/-/vue-qrcode-reader-5.7.1.tgz#920eb9cce9970fa15c5062c72dbb815c0edd9fd3"
-  integrity sha512-7QBu3PqaPJHxobiDLqgcrp6wsjdTk9GJWhRCd4CgQYi93gBw/sIXNNWtbjeKz8d3QYj13n9dyPvcPMUcGOsBHw==
+vue-qrcode-reader@5.7.2:
+  version "5.7.2"
+  resolved "https://registry.yarnpkg.com/vue-qrcode-reader/-/vue-qrcode-reader-5.7.2.tgz#0bfdc93a2ec593aee72398eafe1b0ce86d46ecef"
+  integrity sha512-MRwo8IWM+1UzvfRhOQQBqEap06nl0E8QFIb+/HxS1KiH8BqL2qhlzMVvJgMUti4m5x+XH2YlGS0v1Qshpg+Hbw==
   dependencies:
     barcode-detector "2.2.2"
     webrtc-adapter "8.2.3"
