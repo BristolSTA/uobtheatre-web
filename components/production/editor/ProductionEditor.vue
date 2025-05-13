@@ -134,6 +134,18 @@
             </div>
           </template>
         </form-label>
+        <form-label :errors="errors" name="productionAlert">
+          Production Alert
+          <template #control>
+            <UiInputText v-model="production.productionAlert" />
+          </template>
+          <template #helper>
+            A Production Alert is displayed alongside content warnings on a
+            production's page and when a user is booking a ticket. Only use this
+            field for information that is essential for users to view, but that
+            cannot otherwise be conveyed through content warnings.
+          </template>
+        </form-label>
         <div class="flex items-end">
           <form-label
             class="lg:w-1/4 w-1/5 mr-4"
@@ -396,6 +408,7 @@ export default {
         ageRating: this.production.ageRating,
         facebookEvent: this.production.facebookEvent,
         contactEmail: this.production.contactEmail,
+        productionAlert: this.production.productionAlert,
         contentWarnings: (this.production.contentWarnings ?? []).map((cw) => ({
           id: cw.warning.id,
           information: cw.information

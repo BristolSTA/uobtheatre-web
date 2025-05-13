@@ -37,6 +37,7 @@ query adminProductionEdit($slug: String!) {
     }
     ageRating
     facebookEvent
+    productionAlert
     performances(orderBy: "start") {
       edges {
         node {
