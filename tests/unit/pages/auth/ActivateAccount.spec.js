@@ -1,4 +1,6 @@
 import { expect, vi } from 'vitest';
+import MatchMediaMock from 'vitest-matchmedia-mock';
+
 import { mount } from '#testSupport/helpers';
 
 import ActivateAccount from '@/pages/login/activate/[token]/index.vue';
@@ -9,6 +11,10 @@ import { flushPromises } from '@vue/test-utils';
 
 describe('Activate Account', function () {
   let component;
+
+  beforeEach(async () => {
+    new MatchMediaMock();
+  });
 
   it('activates account with valid token', async () => {
     const swalToastStub = vi.spyOn(swalToast, 'fire');
