@@ -1,7 +1,10 @@
 #import "../fragments/booking/BookingWithProductionDetails.gql"
 query userCompletedBooking($bookingRef: String!) {
   me {
-    bookings(reference: $bookingRef, statusIn: ["PAID", "CANCELLED"]) {
+    bookings(
+      reference: $bookingRef
+      statusIn: ["PAID", "CANCELLED", "REFUNDED", "REFUND_PROCESSING"]
+    ) {
       edges {
         node {
           ...BookingWithProductionDetails

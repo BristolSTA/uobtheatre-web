@@ -13,7 +13,9 @@
             { displayText: 'All', value: null },
             { displayText: 'In Progress', value: 'IN_PROGRESS' },
             { displayText: 'Paid', value: 'PAID' },
-            { displayText: 'Cancelled', value: 'CANCELLED' }
+            { displayText: 'Cancelled', value: 'CANCELLED' },
+            { displayText: 'Refund Processing', value: 'REFUND_PROCESSING' },
+            { displayText: 'Refunded', value: 'REFUNDED' }
           ]"
         />
       </div>
