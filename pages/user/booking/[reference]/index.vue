@@ -7,6 +7,12 @@
       <alert v-if="booking.status == 'CANCELLED'" level="danger">
         This booking has been cancelled, and is no longer valid
       </alert>
+      <alert v-else-if="booking.status == 'REFUND_PROCESSING'" level="danger">
+        This booking is in the process of being refunded, and is no longer valid
+      </alert>
+      <alert v-else-if="booking.status == 'REFUNDED'" level="danger">
+        This booking has been refunded, and is no longer valid
+      </alert>
       <h1 class="pt-2 text-h1">Your Booking</h1>
       <h2 class="text-sta-orange text-h2">
         Reference - {{ booking.reference }}
@@ -40,7 +46,16 @@
           :online="booking.performance.isOnline"
           :in-person="booking.performance.isInperson"
         />
-
+        <accessibility-overview
+          class="lg:col-span-2"
+          :booking="booking"
+          :allow-edit="upcomingEvent"
+        />
+        <VenueAccessibility
+          v-if="booking.performance"
+          :venue-data="booking.performance.venue.slug"
+          class="lg:col-span-1"
+        />
         <payment-overview class="lg:col-span-1" :booking="booking" />
         <tickets-overview class="lg:col-span-2" :booking="booking" />
       </div>
@@ -80,6 +95,7 @@ import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue';
 import BookingPerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue';
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
 import VenueOverview from '@/components/booking/overview/VenueOverview.vue';
+import AccessibilityOverview from '@/components/booking/overview/AccessibilityOverview.vue';
 import Ticket from '@/components/booking/Ticket.vue';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
 import Alert from '@/components/ui/Alert.vue';
@@ -95,6 +111,7 @@ export default defineNuxtComponent({
     VenueOverview,
     BookingPerformanceOverview,
     TicketsOverview,
+    AccessibilityOverview,
     ProductionBanner,
     PaymentOverview,
     Ticket,
@@ -138,6 +155,11 @@ export default defineNuxtComponent({
       return this.booking?.performance
         ? this.booking.performance.production
         : null;
+    },
+    upcomingEvent() {
+      // Accessibility info can't be changed on past performances
+      // If you want to change this, you'll need to change the API mutation
+      return this.booking.performance.doorsOpen > new Date().toISOString();
     }
   },
   methods: {

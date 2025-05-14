@@ -6,6 +6,9 @@ query adminBookingDetail($bookingReference: String!) {
         ...BookingWithProductionDetails
         createdAt
         updatedAt
+        accessibilityInfo
+        previousAccessibilityInfo
+        accessibilityInfoUpdatedAt
         creator {
           id
           firstName

@@ -6,6 +6,7 @@ export default (overrides = {}) => {
       street: 'Queens Road',
       buildingNumber: '69',
       city: 'London',
+      what3words: 'example.example.example',
       postcode: 'BS69 420',
       latitude: '123.4567',
       longitude: '987.654'

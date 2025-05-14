@@ -20,18 +20,20 @@
       </p>
     </template>
     <table v-if="booking.transactions.length" class="my-2">
-      <tr>
-        <td class="pr-2">Total Paid</td>
-        <td class="">:</td>
-        <td class="px-2">£{{ pricePaidPounds }}</td>
-      </tr>
-      <tr v-if="datePaid">
-        <td class="pr-2">On</td>
-        <td class="">:</td>
-        <td class="px-2">
-          {{ dateFormat(datePaid, 'EEE d MMM kkkk') }}
-        </td>
-      </tr>
+      <tbody>
+        <tr>
+          <td class="pr-2">Total Paid</td>
+          <td class="">:</td>
+          <td class="px-2">£{{ pricePaidPounds }}</td>
+        </tr>
+        <tr v-if="datePaid">
+          <td class="pr-2">On</td>
+          <td class="">:</td>
+          <td class="px-2">
+            {{ dateFormat(datePaid, 'EEE d MMM kkkk') }}
+          </td>
+        </tr>
+      </tbody>
     </table>
     <template v-else> No payment recorded towards this booking </template>
   </overview-box>
