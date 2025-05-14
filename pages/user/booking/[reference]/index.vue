@@ -7,6 +7,12 @@
       <alert v-if="booking.status == 'CANCELLED'" level="danger">
         This booking has been cancelled, and is no longer valid
       </alert>
+      <alert v-else-if="booking.status == 'REFUND_PROCESSING'" level="danger">
+        This booking is in the process of being refunded, and is no longer valid
+      </alert>
+      <alert v-else-if="booking.status == 'REFUNDED'" level="danger">
+        This booking has been refunded, and is no longer valid
+      </alert>
       <h1 class="pt-2 text-h1">Your Booking</h1>
       <h2 class="text-sta-orange text-h2">
         Reference - {{ booking.reference }}
