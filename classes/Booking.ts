@@ -19,6 +19,7 @@ export default class Booking {
   transactions: TransactionNode[];
   tickets: Ticket[];
   priceBreakdown?: DetailedBookingDetailsFragment['priceBreakdown'];
+  salesBreakdown?: DetailedBookingDetailsFragment['salesBreakdown'];
   dirty: boolean = false;
   raw?: DetailedBookingDetailsFragment;
   idempotencyKey?: string;
@@ -52,6 +53,9 @@ export default class Booking {
     this.raw = bookingData;
     if (bookingData.priceBreakdown) {
       this.priceBreakdown = bookingData.priceBreakdown;
+    }
+    if (bookingData.salesBreakdown) {
+      this.salesBreakdown = bookingData.salesBreakdown;
     }
     if (bookingData.tickets) {
       this.tickets = bookingData.tickets.map((ticketAPIData) =>
