@@ -311,6 +311,40 @@ export default class Booking {
   }
 
   /**
+   * @returns {string} Total provider processing fee in pounds
+   */
+  get providerFeePounds() {
+    if (!this.salesBreakdown) {
+      return (0).toFixed(2);
+    }
+    return (this.salesBreakdown.providerPaymentValue / 100).toFixed(2);
+  }
+
+  /**
+   * @returns {string} Total app (UOB Theatre's total fees) fee in pounds
+   */
+  get appFeePounds() {
+    if (!this.salesBreakdown) {
+      return (0).toFixed(2);
+    }
+    return (this.salesBreakdown.appFee / 100).toFixed(2);
+  }
+
+  /**
+   * @returns {string} Total profit for the website in pounds
+   * @description This is the difference between the app fee and the provider payment value
+   */
+  get websiteProfitPounds() {
+    if (!this.salesBreakdown) {
+      return (0).toFixed(2);
+    }
+    return (
+      (this.salesBreakdown.appFee - this.salesBreakdown.providerPaymentValue) /
+      100
+    ).toFixed(2);
+  }
+
+  /**
    * @param {TicketsMatrix} ticketMatrix Ticket Matrix instance
    * @returns {Array} List of tickets grouped by seat group & concession type, giving capacity and price
    */
