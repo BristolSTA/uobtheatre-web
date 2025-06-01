@@ -204,6 +204,76 @@
         </div>
       </template>
     </UiCard>
+    <UiCard title="Adapted Performance Options">
+      <form-label name="isRelaxed" :errors="errors">
+        Adapted Performance
+        <template #control>
+          <UiInputToggle v-model="performance.isRelaxed" />
+        </template>
+        <template #helper>
+          Toggle this option for a relaxed/sensory friendly performance to show this on the production page.
+        </template>
+      </form-label>
+      <form-label>
+        Pre-filled options
+        <template #control>
+          <div class="space-x-4 py-2">
+            <button class="p-2 bg-sta-green" @click="selectDefaultRelaxedCategories">Relaxed Performance</button>
+            <button class="p-2 bg-sta-green" @click="selectDefaultSensoryFriendlyRelaxedCategories">Sensory Friendly Performance</button>
+          </div>
+        </template>
+        <template #helper>
+          Enter your own information below, or choose one of the pre-made options to edit.
+        </template>
+      </form-label>
+      <form-label name="relaxedName" :errors="errors">
+        Relaxed Performance Name
+        <template #control>
+          <UiInputText v-model="performance.relaxedName" />
+        </template>
+        <template #helper>
+          Optionally, add a name for the relaxed performance (e.g. 'Relaxed' or 'Sensory Friendly').
+        </template>
+      </form-label>
+      <form-label name="relaxedCategories" :errors="errors">
+        Relaxed Categories
+        <template #helper>
+          Select the relaxed categories that apply to this performance.
+        </template>
+      </form-label>
+      <table>
+        <table-row class="border-sta-gray-dark border-2">
+          <table-head-item class="border-sta-gray-dark border-r-2">
+            Relaxed Category
+          </table-head-item>
+          <table-head-item class="border-sta-gray-dark border-r-2">
+            Used in this performance?
+          </table-head-item>
+        </table-row>
+        <table-row
+          v-for="rc in allRelaxedCategories"
+          :key="rc.id"
+          :striped="false"
+          class="border-sta-gray-dark border-2"
+        >
+          <table-row-item class="max-w-lg border-sta-gray-dark border-r-2">
+            <p class="font-bold">{{ rc.shortDescription }}</p>
+            <p class="text-sm">{{ rc.longDescription }}</p>
+            <p v-if="rc.helpText" class="text-sm font-bold text-sta-orange">
+              <font-awesome-icon icon="fa-circle-info"></font-awesome-icon>
+              {{ rc.helpText }}
+            </p>
+          </table-row-item>
+          <table-row-item class="text-center border-sta-gray-dark border-r-2">
+            <input
+              type="checkbox"
+              :checked="performance.relaxedCategories.map((rc) => (rc.id)).includes(rc.id)"
+              @change="relaxedCategorySelectionToggle(rc)"
+            />
+          </table-row-item>
+        </table-row>
+      </table>
+    </UiCard>
     <UiCard title="Other Details">
       <div class="space-y-4">
         <form-label name="disabled" :errors="errors">
@@ -274,11 +344,20 @@ import {
   DiscountMutationDocument,
   DiscountRequirementMutationDocument,
   PerformanceSeatGroupDocument,
-  VenuesDocument
+  VenuesDocument,
+  RelaxedCategoriesDocument
 } from '@/graphql/codegen/operations';
+import UiInputToggle from '../../ui/Input/UiInputToggle.vue';
+import TableRow from '~/components/ui/Tables/TableRow.vue';
+import TableHeadItem from '~/components/ui/Tables/TableHeadItem.vue';
+import TableRowItem from '~/components/ui/Tables/TableRowItem.vue';
 
 export default {
   components: {
+    TableRowItem,
+    TableHeadItem,
+    TableRow,
+    UiInputToggle,
     FormLabel,
     SeatGroup,
     ConcessionType,
@@ -310,7 +389,9 @@ export default {
 
       performanceSeatGroups: [],
 
-      deletedDiscounts: []
+      deletedDiscounts: [],
+
+      allRelaxedCategories: [],
     };
   },
   apollo: {
@@ -340,6 +421,10 @@ export default {
         };
       },
       fetchPolicy: 'cache-and-network'
+    },
+    allRelaxedCategories: {
+      query: RelaxedCategoriesDocument,
+      update: (data) => data.relaxedCategories.edges.map((edge) => edge.node)
     }
   },
   computed: {
@@ -414,6 +499,9 @@ export default {
         end: this.performance.end,
         venue: this.performance.venue?.id,
         disabled: !!this.performance.disabled,
+        isRelaxed: this.performance.isRelaxed,
+        relaxedName: this.performance.relaxedName,
+        relaxedCategories: this.performance.relaxedCategories.map((rc) => rc.id),
         description: this.performance.description,
         capacity:
           this.performance.capacity === '' ? null : this.performance.capacity
@@ -740,6 +828,30 @@ export default {
       };
 
       this.deletedDiscounts.push(discount);
+    },
+    selectDefaultRelaxedCategories() {
+      // eslint-disable-next-line vue/no-mutating-props
+      this.performance.relaxedName = "Relaxed";
+      // eslint-disable-next-line vue/no-mutating-props
+      this.performance.relaxedCategories = this.allRelaxedCategories.map((rc) => (rc.defaultRelaxed ? rc : false)).filter((rc) => rc);
+    },
+    selectDefaultSensoryFriendlyRelaxedCategories() {
+      // eslint-disable-next-line vue/no-mutating-props
+      this.performance.relaxedName = "Sensory Friendly";
+      // eslint-disable-next-line vue/no-mutating-props
+      this.performance.relaxedCategories = this.allRelaxedCategories.map((rc) => (rc.defaultSensoryFriendly ? rc : false)).filter((rc) => rc);
+    },
+    relaxedCategorySelectionToggle(category) {
+      const index = this.performance.relaxedCategories.findIndex(
+        (rc) => rc.id === category.id
+      );
+      if (index === -1) {
+        // eslint-disable-next-line vue/no-mutating-props
+        this.performance.relaxedCategories.push(category);
+      } else {
+        // eslint-disable-next-line vue/no-mutating-props
+        this.performance.relaxedCategories.splice(index, 1);
+      }
     }
   }
 };
