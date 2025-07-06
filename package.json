@@ -111,7 +111,7 @@
     "prosemirror-schema-list": "^1.5.1",
     "prosemirror-state": "^1.4.2",
     "prosemirror-transform": "^1.10.3",
-    "prosemirror-view": "^1.39.1",
+    "prosemirror-view": "^1.40.0",
     "qrcode.vue": "^3.6.0",
     "sweetalert2": "^11.21.0",
     "uuid": "^11.1.0",
