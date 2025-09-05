@@ -1,4 +1,5 @@
 <template>
+  <LayoutSiteMessageModal location="PRODUCTION_CREATION_MODAL" />
   <AdminPage :title="`Edit ${production.name}`">
     <template #toolbar>
       <UiStaButton colour="green" @click="save"> Save Changes </UiStaButton>

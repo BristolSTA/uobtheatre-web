@@ -1,4 +1,5 @@
 <template>
+  <LayoutSiteMessageModal location="PRODUCTION_CREATION_MODAL" />
   <AdminPage title="Create a Production">
     <template #toolbar>
       <UiStaButton colour="green" @click="create"> Create Draft </UiStaButton>

@@ -1,4 +1,5 @@
 <template>
+  <LayoutSiteMessageModal location="BOOKING_MODAL" />
   <div class="min-h-full bg-sta-gray">
     <Head>
       <Title>Book {{ production.name }}</Title>
