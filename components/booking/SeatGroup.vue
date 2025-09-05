@@ -2,13 +2,13 @@
   <div class="text-white">
     <div
       ref="header"
-      class="flex pl-4 py-2 hover:bg-opacity-80"
+      class="flex pl-4 py-2"
       :class="[
         expanded
-          ? 'bg-sta-orange'
+          ? 'bg-sta-orange hover:bg-sta-orange/80'
           : available
-            ? 'bg-sta-green'
-            : 'bg-sta-gray-dark border-2 border-sta-rouge',
+            ? 'bg-sta-green hover:bg-sta-green/80'
+            : 'bg-sta-gray-dark hover:bg-sta-gray-dark/80 border-2 border-sta-rouge',
         available ? 'cursor-pointer' : ''
       ]"
       @click="onHeaderClick"

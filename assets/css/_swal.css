@@ -1,12 +1,16 @@
-/* Fix issue with Sweetalert2 text colour */
-.swal2-container {
-  /* Fix issue with Sweetalert2 text colour */
+// Because sweetalerts uses a lot of specificity we need to use ! to override it
+.swal2-popup {
+  @apply bg-sta-gray!;
 }
 
-.swal2-container .text-white {
-  color: white !important;
+.swal2-confirm {
+  @apply bg-sta-orange! hover:bg-sta-orange/80!;
 }
 
-.swal2-container .swal2-select {
-  @apply bg-white;
+.swal2-deny {
+  @apply bg-sta-rouge! hover:bg-sta-rouge/80!;
+}
+
+.swal2-cancel {
+  @apply bg-gray-500! hover:bg-gray-500/80!;
 }

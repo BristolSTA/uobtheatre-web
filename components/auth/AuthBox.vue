@@ -29,7 +29,7 @@
     <div
       v-if="loading"
       data-test="loading-overlay"
-      class="absolute z-10 top-0 flex items-center justify-center w-full h-full text-white text-3xl bg-sta-gray-dark bg-opacity-95"
+      class="absolute z-10 top-0 flex items-center justify-center w-full h-full text-white text-3xl bg-sta-gray-dark/95"
     >
       <loading-icon size-class="" />
     </div>

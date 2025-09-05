@@ -1,5 +1,4 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
-import tailwindcss from '@tailwindcss/vite';
 import publicConfig from './config.public';
 import eslintPlugin from 'vite-plugin-eslint2';
 

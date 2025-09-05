@@ -45,7 +45,7 @@
       >
         <button
           id="prevBtn"
-          class="w-full h-full text-4xl transition-colors duration-300 cursor-pointer hover:bg-black hover:bg-opacity-30 focus:outline-hidden"
+          class="w-full h-full text-4xl transition-colors duration-300 cursor-pointer hover:bg-black/30 focus:outline-hidden"
           @click="goToPrev()"
           @keypress="goToPrev()"
         >
@@ -58,7 +58,7 @@
       >
         <button
           id="nextBtn"
-          class="w-full h-full text-4xl transition-colors duration-300 cursor-pointer hover:bg-black hover:bg-opacity-30 focus:outline-hidden"
+          class="w-full h-full text-4xl transition-colors duration-300 cursor-pointer hover:bg-black/30 focus:outline-hidden"
           @click="goToNext()"
           @keypress="goToNext()"
         >

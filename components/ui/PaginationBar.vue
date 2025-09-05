@@ -121,7 +121,7 @@ export default {
     },
     disabledButtonStyle: {
       default:
-        'cursor-default bg-opacity-70 text-gray-300 border border-gray-300',
+        'cursor-default bg-black/70 text-gray-300 border border-gray-300',
       type: String
     }
   },

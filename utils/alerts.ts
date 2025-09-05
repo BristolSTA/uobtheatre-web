@@ -1,23 +1,7 @@
 import Swal from 'sweetalert2';
 
 export const swal = Swal.mixin({
-  // @ts-ignore
-  background: getComputedStyle(document.documentElement).getPropertyValue(
-    '--sta-gray'
-  ),
-  customClass: {
-    title: 'text-white',
-    htmlContainer: 'text-white',
-    input: 'bg-white'
-  },
-  // @ts-ignore
-  confirmButtonColor: getComputedStyle(
-    document.documentElement
-  ).getPropertyValue('--sta-orange'),
-  // @ts-ignore
-  denyButtonColor: getComputedStyle(document.documentElement).getPropertyValue(
-    '--sta-rouge'
-  )
+  theme: 'dark'
 });
 export const swalToast = swal.mixin({
   toast: true,

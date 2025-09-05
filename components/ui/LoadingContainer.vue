@@ -3,7 +3,7 @@
     <div
       v-if="loading"
       ref="loading-overlay"
-      :class="{ 'absolute bg-sta-gray-dark bg-opacity-95': showContent }"
+      :class="{ 'absolute bg-sta-gray-dark/95': showContent }"
       class="top-0 z-10 flex flex-col items-center justify-center w-full h-full py-6 text-white"
     >
       <loading-icon :size-class="loaderIconSize" class="text-3xl" />

@@ -3,7 +3,7 @@
     <input
       :id="inputId"
       ref="input"
-      class="px-2 py-2 w-full text-black rounded-xs focus:outline-hidden rounded-sm"
+      class="px-2 py-2 w-full text-black rounded-xs focus:outline-hidden focus:rounded-sm"
       :class="inputClass"
       :name="inputId"
       :type="type"
@@ -76,7 +76,7 @@ export default {
       type: Boolean
     }
   },
-  emits: ['focus', 'blur-sm', 'change', 'update:modelValue'],
+  emits: ['focus', 'blur', 'change', 'update:modelValue'],
   computed: {
     inputId() {
       return (
