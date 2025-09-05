@@ -14,6 +14,7 @@ query adminProductionEdit($slug: String!) {
     }
     slug
     description
+    shortDescription
     contentWarnings {
       information
       warning {
@@ -36,6 +37,7 @@ query adminProductionEdit($slug: String!) {
     }
     ageRating
     facebookEvent
+    productionAlert
     performances(orderBy: "start") {
       edges {
         node {

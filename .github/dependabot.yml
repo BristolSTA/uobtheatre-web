@@ -9,14 +9,14 @@ updates:
     directory: '/' # Location of package manifests
     schedule:
       interval: 'daily'
-    assignees:
-      - 'happynth'
     target-branch: 'dependabot/develop'
+    assignees:
+      - 'ClaraARay'
     groups:
       vue:
         patterns:
           - '@vue/*'
-          - 'vue-*'
+          - 'vue-tsc'
           - 'vue'
       eslint:
         patterns:

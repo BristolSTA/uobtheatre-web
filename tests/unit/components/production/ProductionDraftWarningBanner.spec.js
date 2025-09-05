@@ -30,6 +30,11 @@ describe('Production draft warning banner', () => {
     );
   });
 
+  afterEach(() => {
+    // Clean up the component after each test.
+    draftWarningBannerComponent = null;
+  });
+
   const createWithStatus = async (prodStatus) => {
     draftWarningBannerComponent = await mount(ProductionDraftWarningBannerVue, {
       shallow: false,

@@ -33,7 +33,7 @@
             <button
               class="carousel-indicator w-2.5 h-2.5 hover:bg-white border border-white rounded-full focus:outline-none cursor-pointer transition-colors duration-500"
               :class="[n - 1 == currentItem ? 'bg-white' : 'bg-transparent']"
-              @click="goTo(n - 1), enableAutoPlay()"
+              @click="(goTo(n - 1), enableAutoPlay())"
               @keypress="goTo(n - 1)"
             />
           </li>

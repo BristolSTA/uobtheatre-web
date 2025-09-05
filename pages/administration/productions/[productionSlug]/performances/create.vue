@@ -4,7 +4,7 @@
       <UiStaButton colour="green" icon="save" @click="create">
         Create
       </UiStaButton>
-      <UiStaButton colour="orange" to="../../"> Cancel </UiStaButton>
+      <UiStaButton colour="orange" to="../"> Cancel </UiStaButton>
     </template>
     <UiNonFieldError :errors="errors" />
     <performance-editor

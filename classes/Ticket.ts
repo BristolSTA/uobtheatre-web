@@ -54,14 +54,10 @@ export default class {
     return ticket;
   }
 
-  static dataFromQRCode(rawQRCode: string) {
+  static dataFromQRCode(rawValue: string) {
     try {
-      const result = JSON.parse(atob(rawQRCode));
-
-      return {
-        bookingReference: result[0],
-        ticketId: result[1]
-      };
+      const result = JSON.parse(atob(rawValue));
+      return { bookingReference: result[0], ticketId: result[1] };
     } catch (e) {
       if (
         e instanceof SyntaxError ||

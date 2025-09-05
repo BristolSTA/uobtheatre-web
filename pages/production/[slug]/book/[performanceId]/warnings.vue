@@ -9,11 +9,30 @@
       class="w-full mb-2"
     >
       <template #subtitle>
-        <span class="text-xl">Performance Information</span>
+        <span class="text-xl">Performance-Specific Information</span>
       </template>
       {{ booking.performance.description }}
     </UiCard>
-    <div class="mb-2 p-6 pt-3 text-white">
+    <div v-if="production.productionAlert" class="w-full p-3 px-6 text-white">
+      <h3 class="text-h3 font-semibold">
+        <font-awesome-icon icon="exclamation-triangle" class="text-sta-rouge" />
+        Production Alert
+      </h3>
+      <p>
+        {{
+          /[.!?]$/.test(production.productionAlert)
+            ? production.productionAlert
+            : production.productionAlert + '.'
+        }}
+        For more information, please contact
+        <a :href="`mailto:${production.contactEmail}`" class="underline">{{
+          production.contactEmail
+        }}</a
+        >.
+      </p>
+      <hr class="mt-2 border-sta-gray-light" />
+    </div>
+    <div class="p-3 px-6 text-white">
       <h3 class="text-h3 font-semibold">
         <font-awesome-icon icon="exclamation-triangle" class="text-sta-rouge" />
         Content Warnings
@@ -26,7 +45,6 @@
         }}</a
         >.
       </p>
-
       <hr class="my-2 border-sta-gray-light" />
       <content-warnings-display
         :content-warnings="production.contentWarnings"
@@ -34,7 +52,7 @@
     </div>
     <div>
       <button
-        class="btn btn-rouge btn-outline"
+        class="mt-2 btn btn-rouge btn-outline"
         @click="onUnderstood"
         @keypress="onUnderstood"
       >
@@ -51,11 +69,13 @@ import Booking from '~~/classes/Booking';
 import ContentWarningsDisplay from '@/components/production/content-warnings/ContentWarningsDisplay.vue';
 
 const stageInfo = new BookingStage({
-  name: 'Content Warnings',
+  name: 'Performance Warnings',
   routeName: 'production-slug-book-performanceId-warnings',
   shouldBeUsed: (production, booking) => {
     return (
-      production.contentWarnings.length > 0 || booking?.performance?.description
+      production.contentWarnings.length > 0 ||
+      booking?.performance?.description ||
+      production.productionAlert
     );
   }
 });
@@ -75,13 +95,14 @@ export default defineNuxtComponent({
       type: Booking
     }
   },
+  emits: ['mounted', 'next-stage'],
+  mounted() {
+    this.$emit('mounted', stageInfo);
+  },
   methods: {
     onUnderstood() {
       this.$emit('next-stage');
     }
-  },
-  mounted() {
-    this.$emit('mounted', stageInfo);
   }
 });
 </script>

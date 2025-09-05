@@ -75,6 +75,15 @@
             <rich-text-input v-model="production.description" />
           </template>
         </form-label>
+        <form-label :errors="errors" name="shortDescription">
+          Short Description
+          <template #control>
+            <UiInputText v-model="production.shortDescription" />
+          </template>
+          <template #helper>
+            This will be shown in place of the description on the front page.
+          </template>
+        </form-label>
         <form-label :errors="errors" name="warnings">
           Content Warnings
           <template #control>
@@ -123,6 +132,18 @@
                 Add
               </UiStaButton>
             </div>
+          </template>
+        </form-label>
+        <form-label :errors="errors" name="productionAlert">
+          Production Alert
+          <template #control>
+            <UiInputText v-model="production.productionAlert" />
+          </template>
+          <template #helper>
+            A Production Alert is displayed alongside content warnings on a
+            production's page and when a user is booking a ticket. Only use this
+            field for information that is essential for users to view, but that
+            cannot otherwise be conveyed through content warnings.
           </template>
         </form-label>
         <div class="flex items-end">
@@ -387,6 +408,7 @@ export default {
         ageRating: this.production.ageRating,
         facebookEvent: this.production.facebookEvent,
         contactEmail: this.production.contactEmail,
+        productionAlert: this.production.productionAlert,
         contentWarnings: (this.production.contentWarnings ?? []).map((cw) => ({
           id: cw.warning.id,
           information: cw.information

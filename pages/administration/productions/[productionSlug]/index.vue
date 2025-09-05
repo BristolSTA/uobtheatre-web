@@ -206,16 +206,16 @@ export default defineNuxtComponent({
   },
   async asyncData() {
     // Execute query
-    const { data } = await useAsyncQuery({
+    const { data } = await useDefaultApolloClient().query({
       query: AdminProductionShowQuery,
       variables: {
         slug: useRoute().params.productionSlug
       },
-      fetchPolicy: 'no-cache'
+      fetchPolicy: 'no-cache',
+      server: false
     });
-
-    const production = computed(() => data.value.production);
-    if (!production.value) {
+    const production = data.production;
+    if (!production) {
       throw createSafeError({
         statusCode: 404,
         message: 'This production does not exist'
@@ -243,7 +243,8 @@ export default defineNuxtComponent({
         };
       },
       update: (data) => data.production.performances,
-      fetchPolicy: 'cache-and-network'
+      notifyOnNetworkStatusChange: true,
+      fetchPolicy: 'no-cache'
     }
   },
   computed: {
@@ -380,6 +381,16 @@ export default defineNuxtComponent({
           },
           'setProductionStatus'
         );
+
+        const { data } = await useDefaultApolloClient().query({
+          query: AdminProductionShowQuery,
+          variables: {
+            slug: useRoute().params.productionSlug
+          },
+          fetchPolicy: 'no-cache'
+        });
+
+        this.production = data.production;
       } catch (e) {
         const errors = getValidationErrors(e);
         swal.fire({
@@ -390,7 +401,7 @@ export default defineNuxtComponent({
         });
         return;
       }
-      await refreshNuxtData();
+
       successToast.fire({ title: 'Status updated' });
     }
   }

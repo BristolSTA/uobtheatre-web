@@ -20,6 +20,7 @@
         <NuxtLink
           :to="buttonTo"
           class="btn btn-outline btn-orange font font-semibold"
+          @click="emit('clearError')"
         >
           {{ buttonText }}
         </NuxtLink>
@@ -29,13 +30,13 @@
 </template>
 
 <script setup lang="ts">
-import type { H3Error } from 'h3';
+import { H3Error } from 'h3';
 
 const props = withDefaults(
   defineProps<{
     buttonText?: string;
     buttonTo?: string;
-    error: H3Error;
+    error: Error;
   }>(),
   {
     buttonText: 'Return Home',
@@ -43,12 +44,17 @@ const props = withDefaults(
   }
 );
 
+const emit = defineEmits(['clearError']);
+
 const errorTypeMessage = computed(() => {
-  if (props.error.statusCode === 404) {
-    return '404 - Page Not found';
-  }
-  if (props.error.statusCode === 401) {
-    return '401 - Unauthorized';
+  if (props.error instanceof H3Error) {
+    // H3Error extends Error and so is sometimes thrown
+    if (props.error.statusCode === 404) {
+      return '404 - Page Not found';
+    }
+    if (props.error.statusCode === 401) {
+      return '401 - Unauthorized';
+    }
   }
   return 'There was an issue.';
 });

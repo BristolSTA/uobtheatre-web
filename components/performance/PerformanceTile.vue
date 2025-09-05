@@ -72,6 +72,7 @@ import Modal from '~/components/ui/Modal.vue';
 import RelaxedCategoriesDisplay from '~/components/performance/relaxed-categories/RelaxedCategoriesDisplay.vue';
 
 export default {
+  name: 'PerformanceOverviewTile',
   components: {
     Modal,
     RelaxedCategoriesDisplay,

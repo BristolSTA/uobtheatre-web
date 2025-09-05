@@ -1,4 +1,6 @@
 import { expect, vi } from 'vitest';
+import MatchMediaMock from 'vitest-matchmedia-mock';
+
 import { mount } from '#testSupport/helpers';
 
 import ForgotPassword from '@/pages/login/forgot/index.vue';
@@ -8,6 +10,10 @@ import useAuthStore from '@/store/auth';
 import ValidationError from '~~/errors/ValidationError';
 
 describe('Request Password Reset Page', function () {
+  beforeEach(async () => {
+    new MatchMediaMock();
+  });
+
   let forgotPasswordComponent, swalStub;
 
   describe('without reset token', () => {

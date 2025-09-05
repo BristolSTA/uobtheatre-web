@@ -1,7 +1,7 @@
 import { expect } from 'vitest';
 import { mount } from '#testSupport/helpers';
 
-import PerformanceOverview from '@/components/performance/PerformanceOverview.vue';
+import PerformanceOverview from '@/components/performance/PerformanceTile.vue';
 
 import PickPerformanceStage from '@/pages/production/[slug]/book/index.vue';
 import Production from '#testSupport/fixtures/Production';

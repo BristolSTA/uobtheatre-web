@@ -2,28 +2,22 @@
   <qrcode-stream
     :camera="!on || cameraReset ? 'off' : 'auto'"
     :track="onTrackEvent"
-    @init="onInit"
-    @decode="onDecode"
+    @camera-on="cameraOn"
+    @detect="onDetect"
   >
     <slot />
   </qrcode-stream>
 </template>
 
 <script lang="ts" setup>
-import { QrcodeStream } from 'vue-qrcode-reader';
+import { QrcodeStream, type DetectedBarcode } from 'vue-qrcode-reader';
 import Ticket from '~~/classes/Ticket';
 import InvalidTicketQRCodeException from '~~/exceptions/InvalidTicketQRCodeException';
 import type { TicketQRCodeData } from '~~/types/ticket';
 
 const props = withDefaults(
-  defineProps<{
-    on?: boolean;
-    pauseOnDecode?: boolean;
-  }>(),
-  {
-    on: true,
-    pauseOnDecode: true
-  }
+  defineProps<{ on?: boolean; pauseOnDecode?: boolean }>(),
+  { on: true, pauseOnDecode: true }
 );
 
 const cameraReset = ref(false);
@@ -33,10 +27,7 @@ const emit = defineEmits<{
   (event: 'unable', message: string): void;
   (
     event: 'scanned',
-    data: {
-      ticketData: TicketQRCodeData;
-      reenable: () => void;
-    }
+    data: { ticketData: TicketQRCodeData; reenable: () => void }
   ): void;
   (event: 'invalidCode'): void;
 }>();
@@ -56,9 +47,8 @@ function onTrackEvent(detectedCodes: any, ctx: any) {
   }
 }
 
-async function onInit(promise: Promise<any>) {
+async function cameraOn(c: MediaTrackCapabilities) {
   try {
-    await promise;
     emit('ready');
   } catch (error: any) {
     let errorMessage;
@@ -90,11 +80,15 @@ async function onInit(promise: Promise<any>) {
     emit('unable', errorMessage);
   }
 }
-function onDecode(string: string) {
+function onDetect(detectedCodes: DetectedBarcode[]) {
   new Audio('/audio/beep_single.mp3').play();
-
   try {
-    const ticketData = Ticket.dataFromQRCode(string);
+    let rawValue = detectedCodes[0].rawValue;
+    // Strip " from the start and end of the string
+    if (rawValue.startsWith('"') && rawValue.endsWith('"')) {
+      rawValue = rawValue.slice(1, -1);
+    }
+    const ticketData = Ticket.dataFromQRCode(rawValue);
     if (props.pauseOnDecode) {
       cameraReset.value = true;
     }

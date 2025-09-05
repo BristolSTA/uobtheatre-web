@@ -6,18 +6,20 @@
     </template>
     <template #messageBox>
       <table class="flex table-auto ml-auto">
-        <tr>
-          <th class="pr-4">
-            <font-awesome-icon
-              icon="info-circle"
-              class="flex items-center text-h3 lg:text-h2"
-            />
-          </th>
-          <td class="text-xs lg:text-sm">
-            <p>All our tickets are fulfilled digitally</p>
-            <p>Display on your phone or print</p>
-          </td>
-        </tr>
+        <tbody>
+          <tr>
+            <th class="pr-4">
+              <font-awesome-icon
+                icon="info-circle"
+                class="flex items-center text-h3 lg:text-h2"
+              />
+            </th>
+            <td class="text-xs lg:text-sm">
+              <p>All our tickets are fulfilled digitally</p>
+              <p>Display on your phone or print</p>
+            </td>
+          </tr>
+        </tbody>
       </table>
     </template>
     <div class="grid gap-2 grid-cols-1 sm:grid-cols-2">

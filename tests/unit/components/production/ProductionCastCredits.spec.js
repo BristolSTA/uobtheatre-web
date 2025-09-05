@@ -98,6 +98,11 @@ describe('Production Cast and Credits', function () {
     expect(castArray.at(1).find('img').exists()).to.be.false;
   });
 
+  afterEach(() => {
+    // Clean up the component after each test.
+    castCreditsContainer = null;
+  });
+
   const createWithPerformances = async (performances, productionOverrides) => {
     const production = Production(productionOverrides);
     production.performances = GenericNodeConnection(

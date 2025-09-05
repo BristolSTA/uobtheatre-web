@@ -91,9 +91,7 @@ export default defineNuxtComponent({
       type: Booking
     }
   },
-  mounted() {
-    this.$emit('mounted', stageInfo);
-  },
+  emits: ['mounted', 'paid'],
   data() {
     return {
       paymentForm: null,
@@ -106,6 +104,9 @@ export default defineNuxtComponent({
         apple: false
       }
     };
+  },
+  mounted() {
+    this.$emit('mounted', stageInfo);
   },
   methods: {
     dateFormat,

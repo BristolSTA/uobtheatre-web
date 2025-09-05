@@ -2,7 +2,7 @@
   <div
     class="flex flex-wrap items-center justify-center space-x-0 md:space-x-10"
   >
-    <div class="relative inline-block m-8 w-full max-w-xl md:w-2/3">
+    <div class="relative inline-block m-2 w-full max-w-xl md:w-2/3">
       <production-featured-image
         data-test="featured-image"
         class="p-4 w-full sm:p-8"
@@ -21,7 +21,14 @@
       class="flex flex-col items-center px-10 w-full text-center text-white md:block md:w-auto md:max-w-md md:text-left"
     >
       <span class="font-semibold">
-        <span class="text-h2">{{ production.name }}</span>
+        <NuxtLink
+          v-if="clickableProductionName"
+          class="hover:text-gray-300"
+          :to="`/production/${production.slug}`"
+        >
+          <span class="text-h2">{{ production.name }}</span>
+        </NuxtLink>
+        <span v-else class="text-h2">{{ production.name }}</span>
         <p class="-mt-2 mb-1 text-sta-gray-lighter">
           by
           <NuxtLink
@@ -64,8 +71,8 @@
           <template
             v-if="
               production.performances.edges
-                .map((edge: any) => edge.node)
-                .find((node: any) => node.intervalDurationMins)
+                .map((edge) => edge.node)
+                .find((node) => node.intervalDurationMins)
             "
           >
             <small>(inc. interval)</small>
@@ -77,9 +84,13 @@
             <span class="font-semibold">
               £{{ (production.minSeatPrice / 100).toFixed(2) }}
             </span>
-            <UTooltip class="pl-1" :popper="{ arrow: true }">
+            <UTooltip
+              v-if="miscCostsDisplay"
+              class="pl-1"
+              :popper="{ arrow: true }"
+            >
               <template #text>
-                <span>10% + £1 to cover fees and support student theatre.</span>
+                {{ miscCostsDisplay }} to cover fees and support our theatre.
               </template>
               <small
                 >(exc. fees)<font-awesome-icon icon="circle-info" class="ml-1"
@@ -92,81 +103,123 @@
       <button
         v-if="showBuyTicketsButton && production.isBookable"
         class="btn btn-green mt-4 w-full font-semibold"
-        @click="emit('on-buy-tickets-click')"
-        @keypress="emit('on-buy-tickets-click')"
+        @click="$emit('on-buy-tickets-click')"
+        @keypress="$emit('on-buy-tickets-click')"
       >
-        Buy Tickets
+        {{ production.minSeatPrice ? 'Buy' : 'Get' }} Tickets
       </button>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
+<script>
 import humanizeDuration from 'humanize-duration';
 import lo from 'lodash';
 
 import ProductionFeaturedImage from './ProductionFeaturedImage.vue';
 import IconListItem from '~~/components/ui/UiIconListItem.vue';
 import { displayStartEnd } from '@/utils/datetime';
+import MiscCostQuery from '@/graphql/queries/MiscCosts.gql';
 
-const emit = defineEmits<{
-  (event: 'on-buy-tickets-click'): void;
-}>();
-
-const props = defineProps({
-  production: {
-    required: true,
-    type: Object
+export default {
+  components: {
+    ProductionFeaturedImage,
+    IconListItem
   },
-  showBuyTicketsButton: {
-    default: true,
-    type: Boolean
+  props: {
+    production: {
+      required: true,
+      type: Object
+    },
+    showBuyTicketsButton: {
+      default: true,
+      type: Boolean
+    },
+    showDetailedInfo: {
+      default: true,
+      type: Boolean
+    },
+    clickableProductionName: {
+      default: false,
+      type: Boolean
+    }
   },
-  showDetailedInfo: {
-    default: true,
-    type: Boolean
+  emits: ['on-buy-tickets-click'],
+  apollo: {
+    miscCosts: {
+      query: MiscCostQuery,
+      update: (data) => data.miscCosts.edges.map((edge) => edge.node)
+    }
+  },
+  data() {
+    return {
+      venueOverflow: 3,
+      miscCosts: []
+    };
+  },
+  computed: {
+    hasOnlinePerformances() {
+      return !!this.production.performances.edges.find(
+        (edge) => edge.node.isOnline
+      );
+    },
+    hasInPersonPerformances() {
+      return !!this.production.performances.edges.find(
+        (edge) => edge.node.isInperson
+      );
+    },
+    venues() {
+      let venueList = [];
+      if (this.hasInPersonPerformances) {
+        venueList = lo.uniqBy(
+          this.production.performances.edges.map((edge) => {
+            return edge.node.venue;
+          }),
+          'name'
+        );
+      }
+      lo.take(venueList, this.venueOverflow + 1);
+      return venueList;
+    },
+    duration() {
+      if (!this.production.performances.edges.length) {
+        return;
+      }
+      return humanizeDuration(
+        lo
+          .chain(this.production.performances.edges.map((edge) => edge.node))
+          .minBy('durationMins')
+          .value().durationMins *
+          60 *
+          1000
+      );
+    },
+    miscCostsDisplay() {
+      // The total percentage sum of all misc costs
+      const totalPercentage =
+        this.miscCosts
+          .reduce((acc, miscCost) => acc + miscCost.percentage, 0)
+          .toFixed(2) * 100;
+
+      // The total value sum of all misc costs in pence
+      const totalValue = this.miscCosts.reduce(
+        (acc, miscCost) => acc + miscCost.value,
+        0
+      );
+
+      // Returns the total percentage and value of all misc costs in format totalPercentage + totalValue, but hide each if the value is 0
+      // If the total value is greater than 100 (i.e. £1), it is displayed in pounds, otherwise displayed in pence
+      return `${totalPercentage ? `${totalPercentage}%` : ''}${
+        totalValue
+          ? `${totalPercentage ? ' + ' : ''}${
+              totalValue >= 100 ? '£' + totalValue / 100 : totalValue + 'p'
+            }`
+          : ''
+      }`;
+    }
+  },
+  methods: {
+    displayStartEnd
   }
-});
-
-const venueOverflow = 3;
-
-const hasOnlinePerformances = computed(() => {
-  return !!props.production.performances.edges.find(
-    (edge: any) => edge.node.isOnline
-  );
-});
-
-const hasInPersonPerformances = computed(() => {
-  return !!props.production.performances.edges.find(
-    (edge: any) => edge.node.isInperson
-  );
-});
-
-const venues = computed(() => {
-  let venueList: any[] = [];
-  if (hasInPersonPerformances.value) {
-    venueList = lo.uniqBy(
-      props.production.performances.edges.map((edge: any) => {
-        return edge.node.venue;
-      }),
-      'name'
-    );
-  }
-  lo.take(venueList, venueOverflow + 1);
-  return venueList;
-});
-
-const duration = computed(() => {
-  if (!props.production.performances.edges.length) {
-    return;
-  }
-  return humanizeDuration(
-    lo
-      .chain(props.production.performances.edges.map((edge: any) => edge.node))
-      .minBy('durationMins')
-      .value().durationMins *
-      60 *
-      1000
-  );
-});
+};
 </script>

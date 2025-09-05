@@ -141,6 +141,9 @@ watch([searchText, searchFilter], () => {
 });
 
 watch(scannedCode, async (newValue) => {
+  // Handles QR code scanning with physical scanners
+  // Mobile scanning is handled by the UiInputTicketScanner component
+
   // If the newly scaned code is undefined (i.e. telling us a new code is about to be scanned) reset the state
   if (!newValue) {
     setCheckInState();

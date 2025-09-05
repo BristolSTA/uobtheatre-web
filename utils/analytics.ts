@@ -1,4 +1,4 @@
-import { event, purchase } from 'vue-gtag';
+import { event, ecommerce } from 'vue-gtag';
 
 interface EventDescription {
   category: string;
@@ -25,7 +25,7 @@ export function recordEvent(eventDescription: EventDescription): void {
 }
 
 export function recordPaymentEvent(
-  purchaseDetails: Parameters<typeof purchase>[0]
+  purchaseDetails: Parameters<typeof ecommerce>[1]
 ): void {
-  purchase(purchaseDetails);
+  ecommerce('purchase', purchaseDetails);
 }

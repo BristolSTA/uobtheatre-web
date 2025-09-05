@@ -34,31 +34,19 @@
         <form-label name="doorsOpen" :errors="errors" :required="true">
           Doors Open
           <template #control>
-            <VueDatepicker
-              v-model="performance.doorsOpen"
-              :start-time="{ hours: 0, minutes: 0, seconds: 0 }"
-              format="dd/MM/yyyy HH:mm"
-            />
+            <UiInputDateTime v-model="performance.doorsOpen" />
           </template>
         </form-label>
         <form-label name="start" :errors="errors" :required="true">
           Performance Starts
           <template #control>
-            <VueDatepicker
-              v-model="performance.start"
-              :start-time="{ hours: 0, minutes: 0, seconds: 0 }"
-              format="dd/MM/yyyy HH:mm"
-            />
+            <UiInputDateTime v-model="performance.start" />
           </template>
         </form-label>
         <form-label name="end" :errors="errors" :required="true">
           Performance Ends
           <template #control>
-            <VueDatepicker
-              v-model="performance.end"
-              :start-time="{ hours: 0, minutes: 0, seconds: 0 }"
-              format="dd/MM/yyyy HH:mm"
-            />
+            <UiInputDateTime v-model="performance.end" />
           </template>
         </form-label>
         <form-label name="intervalDurationMins" :errors="errors">
@@ -345,7 +333,6 @@ import { swal } from '@/utils/alerts';
 import { dateFormat } from '@/utils/datetime';
 import Alert from '@/components/ui/Alert.vue';
 import { getSingleDiscounts } from '@/utils/performance';
-import VueDatepicker from '@vuepic/vue-datepicker';
 
 import {
   AdminPerformanceDetailDocument,
@@ -372,7 +359,6 @@ export default {
     TableRow,
     UiInputToggle,
     FormLabel,
-    VueDatepicker,
     SeatGroup,
     ConcessionType,
     ErrorHelper,

@@ -3,7 +3,7 @@ import { NuxtLinkStub } from '#testSupport/stubs';
 import { expect } from 'vitest';
 
 import Performance from '#testSupport/fixtures/Performance';
-import PerformanceOverview from '@/components/performance/PerformanceOverview.vue';
+import PerformanceOverview from '@/components/performance/PerformanceTile.vue';
 
 describe('Performance Overview', () => {
   let performanceOverviewComponent;

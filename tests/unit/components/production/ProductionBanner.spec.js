@@ -139,6 +139,13 @@ describe('ProductionBanner', function () {
     expect(headerContainer.findAllComponents(NuxtLinkStub).length).to.equal(2);
   });
 
+  it('links to the production when prop set', async () => {
+    await createWithPerformances([], [], {}, true, true, true);
+    expect(
+      headerContainer.findAllComponents(NuxtLinkStub).at(0).attributes('to')
+    ).to.equal('/production/legally-ginger');
+  });
+
   it('shows venue overflow', async () => {
     await createWithPerformances([
       {
@@ -211,7 +218,7 @@ describe('ProductionBanner', function () {
 
   // no buy tickets when not bookable
   it('doesnt show buy tickets button when not bookable', async () => {
-    await createWithPerformances([{}], {
+    await createWithPerformances([{}], [], {
       isBookable: false
     });
     expect(fixTextSpacing(headerContainer.text())).not.to.contain(
@@ -220,13 +227,26 @@ describe('ProductionBanner', function () {
     expect(headerContainer.find('button').exists()).to.be.false;
   });
 
+  it.each([
+    [true, 'Get Tickets'],
+    [false, 'Buy Tickets']
+  ])(
+    'shows buy tickets button with correct wording for free tickets',
+    async (free, text) => {
+      await createWithPerformances([{}], [], {
+        minSeatPrice: free ? null : 120
+      });
+      expect(headerContainer.find('button').text()).to.equal(text);
+    }
+  );
+
   it('doesnt show buy tickets button when told to not be present', async () => {
-    await createWithPerformances([{}], {}, false);
+    await createWithPerformances([{}], [], {}, false);
     expect(headerContainer.find('button').exists()).to.be.false;
   });
 
   it('doesnt show detailed data when told to not show', async () => {
-    await createWithPerformances([{}], {}, false, false);
+    await createWithPerformances([{}], [], {}, false, false);
 
     expect(headerContainer.text()).to.contain('Legally Ginger');
     expect(fixTextSpacing(headerContainer.text())).to.contain('by STA');
@@ -245,11 +265,107 @@ describe('ProductionBanner', function () {
     );
   });
 
+  describe('Production Fee Display', function () {
+    it('doesnt display fees if none exist', async () => {
+      await createWithPerformances([]);
+
+      expect(headerContainer.vm.miscCostsDisplay).to.equal('');
+      expect(headerContainer.text()).to.not.contain('(exc. fees)');
+    });
+
+    it('doesnt display if tickets are free', async () => {
+      await createWithPerformances(
+        [{}],
+        [
+          {
+            id: 1,
+            name: 'Booking Fee',
+            description: 'Supports theatre maintainance and website',
+            percentage: 0.05
+          }
+        ],
+        {
+          minSeatPrice: null
+        }
+      );
+
+      expect(headerContainer.text()).to.not.contain('(exc. fees)');
+    });
+
+    const feeTestCases = [
+      {
+        a: [0.05, null],
+        b: [null, null],
+        expected: '5%',
+        testMessage: 'percentage only'
+      },
+      {
+        a: [null, 100],
+        b: [null, null],
+        expected: '£1',
+        testMessage: 'fixed fee only'
+      },
+      {
+        a: [0.05, null],
+        b: [null, 100],
+        expected: '5% + £1',
+        testMessage: 'percentage and fixed fee, handling £s'
+      },
+      {
+        a: [0.1, null],
+        b: [null, 25],
+        expected: '10% + 25p',
+        testMessage: 'percentage and fixed fee, handling pence'
+      },
+      {
+        a: [null, 50],
+        b: [0.05, null],
+        expected: '5% + 50p',
+        testMessage: 'percentage and fixed fee, while order agnostic'
+      }
+    ];
+
+    it.each(feeTestCases)(
+      'calculates correct fee with $testMessage',
+      async ({ a, b, expected }) => {
+        await createWithPerformances(
+          [{}],
+          [
+            {
+              id: 1,
+              name: 'Theatre Improvement Levy',
+              description: 'Makes the STA stonks',
+              percentage: a[0],
+              value: a[1]
+            },
+            {
+              id: 2,
+              name: 'Booking Fee',
+              description: 'Oh no Square charges us money',
+              percentage: b[0],
+              value: b[1]
+            }
+          ]
+        );
+
+        expect(headerContainer.vm.miscCostsDisplay).to.equal(expected);
+        expect(headerContainer.text()).to.contain('(exc. fees)');
+      }
+    );
+  });
+
+  afterEach(() => {
+    // Clean up the component after each test.
+    headerContainer = null;
+  });
+
   const createWithPerformances = async (
     performances,
+    miscCostsData = [],
     productionOverrides,
     showBuyTicketsButton = true,
-    showDetailedInfo = true
+    showDetailedInfo = true,
+    clickableProductionName = false
   ) => {
     const production = Production(productionOverrides);
     production.performances = GenericNodeConnection(
@@ -261,7 +377,13 @@ describe('ProductionBanner', function () {
       props: {
         production,
         showBuyTicketsButton,
-        showDetailedInfo
+        showDetailedInfo,
+        clickableProductionName
+      },
+      data() {
+        return {
+          miscCosts: miscCostsData
+        };
       }
     });
   };

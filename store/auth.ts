@@ -182,7 +182,8 @@ const useAuthStore = defineStore('auth', {
       // If the user wants to be remembered, we'll store a cookie to remember this preference
       if (remember) {
         cookie.set(runtimeConfig.public.auth.rememberKey, 'true', {
-          expires: remember ? rememberLengthDays : undefined
+          expires: remember ? rememberLengthDays : undefined,
+          sameSite: 'Strict'
         });
       } else if (
         remember === false &&
@@ -194,7 +195,8 @@ const useAuthStore = defineStore('auth', {
 
       // Finally, we'll set a cookie with the refresh token. If the user wants to be remembered, we'll make this expire in 1 year, otherwise it will expire with the session
       cookie.set(runtimeConfig.public.auth.refreshTokenKey, refreshToken, {
-        expires: this.isRemembering() ? rememberLengthDays : undefined
+        expires: this.isRemembering() ? rememberLengthDays : undefined,
+        sameSite: 'Strict'
       });
     },
 
