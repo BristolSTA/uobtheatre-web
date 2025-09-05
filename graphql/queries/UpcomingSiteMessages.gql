@@ -1,10 +1,15 @@
-query upcomingSiteMessages($now: DateTime, $afterCursor: String) {
+query upcomingSiteMessages(
+  $now: DateTime
+  $afterCursor: String
+  $displayLocation: String
+) {
   siteMessages(
     first: 5
     orderBy: "display_start"
     after: $afterCursor
     displayStart_Lte: $now
     end_Gte: $now
+    displayLocation: $displayLocation
   ) {
     pageInfo {
       hasNextPage
