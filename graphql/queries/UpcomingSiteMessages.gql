@@ -18,6 +18,7 @@ query upcomingSiteMessages(
     edges {
       node {
         id
+        title
         message
         active
         indefiniteOverride

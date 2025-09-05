@@ -32,12 +32,6 @@ export default defineNuxtConfig({
     '@nuxtjs/turnstile'
   ],
 
-  // Override @nuxt/ui's lightmode/darkmode features because our website is not cut out for it
-  // See https://github.com/BristolSTA/uobtheatre-web/issues/620
-  colorMode: {
-    preference: 'light'
-  },
-
   // Define the runtime config
   runtimeConfig: {
     public: publicConfig(),

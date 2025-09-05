@@ -163,16 +163,29 @@ export default {
     },
     dismissBanner() {
       this.maintenanceBannerDismissed = true;
-      const dismissalTime = this.siteMessage.eventEnd - Date.now();
+
+      if (this.siteMessage.dismissalPolicy === 'SINGLE') {
+        // Session cookies are deleted when the browser is closed, so no need to set an expiry
+        // If a cookie has already been sent, append the new id to the list, otherwise create the cookie
+        if (this.dismissedIds) {
+          this.dismissedIds.push(this.siteMessage.id);
+          cookie.set('siteMessageModalDismissed', this.dismissedIds.join(','));
+        } else {
+          cookie.set('siteMessageModalDismissed', this.siteMessage.id);
+        }
+        return;
+      }
+
+      const dismissalTime = new Date(this.siteMessage.eventEnd);
 
       // If a cookie has already been sent, append the new id to the list, otherwise create the cookie
       if (this.dismissedIds) {
         this.dismissedIds.push(this.siteMessage.id);
-        cookie.set('maintenanceBannerDismissed', this.dismissedIds.join(','), {
+        cookie.set('siteMessageModalDismissed', this.dismissedIds.join(','), {
           expires: dismissalTime
         });
       } else {
-        cookie.set('maintenanceBannerDismissed', this.siteMessage.id, {
+        cookie.set('siteMessageModalDismissed', this.siteMessage.id, {
           expires: dismissalTime
         });
       }

@@ -122,7 +122,6 @@ export default defineNuxtComponent({
       showConfirmButton: true,
       showCancelButton: true,
       confirmButtonText: 'Abandon Booking',
-      confirmButtonColor: '#d94519',
       cancelButtonText: 'Keep editing'
     });
 
