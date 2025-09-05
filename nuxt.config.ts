@@ -9,7 +9,7 @@ const cssFiles = [
 ];
 
 // If we are NOT testing (cypress), we push the app styles
-if (process.env.MODE !== 'test') cssFiles.push('@/assets/styles/app.scss');
+if (process.env.MODE !== 'test') cssFiles.push('@/assets/styles/app.css');
 
 export default defineNuxtConfig({
   // Enable experimental features
