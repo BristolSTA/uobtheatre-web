@@ -11,7 +11,7 @@ updates:
       interval: 'daily'
     target-branch: 'dependabot/develop'
     assignees:
-      - 'HappyNTH'
+      - 'ClaraARay'
     groups:
       vue:
         patterns:
