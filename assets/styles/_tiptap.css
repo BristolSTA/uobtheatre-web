@@ -1,0 +1,43 @@
+.tiptap-output:focus {
+  @apply outline-none;
+}
+
+.tiptap-output h1 {
+  @apply text-xl font-semibold;
+}
+
+.tiptap-output h2 {
+  @apply text-lg font-semibold;
+}
+
+.tiptap-output > p {
+  @apply my-2;
+}
+
+.tiptap-output a {
+  @apply text-sta-orange transition-colors;
+}
+
+.tiptap-output a:hover {
+  @apply text-sta-orange-dark;
+}
+
+.tiptap-output blockquote {
+  @apply p-4 border-l-2 border-sta-gray-dark bg-gray-600;
+}
+
+.tiptap-output ul {
+  @apply list-inside list-disc;
+}
+
+.tiptap-output ul p {
+  @apply inline-block;
+}
+
+.tiptap-output ol {
+  @apply list-inside list-decimal;
+}
+
+.tiptap-output ol p {
+  @apply inline-block;
+}

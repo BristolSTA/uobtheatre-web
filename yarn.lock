@@ -2817,6 +2817,28 @@
     ufo "^1.5.4"
     unctx "^2.4.1"
 
+"@nuxtjs/tailwindcss@^6.14.0":
+  version "6.14.0"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/tailwindcss/-/tailwindcss-6.14.0.tgz#c2feffc4ea4f5c4bd8d60218841d8bae84f70271"
+  integrity sha512-30RyDK++LrUVRgc2A85MktGWIZoRQgeQKjE4CjjD64OXNozyl+4ScHnnYgqVToMM6Ch2ZG2W4wV2J0EN6F0zkQ==
+  dependencies:
+    "@nuxt/kit" "^3.16.0"
+    autoprefixer "^10.4.20"
+    c12 "^3.0.2"
+    consola "^3.4.0"
+    defu "^6.1.4"
+    h3 "^1.15.1"
+    klona "^2.0.6"
+    ohash "^2.0.11"
+    pathe "^2.0.3"
+    pkg-types "^2.1.0"
+    postcss "^8.5.3"
+    postcss-nesting "^13.0.1"
+    tailwind-config-viewer "^2.0.4"
+    tailwindcss "~3.4.17"
+    ufo "^1.5.4"
+    unctx "^2.4.1"
+
 "@nuxtjs/turnstile@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@nuxtjs/turnstile/-/turnstile-1.0.0.tgz#449427afc8a8b975b130b4a37761ec0f23e77425"

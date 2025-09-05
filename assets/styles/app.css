@@ -1,24 +1,9 @@
-@use 'sass:string';
-@use '_tiptap';
-@use '_swal';
-@use '_table';
-@use '_datepicker';
-@use '_misc';
+@import '_tiptap.css';
+@import '_swal.css';
+@import '_table.css';
+@import '_datepicker.css';
+@import '_misc.css';
 @import '@fortawesome/fontawesome-svg-core/styles.css';
-
-@function str-replace($string, $search, $replace: '') {
-  $index: string.index($string, $search);
-  @if $index {
-    @return string.slice($string, 1, $index - 1) + $replace +
-      str-replace(
-        string.slice($string, $index + string.length($search)),
-        $search,
-        $replace
-      );
-  }
-
-  @return $string;
-}
 
 @tailwind base;
 @tailwind components;
@@ -39,40 +24,99 @@
   .btn {
     @apply rounded-sm px-6 py-2 cursor-pointer inline-block;
     @apply text-white;
+  }
 
-    &.disabled,
-    &[disabled] {
-      @apply cursor-not-allowed;
-    }
-    &:focus {
-      @apply outline-none;
-    }
+  .btn.disabled,
+  .btn[disabled] {
+    @apply cursor-not-allowed;
+  }
+
+  .btn:focus {
+    @apply outline-none;
   }
 
   .btn-outline {
     @apply bg-transparent border border-solid;
   }
 
-  $colors: ('rouge', 'orange', 'green', 'gray', 'gray-light');
-  @each $color in $colors {
-    .btn-#{$color}:not(.btn-outline) {
-      @apply bg-sta-#{$color};
-    }
-    .btn-#{$color}.btn-outline {
-      @apply border-sta-#{$color};
-      @apply text-sta-#{$color};
-    }
-    .btn-#{$color}:hover:not(.disabled):not([disabled]) {
-      $hov-color: 'bg-sta-#{$color}-dark';
-      @if (string.index($color, '-light')) {
-        $new-col: str-replace($color, '-light', '');
-        $hov-color: 'bg-sta-#{$new-col}-dark';
-      }
+  /* Rouge button styles */
+  .btn-rouge:not(.btn-outline) {
+    @apply bg-sta-rouge;
+  }
 
-      @apply #{$hov-color};
-      @apply text-white;
-      @apply border-transparent;
-    }
+  .btn-rouge.btn-outline {
+    @apply border-sta-rouge;
+    @apply text-sta-rouge;
+  }
+
+  .btn-rouge:hover:not(.disabled):not([disabled]) {
+    @apply bg-sta-rouge-dark;
+    @apply text-white;
+    @apply border-transparent;
+  }
+
+  /* Orange button styles */
+  .btn-orange:not(.btn-outline) {
+    @apply bg-sta-orange;
+  }
+
+  .btn-orange.btn-outline {
+    @apply border-sta-orange;
+    @apply text-sta-orange;
+  }
+
+  .btn-orange:hover:not(.disabled):not([disabled]) {
+    @apply bg-sta-orange-dark;
+    @apply text-white;
+    @apply border-transparent;
+  }
+
+  /* Green button styles */
+  .btn-green:not(.btn-outline) {
+    @apply bg-sta-green;
+  }
+
+  .btn-green.btn-outline {
+    @apply border-sta-green;
+    @apply text-sta-green;
+  }
+
+  .btn-green:hover:not(.disabled):not([disabled]) {
+    @apply bg-sta-green-dark;
+    @apply text-white;
+    @apply border-transparent;
+  }
+
+  /* Gray button styles */
+  .btn-gray:not(.btn-outline) {
+    @apply bg-sta-gray;
+  }
+
+  .btn-gray.btn-outline {
+    @apply border-sta-gray;
+    @apply text-sta-gray;
+  }
+
+  .btn-gray:hover:not(.disabled):not([disabled]) {
+    @apply bg-sta-gray-dark;
+    @apply text-white;
+    @apply border-transparent;
+  }
+
+  /* Gray-light button styles */
+  .btn-gray-light:not(.btn-outline) {
+    @apply bg-sta-gray-light;
+  }
+
+  .btn-gray-light.btn-outline {
+    @apply border-sta-gray-light;
+    @apply text-sta-gray-light;
+  }
+
+  .btn-gray-light:hover:not(.disabled):not([disabled]) {
+    @apply bg-sta-gray-dark;
+    @apply text-white;
+    @apply border-transparent;
   }
 }
 
