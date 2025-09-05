@@ -5,7 +5,7 @@
       :class="{ 'flex-col': showIndicator }"
     >
       <div
-        class="md:p-5 border-2 border-white text-white flex items-center justify-center flex-grow md:text-4xl overflow-clip md:order-2 text-center"
+        class="md:p-5 border-2 border-white text-white flex items-center justify-center grow md:text-4xl overflow-clip md:order-2 text-center"
       >
         {{ state.message ?? 'Waiting...' }}
       </div>
@@ -20,11 +20,11 @@
                 ? 'warning'
                 : 'waiting'
           "
-          class="h-12 md:h-20 lg:w-64 px-5 flex-grow text-3xl md:text-7xl"
+          class="h-12 md:h-20 lg:w-64 px-5 grow text-3xl md:text-7xl"
         />
         <button
           v-if="showInformationButton"
-          class="text-white py-2 px-6 rounded bg-sta-green"
+          class="text-white py-2 px-6 rounded-sm bg-sta-green"
           @click="emit('click-information')"
         >
           <font-awesome-icon icon="info" />

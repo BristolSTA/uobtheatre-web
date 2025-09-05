@@ -1,5 +1,5 @@
 <template>
-  <div class="p-3 bg-sta-gray-dark rounded border border-sta-orange">
+  <div class="p-3 bg-sta-gray-dark rounded-sm border border-sta-orange">
     <h2 class="text-center text-h2 text-white">Payment</h2>
 
     <h3 class="text-center text-sta-orange text-h3">
@@ -11,7 +11,7 @@
         <template v-if="booking.totalPrice > 0">
           <button
             v-if="enabledMethods.squarePOS && availableTerminals.length"
-            class="btn p-2 bg-sta-green hover:bg-sta-green-dark rounded focus:outline-none transition-colors"
+            class="btn p-2 bg-sta-green hover:bg-sta-green-dark rounded-sm focus:outline-hidden transition-colors"
             @click="
               boxOfficeStore.terminalDevice
                 ? pay(PaymentProvider['SquarePos'])
@@ -28,7 +28,7 @@
           </button>
           <button
             v-else-if="enabledMethods.manualCard"
-            class="btn p-2 bg-sta-green hover:bg-sta-green-dark rounded focus:outline-none transition-colors"
+            class="btn p-2 bg-sta-green hover:bg-sta-green-dark rounded-sm focus:outline-hidden transition-colors"
             @click="paymentMode = PaymentProvider['Card']"
           >
             <font-awesome-icon icon="money-check-alt" />
@@ -36,7 +36,7 @@
           </button>
           <button
             v-if="enabledMethods.cash"
-            class="p-2 bg-sta-green hover:bg-sta-green-dark rounded focus:outline-none transition-colors"
+            class="p-2 bg-sta-green hover:bg-sta-green-dark rounded-sm focus:outline-hidden transition-colors"
             @click="paymentMode = PaymentProvider['Cash']"
           >
             <font-awesome-icon icon="money-bill" />
@@ -45,7 +45,7 @@
         </template>
         <button
           v-else
-          class="p-2 bg-sta-green hover:bg-sta-green-dark rounded focus:outline-none transition-colors"
+          class="p-2 bg-sta-green hover:bg-sta-green-dark rounded-sm focus:outline-hidden transition-colors"
           @click="pay(undefined)"
         >
           <font-awesome-icon icon="money-bill" />
@@ -63,7 +63,7 @@
             <input
               v-model.number="amountTendered"
               type="text"
-              class="p-1 w-full text-gray-800 rounded outline-none"
+              class="p-1 w-full text-gray-800 rounded-sm outline-hidden"
               placeholder="Tendered"
             />
           </div>
@@ -78,7 +78,7 @@
       </div>
       <div v-if="paymentMode" class="mt-4 text-center">
         <button
-          class="p-2 bg-sta-orange hover:bg-sta-orange-dark rounded animate-pulse"
+          class="p-2 bg-sta-orange hover:bg-sta-orange-dark rounded-sm animate-pulse"
           @click="paymentMode ? pay(paymentMode) : null"
         >
           <strong>Click Here When Payment Processed ({{ paymentMode }})</strong>
@@ -87,7 +87,7 @@
       <template v-if="paymentMode == 'SQUARE_POS'" #overlay>
         <div>
           <button
-            class="mt-4 p-2 bg-sta-rouge hover:bg-sta-rouge-dark rounded transition-colors"
+            class="mt-4 p-2 bg-sta-rouge hover:bg-sta-rouge-dark rounded-sm transition-colors"
             @click="cancelSquarePOSPayment"
           >
             Cancel

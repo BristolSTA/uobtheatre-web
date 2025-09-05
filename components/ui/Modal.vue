@@ -2,7 +2,7 @@
   <div
     class="fixed top-0 left-0 right-0 bottom-0 flex bg-black bg-opacity-50 items-center justify-center p-2 md:p-5 -my-2"
   >
-    <div class="shadow flex flex-col overflow-x-auto bg-sta-gray max-h-full">
+    <div class="shadow-sm flex flex-col overflow-x-auto bg-sta-gray max-h-full">
       <header
         class="bg-sta-gray-light border-b border-sta-gray-dark flex justify-between p-4"
       >

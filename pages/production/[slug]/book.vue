@@ -40,7 +40,7 @@
           </div>
           <div
             v-if="booking.raw && booking.raw.expiresAt"
-            class="p-2 bg-sta-green-dark my-2 rounded text-center shadow-inner"
+            class="p-2 bg-sta-green-dark my-2 rounded-sm text-center shadow-inner"
           >
             You have
             <strong>
@@ -55,7 +55,7 @@
 
         <div
           id="booking-view"
-          class="flex-grow sm:pb-4 max-w-full bg-sta-gray-dark sm:p-3"
+          class="grow sm:pb-4 max-w-full bg-sta-gray-dark sm:p-3"
         >
           <NuxtPage
             data-test="nuxt-page"

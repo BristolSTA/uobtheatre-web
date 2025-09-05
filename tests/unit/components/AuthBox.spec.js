@@ -196,12 +196,12 @@ describe('AuthBox', async function () {
       const fullNameInputField = authBoxComponent.find('input#fullName');
 
       fullNameInputField.setValue('Joe');
-      await fullNameInputField.trigger('blur');
+      await fullNameInputField.trigger('blur-sm');
       expect(authBoxComponent.find('input#firstName').exists()).to.be.false;
       expect(authBoxComponent.find('input#lastName').exists()).to.be.false;
 
       fullNameInputField.setValue('Joe Bloggs');
-      await fullNameInputField.trigger('blur');
+      await fullNameInputField.trigger('blur-sm');
       expect(authBoxComponent.find('input#firstName').element.value).to.eq(
         'Joe'
       );
@@ -221,7 +221,7 @@ describe('AuthBox', async function () {
     it('can signup correctly', async () => {
       const fullNameInputField = authBoxComponent.find('input#fullName');
       fullNameInputField.setValue('Joe Bloggs');
-      await fullNameInputField.trigger('blur');
+      await fullNameInputField.trigger('blur-sm');
       await authBoxComponent
         .find('input#email')
         .setValue('joe.bloggs@example.org');
@@ -252,7 +252,7 @@ describe('AuthBox', async function () {
 
       const fullNameInputField = authBoxComponent.find('input#fullName');
       fullNameInputField.setValue('Joe Bloggs');
-      await fullNameInputField.trigger('blur');
+      await fullNameInputField.trigger('blur-sm');
       await authBoxComponent
         .find('input#email')
         .setValue('joe.bloggs@example.org');

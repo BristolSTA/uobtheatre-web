@@ -9,7 +9,7 @@
         <!-- Icon Slot -->
         <font-awesome-icon
           id="maintenanceBannerIcon"
-          class="rounded text-h2 p-2"
+          class="rounded-sm text-h2 p-2"
           :class="[typeConfig.iconColour]"
           :icon="typeConfig.icon"
         />

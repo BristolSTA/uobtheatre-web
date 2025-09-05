@@ -22,7 +22,7 @@
                 @change="updateApi"
               />
             </div>
-            <div class="text-center flex-grow">
+            <div class="text-center grow">
               <div class="bg-sta-gray-light p-4">
                 <BookingSelectedTicketsTable
                   class="text-white overflow-auto"

@@ -2,7 +2,7 @@
   <div class="flex flex-none gap-2">
     <BoxOfficeBookingHeader
       :booking="booking"
-      class="flex-grow"
+      class="grow"
     /><PerformanceSummaryPill
       v-if="showPerformanceSummary && booking.performance"
       class="hidden md:flex"
@@ -14,7 +14,7 @@
       :performance="booking.performance"
     />
   </div>
-  <div class="flex-grow overflow-y-auto my-2">
+  <div class="grow overflow-y-auto my-2">
     <BoxOfficeBookingTickets
       v-if="showTickets && booking.tickets"
       :tickets="booking.tickets"

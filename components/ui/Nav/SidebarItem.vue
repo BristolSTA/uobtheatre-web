@@ -1,6 +1,6 @@
 <template>
   <div
-    class="px-3 py-2 rounded"
+    class="px-3 py-2 rounded-sm"
     :class="[
       isActive ? 'text-sta-orange' : ' text-gray-400 hover:text-gray-100'
     ]"

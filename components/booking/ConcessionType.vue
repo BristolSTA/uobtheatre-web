@@ -27,7 +27,7 @@
             type="text"
             :value="numTickets"
             aria-label="number of tickets"
-            class="w-12 h-8 text-center text-black bg-white rounded-sm"
+            class="w-12 h-8 text-center text-black bg-white rounded-xs"
             @keypress.stop="
               if (!/^[0-9]$/i.test($event.key)) $event.preventDefault();
             "

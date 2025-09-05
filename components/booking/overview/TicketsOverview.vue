@@ -22,7 +22,7 @@
       <div
         v-for="(groupedConcessions, index) in seatGroupedTickets"
         :key="index"
-        class="p-2 px-4 bg-sta-gray rounded"
+        class="p-2 px-4 bg-sta-gray rounded-sm"
       >
         <span class="text-sta-orange font-semibold">
           {{ groupedConcessions[0].seatGroup.name }}

@@ -37,7 +37,8 @@ export default {
 };
 </script>
 
-<style scoped lang="postcss">
+<style scoped>
+@reference '@/assets/css/app.css';
 .production-tile:hover .production-title {
   @apply text-sta-green;
 }

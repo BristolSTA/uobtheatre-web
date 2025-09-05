@@ -1,7 +1,7 @@
 <template>
   <nav
     v-if="canGoForward || canGoBackward"
-    class="relative z-0 inline-flex shadow-sm -space-x-px"
+    class="relative z-0 inline-flex shadow-xs -space-x-px"
     aria-label="Pagination"
   >
     <button
@@ -111,12 +111,12 @@ export default {
     },
     activeButtonStyle: {
       default:
-        'bg-sta-orange text-gray-700 border border-gray-300 focus:outline-none',
+        'bg-sta-orange text-gray-700 border border-gray-300 focus:outline-hidden',
       type: String
     },
     inactiveButtonStyle: {
       default:
-        'bg-white text-gray-700 border border-gray-300 hover:bg-gray-200 focus:outline-none',
+        'bg-white text-gray-700 border border-gray-300 hover:bg-gray-200 focus:outline-hidden',
       type: String
     },
     disabledButtonStyle: {

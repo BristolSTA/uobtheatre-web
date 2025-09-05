@@ -30,7 +30,7 @@
       <p v-if="!performance.isBookable">No Tickets Available</p>
       <p v-else>Tickets Available</p>
     </div>
-    <div class="flex-grow" />
+    <div class="grow" />
     <button
       v-if="!performance.isBookable"
       class="btn btn-rouge btn-outline disabled mt-4 w-2/3 text-center font-semibold"

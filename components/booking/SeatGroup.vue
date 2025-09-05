@@ -14,7 +14,7 @@
       @click="onHeaderClick"
       @keypress="onHeaderClick"
     >
-      <div class="flex-grow">
+      <div class="grow">
         <h3
           class="inline-block text-h3 lg:text-h2"
           :class="{ 'line-through': !available }"

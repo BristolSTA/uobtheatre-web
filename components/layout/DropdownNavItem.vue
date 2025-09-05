@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <button
-      class="focus:shadow-outline flex flex-row items-center mt-2 px-4 py-2 w-full text-left hover:text-gray-900 text-white font-semibold hover:bg-gray-200 bg-sta-gray-light rounded-lg focus:outline-none md:inline md:ml-4 md:mt-0 md:w-auto"
+      class="focus:shadow-outline flex flex-row items-center mt-2 px-4 py-2 w-full text-left hover:text-gray-900 text-white font-semibold hover:bg-gray-200 bg-sta-gray-light rounded-lg focus:outline-hidden md:inline md:ml-4 md:mt-0 md:w-auto"
       @click.stop="open = !open"
       @keypress.stop="open = !open"
     >
@@ -22,7 +22,7 @@
     <transition name="fade">
       <div
         v-show="open"
-        class="z-10 right-0 mt-2 w-full origin-top-right md:absolute md:w-screen md:max-w-screen-sm"
+        class="z-10 right-0 mt-2 w-full origin-top-right md:absolute md:w-screen md:max-w-(--breakpoint-sm)"
         @click.stop
       >
         <div class="px-2 py-2 bg-white rounded-md shadow-lg">

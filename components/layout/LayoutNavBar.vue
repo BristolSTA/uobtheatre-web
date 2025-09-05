@@ -1,7 +1,7 @@
 <template>
   <div class="antialiased bg-sta-gray-dark">
     <div
-      class="flex flex-col mx-auto max-w-screen-xl md:flex-row md:items-center md:justify-between lg:container"
+      class="flex flex-col mx-auto max-w-(--breakpoint-xl) md:flex-row md:items-center md:justify-between lg:container"
     >
       <div class="flex flex-row items-center justify-between p-4 text-white">
         <NuxtLink
@@ -12,7 +12,7 @@
         </NuxtLink>
         <button
           role="toggle"
-          class="focus:shadow-outline rounded-lg focus:outline-none md:hidden"
+          class="focus:shadow-outline rounded-lg focus:outline-hidden md:hidden"
           @click="open = !open"
           @keypress="open = !open"
         >
@@ -34,7 +34,7 @@
       </div>
       <nav
         :class="{ flex: open, hidden: !open }"
-        class="flex-col flex-grow p-4 pt-0 space-y-2 md:flex md:flex-row md:items-center md:justify-end md:pb-0 md:space-y-0"
+        class="flex-col grow p-4 pt-0 space-y-2 md:flex md:flex-row md:items-center md:justify-end md:pb-0 md:space-y-0"
       >
         <NuxtLink
           v-for="(item, index) in navItems"
@@ -149,7 +149,8 @@ function closeUserMenu() {
 }
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
+@reference '@/assets/css/app.css';
 nav > a.router-link-exact-active {
   @apply text-sta-orange;
 }

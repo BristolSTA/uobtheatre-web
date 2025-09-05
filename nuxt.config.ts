@@ -1,4 +1,5 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
+import tailwindcss from '@tailwindcss/vite';
 import publicConfig from './config.public';
 import eslintPlugin from 'vite-plugin-eslint2';
 
@@ -25,7 +26,6 @@ export default defineNuxtConfig({
 
   // Define third party plugins/modules we are using
   modules: [
-    '@nuxtjs/tailwindcss',
     '@nuxtjs/apollo',
     '@pinia/nuxt',
     '@nuxt/ui',
@@ -102,11 +102,6 @@ export default defineNuxtConfig({
 
   // Set the CSS Files
   css: cssFiles,
-
-  // Tailwind module configuration
-  tailwindcss: {
-    exposeConfig: true
-  },
 
   // Vite configuration
   vite: {

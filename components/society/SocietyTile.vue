@@ -27,7 +27,8 @@ export default {
 };
 </script>
 
-<style scoped lang="postcss">
+<style scoped>
+@reference '@/assets/css/app.css';
 .society-tile:hover .society-title {
   @apply text-sta-green;
 }
