@@ -6,7 +6,7 @@
       <div class="flex flex-row items-center justify-between p-4 text-white">
         <UApp>
           <UTooltip
-            :text="'Trans Rights are Human Rights'"
+            :text="randomTooltipPhrase"
             :delay-duration="0"
             placement="bottom"
             arrow
@@ -18,7 +18,7 @@
             }"
           >
             <NuxtLink
-              class="px-4 text-3xl tracking-tight uppercase sm:text-4xl transflag"
+              class="px-4 text-3xl tracking-tight uppercase sm:text-4xl sm:font-semibold transflag"
               to="/"
               @pointerenter="open = true"
               @pointerleave="open = false"
@@ -171,6 +171,30 @@ function closeUserMenu() {
   }
 }
 
+// Randomly chose from a list of phrases for the tooltip
+const tooltipPhrases = [
+  'Trans Rights are Human Rights',
+  'Protect Trans Kids',
+  'Protect the Dolls',
+  'Trans Rights, Now and Always',
+  'With Love To All Our Trans Siblings',
+  'One Day We Will Win',
+  'Trans Joy is Revolutionary',
+  'You Belong Here',
+  'Trans Lives Matter',
+  'Support Trans Artists',
+  'Trans Visibility Saves Lives',
+  'Trans People Are Loved',
+  'Trans Futures Are Bright',
+  'Trans Liberation For All',
+  'Trans Pride Every Day'
+];
+
+const randomTooltipPhrase = computed(() => {
+  const randomIndex = Math.floor(Math.random() * tooltipPhrases.length);
+  return tooltipPhrases[randomIndex];
+});
+
 const anchor = ref({ x: 0, y: 0 });
 
 const reference = computed(() => ({
@@ -196,10 +220,10 @@ nav > a.router-link-exact-active {
 }
 .transflag {
   background: linear-gradient(
-    #00d2ff 28%,
+    #00d2ff 30%,
     #ffa6b9 0 43%,
-    white 0 58%,
-    #ffa6b9 0 72%,
+    white 0 57%,
+    #ffa6b9 0 70%,
     #00d2ff 0
   );
   @apply bg-clip-text;

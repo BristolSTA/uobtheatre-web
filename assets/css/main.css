@@ -16,7 +16,6 @@
   --font-mono: 'Roboto Mono', monospace;
 
   /* Container configuration */
-  --container-center: true;
   --container-padding: 1rem;
   --container-padding-sm: 2rem;
   --container-padding-lg: 4rem;
@@ -310,5 +309,36 @@
   .fade-enter,
   .fade-leave-to {
     opacity: 0;
+  }
+}
+
+@utility bg-transflag {
+  background: linear-gradient(
+    #00d2ff 20%,
+    #ffa6b9 0 40%,
+    white 0 60%,
+    #ffa6b9 0 80%,
+    #00d2ff 0
+  );
+}
+
+@layer utilities {
+  .container {
+    align-content: center;
+    @media (width >= 40rem /* 640px */) {
+      @apply px-[var(--container-padding)];
+    }
+    @media (width >= 48rem /* 768px */) {
+      @apply px-[var(--container-padding)];
+    }
+    @media (width >= 64rem /* 1024px */) {
+      @apply px-[var(--container-padding-sm)];
+    }
+    @media (width >= 80rem /* 1280px */) {
+      @apply px-[var(--container-padding-lg)];
+    }
+    @media (width >= 96rem /* 1536px */) {
+      @apply px-[var(--container-padding-xl)];
+    }
   }
 }
