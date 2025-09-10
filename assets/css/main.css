@@ -284,18 +284,22 @@
 
 @utility text-h1 {
   @apply font-semibold;
+  font-size: var(--font-size-h1);
 }
 
 @utility text-h2 {
   @apply font-semibold;
+  font-size: var(--font-size-h2);
 }
 
 @utility text-h3 {
   @apply font-semibold;
+  font-size: var(--font-size-h3);
 }
 
 @utility text-h4 {
   @apply font-semibold;
+  font-size: var(--font-size-h4);
 }
 
 @layer base {

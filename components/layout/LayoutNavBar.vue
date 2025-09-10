@@ -4,12 +4,35 @@
       class="flex flex-col mx-auto max-w-(--breakpoint-xl) md:flex-row md:items-center md:justify-between lg:container"
     >
       <div class="flex flex-row items-center justify-between p-4 text-white">
-        <NuxtLink
-          class="px-4 text-3xl tracking-tight uppercase sm:text-4xl"
-          to="/"
-        >
-          {{ appConfig.name }}
-        </NuxtLink>
+        <UApp>
+          <UTooltip
+            :text="'Trans Rights are Human Rights'"
+            :delay-duration="0"
+            placement="bottom"
+            arrow
+            :reference="reference"
+            :content="{
+              side: 'top',
+              sideOffset: 16,
+              updatePositionStrategy: 'always'
+            }"
+          >
+            <NuxtLink
+              class="px-4 text-3xl tracking-tight uppercase sm:text-4xl transflag"
+              to="/"
+              @pointerenter="open = true"
+              @pointerleave="open = false"
+              @pointermove="
+                (ev) => {
+                  anchor.x = ev.clientX;
+                  anchor.y = ev.clientY;
+                }
+              "
+            >
+              {{ appConfig.name }}
+            </NuxtLink>
+          </UTooltip>
+        </UApp>
         <button
           role="toggle"
           class="focus:shadow-outline rounded-lg focus:outline-hidden md:hidden"
@@ -147,6 +170,20 @@ function closeUserMenu() {
     userDropdownComponent.value.hideMenu();
   }
 }
+
+const anchor = ref({ x: 0, y: 0 });
+
+const reference = computed(() => ({
+  getBoundingClientRect: () => ({
+    width: 0,
+    height: 0,
+    left: anchor.value.x,
+    right: anchor.value.x,
+    top: anchor.value.y,
+    bottom: anchor.value.y,
+    ...anchor.value
+  })
+}));
 </script>
 
 <style scoped>
@@ -156,5 +193,16 @@ nav > a.router-link-exact-active {
 }
 .auth-button {
   @apply inline-block;
+}
+.transflag {
+  background: linear-gradient(
+    #00d2ff 28%,
+    #ffa6b9 0 43%,
+    white 0 58%,
+    #ffa6b9 0 72%,
+    #00d2ff 0
+  );
+  @apply bg-clip-text;
+  @apply text-transparent;
 }
 </style>
