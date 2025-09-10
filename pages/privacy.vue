@@ -292,7 +292,7 @@ export default defineNuxtComponent({
 </script>
 
 <style scoped>
-@reference '@/assets/css/app.css';
+@reference '@/assets/css/main.css';
 .text-page {
   h2 {
     @apply text-h2 mt-2 font-semibold;

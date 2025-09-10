@@ -292,35 +292,36 @@ describe('ProductionBanner', function () {
       expect(headerContainer.text()).to.not.contain('(exc. fees)');
     });
 
+    const costSpiel = ' to cover fees and support our theatre';
     const feeTestCases = [
       {
         a: [0.05, null],
         b: [null, null],
-        expected: '5%',
+        expected: '5%' + costSpiel,
         testMessage: 'percentage only'
       },
       {
         a: [null, 100],
         b: [null, null],
-        expected: '£1',
+        expected: '£1' + costSpiel,
         testMessage: 'fixed fee only'
       },
       {
         a: [0.05, null],
         b: [null, 100],
-        expected: '5% + £1',
+        expected: '5% + £1' + costSpiel,
         testMessage: 'percentage and fixed fee, handling £s'
       },
       {
         a: [0.1, null],
         b: [null, 25],
-        expected: '10% + 25p',
+        expected: '10% + 25p' + costSpiel,
         testMessage: 'percentage and fixed fee, handling pence'
       },
       {
         a: [null, 50],
         b: [0.05, null],
-        expected: '5% + 50p',
+        expected: '5% + 50p' + costSpiel,
         testMessage: 'percentage and fixed fee, while order agnostic'
       }
     ];

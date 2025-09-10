@@ -99,7 +99,7 @@ export default {
 </script>
 
 <style scoped>
-@reference '@/assets/css/app.css';
+@reference '@/assets/css/main.css';
 .crew-section-header {
   @apply text-2xl;
   @apply tracking-wide;

@@ -28,7 +28,7 @@ export default {
 </script>
 
 <style scoped>
-@reference '@/assets/css/app.css';
+@reference '@/assets/css/main.css';
 .society-tile:hover .society-title {
   @apply text-sta-green;
 }

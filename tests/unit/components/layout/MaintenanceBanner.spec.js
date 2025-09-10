@@ -5,6 +5,8 @@ import SiteMessage from '../../support/fixtures/SiteMessage';
 import { vi } from 'vitest';
 import { GenericNodeConnection } from '../../support/helpers/api';
 
+import cookie from 'js-cookie';
+
 describe('Maintenance Banner', () => {
   let maintenanceBannerComponent;
 
@@ -124,7 +126,8 @@ describe('Maintenance Banner', () => {
       ).toBe(false);
     });
 
-    it('dismissed the banner', async () => {
+    it('can dismiss the banner and set a cookie', async () => {
+      const setCookieSpy = vi.spyOn(cookie, 'set');
       await createWithMessage();
 
       expect(
@@ -137,13 +140,19 @@ describe('Maintenance Banner', () => {
       expect(
         maintenanceBannerComponent.vm.$data.maintenanceBannerDismissed
       ).toBe(true);
-      // Order matters here! The cookie is set for the next test
+
+      expect(setCookieSpy).toHaveBeenCalledWith(
+        'siteMessageModalDismissed',
+        SiteMessage().id.toString(),
+        expect.any(Object)
+      );
     });
 
-    it('sets cookies, and it does not appear if id in cookies', async () => {
-      // Order matters here! The cookie is set in the previous test.
-      await createWithMessage({ dismissalPolicy: 'BANNED' });
+    it('does not appear if id in cookies', async () => {
+      vi.spyOn(cookie, 'get').mockReturnValue(SiteMessage().id.toString());
+      await createWithMessage({ dismissalPolicy: 'BANNED' }, false);
 
+      // The banner still exists, but should not display the message
       expect(maintenanceBannerComponent.exists()).toBe(true);
       expect(maintenanceBannerComponent.text()).not.toContain(
         SiteMessage().message
@@ -151,7 +160,7 @@ describe('Maintenance Banner', () => {
     });
 
     it('appears if a different id is in cookies', async () => {
-      // Order matters here! The cookie is set in the previous tests.
+      vi.spyOn(cookie, 'get').mockReturnValue(SiteMessage().id.toString());
       await createWithMessage({ id: 2 });
 
       expect(maintenanceBannerComponent.exists()).toBe(true);

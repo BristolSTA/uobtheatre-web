@@ -9,7 +9,7 @@ const cssFiles = [
 ];
 
 // If we are NOT testing (cypress), we push the app styles
-if (process.env.MODE !== 'test') cssFiles.push('@/assets/css/app.css');
+if (process.env.MODE !== 'test') cssFiles.push('@/assets/css/main.css');
 
 export default defineNuxtConfig({
   // Enable experimental features
@@ -146,6 +146,14 @@ export default defineNuxtConfig({
 
   sourcemap: {
     client: true
+  },
+
+  // Nuxt UI configuration
+  ui: {
+    theme: {
+      colors: ['primary', 'secondary', 'info', 'success', 'warning', 'error']
+    },
+    colorMode: false
   },
 
   compatibilityDate: '2024-07-11'

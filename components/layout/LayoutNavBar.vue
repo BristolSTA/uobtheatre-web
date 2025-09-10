@@ -150,7 +150,7 @@ function closeUserMenu() {
 </script>
 
 <style scoped>
-@reference '@/assets/css/app.css';
+@reference '@/assets/css/main.css';
 nav > a.router-link-exact-active {
   @apply text-sta-orange;
 }

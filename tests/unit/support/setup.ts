@@ -18,7 +18,8 @@ config.global.stubs = {
   'font-awesome-icon': true,
   Head: true,
   Title: true,
-  Meta: true
+  Meta: true,
+  LayoutSiteMessageModal: true
 };
 
 // Globally register some fake Nuxt components

@@ -1,23 +1,25 @@
 <template>
   <UModal
     v-model:open="showModel"
-    class="bg-sta-gray"
-    :close="
-      !preventDismiss && {
-        size: 'lg',
-        color: 'warning',
-        variant: 'outline'
-      }
-    "
+    class="bg-sta-gray max-w-3/4 w-fit"
+    :close="false"
     :dismissible="!preventDismiss"
     @after:leave="dismissBanner"
   >
     <template #description>
       <div class="overflow-scroll max-h-[80vh]">
-        <h1 class="text-xl text-white font-bold">
-          {{ siteMessage.title }}
-        </h1>
-        <br />
+        <div class="flex items-center justify-between mb-2">
+          <h1 class="text-xl text-white font-bold">
+            {{ siteMessage.title }}
+          </h1>
+          <UiStaButton
+            id="maintenanceBannerDismiss"
+            class="text-xl -my-2 text-sta-orange hover:text-sta-orange-dark"
+            icon="circle-xmark"
+            :disabled="preventDismiss"
+            @click="dismissBanner"
+          />
+        </div>
         <div class="text-white text-lg">
           <div v-for="(line, index) in formattedMessage" :key="index">
             <p v-if="line.trim() !== ''">{{ line }}</p>
@@ -45,7 +47,6 @@ export default {
   },
   data() {
     return {
-      maintenanceBannerDismissed: false,
       preventDismiss: false,
       siteMessage: null,
       dismissedIds: [],
@@ -58,6 +59,8 @@ export default {
     },
     formattedMessage() {
       // Split around new lines and trim each line
+      // Allows us to show multi-line messages without needing HTML in the message
+      // (because that's bad)
       const msg = this.siteMessage?.message || '';
       return msg.split('\n').map((line) => line.trim());
     }
@@ -98,7 +101,7 @@ export default {
       }
     },
     dismissBanner() {
-      this.maintenanceBannerDismissed = true;
+      this.showModel = false;
 
       if (this.siteMessage.dismissalPolicy === 'BANNED') {
         return;

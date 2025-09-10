@@ -1,0 +1,310 @@
+@import './_tiptap.css' layer(base);
+@import './_swal.css' layer(base);
+@import './_table.css' layer(base);
+@import './_datepicker.css' layer(base);
+@import './_misc.css' layer(base);
+@import '@fortawesome/fontawesome-svg-core/styles.css' layer(base);
+
+@import 'tailwindcss';
+@import '@nuxt/ui';
+
+@config '../../tailwind.config.ts';
+
+@theme static {
+  /* Font families */
+  --font-body: Montserrat, sans-serif;
+  --font-mono: 'Roboto Mono', monospace;
+
+  /* Container configuration */
+  --container-center: true;
+  --container-padding: 1rem;
+  --container-padding-sm: 2rem;
+  --container-padding-lg: 4rem;
+  --container-padding-xl: 5rem;
+
+  /* Custom colors */
+
+  /* Some colors have gradiants so NuxtUI can pick them up nicely */
+  --color-sta-gray-50: #f6f7f9;
+  --color-sta-gray-100: #eceef2;
+  --color-sta-gray-200: #d5dae2;
+  --color-sta-gray-300: #b1bbc8;
+  --color-sta-gray-400: #8695aa;
+  --color-sta-gray-500: #677890;
+  --color-sta-gray-600: #526077;
+  --color-sta-gray-700: #434e61;
+  --color-sta-gray-800: #3a4452;
+  --color-sta-gray-900: #343a46;
+  --color-sta-gray-950: #2b303a;
+
+  /* Whereas these are solid colors we used in legacy */
+  --color-sta-gray: #2b303a;
+  --color-sta-gray-dark: #23272a;
+  --color-sta-gray-light: #3d434e;
+  --color-sta-gray-lighter: #908e89;
+  --color-sta-gray-lightest: #cecdca;
+
+  --color-sta-rouge-50: #fff1f1;
+  --color-sta-rouge-100: #ffe3e4;
+  --color-sta-rouge-200: #ffccd0;
+  --color-sta-rouge-300: #ffa1a9;
+  --color-sta-rouge-400: #ff6978;
+  --color-sta-rouge-500: #f93a52;
+  --color-sta-rouge-600: #e7173c;
+  --color-sta-rouge-700: #c30d31;
+  --color-sta-rouge-800: #a30e30;
+  --color-sta-rouge-900: #8b1030;
+  --color-sta-rouge-950: #4e0315;
+
+  --color-sta-rouge: #ff6978;
+  --color-sta-rouge-dark: #cc3645;
+
+  --color-sta-green-50: #f4f9f8;
+  --color-sta-green-100: #daedea;
+  --color-sta-green-200: #b5dad5;
+  --color-sta-green-300: #89bfbb;
+  --color-sta-green-400: #60a19d;
+  --color-sta-green-500: #4b8f8c;
+  --color-sta-green-600: #366b69;
+  --color-sta-green-700: #2f5656;
+  --color-sta-green-800: #294646;
+  --color-sta-green-900: #253c3c;
+  --color-sta-green-950: #112222;
+
+  --color-sta-green: #4b8f8c;
+  --color-sta-green-dark: #185c59;
+
+  --color-sta-orange-50: #fff8eb;
+  --color-sta-orange-100: #ffecc6;
+  --color-sta-orange-200: #ffd688;
+  --color-sta-orange-300: #ffbb4a;
+  --color-sta-orange-400: #ff9f1c;
+  --color-sta-orange-500: #f97c07;
+  --color-sta-orange-600: #dd5702;
+  --color-sta-orange-700: #b73a06;
+  --color-sta-orange-800: #942b0c;
+  --color-sta-orange-900: #7a240d;
+  --color-sta-orange-950: #461002;
+
+  --color-sta-orange: #ff9f1c;
+  --color-sta-orange-dark: #cc6c00;
+  --color-sta-orange-light: #ffb833;
+
+  --color-sta-gold: #fdae39;
+
+  /* Custom opacity */
+  --opacity-40: 0.4;
+
+  /* Custom font sizes */
+  --font-size-xxs: 0.5rem;
+  --font-size-h1: 2.5rem;
+  --font-size-h2: 2rem;
+  --font-size-h3: 1.5rem;
+  --font-size-h4: 1.25rem;
+  --font-size-rxl: 8vw;
+  --font-size-rlg: 5vw;
+  --font-size-rmd: 3vw;
+  --font-size-rsm: 2vw;
+
+  /* Custom widths */
+  --width-1-3-screen: 33vw;
+
+  /* Custom min-widths */
+  --min-width-2-3: 66%;
+  --min-width-1-2: 50%;
+  --min-width-1-3: 33%;
+
+  /* Custom min-heights */
+  --min-height-25vh: 25vh;
+  --min-height-40vh: 40vh;
+
+  /* Custom drop shadows */
+  --drop-shadow-dark: 0 2px 4px rgba(0, 0, 0, 0.35);
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@utility btn {
+  @apply rounded-xs px-6 py-2 cursor-pointer inline-block;
+  @apply text-white;
+
+  &.disabled {
+    @apply cursor-not-allowed;
+  }
+
+  &[disabled] {
+    @apply cursor-not-allowed;
+  }
+
+  &:focus {
+    @apply outline-hidden;
+  }
+}
+
+@utility disabled {
+  &.btn {
+    @apply cursor-not-allowed;
+  }
+}
+
+@utility btn-outline {
+  @apply bg-transparent border border-solid;
+
+  &.btn-rouge {
+    @apply border-sta-rouge;
+    @apply text-sta-rouge;
+  }
+
+  &.btn-orange {
+    @apply border-sta-orange;
+    @apply text-sta-orange;
+  }
+
+  &.btn-green {
+    @apply border-sta-green;
+    @apply text-sta-green;
+  }
+
+  &.btn-gray {
+    @apply border-sta-gray;
+    @apply text-sta-gray;
+  }
+
+  &.btn-gray-light {
+    @apply border-sta-gray-light;
+    @apply text-sta-gray-light;
+  }
+}
+
+@utility btn-rouge {
+  /* Rouge button styles */
+  &:not(.btn-outline) {
+    @apply bg-sta-rouge;
+  }
+
+  &.btn-outline {
+    @apply border-sta-rouge;
+    @apply text-sta-rouge;
+  }
+
+  &:hover:not(.disabled):not([disabled]) {
+    @apply bg-sta-rouge-dark;
+    @apply text-white;
+    @apply border-transparent;
+  }
+}
+
+@utility btn-orange {
+  /* Orange button styles */
+  &:not(.btn-outline) {
+    @apply bg-sta-orange;
+  }
+
+  &.btn-outline {
+    @apply border-sta-orange;
+    @apply text-sta-orange;
+  }
+
+  &:hover:not(.disabled):not([disabled]) {
+    @apply bg-sta-orange-dark;
+    @apply text-white;
+    @apply border-transparent;
+  }
+}
+
+@utility btn-green {
+  /* Green button styles */
+  &:not(.btn-outline) {
+    @apply bg-sta-green;
+  }
+
+  &.btn-outline {
+    @apply border-sta-green;
+    @apply text-sta-green;
+  }
+
+  &:hover:not(.disabled):not([disabled]) {
+    @apply bg-sta-green-dark;
+    @apply text-white;
+    @apply border-transparent;
+  }
+}
+
+@utility btn-gray {
+  /* Gray button styles */
+  &:not(.btn-outline) {
+    @apply bg-sta-gray;
+  }
+
+  &.btn-outline {
+    @apply border-sta-gray;
+    @apply text-sta-gray;
+  }
+
+  &:hover:not(.disabled):not([disabled]) {
+    @apply bg-sta-gray-dark;
+    @apply text-white;
+    @apply border-transparent;
+  }
+}
+
+@utility btn-gray-light {
+  /* Gray-light button styles */
+  &:not(.btn-outline) {
+    @apply bg-sta-gray-light;
+  }
+
+  &.btn-outline {
+    @apply border-sta-gray-light;
+    @apply text-sta-gray-light;
+  }
+
+  &:hover:not(.disabled):not([disabled]) {
+    @apply bg-sta-gray-dark;
+    @apply text-white;
+    @apply border-transparent;
+  }
+}
+
+@utility text-h1 {
+  @apply font-semibold;
+}
+
+@utility text-h2 {
+  @apply font-semibold;
+}
+
+@utility text-h3 {
+  @apply font-semibold;
+}
+
+@utility text-h4 {
+  @apply font-semibold;
+}
+
+@layer base {
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.5s;
+  }
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
+  }
+}

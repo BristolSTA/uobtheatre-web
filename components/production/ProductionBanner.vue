@@ -190,6 +190,11 @@ export default {
       );
     },
     miscCostsDisplay() {
+      // If there are no misc costs, return nothing
+      if (!this.miscCosts.length) {
+        return '';
+      }
+
       // The total percentage sum of all misc costs
       const totalPercentage =
         this.miscCosts
