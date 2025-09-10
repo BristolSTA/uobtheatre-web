@@ -6,7 +6,7 @@
     >
       <div
         v-if="!bannerProductions.length"
-        class="flex items-center bg-black/40"
+        class="flex items-center bg-black/45"
         style="min-height: 50vh"
       >
         <div class="container px-4 text-white lg:w-2/3">

@@ -322,23 +322,24 @@
   );
 }
 
-@layer utilities {
-  .container {
-    align-content: center;
-    @media (width >= 40rem /* 640px */) {
-      @apply px-[var(--container-padding)];
-    }
-    @media (width >= 48rem /* 768px */) {
-      @apply px-[var(--container-padding)];
-    }
-    @media (width >= 64rem /* 1024px */) {
-      @apply px-[var(--container-padding-sm)];
-    }
-    @media (width >= 80rem /* 1280px */) {
-      @apply px-[var(--container-padding-lg)];
-    }
-    @media (width >= 96rem /* 1536px */) {
-      @apply px-[var(--container-padding-xl)];
-    }
+@utility container {
+  align-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  @media (width >= 40rem /* 640px */) {
+    @apply px-[var(--container-padding)];
+  }
+  @media (width >= 48rem /* 768px */) {
+    @apply px-[var(--container-padding)];
+  }
+  @media (width >= 64rem /* 1024px */) {
+    @apply px-[var(--container-padding-sm)];
+  }
+  @media (width >= 80rem /* 1280px */) {
+    @apply px-[var(--container-padding-lg)];
+  }
+  @media (width >= 96rem /* 1536px */) {
+    @apply px-[var(--container-padding-xl)];
   }
 }
