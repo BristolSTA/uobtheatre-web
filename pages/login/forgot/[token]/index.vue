@@ -66,7 +66,7 @@ async function attemptReset() {
 
   try {
     await authStore.resetPassword(
-      route.params.token,
+      route.params.token as string,
       newPassword.value,
       confirmedNewPassword.value
     );

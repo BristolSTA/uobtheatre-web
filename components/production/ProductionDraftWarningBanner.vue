@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="['Draft', 'Pending', 'Approved'].includes(status.name)"
+    v-if="['Draft', 'Pending', 'Approved'].includes(status.name ?? '')"
     ref="draft-banner"
     class="bg-sta-orange text-center w-full py-1"
   >
