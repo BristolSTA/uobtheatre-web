@@ -1516,10 +1516,10 @@
   dependencies:
     "@fortawesome/fontawesome-common-types" "7.0.1"
 
-"@fortawesome/vue-fontawesome@^3.1.1":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@fortawesome/vue-fontawesome/-/vue-fontawesome-3.1.1.tgz#15212b003928f7a37a64ce1f3b7d02b2a2701af5"
-  integrity sha512-U5azn4mcUVpjHe4JO0Wbe7Ih8e3VbN83EH7OTBtA5/QGw9qcPGffqcmwsLyZYgEkpVkYbq/6dX1Iyl5KUGMp6Q==
+"@fortawesome/vue-fontawesome@^3.1.2":
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/@fortawesome/vue-fontawesome/-/vue-fontawesome-3.1.2.tgz#a61d44522bc0be3283ccd9811ed5a2de282c168a"
+  integrity sha512-mhYnBIuuW8OIMHf31kOjaBmyE7BMrwBorhrOHVud6vTTu+7IPQNWB+DWaHoE75v10dRF5s/dFtcrgE7vKSEWwQ==
 
 "@graphql-codegen/add@^4.0.1":
   version "4.0.1"
