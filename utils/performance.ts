@@ -13,7 +13,7 @@ function isSingleDiscount(
 ): discount is SingleDiscount {
   return (
     discount?.requirements?.length === 1 &&
-    discount.requirements[0].number === 1
+    discount?.requirements[0]?.number === 1
   );
 }
 

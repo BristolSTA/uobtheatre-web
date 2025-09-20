@@ -333,25 +333,25 @@ export default class Booking {
       .values()
       .map((groupedTickets) => {
         const option = ticketMatrix.ticketOptions.find(
-          (option) => option?.seatGroup.id === groupedTickets[0].seatGroup.id
+          (option) => option?.seatGroup.id === groupedTickets[0]?.seatGroup.id
         );
 
         if (!option) {
           throw new Error(
-            `No matching ticket option found for ticket details (Seat Group ID: ${groupedTickets[0].seatGroup.id})`
+            `No matching ticket option found for ticket details (Seat Group ID: ${groupedTickets[0]?.seatGroup.id})`
           );
         }
 
         const seatGroup = option.seatGroup;
         const concessionTypeEdge = option.concessionTypes?.find(
-          (cocnessionTypeEdge) =>
-            cocnessionTypeEdge?.concessionType?.id ===
-            groupedTickets[0].concessionType.id
+          (concessionTypeEdge) =>
+            concessionTypeEdge?.concessionType?.id ===
+            groupedTickets[0]?.concessionType?.id
         );
 
         if (!concessionTypeEdge) {
           throw new Error(
-            `No matching concession type found for ticket details (Concession Type ID: ${groupedTickets[0].concessionType.id})`
+            `No matching concession type found for ticket details (Concession Type ID: ${groupedTickets[0]?.concessionType?.id})`
           );
         }
 

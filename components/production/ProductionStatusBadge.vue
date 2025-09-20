@@ -21,7 +21,8 @@ const status = computed<string>(() => {
   ) {
     return 'Not Bookable';
   }
-  return new ProductionStatusEnum(props.production.status).name;
+  // Ensure a string is always returned
+  return new ProductionStatusEnum(props.production.status).name ?? '';
 });
 
 const colours = computed<string>(() => {
