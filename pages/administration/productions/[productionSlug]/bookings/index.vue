@@ -24,9 +24,15 @@
         ><UiInputSelect
           v-model="hasAccessibilityInfo"
           :options="[
-            { displayText: 'Show Only Accessibile Bookings', value: true },
+            {
+              displayText: 'Show Only Bookings with Accessibility Needs',
+              value: true
+            },
             { displayText: 'Show All Bookings', value: null },
-            { displayText: 'Hide Accessible Bookings', value: false }
+            {
+              displayText: 'Hide Bookings with Accessibility Needs',
+              value: false
+            }
           ]"
         />
       </div>
