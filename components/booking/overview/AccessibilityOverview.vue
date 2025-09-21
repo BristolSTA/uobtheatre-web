@@ -93,15 +93,11 @@
             />
           </template>
           <template #helperAfter>
-            Any accessibility requirements you chose to share with us will be
-            made available via email and the website to the production team and
-            website staff. Any information you provide will be deleted shortly
-            after the event. We cannot guarantee that your requirements can be
-            met, though a member of the team will be in touch to discuss your
-            requirements if needed. If you have any questions, please email
+            {{ ACCESSIBILITY_INFO_HELPER_EMAIL }}
+            <!-- To avoid leaving ourselves open to XSS, the email's <a> is not packaged into the const -->
             <a href="mailto:support@uobtheatre.com" class="underline">
               support@uobtheatre.com</a
-            >.
+            >
           </template>
         </form-label>
       </div>
@@ -119,6 +115,7 @@ import { getValidationErrors, performMutation } from '~~/utils/api';
 import { successToast } from '~~/utils/alerts';
 
 import FormLabel from '../../ui/FormLabel.vue';
+import { ACCESSIBILITY_INFO_HELPER } from '~/utils/constants';
 
 export default {
   name: 'TicketsOverview',
@@ -168,12 +165,7 @@ export default {
         } else if (this.booking.accessibilityInfo === '') {
           const swalArgs = {
             title: 'Are you sure?',
-            text: `Any accessibility requirements you chose to share with us will be made
-            available to the production team and website
-            staff. Any information you provide will be deleted shortly after the
-            event. We cannot guarantee that your requirements can be met, though a
-            member of the team will be in touch to discuss your requirements if
-            needed.`,
+            text: ACCESSIBILITY_INFO_HELPER,
             showCancelButton: true,
             showConfirmButton: true
           };

@@ -1,0 +1,10 @@
+export const ACCESSIBILITY_INFO_HELPER = `
+  Any accessibility requirements you chose to share with us will be made
+  available to the production team and website staff. Any information you
+  provide will be deleted shortly after the event. We cannot guarantee
+  that your requirements can be met, though a member of the team will be
+  in touch to discuss your requirements if needed.
+`;
+// When using this constant, ensure to add the email link separately to avoid XSS issues
+export const ACCESSIBILITY_INFO_HELPER_EMAIL =
+  ACCESSIBILITY_INFO_HELPER + ' If you have any questions, please email ';
