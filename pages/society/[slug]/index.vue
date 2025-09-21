@@ -17,12 +17,12 @@
     >
       <div class="lg:col-start-1 lg:col-span-5 lg:row-start-1">
         <!-- Title -->
-        <h1 class="container align-middle py-6 text-left text-h1">
+        <h1 class="container align-middle py-3 text-center text-h1">
           {{ society.name }}
         </h1>
       </div>
       <div
-        class="lg:col-start-4 lg:col-span-2 lg:row-start-2 lg:row-span-2 lg:sticky lg:top-4"
+        class="lg:col-start-4 lg:col-span-2 lg:row-start-2 lg:row-span-2 lg:sticky lg:top-4 h-min"
       >
         <!-- Banner Information Section -->
         <div class="flex flex-col flex-wrap items-center justify-center">

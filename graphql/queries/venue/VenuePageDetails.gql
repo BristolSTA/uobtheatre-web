@@ -1,10 +1,11 @@
 #import "../../fragments/AddressFragment.gql"
-query venuePageDetails($slug: String!) {
+query venuePageDetails($slug: String!, $now: DateTime, $afterCursor: String) {
   venue(slug: $slug) {
     name
     internalCapacity
     description
     accessibilityInfo
+    accessibilityShort
     email
     website
     image {
@@ -13,7 +14,13 @@ query venuePageDetails($slug: String!) {
     address {
       ...AddressFields
     }
-    productions(orderBy: "-start") {
+    productions(
+      first: 9
+      orderBy: "start"
+      after: $afterCursor
+      end_Gte: $now
+      status: "PUBLISHED"
+    ) {
       pageInfo {
         hasNextPage
         endCursor

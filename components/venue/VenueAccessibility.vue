@@ -19,9 +19,19 @@
     </template>
     <div class="mt-2 text-white">
       <loading-icon v-if="!venue" />
-      <p v-else-if="venue.accessibilityInfo">
-        {{ venue.accessibilityInfo }}
-      </p>
+      <div v-else-if="venue.accessibilityShort">
+        {{ venue.accessibilityShort }}
+        <div
+          v-if="venue.accessibilityInfo"
+          class="text-sta-orange text-sm font-semibold mt-2"
+        >
+          <NuxtLink :to="`/venue/${venue.slug}/accessibility`">
+            <icon-list-item icon="arrow-right">
+              Read more about this venue's accessibility information
+            </icon-list-item>
+          </NuxtLink>
+        </div>
+      </div>
       <p v-else class="font-semibold">
         No accessibility information has been listed for this venue
       </p>
@@ -65,6 +75,7 @@ export default {
             name
             slug
             accessibilityInfo
+            accessibilityShort
           }
         }
       `,

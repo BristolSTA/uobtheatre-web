@@ -55,29 +55,29 @@
         </UiTablesTableRow>
       </UiTablesPaginatedTable>
     </UiCard>
-    <div class="grid gap-4 grid-cols-1 lg:grid-cols-3">
+    <div class="grid gap-4 grid-cols-1 lg:grid-cols-6">
       <booking-performance-overview
-        class="lg:col-span-2"
+        class="lg:col-span-4"
         :production="production"
         :performance="booking.performance"
       />
       <venue-overview
-        class="lg:col-span-1"
+        class="lg:col-span-2"
         :venue-data="booking.performance.venue.slug"
         :online="booking.performance.isOnline"
         :in-person="booking.performance.isInperson"
       />
       <accessibility-overview
-        class="lg:col-span-2"
+        class="lg:col-span-3"
         :booking="booking"
         :show-previous="true"
       />
       <VenueAccessibility
         :venue-data="booking.performance.venue.slug"
-        class="lg:col-span-1"
+        class="lg:col-span-3"
       />
-      <payment-overview class="lg:col-span-1" :booking="booking" />
-      <tickets-overview class="lg:col-span-2" :booking="booking" />
+      <payment-overview class="lg:col-span-2" :booking="booking" />
+      <tickets-overview class="lg:col-span-4" :booking="booking" />
     </div>
   </AdminPage>
 </template>
