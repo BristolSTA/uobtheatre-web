@@ -93,6 +93,7 @@
             />
           </template>
           <template #helperAfter>
+            <!-- eslint-disable-next-line vue/no-v-html -->
             <span v-html="ACCESSIBILITY_INFO_HELPER_EMAIL" />
           </template>
         </form-label>
