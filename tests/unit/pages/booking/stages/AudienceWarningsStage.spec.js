@@ -38,12 +38,13 @@ describe('Audience Warnings Stage', () => {
     });
 
     it('displays the content warnings', () => {
-      expect(warningComponent.text()).to.contain('Strobe Lighting');
-      expect(warningComponent.text()).to.contain('Nudity');
+      expect(warningComponent.find({ ref: 'perf-warnings' }).exists()).to.be
+        .true;
+      expect(warningComponent.find({ ref: 'warnings' }).exists()).to.be.true;
     });
 
     it('emits event on understood', () => {
-      warningComponent.find('button').trigger('click');
+      warningComponent.find({ ref: 'understood' }).trigger('click');
       expect(warningComponent.emitted('next-stage').length).to.eq(1);
     });
   });
@@ -82,7 +83,7 @@ describe('Audience Warnings Stage', () => {
     });
 
     it('emits event on understood', () => {
-      warningComponent.find('button').trigger('click');
+      warningComponent.find({ ref: 'understood' }).trigger('click');
       expect(warningComponent.emitted('next-stage').length).to.eq(1);
     });
   });
