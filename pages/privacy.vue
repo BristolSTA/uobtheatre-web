@@ -276,7 +276,7 @@ export default defineNuxtComponent({
             },
             {
               purpose:
-                'Aiding production teams and venue staff to cater for accessibility needs',
+                'Allowing production teams and venue staff to cater for accessibility needs',
               basis: 'Legitimate interests',
               data: ['User Accessibility Information']
             }
