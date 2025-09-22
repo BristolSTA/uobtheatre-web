@@ -2,7 +2,11 @@
 <template>
   <UiCard title="Booking Accessibility">
     <form for="accessibility_input" class="flex items-center space-x-2">
-      <UiInputToggle id="accessibility_input" v-model="accessibilityInput" />
+      <UiInputToggle
+        id="accessibility_input"
+        v-model="accessibilityInput"
+        @change="$emit('accessibility-toggle', accessibilityInput)"
+      />
       <span class="text-white text-xs font-semibold"
         >I have additional accessibility needs</span
       >
@@ -23,11 +27,7 @@
           required
       /></template>
       <template #helper>
-        {{ ACCESSIBILITY_INFO_HELPER_EMAIL }}
-        <!-- To avoid leaving ourselves open to XSS, the email's <a> is not packaged into the const -->
-        <a href="mailto:support@uobtheatre.com" class="underline">
-          support@uobtheatre.com</a
-        >
+        <span v-html="ACCESSIBILITY_INFO_HELPER_EMAIL" />
       </template>
     </form-label>
   </UiCard>
@@ -53,10 +53,14 @@ export default {
       default: null
     }
   },
+  emits: ['accessibility-toggle'],
   data() {
     return {
       accessibilityInput: !!this.booking.accessibilityInfo
     };
+  },
+  mounted() {
+    this.$emit('accessibility-toggle', this.accessibilityInput);
   }
 };
 </script>

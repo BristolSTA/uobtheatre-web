@@ -5,6 +5,6 @@ export const ACCESSIBILITY_INFO_HELPER = `
   that your requirements can be met, though a member of the team will be
   in touch to discuss your requirements if needed.
 `;
-// When using this constant, ensure to add the email link separately to avoid XSS issues
 export const ACCESSIBILITY_INFO_HELPER_EMAIL =
-  ACCESSIBILITY_INFO_HELPER + ' If you have any questions, please email ';
+  ACCESSIBILITY_INFO_HELPER +
+  ' If you have any questions, or have more complex needs than can be summarised here, please email <a href="mailto:support@uobtheatre.com" class="underline">support@uobtheatre.com</a>';

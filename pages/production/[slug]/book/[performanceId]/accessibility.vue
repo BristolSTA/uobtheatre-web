@@ -4,20 +4,18 @@
       <VenueAccessibility :venue-data="booking.performance.venue.slug" />
     </div>
     <div class="mb-4">
-      <AccessibilityInput :booking="booking" />
+      <AccessibilityInput
+        :booking="booking"
+        :errors="errors"
+        @accessibility-toggle="(n) => (updating = n)"
+      />
     </div>
     <div v-if="booking.tickets.length" class="mt-2 text-center">
       <button
         class="btn btn-orange font-semibold"
         :disabled="booking.dirty"
-        @click="
-          updateAPI();
-          $emit('next-stage');
-        "
-        @keypress="
-          updateAPI();
-          $emit('next-stage');
-        "
+        @click="handleNextStage"
+        @keypress="handleNextStage"
       >
         Next
       </button>
@@ -37,6 +35,7 @@ import BookingStage from '@/classes/BookingStage';
 import AccessibilityInput from '@/components/booking/AccessibilityInput.vue';
 import VenueAccessibility from '@/components/venue/VenueAccessibility.vue';
 import { recordEvent, events } from '~~/utils/analytics';
+import Errors from '~/classes/Errors';
 const stageInfo = new BookingStage({
   name: 'Accessibility Information',
   routeName: 'production-slug-book-performanceId-accessibility',
@@ -67,7 +66,8 @@ export default defineNuxtComponent({
   data() {
     return {
       interaction_timer: lo.debounce(this.updateAPI, 2 * 1000),
-      errors: null
+      errors: null,
+      updating: false
     };
   },
   mounted() {
@@ -125,6 +125,21 @@ export default defineNuxtComponent({
 
       // There has been a change in the selected tickets whilst calling the API. Let's trigger another call...
       this.interaction_timer();
+    },
+    handleNextStage() {
+      if (
+        this.booking.dirty ||
+        (this.updating && !this.booking.accessibilityInfo)
+      ) {
+        // Raise an error to be passed to the accessibility input
+        this.errors = Errors.createFromMessage(
+          'Please enter your accessibility requirements or uncheck the box if you do not have any.',
+          'accessibilityInfo'
+        );
+        return;
+      }
+      this.updateAPI();
+      this.$emit('next-stage');
     }
   }
 });

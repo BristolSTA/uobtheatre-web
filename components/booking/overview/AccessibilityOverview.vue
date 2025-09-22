@@ -86,18 +86,14 @@
       <div v-else>
         <form-label>
           <template #control>
-            <UiInputTextArea
+            <UiInputText
               v-model="newAccessibility"
               placeholder="e.g. Wheelchair seat required"
               required
             />
           </template>
           <template #helperAfter>
-            {{ ACCESSIBILITY_INFO_HELPER_EMAIL }}
-            <!-- To avoid leaving ourselves open to XSS, the email's <a> is not packaged into the const -->
-            <a href="mailto:support@uobtheatre.com" class="underline">
-              support@uobtheatre.com</a
-            >
+            <span v-html="ACCESSIBILITY_INFO_HELPER_EMAIL" />
           </template>
         </form-label>
       </div>
