@@ -88,17 +88,12 @@
           </template>
         </UiCarousel>
       </div>
-      <div v-if="society.description" class="mx-4 mt-4">
+      <div v-if="society.description" class="mt-4">
         <!-- Description -->
-        <h1 class="text-3xl font-semibold text-center mb-2">
-          Venue Description
-        </h1>
-        <tip-tap-output
-          class="p-4 w-full text-justify lg:block"
-          :html="society.description"
-        />
+        <h1 class="text-3xl font-semibold text-center mb-2">Description</h1>
+        <tip-tap-output :html="society.description" />
       </div>
-      <div v-if="pastProductions.length" class="mt-4">
+      <div v-if="pastProductions.length" class="mx-4 mt-4">
         <!-- Past Shows -->
         <div ref="production-list" class="flex-none container">
           <div class="w-full bg-sta-gray-dark">

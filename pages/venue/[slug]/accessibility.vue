@@ -173,12 +173,10 @@ export default defineNuxtComponent({
         attribution:
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
-      L.popup({ closeButton: false })
-        .setLatLng(
-          L.latLng(this.venue.address.latitude, this.venue.address.longitude)
-        )
-        .setContent(`${this.venue.name}`)
-        .openOn(map);
+      L.marker([this.venue.address.latitude, this.venue.address.longitude])
+        .addTo(map)
+        .bindPopup(this.venue.name)
+        .openPopup();
     }
   }
 });

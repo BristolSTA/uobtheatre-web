@@ -152,17 +152,14 @@
           </template>
         </UiCarousel>
       </div>
-      <div v-if="venue.description" class="mx-4 mt-4">
+      <div v-if="venue.description" class="mt-4">
         <!-- Description -->
         <h1 class="text-3xl font-semibold text-center mb-2">
           Venue Description
         </h1>
-        <UiTipTapOutput
-          class="w-full text-justify lg:block"
-          :html="venue.description"
-        />
+        <UiTipTapOutput :html="venue.description" />
       </div>
-      <div v-if="pastProductions.length" class="mt-4">
+      <div v-if="pastProductions.length" class="mx-4 mt-4">
         <!-- Past Shows -->
         <div ref="production-list" class="flex-none container">
           <div class="w-full bg-sta-gray-dark">
@@ -296,12 +293,10 @@ export default defineNuxtComponent({
         attribution:
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
-      L.popup({ closeButton: false })
-        .setLatLng(
-          L.latLng(this.venue.address.latitude, this.venue.address.longitude)
-        )
-        .setContent(`${this.venue.name}`)
-        .openOn(map);
+      L.marker([this.venue.address.latitude, this.venue.address.longitude])
+        .addTo(map)
+        .bindPopup(this.venue.name)
+        .openPopup();
     }
   }
 });
