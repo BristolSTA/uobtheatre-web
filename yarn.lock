@@ -3277,10 +3277,10 @@
   dependencies:
     "@nuxt/kit" "^3.9.0"
 
-"@pinia/testing@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@pinia/testing/-/testing-1.0.0.tgz#dfd3fdb00220e56f2589d23aa414bf9b24fa5703"
-  integrity sha512-a0QquMJqIdgOsb64f8u6YznRbZD4aJxjpyiWXJbs6e2mn7qn6xx/y1hSdTzqK8jfjX0rGPYniHHvF6zpP73ilg==
+"@pinia/testing@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@pinia/testing/-/testing-1.0.2.tgz#85afa987eca6209df2cf07fd5b96edcfb5ecc55a"
+  integrity sha512-yZVXJTKh677J0AT8kOPxGk5s1v7hMQIDT3tmeriwtR5LDu41DvXTEBQf0ql9SsHW1mCSDG38QDFzSSl5ucJqnQ==
 
 "@pkgjs/parseargs@^0.11.0":
   version "0.11.0"
@@ -5659,7 +5659,7 @@ aws4@^1.8.0:
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.13.2.tgz#0aa167216965ac9474ccfa83892cfb6b3e1e52ef"
   integrity sha512-lHe62zvbTB5eEABUVi/AwVh0ZKY9rMMDhmm+eeyuuUQbQ3+J+fONVQOZyj+DdrvD4BY33uYniyRJ4UJIaSKAfw==
 
-axios@^1.11.0:
+axios@^1.12.2:
   version "1.12.2"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.12.2.tgz#6c307390136cf7a2278d09cec63b136dfc6e6da7"
   integrity sha512-vMJzPewAlRyOgxV2dU0Cuz2O8zzzx9VYtbJOaBgXFeLc4IV/Eg50n4LowmehOOR61S8ZMpc2K5Sa7g6A4jfkUw==
