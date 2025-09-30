@@ -7,7 +7,7 @@
     </template>
     <template #toolbar>
       <UiStaButton
-        v-if="allowEdit && !changingAccessibility"
+        v-if="allowEdit && editPermission && !changingAccessibility"
         class="bg-sta-orange hover:bg-sta-orange-dark transition-colors"
         @click="
           () => {
@@ -125,7 +125,7 @@ export default {
     },
     allowEdit: {
       type: Boolean,
-      default: true
+      default: false
     },
     showPrevious: {
       type: Boolean,
@@ -136,7 +136,8 @@ export default {
     return {
       newAccessibility: this.booking.accessibilityInfo,
       changingAccessibility: false,
-      errors: null
+      errors: null,
+      editPermission: this.booking.canModifyAccessibility ?? false
     };
   },
   computed: {

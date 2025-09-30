@@ -49,7 +49,7 @@
         <accessibility-overview
           class="lg:col-span-3"
           :booking="booking"
-          :allow-edit="upcomingEvent"
+          :allow-edit="true"
         />
         <VenueAccessibility
           v-if="booking.performance"
@@ -155,11 +155,6 @@ export default defineNuxtComponent({
       return this.booking?.performance
         ? this.booking.performance.production
         : null;
-    },
-    upcomingEvent() {
-      // Accessibility info can't be changed on past performances
-      // If you want to change this, you'll need to change the API mutation
-      return this.booking.performance.doorsOpen > new Date().toISOString();
     }
   },
   methods: {

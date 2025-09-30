@@ -40,4 +40,5 @@ fragment DetailedBookingDetails on BookingNode {
     durationMins
     intervalDurationMins
   }
+  canModifyAccessibility
 }

@@ -27,6 +27,7 @@ export default class Booking {
   accessibilityInfo?: string;
   previousAccessibilityInfo?: string;
   accessibilityInfoUpdatedAt?: DateTime;
+  canModifyAccessibility?: boolean;
 
   constructor() {
     this.tickets = [];
@@ -79,6 +80,9 @@ export default class Booking {
     }
     if (bookingData.previousAccessibilityInfo) {
       this.previousAccessibilityInfo = bookingData.previousAccessibilityInfo;
+    }
+    if (bookingData.canModifyAccessibility) {
+      this.canModifyAccessibility = bookingData.canModifyAccessibility;
     }
     if (bookingData.transactions && bookingData.transactions.edges.length) {
       this.transactions = bookingData.transactions.edges

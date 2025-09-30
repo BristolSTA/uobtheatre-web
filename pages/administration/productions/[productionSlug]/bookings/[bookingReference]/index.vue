@@ -71,6 +71,7 @@
         class="lg:col-span-3"
         :booking="booking"
         :show-previous="true"
+        :allow-edit="true"
       />
       <VenueAccessibility
         :venue-data="booking.performance.venue.slug"
