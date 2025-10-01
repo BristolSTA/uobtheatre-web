@@ -1,15 +1,17 @@
 <template>
   <UModal
     v-model:open="showModel"
-    class="bg-sta-gray min-w-1/2 max-w-3/4 w-fit"
+    class="bg-sta-gray min-w-1/2 max-w-11/12 sm:max-w-3/4"
     :close="false"
     :dismissible="!preventDismiss"
     @after:leave="dismissOnClose"
   >
     <template #content>
-      <div class="overflow-scroll max-h-[80vh] p-4 px-6">
-        <div class="flex items-start justify-between mb-2 gap-4">
-          <div class="flex-1">
+      <div class="overflow-scroll max-h-[80vh] p-4 sm:px-6">
+        <div
+          class="flex flex-col sm:flex-row items-center sm:items-start justify-between mb-2 sm:gap-4"
+        >
+          <div class="flex-1 text-center sm:text-left order-2 sm:order-1">
             <h1 class="text-xl text-white font-bold">
               {{ currentMessage?.title }}
             </h1>
@@ -20,23 +22,36 @@
               {{ currentIndex + 1 }} of {{ messages.length }}
             </div>
           </div>
-          <div class="flex items-center ml-auto gap-2">
+          <div class="flex items-center order-1 sm:order-2">
             <UiStaButton
-              v-if="messages.length > 1 && currentIndex > 0"
-              class="text-xl -my-2 text-sta-orange hover:text-sta-orange-dark cursor-pointer"
+              :class="[
+                'text-xl -my-2 text-sta-orange hover:text-sta-orange-dark cursor-pointer',
+                messages.length > 1 && currentIndex > 0 ? '' : 'invisible'
+              ]"
               icon="chevron-left"
+              :disabled="messages.length <= 1 || currentIndex === 0"
               @click="prevMessage"
             />
             <UiStaButton
-              v-if="!preventDismiss"
-              class="text-xl -my-2 text-sta-orange hover:text-sta-orange-dark cursor-pointer"
+              :class="[
+                'text-xl -my-2 text-sta-orange hover:text-sta-orange-dark cursor-pointer',
+                !preventDismiss ? '' : 'invisible'
+              ]"
               icon="circle-xmark"
+              :disabled="preventDismiss"
               @click="dismissCurrent"
             />
             <UiStaButton
-              v-if="messages.length > 1 && currentIndex < messages.length - 1"
-              class="text-xl -my-2 text-sta-orange hover:text-sta-orange-dark cursor-pointer"
+              :class="[
+                'text-xl -my-2 text-sta-orange hover:text-sta-orange-dark cursor-pointer',
+                messages.length > 1 && currentIndex < messages.length - 1
+                  ? ''
+                  : 'invisible'
+              ]"
               icon="chevron-right"
+              :disabled="
+                messages.length <= 1 || currentIndex === messages.length - 1
+              "
               @click="nextMessage"
             />
           </div>

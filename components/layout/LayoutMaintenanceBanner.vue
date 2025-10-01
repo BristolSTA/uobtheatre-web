@@ -4,12 +4,10 @@
     <div
       class="flex relative gap-2 p-2 items-start justify-center text-white min-h-24"
     >
-      <div
-        class="absolute top-0 left-0 invisible w-32 h-full md:w-24 md:visible lg:w-32"
-      >
+      <div class="absolute top-0 left-0 h-full w-4 sm:w-12 md:w-24 lg:w-32">
         <UiStaButton
           v-if="siteMessages.length > 1 && currentIndex > 0"
-          class="w-full h-full text-4xl transition-colors duration-300 cursor-pointer hover:bg-black/30 focus:outline-hidden"
+          class="w-full h-full text-h4 sm:text-4xl transition-colors duration-300 cursor-pointer hover:bg-black/30 focus:outline-hidden -mx-2 sm:m-0"
           icon="chevron-left"
           @click="prevMessage"
         />
@@ -75,14 +73,12 @@
         icon="circle-xmark"
         @click="dismissCurrent"
       />
-      <div
-        class="absolute top-0 right-0 invisible w-32 h-full md:w-24 md:visible lg:w-32"
-      >
+      <div class="absolute top-0 right-0 h-full w-4 sm:w-12 md:w-24 lg:w-32">
         <UiStaButton
           v-if="
             siteMessages.length > 1 && currentIndex < siteMessages.length - 1
           "
-          class="w-full h-full text-4xl transition-colors duration-300 cursor-pointer hover:bg-black/30 focus:outline-hidden"
+          class="w-full h-full text-h4 sm:text-4xl transition-colors duration-300 cursor-pointer hover:bg-black/30 focus:outline-hidden -mx-4 sm:mx-0"
           icon="chevron-right"
           @click="nextMessage"
         />
