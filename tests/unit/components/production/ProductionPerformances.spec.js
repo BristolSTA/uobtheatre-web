@@ -66,7 +66,6 @@ describe('Production Performances', function () {
     });
 
     it('displays the correct number of performance overviews', () => {
-      console.log(performancesContainer.html());
       const overviews =
         performancesContainer.findAllComponents(PerformanceOverview);
       const production = performancesContainer.vm.production;

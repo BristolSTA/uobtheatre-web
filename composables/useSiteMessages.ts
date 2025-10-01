@@ -1,6 +1,5 @@
 import cookie from 'js-cookie';
 
-// Unified cookie key for all site messages (banner and modal)
 export const SITE_MESSAGES_COOKIE_KEY = 'siteMessagesDismissed';
 export const SITE_MESSAGES_COOKIE_EXP_KEY = 'siteMessagesDismissedExpiry';
 
@@ -24,11 +23,11 @@ export function getDismissedIds(): string[] {
 
 export function setDismissedIds(
   ids: Array<string | number>,
-  opts?: { expires?: Date }
+  expiry: Date | undefined
 ) {
   const unique = Array.from(new Set(ids.map(String)));
   // Determine effective expiry as the later of provided expiry and any existing stored expiry
-  const proposed = opts?.expires;
+  const proposed = expiry;
   const existingExpRaw = cookie.get(SITE_MESSAGES_COOKIE_EXP_KEY);
   const existing = existingExpRaw ? new Date(existingExpRaw) : undefined;
   let effective: Date | undefined = proposed || existing;
@@ -44,40 +43,24 @@ export function setDismissedIds(
       expires: effective
     });
   } else {
-    // No effective expiry -> session cookie only; do not update expiry companion
+    // As a fallback, if no effective expiry is determined, set a session cookie only
     cookie.set(SITE_MESSAGES_COOKIE_KEY, unique.join(','));
   }
 }
 
 export function addDismissedId(
-  current: Array<string | number>,
   id: string | number,
   policy?: string | null,
   eventEnd?: string | null
 ) {
-  const ids = [...current.map(String), String(id)];
+  const ids = [...getDismissedIds(), String(id)];
   if (policy === 'SINGLE') {
     // Do NOT set cookies for SINGLE dismissal; keep in-memory only for this runtime
     return ids.map(String);
   }
   const expiry = eventEnd ? new Date(eventEnd) : undefined;
-  setDismissedIds(ids, expiry ? { expires: expiry } : undefined);
+  setDismissedIds(ids, expiry ? expiry : undefined);
   return getDismissedIds();
-}
-
-const typePriority: Record<string, number> = {
-  ALERT: 0,
-  MAINTENANCE: 1,
-  INFORMATION: 2
-};
-
-export function normalizeTypeKey(rawType: string): string {
-  if (!rawType) return 'INFORMATION';
-  const t = rawType.toUpperCase();
-  if (t.includes('ALERT')) return 'ALERT';
-  if (t.includes('MAINTENANCE')) return 'MAINTENANCE';
-  if (t.includes('INFO')) return 'INFORMATION';
-  return t;
 }
 
 export function filterAndSortMessages(
@@ -89,16 +72,18 @@ export function filterAndSortMessages(
   return (messages || [])
     .filter((m) => m && m.toDisplay && !dismissedIds.includes(String(m.id)))
     .sort((a, b) => {
-      const pa = typePriority[normalizeTypeKey(a.type)] ?? 99;
-      const pb = typePriority[normalizeTypeKey(b.type)] ?? 99;
-      if (pa !== pb) return pa - pb;
-      // upcoming first by nearest start, ongoing before future
-      const as = new Date(a.eventStart).getTime();
-      const bs = new Date(b.eventStart).getTime();
-      const aOngoing = as <= now.getTime();
-      const bOngoing = bs <= now.getTime();
-      if (aOngoing !== bOngoing) return aOngoing ? -1 : 1;
-      return as - bs;
+      const nowTime = now.getTime();
+      const aStart = new Date(a.eventStart).getTime();
+      const bStart = new Date(b.eventStart).getTime();
+      const aOngoing = aStart <= nowTime;
+      const bOngoing = bStart <= nowTime;
+
+      // Ongoing events come before future events
+      if (aOngoing !== bOngoing) {
+        return aOngoing ? -1 : 1;
+      }
+      // If both are ongoing or both are future, earlier start time comes first
+      return aStart - bStart;
     });
 }
 
@@ -111,5 +96,6 @@ export function buildTypeKey(msg: SiteMessage, nowISO?: string) {
   const ongoing = isOngoing(msg, nowISO);
   const t = msg.type || '';
   const norm = t.charAt(0) + t.slice(1).toLowerCase();
-  return `${ongoing ? 'ongoing' : 'upcoming'}${norm}`;
+  const rtrn = `${ongoing ? 'ongoing' : 'upcoming'}${norm}`;
+  return rtrn;
 }
