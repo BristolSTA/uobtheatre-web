@@ -2,17 +2,18 @@ import cookie from 'js-cookie';
 
 // Unified cookie key for all site messages (banner and modal)
 export const SITE_MESSAGES_COOKIE_KEY = 'siteMessagesDismissed';
+export const SITE_MESSAGES_COOKIE_EXP_KEY = 'siteMessagesDismissedExpiry';
 
 export type SiteMessage = {
   id: number | string;
   title?: string | null;
   message: string;
-  type: string; // e.g. MAINTENANCE, INFORMATION, ALERT
+  type: string; // MAINTENANCE, INFORMATION, ALERT
   toDisplay: boolean;
   eventStart: string; // ISO
   eventEnd?: string | null; // ISO
   eventDuration?: number | null; // minutes
-  dismissalPolicy?: 'BANNED' | 'SINGLE' | 'TIMED' | string | null;
+  dismissalPolicy?: 'BANNED' | 'SINGLE' | 'DEFAULT' | string | null;
   indefiniteOverride?: boolean | null;
 };
 
@@ -26,11 +27,26 @@ export function setDismissedIds(
   opts?: { expires?: Date }
 ) {
   const unique = Array.from(new Set(ids.map(String)));
-  if (opts?.expires)
+  // Determine effective expiry as the later of provided expiry and any existing stored expiry
+  const proposed = opts?.expires;
+  const existingExpRaw = cookie.get(SITE_MESSAGES_COOKIE_EXP_KEY);
+  const existing = existingExpRaw ? new Date(existingExpRaw) : undefined;
+  let effective: Date | undefined = proposed || existing;
+  if (proposed && existing) {
+    effective = proposed.getTime() >= existing.getTime() ? proposed : existing;
+  }
+  if (effective) {
     cookie.set(SITE_MESSAGES_COOKIE_KEY, unique.join(','), {
-      expires: opts.expires
+      expires: effective
     });
-  else cookie.set(SITE_MESSAGES_COOKIE_KEY, unique.join(','));
+    // Also persist the expiry value in a companion cookie so we can compare next time
+    cookie.set(SITE_MESSAGES_COOKIE_EXP_KEY, effective.toISOString(), {
+      expires: effective
+    });
+  } else {
+    // No effective expiry -> session cookie only; do not update expiry companion
+    cookie.set(SITE_MESSAGES_COOKIE_KEY, unique.join(','));
+  }
 }
 
 export function addDismissedId(
@@ -41,11 +57,11 @@ export function addDismissedId(
 ) {
   const ids = [...current.map(String), String(id)];
   if (policy === 'SINGLE') {
-    setDismissedIds(ids); // session cookie
-  } else {
-    const expiry = eventEnd ? new Date(eventEnd) : undefined;
-    setDismissedIds(ids, expiry ? { expires: expiry } : undefined);
+    // Do NOT set cookies for SINGLE dismissal; keep in-memory only for this runtime
+    return ids.map(String);
   }
+  const expiry = eventEnd ? new Date(eventEnd) : undefined;
+  setDismissedIds(ids, expiry ? { expires: expiry } : undefined);
   return getDismissedIds();
 }
 
