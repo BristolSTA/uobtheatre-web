@@ -18,7 +18,7 @@
         <!-- Main Information Slot -->
         <h3 class="text-h3 md:text-h2">{{ typeConfig.titleText }}</h3>
         <p class="pb-2 md:text-lg">
-          {{ siteMessage.message }}
+          <UiTipTapOutput :html="siteMessage.message" />
         </p>
         <div class="pb-2">
           <strong>{{ isOngoing ? 'Started On' : 'Starting On' }}: </strong>

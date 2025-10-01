@@ -31,7 +31,7 @@
 }
 
 .tiptap-output ul p {
-  @apply inline-block;
+  @apply inline;
 }
 
 .tiptap-output ol {
@@ -39,5 +39,5 @@
 }
 
 .tiptap-output ol p {
-  @apply inline-block;
+  @apply inline;
 }

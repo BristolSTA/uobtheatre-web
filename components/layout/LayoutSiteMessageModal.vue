@@ -20,10 +20,7 @@
           />
         </div>
         <div class="text-white text-lg">
-          <div v-for="(line, index) in formattedMessage" :key="index">
-            <p v-if="line.trim() !== ''">{{ line }}</p>
-            <br v-else />
-          </div>
+          <UiTipTapOutput :html="siteMessage.message" />
         </div>
       </div>
     </template>
@@ -55,13 +52,6 @@ export default {
   computed: {
     isOngoing() {
       return this.siteMessage.eventStart < DateTime.now().toISO();
-    },
-    formattedMessage() {
-      // Split around new lines and trim each line
-      // Allows us to show multi-line messages without needing HTML in the message
-      // (because that's bad)
-      const msg = this.siteMessage?.message || '';
-      return msg.split('\n').map((line) => line.trim());
     }
   },
   mounted() {
