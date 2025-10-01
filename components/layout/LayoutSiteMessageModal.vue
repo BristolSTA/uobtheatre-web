@@ -7,7 +7,7 @@
     @after:leave="dismissOnClose"
   >
     <template #content>
-      <div class="overflow-scroll max-h-[80vh] p-4 sm:px-6">
+      <div class="overflow-auto max-h-[80vh] p-4 sm:px-6">
         <div
           class="flex flex-col sm:flex-row items-center sm:items-start justify-between mb-2 sm:gap-4"
         >
