@@ -1,26 +1,48 @@
 <template>
   <UModal
     v-model:open="showModel"
-    class="bg-sta-gray max-w-3/4 w-fit"
+    class="bg-sta-gray min-w-1/2 max-w-3/4 w-fit"
     :close="false"
     :dismissible="!preventDismiss"
-    @after:leave="dismissBanner"
+    @after:leave="dismissOnClose"
   >
-    <template #description>
-      <div class="overflow-scroll max-h-[80vh]">
-        <div class="flex items-center justify-between mb-2">
-          <h1 class="text-xl text-white font-bold">
-            {{ siteMessage.title }}
-          </h1>
-          <UiStaButton
-            v-if="!preventDismiss"
-            class="text-xl -my-2 text-sta-orange hover:text-sta-orange-dark"
-            icon="circle-xmark"
-            @click="dismissBanner"
-          />
+    <template #content>
+      <div class="overflow-scroll max-h-[80vh] p-4 px-6">
+        <div class="flex items-start justify-between mb-2 gap-4">
+          <div class="flex-1">
+            <h1 class="text-xl text-white font-bold">
+              {{ currentMessage?.title }}
+            </h1>
+            <div
+              v-if="messages.length > 1"
+              class="text-sta-gray-300 text-sm mt-1"
+            >
+              {{ currentIndex + 1 }} of {{ messages.length }}
+            </div>
+          </div>
+          <div class="flex items-center ml-auto gap-2">
+            <UiStaButton
+              v-if="messages.length > 1 && currentIndex > 0"
+              class="text-xl -my-2 text-sta-orange hover:text-sta-orange-dark cursor-pointer"
+              icon="chevron-left"
+              @click="prevMessage"
+            />
+            <UiStaButton
+              v-if="!preventDismiss"
+              class="text-xl -my-2 text-sta-orange hover:text-sta-orange-dark cursor-pointer"
+              icon="circle-xmark"
+              @click="dismissCurrent"
+            />
+            <UiStaButton
+              v-if="messages.length > 1 && currentIndex < messages.length - 1"
+              class="text-xl -my-2 text-sta-orange hover:text-sta-orange-dark cursor-pointer"
+              icon="chevron-right"
+              @click="nextMessage"
+            />
+          </div>
         </div>
         <div class="text-white text-lg">
-          <UiTipTapOutput :html="siteMessage.message" />
+          <UiTipTapOutput :html="currentMessage?.message" />
         </div>
       </div>
     </template>
@@ -28,10 +50,12 @@
 </template>
 
 <script>
-import cookie from 'js-cookie';
 import { UpcomingSiteMessagesDocument } from '~/graphql/codegen/operations';
-import humanizeDuration from 'humanize-duration';
-import { DateTime } from 'luxon';
+import {
+  addDismissedId,
+  filterAndSortMessages,
+  getDismissedIds
+} from '@/composables/useSiteMessages';
 
 export default {
   name: 'LayoutSiteMessageModal',
@@ -44,21 +68,20 @@ export default {
   data() {
     return {
       preventDismiss: false,
-      siteMessage: null,
+      messages: [],
+      currentIndex: 0,
       dismissedIds: [],
       showModel: false
     };
   },
   computed: {
-    isOngoing() {
-      return this.siteMessage.eventStart < DateTime.now().toISO();
+    currentMessage() {
+      return this.messages[this.currentIndex] || null;
     }
   },
   mounted() {
-    // Need to store the alert's id in the cookie to check if it's been superceded
-    this.dismissedIds = cookie.get('siteMessageModalDismissed')
-      ? cookie.get('siteMessageModalDismissed').split(',')
-      : [];
+    // Load previously dismissed ids from unified cookie
+    this.dismissedIds = getDismissedIds();
     this.loadSiteMessageData();
   },
   methods: {
@@ -73,56 +96,57 @@ export default {
 
       const siteMessages = data.siteMessages;
       if (siteMessages) {
-        this.siteMessage = siteMessages.edges
-          .map((edge) => edge.node)
-          .filter((node) => {
-            return (
-              node.toDisplay && !this.dismissedIds.includes(String(node.id))
-            );
-          })[0];
-
-        if (this.siteMessage) {
+        const nodes = siteMessages.edges.map((edge) => edge.node);
+        this.messages = filterAndSortMessages(nodes, this.dismissedIds);
+        if (this.messages.length) {
           this.showModel = true;
-          if (this.siteMessage.dismissalPolicy === 'BANNED') {
-            this.preventDismiss = true;
-          }
+          this.preventDismiss = this.messages[0].dismissalPolicy === 'BANNED';
         }
       }
     },
-    dismissBanner() {
-      this.showModel = false;
-
-      if (this.siteMessage.dismissalPolicy === 'BANNED') {
-        return;
-      }
-
-      if (this.siteMessage.dismissalPolicy === 'SINGLE') {
-        // Session cookies are deleted when the browser is closed, so no need to set an expiry
-        // If a cookie has already been sent, append the new id to the list, otherwise create the cookie
-        if (this.dismissedIds) {
-          this.dismissedIds.push(this.siteMessage.id);
-          cookie.set('siteMessageModalDismissed', this.dismissedIds.join(','));
-        } else {
-          cookie.set('siteMessageModalDismissed', this.siteMessage.id);
-        }
-        return;
-      }
-
-      const dismissalTime = new Date(this.siteMessage.eventEnd);
-
-      // If a cookie has already been sent, append the new id to the list, otherwise create the cookie
-      if (this.dismissedIds) {
-        this.dismissedIds.push(this.siteMessage.id);
-        cookie.set('siteMessageModalDismissed', this.dismissedIds.join(','), {
-          expires: dismissalTime
-        });
-      } else {
-        cookie.set('siteMessageModalDismissed', this.siteMessage.id, {
-          expires: dismissalTime
-        });
+    nextMessage() {
+      if (this.currentIndex < this.messages.length - 1) {
+        this.currentIndex += 1;
+        this.preventDismiss = this.currentMessage.dismissalPolicy === 'BANNED';
       }
     },
-    humanizeDuration
+    prevMessage() {
+      if (this.currentIndex > 0) {
+        this.currentIndex -= 1;
+        this.preventDismiss = this.currentMessage.dismissalPolicy === 'BANNED';
+      }
+    },
+    dismissCurrent() {
+      const msg = this.currentMessage;
+      if (!msg) return;
+      this.dismissedIds = addDismissedId(
+        this.dismissedIds,
+        msg.id,
+        msg.dismissalPolicy,
+        msg.eventEnd
+      );
+      // Remove from queue and update index
+      this.messages.splice(this.currentIndex, 1);
+      if (this.messages.length === 0) {
+        this.showModel = false;
+        return;
+      }
+      // Keep index within bounds
+      if (this.currentIndex >= this.messages.length) {
+        this.currentIndex = this.messages.length - 1;
+      }
+      this.preventDismiss = this.currentMessage.dismissalPolicy === 'BANNED';
+    },
+    dismissOnClose() {
+      // Mirror prior behavior: when modal closes, treat as dismiss of current message if allowed
+      const msg = this.currentMessage;
+      if (!msg) return;
+      if (msg.dismissalPolicy === 'BANNED') {
+        // If banned, closing shouldn't be possible (dismissible=false), but guard anyway
+        return;
+      }
+      this.dismissCurrent();
+    }
   }
 };
 </script>
