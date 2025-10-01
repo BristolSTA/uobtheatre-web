@@ -16,7 +16,14 @@
       </div>
       <div class="max-w-6xl min-w-2/3 xl:min-w-1/2">
         <!-- Main Information Slot -->
-        <h3 class="text-h3 md:text-h2">{{ typeConfig.titleText }}</h3>
+        <h3 class="text-h3 md:text-h2">
+          <p v-if="siteMessage.title">
+            {{ siteMessage.title }}
+          </p>
+          <p v-else>
+            {{ typeConfig.titleText }}
+          </p>
+        </h3>
         <p class="pb-2 md:text-lg">
           <UiTipTapOutput :html="siteMessage.message" />
         </p>
