@@ -24,6 +24,7 @@
           </div>
           <div class="flex items-center order-1 sm:order-2">
             <UiStaButton
+              v-if="messages.length > 1"
               :class="[
                 'text-xl -my-2 text-sta-orange hover:text-sta-orange-dark cursor-pointer',
                 messages.length > 1 && currentIndex > 0 ? '' : 'invisible'
@@ -42,6 +43,7 @@
               @click="dismissCurrent"
             />
             <UiStaButton
+              v-if="messages.length > 1"
               :class="[
                 'text-xl -my-2 text-sta-orange hover:text-sta-orange-dark cursor-pointer',
                 messages.length > 1 && currentIndex < messages.length - 1
@@ -135,7 +137,6 @@ export default {
       const msg = this.currentMessage;
       if (!msg) return;
       this.dismissedIds = addDismissedId(
-        this.dismissedIds,
         msg.id,
         msg.dismissalPolicy,
         msg.eventEnd
