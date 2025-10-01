@@ -33,8 +33,9 @@ export default (
         includeProduction ? [ProductionNode()] : []
       ),
       accessibilityInfo: includeAccessibilityInfo
-        ? 'Wheelchair access available'
-        : null
+        ? 'Wheelchair access available, quiet room'
+        : null,
+      accessibilityShort: includeAccessibilityInfo ? 'Wheelchair access' : null
     },
     overrides
   );
