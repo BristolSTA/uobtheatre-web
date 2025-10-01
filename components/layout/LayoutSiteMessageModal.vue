@@ -13,7 +13,10 @@
         >
           <div class="flex-1 text-center sm:text-left order-2 sm:order-1">
             <h1 class="text-xl text-white font-bold">
-              {{ currentMessage?.title }}
+              <span v-if="currentMessage?.title">{{
+                currentMessage.title
+              }}</span>
+              <span v-else>{{ typeConfigFor(currentMessage).titleText }}</span>
             </h1>
             <div
               v-if="messages.length > 1"
@@ -61,6 +64,15 @@
         <div class="text-white text-lg">
           <UiTipTapOutput :html="currentMessage?.message" />
         </div>
+        <!-- Go Back Button -->
+        <div v-if="showGoBack" class="mt-6 flex justify-center">
+          <UiStaButton
+            class="btn btn-outline btn-orange font font-semibold"
+            @click="goBack"
+          >
+            Go Back
+          </UiStaButton>
+        </div>
       </div>
     </template>
   </UModal>
@@ -71,8 +83,30 @@ import { UpcomingSiteMessagesDocument } from '~/graphql/codegen/operations';
 import {
   addDismissedId,
   filterAndSortMessages,
-  getDismissedIds
+  getDismissedIds,
+  buildTypeKey
 } from '@/composables/useSiteMessages';
+
+const typeMap = {
+  upcomingMaintenance: {
+    titleText: 'Upcoming Maintenance'
+  },
+  ongoingMaintenance: {
+    titleText: 'Ongoing Maintenance'
+  },
+  upcomingInformation: {
+    titleText: 'Important Future Information'
+  },
+  ongoingInformation: {
+    titleText: 'Important Information'
+  },
+  upcomingAlert: {
+    titleText: 'Urgent Future Alert'
+  },
+  ongoingAlert: {
+    titleText: 'Urgent Alert'
+  }
+};
 
 export default {
   name: 'LayoutSiteMessageModal',
@@ -88,16 +122,21 @@ export default {
       messages: [],
       currentIndex: 0,
       dismissedIds: [],
-      showModel: false
+      showModel: false,
+      typeMap: typeMap
     };
   },
   computed: {
     currentMessage() {
       return this.messages[this.currentIndex] || null;
+    },
+    showGoBack() {
+      const msg = this.currentMessage;
+      return msg && msg.type !== 'sitewide' && msg.dismissalPolicy === 'BANNED';
     }
   },
   mounted() {
-    // Load previously dismissed ids from unified cookie
+    // Load previously dismissed ids from cookies
     this.dismissedIds = getDismissedIds();
     this.loadSiteMessageData();
   },
@@ -162,6 +201,14 @@ export default {
         return;
       }
       this.dismissCurrent();
+    },
+    goBack() {
+      this.$router.back();
+    },
+    typeConfigFor(msg) {
+      return (
+        this.typeMap[buildTypeKey(msg)] || this.typeMap.upcomingInformation
+      );
     }
   }
 };
