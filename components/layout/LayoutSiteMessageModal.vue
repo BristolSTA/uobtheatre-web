@@ -14,7 +14,6 @@
           </h1>
           <UiStaButton
             v-if="!preventDismiss"
-            id="maintenanceBannerDismiss"
             class="text-xl -my-2 text-sta-orange hover:text-sta-orange-dark"
             icon="circle-xmark"
             @click="dismissBanner"
