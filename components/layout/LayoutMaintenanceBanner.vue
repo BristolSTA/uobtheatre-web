@@ -49,11 +49,11 @@
       <div>
         <!-- Icon Slot -->
         <UiStaButton
+          v-if="!preventDismiss"
           id="maintenanceBannerDismiss"
           class="text-h2 -my-2 hover:text-sta-rouge-dark"
           :class="['hover:' + typeConfig.iconColour]"
           icon="circle-xmark"
-          :disabled="preventDismiss"
           @click="dismissBanner"
         />
       </div>
