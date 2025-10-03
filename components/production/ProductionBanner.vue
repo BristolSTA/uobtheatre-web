@@ -113,12 +113,11 @@
 </template>
 
 <script>
-import humanizeDuration from 'humanize-duration';
 import lo from 'lodash';
 
 import ProductionFeaturedImage from './ProductionFeaturedImage.vue';
 import IconListItem from '~~/components/ui/UiIconListItem.vue';
-import { displayStartEnd } from '@/utils/datetime';
+import { displayStartEnd, humanDuration } from '@/utils/datetime';
 import MiscCostQuery from '@/graphql/queries/MiscCosts.gql';
 
 export default {
@@ -185,13 +184,11 @@ export default {
       if (!this.production.performances.edges.length) {
         return;
       }
-      return humanizeDuration(
+      return humanDuration(
         lo
           .chain(this.production.performances.edges.map((edge) => edge.node))
           .minBy('durationMins')
-          .value().durationMins *
-          60 *
-          1000
+          .value().durationMins
       );
     },
     miscCostsDisplay() {
