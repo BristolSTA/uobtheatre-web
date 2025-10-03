@@ -72,7 +72,7 @@
         <div
           v-if="production.productionAlert"
           ref="production-alert"
-          class="bg-sta-rouge-dark text-white text-sm p-3 rounded-xs gap-4"
+          class="bg-sta-rouge-dark text-white text-sm p-2 flex flex-col rounded-sm space-y-1"
         >
           <div class="flex text-lg items-center gap-2">
             <font-awesome-icon icon="warning" />
