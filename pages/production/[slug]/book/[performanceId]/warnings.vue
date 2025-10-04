@@ -18,14 +18,14 @@
         <p>{{ booking.performance.description }}</p>
       </div>
     </div>
-    <div class="flex gap-4 flex-col lg:flex-row">
+    <div class="flex gap-4 flex-col">
       <div
         v-if="production.contentWarnings.length > 0"
         ref="perf-warnings"
         class="flex gap-4 justify-evenly w-full"
       >
-        <div class="p-4 text-white bg-sta-gray-light rounded-lg w-full">
-          <h3 class="text-h3 font-semibold mb-2 gap-4 flex items-center">
+        <div class="p-4 text-white bg-sta-gray-light rounded-lg w-full space-y-2 flex flex-col">
+          <h3 class="text-h3 font-semibold gap-4 flex items-center">
             <font-awesome-icon icon="info-circle" />
             Content Warnings
           </h3>
@@ -39,15 +39,15 @@
               {{ production.contactEmail }} </a
             >.
           </p>
-          <UButton
+          <button
             ref="warnings"
             color="success"
-            class="font-semibold uppercase rounded-xs gap-2 mt-4"
+            class="font-semibold btn btn-rouge w-fit self-center"
             @click="showContentWarningsDetail = true"
           >
-            View content warnings
-            <font-awesome-icon icon="chevron-right" />
-          </UButton>
+            View Content Warnings
+            <font-awesome-icon class="ml-2" icon="chevron-right" />
+          </button>
           <content-warnings-display
             v-if="showContentWarningsDetail"
             :content-warnings="production.contentWarnings"
@@ -61,8 +61,8 @@
         ref="perf-alert"
         class="flex not-lg:flex-basis gap-4 justify-evenly w-full lg:col-span-1"
       >
-        <div class="p-4 text-white bg-sta-gray-light rounded-lg w-full">
-          <h3 class="text-h3 font-semibold mb-2 gap-4 flex items-center">
+        <div class="p-4 text-white bg-sta-gray-light rounded-lg w-full space-y-2">
+          <h3 class="text-h3 font-semibold gap-4 flex items-center">
             <font-awesome-icon icon="warning" />
             Production Alert
           </h3>
@@ -84,10 +84,10 @@
       </div>
     </div>
     <div>
-      <UButton
+      <button
         ref="understood"
         color="warning"
-        class="font-semibold uppercase rounded-xs gap-2 text-md"
+        class="btn btn-orange font-semibold"
         @click="onUnderstood"
         @keypress="onUnderstood"
       >
