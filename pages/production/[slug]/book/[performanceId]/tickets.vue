@@ -30,6 +30,7 @@
         @keypress="$emit('next-stage')"
       >
         Next
+        <font-awesome-icon class="ml-2" icon="arrow-right" />
       </button>
     </div>
   </div>

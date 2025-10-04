@@ -55,6 +55,7 @@
           @click="payFree"
         >
           Complete Booking
+          <font-awesome-icon class="ml-2" icon="arrow-right" />
         </button>
       </div>
     </loading-container>
