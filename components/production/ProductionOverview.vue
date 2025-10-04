@@ -42,9 +42,7 @@
             Facebook Event
           </icon-list-item>
         </a>
-        <div
-          v-if="production.contentWarnings.length > 0"
-        >
+        <div v-if="production.contentWarnings.length > 0">
           <h3 class="font-semibold">Content Warnings</h3>
           <p class="text-sm w-fit text-white/75">
             We recognise that aspects of this performance may cause distress or

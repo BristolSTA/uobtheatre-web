@@ -24,7 +24,9 @@
         ref="perf-warnings"
         class="flex gap-4 justify-evenly w-full"
       >
-        <div class="p-4 text-white bg-sta-gray-light rounded-lg w-full space-y-2 flex flex-col">
+        <div
+          class="p-4 text-white bg-sta-gray-light rounded-lg w-full space-y-2 flex flex-col"
+        >
           <h3 class="text-h3 font-semibold gap-4 flex items-center">
             <font-awesome-icon icon="info-circle" />
             Content Warnings
@@ -61,7 +63,9 @@
         ref="perf-alert"
         class="flex not-lg:flex-basis gap-4 justify-evenly w-full lg:col-span-1"
       >
-        <div class="p-4 text-white bg-sta-gray-light rounded-lg w-full space-y-2">
+        <div
+          class="p-4 text-white bg-sta-gray-light rounded-lg w-full space-y-2"
+        >
           <h3 class="text-h3 font-semibold gap-4 flex items-center">
             <font-awesome-icon icon="warning" />
             Production Alert
