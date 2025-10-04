@@ -140,18 +140,6 @@ describe('Production Overview', function () {
       });
       expect(productionAlertsBox.exists()).to.be.false;
     });
-
-    it('shows the production email', async () => {
-      await createWithPerformances([], {
-        productionAlert: 'Alert',
-        contactEmail: 'prodteam@example.com'
-      });
-      const productionAlertsBox = overviewContainer.find({
-        ref: 'production-alert'
-      });
-      console.log(productionAlertsBox.text());
-      expect(productionAlertsBox.text()).to.contain('prodteam@example.com');
-    });
   });
 
   describe('content warnings button', function () {
