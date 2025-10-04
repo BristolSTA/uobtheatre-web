@@ -73,13 +73,6 @@
                 : production.productionAlert + '.'
             }}
           </p>
-          <p class="mt-2">
-            For more information, please contact
-            <a :href="`mailto:${production.contactEmail}`" class="underline">{{
-              production.contactEmail
-            }}</a
-            >.
-          </p>
         </div>
       </div>
     </div>
