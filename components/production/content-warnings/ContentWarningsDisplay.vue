@@ -1,8 +1,8 @@
 <template>
   <modal @close="$emit('close')">
     <div ref="warnings-modal" class="max-w-screen-sm">
-      <h2 class="text-lg font-semibold px-3">Content Warnings</h2>
-      <p class="p-3 text-wrap inline-block">
+      <h2 class="text-lg font-semibold px-1">Content Warnings</h2>
+      <p class="py-2 px-1 text-wrap inline-block">
         This performance contains references to, depictions of, and/or
         discussions around topics that may cause distress or challenging
         emotions for some of our audience members. If you have any questions

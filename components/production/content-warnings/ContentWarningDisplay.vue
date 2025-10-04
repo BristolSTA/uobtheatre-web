@@ -11,7 +11,8 @@
     >
       <div class="flex justify-between items-center text-left">
         <h3 class="font-bold">{{ contentWarning.shortDescription }}</h3>
-        <div>
+        <div class="flex justify-center items-center">
+          <span class="font-medium ml-2">show {{ expanded ? 'less' : 'more' }}</span>
           <font-awesome-icon
             icon="chevron-down"
             class="ml-2 transition-transform duration-200"

@@ -44,10 +44,9 @@
         </a>
         <div
           v-if="production.contentWarnings.length > 0"
-          class="rounded-xs gap-4 text-wrap"
         >
           <h3 class="font-semibold">Content Warnings</h3>
-          <p class="text-sm w-fit text-white/75 text-wrap">
+          <p class="text-sm w-fit text-white/75">
             We recognise that aspects of this performance may cause distress or
             challenging emotions for some of our audience members. Click below
             if you would like to see the content warnings for this show (may
@@ -56,11 +55,11 @@
           <UButton
             ref="warnings"
             color="success"
-            class="font-semibold uppercase rounded-xs gap-2 my-2"
+            class="mt-2 p-2 btn btn-rouge w-full justify-center"
             @click="showContentWarningsDetail = true"
           >
-            View content warnings
-            <font-awesome-icon icon="chevron-right" />
+            View Content Warnings
+            <font-awesome-icon class="px-2" icon="chevron-right" />
           </UButton>
           <content-warnings-display
             v-if="showContentWarningsDetail"
@@ -74,7 +73,7 @@
           ref="production-alert"
           class="bg-sta-rouge-dark text-white text-sm p-2 flex flex-col rounded-sm space-y-1"
         >
-          <div class="flex text-lg items-center gap-2">
+          <div class="flex items-center justify-center text-lg gap-2">
             <font-awesome-icon icon="warning" />
             <h3 class="font-bold">Production Alert</h3>
           </div>
@@ -84,13 +83,6 @@
                 ? production.productionAlert
                 : production.productionAlert + '.'
             }}
-          </p>
-          <p>
-            For more information, please contact
-            <a :href="`mailto:${production.contactEmail}`" class="underline">{{
-              production.contactEmail
-            }}</a
-            >.
           </p>
         </div>
       </div>
