@@ -57,7 +57,7 @@ describe('ProductionBanner', function () {
     expect(headerContainer.findAllComponents(NuxtLinkStub).length).to.equal(2);
 
     expect(headerContainer.text()).to.contain('14 Nov - 18 Nov 2020');
-    expect(headerContainer.text()).to.contain('1 hour, 42 minutes');
+    expect(headerContainer.text()).to.contain('1 hour 45 minutes');
     expect(fixTextSpacing(headerContainer.text())).to.contain(
       'Tickets from £1.20'
     );

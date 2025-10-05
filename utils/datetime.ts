@@ -26,7 +26,11 @@ export const humanDuration = (
   durationMins: number,
   options?: humanizeDuration.Options
 ) => {
-  const mergedOptions = Object.assign({ round: true, largest: 1 }, options);
+  durationMins = 15 * Math.round(durationMins / 15); // round to nearest 15 minutes
+  const mergedOptions = Object.assign(
+    { round: true, largest: 2, delimiter: ' ' },
+    options
+  );
   return humanizeDuration(durationMins * 60 * 1000, mergedOptions);
 };
 
