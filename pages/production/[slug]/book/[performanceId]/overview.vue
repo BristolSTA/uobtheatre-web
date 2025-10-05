@@ -23,6 +23,7 @@
         @keypress="$emit('next-stage')"
       >
         Proceed to payment
+        <font-awesome-icon class="ml-2" icon="arrow-right" />
       </button>
     </div>
   </div>

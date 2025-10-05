@@ -1,34 +1,31 @@
 <template>
-  <div>
-    <component
-      :is="expandable ? 'button' : 'div'"
-      class="w-full py-1 px-3 transition-colors group"
+  <div class="mb-2">
+    <div
+      ref="clickable"
+      class="w-full py-1 px-3 transition-colors group hover:bg-gray-600 rounded"
       :class="{
-        'hover:bg-gray-600 rounded': expandable,
-        'bg-gray-600 rounded-bl-none rounded-br-none': expanded && expandable
+        'rounded-bl-none rounded-br-none bg-gray-600': expanded,
+        'bg-gray-700': !expanded
       }"
-      @click="
-        if (expandable) {
-          expanded = !expanded;
-        }
-      "
+      @click="expanded = !expanded"
     >
-      <div class="flex justify-between items-center">
-        <h3>{{ contentWarning.warning.shortDescription }}</h3>
-        <div
-          v-if="expandable"
-          class="rounded px-1"
-          :class="{
-            'bg-white text-gray-700': !expanded
-          }"
-        >
-          <span v-if="!expanded">See Details</span>
-          <font-awesome-icon :icon="expanded ? 'chevron-up' : 'chevron-down'" />
+      <div class="flex justify-between items-center text-left">
+        <h3 class="font-bold">{{ contentWarning.shortDescription }}</h3>
+        <div class="flex justify-center items-center">
+          <span class="font-medium ml-2"
+            >show {{ expanded ? 'less' : 'more' }}</span
+          >
+          <font-awesome-icon
+            icon="chevron-down"
+            class="ml-2 transition-transform duration-200"
+            :class="{ 'rotate-180': expanded }"
+          />
         </div>
       </div>
-    </component>
+    </div>
     <div
-      v-if="expandable && expanded"
+      v-if="expanded"
+      ref="description"
       class="p-3 bg-gray-700 overflow-x-auto rounded-bl rounded-br"
     >
       {{ description }}
@@ -37,7 +34,10 @@
 </template>
 
 <script>
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
 export default {
+  components: { FontAwesomeIcon },
   props: {
     contentWarning: {
       required: true,
@@ -55,14 +55,10 @@ export default {
     };
   },
   computed: {
-    expandable() {
-      return !!this.description;
-    },
     description() {
-      return (
-        this.contentWarning.information ??
-        this.contentWarning.warning.longDescription
-      );
+      return this.contentWarning.longDescription
+        ? this.contentWarning.longDescription
+        : this.contentWarning.shortDescription;
     }
   },
   watch: {
