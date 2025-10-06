@@ -31,7 +31,7 @@
     "@nuxt/ui": "^3.3.3",
     "@nuxtjs/apollo": "^5.0.0-alpha.15",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
-    "@nuxtjs/turnstile": "^1.0.0",
+    "@nuxtjs/turnstile": "^1.1.0",
     "@pinia/testing": "^1.0.2",
     "@rollup/plugin-graphql": "^2.0.5",
     "@tailwindcss/forms": "^0.5.9",
