@@ -28,7 +28,7 @@
     "@graphql-codegen/typescript-vue-apollo": "^4.1.1",
     "@graphql-codegen/typescript-vue-apollo-smart-ops": "^3.0.0",
     "@nuxt/scripts": "^0.12.1",
-    "@nuxt/ui": "4.0.0",
+    "@nuxt/ui": "4.0.1",
     "@nuxtjs/apollo": "^5.0.0-alpha.15",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@nuxtjs/tailwindcss": "^6.13.2",
