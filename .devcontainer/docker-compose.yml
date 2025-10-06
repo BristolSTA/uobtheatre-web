@@ -23,13 +23,16 @@ services:
       POSTGRES_PASSWORD: postgres
       DJANGO_SETTINGS_MODULE: config.settings.local
       BASE_URL: http://localhost:9000
+      # This allows us to use all the Makefile commands in the API module (e.g. make seed below)
+      DEV_CONTAINER: true
     env_file:
       - ./.env
     depends_on:
       - postgres
     links:
       - postgres
-    command: /bin/sh -c "/start --single-seed-e2e"
+    # Seed the database with example data
+    command: /bin/sh -c "/start && make seed"
 
   postgres:
     image: postgres:16
