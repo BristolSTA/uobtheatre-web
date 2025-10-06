@@ -4,17 +4,6 @@
     <div
       class="flex relative gap-2 p-2 items-start justify-center text-white min-h-24"
     >
-      <div
-        v-if="siteMessages.length > 1"
-        class="absolute top-0 left-0 h-full w-4 sm:w-12 md:w-24 lg:w-32"
-      >
-        <UiStaButton
-          v-if="siteMessages.length > 1 && currentIndex > 0"
-          class="w-full h-full text-h4 sm:text-4xl transition-colors duration-300 cursor-pointer hover:bg-black/30 focus:outline-hidden -mx-2 sm:m-0"
-          icon="chevron-left"
-          @click="prevMessage"
-        />
-      </div>
       <div>
         <!-- Icon Slot -->
         <font-awesome-icon
@@ -69,23 +58,36 @@
         </div>
       </div>
       <!-- Dismiss Button -->
-      <UiStaButton
-        v-if="currentMessage && currentMessage.dismissalPolicy !== 'BANNED'"
-        class="text-h2 -my-2 cursor-pointer"
-        :class="['hover:' + typeConfigFor(currentMessage).iconColour]"
-        icon="circle-xmark"
-        @click="dismissCurrent"
-      />
-      <div
-        v-if="siteMessages.length > 1"
-        class="absolute top-0 right-0 h-full w-4 sm:w-12 md:w-24 lg:w-32"
-      >
+      <div class="flex items-center order-1 sm:order-2">
         <UiStaButton
-          v-if="
+          v-if="siteMessages.length > 1"
+          :class="[
+            'text-h3 -my-2 cursor-pointer',
+            siteMessages.length > 1 && currentIndex > 0 ? '' : 'invisible'
+          ]"
+          icon="chevron-left"
+          :disabled="siteMessages.length <= 1 || currentIndex === 0"
+          @click="prevMessage"
+        />
+        <UiStaButton
+          v-if="currentMessage && currentMessage.dismissalPolicy !== 'BANNED'"
+          class="text-h2 -my-2 cursor-pointer"
+          :class="['hover:' + typeConfigFor(currentMessage).iconColour]"
+          icon="circle-xmark"
+          @click="dismissCurrent"
+        />
+        <UiStaButton
+          v-if="siteMessages.length > 1"
+          :class="[
+            'text-h3 -my-2 cursor-pointer',
             siteMessages.length > 1 && currentIndex < siteMessages.length - 1
-          "
-          class="w-full h-full text-h4 sm:text-4xl transition-colors duration-300 cursor-pointer hover:bg-black/30 focus:outline-hidden -mx-4 sm:mx-0"
+              ? ''
+              : 'invisible'
+          ]"
           icon="chevron-right"
+          :disabled="
+            siteMessages.length <= 1 || currentIndex === siteMessages.length - 1
+          "
           @click="nextMessage"
         />
       </div>
