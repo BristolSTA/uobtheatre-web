@@ -19,8 +19,16 @@
     </template>
     <div class="mt-2 text-white">
       <loading-icon v-if="!venue" />
-      <div v-else-if="venue.accessibilityShort">
-        {{ venue.accessibilityShort }}
+      <div v-else>
+        <div v-if="venue.accessibilityShort">
+          {{ venue.accessibilityShort }}
+        </div>
+        <p v-else-if="venue.accessibilityInfo">
+          {{ truncate(oneLiner(venue.accessibilityInfo), 230) }}
+        </p>
+        <p v-else class="font-semibold">
+          No accessibility information has been listed for this venue
+        </p>
         <div
           v-if="venue.accessibilityInfo"
           class="text-sta-orange text-sm font-semibold mt-2"
@@ -32,9 +40,6 @@
           </NuxtLink>
         </div>
       </div>
-      <p v-else class="font-semibold">
-        No accessibility information has been listed for this venue
-      </p>
     </div>
   </overview-box>
 </template>

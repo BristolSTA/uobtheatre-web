@@ -101,6 +101,9 @@
             <p v-if="venue.accessibilityShort">
               {{ venue.accessibilityShort }}
             </p>
+            <p v-else-if="venue.accessibilityInfo">
+              {{ truncate(oneLiner(venue.accessibilityInfo), 230) }}
+            </p>
             <p v-else class="font-semibold">
               No accessibility information has been listed for this venue
             </p>
