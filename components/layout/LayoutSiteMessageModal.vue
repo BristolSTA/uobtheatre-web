@@ -179,6 +179,12 @@ export default {
     dismissCurrent() {
       const msg = this.currentMessage;
       if (!msg) return;
+      // Close the modal if this is the last message
+      // (needs to happen before splicing the array so no fields are null)
+      if (this.messages.length === 1) {
+        this.showModel = false;
+        return;
+      }
       this.dismissedIds = addDismissedId(
         msg.id,
         msg.dismissalPolicy,
@@ -186,10 +192,6 @@ export default {
       );
       // Remove from queue and update index
       this.messages.splice(this.currentIndex, 1);
-      if (this.messages.length === 0) {
-        this.showModel = false;
-        return;
-      }
       // Keep index within bounds
       if (this.currentIndex >= this.messages.length) {
         this.currentIndex = this.messages.length - 1;
