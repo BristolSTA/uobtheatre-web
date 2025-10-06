@@ -5,22 +5,18 @@
       Tickets
     </template>
     <template #messageBox>
-      <table class="flex table-auto ml-auto">
-        <tbody>
-          <tr>
-            <th class="pr-4">
-              <font-awesome-icon
-                icon="info-circle"
-                class="flex items-center text-h3 lg:text-h2"
-              />
-            </th>
-            <td class="text-xs lg:text-sm">
-              <p>All our tickets are fulfilled digitally</p>
-              <p>Display on your phone or print</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="flex table-auto ml-auto">
+        <div class="pr-4 flex items-center">
+          <font-awesome-icon
+            icon="info-circle"
+            class="flex items-center text-h3 lg:text-h2"
+          />
+        </div>
+        <div class="text-xs lg:text-sm">
+          <p>All our tickets are fulfilled digitally</p>
+          <p>Display on your phone or print</p>
+        </div>
+      </div>
     </template>
     <div class="grid gap-2 grid-cols-1 sm:grid-cols-2">
       <div

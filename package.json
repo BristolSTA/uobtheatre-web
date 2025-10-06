@@ -46,7 +46,7 @@
     "@typescript-eslint/eslint-plugin": "^8.43.0",
     "@typescript-eslint/parser": "^8.43.0",
     "@vitejs/plugin-vue": "^5.2.3",
-    "@vitest/coverage-v8": "^2.1.9",
+    "@vitest/coverage-v8": "^3.2.4",
     "@vue/test-utils": "^2.4.6",
     "cypress": "^14.3.2",
     "eslint": "^9.35.0",
@@ -66,7 +66,7 @@
     "unplugin-vue-components": "^28.4.1",
     "vite": "^6.3.6",
     "vite-plugin-eslint2": "^5.0.3",
-    "vitest": "^2.1.9",
+    "vitest": "^3.2.4",
     "vitest-matchmedia-mock": "^2.0.3",
     "vue-tsc": "3.0.6",
     "webpack": "^5.99.9"

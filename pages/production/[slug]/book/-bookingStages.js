@@ -3,11 +3,13 @@ import OverviewStage from '@/pages/production/[slug]/book/[performanceId]/overvi
 import PaymentStage from '@/pages/production/[slug]/book/[performanceId]/pay.vue';
 import TicketSelectionStage from '@/pages/production/[slug]/book/[performanceId]/tickets.vue';
 import PickPerformanceStage from '@/pages/production/[slug]/book/index.vue';
+import AccessibilityStage from '@/pages/production/[slug]/book/[performanceId]/accessibility.vue';
 
 const stages = [
   PickPerformanceStage,
   AudienceWarningsStage,
   TicketSelectionStage,
+  AccessibilityStage,
   OverviewStage,
   PaymentStage
 ];

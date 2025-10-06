@@ -1,37 +1,23 @@
 <template>
   <div v-if="booking.performance && ticketMatrix" class="text-white">
-    <BookingSelectedPerformanceBar
-      v-if="booking.performance"
-      :performance="booking.performance"
-    />
-    <tickets-editor
-      :tickets-matrix="ticketMatrix"
-      :booking="booking"
-      :max-tickets="10"
-      :errors="errors"
-      @change="updateAPI"
-    />
-    <div
-      v-if="booking.tickets.length"
-      class="mt-2 min-w-1/2 text-center border-4 border-dashed border-sta-gray rounded-md text-white"
-    >
-      <h2 class="text-h2">Selected Tickets</h2>
-
-      <BookingSelectedTicketsTable
-        :ticket-matrix="ticketMatrix"
+    <div class="mb-4">
+      <VenueAccessibility :venue-data="booking.performance.venue.slug" />
+    </div>
+    <div class="mb-4">
+      <AccessibilityInput
         :booking="booking"
         :errors="errors"
+        @accessibility-toggle="(n) => (updating = n)"
       />
     </div>
     <div v-if="booking.tickets.length" class="mt-2 text-center">
       <button
         class="btn btn-orange font-semibold"
         :disabled="booking.dirty"
-        @click="$emit('next-stage')"
-        @keypress="$emit('next-stage')"
+        @click="handleNextStage"
+        @keypress="handleNextStage"
       >
         Next
-        <font-awesome-icon class="ml-2" icon="arrow-right" />
       </button>
     </div>
   </div>
@@ -46,17 +32,21 @@ import BookingMutation from '@/graphql/mutations/booking/Booking.gql';
 import { getValidationErrors, performMutation } from '~~/utils/api';
 
 import BookingStage from '@/classes/BookingStage';
-import TicketsEditor from '@/components/booking/editor/TicketsEditor.vue';
+import AccessibilityInput from '@/components/booking/AccessibilityInput.vue';
+import VenueAccessibility from '@/components/venue/VenueAccessibility.vue';
 import { recordEvent, events } from '~~/utils/analytics';
+import Errors from '~/classes/Errors';
 const stageInfo = new BookingStage({
-  name: 'Ticket Selection',
-  routeName: 'production-slug-book-performanceId-tickets'
+  name: 'Accessibility Information',
+  routeName: 'production-slug-book-performanceId-accessibility',
+  eligable: (_, booking) => !booking.dirty && booking.tickets.length > 0
 });
 
 export default defineNuxtComponent({
   stageInfo,
   components: {
-    TicketsEditor
+    AccessibilityInput,
+    VenueAccessibility
   },
   props: {
     production: {
@@ -76,7 +66,8 @@ export default defineNuxtComponent({
   data() {
     return {
       interaction_timer: lo.debounce(this.updateAPI, 2 * 1000),
-      errors: null
+      errors: null,
+      updating: false
     };
   },
   mounted() {
@@ -95,7 +86,8 @@ export default defineNuxtComponent({
               variables: {
                 input: {
                   performance: this.booking.performance.id,
-                  tickets: this.booking.toAPIData().tickets
+                  tickets: this.booking.toAPIData().tickets,
+                  accessibilityInfo: this.booking.accessibilityInfo
                 }
               }
             },
@@ -112,7 +104,8 @@ export default defineNuxtComponent({
               variables: {
                 input: {
                   id: this.booking.id,
-                  tickets: this.booking.toAPIData().tickets
+                  tickets: this.booking.toAPIData().tickets,
+                  accessibilityInfo: this.booking.accessibilityInfo
                 }
               }
             },
@@ -132,6 +125,21 @@ export default defineNuxtComponent({
 
       // There has been a change in the selected tickets whilst calling the API. Let's trigger another call...
       this.interaction_timer();
+    },
+    handleNextStage() {
+      if (
+        this.booking.dirty ||
+        (this.updating && !this.booking.accessibilityInfo)
+      ) {
+        // Raise an error to be passed to the accessibility input
+        this.errors = Errors.createFromMessage(
+          'Please enter your accessibility requirements or uncheck the box if you do not have any.',
+          'accessibilityInfo'
+        );
+        return;
+      }
+      this.updateAPI();
+      this.$emit('next-stage');
     }
   }
 });

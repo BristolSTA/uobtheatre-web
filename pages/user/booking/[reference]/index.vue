@@ -7,6 +7,12 @@
       <alert v-if="booking.status == 'CANCELLED'" level="danger">
         This booking has been cancelled, and is no longer valid
       </alert>
+      <alert v-else-if="booking.status == 'REFUND_PROCESSING'" level="danger">
+        This booking is in the process of being refunded, and is no longer valid
+      </alert>
+      <alert v-else-if="booking.status == 'REFUNDED'" level="danger">
+        This booking has been refunded, and is no longer valid
+      </alert>
       <h1 class="pt-2 text-h1">Your Booking</h1>
       <h2 class="text-sta-orange text-h2">
         Reference - {{ booking.reference }}
@@ -28,21 +34,30 @@
         </button>
       </div>
 
-      <div class="grid gap-4 grid-cols-1 lg:grid-cols-3">
+      <div class="grid gap-4 grid-cols-1 lg:grid-cols-6">
         <BookingPerformanceOverview
-          class="lg:col-span-2"
+          class="lg:col-span-4"
           :production="production"
           :performance="booking.performance"
         />
         <venue-overview
-          class="lg:col-span-1"
+          class="lg:col-span-2"
           :venue-data="booking.performance.venue.slug"
           :online="booking.performance.isOnline"
           :in-person="booking.performance.isInperson"
         />
-
-        <payment-overview class="lg:col-span-1" :booking="booking" />
-        <tickets-overview class="lg:col-span-2" :booking="booking" />
+        <accessibility-overview
+          class="lg:col-span-3"
+          :booking="booking"
+          :allow-edit="true"
+        />
+        <VenueAccessibility
+          v-if="booking.performance"
+          :venue-data="booking.performance.venue.slug"
+          class="lg:col-span-3"
+        />
+        <payment-overview class="lg:col-span-2" :booking="booking" />
+        <tickets-overview class="lg:col-span-4" :booking="booking" />
       </div>
 
       <div v-if="booking.status == 'PAID'" class="mt-4">
@@ -80,6 +95,7 @@ import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue';
 import BookingPerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue';
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
 import VenueOverview from '@/components/booking/overview/VenueOverview.vue';
+import AccessibilityOverview from '@/components/booking/overview/AccessibilityOverview.vue';
 import Ticket from '@/components/booking/Ticket.vue';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
 import Alert from '@/components/ui/Alert.vue';
@@ -95,6 +111,7 @@ export default defineNuxtComponent({
     VenueOverview,
     BookingPerformanceOverview,
     TicketsOverview,
+    AccessibilityOverview,
     ProductionBanner,
     PaymentOverview,
     Ticket,

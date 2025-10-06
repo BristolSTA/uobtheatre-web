@@ -6,7 +6,8 @@ import ProductionNode from './Production.js';
 export default (
   overrides = {},
   includePerformance = false,
-  includeProduction = true
+  includeProduction = true,
+  includeAccessibilityInfo = true
 ) => {
   return Object.assign(
     {
@@ -15,6 +16,8 @@ export default (
       updatedAt: '2021-05-08T16:00:00.000',
       name: 'Anson Theatre',
       internalCapacity: 420,
+      website: 'http://uobtheatre.com',
+      email: 'support@uobtheatre.com',
       description: 'not the anson rooms',
       address: Address(),
       image: {
@@ -28,7 +31,11 @@ export default (
       ),
       productions: GenericConnection(
         includeProduction ? [ProductionNode()] : []
-      )
+      ),
+      accessibilityInfo: includeAccessibilityInfo
+        ? 'Wheelchair access available, quiet room'
+        : null,
+      accessibilityShort: includeAccessibilityInfo ? 'Wheelchair access' : null
     },
     overrides
   );

@@ -55,21 +55,30 @@
         </UiTablesTableRow>
       </UiTablesPaginatedTable>
     </UiCard>
-    <div class="grid gap-4 grid-cols-1 lg:grid-cols-3">
+    <div class="grid gap-4 grid-cols-1 lg:grid-cols-6">
       <booking-performance-overview
-        class="lg:col-span-2"
+        class="lg:col-span-4"
         :production="production"
         :performance="booking.performance"
       />
       <venue-overview
-        class="lg:col-span-1"
+        class="lg:col-span-2"
         :venue-data="booking.performance.venue.slug"
         :online="booking.performance.isOnline"
         :in-person="booking.performance.isInperson"
       />
-
-      <payment-overview class="lg:col-span-1" :booking="booking" />
-      <tickets-overview class="lg:col-span-2" :booking="booking" />
+      <accessibility-overview
+        class="lg:col-span-3"
+        :booking="booking"
+        :show-previous="true"
+        :allow-edit="true"
+      />
+      <VenueAccessibility
+        :venue-data="booking.performance.venue.slug"
+        class="lg:col-span-3"
+      />
+      <payment-overview class="lg:col-span-2" :booking="booking" />
+      <tickets-overview class="lg:col-span-4" :booking="booking" />
     </div>
   </AdminPage>
 </template>
@@ -80,6 +89,7 @@ import BookingPerformanceOverview from '@/components/booking/overview/Performanc
 import VenueOverview from '@/components/booking/overview/VenueOverview.vue';
 import PaymentOverview from '@/components/booking/overview/PaymentOverview.vue';
 import TicketsOverview from '@/components/booking/overview/TicketsOverview.vue';
+import AccessibilityOverview from '@/components/booking/overview/AccessibilityOverview.vue';
 import Booking from '~~/classes/Booking';
 
 import TableRow from '@/components/ui/Tables/TableRow.vue';
@@ -97,6 +107,7 @@ export default defineNuxtComponent({
     VenueOverview,
     PaymentOverview,
     TicketsOverview,
+    AccessibilityOverview,
     TableHeadItem,
     TableRowItem,
     TableRow

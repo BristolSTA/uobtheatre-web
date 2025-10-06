@@ -11,6 +11,7 @@ import type {
 } from '~~/graphql/codegen/operations';
 import type { IdInput } from '~~/types/generic';
 import TicketsMatrix from './TicketsMatrix';
+import type { DateTime } from 'luxon';
 
 export default class Booking {
   id?: IdInput;
@@ -23,6 +24,10 @@ export default class Booking {
   raw?: DetailedBookingDetailsFragment;
   idempotencyKey?: string;
   user?: DetailedBookingDetailsFragment['user'];
+  accessibilityInfo?: string;
+  previousAccessibilityInfo?: string;
+  accessibilityInfoUpdatedAt?: DateTime;
+  canModifyAccessibility?: boolean;
 
   constructor() {
     this.tickets = [];
@@ -66,6 +71,18 @@ export default class Booking {
     }
     if (bookingData.user) {
       this.user = bookingData.user;
+    }
+    if (bookingData.accessibilityInfo) {
+      this.accessibilityInfo = bookingData.accessibilityInfo;
+    }
+    if (bookingData.accessibilityInfoUpdatedAt) {
+      this.accessibilityInfoUpdatedAt = bookingData.accessibilityInfoUpdatedAt;
+    }
+    if (bookingData.previousAccessibilityInfo) {
+      this.previousAccessibilityInfo = bookingData.previousAccessibilityInfo;
+    }
+    if (bookingData.canModifyAccessibility) {
+      this.canModifyAccessibility = bookingData.canModifyAccessibility;
     }
     if (bookingData.transactions && bookingData.transactions.edges.length) {
       this.transactions = bookingData.transactions.edges
