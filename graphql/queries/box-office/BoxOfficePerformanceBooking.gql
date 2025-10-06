@@ -17,6 +17,7 @@ query boxOfficePerformanceBooking(
           }
           expired
           expiresAt
+          canModifyAccessibility
           performance {
             id
             start
