@@ -11,7 +11,7 @@
     />
 
     <div
-      class="container grid gap-4 p-4 grid-cols-1 lg:grid-cols-5"
+      class="grid gap-4 p-4 lg:mx-5 grid-cols-1 lg:grid-cols-5"
       style="grid-template-rows: auto auto auto"
     >
       <div class="lg:col-start-1 lg:col-span-5 lg:row-start-1">
@@ -31,7 +31,7 @@
         </div>
       </div>
 
-      <div class="lg:col-start-1 lg:col-span-3 flex flex-col rounded">
+      <div class="lg:mr-5 lg:col-start-1 lg:col-span-3 flex flex-col rounded">
         <!-- Main page content -->
         <slot />
       </div>

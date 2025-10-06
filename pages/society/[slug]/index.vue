@@ -17,11 +17,11 @@
         v-if="society.website || society.contact"
         class="flex justify-center w-full lg:w-3/4 px-4 pb-4"
       >
-        <div>
+        <div class="max-w-full">
           <h2 class="text-sta-orange text-3xl font-semibold text-center">
             Society Information
           </h2>
-          <table class="table-auto mt-2">
+          <table class="table-auto mt-2 w-full break-words">
             <tbody>
               <tr v-if="society.website">
                 <th class="align-top pr-2">Website:</th>
@@ -30,7 +30,7 @@
                     :href="society.website"
                     target="_blank"
                     title="Opens in a new tab"
-                    class="text-sta-orange hover:text-sta-orange-dark"
+                    class="text-sta-orange hover:text-sta-orange-dark break-all"
                   >
                     {{ society.website }}
                   </a>
@@ -43,7 +43,7 @@
                     :href="`mailto:${society.contact}`"
                     target="_blank"
                     title="Opens in a new tab"
-                    class="text-sta-orange hover:text-sta-orange-dark"
+                    class="text-sta-orange hover:text-sta-orange-dark break-all"
                   >
                     {{ society.contact }}
                   </a>

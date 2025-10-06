@@ -2,11 +2,11 @@
   <LayoutInfoPage :title="venue?.name" :banner="banner">
     <template #sidebar>
       <div class="flex justify-center w-full p-4">
-        <div ref="venueInfo">
+        <div ref="venueInfo" class="max-w-full">
           <h2 class="text-sta-orange text-3xl font-semibold text-center">
             Venue Information
           </h2>
-          <table class="table-auto mt-2">
+          <table class="table-auto mt-2 w-full break-words">
             <tbody>
               <tr class="pb-2">
                 <th class="align-top text-right pr-2">Capacity:</th>
@@ -15,7 +15,7 @@
               <tr v-if="venue.website">
                 <th class="align-top text-right pr-2">Website:</th>
                 <td
-                  class="align-top text-sta-orange hover:text-sta-orange-dark"
+                  class="align-top text-sta-orange hover:text-sta-orange-dark break-all"
                 >
                   <a
                     :href="venue.website"
@@ -29,7 +29,7 @@
               <tr v-if="venue.email">
                 <th class="align-top text-right pr-2">Contact:</th>
                 <td
-                  class="align-top text-sta-orange hover:text-sta-orange-dark"
+                  class="align-top text-sta-orange hover:text-sta-orange-dark break-all"
                 >
                   <a :href="`mailto:${venue.email}`">{{ venue.email }}</a>
                 </td>
@@ -37,7 +37,7 @@
               <tr v-if="venue.address.what3words">
                 <th class="align-top pr-2">what3words:</th>
                 <td
-                  class="align-top text-sta-orange hover:text-sta-orange-dark"
+                  class="align-top text-sta-orange hover:text-sta-orange-dark break-all"
                 >
                   <a
                     target="_blank"
@@ -93,7 +93,7 @@
         />
       </div>
       <div class="flex justify-center w-full px-4 pb-4">
-        <div ref="accessibilityInfo">
+        <div ref="accessibilityInfo" class="max-w-full">
           <h2 class="text-sta-orange text-3xl font-semibold text-center">
             Accessibility Summary
           </h2>
