@@ -1,4 +1,5 @@
 <template>
+  <LayoutSiteMessageModal location="BOOKING_MODAL" />
   <div>
     <div>
       <button class="text-white hover:text-gray-300 font-bold" @click="cancel">

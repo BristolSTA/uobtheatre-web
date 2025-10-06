@@ -1,4 +1,5 @@
 <template>
+  <LayoutSiteMessageModal location="BOOKING_MODAL" />
   <UiCard>
     <loading-container :loading="loading">
       <BookingSelectedPerformanceBar
