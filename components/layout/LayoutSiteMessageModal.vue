@@ -132,7 +132,11 @@ export default {
     },
     showGoBack() {
       const msg = this.currentMessage;
-      return msg && msg.type !== 'sitewide' && msg.dismissalPolicy === 'BANNED';
+      return (
+        msg &&
+        this.location !== 'SITEWIDE_MODAL' &&
+        msg.dismissalPolicy === 'BANNED'
+      );
     }
   },
   mounted() {
