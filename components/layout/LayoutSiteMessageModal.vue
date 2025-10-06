@@ -188,7 +188,8 @@ export default {
       this.dismissedIds = addDismissedId(
         msg.id,
         msg.dismissalPolicy,
-        msg.eventEnd
+        msg.eventEnd,
+        msg.indefiniteOverride
       );
       // Remove from queue and update index
       this.messages.splice(this.currentIndex, 1);

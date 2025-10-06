@@ -51,12 +51,20 @@ export function setDismissedIds(
 export function addDismissedId(
   id: string | number,
   policy?: string | null,
-  eventEnd?: string | null
+  eventEnd?: string | null,
+  indefiniteOverride?: boolean | null
 ) {
   const ids = [...getDismissedIds(), String(id)];
   if (policy === 'SINGLE') {
     // Do NOT set cookies for SINGLE dismissal; keep in-memory only for this runtime
     return ids.map(String);
+  }
+  if (indefiniteOverride) {
+    // If this is an indefinite override, we use a fallback expiry of 3 months from now.
+    const fallbackExpiry = new Date();
+    fallbackExpiry.setMonth(fallbackExpiry.getMonth() + 3);
+    setDismissedIds(ids, fallbackExpiry);
+    return getDismissedIds();
   }
   const expiry = eventEnd ? new Date(eventEnd) : undefined;
   setDismissedIds(ids, expiry ? expiry : undefined);

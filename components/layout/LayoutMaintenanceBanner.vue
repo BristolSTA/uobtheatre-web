@@ -198,7 +198,8 @@ export default {
       this.dismissedIds = addDismissedId(
         msg.id,
         msg.dismissalPolicy,
-        msg.eventEnd
+        msg.eventEnd,
+        msg.indefiniteOverride
       );
       this.siteMessages.splice(this.currentIndex, 1);
       if (this.siteMessages.length === 0) return;
