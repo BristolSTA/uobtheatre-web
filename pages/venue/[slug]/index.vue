@@ -217,7 +217,9 @@ export default defineNuxtComponent({
     }
 
     const upcomingProductions = venue.productions
-      ? venue.productions.edges.map((edge) => edge.node)
+      ? venue.productions.edges
+          .map((edge) => edge.node)
+          .filter((production) => new Date(production.end) > new Date())
       : [];
 
     const bannerProductions = upcomingProductions

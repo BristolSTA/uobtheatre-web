@@ -150,7 +150,9 @@ export default defineNuxtComponent({
     }
 
     const upcomingProductions = society.productions
-      ? society.productions.edges.map((edge) => edge.node)
+      ? society.productions.edges
+          .map((edge) => edge.node)
+          .filter((production) => new Date(production.end) > new Date())
       : [];
 
     const bannerProductions = upcomingProductions
