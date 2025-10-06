@@ -78,7 +78,7 @@ export function filterAndSortMessages(
 ) {
   const now = nowISO ? new Date(nowISO) : new Date();
   return (messages || [])
-    .filter((m) => m && m.toDisplay && !dismissedIds.includes(String(m.id)))
+    .filter((m) => m && !dismissedIds.includes(String(m.id)))
     .sort((a, b) => {
       const nowTime = now.getTime();
       const aStart = new Date(a.eventStart).getTime();

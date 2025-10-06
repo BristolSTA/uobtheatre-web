@@ -1,14 +1,9 @@
-query upcomingSiteMessages(
-  $now: DateTime
-  $afterCursor: String
-  $displayLocation: String
-) {
+query upcomingSiteMessages($afterCursor: String, $displayLocation: String) {
   siteMessages(
     first: 5
     orderBy: "display_start"
     after: $afterCursor
-    displayStart_Lte: $now
-    end_Gte: $now
+    toDisplay: true
     displayLocation: $displayLocation
   ) {
     pageInfo {

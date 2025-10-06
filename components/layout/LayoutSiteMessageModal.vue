@@ -149,7 +149,6 @@ export default {
       const { data } = await this.$apollo.query({
         query: UpcomingSiteMessagesDocument,
         variables: {
-          now: new Date(),
           displayLocation: this.location
         }
       });
