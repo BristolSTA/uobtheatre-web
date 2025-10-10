@@ -196,11 +196,6 @@ import { successToast, swal } from '~~/utils/alerts';
 import { humanDuration, dateFormat } from '~~/utils/datetime';
 import { SetProductionStatusDocument } from '@/graphql/codegen/operations';
 
-definePageMeta({
-  middleware: ['require-production-permissions'],
-  requiredPermissions: ['view_production']
-});
-
 export default defineNuxtComponent({
   components: {
     ProgressBar,
