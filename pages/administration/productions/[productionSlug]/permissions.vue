@@ -34,6 +34,11 @@ import {
   ProductionPermissionsMutationsDocument
 } from '~~/graphql/codegen/operations';
 
+definePageMeta({
+  middleware: ['require-production-permissions'],
+  requiredPermissions: ['view_production']
+});
+
 export default defineNuxtComponent({
   components: {
     PermissionsAssigner,

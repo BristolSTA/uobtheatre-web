@@ -21,7 +21,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     !Array.isArray(requiredPermissions) ||
     requiredPermissions.length === 0
   ) {
-    return abortNavigation('Invalid permission configuration.');
+    return abortNavigation('Invalid permission configuration');
   }
 
   // Check if the user has the required permission for the production
@@ -33,7 +33,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   if (!hasPermission) {
     return abortNavigation(
-      'You do not have permission to access this page for this production.'
+      createSafeError({
+        statusCode: 401,
+        message: 'You do not have permission to access this page'
+      })
     );
   }
 });

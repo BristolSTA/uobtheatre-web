@@ -453,11 +453,22 @@ const useAuthStore = defineStore('auth', {
         return false;
       }
 
-      const productionPermissions = result.value?.production?.permissions || [];
+      // If we don't have a production, raise a 404
+      if (!result.value?.production) {
+        throw createSafeError({
+          statusCode: 404,
+          message: 'This production does not exist'
+        });
+      } else {
+        // Check the user has all the required permissions
 
-      return permissions.every((permission) =>
-        productionPermissions.includes(permission)
-      );
+        const productionPermissions =
+          result.value?.production?.permissions || [];
+
+        return permissions.every((permission) =>
+          productionPermissions.includes(permission)
+        );
+      }
     }
   }
 });
