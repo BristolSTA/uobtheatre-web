@@ -21,6 +21,11 @@ import { getValidationErrors, performMutation } from '~~/utils/api';
 import { loadingSwal, successToast } from '~~/utils/alerts';
 import { ProductionMutationDocument } from '~~/graphql/codegen/operations';
 
+definePageMeta({
+  middleware: ['require-production-permissions'],
+  requiredPermissions: ['view_production', 'change_production']
+});
+
 export default defineNuxtComponent({
   components: { ProductionEditor },
   async asyncData() {
