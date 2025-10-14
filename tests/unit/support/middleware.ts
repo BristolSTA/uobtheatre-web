@@ -62,3 +62,55 @@ export function mockAuthStoreWithPermissionMethod(
 export async function loadMiddleware(modulePath: string) {
   return (await import(modulePath)).default;
 }
+
+/**
+ * Stub navigateTo and return its mock (returns argument by default)
+ */
+export function stubNavigateTo() {
+  const navigateToMock = vi.fn((arg: any) => arg);
+  vi.stubGlobal('navigateTo', navigateToMock);
+  return navigateToMock;
+}
+
+/**
+ * Mock the auth store with isLoggedIn and hasPermission support
+ */
+export function mockAuthStore(overrides?: {
+  isLoggedIn?: boolean;
+  hasPermissionImpl?: (permission: string) => boolean | Promise<boolean>;
+}) {
+  const hasPermissionMock = vi.fn(overrides?.hasPermissionImpl as any);
+  const store = {
+    isLoggedIn: overrides?.isLoggedIn ?? false,
+    hasPermission: hasPermissionMock
+  } as any;
+
+  const useAuthStoreMock = vi.fn(() => store);
+  vi.doMock('@/store/auth', () => ({
+    __esModule: true,
+    default: useAuthStoreMock
+  }));
+  vi.doMock('~~/store/auth', () => ({
+    __esModule: true,
+    default: useAuthStoreMock
+  }));
+
+  return { useAuthStoreMock, hasPermissionMock, store } as const;
+}
+
+/**
+ * Mock the box office store with a lockdownMode flag
+ */
+export function mockBoxOfficeStore(overrides?: { lockdownMode?: boolean }) {
+  const store = {
+    lockdownMode: overrides?.lockdownMode ?? false
+  } as any;
+
+  const useBoxOfficeStoreMock = vi.fn(() => store);
+  vi.doMock('~~/store/box-office', () => ({
+    __esModule: true,
+    default: useBoxOfficeStoreMock
+  }));
+
+  return { useBoxOfficeStoreMock, store } as const;
+}
