@@ -1,12 +1,12 @@
 <template>
   <div
-    class="relative p-2 bg-sta-gray-dark rounded"
+    class="relative p-2 bg-sta-gray-dark rounded-sm"
     @drop.prevent="onDrop"
     @dragover.prevent="onDragOver"
   >
     <div
       v-if="draggingOver"
-      class="absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center bg-sta-gray-dark bg-opacity-80"
+      class="absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center bg-sta-gray-dark/80"
       @dragleave.prevent="onDragLeave"
     >
       <strong>Release to swap</strong>
@@ -22,13 +22,13 @@
             {{ error }}
           </error-helper>
           <button
-            class="p-1 mr-0.5 bg-sta-orange hover:bg-sta-orange-dark rounded transition-colors"
+            class="p-1 mr-0.5 bg-sta-orange hover:bg-sta-orange-dark rounded-sm transition-colors"
             @click="file = null"
           >
             Remove
           </button>
           <button
-            class="p-1 ml-0.5 bg-sta-orange hover:bg-sta-orange-dark rounded transition-colors"
+            class="p-1 ml-0.5 bg-sta-orange hover:bg-sta-orange-dark rounded-sm transition-colors"
             @click="$refs.fileInput.click()"
           >
             Replace
@@ -40,7 +40,7 @@
         <p>
           Drag an image here or
           <button
-            class="p-1 bg-sta-orange hover:bg-sta-orange-dark rounded transition-colors"
+            class="p-1 bg-sta-orange hover:bg-sta-orange-dark rounded-sm transition-colors"
             @click="$refs.fileInput.click()"
           >
             Select

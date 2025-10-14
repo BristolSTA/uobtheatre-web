@@ -1,29 +1,38 @@
 <template>
-  <div
-    v-if="siteMessage && !maintenanceBannerDismissed"
-    class="antialiased bg-sta-gray-light"
-  >
-    <div class="h-2" :class="[typeConfig.accentBar]" />
-    <div class="flex gap-2 p-2 items-start justify-center text-white min-h-24">
+  <div v-if="siteMessages.length" class="antialiased bg-sta-gray-light">
+    <div class="h-2" :class="[typeConfigFor(currentMessage).accentBar]" />
+    <div
+      class="flex relative gap-2 p-2 items-start justify-center text-white min-h-24"
+    >
       <div>
         <!-- Icon Slot -->
         <font-awesome-icon
           id="maintenanceBannerIcon"
-          class="rounded text-h2 p-2"
-          :class="[typeConfig.iconColour]"
-          :icon="typeConfig.icon"
+          class="rounded-sm text-h2 p-2"
+          :class="[typeConfigFor(currentMessage).iconColour]"
+          :icon="typeConfigFor(currentMessage).icon"
         />
       </div>
-      <div class="max-w-6xl min-w-2/3 xl:min-w-1/2">
+      <div class="w-3/4">
         <!-- Main Information Slot -->
-        <h3 class="text-h3 md:text-h2">{{ typeConfig.titleText }}</h3>
+        <h3 class="text-h3 md:text-h2 flex items-baseline gap-2">
+          <span v-if="currentMessage?.title">{{ currentMessage.title }}</span>
+          <span v-else>{{ typeConfigFor(currentMessage).titleText }}</span>
+          <span
+            v-if="siteMessages.length > 1"
+            class="text-sm text-sta-gray-light"
+            >{{ currentIndex + 1 }} of {{ siteMessages.length }}</span
+          >
+        </h3>
         <p class="pb-2 md:text-lg">
-          {{ siteMessage.message }}
+          <UiTipTapOutput :html="currentMessage?.message" />
         </p>
         <div class="pb-2">
-          <strong>{{ isOngoing ? 'Started On' : 'Starting On' }}: </strong>
+          <strong
+            >{{ isOngoingFor(currentMessage) ? 'Started On' : 'Starting On' }}:
+          </strong>
           <span>{{
-            dateFormatLocale(siteMessage.eventStart, {
+            dateFormatLocale(currentMessage.eventStart, {
               weekday: 'long',
               day: 'numeric',
               month: 'long',
@@ -35,38 +44,72 @@
           }}</span>
         </div>
         <div class="pb-2">
-          <span v-if="!siteMessage.indefiniteOverride">
+          <span v-if="!currentMessage.indefiniteOverride">
             <strong>Expected Duration:</strong>
             {{
-              humanizeDuration(siteMessage.eventDuration * 60 * 1000, {
-                units: ['d', 'h', 'm']
-              })
+              humanizeDuration(
+                (currentMessage.eventDuration || 0) * 60 * 1000,
+                {
+                  units: ['d', 'h', 'm']
+                }
+              )
             }}
           </span>
           <span v-else> <strong>Duration: </strong>Ongoing</span>
         </div>
       </div>
-      <div>
-        <!-- Icon Slot -->
+      <!-- Dismiss Button -->
+      <div class="flex items-center order-1 sm:order-2">
         <UiStaButton
+          v-if="siteMessages.length > 1"
+          id="maintenanceBannerPrev"
+          :class="[
+            'text-h3 -my-2 cursor-pointer',
+            siteMessages.length > 1 && currentIndex > 0 ? '' : 'invisible'
+          ]"
+          icon="chevron-left"
+          :disabled="siteMessages.length <= 1 || currentIndex === 0"
+          @click="prevMessage"
+        />
+        <UiStaButton
+          v-if="currentMessage && currentMessage.dismissalPolicy !== 'BANNED'"
           id="maintenanceBannerDismiss"
-          class="text-h2 -my-2 hover:text-sta-rouge-dark"
-          :class="['hover:' + typeConfig.iconColour]"
+          class="text-h2 -my-2 cursor-pointer"
+          :class="['hover:' + typeConfigFor(currentMessage).iconColour]"
           icon="circle-xmark"
-          :disabled="preventDismiss"
-          @click="dismissBanner"
+          @click="dismissCurrent"
+        />
+        <UiStaButton
+          v-if="siteMessages.length > 1"
+          id="maintenanceBannerNext"
+          :class="[
+            'text-h3 -my-2 cursor-pointer',
+            siteMessages.length > 1 && currentIndex < siteMessages.length - 1
+              ? ''
+              : 'invisible'
+          ]"
+          icon="chevron-right"
+          :disabled="
+            siteMessages.length <= 1 || currentIndex === siteMessages.length - 1
+          "
+          @click="nextMessage"
         />
       </div>
     </div>
-    <div class="h-2" :class="[typeConfig.accentBar]" />
+    <div class="h-2" :class="[typeConfigFor(currentMessage).accentBar]" />
   </div>
 </template>
 
 <script>
-import cookie from 'js-cookie';
 import { UpcomingSiteMessagesDocument } from '~/graphql/codegen/operations';
 import humanizeDuration from 'humanize-duration';
-import { DateTime } from 'luxon';
+import {
+  addDismissedId,
+  buildTypeKey,
+  filterAndSortMessages,
+  getDismissedIds,
+  isOngoing
+} from '@/composables/useSiteMessages';
 
 const typeMap = {
   upcomingMaintenance: {
@@ -111,29 +154,20 @@ export default {
   name: 'LayoutMaintenanceBanner',
   data() {
     return {
-      maintenanceBannerDismissed: false,
-      preventDismiss: false,
-      siteMessage: null,
+      siteMessages: [],
+      currentIndex: 0,
       dismissedIds: [],
       typeMap: typeMap
     };
   },
   computed: {
-    isOngoing() {
-      return this.siteMessage.eventStart < DateTime.now().toISO();
-    },
-    typeConfig() {
-      // Combine type and if its ongoing (e.g. ongoingMaintenance, upcomingAlert)
-      return typeMap[
-        `${this.isOngoing ? 'ongoing' : 'upcoming'}${this.siteMessage.type.charAt(0)}${this.siteMessage.type.slice(1).toLowerCase()}`
-      ];
+    currentMessage() {
+      return this.siteMessages[this.currentIndex] || null;
     }
   },
   mounted() {
-    // Need to store the alert's id in the cookie to check if it's been superceded
-    this.dismissedIds = cookie.get('maintenanceBannerDismissed')
-      ? cookie.get('maintenanceBannerDismissed').split(',')
-      : [];
+    // Read unified dismissed ids cookie
+    this.dismissedIds = getDismissedIds();
     this.loadSiteMessageData();
   },
   methods: {
@@ -141,40 +175,48 @@ export default {
       const { data } = await this.$apollo.query({
         query: UpcomingSiteMessagesDocument,
         variables: {
-          now: new Date()
+          displayLocation: 'BANNER'
         }
       });
 
       const siteMessages = data.siteMessages;
       if (siteMessages) {
-        this.siteMessage = siteMessages.edges
-          .map((edge) => edge.node)
-          .filter((node) => {
-            return (
-              node.toDisplay && !this.dismissedIds.includes(String(node.id))
-            );
-          })[0];
-
-        if (this.siteMessage && this.siteMessage.dismissalPolicy === 'BANNED') {
-          this.preventDismiss = true;
-        }
+        const nodes = siteMessages.edges.map((edge) => edge.node);
+        this.siteMessages = filterAndSortMessages(nodes, this.dismissedIds);
       }
     },
-    dismissBanner() {
-      this.maintenanceBannerDismissed = true;
-      const dismissalTime = this.siteMessage.eventEnd - Date.now();
-
-      // If a cookie has already been sent, append the new id to the list, otherwise create the cookie
-      if (this.dismissedIds) {
-        this.dismissedIds.push(this.siteMessage.id);
-        cookie.set('maintenanceBannerDismissed', this.dismissedIds.join(','), {
-          expires: dismissalTime
-        });
-      } else {
-        cookie.set('maintenanceBannerDismissed', this.siteMessage.id, {
-          expires: dismissalTime
-        });
+    nextMessage() {
+      if (this.currentIndex < this.siteMessages.length - 1) {
+        this.currentIndex += 1;
       }
+    },
+    prevMessage() {
+      if (this.currentIndex > 0) {
+        this.currentIndex -= 1;
+      }
+    },
+    dismissCurrent() {
+      const msg = this.currentMessage;
+      if (!msg) return;
+      this.dismissedIds = addDismissedId(
+        msg.id,
+        msg.dismissalPolicy,
+        msg.eventEnd,
+        msg.indefiniteOverride
+      );
+      this.siteMessages.splice(this.currentIndex, 1);
+      if (this.siteMessages.length === 0) return;
+      if (this.currentIndex >= this.siteMessages.length) {
+        this.currentIndex = this.siteMessages.length - 1;
+      }
+    },
+    typeConfigFor(msg) {
+      return (
+        this.typeMap[buildTypeKey(msg)] || this.typeMap.upcomingInformation
+      );
+    },
+    isOngoingFor(msg) {
+      return isOngoing(msg);
     },
     humanizeDuration
   }

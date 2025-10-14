@@ -30,7 +30,7 @@
           </template>
           <template v-else>
             <div class="flex">
-              <form-label class="flex-grow">
+              <form-label class="grow">
                 Slug
                 <UiInputText
                   :model-value="manualSlug"
@@ -163,7 +163,7 @@
               "
             />
           </form-label>
-          <form-label class="flex-grow" :errors="errors" name="facebookEvent">
+          <form-label class="grow" :errors="errors" name="facebookEvent">
             Facebook Event Link
             <UiInputText v-model="production.facebookEvent" />
           </form-label>

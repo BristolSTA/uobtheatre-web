@@ -2,7 +2,7 @@
   <div class="container">
     <h2 class="text-h2">Booking Tickets</h2>
     <NuxtLink
-      class="btn p-2 bg-sta-green hover:bg-sta-green-dark rounded transition-colors mb-2"
+      class="btn p-2 bg-sta-green hover:bg-sta-green-dark rounded-sm transition-colors mb-2"
       to="./"
     >
       View Full Booking

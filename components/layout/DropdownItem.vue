@@ -1,6 +1,6 @@
 <template>
   <NuxtLink
-    class="row focus:shadow-outline flex items-start p-2 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 bg-transparent rounded-lg focus:outline-none"
+    class="row focus:shadow-outline flex items-start p-2 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 bg-transparent rounded-lg focus:outline-hidden"
     :to="route"
     @click="$emit('click')"
   >

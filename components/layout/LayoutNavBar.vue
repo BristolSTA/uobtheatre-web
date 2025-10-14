@@ -1,18 +1,41 @@
 <template>
   <div class="antialiased bg-sta-gray-dark">
     <div
-      class="flex flex-col mx-auto max-w-screen-xl md:flex-row md:items-center md:justify-between lg:container"
+      class="flex flex-col mx-auto max-w-(--breakpoint-xl) md:flex-row md:items-center md:justify-between lg:container"
     >
       <div class="flex flex-row items-center justify-between p-4 text-white">
-        <NuxtLink
-          class="px-4 text-3xl tracking-tight uppercase sm:text-4xl"
-          to="/"
-        >
-          {{ appConfig.name }}
-        </NuxtLink>
+        <UApp>
+          <UTooltip
+            :text="randomTooltipPhrase"
+            :delay-duration="0"
+            placement="bottom"
+            arrow
+            :reference="reference"
+            :content="{
+              side: 'top',
+              sideOffset: 16,
+              updatePositionStrategy: 'always'
+            }"
+          >
+            <NuxtLink
+              class="px-4 text-3xl tracking-tight uppercase sm:text-4xl sm:font-semibold transflag"
+              to="/"
+              @pointerenter="open = true"
+              @pointerleave="open = false"
+              @pointermove="
+                (ev) => {
+                  anchor.x = ev.clientX;
+                  anchor.y = ev.clientY;
+                }
+              "
+            >
+              {{ appConfig.name }}
+            </NuxtLink>
+          </UTooltip>
+        </UApp>
         <button
           role="toggle"
-          class="focus:shadow-outline rounded-lg focus:outline-none md:hidden"
+          class="focus:shadow-outline rounded-lg focus:outline-hidden md:hidden"
           @click="open = !open"
           @keypress="open = !open"
         >
@@ -34,7 +57,7 @@
       </div>
       <nav
         :class="{ flex: open, hidden: !open }"
-        class="flex-col flex-grow p-4 pt-0 space-y-2 md:flex md:flex-row md:items-center md:justify-end md:pb-0 md:space-y-0"
+        class="flex-col grow p-4 pt-0 space-y-2 md:flex md:flex-row md:items-center md:justify-end md:pb-0 md:space-y-0"
       >
         <NuxtLink
           v-for="(item, index) in navItems"
@@ -147,13 +170,63 @@ function closeUserMenu() {
     userDropdownComponent.value.hideMenu();
   }
 }
+
+// Randomly chose from a list of phrases for the tooltip
+const tooltipPhrases = [
+  'Trans Rights are Human Rights',
+  'Protect Trans Kids',
+  'Protect the Dolls',
+  'Trans Rights, Now and Always',
+  'With Love To All Our Trans Siblings',
+  'One Day We Will Win',
+  'Trans Joy is Revolutionary',
+  'You Belong Here',
+  'Trans Lives Matter',
+  'Support Trans Artists',
+  'Trans Visibility Saves Lives',
+  'Trans People Are Loved',
+  'Trans Futures Are Bright',
+  'Trans Liberation For All',
+  'Trans Pride Every Day'
+];
+
+const randomTooltipPhrase = computed(() => {
+  const randomIndex = Math.floor(Math.random() * tooltipPhrases.length);
+  return tooltipPhrases[randomIndex];
+});
+
+const anchor = ref({ x: 0, y: 0 });
+
+const reference = computed(() => ({
+  getBoundingClientRect: () => ({
+    width: 0,
+    height: 0,
+    left: anchor.value.x,
+    right: anchor.value.x,
+    top: anchor.value.y,
+    bottom: anchor.value.y,
+    ...anchor.value
+  })
+}));
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
+@reference '@/assets/css/main.css';
 nav > a.router-link-exact-active {
   @apply text-sta-orange;
 }
 .auth-button {
   @apply inline-block;
+}
+.transflag {
+  background: linear-gradient(
+    #00d2ff 30%,
+    #ffa6b9 0 43%,
+    white 0 57%,
+    #ffa6b9 0 70%,
+    #00d2ff 0
+  );
+  @apply bg-clip-text;
+  @apply text-transparent;
 }
 </style>

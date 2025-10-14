@@ -2,7 +2,7 @@
   <div class="text-black">
     <select
       v-model="value"
-      class="text-black w-full rounded"
+      class="text-black w-full rounded-sm"
       :disabled="props.disabled"
     >
       <option v-if="props.placeholder" value="" disabled selected>

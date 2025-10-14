@@ -86,12 +86,10 @@
             </span>
             <UTooltip
               v-if="miscCostsDisplay"
-              class="pl-1"
-              :popper="{ arrow: true }"
+              arrow
+              :text="miscCostsDisplay"
+              :delay-duration="0"
             >
-              <template #text>
-                {{ miscCostsDisplay }} to cover fees and support our theatre.
-              </template>
               <small
                 >(exc. fees)<font-awesome-icon icon="circle-info" class="ml-1"
               /></small>
@@ -192,6 +190,11 @@ export default {
       );
     },
     miscCostsDisplay() {
+      // If there are no misc costs, return nothing
+      if (!this.miscCosts.length) {
+        return '';
+      }
+
       // The total percentage sum of all misc costs
       const totalPercentage =
         this.miscCosts
@@ -206,13 +209,15 @@ export default {
 
       // Returns the total percentage and value of all misc costs in format totalPercentage + totalValue, but hide each if the value is 0
       // If the total value is greater than 100 (i.e. £1), it is displayed in pounds, otherwise displayed in pence
-      return `${totalPercentage ? `${totalPercentage}%` : ''}${
-        totalValue
-          ? `${totalPercentage ? ' + ' : ''}${
-              totalValue >= 100 ? '£' + totalValue / 100 : totalValue + 'p'
-            }`
-          : ''
-      }`;
+      return (
+        `${totalPercentage ? `${totalPercentage}%` : ''}${
+          totalValue
+            ? `${totalPercentage ? ' + ' : ''}${
+                totalValue >= 100 ? '£' + totalValue / 100 : totalValue + 'p'
+              }`
+            : ''
+        }` + ' to cover fees and support our theatre'
+      );
     }
   },
   methods: {

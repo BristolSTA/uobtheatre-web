@@ -63,8 +63,12 @@
       <div v-if="booking.status == 'PAID'" class="mt-4">
         <div
           ref="tickets"
-          class="flex items-center justify-between px-4 py-2 text-h2 hover:bg-opacity-80 cursor-pointer"
-          :class="[expanded ? 'bg-sta-orange' : 'bg-sta-green']"
+          class="flex items-center justify-between px-4 py-2 text-h2 cursor-pointer"
+          :class="[
+            expanded
+              ? 'bg-sta-orange hover:bg-sta-orange/80'
+              : 'bg-sta-green hover:bg-sta-green/80'
+          ]"
           @click="ticketToggle"
           @keypress="ticketToggle"
         >

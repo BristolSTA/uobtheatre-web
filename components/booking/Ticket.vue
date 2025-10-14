@@ -25,7 +25,7 @@
         {{ ticket.seatGroup.name }}
       </p>
     </div>
-    <div class="flex flex-grow items-center justify-center py-2 w-full">
+    <div class="flex grow items-center justify-center py-2 w-full">
       <qrcode-vue
         :value="ticket.generateQRCodeString(reference)"
         level="L"

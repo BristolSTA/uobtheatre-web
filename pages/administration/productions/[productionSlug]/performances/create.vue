@@ -1,4 +1,5 @@
 <template>
+  <LayoutSiteMessageModal location="PRODUCTION_CREATION_MODAL" />
   <AdminPage title="Create a performance">
     <template #toolbar>
       <UiStaButton colour="green" icon="save" @click="create">

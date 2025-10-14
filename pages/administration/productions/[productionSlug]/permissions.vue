@@ -1,4 +1,5 @@
 <template>
+  <LayoutSiteMessageModal location="PRODUCTION_CREATION_MODAL" />
   <AdminPage title="Edit Permissions">
     <template #toolbar>
       <UiStaButton

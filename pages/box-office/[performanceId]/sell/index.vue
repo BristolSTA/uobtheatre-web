@@ -1,4 +1,5 @@
 <template>
+  <LayoutSiteMessageModal location="BOOKING_MODAL" />
   <div>
     <div>
       <button class="text-white hover:text-gray-300 font-bold" @click="cancel">
@@ -22,7 +23,7 @@
                 @change="updateApi"
               />
             </div>
-            <div class="text-center flex-grow">
+            <div class="text-center grow">
               <div class="bg-sta-gray-light p-4">
                 <BookingSelectedTicketsTable
                   class="text-white overflow-auto"

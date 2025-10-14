@@ -29,7 +29,13 @@ export default defineConfig({
   },
   plugins: [
     graphql(), // GraphQL File Loading
-    Vue(), // Vue SFC File support
+    Vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => tag.includes('NuxtTurnstile')
+        }
+      }
+    }), // Vue SFC File support
     AutoImport({
       imports: ['vue'],
       dirs: ['composables', 'utils'],
@@ -60,7 +66,7 @@ export default defineConfig({
         'utils/**'
       ],
       thresholds: {
-        lines: 51.04
+        lines: 51.89
       }
     }
   }

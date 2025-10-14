@@ -1,6 +1,6 @@
 <template>
   <span class="text-xl">
-    <button class="pl-2 focus:outline-none" @click="onSort">
+    <button class="pl-2 focus:outline-hidden" @click="onSort">
       <font-awesome-icon v-if="currentlySortedUp" icon="sort-up" />
       <font-awesome-icon v-else-if="currentlySortedDown" icon="sort-down" />
       <font-awesome-icon v-else icon="sort" />

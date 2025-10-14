@@ -2,7 +2,7 @@
   <div class="relative w-88 bg-sta-gray shadow-2xl">
     <div role="navigation" class="flex items-center space-x-1">
       <button
-        class="py-3 w-1/2 font-semibold rounded-none focus:outline-none"
+        class="py-3 w-1/2 font-semibold rounded-none focus:outline-hidden"
         :class="[
           loginMode
             ? 'bg-sta-orange'
@@ -14,7 +14,7 @@
         Login
       </button>
       <button
-        class="py-3 w-1/2 font-semibold rounded-none focus:outline-none"
+        class="py-3 w-1/2 font-semibold rounded-none focus:outline-hidden"
         :class="[
           loginMode
             ? 'bg-gray-200 hover:bg-gray-400 text-gray-700'
@@ -29,7 +29,7 @@
     <div
       v-if="loading"
       data-test="loading-overlay"
-      class="absolute z-10 top-0 flex items-center justify-center w-full h-full text-white text-3xl bg-sta-gray-dark bg-opacity-95"
+      class="absolute z-10 top-0 flex items-center justify-center w-full h-full text-white text-3xl bg-sta-gray-dark/95"
     >
       <loading-icon size-class="" />
     </div>
@@ -77,7 +77,7 @@
           id="remember_me"
           v-model="rememberMe"
           type="checkbox"
-          class="border-sta-grey w-5 h-5 border rounded-sm focus:outline-none"
+          class="border-sta-grey w-5 h-5 border rounded-xs focus:outline-hidden"
         />
         <span class="text-white text-xs font-semibold">Remember me?</span>
       </label>
@@ -201,7 +201,7 @@
           v-model="acceptedTerms"
           type="checkbox"
           required
-          class="border-sta-grey w-5 h-5 border rounded-sm focus:outline-none"
+          class="border-sta-grey w-5 h-5 border rounded-xs focus:outline-hidden"
         />
         <span class="text-white text-xs font-semibold">
           I have read and agree to the

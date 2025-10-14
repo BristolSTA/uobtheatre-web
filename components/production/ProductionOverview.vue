@@ -11,7 +11,7 @@
       />
     </div>
     <tip-tap-output
-      class="flex-grow order-3 mt-4 lg:order-2 lg:mt-0 break-words min-w-0"
+      class="grow order-3 mt-4 lg:order-2 lg:mt-0 break-words min-w-0"
       :html="production.description"
     />
     <div class="sm:w-auto lg:order-3 lg:w-1/3 w-full">
