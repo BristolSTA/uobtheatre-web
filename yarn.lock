@@ -13202,15 +13202,10 @@ tailwind-variants@^3.1.0:
   resolved "https://registry.yarnpkg.com/tailwind-variants/-/tailwind-variants-3.1.0.tgz#d2827f601702640c0b28560361328bb74e383548"
   integrity sha512-ieiYaEfUr+sNhw/k++dosmZfVA4VIG5bV+G1eGdJSC4FcflqQv0iSIlOLj/RbzRuTu/VrIiNSlwh1esBM3BXUg==
 
-tailwindcss@4.1.14:
+tailwindcss@4.1.14, tailwindcss@^4.1.12, tailwindcss@^4.1.14:
   version "4.1.14"
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-4.1.14.tgz#a5907cc2202a2a1f5f15bac6f2031e53117e43a8"
   integrity sha512-b7pCxjGO98LnxVkKjaZSDeNuljC4ueKUddjENJOADtubtdo8llTaJy7HwBMeLNSSo2N5QIAgklslK1+Ir8r6CA==
-
-tailwindcss@^4.1.12, tailwindcss@^4.1.13:
-  version "4.1.13"
-  resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-4.1.13.tgz#ade3471fdfd0a2a86da3a679bfc10c623e645b09"
-  integrity sha512-i+zidfmTqtwquj4hMEwdjshYYgMbOrPzb9a0M3ZgNa0JMoZeFC6bxZvO8yr8ozS6ix2SDz0+mvryPeBs2TFE+w==
 
 tapable@^2.1.1, tapable@^2.2.0:
   version "2.2.1"
