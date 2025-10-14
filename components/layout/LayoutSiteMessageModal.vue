@@ -28,6 +28,7 @@
           <div class="flex items-center order-1 sm:order-2">
             <UiStaButton
               v-if="messages.length > 1"
+              id="siteMessageModalPrev"
               :class="[
                 'text-xl -my-2 text-sta-orange hover:text-sta-orange-dark cursor-pointer',
                 messages.length > 1 && currentIndex > 0 ? '' : 'invisible'
@@ -37,6 +38,7 @@
               @click="prevMessage"
             />
             <UiStaButton
+              id="siteMessageModalDismiss"
               :class="[
                 'text-xl -my-2 text-sta-orange hover:text-sta-orange-dark cursor-pointer',
                 !preventDismiss ? '' : 'invisible'
@@ -47,6 +49,7 @@
             />
             <UiStaButton
               v-if="messages.length > 1"
+              id="siteMessageModalNext"
               :class="[
                 'text-xl -my-2 text-sta-orange hover:text-sta-orange-dark cursor-pointer',
                 messages.length > 1 && currentIndex < messages.length - 1
@@ -67,6 +70,7 @@
         <!-- Go Back Button -->
         <div v-if="showGoBack" class="mt-6 flex justify-center">
           <UiStaButton
+            id="siteMessageModalBackButton"
             class="btn btn-outline btn-orange font font-semibold"
             @click="goBack"
           >
@@ -131,12 +135,7 @@ export default {
       return this.messages[this.currentIndex] || null;
     },
     showGoBack() {
-      const msg = this.currentMessage;
-      return (
-        msg &&
-        this.location !== 'SITEWIDE_MODAL' &&
-        msg.dismissalPolicy === 'BANNED'
-      );
+      return this.location !== 'SITEWIDE_MODAL';
     }
   },
   mounted() {
@@ -182,7 +181,6 @@ export default {
       // (needs to happen before splicing the array so no fields are null)
       if (this.messages.length === 1) {
         this.showModel = false;
-        return;
       }
       this.dismissedIds = addDismissedId(
         msg.id,
@@ -192,6 +190,7 @@ export default {
       );
       // Remove from queue and update index
       this.messages.splice(this.currentIndex, 1);
+      if (this.messages.length === 0) return;
       // Keep index within bounds
       if (this.currentIndex >= this.messages.length) {
         this.currentIndex = this.messages.length - 1;
@@ -209,7 +208,7 @@ export default {
       this.dismissCurrent();
     },
     goBack() {
-      this.$router.back();
+      useRouter().back();
     },
     typeConfigFor(msg) {
       return (

@@ -7,6 +7,7 @@
       <div>
         <!-- Icon Slot -->
         <font-awesome-icon
+          id="maintenanceBannerIcon"
           class="rounded-sm text-h2 p-2"
           :class="[typeConfigFor(currentMessage).iconColour]"
           :icon="typeConfigFor(currentMessage).icon"
@@ -61,6 +62,7 @@
       <div class="flex items-center order-1 sm:order-2">
         <UiStaButton
           v-if="siteMessages.length > 1"
+          id="maintenanceBannerPrev"
           :class="[
             'text-h3 -my-2 cursor-pointer',
             siteMessages.length > 1 && currentIndex > 0 ? '' : 'invisible'
@@ -71,6 +73,7 @@
         />
         <UiStaButton
           v-if="currentMessage && currentMessage.dismissalPolicy !== 'BANNED'"
+          id="maintenanceBannerDismiss"
           class="text-h2 -my-2 cursor-pointer"
           :class="['hover:' + typeConfigFor(currentMessage).iconColour]"
           icon="circle-xmark"
@@ -78,6 +81,7 @@
         />
         <UiStaButton
           v-if="siteMessages.length > 1"
+          id="maintenanceBannerNext"
           :class="[
             'text-h3 -my-2 cursor-pointer',
             siteMessages.length > 1 && currentIndex < siteMessages.length - 1

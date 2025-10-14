@@ -19,7 +19,21 @@ config.global.stubs = {
   Head: true,
   Title: true,
   Meta: true,
-  LayoutSiteMessageModal: true
+  LayoutSiteMessageModal: true,
+  UModal: {
+    name: 'UModalStub',
+    props: {
+      open: { type: Boolean, default: false },
+      dismissible: { type: Boolean, default: true },
+      close: { type: Boolean, default: true }
+    },
+    emits: ['update:open', 'after:leave'],
+    template: `
+      <div class="u-modal-stub" v-if="open">
+        <slot name="content" />
+      </div>
+      `
+  }
 };
 
 // Globally register some fake Nuxt components

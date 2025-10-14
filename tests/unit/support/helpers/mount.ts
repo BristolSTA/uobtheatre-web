@@ -130,6 +130,7 @@ function registerRouterStub(routerInfo?: Partial<Router>) {
     {
       replace: vi.fn().mockResolvedValue(null),
       push: vi.fn().mockResolvedValue(null),
+      back: vi.fn().mockResolvedValue(null),
       resolve: vi.fn(),
       beforeEach: vi.fn(),
       afterEach: vi.fn()
