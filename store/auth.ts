@@ -19,7 +19,6 @@ import Errors from '~~/classes/Errors';
 import ValidationError from '~~/errors/ValidationError';
 import UnverifiedLoginError from '~~/errors/auth/UnverifiedLoginError';
 import useBoxOfficeStore from './box-office';
-import { query } from 'vue-gtag';
 
 let refreshTimer: NodeJS.Timeout | null;
 
