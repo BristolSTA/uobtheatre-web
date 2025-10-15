@@ -143,7 +143,7 @@ export default defineNuxtComponent({
       bookingsOffset: 0,
       bookingsSearch: null,
       bookingsOrderBy: null,
-      bookingsStatus: 'PAID',
+      bookingsStatus: PAID,
       hasAccessibilityInfo: null,
 
       production: null,

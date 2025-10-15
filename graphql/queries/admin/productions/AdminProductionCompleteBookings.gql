@@ -5,7 +5,7 @@ query adminProductionCompleteBookings(
   $search: String
   $offset: Int
   $orderBy: String
-  $status: String
+  $status: BookingsBookingStatusChoices
   $hasAccessibilityInfo: Boolean
 ) {
   production(slug: $productionSlug) {
