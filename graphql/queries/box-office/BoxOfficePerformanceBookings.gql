@@ -13,7 +13,7 @@ query boxOfficePerformanceBookings(
       first: 10
       offset: $offset
       orderBy: $orderBy
-      status: "PAID"
+      status: PAID
       expired: false
       adminDiscountPercentage: $discount
       checkedIn: $checkedIn

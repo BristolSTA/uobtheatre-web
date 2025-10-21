@@ -1,5 +1,5 @@
 query allUpcomingProductions($now: DateTime!) {
-  productions(orderBy: "start", end_Gte: $now, status: "PUBLISHED") {
+  productions(orderBy: "start", end_Gte: $now, status: PUBLISHED) {
     edges {
       node {
         id

@@ -1,7 +1,7 @@
 query adminProductions(
   $endGte: DateTime
   $offset: Int
-  $status: String
+  $status: ProductionsProductionStatusChoices
   $startLte: DateTime
   $search: String
 ) {
