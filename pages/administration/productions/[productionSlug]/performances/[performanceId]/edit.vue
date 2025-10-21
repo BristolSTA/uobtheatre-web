@@ -24,6 +24,11 @@ import { getValidationErrors, performMutation } from '~~/utils/api';
 import { loadingSwal, successToast, errorToast } from '~~/utils/alerts';
 import { PerformanceMutationDocument } from '~~/graphql/codegen/operations';
 
+definePageMeta({
+  middleware: ['require-production-permissions'],
+  requiredPermissions: ['view_production', 'change_production']
+});
+
 export default defineNuxtComponent({
   components: { PerformanceEditor },
   async asyncData() {

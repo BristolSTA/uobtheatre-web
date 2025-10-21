@@ -66,7 +66,7 @@ export default defineConfig({
         'utils/**'
       ],
       thresholds: {
-        lines: 51.89
+        lines: 52.07
       }
     }
   }

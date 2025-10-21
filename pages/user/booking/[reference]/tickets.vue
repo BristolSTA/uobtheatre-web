@@ -32,6 +32,7 @@ import {
 } from '~~/graphql/codegen/operations';
 
 definePageMeta({
+  middleware: ['authed'],
   validate: (route) => {
     return !!(
       route.query.ticketID &&
