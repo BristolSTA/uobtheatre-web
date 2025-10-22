@@ -156,7 +156,7 @@ const upcomingProductions = computed(() =>
 );
 
 const upcomingProductionsToDisplay = computed(() =>
-  take(upcomingProductions.value, 4)
+  take(upcomingProductions.value, 8)
 );
 
 // Fetch user upcoming bookings
