@@ -90,7 +90,7 @@
     "apollo-link-sentry": "^3.3.0",
     "axios": "^1.12.2",
     "body-scroll-lock": "^4.0.0-beta.0",
-    "dayjs": "^1.11.13",
+    "dayjs": "^1.11.18",
     "graphql": "^16.11.0",
     "graphql-tag": "^2.12.6",
     "humanize-duration": "^3.32.1",
