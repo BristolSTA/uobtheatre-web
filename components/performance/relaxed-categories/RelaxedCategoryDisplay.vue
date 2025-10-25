@@ -7,15 +7,18 @@
         'rounded-bl-none rounded-br-none bg-gray-600': expanded,
         'bg-gray-700': !expanded
       }"
-      @click="
-        expanded = !expanded;
-      "
+      @click="expanded = !expanded"
     >
       <div class="flex justify-between items-center text-left">
-        <h3
-          class="font-bold">{{ relaxedCategory.shortDescription }}</h3>
+        <h3 class="font-bold">{{ relaxedCategory.shortDescription }}</h3>
         <div>
-          <font-awesome-icon icon="chevron-down" class="ml-2 transition-transform duration-200" :class="{'rotate-180' : expanded}" />
+          <span v-if="expanded">see less</span>
+          <span v-else>see more</span>
+          <font-awesome-icon
+            icon="chevron-down"
+            class="ml-2 transition-transform duration-200"
+            :class="{ 'rotate-180': expanded }"
+          />
         </div>
       </div>
     </div>
@@ -30,7 +33,10 @@
 </template>
 
 <script>
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
 export default {
+  components: { FontAwesomeIcon },
   props: {
     relaxedCategory: {
       required: true,
@@ -49,11 +55,9 @@ export default {
   },
   computed: {
     description() {
-      return (
-        this.relaxedCategory.longDescription
-          ? this.relaxedCategory.longDescription
-          : this.relaxedCategory.shortDescription
-      );
+      return this.relaxedCategory.longDescription
+        ? this.relaxedCategory.longDescription
+        : this.relaxedCategory.shortDescription;
     }
   },
   watch: {
