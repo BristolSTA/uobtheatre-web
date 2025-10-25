@@ -46,7 +46,7 @@
           </icon-list-item>
         </div>
       </div>
-      <div class="flex flex-grow items-center justify-between gap-x-20">
+      <div class="flex grow items-center justify-between gap-x-20">
         <span class="text-rmd text-center">
           Book now at
           <span class="text-sta-orange">{{

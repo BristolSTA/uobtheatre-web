@@ -29,7 +29,13 @@ export default defineConfig({
   },
   plugins: [
     graphql(), // GraphQL File Loading
-    Vue(), // Vue SFC File support
+    Vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => tag.includes('NuxtTurnstile')
+        }
+      }
+    }), // Vue SFC File support
     AutoImport({
       imports: ['vue'],
       dirs: ['composables', 'utils'],
@@ -44,7 +50,24 @@ export default defineConfig({
     setupFiles: ['tests/unit/support/setup.ts'], // Register files to be run at the start of each test file
     restoreMocks: true,
     coverage: {
-      exclude: ['./graphql/codegen/**']
+      include: [
+        'classes/**',
+        'components/**',
+        'composables/**',
+        'enums/**',
+        'errors/**',
+        'exceptions/**',
+        'layouts/**',
+        'middleware/**',
+        'pages/**',
+        'plugins/**',
+        'services/**',
+        'store/**',
+        'utils/**'
+      ],
+      thresholds: {
+        lines: 52.07
+      }
     }
   }
 });

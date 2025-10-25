@@ -1,4 +1,5 @@
 <template>
+  <LayoutSiteMessageModal location="PRODUCTION_CREATION_MODAL" />
   <AdminPage :title="`Edit ${production.name}`">
     <template #toolbar>
       <UiStaButton colour="green" @click="save"> Save Changes </UiStaButton>
@@ -19,6 +20,11 @@ import ProductionEditor from '@/components/production/editor/ProductionEditor.vu
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import { loadingSwal, successToast } from '~~/utils/alerts';
 import { ProductionMutationDocument } from '~~/graphql/codegen/operations';
+
+definePageMeta({
+  middleware: ['require-production-permissions'],
+  requiredPermissions: ['view_production', 'change_production']
+});
 
 export default defineNuxtComponent({
   components: { ProductionEditor },

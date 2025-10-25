@@ -1,4 +1,5 @@
 <template>
+  <LayoutSiteMessageModal location="PRODUCTION_CREATION_MODAL" />
   <AdminPage title="Edit Permissions">
     <template #toolbar>
       <UiStaButton
@@ -32,6 +33,11 @@ import {
   AdminProductionPermissionsDocument,
   ProductionPermissionsMutationsDocument
 } from '~~/graphql/codegen/operations';
+
+definePageMeta({
+  middleware: ['require-production-permissions'],
+  requiredPermissions: ['view_production']
+});
 
 export default defineNuxtComponent({
   components: {

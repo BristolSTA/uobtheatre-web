@@ -1,22 +1,7 @@
 import Swal from 'sweetalert2';
-import tailwindConfig from '#tailwind-config';
-import resolveConfig from 'tailwindcss/resolveConfig';
-
-// @ts-expect-error - Throws an assignment error, but this is recco'd by the docs (https://tailwindcss.com/docs/configuration#referencing-in-java-script)
-const fullConfig = resolveConfig(tailwindConfig);
 
 export const swal = Swal.mixin({
-  // @ts-ignore
-  background: fullConfig.theme.colors['sta-gray'].DEFAULT,
-  customClass: {
-    title: 'text-white',
-    htmlContainer: 'text-white',
-    input: 'bg-white'
-  },
-  // @ts-ignore
-  confirmButtonColor: fullConfig.theme.colors['sta-orange'].DEFAULT,
-  // @ts-ignore
-  denyButtonColor: fullConfig.theme.colors['sta-rouge'].DEFAULT
+  theme: 'dark'
 });
 export const swalToast = swal.mixin({
   toast: true,

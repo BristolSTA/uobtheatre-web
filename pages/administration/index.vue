@@ -2,15 +2,15 @@
   <div>
     <h1 class="text-h1">Dashboard</h1>
     <!-- <div class="flex justify-around space-x-3">
-      <div class="h-24 p-4 rounded bg-sta-orange">
+      <div class="h-24 p-4 rounded-sm bg-sta-orange">
         <span class="text-4xl font-semibold">3</span>
         <p>productions live</p>
       </div>
-      <div class="h-24 p-4 rounded bg-sta-orange">
+      <div class="h-24 p-4 rounded-sm bg-sta-orange">
         <span class="text-4xl font-semibold">1</span>
         <p>society</p>
       </div>
-      <div class="h-24 p-4 rounded bg-sta-orange">
+      <div class="h-24 p-4 rounded-sm bg-sta-orange">
         <span class="text-4xl font-semibold">40,000</span>
         <p>users</p>
       </div>

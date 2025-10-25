@@ -3,7 +3,7 @@
     <input
       :id="inputId"
       ref="input"
-      class="px-2 py-2 w-full text-black rounded-sm focus:outline-none rounded"
+      class="px-2 py-2 w-full text-black rounded-xs focus:outline-hidden focus:rounded-sm"
       :class="inputClass"
       :name="inputId"
       :type="type"

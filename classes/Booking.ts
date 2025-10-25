@@ -11,6 +11,7 @@ import type {
 } from '~~/graphql/codegen/operations';
 import type { IdInput } from '~~/types/generic';
 import TicketsMatrix from './TicketsMatrix';
+import type { DateTime } from 'luxon';
 
 export default class Booking {
   id?: IdInput;
@@ -23,6 +24,10 @@ export default class Booking {
   raw?: DetailedBookingDetailsFragment;
   idempotencyKey?: string;
   user?: DetailedBookingDetailsFragment['user'];
+  accessibilityInfo?: string;
+  previousAccessibilityInfo?: string;
+  accessibilityInfoUpdatedAt?: DateTime;
+  canModifyAccessibility?: boolean;
 
   constructor() {
     this.tickets = [];
@@ -66,6 +71,18 @@ export default class Booking {
     }
     if (bookingData.user) {
       this.user = bookingData.user;
+    }
+    if (bookingData.accessibilityInfo) {
+      this.accessibilityInfo = bookingData.accessibilityInfo;
+    }
+    if (bookingData.accessibilityInfoUpdatedAt) {
+      this.accessibilityInfoUpdatedAt = bookingData.accessibilityInfoUpdatedAt;
+    }
+    if (bookingData.previousAccessibilityInfo) {
+      this.previousAccessibilityInfo = bookingData.previousAccessibilityInfo;
+    }
+    if (bookingData.canModifyAccessibility) {
+      this.canModifyAccessibility = bookingData.canModifyAccessibility;
     }
     if (bookingData.transactions && bookingData.transactions.edges.length) {
       this.transactions = bookingData.transactions.edges
@@ -333,25 +350,25 @@ export default class Booking {
       .values()
       .map((groupedTickets) => {
         const option = ticketMatrix.ticketOptions.find(
-          (option) => option?.seatGroup.id === groupedTickets[0].seatGroup.id
+          (option) => option?.seatGroup.id === groupedTickets[0]?.seatGroup.id
         );
 
         if (!option) {
           throw new Error(
-            `No matching ticket option found for ticket details (Seat Group ID: ${groupedTickets[0].seatGroup.id})`
+            `No matching ticket option found for ticket details (Seat Group ID: ${groupedTickets[0]?.seatGroup.id})`
           );
         }
 
         const seatGroup = option.seatGroup;
         const concessionTypeEdge = option.concessionTypes?.find(
-          (cocnessionTypeEdge) =>
-            cocnessionTypeEdge?.concessionType?.id ===
-            groupedTickets[0].concessionType.id
+          (concessionTypeEdge) =>
+            concessionTypeEdge?.concessionType?.id ===
+            groupedTickets[0]?.concessionType?.id
         );
 
         if (!concessionTypeEdge) {
           throw new Error(
-            `No matching concession type found for ticket details (Concession Type ID: ${groupedTickets[0].concessionType.id})`
+            `No matching concession type found for ticket details (Concession Type ID: ${groupedTickets[0]?.concessionType?.id})`
           );
         }
 

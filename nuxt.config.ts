@@ -9,7 +9,7 @@ const cssFiles = [
 ];
 
 // If we are NOT testing (cypress), we push the app styles
-if (process.env.MODE !== 'test') cssFiles.push('@/assets/styles/app.scss');
+if (process.env.MODE !== 'test') cssFiles.push('@/assets/css/main.css');
 
 export default defineNuxtConfig({
   // Enable experimental features
@@ -25,19 +25,12 @@ export default defineNuxtConfig({
 
   // Define third party plugins/modules we are using
   modules: [
-    '@nuxtjs/tailwindcss',
     '@nuxtjs/apollo',
     '@pinia/nuxt',
     '@nuxt/ui',
     '@nuxt/scripts',
     '@nuxtjs/turnstile'
   ],
-
-  // Override @nuxt/ui's lightmode/darkmode features because our website is not cut out for it
-  // See https://github.com/BristolSTA/uobtheatre-web/issues/620
-  colorMode: {
-    preference: 'light'
-  },
 
   // Define the runtime config
   runtimeConfig: {
@@ -103,11 +96,6 @@ export default defineNuxtConfig({
   // Set the CSS Files
   css: cssFiles,
 
-  // Tailwind module configuration
-  tailwindcss: {
-    exposeConfig: true
-  },
-
   // Vite configuration
   vite: {
     plugins: [eslintPlugin()]
@@ -158,6 +146,14 @@ export default defineNuxtConfig({
 
   sourcemap: {
     client: true
+  },
+
+  // Nuxt UI configuration
+  ui: {
+    theme: {
+      colors: ['primary', 'secondary', 'info', 'success', 'warning', 'error']
+    },
+    colorMode: false
   },
 
   compatibilityDate: '2024-07-11'

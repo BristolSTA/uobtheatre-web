@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<style scoped lang="postcss">
+<style scoped>
 .auth-background {
   background-image: url('@/assets/images/pros-arch-lit.jpg');
   background-size: cover;

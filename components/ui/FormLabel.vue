@@ -3,12 +3,12 @@
     <label>
       <span :class="[labelClass, { underline: underline }]"><slot /></span>
       <required-star v-if="required" />
-      <p v-if="$slots.helper" class="text-gray-400 text-sm">
+      <p v-if="$slots.helper" class="text-gray-300 text-sm pb-2">
         <font-awesome-icon icon="info-circle" /> <slot name="helper" />
       </p>
     </label>
     <slot name="control" />
-    <p v-if="$slots.helperAfter" class="text-gray-400 text-sm">
+    <p v-if="$slots.helperAfter" class="text-gray-300 text-sm">
       <font-awesome-icon icon="info-circle" /> <slot name="helperAfter" />
     </p>
     <div><error-helper v-if="name" :errors="errors" :field-name="name" /></div>

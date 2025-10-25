@@ -33,7 +33,7 @@ import useBoxOfficeStore from '@/store/box-office';
 
 const boxOfficeStore = useBoxOfficeStore();
 
-definePageMeta({ head: ['authed', 'can-boxoffice'] });
+definePageMeta({ middleware: ['authed', 'can-boxoffice'] });
 
 const locationId = ref<string | undefined>(boxOfficeStore.locationId);
 const lockdownMode = ref(boxOfficeStore.lockdownMode);

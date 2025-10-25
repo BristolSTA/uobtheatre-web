@@ -31,7 +31,7 @@
         <ul class="flex items-center p-0 space-x-3 whitespace-nowrap">
           <li v-for="n in carouselLength" :key="n">
             <button
-              class="carousel-indicator w-2.5 h-2.5 hover:bg-white border border-white rounded-full focus:outline-none cursor-pointer transition-colors duration-500"
+              class="carousel-indicator w-2.5 h-2.5 hover:bg-white border border-white rounded-full focus:outline-hidden cursor-pointer transition-colors duration-500"
               :class="[n - 1 == currentItem ? 'bg-white' : 'bg-transparent']"
               @click="(goTo(n - 1), enableAutoPlay())"
               @keypress="goTo(n - 1)"
@@ -45,7 +45,7 @@
       >
         <button
           id="prevBtn"
-          class="w-full h-full text-4xl transition-colors duration-300 cursor-pointer hover:bg-black hover:bg-opacity-30 focus:outline-none"
+          class="w-full h-full text-4xl transition-colors duration-300 cursor-pointer hover:bg-black/30 focus:outline-hidden"
           @click="goToPrev()"
           @keypress="goToPrev()"
         >
@@ -58,7 +58,7 @@
       >
         <button
           id="nextBtn"
-          class="w-full h-full text-4xl transition-colors duration-300 cursor-pointer hover:bg-black hover:bg-opacity-30 focus:outline-none"
+          class="w-full h-full text-4xl transition-colors duration-300 cursor-pointer hover:bg-black/30 focus:outline-hidden"
           @click="goToNext()"
           @keypress="goToNext()"
         >

@@ -27,7 +27,7 @@
           <div
             v-for="(performance, index) in performances"
             :key="index"
-            class="p-3 max-w-md text-center hover:bg-sta-gray-dark bg-sta-gray-light rounded cursor-pointer"
+            class="p-3 max-w-md text-center hover:bg-sta-gray-dark bg-sta-gray-light rounded-sm cursor-pointer"
             @click="selectPerformance(performance.id)"
           >
             <production-featured-image

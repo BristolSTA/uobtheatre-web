@@ -15,7 +15,6 @@
         "apollographql.vscode-apollo",
         "gruntfuggly.todo-tree",
         "Vue.volar",
-        "csstools.postcss",
         "vitest.explorer"
       ]
     }

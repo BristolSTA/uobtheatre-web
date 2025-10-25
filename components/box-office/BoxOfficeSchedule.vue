@@ -177,6 +177,7 @@ const nextPeriodIndex = computed<number | undefined>(() => {
 const durationToNextPeriod = computed(() => {
   if (nextPeriodIndex.value === undefined) return undefined;
   const nextPeriod = periods.value[nextPeriodIndex.value];
+  if (!nextPeriod) return undefined;
   return humanizeDuration(now.value.diff(nextPeriod.begins).toMillis(), {
     largest: 1,
     round: true

@@ -31,12 +31,12 @@
         >
       </p>
       <div class="flex flex-wrap gap-4 lg:flex-nowrap lg:space-y-0">
-        <div class="flex-grow">
+        <div class="grow">
           <UiCard v-if="ticket" title="Ticket">
             <BoxOfficeBookingTicketDetails :ticket="ticket" />
           </UiCard>
         </div>
-        <div class="flex-grow">
+        <div class="grow">
           <UiCard v-if="bookingInfo" title="Booking">
             <BoxOfficeBookingDetails
               :booking="bookingInfo"

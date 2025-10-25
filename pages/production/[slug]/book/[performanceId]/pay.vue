@@ -51,10 +51,11 @@
           payment is requried. Please click below to complete your booking.
         </p>
         <button
-          class="p-2 bg-sta-green hover:bg-sta-green-dark rounded focus:outline-none transition-colors"
+          class="p-2 bg-sta-green hover:bg-sta-green-dark rounded-sm focus:outline-hidden transition-colors"
           @click="payFree"
         >
           Complete Booking
+          <font-awesome-icon class="ml-2" icon="arrow-right" />
         </button>
       </div>
     </loading-container>

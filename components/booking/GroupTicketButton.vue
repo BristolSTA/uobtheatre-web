@@ -1,5 +1,5 @@
 <template>
-  <div class="px-4 py-2 text-center text-white bg-sta-green rounded-sm">
+  <div class="px-4 py-2 text-center text-white bg-sta-green rounded-xs">
     <span class="font-semibold">{{ discount.name }}:</span>
     <div class="flex justify-center text-sm">
       <table class="table-auto text-left">
@@ -12,7 +12,7 @@
       </table>
     </div>
     <button
-      class="btn btn-orange mt-1 px-2.5 py-1 w-full text-sm font-semibold rounded-sm"
+      class="btn btn-orange mt-1 px-2.5 py-1 w-full text-sm font-semibold rounded-xs"
       @click="addTickets"
       @keypress="addTickets"
     >

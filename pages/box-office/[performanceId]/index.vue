@@ -19,20 +19,20 @@
           />
           <NuxtLink
             :href="`/box-office/${performance?.id}/scan`"
-            class="bg-sta-green text-white p-2 md:p-4 rounded flex items-center justify-center mt-3 md:mt-0 w-full md:w-auto"
+            class="bg-sta-green text-white p-2 md:p-4 rounded-sm flex items-center justify-center mt-3 md:mt-0 w-full md:w-auto"
           >
             <font-awesome-icon icon="camera" class="text-xl" />
             <span class="md:hidden ml-4">Scan Tickets</span>
           </NuxtLink>
         </div>
       </div>
-      <div class="flex flex-col gap-5 font-body overflow-y-hidden flex-grow">
+      <div class="flex flex-col gap-5 font-body overflow-y-hidden grow">
         <BoxOfficeBookingFilterBar
           v-model:filter-value="searchFilter"
           v-model:text-search-value="searchText"
         />
 
-        <div class="flex-grow flex overflow-hidden gap-5">
+        <div class="grow flex overflow-hidden gap-5">
           <BoxOfficeBookingInspector
             v-model:selected-booking="selectedBooking"
             :selected-ticket="selectedTicket"

@@ -5,7 +5,7 @@
       <span class="text-sta-gold text-rlg">{{ production.name }}</span>
     </h1>
     <production-featured-image
-      class="flex-shrink"
+      class="shrink"
       :image-object="production.featuredImage"
       style="max-width: 100%; width: 50vw"
     />

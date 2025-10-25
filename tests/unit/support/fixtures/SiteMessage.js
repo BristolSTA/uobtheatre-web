@@ -11,6 +11,7 @@ export default (overrides = {}, ongoing = false) => {
     {
       id: 1,
       message: 'Test message',
+      title: 'Test Title',
       active: true,
       indefiniteOverride: false,
       // displayStart is 2 hour ago
@@ -23,7 +24,8 @@ export default (overrides = {}, ongoing = false) => {
       type: 'ALERT',
       dismissalPolicy: 'DEFAULT',
       eventDuration: eventDuration,
-      toDisplay: true
+      toDisplay: true,
+      displayLocation: 'BANNER'
     },
     overrides
   );

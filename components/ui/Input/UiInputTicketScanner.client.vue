@@ -83,6 +83,9 @@ async function cameraOn(c: MediaTrackCapabilities) {
 function onDetect(detectedCodes: DetectedBarcode[]) {
   new Audio('/audio/beep_single.mp3').play();
   try {
+    if (!detectedCodes[0] || !detectedCodes[0].rawValue) {
+      return;
+    }
     let rawValue = detectedCodes[0].rawValue;
     // Strip " from the start and end of the string
     if (rawValue.startsWith('"') && rawValue.endsWith('"')) {

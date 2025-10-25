@@ -12,7 +12,12 @@ import {
 import InjectionKeys from '@/utils/injection-keys';
 
 definePageMeta({
-  middleware: ['authed'],
+  middleware: [
+    'authed',
+    'can-boxoffice',
+    'require-performance-production-permissions'
+  ],
+  requiredPermissions: ['boxoffice'],
   layout: false
 });
 

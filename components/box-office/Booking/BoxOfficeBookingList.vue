@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="!bookings || !bookings.length"
-    class="flex flex-grow items-center justify-center text-white font-bold text-xl"
+    class="flex grow items-center justify-center text-white font-bold text-xl"
   >
     No Matching Bookings Found
   </div>

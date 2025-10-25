@@ -3,7 +3,7 @@
     <UiInputText
       :model-value="textSearchValue"
       placeholder="Search for a name, email or booking reference"
-      class="flex-grow"
+      class="grow"
       @update:model-value="emit('update:textSearchValue', $event)"
     />
     <UiFormLabel>

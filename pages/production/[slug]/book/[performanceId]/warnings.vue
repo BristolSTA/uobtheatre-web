@@ -1,62 +1,95 @@
 <template>
   <div
     v-if="booking.performance"
-    class="flex flex-col items-center justify-evenly min-h-full"
+    class="flex flex-col items-center min-h-full gap-4 p-4 sm:p-0"
   >
-    <UiCard
+    <div
       v-if="booking.performance.description"
-      ref="perf-description"
-      class="w-full mb-2"
+      class="flex flex-basis gap-4 justify-evenly w-full"
     >
-      <template #subtitle>
-        <span class="text-xl">Performance-Specific Information</span>
-      </template>
-      {{ booking.performance.description }}
-    </UiCard>
-    <div v-if="production.productionAlert" class="w-full p-3 px-6 text-white">
-      <h3 class="text-h3 font-semibold">
-        <font-awesome-icon icon="exclamation-triangle" class="text-sta-rouge" />
-        Production Alert
-      </h3>
-      <p>
-        {{
-          /[.!?]$/.test(production.productionAlert)
-            ? production.productionAlert
-            : production.productionAlert + '.'
-        }}
-        For more information, please contact
-        <a :href="`mailto:${production.contactEmail}`" class="underline">{{
-          production.contactEmail
-        }}</a
-        >.
-      </p>
-      <hr class="mt-2 border-sta-gray-light" />
+      <div
+        ref="perf-description"
+        class="p-4 text-white bg-sta-gray-light rounded-lg w-full"
+      >
+        <h3 class="text-h3 font-semibold mb-2 gap-4 flex items-center">
+          <font-awesome-icon icon="masks-theater" />
+          Performance-Specific Information
+        </h3>
+        <p>{{ booking.performance.description }}</p>
+      </div>
     </div>
-    <div class="p-3 px-6 text-white">
-      <h3 class="text-h3 font-semibold">
-        <font-awesome-icon icon="exclamation-triangle" class="text-sta-rouge" />
-        Content Warnings
-      </h3>
-      <p>
-        This production features content warnings that may make it unsuitable or
-        distressing to viewers. For more information, please contact
-        <a :href="`mailto:${production.contactEmail}`" class="underline">{{
-          production.contactEmail
-        }}</a
-        >.
-      </p>
-      <hr class="my-2 border-sta-gray-light" />
-      <content-warnings-display
-        :content-warnings="production.contentWarnings"
-      />
+    <div class="flex gap-4 flex-col">
+      <div
+        v-if="production.contentWarnings.length > 0"
+        ref="perf-warnings"
+        class="flex gap-4 justify-evenly w-full"
+      >
+        <div
+          class="p-4 text-white bg-sta-gray-light rounded-lg w-full space-y-2 flex flex-col"
+        >
+          <h3 class="text-h3 font-semibold gap-4 flex items-center">
+            <font-awesome-icon icon="info-circle" />
+            Content Warnings
+          </h3>
+          <p>
+            This production features content that may be distressing to some
+            audience members. To view the content warnings for this production,
+            click the button below (may contain some 'spoilers' to the plot). If
+            you have any questions about the content of this production, please
+            contact
+            <a :href="`mailto:${production.contactEmail}`" class="underline">
+              {{ production.contactEmail }} </a
+            >.
+          </p>
+          <button
+            ref="warnings"
+            color="success"
+            class="font-semibold btn btn-rouge w-fit self-center"
+            @click="showContentWarningsDetail = true"
+          >
+            View Content Warnings
+            <font-awesome-icon class="ml-2" icon="chevron-right" />
+          </button>
+          <content-warnings-display
+            v-if="showContentWarningsDetail"
+            :content-warnings="production.contentWarnings"
+            :contact-email="production.contactEmail"
+            @close="showContentWarningsDetail = false"
+          />
+        </div>
+      </div>
+      <div
+        v-if="production.productionAlert"
+        ref="perf-alert"
+        class="flex not-lg:flex-basis gap-4 justify-evenly w-full lg:col-span-1"
+      >
+        <div
+          class="p-4 text-white bg-sta-gray-light rounded-lg w-full space-y-2"
+        >
+          <h3 class="text-h3 font-semibold gap-4 flex items-center">
+            <font-awesome-icon icon="warning" />
+            Production Alert
+          </h3>
+          <p>
+            {{
+              /[.!?]$/.test(production.productionAlert)
+                ? production.productionAlert
+                : production.productionAlert + '.'
+            }}
+          </p>
+        </div>
+      </div>
     </div>
     <div>
       <button
-        class="mt-2 btn btn-rouge btn-outline"
+        ref="understood"
+        color="warning"
+        class="btn btn-orange font-semibold"
         @click="onUnderstood"
         @keypress="onUnderstood"
       >
-        I Understand
+        Continue Booking
+        <font-awesome-icon class="ml-2" icon="arrow-right" />
       </button>
     </div>
   </div>
@@ -67,6 +100,7 @@ import BookingStage from '@/classes/BookingStage';
 import Booking from '~~/classes/Booking';
 
 import ContentWarningsDisplay from '@/components/production/content-warnings/ContentWarningsDisplay.vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 const stageInfo = new BookingStage({
   name: 'Performance Warnings',
@@ -83,6 +117,7 @@ const stageInfo = new BookingStage({
 export default defineNuxtComponent({
   stageInfo,
   components: {
+    FontAwesomeIcon,
     ContentWarningsDisplay
   },
   props: {
@@ -96,6 +131,11 @@ export default defineNuxtComponent({
     }
   },
   emits: ['mounted', 'next-stage'],
+  data() {
+    return {
+      showContentWarningsDetail: false
+    };
+  },
   mounted() {
     this.$emit('mounted', stageInfo);
   },

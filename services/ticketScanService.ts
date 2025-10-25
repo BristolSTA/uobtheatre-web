@@ -146,6 +146,14 @@ export async function handleTicketScan(
     );
   } else {
     // Query the ticket/booking details
+    if (ticketIds[0] === undefined) {
+      return {
+        booking: undefined,
+        ticket: undefined,
+        error: 'No ticket ID provided',
+        message: undefined
+      };
+    }
     response = await retrieveDetailsForTicket(
       performanceId,
       bookingReference,

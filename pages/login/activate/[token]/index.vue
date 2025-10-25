@@ -37,7 +37,7 @@ const errors = ref<Errors | undefined>(undefined);
 onMounted(async () => {
   const authStore = useAuthStore();
   const token = useRoute().params.token;
-  if (Array.isArray(token)) return;
+  if (Array.isArray(token) || !token) return;
   try {
     await authStore.activateAccount(token);
     swalToast.fire({
