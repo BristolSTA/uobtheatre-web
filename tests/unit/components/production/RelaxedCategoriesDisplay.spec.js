@@ -14,32 +14,39 @@ describe('Relaxed Categories Display', () => {
       props: {
         relaxedCategories: [
           {
-            "id": "1",
-            "shortDescription": "No strobe",
-            "longDescription": "This performance will not feature strobe lighting."
+            id: '1',
+            shortDescription: 'No strobe',
+            longDescription:
+              'This performance will not feature strobe lighting.'
           },
           {
-            "id": "2",
-            "shortDescription": "No pyro",
-            "longDescription": "Pyrotechnic effects will not be used in this performance."
+            id: '2',
+            shortDescription: 'No pyro',
+            longDescription:
+              'Pyrotechnic effects will not be used in this performance.'
           },
           {
-            "id": "3",
-            "shortDescription": "No loud noises"
+            id: '3',
+            shortDescription: 'No loud noises'
           }
         ],
         thisRelaxedName: 'Cool'
       }
     });
-    relaxedCategoryDisplayComponents = relaxedCategoriesDisplayComponent.findAllComponents(RelaxedCategoryDisplay);
+    relaxedCategoryDisplayComponents =
+      relaxedCategoriesDisplayComponent.findAllComponents(
+        RelaxedCategoryDisplay
+      );
   });
 
   it('shows correct name', async () => {
     await relaxedCategoriesDisplayComponent.setProps({
       thisRelaxedName: 'Quiet'
-    })
+    });
 
-    expect(relaxedCategoriesDisplayComponent.text()).to.contain('Quiet Performance');
+    expect(relaxedCategoriesDisplayComponent.text()).to.contain(
+      'Quiet Performance'
+    );
   });
 
   it('shows the right number of categories', () => {
@@ -50,7 +57,9 @@ describe('Relaxed Categories Display', () => {
     let category = relaxedCategoryDisplayComponents.at(0);
     await category.find({ ref: 'clickable' }).trigger('click');
     let description = category.find({ ref: 'description' });
-    expect(description.text()).to.contain('This performance will not feature strobe lighting.');
+    expect(description.text()).to.contain(
+      'This performance will not feature strobe lighting.'
+    );
   });
 
   it('shows the correct description on click if no long description given', async () => {
@@ -60,8 +69,10 @@ describe('Relaxed Categories Display', () => {
     expect(description.text()).to.contain('No loud noises');
   });
 
-  it('doesn\'t show no categories message when there are categories', async () => {
-    let content = relaxedCategoriesDisplayComponent.find({ ref: 'no-categories' });
+  it("doesn't show no categories message when there are categories", async () => {
+    let content = relaxedCategoriesDisplayComponent.find({
+      ref: 'no-categories'
+    });
     expect(content.exists()).to.be.false;
   });
 
@@ -69,8 +80,9 @@ describe('Relaxed Categories Display', () => {
     await relaxedCategoriesDisplayComponent.setProps({
       relaxedCategories: []
     });
-    let content = relaxedCategoriesDisplayComponent.find({ ref: 'no-categories' });
+    let content = relaxedCategoriesDisplayComponent.find({
+      ref: 'no-categories'
+    });
     expect(content.exists()).to.be.true;
   });
-
 });

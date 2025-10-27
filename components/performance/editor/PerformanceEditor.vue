@@ -211,19 +211,31 @@
           <UiInputToggle v-model="performance.isRelaxed" />
         </template>
         <template #helper>
-          Toggle this option for a relaxed/sensory friendly performance to show this on the production page.
+          Toggle this option for a relaxed/sensory friendly performance to show
+          this on the production page.
         </template>
       </form-label>
       <form-label>
         Pre-filled options
         <template #control>
           <div class="space-x-4 py-2">
-            <button class="p-2 bg-sta-green" @click="selectDefaultRelaxedCategories">Relaxed Performance</button>
-            <button class="p-2 bg-sta-green" @click="selectDefaultSensoryFriendlyRelaxedCategories">Sensory Friendly Performance</button>
+            <button
+              class="p-2 bg-sta-green"
+              @click="selectDefaultRelaxedCategories"
+            >
+              Relaxed Performance
+            </button>
+            <button
+              class="p-2 bg-sta-green"
+              @click="selectDefaultSensoryFriendlyRelaxedCategories"
+            >
+              Sensory Friendly Performance
+            </button>
           </div>
         </template>
         <template #helper>
-          Enter your own information below, or choose one of the pre-made options to edit.
+          Enter your own information below, or choose one of the pre-made
+          options to edit.
         </template>
       </form-label>
       <form-label name="relaxedName" :errors="errors">
@@ -232,7 +244,8 @@
           <UiInputText v-model="performance.relaxedName" />
         </template>
         <template #helper>
-          Optionally, add a name for the relaxed performance (e.g. 'Relaxed' or 'Sensory Friendly').
+          Optionally, add a name for the relaxed performance (e.g. 'Relaxed' or
+          'Sensory Friendly').
         </template>
       </form-label>
       <form-label name="relaxedCategories" :errors="errors">
@@ -267,7 +280,9 @@
           <table-row-item class="text-center border-sta-gray-dark border-r-2">
             <input
               type="checkbox"
-              :checked="(relaxedCategoriesLocal || []).map((r) => r.id).includes(rc.id)"
+              :checked="
+                (relaxedCategoriesLocal || []).map((r) => r.id).includes(rc.id)
+              "
               @change="relaxedCategorySelectionToggle(rc)"
             />
           </table-row-item>
@@ -511,7 +526,9 @@ export default {
         isRelaxed: this.performance.isRelaxed,
         relaxedName: this.performance.relaxedName,
         // Use the local copy to avoid reading a mutated prop
-        relaxedCategories: (this.relaxedCategoriesLocal || []).map((rc) => rc.id),
+        relaxedCategories: (this.relaxedCategoriesLocal || []).map(
+          (rc) => rc.id
+        ),
         description: this.performance.description,
         capacity:
           this.performance.capacity === '' ? null : this.performance.capacity
@@ -841,25 +858,36 @@ export default {
     },
     selectDefaultRelaxedCategories() {
       // eslint-disable-next-line vue/no-mutating-props
-      this.performance.relaxedName = "Relaxed";
+      this.performance.relaxedName = 'Relaxed';
       // Set local relaxed categories and emit update instead of mutating the prop
-      const selected = this.allRelaxedCategories.filter((rc) => rc.defaultRelaxed);
+      const selected = this.allRelaxedCategories.filter(
+        (rc) => rc.defaultRelaxed
+      );
       this.setRelaxedCategories(selected);
     },
     selectDefaultSensoryFriendlyRelaxedCategories() {
       // eslint-disable-next-line vue/no-mutating-props
-      this.performance.relaxedName = "Sensory Friendly";
+      this.performance.relaxedName = 'Sensory Friendly';
       // Set local relaxed categories and emit update instead of mutating the prop
-      const selected = this.allRelaxedCategories.filter((rc) => rc.defaultSensoryFriendly);
+      const selected = this.allRelaxedCategories.filter(
+        (rc) => rc.defaultSensoryFriendly
+      );
       this.setRelaxedCategories(selected);
     },
     relaxedCategorySelectionToggle(category) {
       // Toggle selection in the local copy, then emit the updated performance
-      const index = this.relaxedCategoriesLocal.findIndex((rc) => rc.id === category.id);
+      const index = this.relaxedCategoriesLocal.findIndex(
+        (rc) => rc.id === category.id
+      );
       if (index === -1) {
-        this.relaxedCategoriesLocal = [...this.relaxedCategoriesLocal, category];
+        this.relaxedCategoriesLocal = [
+          ...this.relaxedCategoriesLocal,
+          category
+        ];
       } else {
-        this.relaxedCategoriesLocal = this.relaxedCategoriesLocal.filter((rc) => rc.id !== category.id);
+        this.relaxedCategoriesLocal = this.relaxedCategoriesLocal.filter(
+          (rc) => rc.id !== category.id
+        );
       }
       this.$emit('update:performance', {
         ...this.performance,
@@ -868,7 +896,9 @@ export default {
     },
     // Helper to update local relaxed categories and notify parent
     setRelaxedCategories(categories) {
-      this.relaxedCategoriesLocal = Array.isArray(categories) ? [...categories] : [];
+      this.relaxedCategoriesLocal = Array.isArray(categories)
+        ? [...categories]
+        : [];
       this.$emit('update:performance', {
         ...this.performance,
         relaxedCategories: this.relaxedCategoriesLocal

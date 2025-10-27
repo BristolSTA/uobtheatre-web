@@ -57,7 +57,9 @@ export default {
       return DateTime.fromISO(this.performance.start);
     },
     thisRelaxedName() {
-      return this.performance.relaxedName ? this.performance.relaxedName : 'Relaxed';
+      return this.performance.relaxedName
+        ? this.performance.relaxedName
+        : 'Relaxed';
     }
   },
   methods: {
