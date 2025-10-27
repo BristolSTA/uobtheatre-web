@@ -267,7 +267,7 @@
           <table-row-item class="text-center border-sta-gray-dark border-r-2">
             <input
               type="checkbox"
-              :checked="performance.relaxedCategories.map((rc) => (rc.id)).includes(rc.id)"
+              :checked="(relaxedCategoriesLocal || []).map((r) => r.id).includes(rc.id)"
               @change="relaxedCategorySelectionToggle(rc)"
             />
           </table-row-item>
@@ -379,7 +379,7 @@ export default {
       required: true
     }
   },
-  emits: ['update:errors'],
+  emits: ['update:errors', 'update:performance'],
   data() {
     return {
       ignoredExisitingPerformances: false,
@@ -392,6 +392,8 @@ export default {
       deletedDiscounts: [],
 
       allRelaxedCategories: [],
+      // Local copy of relaxed categories to avoid mutating the performance prop directly
+      relaxedCategoriesLocal: []
     };
   },
   apollo: {
@@ -484,6 +486,13 @@ export default {
           this.performance.intervalDurationMins = intervalLength;
         }
       }
+    },
+    // Keep a local, non-mutating copy of relaxed categories in sync with the prop
+    'performance.relaxedCategories': {
+      handler(newVal) {
+        this.relaxedCategoriesLocal = newVal ? [...newVal] : [];
+      },
+      immediate: true
     }
   },
   methods: {
@@ -501,7 +510,8 @@ export default {
         disabled: !!this.performance.disabled,
         isRelaxed: this.performance.isRelaxed,
         relaxedName: this.performance.relaxedName,
-        relaxedCategories: this.performance.relaxedCategories.map((rc) => rc.id),
+        // Use the local copy to avoid reading a mutated prop
+        relaxedCategories: (this.relaxedCategoriesLocal || []).map((rc) => rc.id),
         description: this.performance.description,
         capacity:
           this.performance.capacity === '' ? null : this.performance.capacity
@@ -832,26 +842,37 @@ export default {
     selectDefaultRelaxedCategories() {
       // eslint-disable-next-line vue/no-mutating-props
       this.performance.relaxedName = "Relaxed";
-      // eslint-disable-next-line vue/no-mutating-props
-      this.performance.relaxedCategories = this.allRelaxedCategories.map((rc) => (rc.defaultRelaxed ? rc : false)).filter((rc) => rc);
+      // Set local relaxed categories and emit update instead of mutating the prop
+      const selected = this.allRelaxedCategories.filter((rc) => rc.defaultRelaxed);
+      this.setRelaxedCategories(selected);
     },
     selectDefaultSensoryFriendlyRelaxedCategories() {
       // eslint-disable-next-line vue/no-mutating-props
       this.performance.relaxedName = "Sensory Friendly";
-      // eslint-disable-next-line vue/no-mutating-props
-      this.performance.relaxedCategories = this.allRelaxedCategories.map((rc) => (rc.defaultSensoryFriendly ? rc : false)).filter((rc) => rc);
+      // Set local relaxed categories and emit update instead of mutating the prop
+      const selected = this.allRelaxedCategories.filter((rc) => rc.defaultSensoryFriendly);
+      this.setRelaxedCategories(selected);
     },
     relaxedCategorySelectionToggle(category) {
-      const index = this.performance.relaxedCategories.findIndex(
-        (rc) => rc.id === category.id
-      );
+      // Toggle selection in the local copy, then emit the updated performance
+      const index = this.relaxedCategoriesLocal.findIndex((rc) => rc.id === category.id);
       if (index === -1) {
-        // eslint-disable-next-line vue/no-mutating-props
-        this.performance.relaxedCategories.push(category);
+        this.relaxedCategoriesLocal = [...this.relaxedCategoriesLocal, category];
       } else {
-        // eslint-disable-next-line vue/no-mutating-props
-        this.performance.relaxedCategories.splice(index, 1);
+        this.relaxedCategoriesLocal = this.relaxedCategoriesLocal.filter((rc) => rc.id !== category.id);
       }
+      this.$emit('update:performance', {
+        ...this.performance,
+        relaxedCategories: this.relaxedCategoriesLocal
+      });
+    },
+    // Helper to update local relaxed categories and notify parent
+    setRelaxedCategories(categories) {
+      this.relaxedCategoriesLocal = Array.isArray(categories) ? [...categories] : [];
+      this.$emit('update:performance', {
+        ...this.performance,
+        relaxedCategories: this.relaxedCategoriesLocal
+      });
     }
   }
 };
