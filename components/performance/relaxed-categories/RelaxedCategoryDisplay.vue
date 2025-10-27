@@ -11,9 +11,9 @@
     >
       <div class="flex justify-between items-center text-left">
         <h3 class="font-bold">{{ relaxedCategory.shortDescription }}</h3>
-        <div>
-          <span v-if="expanded">see less</span>
-          <span v-else>see more</span>
+        <div class="flex justify-center items-center ml-2">
+          <span v-if="expanded">show less</span>
+          <span v-else>show more</span>
           <font-awesome-icon
             icon="chevron-down"
             class="ml-2 transition-transform duration-200"

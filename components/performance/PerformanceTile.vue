@@ -49,11 +49,11 @@
     </component>
     <div
       v-if="performance.isRelaxed"
-      class="-mx-3 -mb-3 mt-3 p-3 bg-sta-green-dark"
+      class="-mx-3 -mb-3 mt-3 bg-sta-green-dark"
     >
       <button
         ref="categories"
-        class="text-center font-semibold w-full text-gray-50 hover:text-gray-200"
+        class="text-center font-semibold w-full text-gray-50 hover:text-gray-200 p-3 cursor-pointer"
         @click="showRelaxedCategoriesDetail = true"
       >
         <span class="">This is a {{ thisRelaxedName }} Performance</span>
