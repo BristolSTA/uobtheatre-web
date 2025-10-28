@@ -67,10 +67,12 @@
           <p v-if="booking.performance.isRelaxed">
             This production features content that may be distressing to some
             audience members. You can view the content warnings for this
-            production below, but please be aware that some of the warnings will
-            no longer apply due to additional adaptations to this performance,
-            which you can view above. If you have any questions about the
-            content or adaptations of this specific performance, please contact
+            production below, but please be aware that some warnings may no
+            longer apply, due to adaptations made to this performance, which you
+            can view above.
+            <br />
+            If you have any questions about the content or adaptations of this
+            specific performance, please contact
             <a :href="`mailto:${production.contactEmail}`" class="underline">
               {{ production.contactEmail }} </a
             >.
