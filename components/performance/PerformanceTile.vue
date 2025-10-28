@@ -57,6 +57,7 @@
         @click="showRelaxedCategoriesDetail = true"
       >
         <span class="">This is a {{ thisRelaxedName }} Performance</span>
+        <br />
         <span class="inline-block mr-3">More information</span>
         <font-awesome-icon icon="chevron-right" class="inline-block" />
       </button>
