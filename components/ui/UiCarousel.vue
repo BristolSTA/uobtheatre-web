@@ -174,7 +174,7 @@ export default {
 }
 
 .slide-leave-active {
-  transition: opacity 0.8s cubic-bezier(0.5, 0, 0.5, 1) 0.9s;
+  transition: opacity 0.8s cubic-bezier(0.5, 0, 0.5, 1);
 }
 
 .slide-enter-from,
