@@ -67,7 +67,7 @@
     "vite-plugin-eslint2": "^5.0.3",
     "vitest": "^3.2.4",
     "vitest-matchmedia-mock": "^2.0.3",
-    "vue-tsc": "3.1.1",
+    "vue-tsc": "3.1.2",
     "webpack": "^5.99.9"
   },
   "dependencies": {
