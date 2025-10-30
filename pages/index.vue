@@ -50,7 +50,7 @@
     </template>
 
     <div ref="whatson" class="container mt-4 text-white">
-      <h1 class="text-h1 text-center md:text-left">What's On</h1>
+      <h1 class="text-h1 text-center">What's On</h1>
       <div v-if="productionsLoading" class="flex justify-center my-12">
         <UiLoadingIcon />
       </div>
