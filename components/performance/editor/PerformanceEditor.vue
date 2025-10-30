@@ -241,7 +241,7 @@
       <form-label name="relaxedName" :errors="errors">
         Relaxed Performance Name
         <template #control>
-          <UiInputText v-model="performance.relaxedName" />
+          <UiInputText v-model="relaxedNameLocal" />
         </template>
         <template #helper>
           Optionally, add a name for the relaxed performance (e.g. 'Relaxed' or
@@ -408,7 +408,8 @@ export default {
 
       allRelaxedCategories: [],
       // Local copy of relaxed categories to avoid mutating the performance prop directly
-      relaxedCategoriesLocal: []
+      relaxedCategoriesLocal: [],
+      relaxedNameLocal: ''
     };
   },
   apollo: {
@@ -508,6 +509,12 @@ export default {
         this.relaxedCategoriesLocal = newVal ? [...newVal] : [];
       },
       immediate: true
+    },
+    'performance.relaxedName': {
+      handler(newVal) {
+        this.relaxedNameLocal = newVal ?? '';
+      },
+      immediate: true
     }
   },
   methods: {
@@ -524,11 +531,11 @@ export default {
         venue: this.performance.venue?.id,
         disabled: !!this.performance.disabled,
         isRelaxed: this.performance.isRelaxed,
-        relaxedName: this.performance.relaxedName,
         // Use the local copy to avoid reading a mutated prop
         relaxedCategories: (this.relaxedCategoriesLocal || []).map(
           (rc) => rc.id
         ),
+        relaxedName: this.relaxedNameLocal,
         description: this.performance.description,
         capacity:
           this.performance.capacity === '' ? null : this.performance.capacity
@@ -857,18 +864,16 @@ export default {
       this.deletedDiscounts.push(discount);
     },
     selectDefaultRelaxedCategories() {
-      // eslint-disable-next-line vue/no-mutating-props
-      this.performance.relaxedName = 'Relaxed';
       // Set local relaxed categories and emit update instead of mutating the prop
+      this.setRelaxedName('Relaxed');
       const selected = this.allRelaxedCategories.filter(
         (rc) => rc.defaultRelaxed
       );
       this.setRelaxedCategories(selected);
     },
     selectDefaultSensoryFriendlyRelaxedCategories() {
-      // eslint-disable-next-line vue/no-mutating-props
-      this.performance.relaxedName = 'Sensory Friendly';
       // Set local relaxed categories and emit update instead of mutating the prop
+      this.setRelaxedName('Sensory Friendly');
       const selected = this.allRelaxedCategories.filter(
         (rc) => rc.defaultSensoryFriendly
       );
@@ -902,6 +907,14 @@ export default {
       this.$emit('update:performance', {
         ...this.performance,
         relaxedCategories: this.relaxedCategoriesLocal
+      });
+    },
+    setRelaxedName(value) {
+      this.relaxedNameLocal = value ?? '';
+
+      this.$emit('update:performance', {
+        ...this.performance,
+        relaxedName: this.relaxedNameLocal
       });
     }
   }
