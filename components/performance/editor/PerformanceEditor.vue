@@ -197,7 +197,7 @@
             'General Admission').
           </div>
           <price-matrix
-            :discounts="performance.discounts.edges"
+            :discounts="performanceDiscountsLocal.edges"
             :performance-seat-groups="performanceSeatGroups"
             :editing="true"
           />
@@ -300,7 +300,7 @@ export default {
       required: true
     }
   },
-  emits: ['update:errors'],
+  emits: ['update:errors', 'update:performance'],
   data() {
     return {
       ignoredExisitingPerformances: false,
@@ -309,6 +309,7 @@ export default {
       otherPerformances: [],
 
       performanceSeatGroups: [],
+      performanceDiscountsLocal: { edges: [] },
 
       deletedDiscounts: []
     };
@@ -363,7 +364,7 @@ export default {
       );
     },
     singleDiscounts() {
-      return getSingleDiscounts(this.performance.discounts?.edges || []);
+      return getSingleDiscounts(this.performanceDiscountsLocal?.edges || []);
     },
     selectedSeatGroupCapacities() {
       return this.performanceSeatGroups.reduce(
@@ -384,6 +385,16 @@ export default {
     'performance.ticketOptions': {
       handler(newValue) {
         if (newValue !== undefined) this.performanceSeatGroups = [...newValue];
+      },
+      immediate: true
+    },
+    // Link this nested property with a local property, and watch for it to change
+    // This is because performance.discounts is a property of a local property (i.e. it is nested),
+    // so we can't mutate it directly, and instead have to have a local copy and use
+    // $emit elsewhere to update
+    'performance.discounts': {
+      handler(newValue) {
+        if (newValue !== undefined) this.performanceDiscountsLocal = newValue;
       },
       immediate: true
     },
@@ -470,7 +481,7 @@ export default {
       });
 
       // And concession types...
-      for (const edge of performance.discounts.edges) {
+      for (const edge of performanceDiscountsLocal.edges) {
         if (
           edge.node.requirements.length > 1 ||
           edge.node.requirements[0].number !== 1
@@ -578,8 +589,8 @@ export default {
         });
 
       // Create or update concession types
-      if (this.performance.discounts?.edges) {
-        this.performance.discounts.edges
+      if (this.performanceDiscountsLocal?.edges) {
+        this.performanceDiscountsLocal.edges
           .map((edge) => edge.node)
           .forEach((discount) => {
             mutations.push(
@@ -704,13 +715,13 @@ export default {
       percentage = 0,
       id = null
     ) {
-      const currentNum = this.performance.discounts?.edges
-        ? this.performance.discounts.edges.length
+      const currentNum = this.performanceDiscountsLocal?.edges
+        ? this.performanceDiscountsLocal.edges.length
         : 0;
-      // eslint-disable-next-line vue/no-mutating-props
-      this.performance.discounts = {
+
+      this.performanceDiscountsLocal = {
         edges: [
-          ...(this.performance.discounts?.edges || []),
+          ...(this.performanceDiscountsLocal?.edges || []),
           {
             node: {
               percentage,
@@ -729,17 +740,29 @@ export default {
           }
         ]
       };
+
+      // Alert about the local update to keep the remote version in sync
+      this.$emit('update:performance', {
+        ...this.performance,
+        discounts: this.performanceDiscountsLocal
+      });
     },
     async deleteConcession(discount) {
       // Remove from array
-      // eslint-disable-next-line vue/no-mutating-props
-      this.performance.discounts = {
-        edges: this.performance.discounts.edges.filter(
+
+      this.performanceDiscountsLocal = {
+        edges: this.performanceDiscountsLocal.edges.filter(
           (edge) => edge.node !== discount
         )
       };
 
       this.deletedDiscounts.push(discount);
+
+      // Alert about the local update to keep the remote version in sync
+      this.$emit('update:performance', {
+        ...this.performance,
+        discounts: this.performanceDiscountsLocal
+      });
     }
   }
 };
