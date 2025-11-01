@@ -18,6 +18,39 @@
         <p>{{ booking.performance.description }}</p>
       </div>
     </div>
+    <div
+      v-if="booking.performance.isRelaxed"
+      class="flex flex-basis gap-4 justify-evenly w-full"
+    >
+      <div
+        ref="perf-description"
+        class="p-4 text-white bg-sta-gray-light rounded-lg w-full flex flex-col"
+      >
+        <h3 class="text-h3 font-semibold mb-2 gap-4 flex items-center">
+          <font-awesome-icon icon="heart" />
+          {{ booking.performance.relaxedName }} Performance
+        </h3>
+        <p class="mb-2">
+          This performance has been adapted to be more suitable for different
+          audience members. Click below to see which adaptations have been made
+          to this performance.
+        </p>
+        <button
+          ref="categories"
+          class="font-semibold btn btn-rouge w-fit self-center"
+          @click="showRelaxedCategoriesDetail = true"
+        >
+          View Performance Adaptations
+          <font-awesome-icon class="ml-2" icon="chevron-right" />
+        </button>
+        <relaxed-categories-display
+          v-if="showRelaxedCategoriesDetail"
+          :relaxed-categories="booking.performance.relaxedCategories"
+          :this-relaxed-name="booking.performance.relaxedName"
+          @close="showRelaxedCategoriesDetail = false"
+        />
+      </div>
+    </div>
     <div class="flex gap-4 flex-col">
       <div
         v-if="production.contentWarnings.length > 0"
@@ -31,7 +64,20 @@
             <font-awesome-icon icon="info-circle" />
             Content Warnings
           </h3>
-          <p>
+          <p v-if="booking.performance.isRelaxed">
+            This production features content that may be distressing to some
+            audience members. You can view the content warnings for this
+            production below, but please be aware that some warnings may no
+            longer apply, due to adaptations made to this performance, which you
+            can view above.
+            <br />
+            If you have any questions about the content or adaptations of this
+            specific performance, please contact
+            <a :href="`mailto:${production.contactEmail}`" class="underline">
+              {{ production.contactEmail }} </a
+            >.
+          </p>
+          <p v-else>
             This production features content that may be distressing to some
             audience members. To view the content warnings for this production,
             click the button below (may contain some 'spoilers' to the plot). If
@@ -101,6 +147,7 @@ import Booking from '~~/classes/Booking';
 
 import ContentWarningsDisplay from '@/components/production/content-warnings/ContentWarningsDisplay.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import RelaxedCategoriesDisplay from '~/components/performance/relaxed-categories/RelaxedCategoriesDisplay.vue';
 
 const stageInfo = new BookingStage({
   name: 'Performance Warnings',
@@ -109,7 +156,8 @@ const stageInfo = new BookingStage({
     return (
       production.contentWarnings.length > 0 ||
       booking?.performance?.description ||
-      production.productionAlert
+      production.productionAlert ||
+      booking?.performance?.isRelaxed
     );
   }
 });
@@ -117,6 +165,7 @@ const stageInfo = new BookingStage({
 export default defineNuxtComponent({
   stageInfo,
   components: {
+    RelaxedCategoriesDisplay,
     FontAwesomeIcon,
     ContentWarningsDisplay
   },
@@ -133,7 +182,8 @@ export default defineNuxtComponent({
   emits: ['mounted', 'next-stage'],
   data() {
     return {
-      showContentWarningsDetail: false
+      showContentWarningsDetail: false,
+      showRelaxedCategoriesDetail: false
     };
   },
   mounted() {
