@@ -879,7 +879,7 @@ export default {
       };
 
       this.deletedDiscounts.push(discount);
-      
+
       // Alert about the local update to keep the remote version in sync
       this.$emit('update:performance', {
         ...this.performance,
