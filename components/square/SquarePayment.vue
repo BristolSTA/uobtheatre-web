@@ -172,16 +172,6 @@ export default {
       this.$emit('ready');
       this.ready = true;
     },
-    async verifyBuyer(token) {
-      const details = {
-        amount: this.price,
-        billingContact: {},
-        currencyCode: 'GBP',
-        intent: 'CHARGE'
-      };
-      const results = await square.payments.verifyBuyer(token, details);
-      return results.token;
-    },
     onCancelled() {
       this.paying = false;
       this.$emit('cancelled');
@@ -195,12 +185,19 @@ export default {
       this.squareErrors = [];
 
       try {
-        const result = await provider.tokenize();
+        const details = {
+          billingContact: {},
+          amount: this.price,
+          currencyCode: 'GBP',
+          intent: 'CHARGE',
+          customerInitiated: true,
+          sellerKeyedIn: false
+        };
+
+        const result = await provider.tokenize(details);
+
         if (result.status === 'OK') {
           const paymentData = { nonce: result.token };
-          if (verify) {
-            paymentData.verifyToken = await this.verifyBuyer(result.token);
-          }
           return this.onSuccessfulNonceGeneration(paymentData);
         }
 

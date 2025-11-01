@@ -22,7 +22,6 @@ export default function () {
 
   const paymentsMockReturn = {
     paymentRequest: vi.fn(),
-    verifyBuyer: vi.fn(() => 'verify-token'),
     card: vi.fn(() => cardMockReturn),
     googlePay: vi.fn(() => gPayMockReturn),
     applePay: vi.fn(() => applePayMockReturn)
