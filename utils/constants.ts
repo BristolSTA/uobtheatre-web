@@ -7,4 +7,4 @@ export const ACCESSIBILITY_INFO_HELPER = `
 `;
 export const ACCESSIBILITY_INFO_HELPER_EMAIL =
   ACCESSIBILITY_INFO_HELPER +
-  ' If you have any questions, or have more complex needs than can be summarised here, please email <a href="mailto:support@uobtheatre.com" class="underline">support@uobtheatre.com</a>';
+  ' If you have any questions, or have more complex needs than can be summarised here, please email <a href="mailto:accessibility@uobtheatre.com" class="underline">accessibility@uobtheatre.com</a>';
