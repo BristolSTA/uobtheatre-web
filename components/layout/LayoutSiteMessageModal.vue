@@ -135,7 +135,11 @@ export default {
       return this.messages[this.currentIndex] || null;
     },
     showGoBack() {
-      return this.location !== 'SITEWIDE_MODAL';
+      // Only show on non-sitewide modals that are blockers
+      return (
+        this.location !== 'SITEWIDE_MODAL' &&
+        this.currentMessage?.dismissalPolicy === 'BANNED'
+      );
     }
   },
   mounted() {
