@@ -11,51 +11,17 @@
       />
     </div>
     <tip-tap-output
-      class="flex-grow order-3 mt-4 lg:order-2 lg:mt-0 break-words min-w-0"
+      class="grow order-3 mt-4 lg:order-2 lg:mt-0 break-words min-w-0"
       :html="production.description"
     />
-    <div class="sm:w-auto lg:order-3 lg:w-1/3 w-full flex-none">
+    <div class="sm:w-auto lg:order-3 lg:w-1/3 w-full">
+      <!-- Side Information Bar -->
       <div class="flex flex-col order-2 p-5 bg-sta-gray-dark space-y-2">
         <h3 class="text-xl font-semibold uppercase">Show Information</h3>
         <p v-if="medium"><strong>Medium:</strong> {{ medium }}</p>
         <p v-if="production.ageRating" ref="age-rating">
           Ages {{ production.ageRating }}+
         </p>
-        <modal
-          v-if="showContentWarningsDetail"
-          @close="showContentWarningsDetail = false"
-        >
-          <div class="lg:w-1/3-screen">
-            <h2 class="text-lg font-semibold">Content Warnings</h2>
-            <p>
-              This production features content warnings that may make it
-              unsuitable or distressing to viewers. For more information, please
-              contact
-              <a
-                :href="`mailto:${production.contactEmail}`"
-                class="underline"
-                >{{ production.contactEmail }}</a
-              >.
-            </p>
-            <hr class="my-1 border-sta-gray-light" />
-            <content-warnings-display
-              :content-warnings="production.contentWarnings"
-            />
-          </div>
-        </modal>
-        <button
-          v-if="production.contentWarnings.length"
-          ref="warnings"
-          class="p-3 bg-sta-rouge rounded-md hover:bg-sta-rouge-dark transition-colors flex gap-2 items-center flex-wrap lg:flex-nowrap justify-center"
-          @click="showContentWarningsDetail = true"
-        >
-          This production has content warnings.
-          <div
-            class="text-right min-w-max flex items-center justify-items-center gap-1"
-          >
-            See More <font-awesome-icon icon="chevron-right" />
-          </div>
-        </button>
         <p>
           A production by
           <NuxtLink
@@ -76,22 +42,63 @@
             Facebook Event
           </icon-list-item>
         </a>
+        <div v-if="production.contentWarnings.length > 0">
+          <h3 class="font-semibold">Content Warnings</h3>
+          <p class="text-sm w-fit text-white/75">
+            We recognise that aspects of this performance may cause distress or
+            challenging emotions for some of our audience members. Click below
+            if you would like to see the content warnings for this show (may
+            contain 'spoilers').
+          </p>
+          <UButton
+            ref="warnings"
+            color="success"
+            class="mt-2 p-2 btn btn-rouge w-full justify-center"
+            @click="showContentWarningsDetail = true"
+          >
+            View Content Warnings
+            <font-awesome-icon class="px-2" icon="chevron-right" />
+          </UButton>
+          <content-warnings-display
+            v-if="showContentWarningsDetail"
+            :content-warnings="production.contentWarnings"
+            :contact-email="production.contactEmail"
+            @close="showContentWarningsDetail = false"
+          />
+        </div>
+        <div
+          v-if="production.productionAlert"
+          ref="production-alert"
+          class="bg-sta-rouge-dark text-white text-sm p-2 flex flex-col rounded-sm space-y-1"
+        >
+          <div class="flex items-center justify-center text-lg gap-2">
+            <font-awesome-icon icon="warning" />
+            <h3 class="font-bold">Production Alert</h3>
+          </div>
+          <p class="mb-2">
+            {{
+              /[.!?]$/.test(production.productionAlert)
+                ? production.productionAlert
+                : production.productionAlert + '.'
+            }}
+          </p>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Modal from '../ui/Modal.vue';
 import ContentWarningsDisplay from './content-warnings/ContentWarningsDisplay.vue';
 import ProductionPosterImage from './ProductionPosterImage.vue';
 import TipTapOutput from '~~/components/ui/UiTipTapOutput.vue';
 import IconListItem from '~~/components/ui/UiIconListItem.vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 export default {
   components: {
+    FontAwesomeIcon,
     IconListItem,
     TipTapOutput,
-    Modal,
     ContentWarningsDisplay,
     ProductionPosterImage
   },

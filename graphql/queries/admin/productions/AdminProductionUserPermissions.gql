@@ -1,0 +1,5 @@
+query adminProductionUserPermissions($slug: String!) {
+  production(slug: $slug) {
+    permissions
+  }
+}

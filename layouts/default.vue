@@ -2,12 +2,13 @@
   <div class="flex flex-col h-screen font-body">
     <LayoutNavBar v-if="!boxOfficeStore.lockdownMode" />
     <LayoutMaintenanceBanner />
+    <LayoutSiteMessageModal location="SITEWIDE_MODAL" />
     <UiBreadcrumbs v-if="navStore.breadcrumbs" :crumbs="navStore.breadcrumbs" />
     <main class="flex-1 pb-2 text-white bg-sta-gray">
       <NuxtErrorBoundary @error="onBoundaryErrorCatch">
         <slot />
-        <template #error="{ error }"
-          ><LayoutErrorPageInner :error="error"
+        <template #error="{ error, clearError }"
+          ><LayoutErrorPageInner :error="error" @clear-error="clearError"
         /></template>
       </NuxtErrorBoundary>
     </main>
@@ -27,7 +28,7 @@ router.beforeEach(() => {
   navStore.breadcrumbs = undefined;
 });
 
-function onBoundaryErrorCatch(error: unknown) {
+function onBoundaryErrorCatch(error: Error) {
   if (
     error &&
     typeof error == 'object' && // @ts-ignore

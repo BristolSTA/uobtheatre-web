@@ -53,7 +53,7 @@
         </table-row>
       </tbody>
     </safe-table>
-    <div class="mt-4 p-2 bg-sta-gray-dark rounded">
+    <div class="mt-4 p-2 bg-sta-gray-dark rounded-sm">
       <form-label :required="true">
         User Email Address
         <template #control>

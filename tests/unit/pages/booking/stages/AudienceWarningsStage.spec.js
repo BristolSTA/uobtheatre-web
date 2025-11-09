@@ -24,19 +24,27 @@ describe('Audience Warnings Stage', () => {
     });
 
     it('doesnt display any production description', () => {
-      expect(warningComponent.text()).to.not.contain('Performance Information');
+      expect(warningComponent.text()).to.not.contain(
+        'Performance-Specific Information'
+      );
       expect(warningComponent.text()).to.not.contain(
         'the performance description'
       );
     });
 
-    it('displays the warnings', () => {
-      expect(warningComponent.text()).to.contain('Strobe Lighting');
-      expect(warningComponent.text()).to.contain('Nudity');
+    it('displays the production alert', () => {
+      expect(warningComponent.text()).to.contain('Production Alert');
+      expect(warningComponent.text()).to.contain('This is a production alert.');
+    });
+
+    it('displays the content warnings', () => {
+      expect(warningComponent.find({ ref: 'perf-warnings' }).exists()).to.be
+        .true;
+      expect(warningComponent.find({ ref: 'warnings' }).exists()).to.be.true;
     });
 
     it('emits event on understood', () => {
-      warningComponent.find('button').trigger('click');
+      warningComponent.find({ ref: 'understood' }).trigger('click');
       expect(warningComponent.emitted('next-stage').length).to.eq(1);
     });
   });
@@ -46,24 +54,36 @@ describe('Audience Warnings Stage', () => {
       warningComponent = await mount(AudienceWarningsStage, {
         shallow: false,
         propsData: {
-          production: Production({ contentWarnings: [] }),
+          production: Production({
+            contentWarnings: [],
+            productionAlert: null
+          }),
           booking: BookingCls.fromAPIData(Booking())
         }
       });
     });
 
     it('displays the production description', () => {
-      expect(warningComponent.text()).to.contain('Performance Information');
+      expect(warningComponent.text()).to.contain(
+        'Performance-Specific Information'
+      );
       expect(warningComponent.text()).to.contain('the performance description');
     });
 
-    it('doesnt display any warnings', () => {
+    it('doesnt display the production alert', () => {
+      expect(warningComponent.text()).to.not.contain('Production Alert');
+      expect(warningComponent.text()).to.not.contain(
+        'This is a production alert.'
+      );
+    });
+
+    it('doesnt display any content warnings', () => {
       expect(warningComponent.text()).to.not.contain('Strobe Lighting');
       expect(warningComponent.text()).to.not.contain('Nudity');
     });
 
     it('emits event on understood', () => {
-      warningComponent.find('button').trigger('click');
+      warningComponent.find({ ref: 'understood' }).trigger('click');
       expect(warningComponent.emitted('next-stage').length).to.eq(1);
     });
   });

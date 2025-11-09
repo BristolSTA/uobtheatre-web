@@ -1,4 +1,5 @@
 <template>
+  <LayoutSiteMessageModal location="PRODUCTION_CREATION_MODAL" />
   <AdminPage title="Create a performance">
     <template #toolbar>
       <UiStaButton colour="green" icon="save" @click="create">
@@ -28,6 +29,11 @@ import {
 
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import { loadingSwal, successToast, errorToast } from '~~/utils/alerts';
+
+definePageMeta({
+  middleware: ['require-production-permissions'],
+  requiredPermissions: ['view_production', 'change_production']
+});
 
 export default defineNuxtComponent({
   components: { PerformanceEditor },

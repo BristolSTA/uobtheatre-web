@@ -14,26 +14,16 @@
           v-if="currentReportObject && currentReportObject.requires_times"
         >
           <h2 class="text-h2">Set report times</h2>
-          <form-label field-name="startTime">
+          <form-label field-name="startTime" :required="true">
             Start Time
             <template #control>
-              <VueDatepicker
-                v-model="start"
-                format="dd/MM/yyyy HH:mm"
-                :required="true"
-                :start-time="{ hours: 0, minutes: 0, seconds: 0 }"
-              />
+              <UiInputDateTime v-model="start" />
             </template>
           </form-label>
-          <form-label field-name="endTime">
+          <form-label field-name="endTime" :required="true">
             End Time
             <template #control>
-              <VueDatepicker
-                v-model="end"
-                format="dd/MM/yyyy HH:mm"
-                :required="true"
-                :start-time="{ hours: 0, minutes: 0, seconds: 0 }"
-              />
+              <UiInputDateTime v-model="end" />
             </template>
           </form-label>
         </template>
@@ -62,14 +52,13 @@ import FormLabel from '@/components/ui/FormLabel.vue';
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 import { GenerateReportDocument } from '~~/graphql/codegen/operations';
-import VueDatepicker from '@vuepic/vue-datepicker';
 
 definePageMeta({
   middleware: ['authed', 'finance']
 });
 
 export default defineNuxtComponent({
-  components: { AllErrorsDisplay, FormLabel, LoadingContainer, VueDatepicker },
+  components: { AllErrorsDisplay, FormLabel, LoadingContainer },
   data() {
     return {
       errors: null,

@@ -10,13 +10,13 @@ updates:
     schedule:
       interval: 'daily'
     target-branch: 'dependabot/develop'
-    reviewers:
-      - 'HappyNTH'
+    assignees:
+      - 'ClaraARay'
     groups:
       vue:
         patterns:
           - '@vue/*'
-          - 'vue-*'
+          - 'vue-tsc'
           - 'vue'
       eslint:
         patterns:

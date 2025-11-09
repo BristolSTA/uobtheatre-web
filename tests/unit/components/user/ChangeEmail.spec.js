@@ -1,4 +1,5 @@
 import { expect, vi } from 'vitest';
+import MatchMediaMock from 'vitest-matchmedia-mock';
 
 import { mount } from '#testSupport/helpers';
 import GenericMutationResponse from '#testSupport/fixtures/support/GenericMutationResponse';
@@ -9,6 +10,7 @@ import ChangeEmail from '@/components/user/ChangeEmail.vue';
 describe('Change Email', () => {
   let component;
   beforeEach(async () => {
+    new MatchMediaMock();
     component = await mount(ChangeEmail, {
       apollo: {
         mutationResponses: [

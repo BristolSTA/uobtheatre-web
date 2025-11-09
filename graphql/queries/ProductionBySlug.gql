@@ -41,6 +41,7 @@ query productionBySlug($slug: String!) {
         longDescription
       }
     }
+    productionAlert
     performances(orderBy: "start", disabled: false) {
       edges {
         node {
@@ -60,6 +61,13 @@ query productionBySlug($slug: String!) {
           intervalDurationMins
           isOnline
           isInperson
+          isRelaxed
+          relaxedName
+          relaxedCategories {
+            id
+            shortDescription
+            longDescription
+          }
           ticketsBreakdown {
             totalCapacity
           }

@@ -9,6 +9,8 @@ export default (overrides = {}, includeProductions = false) => {
       updatedAt: '2021-05-08T16:00:00.000',
       name: 'STA',
       description: 'We do it in the dark',
+      website: 'http://uobtheatre.com',
+      contact: 'info@uobtheatre.com',
       logo: {
         url: 'http://pathto.example/logo-image.png'
       },

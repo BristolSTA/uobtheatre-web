@@ -14,6 +14,7 @@ const emit = defineEmits<{
 onMounted(() => {
   nextTick(() => {
     if (!map.value) return;
+    // @ts-ignore
     leafletMapInstance.value = L.map(map.value);
     emit('initalised', leafletMapInstance);
   });

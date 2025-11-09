@@ -1,0 +1,5 @@
+/* Enables QR codes genearted by qrcode.vue (with the class) to be repsonsive height wise */
+.qrcode-responsive-height > svg {
+  width: auto !important;
+  height: 100% !important;
+}

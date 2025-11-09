@@ -1,4 +1,6 @@
 import { expect } from 'vitest';
+import MatchMediaMock from 'vitest-matchmedia-mock';
+
 import { mount } from '#testSupport/helpers';
 import { GenericApolloResponse } from '#testSupport/helpers/api';
 import { flushPromises } from '@vue/test-utils';
@@ -10,6 +12,10 @@ import AdminPage from '@/components/admin/AdminPage.vue';
 import GenericMutationResponse from '#testSupport/fixtures/support/GenericMutationResponse';
 
 describe('Production', function () {
+  beforeEach(async () => {
+    new MatchMediaMock();
+  });
+
   let productionPermissionsPageComponent,
     adminPageComponent,
     permissionsAssignerComponent,

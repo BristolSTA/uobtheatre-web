@@ -1,12 +1,13 @@
 <template>
   <div>
     <div
+      v-if="!productionsLoading"
       id="splashscreen"
       :class="[!!userTodaysBookings?.length ? 'hidden md:block' : '']"
     >
       <div
         v-if="!bannerProductions.length"
-        class="flex items-center bg-black bg-opacity-40"
+        class="flex items-center bg-black/45"
         style="min-height: 50vh"
       >
         <div class="container px-4 text-white lg:w-2/3">
@@ -18,7 +19,7 @@
       </div>
       <UiCarousel v-else :carousel-items="bannerProductions">
         <template #default="slotProps">
-          <div class="flex items-center h-full bg-black bg-opacity-40">
+          <div class="flex items-center h-full bg-black/40">
             <NuxtLink
               class="container px-4 md:pl-12 lg:pl-4 lg:w-2/3"
               :to="`/production/${slotProps.carouselItem.text.slug}`"
@@ -49,9 +50,13 @@
     </template>
 
     <div ref="whatson" class="container mt-4 text-white">
-      <h1 class="text-h1">What's On</h1>
+      <h1 class="text-h1 text-center">What's On</h1>
+      <div v-if="productionsLoading" class="flex justify-center my-12">
+        <UiLoadingIcon />
+      </div>
       <div
-        v-for="(production, index) in upcomingProductionsToDisplay"
+        v-for="(production, index) in upcomingProductions"
+        v-else-if="upcomingProductions.length > 0"
         :key="production!.id"
         class="flex flex-wrap items-center py-4 production-feature"
         :class="{ 'flex-row-reverse': index % 2 == 1 }"
@@ -101,24 +106,10 @@
           </NuxtLink>
         </div>
       </div>
-      <div
-        v-if="upcomingProductions.length == 0"
-        class="flex items-center text-center"
-        style="height: 30vh"
-      >
+      <div v-else class="flex items-center text-center" style="height: 30vh">
         <div class="w-full">
           <h2 class="text-h2">There are currently no upcoming productions</h2>
           <p>Please be sure to check back soon!</p>
-        </div>
-      </div>
-      <div
-        v-if="upcomingProductions.length > upcomingProductionsToDisplay.length"
-        class="flex items-center py-10 text-center"
-      >
-        <div class="w-full">
-          <NuxtLink to="/productions" class="btn btn-outline btn-orange">
-            See More <font-awesome-icon icon="arrow-right" />
-          </NuxtLink>
         </div>
       </div>
     </div>
@@ -126,7 +117,6 @@
 </template>
 
 <script setup lang="ts">
-import take from 'lodash/take';
 import {
   useHomepageUpcomingProductionsQuery,
   useUpcomingBookingsQuery
@@ -145,18 +135,15 @@ useHead({
 });
 
 // Fetch upcoming productions (without blocking)
-const { result: productionsResult } = useHomepageUpcomingProductionsQuery({
-  now: new Date()
-});
+const { result: productionsResult, loading: productionsLoading } =
+  useHomepageUpcomingProductionsQuery({
+    now: new Date()
+  });
 
 const upcomingProductions = computed(() =>
   productionsResult.value?.productions
     ? productionsResult.value.productions.edges.map((edge) => edge!.node)
     : []
-);
-
-const upcomingProductionsToDisplay = computed(() =>
-  take(upcomingProductions.value, 4)
 );
 
 // Fetch user upcoming bookings
@@ -186,7 +173,7 @@ const userTodaysBookings = computed(() => {
 
 // Define banner productions
 const bannerProductions = computed(() =>
-  upcomingProductionsToDisplay.value
+  upcomingProductions.value
     .filter((production) => production?.coverImage)
     .map((production) => {
       return {

@@ -1,7 +1,10 @@
 <template>
   <AdminPage :title="`${production.name} Bookings`">
-    <div class="flex items-end space-x-4">
-      <div><UiInputText v-model="bookingsSearch" placeholder="Search" /></div>
+    <div class="flex flex-col md:flex-row md:items-end md:space-x-4">
+      <div>
+        <label>Search</label>
+        <UiInputText v-model="bookingsSearch" placeholder="Search" />
+      </div>
       <div>
         <label>Status</label
         ><UiInputSelect
@@ -9,7 +12,27 @@
           :options="[
             { displayText: 'All', value: null },
             { displayText: 'In Progress', value: 'IN_PROGRESS' },
-            { displayText: 'Paid', value: 'PAID' }
+            { displayText: 'Paid', value: 'PAID' },
+            { displayText: 'Cancelled', value: 'CANCELLED' },
+            { displayText: 'Refund Processing', value: 'REFUND_PROCESSING' },
+            { displayText: 'Refunded', value: 'REFUNDED' }
+          ]"
+        />
+      </div>
+      <div>
+        <label>Accessible Bookings</label
+        ><UiInputSelect
+          v-model="hasAccessibilityInfo"
+          :options="[
+            {
+              displayText: 'Show Only Bookings with Accessibility Needs',
+              value: true
+            },
+            { displayText: 'Show All Bookings', value: null },
+            {
+              displayText: 'Hide Bookings with Accessibility Needs',
+              value: false
+            }
           ]"
         />
       </div>
@@ -120,7 +143,8 @@ export default defineNuxtComponent({
       bookingsOffset: 0,
       bookingsSearch: null,
       bookingsOrderBy: null,
-      bookingsStatus: null,
+      bookingsStatus: 'PAID',
+      hasAccessibilityInfo: null,
 
       production: null,
 
@@ -137,7 +161,8 @@ export default defineNuxtComponent({
           offset: this.bookingsOffset,
           search: this.bookingsSearch,
           orderBy: this.bookingsOrderBy,
-          status: this.bookingsStatus
+          status: this.bookingsStatus,
+          hasAccessibilityInfo: this.hasAccessibilityInfo
         };
       },
       fetchPolicy: 'cache-and-network',

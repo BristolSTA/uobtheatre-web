@@ -5,26 +5,24 @@
       Tickets
     </template>
     <template #messageBox>
-      <table class="flex table-auto ml-auto">
-        <tr>
-          <th class="pr-4">
-            <font-awesome-icon
-              icon="info-circle"
-              class="flex items-center text-h3 lg:text-h2"
-            />
-          </th>
-          <td class="text-xs lg:text-sm">
-            <p>All our tickets are fulfilled digitally</p>
-            <p>Display on your phone or print</p>
-          </td>
-        </tr>
-      </table>
+      <div class="flex table-auto ml-auto">
+        <div class="pr-4 flex items-center">
+          <font-awesome-icon
+            icon="info-circle"
+            class="flex items-center text-h3 lg:text-h2"
+          />
+        </div>
+        <div class="text-xs lg:text-sm">
+          <p>All our tickets are fulfilled digitally</p>
+          <p>Display on your phone or print</p>
+        </div>
+      </div>
     </template>
     <div class="grid gap-2 grid-cols-1 sm:grid-cols-2">
       <div
         v-for="(groupedConcessions, index) in seatGroupedTickets"
         :key="index"
-        class="p-2 px-4 bg-sta-gray rounded"
+        class="p-2 px-4 bg-sta-gray rounded-sm"
       >
         <span class="text-sta-orange font-semibold">
           {{ groupedConcessions[0].seatGroup.name }}

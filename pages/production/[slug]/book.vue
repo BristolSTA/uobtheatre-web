@@ -1,4 +1,5 @@
 <template>
+  <LayoutSiteMessageModal location="BOOKING_MODAL" />
   <div class="min-h-full bg-sta-gray">
     <Head>
       <Title>Book {{ production.name }}</Title>
@@ -40,7 +41,7 @@
           </div>
           <div
             v-if="booking.raw && booking.raw.expiresAt"
-            class="p-2 bg-sta-green-dark my-2 rounded text-center shadow-inner"
+            class="p-2 bg-sta-green-dark my-2 rounded-sm text-center shadow-inner"
           >
             You have
             <strong>
@@ -55,7 +56,7 @@
 
         <div
           id="booking-view"
-          class="flex-grow sm:pb-4 max-w-full bg-sta-gray-dark sm:p-3"
+          class="grow sm:pb-4 max-w-full bg-sta-gray-dark sm:p-3"
         >
           <NuxtPage
             data-test="nuxt-page"
@@ -122,7 +123,6 @@ export default defineNuxtComponent({
       showConfirmButton: true,
       showCancelButton: true,
       confirmButtonText: 'Abandon Booking',
-      confirmButtonColor: '#d94519',
       cancelButtonText: 'Keep editing'
     });
 

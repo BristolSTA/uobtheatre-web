@@ -1,4 +1,5 @@
 <template>
+  <LayoutSiteMessageModal location="BOOKING_MODAL" />
   <UiCard>
     <loading-container :loading="loading">
       <BookingSelectedPerformanceBar
@@ -114,7 +115,7 @@ export default defineNuxtComponent({
       this.loading = true;
       try {
         // Make the booking
-        const data = await performMutation(
+        await performMutation(
           this.$apollo,
           {
             mutation: BookingMutation,
@@ -129,7 +130,6 @@ export default defineNuxtComponent({
           },
           'booking'
         );
-        this.booking.updateFromAPIData(data.booking.booking);
 
         // Pay the booking
         await performMutation(

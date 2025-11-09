@@ -13,7 +13,7 @@
       <BookingPriceOverview :booking="booking" />
 
       <div
-        class="p-3 bg-sta-gray-dark rounded border"
+        class="p-3 bg-sta-gray-dark rounded-sm border"
         :class="[!validEmail ? 'border-sta-orange' : 'border-transparent']"
       >
         <h2 class="text-center text-h2 text-white">Customer Details</h2>

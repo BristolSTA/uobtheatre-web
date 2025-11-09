@@ -1,4 +1,5 @@
 <template>
+  <LayoutSiteMessageModal location="BOOKING_MODAL" />
   <AdminPage title="Create a Booking">
     <p>Select a performance below to create a complimentry booking for.</p>
 

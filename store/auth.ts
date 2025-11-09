@@ -11,7 +11,9 @@ import {
   useResetPasswordMutationMutation,
   useActiveAccountMutationMutation,
   useRegisterUserMutationMutation,
-  useResendActivationMutationMutation
+  useResendActivationMutationMutation,
+  useAdminProductionUserPermissionsQuery,
+  useAdminPerformanceProductionUserPermissionsQuery
 } from '@/graphql/codegen/operations';
 import Errors from '~~/classes/Errors';
 import ValidationError from '~~/errors/ValidationError';
@@ -422,6 +424,105 @@ const useAuthStore = defineStore('auth', {
     hasPermission(permission: string) {
       if (!this.user || !this.user.permissions) return false;
       return this.user.permissions.includes(permission);
+    },
+
+    /**
+     * Checks if the user has the specified permissions for a production
+     * @param productionSlug The production slug
+     * @param permissions The permissions
+     * @returns Whether the user has the permissions for the production
+     */
+    async hasPermissionsForProduction(
+      productionSlug: string,
+      permissions: string[]
+    ) {
+      if (!this.user || !this.user.permissions) return false;
+      // Query the permission from the production node
+      const { result, error, loading } = useAdminProductionUserPermissionsQuery(
+        { slug: productionSlug },
+        { fetchPolicy: 'no-cache' }
+      );
+
+      // Wait for the query to finish loading
+      while (loading.value) {
+        await new Promise((resolve) => setTimeout(resolve, 10));
+      }
+
+      if (error.value) {
+        console.error('Error fetching production permissions:', error.value);
+        return false;
+      }
+
+      // If we don't have a production, raise a 404
+      if (!result.value?.production) {
+        throw createSafeError({
+          statusCode: 404,
+          message: 'This production does not exist'
+        });
+      } else {
+        // Check the user has all the required permissions
+
+        const productionPermissions =
+          result.value?.production?.permissions || [];
+
+        return permissions.every((permission) =>
+          productionPermissions.includes(permission)
+        );
+      }
+    },
+
+    /**
+     * Checks if the user has the specified permissions for a performance's production
+     * @param performanceId The performance ID
+     * @param permissions The permissions
+     * @returns Whether the user has the permissions for the performance's production
+     */
+    async hasPermissionsForPerformanceProduction(
+      performanceId: string,
+      permissions: string[]
+    ) {
+      if (!this.user || !this.user.permissions) return false;
+      // Query the permission from the performance's production node
+      const { result, error, loading } =
+        useAdminPerformanceProductionUserPermissionsQuery(
+          { id: performanceId },
+          { fetchPolicy: 'no-cache' }
+        );
+
+      // Wait for the query to finish loading
+      while (loading.value) {
+        await new Promise((resolve) => setTimeout(resolve, 10));
+      }
+
+      if (error.value) {
+        console.error(
+          'Error fetching performance production permissions:',
+          error.value
+        );
+        return false;
+      }
+
+      // If we don't have a performance, raise a 404
+      if (!result.value?.performance) {
+        throw createSafeError({
+          statusCode: 404,
+          message: 'This performance does not exist'
+        });
+      } else if (!result.value?.performance.production) {
+        throw createSafeError({
+          statusCode: 404,
+          message: 'This performance does not have a production'
+        });
+      } else {
+        // Check the user has all the required permissions
+
+        const productionPermissions =
+          result.value?.performance?.production?.permissions || [];
+
+        return permissions.every((permission) =>
+          productionPermissions.includes(permission)
+        );
+      }
     }
   }
 });

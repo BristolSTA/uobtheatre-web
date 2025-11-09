@@ -28,9 +28,11 @@
         </thead>
         <tbody>
           <table-row v-for="(row, index) in section.items" :key="index">
-            <table-row-item>{{ row.purpose }}</table-row-item>
-            <table-row-item>{{ row.basis }}</table-row-item>
-            <table-row-item>
+            <table-row-item class="w-3/5">{{ row.purpose }}</table-row-item>
+            <table-row-item class="w-1/5 text-center">{{
+              row.basis
+            }}</table-row-item>
+            <table-row-item class="w-1/5">
               <ul class="list-inside list-disc">
                 <li v-for="(item, itemIndex) in row.data" :key="itemIndex">
                   {{ item }}
@@ -261,7 +263,8 @@ export default defineNuxtComponent({
           title: 'Tickets and Bookings',
           items: [
             {
-              purpose: 'Provision of payment receipt, and booking confirmation',
+              purpose:
+                'Provision of payment receipt, booking confirmation, and important information about your booking',
               basis: 'Legitimate interests',
               data: ['Email Address']
             },
@@ -269,7 +272,13 @@ export default defineNuxtComponent({
               purpose:
                 'Operational statistics to indicate the number of remaining tickets to be checked in or collected',
               basis: 'Legitimate interests',
-              data: ['Ticket Check In State']
+              data: ['Ticket Check-In State']
+            },
+            {
+              purpose:
+                'Allowing production teams and venue staff to cater for accessibility needs',
+              basis: 'Legitimate interests',
+              data: ['User Accessibility Information']
             }
           ]
         }
@@ -282,7 +291,8 @@ export default defineNuxtComponent({
 });
 </script>
 
-<style lang="scss">
+<style scoped>
+@reference '@/assets/css/main.css';
 .text-page {
   h2 {
     @apply text-h2 mt-2 font-semibold;

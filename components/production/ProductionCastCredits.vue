@@ -15,7 +15,7 @@
               alt="profile image"
             />
           </div>
-          <div class="flex-grow text-center">
+          <div class="grow text-center">
             <p>
               <strong>{{ member.name }}</strong>
             </p>
@@ -98,7 +98,8 @@ export default {
 };
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
+@reference '@/assets/css/main.css';
 .crew-section-header {
   @apply text-2xl;
   @apply tracking-wide;

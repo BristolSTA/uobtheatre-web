@@ -2,7 +2,7 @@
   <component
     :is="asType"
     :href="to"
-    class="inline-block rounded transition-colors"
+    class="inline-block rounded-sm transition-colors"
     :class="classes"
     :disabled="disabled"
     @click="$emit('click')"

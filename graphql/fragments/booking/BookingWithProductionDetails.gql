@@ -3,6 +3,7 @@ fragment BookingWithProductionDetails on BookingNode {
   id
   reference
   status
+  accessibilityInfo
   priceBreakdown {
     ...AllPriceBreakdown
   }
@@ -43,6 +44,8 @@ fragment BookingWithProductionDetails on BookingNode {
     doorsOpen
     durationMins
     intervalDurationMins
+    isRelaxed
+    relaxedName
     venue {
       id
       slug

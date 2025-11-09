@@ -34,31 +34,19 @@
         <form-label name="doorsOpen" :errors="errors" :required="true">
           Doors Open
           <template #control>
-            <VueDatepicker
-              v-model="performance.doorsOpen"
-              :start-time="{ hours: 0, minutes: 0, seconds: 0 }"
-              format="dd/MM/yyyy HH:mm"
-            />
+            <UiInputDateTime v-model="performance.doorsOpen" />
           </template>
         </form-label>
         <form-label name="start" :errors="errors" :required="true">
           Performance Starts
           <template #control>
-            <VueDatepicker
-              v-model="performance.start"
-              :start-time="{ hours: 0, minutes: 0, seconds: 0 }"
-              format="dd/MM/yyyy HH:mm"
-            />
+            <UiInputDateTime v-model="performance.start" />
           </template>
         </form-label>
         <form-label name="end" :errors="errors" :required="true">
           Performance Ends
           <template #control>
-            <VueDatepicker
-              v-model="performance.end"
-              :start-time="{ hours: 0, minutes: 0, seconds: 0 }"
-              format="dd/MM/yyyy HH:mm"
-            />
+            <UiInputDateTime v-model="performance.end" />
           </template>
         </form-label>
         <form-label name="intervalDurationMins" :errors="errors">
@@ -209,12 +197,97 @@
             'General Admission').
           </div>
           <price-matrix
-            :discounts="performance.discounts.edges"
+            :discounts="performanceDiscountsLocal.edges"
             :performance-seat-groups="performanceSeatGroups"
             :editing="true"
           />
         </div>
       </template>
+    </UiCard>
+    <UiCard title="Adapted Performance Options">
+      <form-label name="isRelaxed" :errors="errors">
+        Adapted Performance
+        <template #control>
+          <UiInputToggle v-model="performance.isRelaxed" />
+        </template>
+        <template #helper>
+          Toggle this option for a relaxed/sensory friendly performance to show
+          this on the production page.
+        </template>
+      </form-label>
+      <form-label>
+        Pre-filled options
+        <template #control>
+          <div class="space-x-4 py-2">
+            <button
+              class="p-2 bg-sta-green"
+              @click="selectDefaultRelaxedCategories"
+            >
+              Relaxed Performance
+            </button>
+            <button
+              class="p-2 bg-sta-green"
+              @click="selectDefaultSensoryFriendlyRelaxedCategories"
+            >
+              Sensory Friendly Performance
+            </button>
+          </div>
+        </template>
+        <template #helper>
+          Enter your own information below, or choose one of the pre-made
+          options to edit.
+        </template>
+      </form-label>
+      <form-label name="relaxedName" :errors="errors">
+        Relaxed Performance Name
+        <template #control>
+          <UiInputText v-model="relaxedNameLocal" />
+        </template>
+        <template #helper>
+          Optionally, add a name for the relaxed performance (e.g. 'Relaxed' or
+          'Sensory Friendly').
+        </template>
+      </form-label>
+      <form-label name="relaxedCategories" :errors="errors">
+        Relaxed Categories
+        <template #helper>
+          Select the relaxed categories that apply to this performance.
+        </template>
+      </form-label>
+      <table>
+        <table-row class="border-sta-gray-dark border-2">
+          <table-head-item class="border-sta-gray-dark border-r-2">
+            Relaxed Category
+          </table-head-item>
+          <table-head-item class="border-sta-gray-dark border-r-2">
+            Used in this performance?
+          </table-head-item>
+        </table-row>
+        <table-row
+          v-for="rc in allRelaxedCategories"
+          :key="rc.id"
+          :striped="false"
+          class="border-sta-gray-dark border-2"
+        >
+          <table-row-item class="max-w-lg border-sta-gray-dark border-r-2">
+            <p class="font-bold">{{ rc.shortDescription }}</p>
+            <p class="text-sm">{{ rc.longDescription }}</p>
+            <p v-if="rc.helpText" class="text-sm font-bold text-sta-orange">
+              <font-awesome-icon icon="fa-circle-info"></font-awesome-icon>
+              {{ rc.helpText }}
+            </p>
+          </table-row-item>
+          <table-row-item class="text-center border-sta-gray-dark border-r-2">
+            <input
+              type="checkbox"
+              :checked="
+                (relaxedCategoriesLocal || []).map((r) => r.id).includes(rc.id)
+              "
+              @change="relaxedCategorySelectionToggle(rc)"
+            />
+          </table-row-item>
+        </table-row>
+      </table>
     </UiCard>
     <UiCard title="Other Details">
       <div class="space-y-4">
@@ -275,7 +348,6 @@ import { swal } from '@/utils/alerts';
 import { dateFormat } from '@/utils/datetime';
 import Alert from '@/components/ui/Alert.vue';
 import { getSingleDiscounts } from '@/utils/performance';
-import VueDatepicker from '@vuepic/vue-datepicker';
 
 import {
   AdminPerformanceDetailDocument,
@@ -287,13 +359,21 @@ import {
   DiscountMutationDocument,
   DiscountRequirementMutationDocument,
   PerformanceSeatGroupDocument,
-  VenuesDocument
+  VenuesDocument,
+  RelaxedCategoriesDocument
 } from '@/graphql/codegen/operations';
+import UiInputToggle from '../../ui/Input/UiInputToggle.vue';
+import TableRow from '~/components/ui/Tables/TableRow.vue';
+import TableHeadItem from '~/components/ui/Tables/TableHeadItem.vue';
+import TableRowItem from '~/components/ui/Tables/TableRowItem.vue';
 
 export default {
   components: {
+    TableRowItem,
+    TableHeadItem,
+    TableRow,
+    UiInputToggle,
     FormLabel,
-    VueDatepicker,
     SeatGroup,
     ConcessionType,
     ErrorHelper,
@@ -314,7 +394,7 @@ export default {
       required: true
     }
   },
-  emits: ['update:errors'],
+  emits: ['update:errors', 'update:performance'],
   data() {
     return {
       ignoredExisitingPerformances: false,
@@ -323,8 +403,14 @@ export default {
       otherPerformances: [],
 
       performanceSeatGroups: [],
+      performanceDiscountsLocal: { edges: [] },
 
-      deletedDiscounts: []
+      deletedDiscounts: [],
+
+      allRelaxedCategories: [],
+      // Local copy of relaxed categories to avoid mutating the performance prop directly
+      relaxedCategoriesLocal: [],
+      relaxedNameLocal: ''
     };
   },
   apollo: {
@@ -354,6 +440,10 @@ export default {
         };
       },
       fetchPolicy: 'cache-and-network'
+    },
+    allRelaxedCategories: {
+      query: RelaxedCategoriesDocument,
+      update: (data) => data.relaxedCategories.edges.map((edge) => edge.node)
     }
   },
   computed: {
@@ -377,7 +467,7 @@ export default {
       );
     },
     singleDiscounts() {
-      return getSingleDiscounts(this.performance.discounts?.edges || []);
+      return getSingleDiscounts(this.performanceDiscountsLocal?.edges || []);
     },
     selectedSeatGroupCapacities() {
       return this.performanceSeatGroups.reduce(
@@ -401,6 +491,16 @@ export default {
       },
       immediate: true
     },
+    // Link this nested property with a local property, and watch for it to change
+    // This is because performance.discounts is a property of a local property (i.e. it is nested),
+    // so we can't mutate it directly, and instead have to have a local copy and use
+    // $emit elsewhere to update
+    'performance.discounts': {
+      handler(newValue) {
+        if (newValue !== undefined) this.performanceDiscountsLocal = newValue;
+      },
+      immediate: true
+    },
     similarPerformances(newVal) {
       // If this is a create operation, and there are similar performances
       if (newVal.length && !this.id) {
@@ -413,6 +513,19 @@ export default {
           this.performance.intervalDurationMins = intervalLength;
         }
       }
+    },
+    // Keep a local, non-mutating copy of relaxed categories in sync with the prop
+    'performance.relaxedCategories': {
+      handler(newVal) {
+        this.relaxedCategoriesLocal = newVal ? [...newVal] : [];
+      },
+      immediate: true
+    },
+    'performance.relaxedName': {
+      handler(newVal) {
+        this.relaxedNameLocal = newVal ?? '';
+      },
+      immediate: true
     }
   },
   methods: {
@@ -428,6 +541,12 @@ export default {
         end: this.performance.end,
         venue: this.performance.venue?.id,
         disabled: !!this.performance.disabled,
+        isRelaxed: this.performance.isRelaxed,
+        // Use the local copy to avoid reading a mutated prop
+        relaxedCategories: (this.relaxedCategoriesLocal || []).map(
+          (rc) => rc.id
+        ),
+        relaxedName: this.relaxedNameLocal,
         description: this.performance.description,
         capacity:
           this.performance.capacity === '' ? null : this.performance.capacity
@@ -484,7 +603,7 @@ export default {
       });
 
       // And concession types...
-      for (const edge of performance.discounts.edges) {
+      for (const edge of performanceDiscountsLocal.edges) {
         if (
           edge.node.requirements.length > 1 ||
           edge.node.requirements[0].number !== 1
@@ -592,8 +711,8 @@ export default {
         });
 
       // Create or update concession types
-      if (this.performance.discounts?.edges) {
-        this.performance.discounts.edges
+      if (this.performanceDiscountsLocal?.edges) {
+        this.performanceDiscountsLocal.edges
           .map((edge) => edge.node)
           .forEach((discount) => {
             mutations.push(
@@ -718,13 +837,13 @@ export default {
       percentage = 0,
       id = null
     ) {
-      const currentNum = this.performance.discounts?.edges
-        ? this.performance.discounts.edges.length
+      const currentNum = this.performanceDiscountsLocal?.edges
+        ? this.performanceDiscountsLocal.edges.length
         : 0;
-      // eslint-disable-next-line vue/no-mutating-props
-      this.performance.discounts = {
+
+      this.performanceDiscountsLocal = {
         edges: [
-          ...(this.performance.discounts?.edges || []),
+          ...(this.performanceDiscountsLocal?.edges || []),
           {
             node: {
               percentage,
@@ -743,17 +862,83 @@ export default {
           }
         ]
       };
+
+      // Alert about the local update to keep the remote version in sync
+      this.$emit('update:performance', {
+        ...this.performance,
+        discounts: this.performanceDiscountsLocal
+      });
     },
     async deleteConcession(discount) {
       // Remove from array
-      // eslint-disable-next-line vue/no-mutating-props
-      this.performance.discounts = {
-        edges: this.performance.discounts.edges.filter(
+
+      this.performanceDiscountsLocal = {
+        edges: this.performanceDiscountsLocal.edges.filter(
           (edge) => edge.node !== discount
         )
       };
 
       this.deletedDiscounts.push(discount);
+
+      // Alert about the local update to keep the remote version in sync
+      this.$emit('update:performance', {
+        ...this.performance,
+        discounts: this.performanceDiscountsLocal
+      });
+    },
+    selectDefaultRelaxedCategories() {
+      // Set local relaxed categories and emit update instead of mutating the prop
+      this.setRelaxedName('Relaxed');
+      const selected = this.allRelaxedCategories.filter(
+        (rc) => rc.defaultRelaxed
+      );
+      this.setRelaxedCategories(selected);
+    },
+    selectDefaultSensoryFriendlyRelaxedCategories() {
+      // Set local relaxed categories and emit update instead of mutating the prop
+      this.setRelaxedName('Sensory Friendly');
+      const selected = this.allRelaxedCategories.filter(
+        (rc) => rc.defaultSensoryFriendly
+      );
+      this.setRelaxedCategories(selected);
+    },
+    relaxedCategorySelectionToggle(category) {
+      // Toggle selection in the local copy, then emit the updated performance
+      const index = this.relaxedCategoriesLocal.findIndex(
+        (rc) => rc.id === category.id
+      );
+      if (index === -1) {
+        this.relaxedCategoriesLocal = [
+          ...this.relaxedCategoriesLocal,
+          category
+        ];
+      } else {
+        this.relaxedCategoriesLocal = this.relaxedCategoriesLocal.filter(
+          (rc) => rc.id !== category.id
+        );
+      }
+      this.$emit('update:performance', {
+        ...this.performance,
+        relaxedCategories: this.relaxedCategoriesLocal
+      });
+    },
+    // Helper to update local relaxed categories and notify parent
+    setRelaxedCategories(categories) {
+      this.relaxedCategoriesLocal = Array.isArray(categories)
+        ? [...categories]
+        : [];
+      this.$emit('update:performance', {
+        ...this.performance,
+        relaxedCategories: this.relaxedCategoriesLocal
+      });
+    },
+    setRelaxedName(value) {
+      this.relaxedNameLocal = value ?? '';
+
+      this.$emit('update:performance', {
+        ...this.performance,
+        relaxedName: this.relaxedNameLocal
+      });
     }
   }
 };

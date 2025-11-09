@@ -35,7 +35,7 @@
           </p>
         </div>
         <template v-else>
-          <div v-if="viewDetails" class="bg-black/80 flex flex-col flex-grow">
+          <div v-if="viewDetails" class="bg-black/80 flex flex-col grow">
             <div
               class="mt-auto bg-sta-gray-dark rounded-xl rounded-bl-none rounded-br-none px-5 py-3 relative"
             >
@@ -71,7 +71,7 @@
 
                   <div
                     v-if="booking"
-                    class="bg-sta-gray p-2 rounded text-white"
+                    class="bg-sta-gray p-2 rounded-sm text-white"
                   >
                     <PerformanceSummaryPill
                       :performance="booking.performance"

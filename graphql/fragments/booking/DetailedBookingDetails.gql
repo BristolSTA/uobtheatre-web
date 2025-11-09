@@ -7,6 +7,9 @@ fragment DetailedBookingDetails on BookingNode {
   expired
   expiresAt
   status
+  accessibilityInfo
+  previousAccessibilityInfo
+  accessibilityInfoUpdatedAt
   user {
     id
     firstName
@@ -30,6 +33,13 @@ fragment DetailedBookingDetails on BookingNode {
     start
     end
     doorsOpen
+    isRelaxed
+    relaxedName
+    relaxedCategories {
+      id
+      shortDescription
+      longDescription
+    }
     venue {
       id
       slug
@@ -37,4 +47,5 @@ fragment DetailedBookingDetails on BookingNode {
     durationMins
     intervalDurationMins
   }
+  canModifyAccessibility
 }

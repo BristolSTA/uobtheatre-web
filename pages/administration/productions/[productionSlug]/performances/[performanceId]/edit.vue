@@ -1,4 +1,5 @@
 <template>
+  <LayoutSiteMessageModal location="PRODUCTION_CREATION_MODAL" />
   <AdminPage title="Edit Performance">
     <template #toolbar>
       <UiStaButton colour="green" icon="save" @click="save"> Save </UiStaButton>
@@ -22,6 +23,11 @@ import PerformanceEditor from '@/components/performance/editor/PerformanceEditor
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import { loadingSwal, successToast, errorToast } from '~~/utils/alerts';
 import { PerformanceMutationDocument } from '~~/graphql/codegen/operations';
+
+definePageMeta({
+  middleware: ['require-production-permissions'],
+  requiredPermissions: ['view_production', 'change_production']
+});
 
 export default defineNuxtComponent({
   components: { PerformanceEditor },

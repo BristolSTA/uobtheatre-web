@@ -1,4 +1,5 @@
 import { describe, expect, it, beforeEach } from 'vitest';
+import MatchMediaMock from 'vitest-matchmedia-mock';
 import UserAuthBox from '@/components/auth/AuthBox.vue';
 import { mount } from '#testSupport/helpers';
 import { NuxtLinkStub } from '#testSupport/stubs';
@@ -10,6 +11,10 @@ import UnverifiedLoginError from '~~/errors/auth/UnverifiedLoginError';
 
 describe('AuthBox', async function () {
   let authBoxComponent;
+
+  beforeEach(async () => {
+    new MatchMediaMock();
+  });
 
   it('can switch between login and signup', async () => {
     authBoxComponent = await mount(UserAuthBox, {

@@ -1,109 +1,138 @@
 <template>
-  <div class="min-h-full text-white bg-sta-gray">
-    <Head
-      ><Title>{{ society?.name ?? 'Loading...' }}</Title></Head
-    >
-    <div
-      v-if="banner"
-      ref="banner"
-      class="min-h-25vh 2xl:min-h-40vh bg-cover bg-center"
-      :style="{
-        'background-image': banner
-      }"
-    />
-    <div>
-      <h1 class="container pt-8 text-left text-h1">
-        {{ society.name }}
-      </h1>
-    </div>
-    <div
-      class="flex-wrap justify-around mt-4 md:container md:flex md:my-8 md:space-x-6"
-    >
-      <div
-        v-if="society.logo.url"
-        class="flex justify-center mx-4 py-2 h-40 md:mx-0 md:py-0 md:w-60 md:h-60"
-      >
-        <img
-          ref="society-logo"
-          :src="society.logo.url"
-          :alt="`${society.name} logo`"
-        />
+  <LayoutInfoPage :title="society?.name" :banner="banner">
+    <template #sidebar>
+      <div class="p-4">
+        <div
+          v-if="society.logo.url"
+          class="flex justify-center h-40 w-40 md:w-60 md:h-60"
+        >
+          <img
+            ref="society-logo"
+            :src="society.logo.url"
+            :alt="`${society.name} logo`"
+          />
+        </div>
       </div>
-
       <div
-        v-if="productions.length"
-        ref="production-list"
-        class="flex-none px-1 md:w-1/2"
+        v-if="society.website || society.contact"
+        class="flex justify-center w-full lg:w-3/4 px-4 pb-4"
       >
-        <div class="p-2 bg-sta-gray-dark">
-          <h2 class="flex justify-center mb-2 text-2xl">Productions</h2>
-          <table class="table-auto w-full">
+        <div class="max-w-full">
+          <h2 class="text-sta-orange text-3xl font-semibold text-center">
+            Society Information
+          </h2>
+          <table class="table-auto mt-2 w-full break-words">
             <tbody>
-              <tr
-                v-for="(production, index) in productions"
-                :key="index"
-                class="even:bg-sta-gray odd:bg-sta-gray-light"
-              >
-                <td class="pl-4 py-2 hover:text-gray-300 text-xl font-semibold">
-                  <NuxtLink :to="`/production/${production.slug}`">
-                    {{ production.name }}
-                  </NuxtLink>
-                </td>
-                <td v-if="production.isBookable" class="px-4 text-right">
-                  <NuxtLink
-                    class="btn btn-orange my-1 px-3 py-1.5 text-center text-sm font-semibold"
-                    :to="`/production/${production.slug}/book`"
+              <tr v-if="society.website">
+                <th class="align-top pr-2">Website:</th>
+                <td class="align-top">
+                  <a
+                    :href="society.website"
+                    target="_blank"
+                    title="Opens in a new tab"
+                    class="text-sta-orange hover:text-sta-orange-dark break-all"
                   >
-                    Book Now
-                  </NuxtLink>
+                    {{ society.website }}
+                  </a>
                 </td>
-                <td v-else class="px-4 text-right">
-                  {{ dateFormat(production.end, 'MMMM y') }}
+              </tr>
+              <tr v-if="society.contact">
+                <th class="align-top pr-2">Contact:</th>
+                <td class="align-top">
+                  <a
+                    :href="`mailto:${society.contact}`"
+                    target="_blank"
+                    title="Opens in a new tab"
+                    class="text-sta-orange hover:text-sta-orange-dark break-all"
+                  >
+                    {{ society.contact }}
+                  </a>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-      <div
-        class="m-2 px-2 text-center md:text-left"
-        :class="[productions.length ? 'pt-4' : 'md:w-2/3']"
-      >
+    </template>
+
+    <template #default>
+      <div v-if="bannerProductions.length">
+        <!-- Upcoming Shows Carousel -->
+        <h1 class="text-3xl font-semibold text-center mb-2">
+          Upcoming Productions
+        </h1>
+        <UiCarousel :carousel-items="bannerProductions">
+          <template #default="slotProps">
+            <div class="flex items-center h-full bg-black bg-opacity-40">
+              <NuxtLink
+                class="container px-4 md:pl-12 lg:pl-4 lg:w-2/3"
+                :to="`/production/${slotProps.carouselItem.text.slug}`"
+              >
+                <div class="text-2xl">
+                  {{ slotProps.carouselItem.text.society.name }}
+                </div>
+                <div class="text-h1">
+                  {{ slotProps.carouselItem.text.name }}
+                </div>
+                <div class="text-2xl">
+                  {{
+                    displayStartEnd(
+                      slotProps.carouselItem.text.start,
+                      slotProps.carouselItem.text.end,
+                      'd MMMM'
+                    )
+                  }}
+                </div>
+              </NuxtLink>
+            </div>
+          </template>
+        </UiCarousel>
+      </div>
+      <div v-if="society.description" class="mt-4">
+        <!-- Description -->
+        <h1 class="text-3xl font-semibold text-center mb-2">Description</h1>
         <tip-tap-output :html="society.description" />
-        <div v-if="society.website">
-          <strong>Website: </strong>
-          <a
-            :href="society.website"
-            target="_blank"
-            title="Opens in a new tab"
-            class="text-sta-orange hover:text-sta-orange-dark"
-          >
-            {{ society.website }}
-          </a>
-        </div>
-        <div v-if="society.contact">
-          <strong>Contact: </strong>
-          <a
-            :href="`mailto:${society.contact}`"
-            target="_blank"
-            title="Opens in a new tab"
-            class="text-sta-orange hover:text-sta-orange-dark"
-          >
-            {{ society.contact }}
-          </a>
+      </div>
+      <div v-if="pastProductions.length" class="mx-4 mt-4">
+        <!-- Past Shows -->
+        <div ref="production-list" class="flex-none container">
+          <div class="w-full bg-sta-gray-dark">
+            <h2 class="flex justify-center mb-2 text-2xl">Past Productions</h2>
+            <table class="table-auto w-full">
+              <tbody>
+                <tr
+                  v-for="(production, index) in pastProductions"
+                  :key="index"
+                  class="even:bg-sta-gray odd:bg-sta-gray-light"
+                >
+                  <td
+                    class="pl-4 py-2 hover:text-gray-300 text-xl font-semibold"
+                  >
+                    <NuxtLink :to="`/production/${production.slug}`">
+                      {{ production.name }}
+                    </NuxtLink>
+                  </td>
+                  <td class="px-4 text-right">
+                    {{ dateFormat(production.end, 'MMMM y') }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+    </template>
+  </LayoutInfoPage>
 </template>
 
 <script>
 import SocietyDetailQuery from '@/graphql/queries/SocietyDetail.gql';
 import TipTapOutput from '~~/components/ui/UiTipTapOutput.vue';
 import { dateFormat } from '@/utils/datetime';
+import LayoutInfoPage from '@/components/layout/LayoutInfoPage.vue';
 
 export default defineNuxtComponent({
-  components: { TipTapOutput },
+  components: { TipTapOutput, LayoutInfoPage },
   async asyncData() {
     const { data } = await useAsyncQuery({
       query: SocietyDetailQuery,
@@ -120,8 +149,32 @@ export default defineNuxtComponent({
       });
     }
 
+    const upcomingProductions = society.productions
+      ? society.productions.edges
+          .map((edge) => edge.node)
+          .filter((production) => new Date(production.end) > new Date())
+      : [];
+
+    const bannerProductions = upcomingProductions
+      .filter((production) => production?.coverImage)
+      .map((production) => {
+        return {
+          id: production.id,
+          displayImage: production.coverImage,
+          text: {
+            slug: production.slug,
+            name: production.name,
+            start: production.start,
+            end: production.end,
+            society: production.society
+          }
+        };
+      })
+      .slice(0, 4);
+
     return {
-      society
+      society,
+      bannerProductions
     };
   },
   data() {
@@ -139,6 +192,11 @@ export default defineNuxtComponent({
       return this.society.productions.edges
         .map((edge) => edge.node)
         .filter((production) => production.end);
+    },
+    pastProductions() {
+      return this.productions.filter(
+        (production) => new Date(production.end) < new Date()
+      );
     }
   },
   methods: {

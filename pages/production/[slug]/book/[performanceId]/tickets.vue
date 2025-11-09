@@ -20,6 +20,7 @@
       <BookingSelectedTicketsTable
         :ticket-matrix="ticketMatrix"
         :booking="booking"
+        :errors="errors"
       />
     </div>
     <div v-if="booking.tickets.length" class="mt-2 text-center">
@@ -30,6 +31,7 @@
         @keypress="$emit('next-stage')"
       >
         Next
+        <font-awesome-icon class="ml-2" icon="arrow-right" />
       </button>
     </div>
   </div>
