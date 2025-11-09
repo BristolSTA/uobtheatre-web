@@ -130,7 +130,7 @@
         </h1>
         <UiCarousel :carousel-items="bannerProductions">
           <template #default="slotProps">
-            <div class="flex items-center h-full bg-black bg-opacity-40">
+            <div class="flex items-center h-full bg-black/40">
               <NuxtLink
                 class="container px-4 md:pl-12 lg:pl-4 lg:w-2/3"
                 :to="`/production/${slotProps.carouselItem.text.slug}`"
