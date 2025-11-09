@@ -58,13 +58,13 @@
         class="flex gap-4 justify-evenly w-full"
       >
         <div
-          class="p-4 text-white bg-sta-gray-light rounded-lg w-full space-y-2 flex flex-col"
+          class="p-4 text-white bg-sta-gray-light rounded-lg w-full flex flex-col"
         >
-          <h3 class="text-h3 font-semibold gap-4 flex items-center">
+          <h3 class="text-h3 font-semibold gap-4 flex items-center mb-2">
             <font-awesome-icon icon="info-circle" />
             Content Warnings
           </h3>
-          <p v-if="booking.performance.isRelaxed">
+          <p v-if="booking.performance.isRelaxed" class="mb-2">
             This production features content that may be distressing to some
             audience members. You can view the content warnings for this
             production below, but please be aware that some warnings may no
@@ -77,7 +77,7 @@
               {{ production.contactEmail }} </a
             >.
           </p>
-          <p v-else>
+          <p v-else class="mb-2">
             This production features content that may be distressing to some
             audience members. To view the content warnings for this production,
             click the button below (may contain some 'spoilers' to the plot). If
