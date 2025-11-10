@@ -1,5 +1,6 @@
 <template>
   <UModal
+    v-if="currentMessage"
     v-model:open="showModel"
     class="bg-sta-gray min-w-1/2 max-w-11/12 sm:max-w-3/4"
     :close="false"
@@ -135,7 +136,11 @@ export default {
       return this.messages[this.currentIndex] || null;
     },
     showGoBack() {
-      return this.location !== 'SITEWIDE_MODAL';
+      // Only show on non-sitewide modals that are blockers
+      return (
+        this.location !== 'SITEWIDE_MODAL' &&
+        this.currentMessage?.dismissalPolicy === 'BANNED'
+      );
     }
   },
   mounted() {

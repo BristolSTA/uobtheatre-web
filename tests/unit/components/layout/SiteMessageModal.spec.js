@@ -99,8 +99,12 @@ describe('Maintenance Banner', () => {
     );
 
     describe('back button', () => {
-      it('displays on non-sitewide modals', async () => {
-        await createWithMessage({}, false, 'PRODUCTION_CREATION_MODAL');
+      it('displays on non-sitewide dismissal banned modals', async () => {
+        await createWithMessage(
+          { dismissalPolicy: 'BANNED' },
+          false,
+          'PRODUCTION_CREATION_MODAL'
+        );
 
         const backButton = siteMessageModalComponent.find(
           '#siteMessageModalBackButton'
@@ -118,8 +122,21 @@ describe('Maintenance Banner', () => {
         expect(backButton.exists()).toBe(false);
       });
 
-      it('goes back on the router when clicked', async () => {
+      it('does not display on non-banned modals', async () => {
         await createWithMessage({}, false, 'PRODUCTION_CREATION_MODAL');
+
+        const backButton = siteMessageModalComponent.find(
+          '#siteMessageModalBackButton'
+        );
+        expect(backButton.exists()).toBe(false);
+      });
+
+      it('goes back on the router when clicked', async () => {
+        await createWithMessage(
+          { dismissalPolicy: 'BANNED' },
+          false,
+          'PRODUCTION_CREATION_MODAL'
+        );
 
         const backButton = siteMessageModalComponent.find(
           '#siteMessageModalBackButton'
