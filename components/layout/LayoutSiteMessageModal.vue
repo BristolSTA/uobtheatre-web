@@ -1,5 +1,6 @@
 <template>
   <UModal
+    v-if="currentMessage"
     v-model:open="showModel"
     class="bg-sta-gray min-w-1/2 max-w-11/12 sm:max-w-3/4"
     :close="false"
