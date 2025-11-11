@@ -75,7 +75,7 @@ export default class {
     const ticketOption = this.raw_ticket_options[index];
     const capacityRemaining = ticketOption?.capacityRemaining;
 
-    if (!capacityRemaining || !ticketOption) return;
+    if (capacityRemaining == null || !ticketOption) return;
     ticketOption.capacityRemaining = capacityRemaining - 1;
   }
 
@@ -89,7 +89,7 @@ export default class {
     const ticketOption = this.raw_ticket_options[index];
     const capacityRemaining = ticketOption?.capacityRemaining;
 
-    if (!capacityRemaining || !ticketOption) return;
+    if (capacityRemaining == null || !ticketOption) return;
     ticketOption.capacityRemaining = capacityRemaining + 1;
   }
 
