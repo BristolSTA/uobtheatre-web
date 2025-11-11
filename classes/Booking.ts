@@ -20,6 +20,7 @@ export default class Booking {
   transactions: TransactionNode[];
   tickets: Ticket[];
   priceBreakdown?: DetailedBookingDetailsFragment['priceBreakdown'];
+  salesBreakdown?: DetailedBookingDetailsFragment['salesBreakdown'];
   dirty: boolean = false;
   raw?: DetailedBookingDetailsFragment;
   idempotencyKey?: string;
@@ -57,6 +58,9 @@ export default class Booking {
     this.raw = bookingData;
     if (bookingData.priceBreakdown) {
       this.priceBreakdown = bookingData.priceBreakdown;
+    }
+    if (bookingData.salesBreakdown) {
+      this.salesBreakdown = bookingData.salesBreakdown;
     }
     if (bookingData.tickets) {
       this.tickets = bookingData.tickets.map((ticketAPIData) =>
@@ -321,6 +325,40 @@ export default class Booking {
       return (0).toFixed(2);
     }
     return (this.priceBreakdown.discountsValue / 100).toFixed(2);
+  }
+
+  /**
+   * @returns {string} Total provider processing fee in pounds
+   */
+  get providerFeePounds() {
+    if (!this.salesBreakdown) {
+      return (0).toFixed(2);
+    }
+    return (this.salesBreakdown.providerPaymentValue / 100).toFixed(2);
+  }
+
+  /**
+   * @returns {string} Total app (UOB Theatre's total fees) fee in pounds
+   */
+  get appFeePounds() {
+    if (!this.salesBreakdown) {
+      return (0).toFixed(2);
+    }
+    return (this.salesBreakdown.appFee / 100).toFixed(2);
+  }
+
+  /**
+   * @returns {string} Total profit for the website in pounds
+   * @description This is the difference between the app fee and the provider payment value
+   */
+  get websiteProfitPounds() {
+    if (!this.salesBreakdown) {
+      return (0).toFixed(2);
+    }
+    return (
+      (this.salesBreakdown.appFee - this.salesBreakdown.providerPaymentValue) /
+      100
+    ).toFixed(2);
   }
 
   /**
