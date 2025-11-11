@@ -18,6 +18,7 @@
         class="mt-2"
         :ticket-matrix="ticketsMatrix"
         :booking="booking"
+        :show-prices="false"
       />
       <form-label class="py-4" :required="true">
         User Email
@@ -85,15 +86,8 @@ export default defineNuxtComponent({
       });
     }
 
-    const ticketsMatrix = new TicketsMatrix(performance);
-
-    const booking = new Booking();
-    booking.performance = performance;
-
     return {
-      ticketsMatrix,
-      performance,
-      booking
+      performance
     };
   },
   data() {
@@ -102,7 +96,7 @@ export default defineNuxtComponent({
       performance: null,
       loading: false,
 
-      booking: null,
+      booking: new Booking(),
       bookingEmail: null,
       errors: null
     };
@@ -110,12 +104,16 @@ export default defineNuxtComponent({
   head: {
     title: 'Create Complimentary Booking'
   },
+  created() {
+    this.ticketsMatrix = new TicketsMatrix(this.performance);
+    this.booking.performance = this.performance;
+  },
   methods: {
     async create() {
       this.loading = true;
       try {
         // Make the booking
-        await performMutation(
+        const data = await performMutation(
           this.$apollo,
           {
             mutation: BookingMutation,
@@ -130,6 +128,8 @@ export default defineNuxtComponent({
           },
           'booking'
         );
+
+        this.booking.updateFromAPIData(data.booking.booking);
 
         // Pay the booking
         await performMutation(
