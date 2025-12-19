@@ -25,11 +25,29 @@
         <p>
           A production by
           <NuxtLink
-            class="hover:text-gray-300 font-semibold"
+            class="hover:text-gray-300 font-medium"
             :to="`/society/${production.society.slug}`"
           >
             {{ production.society.name }}
           </NuxtLink>
+          <span>
+            <span v-if="supportingSocieties.length">, </span>
+            <span
+              v-for="(society, index) in supportingSocieties"
+              :key="society.id"
+            >
+              <NuxtLink
+                class="hover:text-gray-300 font-medium"
+                :to="`/society/${society.slug}`"
+              >
+                {{ society.name }}
+              </NuxtLink>
+              <span v-if="index < supportingSocieties.length - 2">, </span>
+              <span v-else-if="index == supportingSocieties.length - 2">
+                and
+              </span>
+            </span>
+          </span>
         </p>
         <a
           v-if="production.facebookEvent"
@@ -132,6 +150,9 @@ export default {
       return !!this.production.performances.edges.find(
         (edge) => edge.node.isInperson
       );
+    },
+    supportingSocieties() {
+      return this.production.supportingSocieties.edges.map((edge) => edge.node);
     }
   }
 };

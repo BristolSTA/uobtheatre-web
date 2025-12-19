@@ -26,9 +26,11 @@
           class="hover:text-gray-300"
           :to="`/production/${production.slug}`"
         >
-          <span class="text-h2">{{ production.name }}</span>
+          <span class="text-h2 inline-block mb-3">{{ production.name }}</span>
         </NuxtLink>
-        <span v-else class="text-h2">{{ production.name }}</span>
+        <span v-else class="text-h2 inline-block mb-3">{{
+          production.name
+        }}</span>
         <p class="-mt-2 mb-1 text-sta-gray-lighter">
           by
           <NuxtLink
@@ -37,6 +39,24 @@
           >
             {{ production.society.name }}
           </NuxtLink>
+          <span>
+            <span v-if="supportingSocieties.length"> with </span>
+            <span
+              v-for="(society, index) in supportingSocieties"
+              :key="society.id"
+            >
+              <NuxtLink
+                class="hover:text-gray-500 text-gray-400"
+                :to="`/society/${society.slug}`"
+              >
+                {{ society.name }}
+              </NuxtLink>
+              <span v-if="index < supportingSocieties.length - 2">, </span>
+              <span v-else-if="index == supportingSocieties.length - 2">
+                and
+              </span>
+            </span>
+          </span>
         </p>
       </span>
       <template
@@ -218,6 +238,9 @@ export default {
             : ''
         }` + ' to cover fees and support our theatre'
       );
+    },
+    supportingSocieties() {
+      return this.production.supportingSocieties.edges.map((edge) => edge.node);
     }
   },
   methods: {
