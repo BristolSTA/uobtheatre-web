@@ -15,6 +15,15 @@ query productionBySlug($slug: String!) {
         url
       }
     }
+    supportingSocieties {
+      edges {
+        node {
+          id
+          name
+          slug
+        }
+      }
+    }
     posterImage {
       id
       url
