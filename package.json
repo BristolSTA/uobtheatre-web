@@ -97,7 +97,7 @@
     "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",
     "leaflet": "^1.9.4",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "luxon": "^3.6.1",
     "pinia": "^3.0.3",
     "pluralize": "^8.0.0",
