@@ -68,7 +68,7 @@
     "vitest": "^3.2.4",
     "vitest-matchmedia-mock": "^2.0.3",
     "vue-tsc": "3.0.6",
-    "webpack": "^5.99.9"
+    "webpack": "^5.104.1"
   },
   "dependencies": {
     "@apollo/client": "^3.13.8",
