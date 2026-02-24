@@ -1,0 +1,17 @@
+query AdminPaymentBreakdownByPublishedProduction {
+  productions(status: "PUBLISHED") {
+    edges {
+      node {
+        id
+        name
+        slug
+        totalTicketsSold
+        totalCapacity
+        salesBreakdown {
+          societyRevenue
+          appPaymentValue
+        }
+      }
+    }
+  }
+}

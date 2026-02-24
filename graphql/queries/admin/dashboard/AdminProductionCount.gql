@@ -1,0 +1,12 @@
+query AdminProductionCount($status: String!) {
+  productions(status: $status) {
+    edges {
+      node {
+        id
+        name
+        slug
+        society
+      }
+    }
+  }
+}
