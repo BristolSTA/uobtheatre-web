@@ -90,6 +90,7 @@
     "apollo-link-sentry": "^3.3.0",
     "axios": "^1.12.2",
     "body-scroll-lock": "^4.0.0-beta.0",
+    "chart.js": "^4.5.1",
     "dayjs": "^1.11.13",
     "graphql": "^16.11.0",
     "graphql-tag": "^2.12.6",
@@ -114,6 +115,7 @@
     "qrcode.vue": "^3.6.0",
     "sweetalert2": "^11.22.4",
     "uuid": "^11.1.0",
+    "vue-chartjs": "^5.3.3",
     "vue-currency-input": "^3.2.1",
     "vue-gtag": "3.5.0",
     "vue-qrcode-reader": "5.7.2"
