@@ -1,20 +1,6 @@
 <template>
   <div>
     <h1 class="text-h1">Dashboard</h1>
-    <!-- <div class="flex justify-around space-x-3">
-      <div class="h-24 p-4 rounded-sm bg-sta-orange">
-        <span class="text-4xl font-semibold">3</span>
-        <p>productions live</p>
-      </div>
-      <div class="h-24 p-4 rounded-sm bg-sta-orange">
-        <span class="text-4xl font-semibold">1</span>
-        <p>society</p>
-      </div>
-      <div class="h-24 p-4 rounded-sm bg-sta-orange">
-        <span class="text-4xl font-semibold">40,000</span>
-        <p>users</p>
-      </div>
-    </div> -->
     <div class="my-4 p-2 bg-sta-gray-dark">
       <p>Welcome to the UOB Theatre Administration Panel.</p>
       <p>
@@ -43,13 +29,26 @@
         </NuxtLink>
       </div>
     </div>
+
+    <div class="grid gap-4 grid-cols-1 lg:grid-cols-3 mt-4">
+      <ProductionStatusTile class="" />
+      <ProductionIncomeTile class="lg:col-span-2" />
+      <!--      <div>Recent Bookings</div>-->
+      <!--      <div>Pending Productions</div>-->
+    </div>
   </div>
 </template>
 
 <script>
 import useAuthStore from '@/store/auth';
+import ProductionStatusTile from '~/components/admin/dashboard/ProductionStatusTile.vue';
+import ProductionIncomeTile from '~/components/admin/dashboard/ProductionIncomeTile.vue';
 
 export default defineNuxtComponent({
+  components: {
+    ProductionIncomeTile,
+    ProductionStatusTile
+  },
   data() {
     return {
       authStore: useAuthStore()
