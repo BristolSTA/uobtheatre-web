@@ -5,7 +5,10 @@ query AdminProductionCount($status: String!) {
         id
         name
         slug
-        society
+        society {
+          id
+          name
+        }
       }
     }
   }
