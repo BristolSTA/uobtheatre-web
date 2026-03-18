@@ -90,14 +90,17 @@
 <script setup lang="ts">
 import {
   useAdminProductionsQuery,
-  type AdminProductionsQueryVariables
+  type AdminProductionsQueryVariables,
+  type ProductionsProductionStatusChoices
 } from '@/graphql/codegen/operations';
 import { displayStartEnd } from '~~/utils/datetime';
 import VueDatepicker from '@vuepic/vue-datepicker';
 import { DateTime } from 'luxon';
 
 const productionsOffset = ref(0);
-const productionsStatusFilter = ref<string | null>(null);
+const productionsStatusFilter = ref<ProductionsProductionStatusChoices | null>(
+  null
+);
 const productionsRunDateFilter = ref<Date | null>(null);
 const productionSearchFilter = ref<string | null>(null);
 

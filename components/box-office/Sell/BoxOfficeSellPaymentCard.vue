@@ -108,7 +108,7 @@ import {
   useCancelPaymentMutation,
   usePayBookingMutation,
   useSetBookingUserMutation,
-  BookingStatus,
+  BookingsBookingStatusChoices,
   useBoxOfficePerformanceBookingQuery
 } from '~~/graphql/codegen/operations';
 import Errors from '~~/classes/Errors';
@@ -164,7 +164,7 @@ const { onResult: onBookingRefreshResult } =
 
 onBookingRefreshResult(({ data }) => {
   const booking = data.performance?.bookings.edges[0]?.node;
-  if (booking && booking?.status == BookingStatus['Paid']) {
+  if (booking && booking?.status == BookingsBookingStatusChoices['Paid']) {
     bookingCompleted(booking);
   }
 });
