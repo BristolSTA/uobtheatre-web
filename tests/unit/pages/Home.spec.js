@@ -86,7 +86,7 @@ describe('Home', function () {
       );
 
       expect(slide.attributes('style')).to.contain(
-        'background-image: url(http://pathto.example/cover-image.png)'
+        'background-image: url("http://pathto.example/cover-image.png")'
       );
       expect(
         homepageComponent.findAllComponents(NuxtLinkStub).at(0).attributes('to')
