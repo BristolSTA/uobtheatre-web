@@ -7,7 +7,7 @@ query venueUpcomingProductions(
   venue(slug: $slug) {
     id
     name
-    productions(orderBy: "start", end_Gte: $now, status: "PUBLISHED") {
+    productions(orderBy: "start", end_Gte: $now, status: PUBLISHED) {
       ...ProductionsDetailsFragment
     }
   }
