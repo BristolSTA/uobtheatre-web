@@ -12943,10 +12943,10 @@ vue-eslint-parser@^9.4.3:
     lodash "^4.17.21"
     semver "^7.3.6"
 
-vue-gtag@3.6.2:
-  version "3.6.2"
-  resolved "https://registry.yarnpkg.com/vue-gtag/-/vue-gtag-3.6.2.tgz#9d60573037d9ddc0ca34b9d2f0989abcf0e57384"
-  integrity sha512-6uBjncUSVc5Jal/Bg11bnGYL9sezor+GlvcJoInK+DAhPDpHMh8D2S6IbHTSAsKSaUFSuCgFNWxxayFvYItcXg==
+vue-gtag@3.7.0:
+  version "3.7.0"
+  resolved "https://registry.yarnpkg.com/vue-gtag/-/vue-gtag-3.7.0.tgz#18031fb505b364ac44773e961f7c92b63d66682c"
+  integrity sha512-o/ng/NjiVgEnOBZlSnWyg9IsVzIXUWmSuwbd+lGRX/T/h8gxdYN1IMcz5MT8e7o6GYhextvWpsupVAsWbYb+Gg==
 
 vue-qrcode-reader@5.7.2:
   version "5.7.2"
