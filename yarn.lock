@@ -12323,6 +12323,21 @@ unplugin-vue-components@^31.0.0, unplugin-vue-components@^31.1.0:
     unplugin "^2.3.11"
     unplugin-utils "^0.3.1"
 
+unplugin-vue-components@^32.0.0:
+  version "32.0.0"
+  resolved "https://registry.yarnpkg.com/unplugin-vue-components/-/unplugin-vue-components-32.0.0.tgz#7ad8ac7cc196b0c44c8366533cb8c924bf82d503"
+  integrity sha512-uLdccgS7mf3pv1bCCP20y/hm+u1eOjAmygVkh+Oa70MPkzgl1eQv1L0CwdHNM3gscO8/GDMGIET98Ja47CBbZg==
+  dependencies:
+    chokidar "^5.0.0"
+    local-pkg "^1.1.2"
+    magic-string "^0.30.21"
+    mlly "^1.8.2"
+    obug "^2.1.1"
+    picomatch "^4.0.3"
+    tinyglobby "^0.2.15"
+    unplugin "^3.0.0"
+    unplugin-utils "^0.3.1"
+
 unplugin@^2.0.0, unplugin@^2.3.10, unplugin@^2.3.11:
   version "2.3.11"
   resolved "https://registry.yarnpkg.com/unplugin/-/unplugin-2.3.11.tgz#411e020dd2ba90e2fbe1e7bd63a5a399e6ee3b54"
