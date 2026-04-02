@@ -26,7 +26,7 @@
     "@graphql-codegen/cli": "6.2.1",
     "@graphql-codegen/gql-tag-operations-preset": "^2.1.0",
     "@graphql-codegen/typescript-vue-apollo": "^5.0.0",
-    "@graphql-codegen/typescript-vue-apollo-smart-ops": "^3.0.1",
+    "@graphql-codegen/typescript-vue-apollo-smart-ops": "^4.0.0",
     "@nuxt/scripts": "^0.13.0",
     "@nuxt/ui": "^4.6.0",
     "@nuxtjs/apollo": "^5.0.0-alpha.15",
