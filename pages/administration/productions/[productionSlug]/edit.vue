@@ -60,7 +60,7 @@ export default defineNuxtComponent({
       this.errors = null;
       loadingSwal.fire();
       try {
-        await performMutation(
+        const data = await performMutation(
           this.$apollo,
           {
             mutation: ProductionMutationDocument,
@@ -70,14 +70,7 @@ export default defineNuxtComponent({
           },
           'production'
         );
-        const { data } = await this.$apollo.query({
-          query: AdminProductionEditQuery,
-          variables: {
-            slug: await this.production.slug
-          },
-          fetchPolicy: 'no-cache'
-        });
-        this.production = data.production;
+        this.production = data.production.production;
         useRouter().push(`/administration/productions/${this.production.slug}`);
         successToast.fire({ title: 'Production Updated' });
       } catch (e) {
