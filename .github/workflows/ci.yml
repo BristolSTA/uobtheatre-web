@@ -22,7 +22,7 @@ jobs:
       - name: Setup node env 🏗
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           check-latest: true
 
       - name: Get yarn cache directory path 🛠
@@ -57,7 +57,7 @@ jobs:
       - name: Setup node env 🏗
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           check-latest: true
 
       - name: Get yarn cache directory path 🛠
@@ -98,7 +98,7 @@ jobs:
       - name: Setup node env 🏗
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           check-latest: true
 
       - name: Get yarn cache directory path 🛠
