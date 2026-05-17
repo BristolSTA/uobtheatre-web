@@ -94,7 +94,7 @@ import {
   type ProductionsProductionStatusChoices
 } from '@/graphql/codegen/operations';
 import { displayStartEnd } from '~~/utils/datetime';
-import VueDatepicker from '@vuepic/vue-datepicker';
+import { VueDatePicker as VueDatepicker } from '@vuepic/vue-datepicker';
 import { DateTime } from 'luxon';
 
 const productionsOffset = ref(0);
