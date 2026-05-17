@@ -12,7 +12,10 @@ const config: CodegenConfig = {
       config: {
         vueCompositionApiImportFrom: 'vue',
         scalars: {
-          IdInputField: 'string'
+          IdInputField: 'string',
+          Date: 'any',
+          DateTime: 'any',
+          GenericScalar: 'any'
         }
       }
     }
