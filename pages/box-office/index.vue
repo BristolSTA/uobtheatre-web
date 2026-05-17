@@ -91,7 +91,7 @@ import { DateTime } from 'luxon';
 import { dateFormat } from '@/utils/datetime';
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue';
-import VueDatepicker from '@vuepic/vue-datepicker';
+import { VueDatePicker as VueDatepicker } from '@vuepic/vue-datepicker';
 import { useBoxOfficePerformancesQuery } from '~~/graphql/codegen/operations';
 import type { IdInput } from '~~/types/generic';
 definePageMeta({
