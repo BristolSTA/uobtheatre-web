@@ -1,7 +1,7 @@
 # See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.148.0/containers/javascript-node/.devcontainer/base.Dockerfile
 
 # See here for documentation: https://github.com/devcontainers/images/tree/main/src/javascript-node
-ARG VARIANT="20-bookworm"
+ARG VARIANT="24-bookworm"
 FROM mcr.microsoft.com/devcontainers/javascript-node:${VARIANT}
 
 # [Optional] Uncomment this section to install additional OS packages.
