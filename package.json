@@ -24,7 +24,7 @@
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^10.0.1",
     "@graphql-codegen/cli": "^7.0.0",
-    "@graphql-codegen/gql-tag-operations-preset": "^2.1.0",
+    "@graphql-codegen/client-preset": "^6.0.0",
     "@graphql-codegen/typescript-vue-apollo": "^5.0.1",
     "@graphql-codegen/typescript-vue-apollo-smart-ops": "^4.0.1",
     "@nuxt/scripts": "^1.1.0",
