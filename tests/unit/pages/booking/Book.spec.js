@@ -64,7 +64,8 @@ describe('Create Booking Page', () => {
   });
 
   it('has a nuxt child', async () => {
-    await bookingComponent.setData({ ticketMatrix: 'fakeMatrix' });
+    bookingComponent.vm.ticketMatrix = 'fakeMatrix';
+    await bookingComponent.vm.$nextTick();
 
     const nuxtChild = bookingComponent.findComponent({ name: 'NuxtPage' });
     expect(nuxtChild.exists()).to.be.true;
