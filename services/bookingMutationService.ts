@@ -3,7 +3,7 @@ import Errors from '~~/classes/Errors';
 import {
   type BookingMutation,
   useBookingMutation
-} from '~~/graphql/codegen/operations';
+} from '~~/graphql/codegen/operations.generated';
 import type { IdInput } from '~~/types/generic';
 
 type IReturn = {

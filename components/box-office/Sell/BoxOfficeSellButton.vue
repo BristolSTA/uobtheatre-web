@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useBoxOfficePerformanceTicketsAvailableQuery } from '~~/graphql/codegen/operations';
+import { useBoxOfficePerformanceTicketsAvailableQuery } from '~~/graphql/codegen/operations.generated';
 import type { IdInput } from '~~/types/generic';
 
 const props = defineProps<{

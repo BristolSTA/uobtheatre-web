@@ -14,7 +14,7 @@ import {
   useResendActivationMutationMutation,
   useAdminProductionUserPermissionsQuery,
   useAdminPerformanceProductionUserPermissionsQuery
-} from '@/graphql/codegen/operations';
+} from '@/graphql/codegen/operations.generated';
 import Errors from '~~/classes/Errors';
 import ValidationError from '~~/errors/ValidationError';
 import UnverifiedLoginError from '~~/errors/auth/UnverifiedLoginError';

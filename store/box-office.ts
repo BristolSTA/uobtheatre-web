@@ -2,10 +2,10 @@ import Cookie from 'js-cookie';
 import { defineStore } from 'pinia';
 import {
   useDeleteBookingMutation,
-  type BoxOfficePaymentDevicesQuery,
-  type SquarePaymentDevice
-} from '@/graphql/codegen/operations';
-import { BoxOfficePaymentDevicesDocument } from '~~/graphql/codegen/operations';
+  BoxOfficePaymentDevicesDocument,
+  type BoxOfficePaymentDevicesQuery
+} from '@/graphql/codegen/operations.generated';
+import type { SquarePaymentDevice } from '@/graphql/codegen/base-types.generated';
 import Booking from '~~/classes/Booking';
 
 const locationCookieKey = 'uobtheatre-boxoffice-location';

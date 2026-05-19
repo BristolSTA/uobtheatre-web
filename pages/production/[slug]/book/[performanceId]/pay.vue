@@ -74,7 +74,7 @@ import { swal } from '~~/utils/alerts';
 import BookingStage from '@/classes/BookingStage';
 import SquarePayment from '@/components/square/SquarePayment.vue';
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
-import { PayBookingDocument } from '~~/graphql/codegen/operations';
+import { PayBookingDocument } from '~~/graphql/codegen/operations.generated';
 import { recordPaymentEvent, recordEvent, events } from '~~/utils/analytics';
 
 const stageInfo = new BookingStage({

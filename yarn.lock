@@ -1071,7 +1071,7 @@
     change-case-all "^2.1.0"
     tslib "^2.8.0"
 
-"@graphql-codegen/typescript-operations@^6.0.0":
+"@graphql-codegen/typescript-operations@^6.0.0", "@graphql-codegen/typescript-operations@^6.0.2":
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-operations/-/typescript-operations-6.0.2.tgz#afd94cf6dc6f77ac7f579b3b82043b75e37861f7"
   integrity sha512-QYs8eQIOXsGKiWBlx4ZtIwYALa5RlLwznJELcnKayGubuEbglOsapJBswERXoogf3SMDrU21L58c1CYkYlyKIA==

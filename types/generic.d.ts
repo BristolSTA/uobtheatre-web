@@ -1,4 +1,4 @@
-import { Scalars } from '~~/graphql/codegen/operations';
+import { Scalars } from '~~/graphql/codegen/operations.generated';
 
 export type IdInput = Scalars['IdInputField']['input'];
 export type AtLeastOneIdInput = AtLeastOneOf<IdInput>;

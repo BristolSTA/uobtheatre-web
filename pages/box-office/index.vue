@@ -92,7 +92,7 @@ import { dateFormat } from '@/utils/datetime';
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
 import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue';
 import { VueDatePicker as VueDatepicker } from '@vuepic/vue-datepicker';
-import { useBoxOfficePerformancesQuery } from '~~/graphql/codegen/operations';
+import { useBoxOfficePerformancesQuery } from '~~/graphql/codegen/operations.generated';
 import type { IdInput } from '~~/types/generic';
 definePageMeta({
   middleware: ['authed', 'can-boxoffice']

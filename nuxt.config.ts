@@ -131,7 +131,7 @@ export default defineNuxtConfig({
   // Configure Typescript
   typescript: {
     tsConfig: {
-      exclude: ['../graphql/codegen/operations.ts']
+      exclude: ['../graphql/codegen/operations.generated.ts']
     }
   },
 
