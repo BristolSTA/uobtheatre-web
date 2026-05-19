@@ -110,7 +110,7 @@ import {
   BoxOfficePerformanceBookingDocument,
   type BoxOfficePerformanceBookingQuery,
   type BoxOfficePerformanceBookingQueryVariables
-} from '~~/graphql/codegen/operations';
+} from '~~/graphql/codegen/operations.generated';
 import type { IdInput, PaginationInfo } from '~~/types/generic';
 
 // Props

@@ -1,8 +1,6 @@
 import type { TicketOptions } from '~~/types/performance';
-import type {
-  PerformanceNode,
-  FullPerformanceAndTicketOptionsQuery
-} from '~~/graphql/codegen/operations';
+import type { FullPerformanceAndTicketOptionsQuery } from '~~/graphql/codegen/operations.generated';
+import type { PerformanceNode } from '~~/graphql/codegen/base-types.generated';
 import type { IdInput } from '~~/types/generic';
 
 type Discounts = NonNullable<

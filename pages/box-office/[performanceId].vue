@@ -7,7 +7,7 @@ import {
   BoxOfficePerformanceDocument,
   type BoxOfficePerformanceQuery,
   type BoxOfficePerformanceQueryVariables
-} from '~~/graphql/codegen/operations';
+} from '~~/graphql/codegen/operations.generated';
 
 import InjectionKeys from '@/utils/injection-keys';
 

@@ -61,7 +61,7 @@
 <script lang="ts" setup>
 import Errors from '~~/classes/Errors';
 import TicketsMatrix from '~~/classes/TicketsMatrix';
-import { useFullPerformanceAndTicketOptionsQuery } from '~~/graphql/codegen/operations';
+import { useFullPerformanceAndTicketOptionsQuery } from '~~/graphql/codegen/operations.generated';
 import { upsertBooking } from '~~/services/bookingMutationService';
 import useBoxOfficeStore from '@/store/box-office';
 import debounce from 'lodash/debounce';

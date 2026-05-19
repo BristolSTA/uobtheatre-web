@@ -2,13 +2,13 @@ import lo from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 
 import Ticket from './Ticket';
+import type { DetailedBookingDetailsFragment } from '~~/graphql/codegen/operations.generated';
 import type {
   TransactionNode,
-  DetailedBookingDetailsFragment,
   BookingNode,
   SeatGroupNode,
   ConcessionTypeNode
-} from '~~/graphql/codegen/operations';
+} from '~~/graphql/codegen/base-types.generated';
 import type { IdInput } from '~~/types/generic';
 import TicketsMatrix from './TicketsMatrix';
 import type { DateTime } from 'luxon';

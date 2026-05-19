@@ -96,7 +96,7 @@ import TimeRemainingCountdown from '@/components/ui/Formatters/TimeRemainingCoun
 import {
   PerformanceTicketOptionsDocument,
   UserDraftBookingForPerformanceDocument
-} from '~~/graphql/codegen/operations';
+} from '~~/graphql/codegen/operations.generated';
 import { defineBreadcrumbs } from '~~/composables/defineBreadcrumbs';
 import { events, recordEvent } from '~~/utils/analytics';
 

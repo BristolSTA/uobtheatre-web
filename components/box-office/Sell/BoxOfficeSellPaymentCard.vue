@@ -103,14 +103,16 @@ import Booking from '~~/classes/Booking';
 import useBoxOfficeStore from '~~/store/box-office';
 import type { IdInput } from '~~/types/generic';
 import {
-  PaymentProvider,
   type PayBookingMutation,
   useCancelPaymentMutation,
   usePayBookingMutation,
   useSetBookingUserMutation,
-  BookingsBookingStatusChoices,
   useBoxOfficePerformanceBookingQuery
-} from '~~/graphql/codegen/operations';
+} from '~~/graphql/codegen/operations.generated';
+import {
+  PaymentProvider,
+  BookingsBookingStatusChoices
+} from '~~/graphql/codegen/base-types.generated';
 import Errors from '~~/classes/Errors';
 import { DateTime } from 'luxon';
 import { mutateTicketCheckInState } from '~~/services/ticketScanService';
@@ -143,7 +145,7 @@ const availableTerminals =
 if (
   boxOfficeStore.terminalDevice &&
   !availableTerminals.find(
-    (device) => device && device === boxOfficeStore.terminalDevice?.id
+    (device) => device && device.id === boxOfficeStore.terminalDevice?.id
   )
 ) {
   // This terminal no longer in the list, so we'll get rid
@@ -165,6 +167,7 @@ const { onResult: onBookingRefreshResult } =
 onBookingRefreshResult(({ data }) => {
   const booking = data.performance?.bookings.edges[0]?.node;
   if (booking && booking?.status == BookingsBookingStatusChoices['Paid']) {
+    // @ts-expect-error
     bookingCompleted(booking);
   }
 });

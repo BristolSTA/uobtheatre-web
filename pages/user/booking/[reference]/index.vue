@@ -103,7 +103,7 @@ import AccessibilityOverview from '@/components/booking/overview/AccessibilityOv
 import Ticket from '@/components/booking/Ticket.vue';
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
 import Alert from '@/components/ui/Alert.vue';
-import { UserCompletedBookingDocument } from '~~/graphql/codegen/operations';
+import { UserCompletedBookingDocument } from '~~/graphql/codegen/operations.generated';
 import useAuthStore from '~~/store/auth';
 import { defineBreadcrumbs } from '~~/composables/defineBreadcrumbs';
 definePageMeta({

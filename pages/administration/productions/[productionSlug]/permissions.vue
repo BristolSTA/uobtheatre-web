@@ -32,7 +32,7 @@ import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue';
 import {
   AdminProductionPermissionsDocument,
   ProductionPermissionsMutationsDocument
-} from '~~/graphql/codegen/operations';
+} from '~~/graphql/codegen/operations.generated';
 
 definePageMeta({
   middleware: ['require-production-permissions'],

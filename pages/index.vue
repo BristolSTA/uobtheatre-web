@@ -120,7 +120,7 @@
 import {
   useHomepageUpcomingProductionsQuery,
   useUpcomingBookingsQuery
-} from '@/graphql/codegen/operations';
+} from '@/graphql/codegen/operations.generated';
 import { oneLiner, truncate } from '@/utils/lang';
 import { displayStartEnd } from '@/utils/datetime';
 import { DateTime } from 'luxon';
