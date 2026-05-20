@@ -10921,10 +10921,10 @@ vue-eslint-parser@^10.4.0:
     esquery "^1.6.0"
     semver "^7.6.3"
 
-vue-gtag@3.7.0:
-  version "3.7.0"
-  resolved "https://registry.yarnpkg.com/vue-gtag/-/vue-gtag-3.7.0.tgz#18031fb505b364ac44773e961f7c92b63d66682c"
-  integrity sha512-o/ng/NjiVgEnOBZlSnWyg9IsVzIXUWmSuwbd+lGRX/T/h8gxdYN1IMcz5MT8e7o6GYhextvWpsupVAsWbYb+Gg==
+vue-gtag@3.7.1:
+  version "3.7.1"
+  resolved "https://registry.yarnpkg.com/vue-gtag/-/vue-gtag-3.7.1.tgz#ab1edbc676a700027933a045013e3122d70ad029"
+  integrity sha512-V4S+ks1p/VdfTrxZrgrAjwdcBp3rGjuR4Ts/9KmNOeGlcATOsLZRjIxkrIDWW6oHy7HM4zcviYDEb2QOR9+AKQ==
 
 vue-qrcode-reader@5.7.3:
   version "5.7.3"
