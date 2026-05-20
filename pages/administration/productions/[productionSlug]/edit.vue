@@ -8,7 +8,12 @@
       </UiStaButton>
     </template>
     <UiNonFieldError :errors="errors" />
-    <production-editor ref="editor" :production="production" :errors="errors" />
+    <production-editor
+      ref="editor"
+      :production="production"
+      :errors="errors"
+      @update:production="updateProduction"
+    />
   </AdminPage>
 </template>
 
@@ -56,6 +61,9 @@ export default defineNuxtComponent({
     };
   },
   methods: {
+    updateProduction(updatedProduction) {
+      this.production = updatedProduction;
+    },
     async save() {
       this.errors = null;
       loadingSwal.fire();
@@ -65,7 +73,7 @@ export default defineNuxtComponent({
           {
             mutation: ProductionMutationDocument,
             variables: {
-              input: await this.$refs.editor.getInputData()
+              input: this.production
             }
           },
           'production'
