@@ -391,7 +391,9 @@ export default {
         } else if (imageNode.file) {
           const image = await imageUpload(
             imageNode.file,
-            key + `_${this.id ?? uuid()}.` + imageNode.file.name.split('.').at(-1)
+            key +
+              `_${this.id ?? uuid()}.` +
+              imageNode.file.name.split('.').at(-1)
           );
           images[key] = image ? image.global_id : null;
         } else {
