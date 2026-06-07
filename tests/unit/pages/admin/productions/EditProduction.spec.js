@@ -37,7 +37,7 @@ describe('Production Edit Page', () => {
     productionOverride = null,
     mutationOverride = null
   ) => {
-    let mockProduction = Production(productionOverride);
+    const mockProduction = Production(productionOverride);
 
     editPageComponent = await mount(ProductionEditPage, {
       shallow: false,
