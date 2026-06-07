@@ -67,7 +67,7 @@ export default defineConfig({
       ],
       exclude: ['**/README.md'],
       thresholds: {
-        lines: 42.94
+        lines: 45.86
       }
     }
   }
