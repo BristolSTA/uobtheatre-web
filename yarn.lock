@@ -4180,10 +4180,10 @@
   resolved "https://registry.yarnpkg.com/@vue/devtools-shared/-/devtools-shared-8.1.2.tgz#1399660db04b7426a873b5985a548a6a7397fddd"
   integrity sha512-X9RyVFYAdkBe4IUf5v48TxBF/6QPmF8CmWrDAjXzfUHrgQ/HGfTC1A6TqgXqZ03ye66l3AD51BAGD69IvKM9sw==
 
-"@vue/language-core@3.3.1":
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/@vue/language-core/-/language-core-3.3.1.tgz#3ecf6d35a3b1d3506576be4e5738e943f486de60"
-  integrity sha512-NP8g6V7x81NVOXbLupUvYY6i6LqUkjkVowe2epRedmpgaFCOdjgWHE/rQBvEJ4r7koAYODIjGeBWEdt6n7jYXQ==
+"@vue/language-core@3.3.3":
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/@vue/language-core/-/language-core-3.3.3.tgz#d8ee77412cc57e8697d2a07ab92093acb978f083"
+  integrity sha512-X6p+7nfY7vVT6dQwUJ+v0Jfq/lwIfhL2jMi91dQ3ln4hnlGXlxsDu/FNkeyHYgvYtyQy18ZX76IZy7X4diDbiQ==
   dependencies:
     "@volar/language-core" "2.4.28"
     "@vue/compiler-dom" "^3.5.0"
@@ -4236,10 +4236,10 @@
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.5.35.tgz#192eb3d720c40715db79313454c4937432a4e86d"
   integrity sha512-zSbjL7gRXwks2ZQLRGCajBtBXEOXW9Ddhn/HvSdrGkE2dqGnumzW8XtusRrxrE9LvqtiqDXQ+A60Hp6mvdYxfA==
 
-"@vue/test-utils@^2.4.6":
-  version "2.4.10"
-  resolved "https://registry.yarnpkg.com/@vue/test-utils/-/test-utils-2.4.10.tgz#f3b006e03918e66b5df1f2a6f7f5200663b525d3"
-  integrity sha512-SmoZ5EA1kYiAFs9NkYdiFFQF+cSnUwnvlYEbY+DogWQZUiqOm/Y29eSbc5T6yi75SgSF9863SBeXniIEoPajCA==
+"@vue/test-utils@^2.4.11":
+  version "2.4.11"
+  resolved "https://registry.yarnpkg.com/@vue/test-utils/-/test-utils-2.4.11.tgz#448e56e07fb4c19cf0e57ec1d883f30f94ca71bd"
+  integrity sha512-GDqaqZsA6m2E5vNzej0aYiIb6BX8xV9pNSbbbXKOfEYwg7ZNblVX8suyqmUBThq8VIrgAJNxn+z72hVtUeiWHA==
   dependencies:
     js-beautify "^1.14.9"
     vue-component-type-helpers "^3.0.0"
@@ -10982,13 +10982,13 @@ vue-router@^5.1.0:
     unplugin-utils "^0.3.1"
     yaml "^2.9.0"
 
-vue-tsc@3.3.1:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/vue-tsc/-/vue-tsc-3.3.1.tgz#1e97175b3cac7698f06761d4afdbf070865079f0"
-  integrity sha512-webBP3jhlxzhELZ2g+11KJ6pg5OVY1xWhWrj7N/yQMi1CrtxJnW+tUACyRVeDK0cQNLP2Va5HNYK8pe+7c+msw==
+vue-tsc@3.3.3:
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/vue-tsc/-/vue-tsc-3.3.3.tgz#3403402fd92ec45bdb2ca967327eb92ed7d9b870"
+  integrity sha512-SWUEG7YRUeDJHT7Xsuhf02elYX2gxPzzAII7OxDAh4KNOr4QHQ0Lls0YfnaO5GNd560CwVa2HTfdqmA5MqvRqQ==
   dependencies:
     "@volar/typescript" "2.4.28"
-    "@vue/language-core" "3.3.1"
+    "@vue/language-core" "3.3.3"
 
 vue@^3.4.5, vue@^3.5.35:
   version "3.5.35"
