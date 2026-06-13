@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import { UpcomingSiteMessagesDocument } from '~/graphql/codegen/operations';
+import { UpcomingSiteMessagesDocument } from '~/graphql/codegen/operations.generated';
 import humanizeDuration from 'humanize-duration';
 import {
   addDismissedId,

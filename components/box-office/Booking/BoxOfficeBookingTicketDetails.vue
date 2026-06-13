@@ -29,7 +29,7 @@ import type {
   ExtendedUserNode,
   SeatGroupNode,
   TicketNode
-} from '~~/graphql/codegen/operations';
+} from '~~/graphql/codegen/base-types.generated';
 
 type Ticket = Pick<TicketNode, 'id' | 'checkedInAt'> & {
   seatGroup: Pick<SeatGroupNode, 'name'>;

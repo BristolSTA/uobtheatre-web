@@ -361,7 +361,7 @@ import {
   PerformanceSeatGroupDocument,
   VenuesDocument,
   RelaxedCategoriesDocument
-} from '@/graphql/codegen/operations';
+} from '@/graphql/codegen/operations.generated';
 import UiInputToggle from '../../ui/Input/UiInputToggle.vue';
 import TableRow from '~/components/ui/Tables/TableRow.vue';
 import TableHeadItem from '~/components/ui/Tables/TableHeadItem.vue';

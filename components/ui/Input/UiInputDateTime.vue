@@ -6,7 +6,7 @@
       time-picker-inline
       arrow-navigation
       text-input
-      :timezone="{ timezone: 'Europe/London' }"
+      timezone="Europe/London"
       :enable-time-picker="enableTimePicker"
       :format="format"
       :minutes-increment="minutesIncrement"
@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import VueDatepicker from '@vuepic/vue-datepicker';
+import { VueDatePicker as VueDatepicker } from '@vuepic/vue-datepicker';
 
 export default defineComponent({
   name: 'UiInputDateTime',

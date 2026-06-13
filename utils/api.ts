@@ -1,5 +1,5 @@
 import type { UseMutationReturn, UseQueryReturn } from '@vue/apollo-composable';
-import type { GqlErrorUnion } from '@/graphql/codegen/operations';
+import type { GqlErrorUnion } from '@/graphql/codegen/base-types.generated';
 import Errors from '~~/classes/Errors';
 import ValidationError from '~~/errors/ValidationError';
 import type { ApolloQueryResult, OperationVariables } from '@apollo/client';

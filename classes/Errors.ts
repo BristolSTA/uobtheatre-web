@@ -1,4 +1,7 @@
-import type { NonFieldError, FieldError } from '~~/graphql/codegen/operations';
+import type {
+  NonFieldError,
+  FieldError
+} from '~~/graphql/codegen/base-types.generated';
 
 /**
  * Errors class for wrapping (validaiton) errors from the API

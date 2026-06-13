@@ -1,4 +1,4 @@
-import type { FullPerformanceAndTicketOptionsQuery } from '~~/graphql/codegen/operations';
+import type { FullPerformanceAndTicketOptionsQuery } from '~~/graphql/codegen/operations.generated';
 
 export type TicketOptions = NonNullable<
   NonNullable<

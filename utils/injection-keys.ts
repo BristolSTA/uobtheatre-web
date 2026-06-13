@@ -1,5 +1,5 @@
 import type { InjectionKey } from 'vue';
-import type { BoxOfficePerformanceQuery } from '~~/graphql/codegen/operations';
+import type { BoxOfficePerformanceQuery } from '~~/graphql/codegen/operations.generated';
 
 export default {
   boxOffice: {
