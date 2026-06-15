@@ -67,7 +67,7 @@
     "vitest": "^4.0.5",
     "vitest-matchmedia-mock": "^2.0.3",
     "vue-eslint-parser": "^10.4.0",
-    "vue-tsc": "3.3.3",
+    "vue-tsc": "3.3.5",
     "webpack": "^5.107.1"
   },
   "dependencies": {
