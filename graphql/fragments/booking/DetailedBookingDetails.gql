@@ -14,9 +14,20 @@ fragment DetailedBookingDetails on BookingNode {
     id
     firstName
     lastName
+    email
+  }
+  creator {
+    id
+    firstName
+    lastName
+    email
   }
   salesBreakdown {
     totalPayments
+    societyRevenue
+    appPaymentValue
+    providerPaymentValue
+    appFee
   }
   priceBreakdown {
     ...AllPriceBreakdown

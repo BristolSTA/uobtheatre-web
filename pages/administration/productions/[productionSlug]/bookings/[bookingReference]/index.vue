@@ -1,5 +1,14 @@
 <template>
   <AdminPage title="View Booking">
+    <template #toolbar>
+      <UiStaButton
+        v-if="authStore.hasPermission('refund_booking')"
+        class="bg-sta-rouge hover:bg-sta-rouge-dark transition-colors mt-2"
+        @click="refundBooking"
+      >
+        Refund Booking
+      </UiStaButton>
+    </template>
     <h2 class="text-sta-orange text-h2">Reference - {{ booking.reference }}</h2>
     <production-banner
       class="pb-2 md:pb-8"
@@ -84,6 +93,8 @@
 </template>
 
 <script>
+import useAuthStore from '@/store/auth';
+
 import ProductionBanner from '@/components/production/ProductionBanner.vue';
 import BookingPerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue';
 import VenueOverview from '@/components/booking/overview/VenueOverview.vue';
@@ -134,6 +145,11 @@ export default defineNuxtComponent({
       rawBooking
     };
   },
+  data() {
+    return {
+      authStore: useAuthStore()
+    };
+  },
   computed: {
     production() {
       return this.booking.performance.production;
@@ -162,6 +178,37 @@ export default defineNuxtComponent({
     },
     anyTicketsChecked() {
       return this.booking.tickets.some((ticket) => ticket.checkedIn);
+    }
+  },
+  methods: {
+    async refundBooking() {
+      swal
+        .fire({
+          title: 'Are you sure?',
+          text: 'This will refund the booking and remove it from the system.',
+          icon: 'warning',
+          showCancelButton: true,
+          cancelButtonText: 'No, cancel!',
+          showConfirmButton: true,
+          confirmButtonText: 'Yes, refund it!',
+          input: 'text',
+          inputLabel: 'Refund Reason',
+          inputPlaceholder: 'Enter refund reason'
+        })
+        .then(async (result) => {
+          if (result.isConfirmed) {
+            const { data } = await useDefaultApolloClient().mutate({
+              mutation: AdminBookingDetailDocument,
+              variables: {
+                bookingReference: this.booking.reference
+              }
+            });
+
+            if (data) {
+              this.$router.push('/administration/productions');
+            }
+          }
+        });
     }
   }
 });

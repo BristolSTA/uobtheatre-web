@@ -1,0 +1,33 @@
+mutation refundBooking(
+  $bookingReference: String!
+  $performanceID: IdInputField!
+  $preserveAppFees: Boolean
+  $preservePaymentProviderFees: Boolean
+  $refundReason: String!
+  $supportTicketRef: String
+) {
+  refundBooking(
+    bookingReference: $bookingReference
+    performance: $performanceID
+    preserveAppFees: $preserveAppFees
+    preservePaymentProviderFees: $preservePaymentProviderFees
+    refundReason: $refundReason
+    supportTicketRef: $supportTicketRef
+  ) {
+    success
+    errors {
+      ... on NonFieldError {
+        message
+      }
+      ... on FieldError {
+        message
+        field
+      }
+    }
+    booking {
+      id
+      reference
+      status
+    }
+  }
+}
