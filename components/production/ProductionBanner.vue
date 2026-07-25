@@ -82,7 +82,7 @@
           <template v-if="production.minSeatPrice">
             Tickets from
             <span class="font-semibold">
-              £{{ (production.minSeatPrice / 100).toFixed(2) }}
+              £{{ (minSeatPriceIncludingMiscFees / 100).toFixed(2) }}
             </span>
             <UTooltip
               v-if="miscCostsDisplay"
@@ -90,8 +90,10 @@
               :text="miscCostsDisplay"
               :delay-duration="0"
             >
-              <small
-                >(exc. fees)<font-awesome-icon icon="circle-info" class="ml-1"
+              <small class="pl-1"
+                >(including fees)<font-awesome-icon
+                  icon="circle-info"
+                  class="ml-1"
               /></small>
             </UTooltip>
           </template>
@@ -218,6 +220,17 @@ export default {
             : ''
         }` + ' to cover fees and support our theatre'
       );
+    },
+    minSeatPriceIncludingMiscFees() {
+      let minSeatPriceBase = this.production.minSeatPrice;
+      let minSeatPrice = minSeatPriceBase;
+
+      this.miscCosts.forEach((miscCost) => {
+        minSeatPrice += miscCost.value + miscCost.percentage * minSeatPriceBase;
+        minSeatPrice = Math.ceil(minSeatPrice);
+      });
+
+      return minSeatPrice;
     }
   },
   methods: {
