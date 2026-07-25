@@ -222,7 +222,7 @@ export default {
       );
     },
     minSeatPriceIncludingMiscFees() {
-      let minSeatPriceBase = this.production.minSeatPrice;
+      const minSeatPriceBase = this.production.minSeatPrice;
       let minSeatPrice = minSeatPriceBase;
 
       this.miscCosts.forEach((miscCost) => {
