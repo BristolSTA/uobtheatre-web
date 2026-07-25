@@ -350,7 +350,7 @@ describe('ProductionBanner', function () {
         );
 
         expect(headerContainer.vm.miscCostsDisplay).to.equal(expected);
-        expect(headerContainer.text()).to.contain('(exc. fees)');
+        expect(headerContainer.text()).to.contain('(including fees)');
       }
     );
   });
