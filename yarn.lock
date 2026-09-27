@@ -34,13 +34,13 @@
     tslib "^2.3.0"
     zen-observable-ts "^1.2.5"
 
-"@ardatan/relay-compiler@^13.0.1":
-  version "13.0.1"
-  resolved "https://registry.yarnpkg.com/@ardatan/relay-compiler/-/relay-compiler-13.0.1.tgz#b00a4c1f986156fa2472db8036e9087877d37be3"
-  integrity sha512-afG3YPwuSA0E5foouZusz5GlXKs74dObv4cuWyLyfKsYFj2r7oGRNB28v18HvwuLSQtQFCi+DpIe0TZkgQDYyg==
+"@ardatan/relay-compiler@^13.0.2":
+  version "13.0.2"
+  resolved "https://registry.yarnpkg.com/@ardatan/relay-compiler/-/relay-compiler-13.0.2.tgz#897dc6b0ca22c9f5fb07e50a56aa43417f6ec208"
+  integrity sha512-VFpv9UP820SiwDUPYtq7PmD3jifzZlevkQ26bhbSzFeruSTys0eHzQCZyKg+IhgmZzwPI9AFjPe26ABNjGeIKg==
   dependencies:
-    "@babel/runtime" "^7.29.2"
-    immutable "^5.1.5"
+    "@babel/runtime" "^8.0.0"
+    immutable "^5.1.9"
     invariant "^2.2.4"
 
 "@asamuzakjp/css-color@^5.1.11":
@@ -316,10 +316,10 @@
     "@babel/helper-skip-transparent-expression-wrappers" "^7.29.7"
     "@babel/plugin-syntax-typescript" "^7.29.7"
 
-"@babel/runtime@^7.29.2":
-  version "7.29.2"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.29.2.tgz#9a6e2d05f4b6692e1801cd4fb176ad823930ed5e"
-  integrity sha512-JiDShH45zKHWyGe4ZNVRrCjBz8Nh9TMmZG1kh4QTK8hCBTWBi8Da+i7s1fJw7/lYpM4ccepSNfqzZ/QvABBi5g==
+"@babel/runtime@^8.0.0":
+  version "8.0.5"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-8.0.5.tgz#7b9cdb3ecdd4d9f5975f9a8a64c391a8ce04c436"
+  integrity sha512-7NK+Lz3spQ52XsUGTxIEVU4jYN2/dIaX8sTxRFAUtYmttYZnVh3aehiihv+/Gb7+duMNHl2OrFcBQRyOHScxpg==
 
 "@babel/template@^7.18.10", "@babel/template@^7.28.6", "@babel/template@^7.29.7":
   version "7.29.7"
@@ -1486,19 +1486,19 @@
     tslib "^2.4.0"
 
 "@graphql-tools/optimize@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/optimize/-/optimize-2.0.0.tgz#7a9779d180824511248a50c5a241eff6e7a2d906"
-  integrity sha512-nhdT+CRGDZ+bk68ic+Jw1OZ99YCDIKYA5AlVAnBHJvMawSx9YQqQAIj4refNc1/LRieGiuWvhbG3jvPVYho0Dg==
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/optimize/-/optimize-2.0.1.tgz#552a17e51f0fa36bfe0f4214ff5fbe242d0ca18b"
+  integrity sha512-I63H75wg7SD/+iPj+QdvZgvul0dxxf/el18Yiry5zmwKeqRvzcm6l2KUYRNgMR/ydytp0VuHw3XeyGhPWGigAg==
   dependencies:
     tslib "^2.4.0"
 
 "@graphql-tools/relay-operation-optimizer@^7.1.1":
-  version "7.1.4"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/relay-operation-optimizer/-/relay-operation-optimizer-7.1.4.tgz#6e25416d78d7bc8d92c64df89d39d30644c26042"
-  integrity sha512-cwOD/GEo/R//1uGCP0/urIxsMFoUgzkJVyMt9BDM2HhQhU6rSgH5l6lFukAFTJyPJVdyeOdYm2i0Jj5vYWbHTw==
+  version "7.1.10"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/relay-operation-optimizer/-/relay-operation-optimizer-7.1.10.tgz#e8aca8b28ebe0112a5dbd70852663eec7ca17402"
+  integrity sha512-dCZAyUQkrrC0R3SOIRMUXaCct/uMOJeNmI028yJH6kd6lZzjIVPaX/6NLl6opg1pYdUkjOQ+SiyfTKNmuS71gA==
   dependencies:
-    "@ardatan/relay-compiler" "^13.0.1"
-    "@graphql-tools/utils" "^11.1.0"
+    "@ardatan/relay-compiler" "^13.0.2"
+    "@graphql-tools/utils" "^12.0.1"
     tslib "^2.4.0"
 
 "@graphql-tools/schema@^10.0.0", "@graphql-tools/schema@^10.1.1":
@@ -1528,7 +1528,7 @@
     tslib "^2.4.0"
     ws "^8.21.3"
 
-"@graphql-tools/utils@^11.0.0", "@graphql-tools/utils@^11.1.0", "@graphql-tools/utils@^11.2.0":
+"@graphql-tools/utils@^11.0.0", "@graphql-tools/utils@^11.2.0":
   version "11.2.2"
   resolved "https://registry.yarnpkg.com/@graphql-tools/utils/-/utils-11.2.2.tgz#5e2c8458dc31d856c94cab0a02aabfd9a5e6e616"
   integrity sha512-Do2A/t6ayqOma8m7PvpYMsCBswL+NB35BQSng4GWSBqafL2/BnfAZy/NSENPwV721Rm2fG0BHETFC0+FJJZmLw==
@@ -6847,7 +6847,14 @@ graphql-config@^5.1.6:
     string-env-interpolation "^1.0.1"
     tslib "^2.4.0"
 
-graphql-tag@^2.11.0, graphql-tag@^2.12.6:
+graphql-tag@^2.11.0:
+  version "2.12.7"
+  resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.12.7.tgz#4c82de0af91679b1940f149819fc8351801ed130"
+  integrity sha512-xnE/NFzy+0eIesvAsREJZ284zTl/wYuBAvpsFSDhRGRdRHdnE90M21Q3xAWyYInb0J756c6x0pIQ62+vtvOs1Q==
+  dependencies:
+    tslib "^2.1.0"
+
+graphql-tag@^2.12.6:
   version "2.12.6"
   resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.12.6.tgz#d441a569c1d2537ef10ca3d1633b48725329b5f1"
   integrity sha512-FdSNcu2QQcWnM2VNvSCCDCVS5PpPqpzgFT8+GXzqJuoDd0CBncxCY278u4mhRO7tMgo2JjgJA5aZ+nWSQ/Z+xg==
@@ -7060,10 +7067,10 @@ image-meta@^0.2.2:
   resolved "https://registry.yarnpkg.com/image-meta/-/image-meta-0.2.2.tgz#a88dbdf1983d7c23a80c3e71d3b8acdb5379f5e0"
   integrity sha512-3MOLanc3sb3LNGWQl1RlQlNWURE5g32aUphrDyFeCsxBTk08iE3VNe4CwsUZ0Qs1X+EfX0+r29Sxdpza4B+yRA==
 
-immutable@^5.1.5:
-  version "5.1.5"
-  resolved "https://registry.yarnpkg.com/immutable/-/immutable-5.1.5.tgz#93ee4db5c2a9ab42a4a783069f3c5d8847d40165"
-  integrity sha512-t7xcm2siw+hlUM68I+UEOK+z84RzmN59as9DZ7P1l0994DKUWV7UXBMQZVxaoMSRQ+PBZbHCOoBt7a2wxOMt+A==
+immutable@^5.1.9:
+  version "5.1.9"
+  resolved "https://registry.yarnpkg.com/immutable/-/immutable-5.1.9.tgz#ac23c3a01992ab665e14ac9ffff298f28cd74a0c"
+  integrity sha512-m8nVez3rwrgmWxtLMt1ZYXB2Lv7OKYn/disyxAlSDYAlKSlFoPPfIAmAM/M5xqL4m4C/wAPw7S2/CNaUii1Hxg==
 
 import-fresh@^3.2.1, import-fresh@^3.3.0:
   version "3.3.1"
