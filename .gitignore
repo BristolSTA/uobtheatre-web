@@ -1,6 +1,7 @@
 # Yarn Stuff
 node_modules
 .cache
+.yarn
 
 # Docker Stuff
 .docker
