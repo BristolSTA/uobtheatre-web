@@ -68,7 +68,7 @@
     "vitest-matchmedia-mock": "^2.0.4",
     "vue-eslint-parser": "^10.4.0",
     "vue-tsc": "3.3.3",
-    "webpack": "^5.107.1"
+    "webpack": "^5.111.1"
   },
   "dependencies": {
     "@apollo/client": "^3.14.1",
