@@ -19,7 +19,8 @@ jobs:
       - name: Checkout 🛎
         uses: actions/checkout@master
 
-      - run: corepack enable
+      - name: Enable Corepack ⚡
+        run: corepack enable
 
       - name: Setup node env 🏗
         uses: actions/setup-node@v7
@@ -29,7 +30,7 @@ jobs:
           cache: 'yarn'
 
       - name: Install dependencies 👨🏻‍💻
-        run: yarn
+        run: yarn install --immutable
 
       - name: Load GraphQL 🕸
         run: API_BASE=https://staging.api.uobtheatre.com yarn codegen
@@ -44,7 +45,8 @@ jobs:
       - name: Checkout 🛎
         uses: actions/checkout@master
 
-      - run: corepack enable
+      - name: Enable Corepack ⚡
+        run: corepack enable
 
       - name: Setup node env 🏗
         uses: actions/setup-node@v7
@@ -54,7 +56,7 @@ jobs:
           cache: 'yarn'
 
       - name: Install dependencies 👨🏻‍💻
-        run: yarn
+        run: yarn install --immutable
 
       - name: Load GraphQL Codegen 🕸
         run: GQL_SCHEMA=https://raw.githubusercontent.com/BristolSTA/uobtheatre-api/${{ env.SCHEMA_VERSION }}/schema.graphql yarn codegen
@@ -72,7 +74,8 @@ jobs:
       - name: Checkout 🛎
         uses: actions/checkout@master
 
-      - run: corepack enable
+      - name: Enable Corepack ⚡
+        run: corepack enable
 
       - name: Copy Testing Env ✉
         run: cp .env.test .env
@@ -85,7 +88,7 @@ jobs:
           cache: 'yarn'
 
       - name: Install Yarn Dependencies 👨🏻‍💻
-        run: yarn
+        run: yarn install --immutable
 
       - name: Authenticate with GitHub Container Registry 🔒
         uses: docker/login-action@v3
