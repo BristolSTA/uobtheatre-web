@@ -3,10 +3,7 @@ import { type Ref, type ComputedRef, isRef } from 'vue';
 
 export const defineBreadcrumbs = (
   breadcrumbGenerator:
-    | ComputedRef<Breadcrumb[]>
-    | Ref<Breadcrumb[]>
-    | Breadcrumb[]
-    | undefined
+    ComputedRef<Breadcrumb[]> | Ref<Breadcrumb[]> | Breadcrumb[] | undefined
 ) => {
   const navStore = useNavStore();
 

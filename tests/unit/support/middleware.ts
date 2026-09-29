@@ -39,8 +39,7 @@ export function stubCreateSafeErrorDeps() {
  */
 export function mockAuthStoreWithPermissionMethod(
   methodName:
-    | 'hasPermissionsForProduction'
-    | 'hasPermissionsForPerformanceProduction'
+    'hasPermissionsForProduction' | 'hasPermissionsForPerformanceProduction'
 ) {
   const permissionMethodMock = vi.fn();
   const useAuthStoreMock = vi.fn(() => ({
