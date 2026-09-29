@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@cypress/vue": "^6.0.2",
-    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/eslintrc": "^3.3.7",
     "@eslint/js": "^10.0.1",
     "@graphql-codegen/cli": "^7.4.3",
     "@graphql-codegen/client-preset": "^6.0.0",
