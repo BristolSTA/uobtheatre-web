@@ -653,9 +653,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cypress/vue@npm:^6.0.2":
-  version: 6.0.3
-  resolution: "@cypress/vue@npm:6.0.3"
+"@cypress/vue@npm:^7.0.1":
+  version: 7.0.1
+  resolution: "@cypress/vue@npm:7.0.1"
   peerDependencies:
     "@cypress/webpack-dev-server": "*"
     cypress: ">=7.0.0"
@@ -663,7 +663,7 @@ __metadata:
   peerDependenciesMeta:
     "@cypress/webpack-dev-server":
       optional: true
-  checksum: 10c0/08c02b110de14ce919d094e25bd5e68b6b0ec4fc558d9415c123021e281c2b4ecd84b9799520084687f538a5baf4a4e48af96570489353f7dc9fce57c0b439f1
+  checksum: 10c0/2fd1a4c0c059c9b5c62c82437dcf09ac45c9583040572b41e0d3475f08d102506e15af4cbf991d39aee787fdecd58d5d5e53ed5b5869a93af7d530cee896edac
   languageName: node
   linkType: hard
 
@@ -7866,9 +7866,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cypress@npm:^15.21.1":
-  version: 15.21.1
-  resolution: "cypress@npm:15.21.1"
+"cypress@npm:^16.1.1":
+  version: 16.1.1
+  resolution: "cypress@npm:16.1.1"
   dependencies:
     "@cypress/request": "npm:^4.0.0"
     "@cypress/xvfb": "npm:^1.2.4"
@@ -7886,7 +7886,7 @@ __metadata:
     cli-table3: "npm:0.6.1"
     commander: "npm:^6.2.1"
     common-tags: "npm:^1.8.0"
-    dayjs: "npm:^1.10.4"
+    dayjs: "npm:^1.11.23"
     debug: "npm:^4.3.4"
     eventemitter2: "npm:6.4.7"
     execa: "npm:4.1.0"
@@ -7911,7 +7911,7 @@ __metadata:
     yauzl: "npm:^3.3.1"
   bin:
     cypress: bin/cypress
-  checksum: 10c0/4d3d58a7482c04b3c4a1b2cbcf13925a58122a3bf1c55a97253a0de464e49af2c473a125e0cc7e35a44acda671319181acbe2f0010be503a773d7e78d22ec72a
+  checksum: 10c0/495d3565ae0daf4891164688c72b96c850d151bac0f0cb044ff4cb5f0a74a2c1f53f8298f91966739524399a6152784bcffb85a3a7f88038fa9d7819d7bec648
   languageName: node
   linkType: hard
 
@@ -7955,17 +7955,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dayjs@npm:^1.10.4":
-  version: 1.11.23
-  resolution: "dayjs@npm:1.11.23"
-  checksum: 10c0/69ab04bf19c676e44ab50cc2fca223d265f3dafd107151ef3b0f3ad74d360c37caa602abe62f87cb25d90bd9f6bee003698af47df5b0dbf10a998b7b5f3bb3f1
-  languageName: node
-  linkType: hard
-
 "dayjs@npm:^1.11.18":
   version: 1.11.20
   resolution: "dayjs@npm:1.11.20"
   checksum: 10c0/8af525e2aa100c8db9923d706c42b2b2d30579faf89456619413a5c10916efc92c2b166e193c27c02eb3174b30aa440ee1e7b72b0a2876b3da651d204db848a0
+  languageName: node
+  linkType: hard
+
+"dayjs@npm:^1.11.23":
+  version: 1.11.23
+  resolution: "dayjs@npm:1.11.23"
+  checksum: 10c0/69ab04bf19c676e44ab50cc2fca223d265f3dafd107151ef3b0f3ad74d360c37caa602abe62f87cb25d90bd9f6bee003698af47df5b0dbf10a998b7b5f3bb3f1
   languageName: node
   linkType: hard
 
@@ -13809,7 +13809,7 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     "@apollo/client": "npm:^3.14.1"
-    "@cypress/vue": "npm:^6.0.2"
+    "@cypress/vue": "npm:^7.0.1"
     "@eslint/eslintrc": "npm:^3.3.7"
     "@eslint/js": "npm:^10.0.1"
     "@fortawesome/fontawesome-svg-core": "npm:^7.1.0"
@@ -13857,7 +13857,7 @@ __metadata:
     apollo-link-sentry: "npm:^4.4.0"
     axios: "npm:^1.20.0"
     body-scroll-lock: "npm:^4.0.0-beta.0"
-    cypress: "npm:^15.21.1"
+    cypress: "npm:^16.1.1"
     dayjs: "npm:^1.11.18"
     eslint: "npm:^10.11.0"
     eslint-config-prettier: "npm:^10.1.8"
