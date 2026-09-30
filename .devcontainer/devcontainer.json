@@ -23,5 +23,5 @@
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postAttachCommand": "yarn install && ./node_modules/.bin/cypress install && yarn codegen"
+  "postAttachCommand": "corepack yarn install && ./node_modules/.bin/cypress install && yarn codegen"
 }

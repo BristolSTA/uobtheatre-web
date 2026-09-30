@@ -230,7 +230,7 @@ import TableRow from '@/components/ui/Tables/TableRow.vue';
 import { performMutation } from '~~/utils/api';
 import { dateFormat } from '@/utils/datetime';
 import PriceMatrix from '@/components/performance/editor/PriceMatrix.vue';
-import { GenerateReportDocument } from '~~/graphql/codegen/operations';
+import { GenerateReportDocument } from '~~/graphql/codegen/operations.generated';
 
 export default defineNuxtComponent({
   components: {

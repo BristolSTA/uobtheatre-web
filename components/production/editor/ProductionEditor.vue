@@ -279,7 +279,7 @@ import { swal } from '@/utils/alerts';
 import {
   WarningsDocument,
   AdminSocietiesIndexDocument
-} from '@/graphql/codegen/operations';
+} from '@/graphql/codegen/operations.generated';
 
 const props = defineProps({
   errors: {

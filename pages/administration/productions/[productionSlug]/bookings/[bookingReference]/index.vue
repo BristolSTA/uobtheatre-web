@@ -98,7 +98,7 @@ import TableRowItem from '@/components/ui/Tables/TableRowItem.vue';
 import BookingStatusEnum from '~~/enums/PayableStatusEnum';
 
 import { dateFormat } from '@/utils/datetime';
-import { AdminBookingDetailDocument } from '~~/graphql/codegen/operations';
+import { AdminBookingDetailDocument } from '~~/graphql/codegen/operations.generated';
 
 export default defineNuxtComponent({
   components: {

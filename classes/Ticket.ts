@@ -1,10 +1,10 @@
 import InvalidTicketQRCodeException from '@/exceptions/InvalidTicketQRCodeException';
+import type { DetailedBookingDetailsFragment } from '~~/graphql/codegen/operations.generated';
 import type {
   ConcessionTypeNode,
-  DetailedBookingDetailsFragment,
   SeatGroupNode,
   ExtendedUserNode
-} from '~~/graphql/codegen/operations';
+} from '~~/graphql/codegen/base-types.generated';
 import type { IdInput } from '~~/types/generic';
 import type { TicketOptions } from '~~/types/performance';
 import { DateTime } from 'luxon';

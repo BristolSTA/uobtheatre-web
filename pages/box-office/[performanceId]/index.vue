@@ -73,7 +73,7 @@ import type {
 import {
   useBoxOfficePerformanceBookingQuery,
   useBoxOfficePerformanceBookingsQuery
-} from '~~/graphql/codegen/operations';
+} from '~~/graphql/codegen/operations.generated';
 import type { PaginationInfo } from '~~/types/generic';
 
 // Inject performance, provided by base box office page

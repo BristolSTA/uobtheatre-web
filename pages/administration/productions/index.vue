@@ -90,11 +90,11 @@
 <script setup lang="ts">
 import {
   useAdminProductionsQuery,
-  type AdminProductionsQueryVariables,
-  type ProductionsProductionStatusChoices
-} from '@/graphql/codegen/operations';
+  type AdminProductionsQueryVariables
+} from '@/graphql/codegen/operations.generated';
+import type { ProductionsProductionStatusChoices } from '@/graphql/codegen/base-types.generated';
 import { displayStartEnd } from '~~/utils/datetime';
-import VueDatepicker from '@vuepic/vue-datepicker';
+import { VueDatePicker as VueDatepicker } from '@vuepic/vue-datepicker';
 import { DateTime } from 'luxon';
 
 const productionsOffset = ref(0);

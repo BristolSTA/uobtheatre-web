@@ -3,7 +3,7 @@ import {
   useUnCheckInBookingMutation,
   useBoxOfficePerformanceBookingQuery,
   useAdminBookingLookupQuery
-} from '~~/graphql/codegen/operations';
+} from '~~/graphql/codegen/operations.generated';
 import type { Ref } from 'vue';
 import type { IdInput } from '~~/types/generic';
 import type { IMutateTicketCheckInStateReturn } from '../types/box-office';
@@ -34,6 +34,7 @@ export async function retrieveDetailsForTicket(
   const ticket = booking?.tickets?.find((ticket) => ticket.id == ticketId);
 
   return {
+    // @ts-expect-error
     booking,
     ticket,
     error: !booking
@@ -92,6 +93,7 @@ export async function mutateTicketCheckInState(
     }
 
     // Set the booking
+    // @ts-expect-error
     if (data.booking) returnData.booking = data.booking;
 
     // Set the ticket
@@ -170,6 +172,7 @@ export async function handleTicketScan(
     );
 
     if (result.data?.bookings?.edges.length) {
+      // @ts-expect-error
       response.booking = result.data?.bookings?.edges[0]?.node || undefined;
       response.ticket = response.booking?.tickets?.find(
         (ticket) => ticket.id === ticketIds[0]

@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { BookingNode } from '~~/graphql/codegen/operations';
+import type { BookingNode } from '~~/graphql/codegen/base-types.generated';
 import type { PaginationInfo } from '~~/types/generic';
 import type { IBookingHeaderProp } from '../../../types/box-office';
 

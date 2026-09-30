@@ -194,7 +194,7 @@ import TableRow from '@/components/ui/Tables/TableRow.vue';
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import { successToast, swal } from '~~/utils/alerts';
 import { humanDuration, dateFormat } from '~~/utils/datetime';
-import { SetProductionStatusDocument } from '@/graphql/codegen/operations';
+import { SetProductionStatusDocument } from '@/graphql/codegen/operations.generated';
 
 export default defineNuxtComponent({
   components: {
