@@ -91,9 +91,7 @@
               :delay-duration="0"
             >
               <small class="pl-1"
-                >(inc. fees)<font-awesome-icon
-                  icon="circle-info"
-                  class="ml-1"
+                >(inc. fees)<font-awesome-icon icon="circle-info" class="ml-1"
               /></small>
             </UTooltip>
           </template>
