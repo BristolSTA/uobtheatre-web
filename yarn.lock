@@ -1331,56 +1331,56 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fortawesome/fontawesome-common-types@npm:7.2.0":
-  version: 7.2.0
-  resolution: "@fortawesome/fontawesome-common-types@npm:7.2.0"
-  checksum: 10c0/991ca1390c078d973e92034cf7dbae2fc3aa50cd7ff322b7b23e4c54ec84dae12979bada9a782bdaea11a1577ae74d802aa651c590f41d2e1b1126c17e6cd413
+"@fortawesome/fontawesome-common-types@npm:7.3.1":
+  version: 7.3.1
+  resolution: "@fortawesome/fontawesome-common-types@npm:7.3.1"
+  checksum: 10c0/f443a0109773e57ceab3c35021c4f26baf8c29afc79efbea2324bcd9f7dd326f5ac415e46ead17eaf6e935bc23fce83993d4211a4cff375c19100ee65ea9e5cc
   languageName: node
   linkType: hard
 
-"@fortawesome/fontawesome-svg-core@npm:^7.1.0":
-  version: 7.2.0
-  resolution: "@fortawesome/fontawesome-svg-core@npm:7.2.0"
+"@fortawesome/fontawesome-svg-core@npm:^7.3.1":
+  version: 7.3.1
+  resolution: "@fortawesome/fontawesome-svg-core@npm:7.3.1"
   dependencies:
-    "@fortawesome/fontawesome-common-types": "npm:7.2.0"
-  checksum: 10c0/5c6655b030254804999eb87b96111cdcc42c0789e6e9ea13bc1e37d5ebf9fb982c79a618b68272cc59c23c4e1abf73d487e747a17a61499eac5f9f528fc54ad4
+    "@fortawesome/fontawesome-common-types": "npm:7.3.1"
+  checksum: 10c0/07c84a5751999d13d875f63e059ec2b0ab6dbed9cfe363fe8a870fd64e045c049367ae55bdee18973b38255967593d6eef403170a1e70cf4400de8216a932654
   languageName: node
   linkType: hard
 
-"@fortawesome/free-brands-svg-icons@npm:^7.1.0":
-  version: 7.2.0
-  resolution: "@fortawesome/free-brands-svg-icons@npm:7.2.0"
+"@fortawesome/free-brands-svg-icons@npm:^7.3.1":
+  version: 7.3.1
+  resolution: "@fortawesome/free-brands-svg-icons@npm:7.3.1"
   dependencies:
-    "@fortawesome/fontawesome-common-types": "npm:7.2.0"
-  checksum: 10c0/cfb883006dd0f918dde3d6ed81197552f094823e2032c284f05cb8788df65ccee7aa71c54b8042b393a843bb134fbcff492fc5b1ba57bb690cf9a9de17b30df3
+    "@fortawesome/fontawesome-common-types": "npm:7.3.1"
+  checksum: 10c0/ae9049f450a64166f02e6a199b0c87786899a0d49e114994da85b8ccf906466543510d0e3e63fdb945eac00e0b81b0c2e274d54f06a605767a1e8503bdea344e
   languageName: node
   linkType: hard
 
-"@fortawesome/free-regular-svg-icons@npm:^7.1.0":
-  version: 7.2.0
-  resolution: "@fortawesome/free-regular-svg-icons@npm:7.2.0"
+"@fortawesome/free-regular-svg-icons@npm:^7.3.1":
+  version: 7.3.1
+  resolution: "@fortawesome/free-regular-svg-icons@npm:7.3.1"
   dependencies:
-    "@fortawesome/fontawesome-common-types": "npm:7.2.0"
-  checksum: 10c0/57b0fdecb2d820b5732559ef3893c905ccfe59cc267ee8b631f2826a3703acba54e73a37b5783436a2cf54c3561213068877b2455c5b1b23377ad7aacf27c019
+    "@fortawesome/fontawesome-common-types": "npm:7.3.1"
+  checksum: 10c0/e67570dc9267cc6fa23dfbe01ccbd10dae8966d5ed48127007495902d4d1fde0a32a732070f004b97cd140b31ec45fcfe1728a2fde1afd8f28fb0aab09ce4856
   languageName: node
   linkType: hard
 
-"@fortawesome/free-solid-svg-icons@npm:^7.1.0":
-  version: 7.2.0
-  resolution: "@fortawesome/free-solid-svg-icons@npm:7.2.0"
+"@fortawesome/free-solid-svg-icons@npm:^7.3.1":
+  version: 7.3.1
+  resolution: "@fortawesome/free-solid-svg-icons@npm:7.3.1"
   dependencies:
-    "@fortawesome/fontawesome-common-types": "npm:7.2.0"
-  checksum: 10c0/922ffe0f53b3cebcf36a4a6872958e7d6a0fbaa5c5c73cddbdea9301181fe8625331a0bf8aa09ca54c4d284805473e38d0eb9f06da05546f1914cec2c062343f
+    "@fortawesome/fontawesome-common-types": "npm:7.3.1"
+  checksum: 10c0/b00958ce2929419adc2371739f7552728218f0c502dab74dafb6070e6a6c51a811a8b66ab18ca555703ad71d2769a99c64742baca29b244d8a209d11ad25d8fc
   languageName: node
   linkType: hard
 
-"@fortawesome/vue-fontawesome@npm:^3.1.2":
-  version: 3.2.0
-  resolution: "@fortawesome/vue-fontawesome@npm:3.2.0"
+"@fortawesome/vue-fontawesome@npm:^3.3.3":
+  version: 3.3.3
+  resolution: "@fortawesome/vue-fontawesome@npm:3.3.3"
   peerDependencies:
     "@fortawesome/fontawesome-svg-core": ~1 || ~6 || ~7
     vue: ">= 3.0.0 < 4"
-  checksum: 10c0/203b071c05a42a20118065d5c9e3df7f92436e0d20b652e605768800374416282481d7ed0db281a6c7f655721c06699307a1f5e8df0b6feadb85173580b33031
+  checksum: 10c0/1ca74be12eea7c3cbd635be8868d15391ceaed9bac48626bc8d7ea7a9b7df9bddf9773cf33e39699fb3bd6d81e72e148e444e905c2ada248f790a31d72c86e77
   languageName: node
   linkType: hard
 
@@ -5841,18 +5841,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/language-core@npm:3.3.3":
-  version: 3.3.3
-  resolution: "@vue/language-core@npm:3.3.3"
+"@vue/language-core@npm:3.3.11":
+  version: 3.3.11
+  resolution: "@vue/language-core@npm:3.3.11"
   dependencies:
     "@volar/language-core": "npm:2.4.28"
     "@vue/compiler-dom": "npm:^3.5.0"
     "@vue/shared": "npm:^3.5.0"
-    alien-signals: "npm:^3.2.0"
+    alien-signals: "npm:^3.2.1"
     muggle-string: "npm:^0.4.1"
     path-browserify: "npm:^1.0.1"
     picomatch: "npm:^4.0.4"
-  checksum: 10c0/9d05638757c5babcc07fc526621a737737f790a39b93056f1e4e1f647fd4fe38bae41162e7077905bab71c02d81133a3ab55acac0878ae051c45f1ae4c7d832a
+  checksum: 10c0/d05c0a9983cb92f03e283729450d21da81848eecf4328020c2047b7cf1318b74597455b21740a32f56552d267d8b14fb834ae7939c4f5ff24bd4dc7a3a2fbbc7
   languageName: node
   linkType: hard
 
@@ -6515,7 +6515,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"alien-signals@npm:^3.2.0":
+"alien-signals@npm:^3.2.1":
   version: 3.2.1
   resolution: "alien-signals@npm:3.2.1"
   checksum: 10c0/4c4064faa208126177224d1ed6a2310687d452dec0771994e276d9af4c72e853fcb969ae4a7fcd034b1d1b9accb9500f4941178326eeea1cb8f64ec612853ef8
@@ -7952,13 +7952,6 @@ __metadata:
   version: 4.1.0
   resolution: "date-fns@npm:4.1.0"
   checksum: 10c0/b79ff32830e6b7faa009590af6ae0fb8c3fd9ffad46d930548fbb5acf473773b4712ae887e156ba91a7b3dc30591ce0f517d69fd83bd9c38650fdc03b4e0bac8
-  languageName: node
-  linkType: hard
-
-"dayjs@npm:^1.11.18":
-  version: 1.11.20
-  resolution: "dayjs@npm:1.11.20"
-  checksum: 10c0/8af525e2aa100c8db9923d706c42b2b2d30579faf89456619413a5c10916efc92c2b166e193c27c02eb3174b30aa440ee1e7b72b0a2876b3da651d204db848a0
   languageName: node
   linkType: hard
 
@@ -9693,7 +9686,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql-tag@npm:^2.11.0":
+"graphql-tag@npm:^2.11.0, graphql-tag@npm:^2.12.7":
   version: 2.12.7
   resolution: "graphql-tag@npm:2.12.7"
   dependencies:
@@ -9976,10 +9969,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"humanize-duration@npm:^3.32.1":
-  version: 3.33.2
-  resolution: "humanize-duration@npm:3.33.2"
-  checksum: 10c0/eae493c113f1c11c96e42195002e8016ab7c08bfcc3414ba5459027da4faaa2df012429bc4eae200873a65d0a86b7cc6a9656783aa45705ffe6106b5256af973
+"humanize-duration@npm:^3.35.0":
+  version: 3.35.0
+  resolution: "humanize-duration@npm:3.35.0"
+  checksum: 10c0/6ef662531f9bf713fb66ea7a33c33bd7fe3a033851454dc8688d6c85a97814a829db4c54be5db96dca3fb5d12bc55ffe146e4663636b425e0779d5b897e22191
   languageName: node
   linkType: hard
 
@@ -13315,12 +13308,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qrcode.vue@npm:^3.6.0":
-  version: 3.9.1
-  resolution: "qrcode.vue@npm:3.9.1"
+"qrcode.vue@npm:^3.11.0":
+  version: 3.11.0
+  resolution: "qrcode.vue@npm:3.11.0"
   peerDependencies:
     vue: ^3.0.0
-  checksum: 10c0/8cfc964100e793f9319f2ba7e233b9c9f88c65495af66d0b577928f1edd0df7fac4fa7b652de8edd6d24cf00f6ba044b973af4f2d91d0c911f4cd297f0e7653f
+  checksum: 10c0/14a14927f227203421e19e0d70fb7a5b49eb4cebd8563c6c8410e78e0cab204e1f114d805e9d397c5bc65259fef5bd05ba9a2cbdbcf8c0c13e7877c2d2d8dac7
   languageName: node
   linkType: hard
 
@@ -13812,11 +13805,11 @@ __metadata:
     "@cypress/vue": "npm:^7.0.1"
     "@eslint/eslintrc": "npm:^3.3.7"
     "@eslint/js": "npm:^10.0.1"
-    "@fortawesome/fontawesome-svg-core": "npm:^7.1.0"
-    "@fortawesome/free-brands-svg-icons": "npm:^7.1.0"
-    "@fortawesome/free-regular-svg-icons": "npm:^7.1.0"
-    "@fortawesome/free-solid-svg-icons": "npm:^7.1.0"
-    "@fortawesome/vue-fontawesome": "npm:^3.1.2"
+    "@fortawesome/fontawesome-svg-core": "npm:^7.3.1"
+    "@fortawesome/free-brands-svg-icons": "npm:^7.3.1"
+    "@fortawesome/free-regular-svg-icons": "npm:^7.3.1"
+    "@fortawesome/free-solid-svg-icons": "npm:^7.3.1"
+    "@fortawesome/vue-fontawesome": "npm:^3.3.3"
     "@graphql-codegen/cli": "npm:^7.4.3"
     "@graphql-codegen/client-preset": "npm:^6.2.0"
     "@graphql-codegen/typescript-operations": "npm:^6.1.9"
@@ -13858,15 +13851,15 @@ __metadata:
     axios: "npm:^1.20.0"
     body-scroll-lock: "npm:^4.0.0-beta.0"
     cypress: "npm:^16.1.1"
-    dayjs: "npm:^1.11.18"
+    dayjs: "npm:^1.11.23"
     eslint: "npm:^10.11.0"
     eslint-config-prettier: "npm:^10.1.8"
     eslint-plugin-cypress: "npm:^7.0.2"
     eslint-plugin-unused-imports: "npm:^4.4.1"
     eslint-plugin-vue: "npm:^10.11.1"
     graphql: "npm:^16.13.2"
-    graphql-tag: "npm:^2.12.6"
-    humanize-duration: "npm:^3.32.1"
+    graphql-tag: "npm:^2.12.7"
+    humanize-duration: "npm:^3.35.0"
     js-cookie: "npm:^3.0.5"
     jsdom: "npm:^30.1.1"
     jwt-decode: "npm:^4.0.0"
@@ -13887,22 +13880,22 @@ __metadata:
     prosemirror-state: "npm:^1.4.2"
     prosemirror-transform: "npm:^1.12.0"
     prosemirror-view: "npm:^1.41.3"
-    qrcode.vue: "npm:^3.6.0"
-    sweetalert2: "npm:^11.26.24"
+    qrcode.vue: "npm:^3.11.0"
+    sweetalert2: "npm:^11.26.25"
     tailwindcss: "npm:^4.3.3"
     typescript: "npm:^6.0.3"
-    unplugin-auto-import: "npm:^21.0.0"
+    unplugin-auto-import: "npm:^21.1.0"
     unplugin-vue-components: "npm:^32.1.0"
-    uuid: "npm:^14.0.0"
+    uuid: "npm:^14.0.2"
     vite: "npm:^8.3.1"
     vite-plugin-eslint2: "npm:^5.3.0"
     vitest: "npm:^4.1.11"
     vitest-matchmedia-mock: "npm:^2.0.4"
-    vue-currency-input: "npm:^3.2.1"
+    vue-currency-input: "npm:^3.2.2"
     vue-eslint-parser: "npm:^10.4.1"
     vue-gtag: "npm:3.7.1"
     vue-qrcode-reader: "npm:5.7.3"
-    vue-tsc: "npm:3.3.3"
+    vue-tsc: "npm:3.3.11"
     webpack: "npm:^5.111.1"
   languageName: unknown
   linkType: soft
@@ -14617,10 +14610,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sweetalert2@npm:^11.26.24":
-  version: 11.26.24
-  resolution: "sweetalert2@npm:11.26.24"
-  checksum: 10c0/f002ff982f2cfe48ff24e2faefd990776d7ad38e6d13024fdbdd178f464154061d665682102ddfcb9a65c15019011c6ddae67a93416d4b07716fce77fe9a8484
+"sweetalert2@npm:^11.26.25":
+  version: 11.26.25
+  resolution: "sweetalert2@npm:11.26.25"
+  checksum: 10c0/3ee9d9184bf3467f13132e084cf5544b3d1e9eaa800978754ccb0687362f3e6e3f195ce031dc2de381589edb29c0086fcaec438ac43fdb57210b2a08c0cdc417
   languageName: node
   linkType: hard
 
@@ -15234,28 +15227,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unimport@npm:^5.6.0":
-  version: 5.7.0
-  resolution: "unimport@npm:5.7.0"
-  dependencies:
-    acorn: "npm:^8.16.0"
-    escape-string-regexp: "npm:^5.0.0"
-    estree-walker: "npm:^3.0.3"
-    local-pkg: "npm:^1.1.2"
-    magic-string: "npm:^0.30.21"
-    mlly: "npm:^1.8.0"
-    pathe: "npm:^2.0.3"
-    picomatch: "npm:^4.0.3"
-    pkg-types: "npm:^2.3.0"
-    scule: "npm:^1.3.0"
-    strip-literal: "npm:^3.1.0"
-    tinyglobby: "npm:^0.2.15"
-    unplugin: "npm:^2.3.11"
-    unplugin-utils: "npm:^0.3.1"
-  checksum: 10c0/0d2dab60f66d90c2842efb8871a14e59324f8f7595459f7ea45da1d3af60c8cabc240dc9f97129df9431e5c0bf1d56cc00d28cc10f2c69e42d0b651453e7485c
-  languageName: node
-  linkType: hard
-
 "unimport@npm:^6.2.0":
   version: 6.3.0
   resolution: "unimport@npm:6.3.0"
@@ -15329,28 +15300,6 @@ __metadata:
   dependencies:
     normalize-path: "npm:^2.1.1"
   checksum: 10c0/8b89100619ebde9f0ab4024a4d402316fb7b1d4853723410fc828944e8d3d01480f210cddf94d9a1699559f8180d861eb6323da8011b7bcc1bbaf6a11a5b1f1e
-  languageName: node
-  linkType: hard
-
-"unplugin-auto-import@npm:^21.0.0":
-  version: 21.0.0
-  resolution: "unplugin-auto-import@npm:21.0.0"
-  dependencies:
-    local-pkg: "npm:^1.1.2"
-    magic-string: "npm:^0.30.21"
-    picomatch: "npm:^4.0.3"
-    unimport: "npm:^5.6.0"
-    unplugin: "npm:^2.3.11"
-    unplugin-utils: "npm:^0.3.1"
-  peerDependencies:
-    "@nuxt/kit": ^4.0.0
-    "@vueuse/core": "*"
-  peerDependenciesMeta:
-    "@nuxt/kit":
-      optional: true
-    "@vueuse/core":
-      optional: true
-  checksum: 10c0/2e97a70f20136bc410f7509f4f3737a396e54b88096f4e516b3b576f3016b38d74b91a2044a20c32c22617405335f2bf437cb266230ef30236d0a4480701c850
   languageName: node
   linkType: hard
 
@@ -15681,12 +15630,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:*, uuid@npm:^14.0.0":
+"uuid@npm:*":
   version: 14.0.0
   resolution: "uuid@npm:14.0.0"
   bin:
     uuid: dist-node/bin/uuid
   checksum: 10c0/a57ae7794c45005c1a9208989196c5baf79a7679c30f43c1bee9033a2c4d113a2cea216fa6fcc9663b08b0d55635df1a7c6eb7e7f3d21c3e50688c698fa39a50
+  languageName: node
+  linkType: hard
+
+"uuid@npm:^14.0.2":
+  version: 14.0.2
+  resolution: "uuid@npm:14.0.2"
+  bin:
+    uuid: dist-node/bin/uuid
+  checksum: 10c0/88906237004db370b013129c8372a2149f6fa1aad7a5f78fa65ddf2ba0a8663097022300d81fa01f551efee9d6bbe8c7ab140dc6d49f1b03d289f855096990c9
   languageName: node
   linkType: hard
 
@@ -16035,7 +15993,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-currency-input@npm:^3.2.1":
+"vue-currency-input@npm:^3.2.2":
   version: 3.2.2
   resolution: "vue-currency-input@npm:3.2.2"
   peerDependencies:
@@ -16145,17 +16103,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-tsc@npm:3.3.3":
-  version: 3.3.3
-  resolution: "vue-tsc@npm:3.3.3"
+"vue-tsc@npm:3.3.11":
+  version: 3.3.11
+  resolution: "vue-tsc@npm:3.3.11"
   dependencies:
     "@volar/typescript": "npm:2.4.28"
-    "@vue/language-core": "npm:3.3.3"
+    "@vue/language-core": "npm:3.3.11"
   peerDependencies:
     typescript: ">=5.0.0"
   bin:
     vue-tsc: bin/vue-tsc.js
-  checksum: 10c0/576d606f82557b54aeaac30e4ef7f799f1fcec31dd667c60908dc3df68cbf479f1eb549bf0e479b8dce26e4ace4f47d511f7be6a10b188bf6ca852b306b91581
+  checksum: 10c0/b1995cf9519754e9974d051668d1b6d4e3bb3bd1adc507350689bf2e128cc57c0c21c58952c247a97f12cf008c1b5235f4bcf5882f6784d6a8286019f439d3cf
   languageName: node
   linkType: hard
 
