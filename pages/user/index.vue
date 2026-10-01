@@ -74,7 +74,7 @@ import PaginationBar from '@/components/ui/PaginationBar.vue';
 import {
   CompleteBookingsDocument,
   MyAccountDetailsDocument
-} from '~~/graphql/codegen/operations';
+} from '~~/graphql/codegen/operations.generated';
 
 definePageMeta({
   middleware: ['authed']

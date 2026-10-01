@@ -8,7 +8,12 @@
       </UiStaButton>
     </template>
     <UiNonFieldError :errors="errors" />
-    <production-editor ref="editor" :production="production" :errors="errors" />
+    <production-editor
+      ref="editor"
+      :production="production"
+      :errors="errors"
+      @update:production="updateProduction"
+    />
   </AdminPage>
 </template>
 
@@ -19,7 +24,7 @@ import ProductionEditor from '@/components/production/editor/ProductionEditor.vu
 
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import { loadingSwal, successToast } from '~~/utils/alerts';
-import { ProductionMutationDocument } from '~~/graphql/codegen/operations';
+import { ProductionMutationDocument } from '~~/graphql/codegen/operations.generated';
 
 definePageMeta({
   middleware: ['require-production-permissions'],
@@ -56,28 +61,24 @@ export default defineNuxtComponent({
     };
   },
   methods: {
+    updateProduction(updatedProduction) {
+      this.production = updatedProduction;
+    },
     async save() {
       this.errors = null;
       loadingSwal.fire();
       try {
-        await performMutation(
+        const data = await performMutation(
           this.$apollo,
           {
             mutation: ProductionMutationDocument,
             variables: {
-              input: await this.$refs.editor.getInputData()
+              input: this.production
             }
           },
           'production'
         );
-        const { data } = await this.$apollo.query({
-          query: AdminProductionEditQuery,
-          variables: {
-            slug: await this.production.slug
-          },
-          fetchPolicy: 'no-cache'
-        });
-        this.production = data.production;
+        this.production = data.production.production;
         useRouter().push(`/administration/productions/${this.production.slug}`);
         successToast.fire({ title: 'Production Updated' });
       } catch (e) {

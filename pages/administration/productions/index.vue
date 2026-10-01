@@ -91,13 +91,16 @@
 import {
   useAdminProductionsQuery,
   type AdminProductionsQueryVariables
-} from '@/graphql/codegen/operations';
+} from '@/graphql/codegen/operations.generated';
+import type { ProductionsProductionStatusChoices } from '@/graphql/codegen/base-types.generated';
 import { displayStartEnd } from '~~/utils/datetime';
-import VueDatepicker from '@vuepic/vue-datepicker';
+import { VueDatePicker as VueDatepicker } from '@vuepic/vue-datepicker';
 import { DateTime } from 'luxon';
 
 const productionsOffset = ref(0);
-const productionsStatusFilter = ref<string | null>(null);
+const productionsStatusFilter = ref<ProductionsProductionStatusChoices | null>(
+  null
+);
 const productionsRunDateFilter = ref<Date | null>(null);
 const productionSearchFilter = ref<string | null>(null);
 

@@ -1,13 +1,15 @@
 import type {
   BoxOfficePerformanceBookingQuery,
-  BoxOfficePerformanceBookingsQuery,
+  BoxOfficePerformanceBookingsQuery
+} from '~~/graphql/codegen/operations.generated';
+import type {
   ConcessionTypeNode,
   ImageNode,
   PerformanceNode,
   ProductionNode,
   SeatGroupNode,
   TicketNode
-} from '~~/graphql/codegen/operations';
+} from '~~/graphql/codegen/base-types.generated';
 
 // The "booking" prop on BookingHeader component
 export type IBookingHeaderProp = {

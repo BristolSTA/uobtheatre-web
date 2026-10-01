@@ -19,7 +19,7 @@ query venuePageDetails($slug: String!, $now: DateTime, $afterCursor: String) {
       orderBy: "start"
       after: $afterCursor
       end_Gte: $now
-      status: "PUBLISHED"
+      status: PUBLISHED
     ) {
       pageInfo {
         hasNextPage

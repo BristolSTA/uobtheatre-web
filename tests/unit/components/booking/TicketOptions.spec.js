@@ -43,7 +43,8 @@ describe('Ticket Options', () => {
     await component.vm.booking.tickets.push(
       new Ticket(
         FullBooking().performance.ticketOptions[0].seatGroup.id,
-        FullBooking().performance.ticketOptions[0].concessionTypes[0].concessionType.id
+        FullBooking().performance.ticketOptions[0].concessionTypes[0]
+          .concessionType.id
       )
     );
 
@@ -129,7 +130,8 @@ describe('Ticket Options', () => {
     component.vm.booking.tickets = [
       new Ticket(
         FullBooking().performance.ticketOptions[0].seatGroup.id,
-        FullBooking().performance.ticketOptions[0].concessionTypes[0].concessionType.id
+        FullBooking().performance.ticketOptions[0].concessionTypes[0]
+          .concessionType.id
       )
     ];
     await component

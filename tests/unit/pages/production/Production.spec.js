@@ -62,9 +62,9 @@ describe('Production', function () {
   });
 
   it('can show cast credits component', async () => {
-    await productionPageComponent.setData({
-      overview: false
-    });
+    productionPageComponent.vm.overview = false;
+    await productionPageComponent.vm.$nextTick();
+
     findComponents();
 
     expect(castCreditsComponent.exists()).to.be.true;

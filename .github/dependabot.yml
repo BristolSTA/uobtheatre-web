@@ -35,6 +35,8 @@ updates:
           - '@nuxt/*'
           - 'nuxt-*'
           - 'nuxt'
+        exclude-patterns:
+          - '@nuxt/ui'
       typescript:
         patterns:
           - '@types/*'

@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import { UpcomingSiteMessagesDocument } from '~/graphql/codegen/operations';
+import { UpcomingSiteMessagesDocument } from '~/graphql/codegen/operations.generated';
 import {
   addDismissedId,
   filterAndSortMessages,

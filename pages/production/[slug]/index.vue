@@ -132,8 +132,8 @@ export default defineNuxtComponent({
     hasCastCrew() {
       return Boolean(
         this.production.crew.length ||
-          this.production.cast.length ||
-          this.production.productionTeam.length
+        this.production.cast.length ||
+        this.production.productionTeam.length
       );
     }
   },

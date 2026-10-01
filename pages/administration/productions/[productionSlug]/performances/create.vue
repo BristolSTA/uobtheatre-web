@@ -25,7 +25,7 @@ import PerformanceEditor from '@/components/performance/editor/PerformanceEditor
 import {
   AdminProductionLookupDocument,
   PerformanceMutationDocument
-} from '@/graphql/codegen/operations';
+} from '@/graphql/codegen/operations.generated';
 
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import { loadingSwal, successToast, errorToast } from '~~/utils/alerts';

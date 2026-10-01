@@ -51,7 +51,7 @@ import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue';
 import FormLabel from '@/components/ui/FormLabel.vue';
 import { getValidationErrors, performMutation } from '~~/utils/api';
 import LoadingContainer from '@/components/ui/LoadingContainer.vue';
-import { GenerateReportDocument } from '~~/graphql/codegen/operations';
+import { GenerateReportDocument } from '~~/graphql/codegen/operations.generated';
 
 definePageMeta({
   middleware: ['authed', 'finance']

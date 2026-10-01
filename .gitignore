@@ -1,6 +1,7 @@
 # Yarn Stuff
 node_modules
 .cache
+.yarn
 
 # Docker Stuff
 .docker
@@ -22,7 +23,8 @@ coverage
 *.log*
 
 # Codegen Generated Files
-graphql/codegen/operations.ts
+graphql/codegen/operations.generated.ts
+graphql/codegen/base-types.generated.ts
 
 # Cypress files
 cypress

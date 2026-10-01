@@ -2,7 +2,7 @@ import type {
   DiscountNode,
   DiscountNodeEdge,
   DiscountRequirementNode
-} from '~~/graphql/codegen/operations';
+} from '~~/graphql/codegen/base-types.generated';
 
 export type SingleDiscount = Omit<DiscountNode, 'requirements'> & {
   requirements: [DiscountRequirementNode & { number: 1 }];

@@ -1,4 +1,7 @@
-query upcomingSiteMessages($afterCursor: String, $displayLocation: String) {
+query upcomingSiteMessages(
+  $afterCursor: String
+  $displayLocation: SiteMessagesMessageDisplayLocationChoices
+) {
   siteMessages(
     first: 5
     orderBy: "display_start"

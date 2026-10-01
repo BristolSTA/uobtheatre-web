@@ -29,7 +29,7 @@ import {
   PerformanceByIdDocument,
   type PerformanceByIdQuery,
   type PerformanceByIdQueryVariables
-} from '~~/graphql/codegen/operations';
+} from '~~/graphql/codegen/operations.generated';
 
 definePageMeta({
   middleware: ['authed'],
