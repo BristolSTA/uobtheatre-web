@@ -9727,10 +9727,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql@npm:^16.11.0, graphql@npm:^16.13.2":
+"graphql@npm:^16.11.0":
   version: 16.14.0
   resolution: "graphql@npm:16.14.0"
   checksum: 10c0/baaa368fcfeb7bf2cdf94b9f31bf916e97eaa9e7e82148a7046f31cbd49b760b38190f22393b024cbdd9ca0f4f46287515de0136b6a0cc164074b36ad7b50618
+  languageName: node
+  linkType: hard
+
+"graphql@npm:^17.0.2":
+  version: 17.0.2
+  resolution: "graphql@npm:17.0.2"
+  checksum: 10c0/766546216b891439ed09fd8584963df2013e26f2f79f096036eaaa2788c38964e049c8a142d68e3afdabdd8bbe70042639e83f0f4b82edbc7c6850421f072bb6
   languageName: node
   linkType: hard
 
@@ -13860,7 +13867,7 @@ __metadata:
     eslint-plugin-cypress: "npm:^7.0.2"
     eslint-plugin-unused-imports: "npm:^4.4.1"
     eslint-plugin-vue: "npm:^10.11.1"
-    graphql: "npm:^16.13.2"
+    graphql: "npm:^17.0.2"
     graphql-tag: "npm:^2.12.7"
     humanize-duration: "npm:^3.35.0"
     js-cookie: "npm:^3.0.5"
