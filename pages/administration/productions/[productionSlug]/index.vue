@@ -376,7 +376,7 @@ export default defineNuxtComponent({
             mutation: SetProductionStatusDocument,
             variables: {
               id: this.production.id,
-              message: value,
+              ...(value !== true ? { message: value } : {}), // Swal returns True if no input is requested (i.e. for Approve/Reject), otherwise it returns the input value
               status
             }
           },

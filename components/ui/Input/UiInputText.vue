@@ -32,7 +32,7 @@ export default {
   props: {
     modelValue: {
       default: null,
-      type: [String, null]
+      type: [String, Number, null]
     },
     placeholder: {
       default: null,
@@ -86,7 +86,14 @@ export default {
   },
   methods: {
     onInput(event) {
-      this.$emit('update:modelValue', event.target.value);
+      const value =
+        this.type === 'number'
+          ? event.target.value === ''
+            ? null
+            : event.target.valueAsNumber
+          : event.target.value;
+
+      this.$emit('update:modelValue', value);
       if (this.errors) {
         this.errors.clear(this.inputId);
       }
