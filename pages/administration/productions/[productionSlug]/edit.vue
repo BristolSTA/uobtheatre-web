@@ -73,7 +73,7 @@ export default defineNuxtComponent({
           {
             mutation: ProductionMutationDocument,
             variables: {
-              input: this.production
+              input: await this.$refs.editor.getInputData()
             }
           },
           'production'

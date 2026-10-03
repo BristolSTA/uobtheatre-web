@@ -199,6 +199,7 @@
           View Bookings
         </menu-tile>
         <menu-tile
+          v-if="production.permissions.includes('comp_tickets')"
           class="bg-sta-green hover:bg-sta-green-dark"
           :to="`../bookings/create/${performance.id}`"
           icon="plus-circle"
