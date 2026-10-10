@@ -21,7 +21,6 @@
         <UiInputText
           v-model="booking.accessibilityInfo"
           name="Accessibility Requirements"
-          type="accessibility"
           placeholder="e.g. Wheelchair seat required"
           :errors="errors"
           required
