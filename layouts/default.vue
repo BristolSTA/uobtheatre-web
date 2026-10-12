@@ -39,4 +39,10 @@ function onBoundaryErrorCatch(error: Error) {
 
   silentErrorHandler(error);
 }
+
+useHead({
+  htmlAttrs: {
+    class: 'bg-sta-gray'
+  }
+});
 </script>

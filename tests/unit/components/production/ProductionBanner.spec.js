@@ -48,7 +48,7 @@ describe('ProductionBanner', function () {
 
     // test combination of two venues
     expect(fixTextSpacing(headerContainer.text())).to.contain(
-      'Live at The New VicandThe Newer Vic'
+      'Live at The New Vic and The Newer Vic'
     );
 
     expect(
@@ -196,7 +196,7 @@ describe('ProductionBanner', function () {
 
     // test venue overflow
     expect(fixTextSpacing(headerContainer.text())).to.contain(
-      'Live at The Newer VicandThe New VicandAnson Theatre and others and Online'
+      'Live at The Newer Vic and The New Vic and Anson Theatre and others and Online'
     );
   });
 

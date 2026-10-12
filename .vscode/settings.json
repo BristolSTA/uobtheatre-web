@@ -8,5 +8,8 @@
   "path-intellisense.mappings": {
     "@": "${workspaceRoot}"
   },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
   "eslint.format.enable": true
 }
