@@ -56,7 +56,11 @@
         class="text-center font-semibold w-full text-gray-50 hover:text-gray-200 p-3 cursor-pointer"
         @click="showRelaxedCategoriesDetail = true"
       >
-        <span class="">This is a {{ thisRelaxedName }} Performance</span>
+        <span class=""
+          >This is
+          {{ /^[aeiou]/i.test(thisRelaxedName) ? 'an' : 'a' }}
+          {{ thisRelaxedName }} Performance</span
+        >
         <br />
         <span class="inline-block mr-3">More information</span>
         <font-awesome-icon icon="chevron-right" class="inline-block" />

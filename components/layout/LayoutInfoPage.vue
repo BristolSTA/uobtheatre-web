@@ -6,7 +6,7 @@
 
     <div
       v-if="banner"
-      class="min-h-25vh 2xl:min-h-40vh bg-cover bg-center"
+      class="min-h-[25vh] 2xl:min-h-[40vh] bg-cover bg-center"
       :style="{ 'background-image': banner }"
     />
     <div>

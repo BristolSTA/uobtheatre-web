@@ -6,9 +6,8 @@
 @import '@fortawesome/fontawesome-svg-core/styles.css' layer(base);
 
 @import 'tailwindcss';
+@plugin '@tailwindcss/forms';
 @import '@nuxt/ui';
-
-@config '../../tailwind.config.ts';
 
 @theme static {
   /* Font families */
@@ -18,8 +17,8 @@
   /* Container configuration */
   --container-padding: 1rem;
   --container-padding-sm: 2rem;
-  --container-padding-lg: 4rem;
-  --container-padding-xl: 5rem;
+  --container-padding-lg: rem;
+  --container-padding-xl: 4rem;
 
   /* Custom colors */
 
@@ -91,9 +90,6 @@
 
   --color-sta-gold: #fdae39;
 
-  /* Custom opacity */
-  --opacity-40: 0.4;
-
   /* Custom font sizes */
   --font-size-xxs: 0.5rem;
   --font-size-h1: 2.5rem;
@@ -104,18 +100,6 @@
   --font-size-rlg: 5vw;
   --font-size-rmd: 3vw;
   --font-size-rsm: 2vw;
-
-  /* Custom widths */
-  --width-1-3-screen: 33vw;
-
-  /* Custom min-widths */
-  --min-width-2-3: 66%;
-  --min-width-1-2: 50%;
-  --min-width-1-3: 33%;
-
-  /* Custom min-heights */
-  --min-height-25vh: 25vh;
-  --min-height-40vh: 40vh;
 
   /* Custom drop shadows */
   --drop-shadow-dark: 0 2px 4px rgba(0, 0, 0, 0.35);
@@ -301,6 +285,26 @@
   font-size: var(--font-size-h4);
 }
 
+@utility text-rxl {
+  @apply font-semibold;
+  font-size: var(--font-size-rxl);
+}
+
+@utility text-rlg {
+  @apply font-semibold;
+  font-size: var(--font-size-rlg);
+}
+
+@utility text-rmd {
+  @apply font-semibold;
+  font-size: var(--font-size-rmd);
+}
+
+@utility text-rsm {
+  @apply font-semibold;
+  font-size: var(--font-size-rsm);
+}
+
 @layer base {
   .fade-enter-active,
   .fade-leave-active {
@@ -312,34 +316,19 @@
   }
 }
 
-@utility bg-transflag {
-  background: linear-gradient(
-    #00d2ff 20%,
-    #ffa6b9 0 40%,
-    white 0 60%,
-    #ffa6b9 0 80%,
-    #00d2ff 0
-  );
-}
-
 @utility container {
   align-content: center;
   margin-left: auto;
   margin-right: auto;
   width: 100%;
-  @media (width >= 40rem /* 640px */) {
-    @apply px-[var(--container-padding)];
+  @apply px-(--container-padding);
+  @media (width >= 40rem) {
+    @apply px-(--container-padding-sm);
   }
-  @media (width >= 48rem /* 768px */) {
-    @apply px-[var(--container-padding)];
+  @media (width >= 64rem) {
+    @apply px-(--container-padding-lg);
   }
-  @media (width >= 64rem /* 1024px */) {
-    @apply px-[var(--container-padding-sm)];
-  }
-  @media (width >= 80rem /* 1280px */) {
-    @apply px-[var(--container-padding-lg)];
-  }
-  @media (width >= 96rem /* 1536px */) {
-    @apply px-[var(--container-padding-xl)];
+  @media (width >= 80rem) {
+    @apply px-(--container-padding-xl);
   }
 }

@@ -7,6 +7,9 @@ fragment ProductionsDetailsFragment on ProductionNodeConnection {
       start
       end
       isBookable
+      society {
+        name
+      }
       featuredImage {
         id
         url

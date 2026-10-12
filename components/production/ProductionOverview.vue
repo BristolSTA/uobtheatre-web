@@ -1,8 +1,6 @@
 <template>
-  <div class="flex flex-wrap p-4 lg:flex-nowrap gap-4 justify-evenly">
-    <div
-      class="flex-none order-1 w-full text-center sm:w-auto lg:mb-0 lg:w-auto"
-    >
+  <div class="flex flex-wrap p-2 lg:flex-nowrap gap-4 justify-evenly">
+    <div class="flex-none order-1 text-center lg:mb-0 lg:max-w-1/3">
       <production-poster-image
         ref="poster-image"
         class="inline-block max-h-80"
@@ -11,12 +9,12 @@
       />
     </div>
     <tip-tap-output
-      class="grow order-3 mt-4 lg:order-2 lg:mt-0 break-words min-w-0"
+      class="order-3 mt-4 lg:order-2 lg:mt-0 wrap-break-words"
       :html="production.description"
     />
-    <div class="sm:w-auto lg:order-3 lg:w-1/3 w-full">
+    <div class="lg:order-3 lg:min-w-1/4 lg:max-w-1/4">
       <!-- Side Information Bar -->
-      <div class="flex flex-col order-2 p-5 bg-sta-gray-dark space-y-2">
+      <div class="flex flex-col order-2 p-4 bg-sta-gray-dark space-y-2">
         <h3 class="text-xl font-semibold uppercase">Show Information</h3>
         <p v-if="medium"><strong>Medium:</strong> {{ medium }}</p>
         <p v-if="production.ageRating" ref="age-rating">

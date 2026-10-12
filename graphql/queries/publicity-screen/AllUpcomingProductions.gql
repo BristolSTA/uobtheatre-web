@@ -8,6 +8,9 @@ query allUpcomingProductions($now: DateTime!) {
         start
         end
         isBookable
+        society {
+          name
+        }
         featuredImage {
           id
           url
