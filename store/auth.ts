@@ -70,11 +70,17 @@ const useAuthStore = defineStore('auth', {
      * @param email The user's email
      * @param password The user's password
      * @param remember Whether the user would like to be remembered on this device
+     * @param turnstileToken The Turnstile token for the user
      */
-    async login(email: string, password: string, remember: boolean) {
+    async login(
+      email: string,
+      password: string,
+      remember: boolean,
+      turnstileToken: string
+    ) {
       const loginData = await doMutation(
         useLoginMutationMutation({
-          variables: { email, password }
+          variables: { email, password, turnstileToken }
         }),
         'login'
       );
@@ -240,12 +246,14 @@ const useAuthStore = defineStore('auth', {
      * Request a password reset for an given email address
      *
      * @param email string Email address to request a reset for
+     * @param turnstileToken The Turnstile token for the user
      */
-    async requestPasswordReset(email: string) {
+    async requestPasswordReset(email: string, turnstileToken: string) {
       // Send the mutation to request the reset
       const { mutate } = useRequestPasswordResetMutationMutation({
         variables: {
-          email
+          email,
+          turnstileToken
         }
       });
 
@@ -388,12 +396,14 @@ const useAuthStore = defineStore('auth', {
      * Resends the account verification email for an account
      *
      * @param email The user's email address
+     * @param turnstileToken The Turnstile token for the user
      */
-    async resendVerificationEmail(email: string) {
+    async resendVerificationEmail(email: string, turnstileToken: string) {
       await doMutation(
         useResendActivationMutationMutation({
           variables: {
-            email
+            email,
+            turnstileToken
           }
         }),
         'resendActivationEmail'

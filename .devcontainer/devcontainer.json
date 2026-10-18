@@ -13,9 +13,10 @@
         "christian-kohler.path-intellisense",
         "esbenp.prettier-vscode",
         "apollographql.vscode-apollo",
-        "gruntfuggly.todo-tree",
         "Vue.volar",
-        "vitest.explorer"
+        "vitest.explorer",
+        "Nuxtr.nuxtr-vscode",
+        "alimozdemir.vscode-nuxt-dx-tools"
       ]
     }
   },

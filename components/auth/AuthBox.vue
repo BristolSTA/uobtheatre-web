@@ -81,9 +81,14 @@
         />
         <span class="text-white text-xs font-semibold">Remember me?</span>
       </label>
+      <NuxtTurnstile
+        v-model="turnstileToken"
+        size="flexible"
+        class="text-center"
+      />
       <button
         class="btn btn-orange btn-outline mt-2 w-full text-center text-xl font-semibold"
-        :disabled="!email || !password"
+        :disabled="!email || !password || !turnstileToken"
         type="submit"
         data-test="login-button"
       >
@@ -291,9 +296,14 @@ async function attemptLogin() {
   loading.value = true;
   loginErrors.value = undefined;
 
-  if (!email.value || !password.value) return;
+  if (!email.value || !password.value || !turnstileToken.value) return;
   try {
-    await authStore.login(email.value, password.value, rememberMe.value);
+    await authStore.login(
+      email.value,
+      password.value,
+      rememberMe.value,
+      turnstileToken.value
+    );
 
     // Redirect to intended destination if they were intercepted by middleware
     if (route.query.redirect && !Array.isArray(route.query.redirect)) {
@@ -427,10 +437,10 @@ async function resendVerificationEmail() {
   loading.value = true;
   loginErrors.value = undefined;
 
-  if (!email.value) return;
+  if (!email.value || !turnstileToken.value) return;
 
   try {
-    await authStore.resendVerificationEmail(email.value);
+    await authStore.resendVerificationEmail(email.value, turnstileToken.value);
     successToast.fire({
       title: 'Verfication email sent!'
     });

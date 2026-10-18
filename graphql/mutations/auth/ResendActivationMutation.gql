@@ -1,5 +1,5 @@
-mutation resendActivationMutation($email: String!) {
-  resendActivationEmail(email: $email) {
+mutation resendActivationMutation($email: String!, $turnstileToken: String!) {
+  resendActivationEmail(email: $email, turnstileToken: $turnstileToken) {
     success
     errors {
       ... on NonFieldError {

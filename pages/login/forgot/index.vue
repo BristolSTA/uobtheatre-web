@@ -11,6 +11,11 @@
       <div class="p-6 text-white">
         <h1 class="text-h3">Forgot your password?</h1>
         <form class="flex flex-col space-y-2" @submit.prevent="requestReset">
+          <NuxtTurnstile
+            v-model="turnstileToken"
+            size="flexible"
+            class="text-center"
+          />
           <UiInputText
             v-model="email"
             name="Email"
@@ -46,6 +51,8 @@ useHead({
 
 // Define state
 const email = ref<string | null>(null);
+const turnstileToken = ref<string | undefined>(undefined);
+
 const loading = ref(false);
 const errors = ref<Errors | undefined>(undefined);
 
@@ -53,9 +60,9 @@ const authStore = useAuthStore();
 
 async function requestReset() {
   loading.value = true;
-  if (!email.value) return;
+  if (!email.value || !turnstileToken.value) return;
   try {
-    await authStore.requestPasswordReset(email.value);
+    await authStore.requestPasswordReset(email.value, turnstileToken.value);
     swal.fire({
       icon: 'info',
       title: 'Check your email',
