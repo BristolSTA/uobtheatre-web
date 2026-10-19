@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/browser';
+import * as Sentry from '@sentry/nuxt';
 import axios from 'axios';
 
 export const errorHandler = (e) => {

@@ -18,6 +18,13 @@ export default defineNuxtConfig({
     emitRouteChunkError: 'automatic'
   },
 
+  // Set headers required for browser profiling
+  routeRules: {
+    '/**': {
+      headers: { 'Document-Policy': 'js-profiling' }
+    }
+  },
+
   // Define aliases
   alias: {
     '#testSupport': './tests/unit/support',
@@ -30,7 +37,8 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxt/ui',
     '@nuxt/scripts',
-    '@nuxtjs/turnstile'
+    '@nuxtjs/turnstile',
+    '@sentry/nuxt/module'
   ],
 
   // Define the runtime config

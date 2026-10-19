@@ -27,9 +27,6 @@ export default () => ({
     },
     googleAnalytics: {
       id: process.env.GA_ID
-    },
-    sentry: {
-      dsn: process.env.SENTRY_DSN
     }
   }
 });
