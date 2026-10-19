@@ -74,7 +74,7 @@
             If you have any questions about the content or adaptations of this
             specific performance, please contact
             <a :href="`mailto:${production.contactEmail}`" class="underline">
-              {{ production.contactEmail }} </a
+              <SensitiveText>{{ production.contactEmail }}</SensitiveText> </a
             >.
           </p>
           <p v-else class="mb-2">
@@ -84,7 +84,7 @@
             you have any questions about the content of this production, please
             contact
             <a :href="`mailto:${production.contactEmail}`" class="underline">
-              {{ production.contactEmail }} </a
+              <SensitiveText>{{ production.contactEmail }}</SensitiveText> </a
             >.
           </p>
           <button

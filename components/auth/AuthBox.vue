@@ -240,8 +240,6 @@
 </template>
 
 <script setup lang="ts">
-import trim from 'lodash/trim';
-
 import LoadingIcon from '../ui/UiLoadingIcon.vue';
 import ClickableLink from '@/components/ui/ClickableLink.vue';
 
@@ -417,13 +415,6 @@ async function attemptSignup() {
   } finally {
     loading.value = false;
   }
-}
-
-function guessNameParts() {
-  if (!signUpDetails.fullName) return;
-  const components = trim(signUpDetails.fullName).split(' ');
-  signUpDetails.firstName = components.shift();
-  signUpDetails.lastName = components.join(' ');
 }
 
 async function resendVerificationEmail() {

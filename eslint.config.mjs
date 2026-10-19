@@ -1,50 +1,47 @@
 import unusedImports from 'eslint-plugin-unused-imports';
 import eslintConfigPrettier from 'eslint-config-prettier';
-import parser from 'vue-eslint-parser';
-import pluginVue from 'eslint-plugin-vue';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import js from '@eslint/js';
-import { FlatCompat } from '@eslint/eslintrc';
+import pluginCypress from 'eslint-plugin-cypress';
+import withNuxt from './.nuxt/eslint.config.mjs';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all
-});
+import noUnmaskedSensitiveText from './eslint/rules/no-unmasked-sensitive-text.mjs';
 
-export default [
+export default withNuxt([
+  // @nuxt/eslint lays out base rules, but we want to add a few more and override some of them. This is the recommended way to do that.
   {
-    ignores: [
-      './graphql/codegen/*',
-      './coverage/*',
-      './tests/unit/test.spec.example.js'
-    ]
+    plugins: {
+      unusedImports: unusedImports,
+      local: {
+        rules: {
+          'no-unmasked-sensitive-text': noUnmaskedSensitiveText
+        }
+      }
+    },
+    rules: {
+      'local/no-unmasked-sensitive-text': 'error'
+    },
+    files: ['**/*.ts', '**/*.js', '**/*.vue']
   },
-  ...pluginVue.configs['flat/recommended'],
   {
+    name: 'cypress',
+    plugins: {
+      cypress: pluginCypress
+    },
+    files: ['tests/e2e/**/*.js'],
+    extends: [pluginCypress.configs.recommended],
+    rules: {
+      'cypress/no-unnecessary-waiting': 'off'
+    }
+  },
+  eslintConfigPrettier
+])
+  .overrideRules({
+    'vue/multi-word-component-names': 0
+  })
+  .override('nuxt/import/rules', {
     plugins: {
       'unused-imports': unusedImports
     },
-
-    languageOptions: {
-      parser: parser,
-      ecmaVersion: 'latest',
-      sourceType: 'module',
-
-      parserOptions: {
-        parser: '@typescript-eslint/parser'
-      }
-    },
-
     rules: {
-      'unused-imports/no-unused-imports': 'error',
-      'vue/multi-word-component-names': 0
-    },
-
-    files: ['**/*.ts', '**/*.js', '**/*.vue']
-  },
-  eslintConfigPrettier
-];
+      'unused-imports/no-unused-imports': 'error'
+    }
+  });

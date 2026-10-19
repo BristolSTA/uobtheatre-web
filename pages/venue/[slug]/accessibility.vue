@@ -31,7 +31,9 @@
                 <td
                   class="align-top text-sta-orange hover:text-sta-orange-dark break-all"
                 >
-                  <a :href="`mailto:${venue.email}`">{{ venue.email }}</a>
+                  <a :href="`mailto:${venue.email}`">
+                    <SensitiveText>{{ venue.email }}</SensitiveText>
+                  </a>
                 </td>
               </tr>
               <tr v-if="venue.address.what3words">

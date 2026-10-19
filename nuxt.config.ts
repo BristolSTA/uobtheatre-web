@@ -13,6 +13,7 @@ const cssFiles = [
 if (process.env.MODE !== 'test') cssFiles.push('@/assets/css/main.css');
 
 export default defineNuxtConfig({
+  devtools: { enabled: true },
   // Enable experimental features
   experimental: {
     emitRouteChunkError: 'automatic'
@@ -38,7 +39,8 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxt/scripts',
     '@nuxtjs/turnstile',
-    '@sentry/nuxt/module'
+    '@sentry/nuxt/module',
+    '@nuxt/eslint'
   ],
 
   // Define the runtime config
