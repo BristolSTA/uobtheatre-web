@@ -24,7 +24,10 @@
           class="text-center"
         >
           <table-row-item>
-            {{ assignedUser.user.firstName }} {{ assignedUser.user.lastName }}
+            <SensitiveText
+              >{{ assignedUser.user.firstName }}
+              {{ assignedUser.user.lastName }}</SensitiveText
+            >
             <br />
             <div id="removeUser">
               <UiStaButton

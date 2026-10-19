@@ -11,7 +11,10 @@
       <table>
         <table-row v-for="(row, index) in adminInfo" :key="index">
           <table-head-item>{{ row[0] }}</table-head-item>
-          <table-row-item>{{ row[1] }}</table-row-item>
+          <table-row-item>
+            <SensitiveText v-if="row[2]">{{ row[1] }}</SensitiveText>
+            <template v-else>{{ row[1] }}</template>
+          </table-row-item>
         </table-row>
       </table>
     </UiCard>
@@ -44,11 +47,13 @@
           <UiTablesTableRowItem>{{
             ticket.checkedIn ? 'Yes' : 'No'
           }}</UiTablesTableRowItem>
-          <UiTablesTableRowItem v-if="anyTicketsChecked">{{
-            ticket.checkedIn
-              ? `${ticket.checkedInBy.firstName} ${ticket.checkedInBy.lastName}`
-              : 'N/A'
-          }}</UiTablesTableRowItem>
+          <UiTablesTableRowItem v-if="anyTicketsChecked">
+            <SensitiveText v-if="ticket.checkedIn">
+              {{ ticket.checkedInBy.firstName }}
+              {{ ticket.checkedInBy.lastName }}
+            </SensitiveText>
+            <template v-else>N/A</template>
+          </UiTablesTableRowItem>
           <UiTablesTableRowItem v-if="anyTicketsChecked">{{
             ticket.checkedIn ? ticket.checkedInAt.toHTTP() : 'N/A'
           }}</UiTablesTableRowItem>
@@ -151,11 +156,13 @@ export default defineNuxtComponent({
         ],
         [
           'Created By',
-          `${this.rawBooking.creator.firstName} ${this.rawBooking.creator.lastName} (Email: ${this.rawBooking.creator.email})`
+          `${this.rawBooking.creator.firstName} ${this.rawBooking.creator.lastName} (Email: ${this.rawBooking.creator.email})`,
+          true
         ],
         [
           'Owned By',
-          `${this.rawBooking.user.firstName} ${this.rawBooking.user.lastName} (Email: ${this.rawBooking.user.email})`
+          `${this.rawBooking.user.firstName} ${this.rawBooking.user.lastName} (Email: ${this.rawBooking.user.email})`,
+          true
         ],
         ['Admin Discount', this.rawBooking.adminDiscountPercentage * 100 + '%']
       ];

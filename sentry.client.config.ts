@@ -8,7 +8,15 @@ Sentry.init({
     Sentry.replayIntegration({
       maskAllText: false,
       blockAllMedia: false,
-      mask: ['input[type="password"], input[type="email"]']
+      mask: [
+        'input[type="password"]',
+        'input[type="email"]',
+        'input[autocomplete="name"]',
+        'input[autocomplete="given-name"]',
+        'input[autocomplete="family-name"]',
+        '.sentry-mask',
+        '[data-sentry-mask]'
+      ]
     }),
     Sentry.browserTracingIntegration(),
     Sentry.browserProfilingIntegration()

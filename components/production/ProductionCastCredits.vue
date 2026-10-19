@@ -17,7 +17,9 @@
           </div>
           <div class="grow text-center">
             <p>
-              <strong>{{ member.name }}</strong>
+              <strong
+                ><SensitiveText>{{ member.name }}</SensitiveText></strong
+              >
             </p>
             <p>{{ member.role }}</p>
           </div>
@@ -36,7 +38,7 @@
           :name="group[0].role"
         >
           <p v-for="(member, gIndex) in group" :key="gIndex">
-            {{ member.name }}
+            <SensitiveText>{{ member.name }}</SensitiveText>
           </p>
         </role-group>
       </div>
@@ -50,7 +52,7 @@
           :name="group[0].role.department.description"
         >
           <p v-for="(member, gIndex) in group" :key="gIndex">
-            {{ member.name }}
+            <SensitiveText>{{ member.name }}</SensitiveText>
           </p>
         </role-group>
       </div>

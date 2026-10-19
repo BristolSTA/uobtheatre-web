@@ -8,9 +8,8 @@
         emotions for some of our audience members. If you have any questions
         about the content of this production or the information below, please
         contact
-        <a :href="`mailto:${contactEmail}`" class="underline">{{
-          contactEmail
-        }}</a
+        <a :href="`mailto:${contactEmail}`" class="underline">
+          <SensitiveText>{{ contactEmail }}</SensitiveText> </a
         >.
       </p>
       <ul class="gap-y-2 flex flex-col">

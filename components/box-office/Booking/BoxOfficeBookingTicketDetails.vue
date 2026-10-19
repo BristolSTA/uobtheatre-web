@@ -5,7 +5,10 @@
         <p class="text-lg">
           <strong>{{ item.title }}</strong>
         </p>
-        <p>{{ item.text }}</p>
+        <p>
+          <SensitiveText v-if="item.sensitive">{{ item.text }}</SensitiveText>
+          <template v-else>{{ item.text }}</template>
+        </p>
       </div>
       <p><strong>ID:</strong> {{ ticket.id }}</p>
     </div>
@@ -64,29 +67,36 @@ const checkedIn = computed(
   () => !!props.ticket.checkedInAt && !!props.ticket.checkedInBy
 );
 
-const items = computed<{ title: string; text: string }[]>(() => {
-  const items = [
-    { title: 'Seat Group', text: props.ticket.seatGroup.name },
-    { title: 'Type', text: 'General Admission' }
-  ];
+const items = computed<{ title: string; text: string; sensitive?: boolean }[]>(
+  () => {
+    const items: {
+      title: string;
+      text: string;
+      sensitive?: boolean;
+    }[] = [
+      { title: 'Seat Group', text: props.ticket.seatGroup.name },
+      { title: 'Type', text: 'General Admission' }
+    ];
 
-  if (checkedIn.value) {
-    const timeAgo = humanizeDuration(
-      now.value.toMillis() -
-        DateTime.fromISO(props.ticket.checkedInAt as string).toMillis(),
-      {
-        largest: 1,
-        round: true
-      }
-    );
+    if (checkedIn.value) {
+      const timeAgo = humanizeDuration(
+        now.value.toMillis() -
+          DateTime.fromISO(props.ticket.checkedInAt as string).toMillis(),
+        {
+          largest: 1,
+          round: true
+        }
+      );
 
-    items.push({
-      title: 'Last Check In',
-      text: `${timeAgo} ago by ${props.ticket.checkedInBy!.firstName} ${
-        props.ticket!.checkedInBy!.lastName
-      }`
-    });
+      items.push({
+        title: 'Last Check In',
+        sensitive: true,
+        text: `${timeAgo} ago by ${props.ticket.checkedInBy!.firstName} ${
+          props.ticket!.checkedInBy!.lastName
+        }`
+      });
+    }
+    return items;
   }
-  return items;
-});
+);
 </script>

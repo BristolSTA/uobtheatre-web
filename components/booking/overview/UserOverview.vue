@@ -5,11 +5,13 @@
       Your Details
     </template>
     <template #subtitle>
-      {{ authStore.user?.firstName }}
-      {{ authStore.user?.lastName }}
+      <SensitiveText
+        >{{ authStore.user?.firstName
+        }}{{ authStore.user?.lastName }}</SensitiveText
+      >
     </template>
     <div>
-      {{ authStore.user?.email }}
+      <SensitiveText>{{ authStore.user?.email }}</SensitiveText>
     </div>
   </UiCard>
 </template>

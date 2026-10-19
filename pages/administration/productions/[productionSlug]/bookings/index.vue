@@ -68,11 +68,16 @@
           @click="useRouter().push(`bookings/${booking.reference}`)"
         >
           <table-row-item>
-            {{ booking.user.firstName }}
-            {{ booking.user.lastName }}
+            <SensitiveText>
+              {{ booking.user.firstName }}
+              {{ booking.user.lastName }}
+            </SensitiveText>
             <p v-if="booking.creator.id !== booking.user.id" class="text-xs">
-              Created by {{ booking.creator.firstName }}
-              {{ booking.creator.lastName }}
+              Created by
+              <SensitiveText>
+                {{ booking.creator.firstName }}
+                {{ booking.creator.lastName }}
+              </SensitiveText>
             </p>
           </table-row-item>
           <table-row-item>{{ booking.reference }}</table-row-item>

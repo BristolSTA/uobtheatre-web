@@ -36,7 +36,9 @@
       Booking Ref: <span class="font-mono">{{ reference }}</span>
     </p>
     <div v-if="fullName" class="flex justify-between w-full">
-      <p>Booked By: {{ fullName }}</p>
+      <p>
+        Booked By: <SensitiveText>{{ fullName }}</SensitiveText>
+      </p>
     </div>
     <p class="text-right text-gray-400 font-mono text-sm italic">
       {{ ticket.id }}

@@ -69,7 +69,7 @@
         </NuxtLink>
         <dropdown-nav-item v-if="authStore.user" ref="userDropdownComponent">
           <span class="capitalize pr-1">
-            Hi, {{ authStore.user.firstName }}
+            Hi, <SensitiveText>{{ authStore.user.firstName }}</SensitiveText>
           </span>
           <span role="img">👋</span>
           <template #content>
@@ -142,6 +142,7 @@
 </template>
 
 <script setup>
+import SensitiveText from '../ui/SensitiveText.vue';
 import DropdownItem from './DropdownItem.vue';
 import DropdownNavItem from './DropdownNavItem.vue';
 import ClickableLink from '@/components/ui/ClickableLink.vue';

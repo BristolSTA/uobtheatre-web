@@ -22,7 +22,7 @@
               </th>
               <td class="pb-2">
                 <p v-if="!editing" class="capitalize">
-                  {{ user.firstName }}
+                  <SensitiveText>{{ user.firstName }}</SensitiveText>
                 </p>
                 <text-input
                   v-else
@@ -39,7 +39,7 @@
               <th class="pb-2 pr-6 text-sta-orange">Last Name</th>
               <td class="pb-2">
                 <p v-if="!editing" class="capitalize">
-                  {{ user.lastName }}
+                  <SensitiveText>{{ user.lastName }}</SensitiveText>
                 </p>
                 <text-input
                   v-else
@@ -56,7 +56,7 @@
               <th class="pb-2 pr-6 text-sta-orange">Email</th>
               <td class="pb-2">
                 <p v-if="!editing" class="break-all">
-                  {{ user.email }}
+                  <SensitiveText>{{ user.email }}</SensitiveText>
                 </p>
                 <button
                   v-else
