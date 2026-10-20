@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import SensitiveText from '@/components/ui/SensitiveText.vue';
 
 describe('SensitiveText', () => {

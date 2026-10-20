@@ -1,15 +1,19 @@
 import unusedImports from 'eslint-plugin-unused-imports';
-import eslintConfigPrettier from 'eslint-config-prettier';
 import pluginCypress from 'eslint-plugin-cypress';
+import vitest from '@vitest/eslint-plugin';
 import withNuxt from './.nuxt/eslint.config.mjs';
 
 import noUnmaskedSensitiveText from './eslint/rules/no-unmasked-sensitive-text.mjs';
 
 export default withNuxt([
+  {
+    name: 'local global ignores',
+    ignores: ['./tests/unit/test.spec.example.js']
+  },
   // @nuxt/eslint lays out base rules, but we want to add a few more and override some of them. This is the recommended way to do that.
   {
+    name: 'local',
     plugins: {
-      unusedImports: unusedImports,
       local: {
         rules: {
           'no-unmasked-sensitive-text': noUnmaskedSensitiveText
@@ -18,21 +22,28 @@ export default withNuxt([
     },
     rules: {
       'local/no-unmasked-sensitive-text': 'error'
-    },
-    files: ['**/*.ts', '**/*.js', '**/*.vue']
+    }
   },
   {
     name: 'cypress',
+    files: ['tests/e2e/**/*.js'],
     plugins: {
       cypress: pluginCypress
     },
-    files: ['tests/e2e/**/*.js'],
-    extends: [pluginCypress.configs.recommended],
     rules: {
-      'cypress/no-unnecessary-waiting': 'off'
+      ...pluginCypress.configs.recommended.rules
     }
   },
-  eslintConfigPrettier
+  {
+    name: 'vitest',
+    files: ['tests/unit/**/*.js'],
+    plugins: {
+      vitest
+    },
+    rules: {
+      ...vitest.configs.recommended.rules
+    }
+  }
 ])
   .overrideRules({
     'vue/multi-word-component-names': 0
