@@ -1,4 +1,4 @@
-import { expect } from 'vitest';
+import { expect, describe, it, beforeAll } from 'vitest';
 import { mount } from '#testSupport/helpers';
 
 import PerformanceOverview from '@/components/performance/PerformanceTile.vue';

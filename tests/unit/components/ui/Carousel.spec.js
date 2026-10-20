@@ -1,4 +1,4 @@
-import { expect, vi } from 'vitest';
+import { expect, vi, describe, it, beforeEach } from 'vitest';
 
 import Carousel from '~~/components/ui/UiCarousel.vue';
 import { mount } from '@vue/test-utils';

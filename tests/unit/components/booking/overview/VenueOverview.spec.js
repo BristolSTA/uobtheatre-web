@@ -1,6 +1,6 @@
 import { mount, fixTextSpacing } from '#testSupport/helpers';
 import { NuxtLinkStub } from '#testSupport/stubs';
-import { expect } from 'vitest';
+import { expect, describe, it, beforeEach } from 'vitest';
 
 import OverviewBox from '~~/components/ui/UiCard.vue';
 import VenueOverview from '@/components/booking/overview/VenueOverview.vue';

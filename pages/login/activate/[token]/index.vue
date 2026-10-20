@@ -22,7 +22,7 @@ import { getValidationErrors } from '~/utils/api';
 import { swalToast } from '~/utils/alerts';
 
 import useAuthStore from '~~/store/auth';
-import Errors from '~~/classes/Errors';
+import type Errors from '~~/classes/Errors';
 
 definePageMeta({
   middleware: 'not-authed'

@@ -178,7 +178,7 @@ export default {
 
         if (this.booking.id) {
           // We have a booking, lets update it
-          const data = await performMutation(
+          await performMutation(
             this.$apollo,
             {
               mutation: UpdateBookingAccessibilityInfo,

@@ -1,4 +1,4 @@
-import { expect, vi } from 'vitest';
+import { expect, vi, describe, beforeEach, afterEach, it } from 'vitest';
 import { h } from 'vue';
 
 import Venue from '#testSupport/fixtures/Venue';

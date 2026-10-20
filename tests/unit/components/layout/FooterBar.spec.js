@@ -1,6 +1,6 @@
 import { mount, fixTextSpacing } from '#testSupport/helpers';
 import { NuxtLinkStub } from '#testSupport/stubs';
-import { expect } from 'vitest';
+import { expect, describe, it, beforeEach } from 'vitest';
 import FooterBar from '@/components/layout/LayoutFooterBar.vue';
 
 describe('FooterBar', function () {

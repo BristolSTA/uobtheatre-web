@@ -1,6 +1,6 @@
 import { flushPromises } from '@vue/test-utils';
 import { mount } from '#testSupport/helpers';
-import { expect, vi } from 'vitest';
+import { expect, vi, describe, it, beforeEach } from 'vitest';
 
 import InfiniteScroll from '@/components/ui/InfiniteScroll.vue';
 

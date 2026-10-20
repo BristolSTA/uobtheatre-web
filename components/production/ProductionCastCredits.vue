@@ -13,7 +13,7 @@
               class="rounded-full"
               :src="member.profilePicture.url"
               alt="profile image"
-            />
+            >
           </div>
           <div class="grow text-center">
             <p>

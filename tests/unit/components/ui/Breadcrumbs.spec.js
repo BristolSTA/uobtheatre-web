@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { expect, vi } from 'vitest';
+import { expect, vi, describe, it, beforeEach } from 'vitest';
 
 import Breadcrumbs from '@/components/ui/UiBreadcrumbs.vue';
 import { NuxtLinkStub } from '#testSupport/stubs';

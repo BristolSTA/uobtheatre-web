@@ -89,7 +89,7 @@
                     (100 * performance.ticketsBreakdown.totalTicketsSold) /
                     performance.ticketsBreakdown.totalCapacity
                   ).toFixed(0)
-                }}%<br />
+                }}%<br >
                 <small
                   >(of
                   {{ performance.ticketsBreakdown.totalCapacity }} performance

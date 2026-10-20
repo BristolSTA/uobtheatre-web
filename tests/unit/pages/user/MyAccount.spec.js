@@ -1,4 +1,4 @@
-import { expect } from 'vitest';
+import { expect, describe, it, beforeEach } from 'vitest';
 import { mount } from '#testSupport/helpers';
 import { NuxtLinkStub } from '#testSupport/stubs';
 

@@ -26,7 +26,7 @@
               class="mx-auto max-h-full"
               style="max-height: 100px"
               alt="Stage Technicians' Association Logo"
-            />
+            >
           </a>
         </div>
         <div class="w-48">
@@ -36,7 +36,7 @@
               class="mx-auto max-h-full"
               style="max-height: 100px"
               alt="Bristol SU Balloon Logo"
-            />
+            >
           </a>
         </div>
 

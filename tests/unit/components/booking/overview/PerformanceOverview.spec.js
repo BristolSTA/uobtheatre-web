@@ -1,5 +1,5 @@
 import { mount, fixTextSpacing } from '#testSupport/helpers';
-import { expect } from 'vitest';
+import { expect, describe, it, beforeAll } from 'vitest';
 
 import OverviewBox from '~~/components/ui/UiCard.vue';
 import PerformanceOverview from '@/components/booking/overview/PerformanceOverview.vue';

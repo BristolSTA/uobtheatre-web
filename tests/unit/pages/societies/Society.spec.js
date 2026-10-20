@@ -1,4 +1,4 @@
-import { expect } from 'vitest';
+import { expect, describe, it, beforeEach } from 'vitest';
 import { mount } from '#testSupport/helpers';
 import { NuxtLinkStub } from '#testSupport/stubs';
 import {
@@ -150,8 +150,8 @@ describe('Society page', function () {
   });
 
   it('handles invalid society', async () => {
-    await expect(async () => {
-      await mount(Society, {
+    await expect(
+      mount(Society, {
         apollo: {
           queryResponses: [GenericApolloResponse('society')]
         },
@@ -160,8 +160,8 @@ describe('Society page', function () {
             slug: 'not-drama-soc'
           }
         }
-      });
-    }).rejects.toThrowError();
+      })
+    ).rejects.toThrowError();
 
     expect(createError).toHaveBeenCalledOnce();
   });

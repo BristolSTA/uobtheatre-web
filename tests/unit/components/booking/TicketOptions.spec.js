@@ -1,5 +1,5 @@
 import { mount } from '#testSupport/helpers';
-import { expect, vi } from 'vitest';
+import { expect, vi, describe, it, beforeEach } from 'vitest';
 import lo from 'lodash';
 import FullBooking from '#testSupport/fixtures/instances/FullBooking';
 import TicketOptions from '@/components/booking/TicketOptions.vue';

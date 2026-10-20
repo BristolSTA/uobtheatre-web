@@ -1,4 +1,4 @@
-import { expect } from 'vitest';
+import { expect, describe, it, beforeEach } from 'vitest';
 import { mount } from '#testSupport/helpers';
 
 import AuthBox from '@/components/auth/AuthBox.vue';

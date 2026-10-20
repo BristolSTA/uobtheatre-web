@@ -56,7 +56,7 @@ export default defineComponent({
     watch(date, (newDate) => {
       try {
         emit('update:modelValue', newDate);
-      } catch (error) {
+      } catch {
         console.error('Invalid date format:', newDate);
       }
     });

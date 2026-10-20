@@ -10,7 +10,7 @@
             ref="society-logo"
             :src="society.logo.url"
             :alt="`${society.name} logo`"
-          />
+          >
         </div>
       </div>
       <div

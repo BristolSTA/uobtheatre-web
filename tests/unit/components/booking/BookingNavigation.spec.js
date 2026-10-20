@@ -1,5 +1,13 @@
 import { mount } from '#testSupport/helpers';
-import { expect, vi } from 'vitest';
+import {
+  expect,
+  vi,
+  describe,
+  expect,
+  it,
+  beforeEach,
+  beforeAll
+} from 'vitest';
 import Booking from '~~/classes/Booking';
 import BookingNavgiation from '@/components/booking/BookingNavigation.vue';
 import Stages from '@/pages/production/[slug]/book/-bookingStages';

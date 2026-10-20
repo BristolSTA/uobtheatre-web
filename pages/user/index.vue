@@ -5,7 +5,7 @@
       <user-details v-if="user" class="pb-4" :user="user" />
     </div>
 
-    <hr class="border-t-2 border-sta-gray-dark" />
+    <hr class="border-t-2 border-sta-gray-dark" >
     <div class="container">
       <h2 id="myBookings" class="px-4 py-2 text-h2">My Bookings</h2>
       <div v-if="!activeBookings.edges.length" class="p-6 text-center">

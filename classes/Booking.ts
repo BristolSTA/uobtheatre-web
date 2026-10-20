@@ -10,7 +10,7 @@ import type {
   ConcessionTypeNode
 } from '~~/graphql/codegen/base-types.generated';
 import type { IdInput } from '~~/types/generic';
-import TicketsMatrix from './TicketsMatrix';
+import type TicketsMatrix from './TicketsMatrix';
 import type { DateTime } from 'luxon';
 
 export default class Booking {

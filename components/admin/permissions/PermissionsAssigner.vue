@@ -28,7 +28,7 @@
               >{{ assignedUser.user.firstName }}
               {{ assignedUser.user.lastName }}</SensitiveText
             >
-            <br />
+            <br >
             <div id="removeUser">
               <UiStaButton
                 :small="true"
@@ -65,7 +65,7 @@
             v-model="newUser.email"
             type="email"
             class="text-black"
-          />
+          >
         </template>
         <template #helper>
           This user must have an account on this site
@@ -98,7 +98,7 @@
                 v-model="newUser.permissions"
                 type="checkbox"
                 :value="assignablePermission.name"
-              />
+              >
             </table-row-item>
           </table-row>
         </tbody>

@@ -1,5 +1,5 @@
 import { NuxtLinkStub } from '#testSupport/stubs';
-import { expect, vi } from 'vitest';
+import { expect, vi, describe, it, beforeEach, afterEach } from 'vitest';
 
 import { fixTextSpacing, mount } from '#testSupport/helpers';
 import {

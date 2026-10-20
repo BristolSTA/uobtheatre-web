@@ -51,7 +51,7 @@
               </UiStaButton>
             </div>
           </template>
-          <br />
+          <br >
           <error-helper :errors="errors" field-name="slug" />
         </p>
         <form-label :errors="errors" name="subtitle">
@@ -193,7 +193,7 @@
         v-if="localProduction.society"
         class="flex items-center justify-center p-4 bg-sta-gray-dark rounded-lg space-x-8"
       >
-        <img :src="localProduction.society.logo.url" style="max-width: 100px" />
+        <img :src="localProduction.society.logo.url" style="max-width: 100px" >
         <span class="text-xl font-semibold">{{
           localProduction.society.name
         }}</span>

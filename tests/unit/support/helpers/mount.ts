@@ -186,7 +186,7 @@ function registerNuxtComposableStubs() {
     navigateTo: vi.fn(() => {})
   };
 
-  for (let [key, stub] of Object.entries(stubs)) {
+  for (const [key, stub] of Object.entries(stubs)) {
     vi.stubGlobal(key, stub);
   }
 }
@@ -207,7 +207,7 @@ export default async function (
     ...vtuMountOptions
   } = options ?? {};
 
-  let stubMountOptions = {
+  const stubMountOptions = {
     global: {
       plugins: [createTestingPinia(pinia)] // Install Pinia mock
     }
@@ -230,7 +230,7 @@ export default async function (
 
   if (preMount) preMount();
 
-  let dataOpt = vtuMountOptions.data ? vtuMountOptions.data() : {};
+  const dataOpt = vtuMountOptions.data ? vtuMountOptions.data() : {};
   // @ts-ignore
   if (component.asyncData) {
     // @ts-ignore

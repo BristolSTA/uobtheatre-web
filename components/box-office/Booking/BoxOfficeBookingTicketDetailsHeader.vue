@@ -4,9 +4,8 @@
       <font-awesome-icon
         icon="fa-ticket"
         class="-rotate-45 mr-2"
-      ></font-awesome-icon
-      >Ticket Details
+      />Ticket Details
     </h2>
-    <hr class="border-dashed border-sta-gray-light border my-2" />
+    <hr class="border-dashed border-sta-gray-light border my-2" >
   </div>
 </template>

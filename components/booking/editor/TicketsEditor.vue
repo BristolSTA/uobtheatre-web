@@ -18,10 +18,10 @@
 
 <script lang="ts" setup>
 import TicketOptions from '../TicketOptions.vue';
-import Booking from '~~/classes/Booking';
-import TicketsMatrix from '~~/classes/TicketsMatrix';
+import type Booking from '~~/classes/Booking';
+import type TicketsMatrix from '~~/classes/TicketsMatrix';
 import AllErrorsDisplay from '@/components/ui/AllErrorsDisplay.vue';
-import Errors from '~~/classes/Errors';
+import type Errors from '~~/classes/Errors';
 
 withDefaults(
   defineProps<{

@@ -161,7 +161,7 @@ const userTodaysBookings = computed(() => {
     userBookingsResult.value?.me?.bookings?.edges
       .map((edge) => edge!.node)
       .filter((booking) => {
-        let bookingDate = DateTime.fromISO(booking?.performance.start);
+        const bookingDate = DateTime.fromISO(booking?.performance.start);
         return (
           bookingDate.hasSame(today, 'day') &&
           bookingDate.hasSame(today, 'month') &&

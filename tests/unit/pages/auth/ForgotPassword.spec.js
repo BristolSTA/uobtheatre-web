@@ -1,4 +1,4 @@
-import { expect, vi } from 'vitest';
+import { expect, vi, describe, it, beforeEach, afterEach } from 'vitest';
 import MatchMediaMock from 'vitest-matchmedia-mock';
 
 import { mount } from '#testSupport/helpers';

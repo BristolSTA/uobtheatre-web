@@ -273,7 +273,7 @@
             <p class="font-bold">{{ rc.shortDescription }}</p>
             <p class="text-sm">{{ rc.longDescription }}</p>
             <p v-if="rc.helpText" class="text-sm font-bold text-sta-orange">
-              <font-awesome-icon icon="fa-circle-info"></font-awesome-icon>
+              <font-awesome-icon icon="fa-circle-info"/>
               {{ rc.helpText }}
             </p>
           </table-row-item>
@@ -284,7 +284,7 @@
                 (relaxedCategoriesLocal || []).map((r) => r.id).includes(rc.id)
               "
               @change="relaxedCategorySelectionToggle(rc)"
-            />
+            >
           </table-row-item>
         </table-row>
       </table>

@@ -16,7 +16,7 @@
         <img
           :src="fileDataUrl"
           class="max-h-52 pointer-events-none select-none"
-        />
+        >
         <div class="mt-3 text-center">
           <error-helper v-if="error">
             {{ error }}
@@ -54,7 +54,7 @@
       accept="image/*"
       class="hidden"
       @change="handleFileSelection"
-    />
+    >
   </div>
 </template>
 

@@ -61,7 +61,7 @@
           {{ /^[aeiou]/i.test(thisRelaxedName) ? 'an' : 'a' }}
           {{ thisRelaxedName }} Performance</span
         >
-        <br />
+        <br >
         <span class="inline-block mr-3">More information</span>
         <font-awesome-icon icon="chevron-right" class="inline-block" />
       </button>
@@ -72,7 +72,7 @@
         @close="showRelaxedCategoriesDetail = false"
       />
     </div>
-    <div v-else class="bg-sta-gray mt-3 -mx-3 -mb-3 flex-grow"></div>
+    <div v-else class="bg-sta-gray mt-3 -mx-3 -mb-3 flex-grow"/>
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 import { mount } from '#testSupport/helpers';
-import { expect } from 'vitest';
+import { expect, describe, it, beforeEach } from 'vitest';
 import { fixTextSpacing } from '#testSupport/helpers';
 import Performance from '#testSupport/fixtures/Performance';
 import Ticket from '~~/classes/Ticket';

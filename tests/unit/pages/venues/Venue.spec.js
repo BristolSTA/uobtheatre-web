@@ -1,4 +1,4 @@
-import { expect } from 'vitest';
+import { expect, describe, it, beforeEach } from 'vitest';
 import { fixTextSpacing, mount } from '#testSupport/helpers';
 import { NuxtLinkStub } from '#testSupport/stubs';
 import {
@@ -240,8 +240,8 @@ describe('Venue page', function () {
   });
 
   it('handles invalid venue', async () => {
-    await expect(async () => {
-      await mount(Venue, {
+    await expect(
+      mount(Venue, {
         apollo: {
           queryResponses: [GenericApolloResponse('venue')]
         },
@@ -250,8 +250,8 @@ describe('Venue page', function () {
             slug: 'anson-theatre-allowed'
           }
         }
-      });
-    }).rejects.toThrowError();
+      })
+    ).rejects.toThrowError();
 
     expect(createError).toHaveBeenCalledOnce();
   });

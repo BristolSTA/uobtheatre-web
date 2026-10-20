@@ -59,7 +59,7 @@
               <div class="md:hidden">
                 <hr
                   class="my-4 border-sta-gray border-2 rounded-lg lg:hidden"
-                />
+                >
                 <div
                   class="flex flex-col items-center lg:flex-row lg:gap-6 lg:justify-around"
                 >
@@ -176,7 +176,7 @@ async function handleScannedTicket(eventData: {
   setCheckInState(undefined, 'Loading...');
 
   // Mutate / fetch as required
-  let state = await handleTicketScan(
+  const state = await handleTicketScan(
     autoCheckIn,
     performance.id,
     ticketData.bookingReference,

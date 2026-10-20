@@ -15,7 +15,7 @@
       @focus="$emit('focus', $event)"
       @blur="$emit('blur', $event)"
       @change="$emit('change', $event)"
-    />
+    >
     <error-helper :errors="errors" :field-name="inputId" />
   </div>
 </template>

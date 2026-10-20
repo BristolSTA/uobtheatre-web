@@ -4,8 +4,8 @@
   >
     <div class="flex">
       <div>
-        <img src="@/assets/images/undraw_horror_movie_3988.svg" />
-        <img src="@/assets/images/undraw_refreshing_ncum.svg" />
+        <img src="@/assets/images/undraw_horror_movie_3988.svg" >
+        <img src="@/assets/images/undraw_refreshing_ncum.svg" >
       </div>
       <div class="flex flex-col justify-center gap-5">
         <h1 class="text-rlg font-bold">Fancy a drink or snack?</h1>

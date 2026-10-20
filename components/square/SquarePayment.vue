@@ -180,7 +180,7 @@ export default {
       this.paying = false;
       this.$emit('nonceRecieved', paymentData);
     },
-    async pay(provider, verify = false) {
+    async pay(provider) {
       this.paying = true;
       this.squareErrors = [];
 
@@ -216,7 +216,7 @@ export default {
       }
     },
     payCard() {
-      return this.pay(square.methods.card, true);
+      return this.pay(square.methods.card);
     },
     payGPay() {
       return this.pay(square.methods.gpay);

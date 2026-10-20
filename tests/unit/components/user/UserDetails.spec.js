@@ -1,5 +1,5 @@
 import { mount } from '#testSupport/helpers';
-import { expect } from 'vitest';
+import { expect, describe, vi, it, beforeEach } from 'vitest';
 import MatchMediaMock from 'vitest-matchmedia-mock';
 import { flushPromises } from '@vue/test-utils';
 

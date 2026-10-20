@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { H3Error } from 'h3';
+import type { H3Error } from 'h3';
 defineProps<{
   error: H3Error;
 }>();

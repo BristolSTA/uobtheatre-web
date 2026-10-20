@@ -1,4 +1,14 @@
-import { describe, expect, it, beforeEach } from 'vitest';
+import {
+  describe,
+  expect,
+  it,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  beforeEach,
+  beforeAll
+} from 'vitest';
 import Errors from '~~/classes/Errors';
 
 describe('Errors', () => {

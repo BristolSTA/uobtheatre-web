@@ -2,7 +2,7 @@ import { mount } from '#testSupport/helpers';
 
 import siteMessageModal from '@/components/layout/LayoutSiteMessageModal.vue';
 import SiteMessage from '../../support/fixtures/SiteMessage';
-import { vi } from 'vitest';
+import { vi, describe, expect, it, beforeEach, afterEach } from 'vitest';
 import { GenericNodeConnection } from '../../support/helpers/api';
 
 import cookie from 'js-cookie';
@@ -89,14 +89,11 @@ describe('Maintenance Banner', () => {
       }
     );
 
-    if (
-      ('displays the correct title',
-      async () => {
-        await createWithMessage({ title: 'Custom Title' });
+    it('displays the correct title', async () => {
+      await createWithMessage({ title: 'Custom Title' });
 
-        expect(siteMessageModalComponent.text()).toContain('Custom Title');
-      })
-    );
+      expect(siteMessageModalComponent.text()).toContain('Custom Title');
+    });
 
     describe('back button', () => {
       it('displays on non-sitewide dismissal banned modals', async () => {

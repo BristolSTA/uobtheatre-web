@@ -95,7 +95,7 @@ type PeriodDefinition = {
 };
 
 const periods = computed<PeriodDefinition[]>(() => {
-  let periodList: PeriodDefinition[] = [];
+  const periodList: PeriodDefinition[] = [];
 
   // Add the performance doors period
   periodList.push({

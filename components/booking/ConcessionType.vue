@@ -41,7 +41,7 @@
                 $emit('set-tickets', event.target.value);
               }
             "
-          />
+          >
           <button
             class="btn p-0 w-8 h-8"
             :class="[

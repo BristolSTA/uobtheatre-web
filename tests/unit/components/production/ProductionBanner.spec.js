@@ -1,6 +1,6 @@
 import { mount, fixTextSpacing } from '#testSupport/helpers';
 import { NuxtLinkStub } from '#testSupport/stubs';
-import { expect } from 'vitest';
+import { expect, describe, it } from 'vitest';
 import { DateTime } from 'luxon';
 
 import Production from '#testSupport/fixtures/Production.js';

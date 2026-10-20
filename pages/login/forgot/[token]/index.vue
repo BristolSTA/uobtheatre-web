@@ -38,7 +38,7 @@
 import { getValidationErrors } from '~~/utils/api';
 import { successToast } from '~~/utils/alerts';
 
-import Errors from '~~/classes/Errors';
+import type Errors from '~~/classes/Errors';
 import useAuthStore from '~~/store/auth';
 
 definePageMeta({

@@ -10,6 +10,7 @@
     "codegen": "graphql-codegen --config codegen.ts",
     "lint:tsc": "yarn nuxi typecheck",
     "lint:js": "eslint .",
+    "lint:js:fix": "eslint . --fix",
     "test:eslint": "node eslint/rules/no-unmasked-sensitive-text.test.mjs",
     "prettier:check": "prettier . --check",
     "prettier:write": "prettier . --write",

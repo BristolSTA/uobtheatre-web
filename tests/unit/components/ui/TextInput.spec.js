@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { expect } from 'vitest';
+import { expect, describe, it, beforeEach } from 'vitest';
 
 import TextInput from '@/components/ui/Input/UiInputText.vue';
 import { fakeValidationErrors } from '#testSupport/fixtures/instances/FakeErrors';

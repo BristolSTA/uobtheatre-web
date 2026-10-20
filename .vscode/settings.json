@@ -1,17 +1,17 @@
 {
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.ts": "explicit",
+    "source.fixAll.prettier": "explicit"
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "eslint.validate": ["javascript", "javascriptreact", "vue"],
   "path-intellisense.mappings": {
     "@": "${workspaceRoot}"
   },
   "files.associations": {
     "*.css": "tailwindcss"
   },
-  "eslint.format.enable": true,
   "js/ts.tsdk.path": "node_modules/typescript/lib",
   "js/ts.tsdk.promptToUseWorkspaceVersion": true
 }

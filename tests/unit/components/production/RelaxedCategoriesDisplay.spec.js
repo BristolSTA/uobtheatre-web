@@ -1,5 +1,5 @@
 import { mount } from '#testSupport/helpers';
-import { expect } from 'vitest';
+import { expect, describe, it, beforeEach } from 'vitest';
 
 import RelaxedCategoriesDisplay from '@/components/performance/relaxed-categories/RelaxedCategoriesDisplay.vue';
 import RelaxedCategoryDisplay from '@/components/performance/relaxed-categories/RelaxedCategoryDisplay.vue';

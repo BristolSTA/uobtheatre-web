@@ -1,5 +1,5 @@
 import { mount, fixTextSpacing } from '#testSupport/helpers';
-import { expect } from 'vitest';
+import { expect, describe, it } from 'vitest';
 import { DateTime } from 'luxon';
 import Production from '#testSupport/fixtures/Production.js';
 import Performance from '#testSupport/fixtures/Performance.js';

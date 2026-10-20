@@ -1,5 +1,5 @@
 import { mount } from '#testSupport/helpers';
-import { expect } from 'vitest';
+import { expect, describe, it, beforeEach } from 'vitest';
 
 import Performance from '#testSupport/fixtures/Performance';
 import GroupTicketButton from '@/components/booking/GroupTicketButton.vue';

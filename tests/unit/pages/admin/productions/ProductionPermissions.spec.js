@@ -1,4 +1,4 @@
-import { expect } from 'vitest';
+import { vi, expect, describe, it, beforeEach } from 'vitest';
 import MatchMediaMock from 'vitest-matchmedia-mock';
 
 import { mount } from '#testSupport/helpers';
@@ -155,10 +155,10 @@ describe('Production', function () {
     await flushPromises();
 
     // Check that the setUserPermissions method was called with the correct arguments
-    expect(setUserPermissionsStub).toHaveBeenCalledOnce();
-    expect(setUserPermissionsStub).toHaveBeenCalledWith('someone@example.org', [
-      'view_bookings'
-    ]);
+    expect(setUserPermissionsStub).toHaveBeenCalledExactlyOnceWith(
+      'someone@example.org',
+      ['view_bookings']
+    );
 
     // Check the page then refreshed and showed a success toast
     expect(refreshStub).toHaveBeenCalledOnce();

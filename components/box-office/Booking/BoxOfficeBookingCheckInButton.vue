@@ -45,9 +45,11 @@ function onClick() {
   };
 
   emit('click', asyncCompleteCallback);
-  props.checkIn
-    ? emit('checkIn', asyncCompleteCallback)
-    : emit('unCheckIn', asyncCompleteCallback);
+  if (props.checkIn) {
+    emit('checkIn', asyncCompleteCallback);
+  } else {
+    emit('unCheckIn', asyncCompleteCallback);
+  }
 }
 
 const buttonText = computed(() => {

@@ -1,4 +1,15 @@
-import { describe, expect, vi, it, beforeEach } from 'vitest';
+import {
+  describe,
+  expect,
+  vi,
+  it,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  beforeEach,
+  beforeAll
+} from 'vitest';
 import BookingStage from '@/classes/BookingStage';
 
 describe('BookingStage Class', () => {

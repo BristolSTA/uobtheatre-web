@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils';
-import { expect } from 'chai';
+import { expect, describe, it, beforeEach } from 'vitest';
 
 import PaginationBar from '@/components/ui/PaginationBar.vue';
 

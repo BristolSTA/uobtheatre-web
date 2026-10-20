@@ -8,7 +8,7 @@ import noUnmaskedSensitiveText from './eslint/rules/no-unmasked-sensitive-text.m
 export default withNuxt([
   {
     name: 'local global ignores',
-    ignores: ['./tests/unit/test.spec.example.js']
+    ignores: ['./tests/unit/test.spec.example.js', './.github/**']
   },
   // @nuxt/eslint lays out base rules, but we want to add a few more and override some of them. This is the recommended way to do that.
   {
@@ -36,18 +36,15 @@ export default withNuxt([
   },
   {
     name: 'vitest',
-    files: ['tests/unit/**/*.js'],
+    files: ['tests/unit/**/*.js', 'tests/unit/**/*.ts'],
     plugins: {
-      vitest
+      vitest: vitest
     },
     rules: {
       ...vitest.configs.recommended.rules
     }
   }
 ])
-  .overrideRules({
-    'vue/multi-word-component-names': 0
-  })
   .override('nuxt/import/rules', {
     plugins: {
       'unused-imports': unusedImports
@@ -55,4 +52,8 @@ export default withNuxt([
     rules: {
       'unused-imports/no-unused-imports': 'error'
     }
+  })
+  .overrideRules({
+    'vue/multi-word-component-names': 0,
+    '@typescript-eslint/unified-signatures': 0
   });

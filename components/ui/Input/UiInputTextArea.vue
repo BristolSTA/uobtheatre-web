@@ -7,7 +7,7 @@
       @input="
         emit('update:modelValue', ($event.target as HTMLInputElement).value)
       "
-    ></textarea>
+    />
   </div>
 </template>
 <script lang="ts" setup>

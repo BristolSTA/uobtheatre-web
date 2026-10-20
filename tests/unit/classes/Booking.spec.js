@@ -1,5 +1,17 @@
 import { DateTime } from 'luxon';
-import { describe, expect, vi, it, beforeAll, beforeEach } from 'vitest';
+import {
+  describe,
+  expect,
+  vi,
+  it,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  beforeEach,
+  beforeAll
+} from 'vitest';
 
 import PerformanceFixture from '#testSupport/fixtures/Performance';
 

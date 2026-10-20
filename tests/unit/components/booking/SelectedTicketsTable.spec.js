@@ -1,5 +1,5 @@
 import { mount } from '#testSupport/helpers';
-import { expect } from 'vitest';
+import { expect, describe, it, beforeEach } from 'vitest';
 import FullBooking from '#testSupport/fixtures/instances/FullBooking';
 import SelectedTicketsTable from '~~/components/booking/BookingSelectedTicketsTable.vue';
 import Booking from '~~/classes/Booking';

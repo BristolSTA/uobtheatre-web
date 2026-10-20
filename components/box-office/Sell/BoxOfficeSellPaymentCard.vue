@@ -113,7 +113,7 @@ import {
   PaymentProvider,
   BookingsBookingStatusChoices
 } from '~~/graphql/codegen/base-types.generated';
-import Errors from '~~/classes/Errors';
+import type Errors from '~~/classes/Errors';
 import { DateTime } from 'luxon';
 import { mutateTicketCheckInState } from '~~/services/ticketScanService';
 
@@ -167,7 +167,7 @@ const { onResult: onBookingRefreshResult } =
 onBookingRefreshResult(({ data }) => {
   const booking = data.performance?.bookings.edges[0]?.node;
   if (booking && booking?.status == BookingsBookingStatusChoices['Paid']) {
-    // @ts-expect-error
+    // @ts-expect-error typing mistmatch, but we know this is a booking
     bookingCompleted(booking);
   }
 });

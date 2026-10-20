@@ -26,7 +26,7 @@
         :production="production"
         @on-buy-tickets-click="$refs.performances.$el.scrollIntoView()"
       />
-      <hr class="border-t-2 border-sta-gray-dark" />
+      <hr class="border-t-2 border-sta-gray-dark" >
       <div class="container my-6 text-white">
         <ul class="text-xl uppercase">
           <li
@@ -62,7 +62,7 @@
           :production="production"
         />
       </div>
-      <hr class="border-t-2 border-sta-gray-dark" />
+      <hr class="border-t-2 border-sta-gray-dark" >
       <production-performances ref="performances" :production="production" />
     </template>
   </div>

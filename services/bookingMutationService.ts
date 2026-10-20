@@ -1,5 +1,5 @@
-import Booking from '~~/classes/Booking';
-import Errors from '~~/classes/Errors';
+import type Booking from '~~/classes/Booking';
+import type Errors from '~~/classes/Errors';
 import {
   type BookingMutation,
   useBookingMutation

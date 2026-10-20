@@ -1,5 +1,5 @@
 import { mount } from '#testSupport/helpers';
-import { expect } from 'vitest';
+import { expect, describe, it } from 'vitest';
 
 import ProductionDraftWarningBannerVue from '~~/components/production/ProductionDraftWarningBanner.vue';
 import Production from '../../support/fixtures/Production';

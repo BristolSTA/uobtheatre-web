@@ -15,7 +15,7 @@
         :src="production.society.logo.url"
         :alt="`${production.society.name} logo`"
         class="absolute bottom-0 left-0 w-10 sm:w-20"
-      />
+      >
     </div>
     <div
       class="flex flex-col items-center md:px-10 w-full text-center text-white md:block md:w-auto md:max-w-md md:text-left"

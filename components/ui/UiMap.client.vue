@@ -16,7 +16,7 @@ onMounted(() => {
     if (!map.value) return;
     // @ts-ignore
     leafletMapInstance.value = L.map(map.value);
-    emit('initalised', leafletMapInstance);
+    emit('initalised', leafletMapInstance.value);
   });
 });
 </script>

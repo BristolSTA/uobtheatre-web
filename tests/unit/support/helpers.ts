@@ -1,4 +1,4 @@
-import { VueWrapper } from '@vue/test-utils';
+import type { VueWrapper } from '@vue/test-utils';
 export { default as mount } from './helpers/mount';
 
 /**
@@ -17,7 +17,7 @@ export function fixTextSpacing(text: string) {
  */
 export function setCompositionData(component: VueWrapper, data: object) {
   for (const [key, value] of Object.entries(data)) {
-    // @ts-ignore
+    // @ts-expect-error typing mismatch
     component.vm[key] = value;
   }
 }

@@ -4,7 +4,7 @@
   >
     <NuxtLink :to="`/society/${society.slug}`" class="w-full">
       <div class="flex justify-center w-full">
-        <img class="w-40" :src="society.logo.url" alt="society logo" />
+        <img class="w-40" :src="society.logo.url" alt="society logo" >
       </div>
 
       <h2

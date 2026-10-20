@@ -59,7 +59,7 @@
 </template>
 
 <script lang="ts" setup>
-import Errors from '~~/classes/Errors';
+import type Errors from '~~/classes/Errors';
 import TicketsMatrix from '~~/classes/TicketsMatrix';
 import { useFullPerformanceAndTicketOptionsQuery } from '~~/graphql/codegen/operations.generated';
 import { upsertBooking } from '~~/services/bookingMutationService';

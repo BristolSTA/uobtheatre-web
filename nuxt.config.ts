@@ -135,13 +135,6 @@ export default defineNuxtConfig({
     }
   },
 
-  // Configure Typescript
-  typescript: {
-    tsConfig: {
-      exclude: ['../graphql/codegen/operations.generated.ts']
-    }
-  },
-
   // Configure Turnstile
   turnstile: {
     // The Turnstile dummy testing key - defaults every Turnstile request to pass

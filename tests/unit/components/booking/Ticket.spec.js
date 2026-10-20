@@ -1,5 +1,5 @@
 import { mount } from '#testSupport/helpers';
-import { expect } from 'vitest';
+import { expect, describe, it, beforeAll } from 'vitest';
 import QrcodeVue from 'qrcode.vue';
 
 import BookingFixture from '#testSupport/fixtures/Booking';

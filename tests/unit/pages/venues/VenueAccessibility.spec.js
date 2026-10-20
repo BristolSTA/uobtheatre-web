@@ -1,4 +1,4 @@
-import { expect } from 'vitest';
+import { expect, describe, it, beforeEach } from 'vitest';
 import { fixTextSpacing, mount } from '#testSupport/helpers';
 import {
   GenericApolloResponse,
@@ -96,7 +96,7 @@ describe('Venue Accessibility page', function () {
     });
 
     // no building number
-    it('has the correct address', async () => {
+    it('has the correct address with no building number', async () => {
       await mountComponent({
         buildingName: 'Wills Memorial Building',
         buildingNumber: null
@@ -107,7 +107,7 @@ describe('Venue Accessibility page', function () {
     });
 
     // no building name
-    it('has the correct address', async () => {
+    it('has the correct address with no building name', async () => {
       await mountComponent({
         buildingName: null,
         buildingNumber: '69'
@@ -119,7 +119,7 @@ describe('Venue Accessibility page', function () {
     });
 
     // no building name or number
-    it('has the correct address', async () => {
+    it('has the correct address with no building name or number', async () => {
       await mountComponent({
         buildingName: null,
         buildingNumber: null
@@ -188,8 +188,8 @@ describe('Venue Accessibility page', function () {
   });
 
   it('handles invalid venue', async () => {
-    await expect(async () => {
-      await mount(VenueAccessibility, {
+    await expect(
+      mount(VenueAccessibility, {
         apollo: {
           queryResponses: [GenericApolloResponse('venue')]
         },
@@ -198,8 +198,8 @@ describe('Venue Accessibility page', function () {
             slug: 'anson-theatre-allowed'
           }
         }
-      });
-    }).rejects.toThrowError();
+      })
+    ).rejects.toThrowError();
 
     expect(createError).toHaveBeenCalledOnce();
   });

@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 
 import MaintenanceBanner from '@/components/layout/LayoutMaintenanceBanner.vue';
 import SiteMessage from '../../support/fixtures/SiteMessage';
-import { vi } from 'vitest';
+import { vi, describe, expect, it, afterEach } from 'vitest';
 import { GenericNodeConnection } from '../../support/helpers/api';
 
 import cookie from 'js-cookie';

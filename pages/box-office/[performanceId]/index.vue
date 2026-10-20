@@ -155,7 +155,7 @@ watch(scannedCode, async (newValue) => {
     const ticketDetails = Ticket.dataFromQRCode(newValue);
 
     // Do the scan action as appropriate
-    let state = await handleTicketScan(
+    const state = await handleTicketScan(
       autoCheckIn,
       performance.id,
       ticketDetails.bookingReference,

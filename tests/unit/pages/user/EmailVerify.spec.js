@@ -1,4 +1,4 @@
-import { expect } from 'vitest';
+import { expect, describe, it, beforeEach } from 'vitest';
 import MatchMediaMock from 'vitest-matchmedia-mock';
 
 import { mount } from '#testSupport/helpers';

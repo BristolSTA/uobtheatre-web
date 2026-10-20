@@ -1,5 +1,5 @@
 import { mount } from '#testSupport/helpers';
-import { expect } from 'vitest';
+import { expect, describe, it, beforeEach } from 'vitest';
 import { NuxtLinkStub } from '#testSupport/stubs';
 
 import Booking from '~~/classes/Booking';

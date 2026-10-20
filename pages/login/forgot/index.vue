@@ -38,7 +38,7 @@
 import { swal } from '~~/utils/alerts';
 import { getValidationErrors } from '~~/utils/api';
 
-import Errors from '~~/classes/Errors';
+import type Errors from '~~/classes/Errors';
 import useAuthStore from '~~/store/auth';
 
 definePageMeta({

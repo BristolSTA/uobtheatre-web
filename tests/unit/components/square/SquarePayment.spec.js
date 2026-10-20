@@ -1,6 +1,6 @@
 import { mount } from '#testSupport/helpers';
 import { SquareWebSDK } from '#testSupport/stubs';
-import { expect } from 'vitest';
+import { expect, describe, it, beforeEach } from 'vitest';
 import SquarePayment from '@/components/square/SquarePayment.vue';
 
 describe('Card Payment', () => {

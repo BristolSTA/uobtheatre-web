@@ -1,6 +1,6 @@
 import { mount } from '#testSupport/helpers';
 import { NuxtLinkStub } from '#testSupport/stubs';
-import { expect } from 'vitest';
+import { expect, describe, it, beforeAll } from 'vitest';
 
 import SocietyTile from '@/components/society/SocietyTile.vue';
 

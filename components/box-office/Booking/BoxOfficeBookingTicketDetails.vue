@@ -54,11 +54,7 @@ const now = useClock(5);
 
 const emit = defineEmits<{
   (
-    event: 'checkIn',
-    payload: { ticket: Ticket; asyncCompleteCallback: () => void }
-  ): void;
-  (
-    event: 'unCheckIn',
+    event: 'checkIn' | 'unCheckIn',
     payload: { ticket: Ticket; asyncCompleteCallback: () => void }
   ): void;
 }>();

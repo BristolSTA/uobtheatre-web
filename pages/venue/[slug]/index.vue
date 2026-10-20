@@ -279,7 +279,7 @@ export default defineNuxtComponent({
     },
     website() {
       if (!this.venue?.website) return null;
-      let website = this.venue.website;
+      const website = this.venue.website;
       if (this.venue.website.startsWith('http://')) {
         return this.venue.website.slice(7);
       } else if (this.venue.website.startsWith('https://')) {

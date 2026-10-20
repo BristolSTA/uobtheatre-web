@@ -1,5 +1,5 @@
 import { mount, fixTextSpacing } from '#testSupport/helpers';
-import { expect, vi } from 'vitest';
+import { expect, vi, describe, it, beforeEach } from 'vitest';
 import { DateTime } from 'luxon';
 
 import GenericNodeConnection from '#testSupport/fixtures/support/GenericNodeConnection.js';

@@ -1,6 +1,6 @@
 <template>
   <div v-if="!bannerDismissed" class="bg-sta-gray-dark">
-    <hr class="h-px bg-slate-900 border-0 drop-shadow-2xl" />
+    <hr class="h-px bg-slate-900 border-0 drop-shadow-2xl" >
     <div
       class="container text-white text-center md:text-left mb-2 flex gap-2 p-2 items-start justify-center"
     >
@@ -94,7 +94,7 @@
         />
       </div>
     </div>
-    <hr class="h-px bg-slate-900 border-0 drop-shadow-2xl" />
+    <hr class="h-px bg-slate-900 border-0 drop-shadow-2xl" >
   </div>
 </template>
 

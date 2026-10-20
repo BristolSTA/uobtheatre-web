@@ -1,4 +1,4 @@
-import { expect } from 'vitest';
+import { vi, expect, describe, it, beforeEach, afterEach } from 'vitest';
 import {
   GenericApolloResponse,
   GenericNodeConnection
@@ -193,7 +193,7 @@ describe('Create Booking Page', () => {
       );
     };
 
-    it('it changes stage if stage should not be used', async () => {
+    it('changes stage if stage should not be used', async () => {
       const stage = stages[1];
       const mock = vi
         .spyOn(stage.stageInfo, 'shouldBeUsed')
@@ -209,7 +209,7 @@ describe('Create Booking Page', () => {
       mock.mockReset();
     });
 
-    it('it changes stage if not eligable for stage', async () => {
+    it('changes stage if not eligable for stage', async () => {
       const stage = stages[1];
       const shouldBeUsedMock = vi
         .spyOn(stage.stageInfo, 'shouldBeUsed')
