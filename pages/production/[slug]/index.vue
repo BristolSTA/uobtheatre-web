@@ -22,7 +22,7 @@
     <template v-else>
       <production-draft-warning-banner :production="production" />
       <production-banner
-        class="pb-12 pt-6"
+        class="mt-6 mb-12"
         :production="production"
         @on-buy-tickets-click="$refs.performances.$el.scrollIntoView()"
       />

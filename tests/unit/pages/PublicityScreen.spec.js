@@ -1,4 +1,5 @@
 import { expect, vi } from 'vitest';
+import { h } from 'vue';
 
 import Venue from '#testSupport/fixtures/Venue';
 import { mount } from '#testSupport/helpers';
@@ -10,7 +11,14 @@ import Production from '#testSupport/fixtures/Production';
 import Performance from '#testSupport/fixtures/Performance';
 import PublicityScreenPage from '@/pages/publicity-screen/[venueSlugs]/index.vue';
 import HaveTicketsReadyScreen from '@/components/publicity-screens/HaveTicketsReadyScreen.vue';
+import ProductionFeaturedImage from '@/components/production/ProductionFeaturedImage.vue';
 import { flushPromises } from '@vue/test-utils';
+
+const TransitionStub = {
+  render() {
+    return h('div', this.$slots.default?.());
+  }
+};
 
 const prod1 = Production({ id: 1, name: 'My Production 1' });
 const prod2 = Production({ id: 2, name: 'My Production 2' });
@@ -61,6 +69,11 @@ describe('Publicity Screen', function () {
       },
       routerInfo: {
         resolve: () => 'http://my.url/'
+      },
+      global: {
+        stubs: {
+          transition: TransitionStub
+        }
       }
     });
 
@@ -118,17 +131,24 @@ describe('Publicity Screen', function () {
       expect(pageComponent.text()).to.contain('My Production 1');
       expect(pageComponent.text()).not.to.contain('My Production 2');
 
-      vi.advanceTimersByTime(10001);
+      vi.advanceTimersByTime(20001);
       // Second slide is the second production
       await pageComponent.vm.$nextTick();
-      expect(pageComponent.text()).not.to.contain('My Production 1');
-      expect(pageComponent.text()).to.contain('My Production 2');
+      expect(pageComponent.vm.currentProductionIndex).to.eq(1);
+      const secondProduction = pageComponent.vm.marketableProductions[1];
+      expect(pageComponent.find('h2').text()).to.eq(secondProduction.name);
+      expect(
+        pageComponent.findComponent(ProductionFeaturedImage).props()
+      ).to.deep.equal({ imageObject: secondProduction.featuredImage });
 
-      vi.advanceTimersByTime(10001);
+      vi.advanceTimersByTime(20001);
       // Third slide is the first production (loops back...)
       await pageComponent.vm.$nextTick();
-      expect(pageComponent.text()).to.contain('My Production 1');
-      expect(pageComponent.text()).not.to.contain('My Production 2');
+      const firstProduction = pageComponent.vm.marketableProductions[0];
+      expect(pageComponent.find('h2').text()).to.eq(firstProduction.name);
+      expect(
+        pageComponent.findComponent(ProductionFeaturedImage).props()
+      ).to.deep.equal({ imageObject: firstProduction.featuredImage });
     });
 
     it('can show upcoming productions for given venues only', async () => {
@@ -207,9 +227,11 @@ describe('Publicity Screen', function () {
             .findComponent({ ref: 'activeBoxOfficeComponent' })
             .exists()
         ).to.be.false;
+        expect(pageComponent.findComponent(HaveTicketsReadyScreen).exists()).to
+          .be.false;
 
         vi.setSystemTime(new Date('2020-01-01T10:11:00'));
-        vi.advanceTimersByTime(10000);
+        vi.advanceTimersByTime(20001);
         await pageComponent.vm.$nextTick();
         expect(pageComponent.vm.productionsOnNow.length).to.be.eq(1);
         expect(
@@ -222,13 +244,14 @@ describe('Publicity Screen', function () {
         );
 
         vi.setSystemTime(new Date('2020-01-01T10:31:00'));
-        vi.advanceTimersByTime(10000);
+        vi.advanceTimersByTime(20001);
         await pageComponent.vm.$nextTick();
         expect(pageComponent.findComponent(HaveTicketsReadyScreen).exists()).to
           .be.true;
+        expect(pageComponent.text()).to.contain('Have your eTicket ready');
 
         vi.setSystemTime(new Date('2020-01-01T11:00:00'));
-        vi.advanceTimersByTime(10000);
+        vi.advanceTimersByTime(20001);
         await pageComponent.vm.$nextTick();
         expect(pageComponent.text()).to.contain('Book now at');
         expect(

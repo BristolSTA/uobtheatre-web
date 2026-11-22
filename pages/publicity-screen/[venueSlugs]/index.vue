@@ -2,14 +2,16 @@
   <div class="h-full">
     <!-- If productions are active right now -->
     <template v-if="productionsOnNow.length">
-      <component
-        :is="currentScreen"
-        ref="activeBoxOfficeComponent"
-        :production="productionsOnNow[onNowProductionIndex]"
-        :performance="
-          productionsOnNow[onNowProductionIndex].performances.edges[0].node
-        "
-      />
+      <transition name="production-slide" mode="out-in">
+        <component
+          :is="currentScreen"
+          ref="activeBoxOfficeComponent"
+          :production="productionsOnNow[onNowProductionIndex]"
+          :performance="
+            productionsOnNow[onNowProductionIndex].performances.edges[0].node
+          "
+        />
+      </transition>
     </template>
 
     <!-- If upcoming productions -->
@@ -17,53 +19,65 @@
       v-else-if="marketableProductions.length"
       class="flex flex-col p-4 gap-2 h-full overflow-hidden"
     >
-      <div class="flex h-2/3 gap-4 justify-evenly">
-        <div class="flex items-center justify-center">
-          <production-featured-image
-            :image-object="currentDisplayedProduction.featuredImage"
-            class="w-auto max-h-full"
-          />
+      <transition name="production-slide" mode="out-in">
+        <div
+          :key="currentDisplayedProduction.id"
+          class="flex flex-col h-full overflow-hidden"
+        >
+          <div class="flex h-2/3 gap-4 justify-evenly">
+            <div class="flex w-2/3 items-center justify-center">
+              <production-featured-image
+                :image-object="currentDisplayedProduction.featuredImage"
+                class="w-auto max-h-full"
+              />
+            </div>
+            <div
+              class="flex w-1/3 flex-col items-center justify-evenly text-rsm"
+            >
+              <h2 class="text-rmd font-bold text-sta-orange text-center">
+                {{ currentDisplayedProduction.name }}
+              </h2>
+              <icon-list-item icon="masks-theater">
+                {{ currentDisplayedProduction.society.name }}
+              </icon-list-item>
+              <icon-list-item icon="clock">
+                {{
+                  displayStartEnd(
+                    currentDisplayedProduction.start,
+                    currentDisplayedProduction.end,
+                    'd MMM'
+                  )
+                }}
+              </icon-list-item>
+              <icon-list-item icon="map-marker">
+                {{
+                  currentDisplayedProduction.venues
+                    .map((venue) => venue.name)
+                    .join(', ')
+                }}
+              </icon-list-item>
+            </div>
+          </div>
+          <div class="flex grow items-center justify-between gap-x-10">
+            <span class="text-rmd text-center w-5/6">
+              Book now at
+              <span class="text-sta-orange">{{
+                currentDisplayedProductionUrl
+              }}</span>
+            </span>
+            <qrcode-vue
+              :value="
+                currentDisplayedProductionUrl + '?utm_medium=publicity-screen'
+              "
+              render-as="svg"
+              level="L"
+              background="transparent"
+              foreground="white"
+              class="qrcode-responsive-height h-full w-1/6 mx-4"
+            />
+          </div>
         </div>
-        <div class="flex flex-col items-center justify-evenly text-rsm">
-          <h2 class="text-rmd font-bold text-sta-orange text-center">
-            {{ currentDisplayedProduction.name }}
-          </h2>
-          <icon-list-item icon="clock">
-            {{
-              displayStartEnd(
-                currentDisplayedProduction.start,
-                currentDisplayedProduction.end,
-                'd MMM'
-              )
-            }}
-          </icon-list-item>
-          <icon-list-item icon="map-marker">
-            {{
-              currentDisplayedProduction.venues
-                .map((venue) => venue.name)
-                .join(', ')
-            }}
-          </icon-list-item>
-        </div>
-      </div>
-      <div class="flex grow items-center justify-between gap-x-20">
-        <span class="text-rmd text-center">
-          Book now at
-          <span class="text-sta-orange">{{
-            currentDisplayedProductionUrl
-          }}</span>
-        </span>
-        <qrcode-vue
-          :value="
-            currentDisplayedProductionUrl + '?utm_medium=publicity-screen'
-          "
-          render-as="svg"
-          level="L"
-          background="transparent"
-          foreground="white"
-          class="qrcode-responsive-height h-full"
-        />
-      </div>
+      </transition>
     </div>
 
     <!-- If no productions to shown -->
@@ -223,7 +237,7 @@ export default defineNuxtComponent({
       } else {
         this.onNowScreenIndex += 1;
       }
-    }, 1000 * 10);
+    }, 1000 * 20);
   },
   unmounted() {
     clearInterval(this.dataFetchTimer);
@@ -310,3 +324,17 @@ export default defineNuxtComponent({
   }
 });
 </script>
+
+<style scoped>
+.production-slide-enter-active,
+.production-slide-leave-active {
+  transition:
+    opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.production-slide-enter-from,
+.production-slide-leave-to {
+  opacity: 0;
+}
+</style>

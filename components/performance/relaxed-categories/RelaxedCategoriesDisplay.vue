@@ -1,6 +1,6 @@
 <template>
   <modal @close="$emit('close')">
-    <div class="lg:w-1/3-screen">
+    <div>
       <h2 class="text-lg font-semibold px-3">
         {{ thisRelaxedName }} Performance
       </h2>

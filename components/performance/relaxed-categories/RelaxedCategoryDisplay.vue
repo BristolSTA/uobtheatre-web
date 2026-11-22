@@ -2,7 +2,7 @@
   <div class="mb-2">
     <div
       ref="clickable"
-      class="w-full py-1 px-3 transition-colors group hover:bg-gray-600 rounded"
+      class="w-full py-1 px-3 transition-colors group hover:bg-gray-600 rounded hover:cursor-pointer"
       :class="{
         'rounded-bl-none rounded-br-none bg-gray-600': expanded,
         'bg-gray-700': !expanded

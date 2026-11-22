@@ -7,7 +7,7 @@
         class="bg-sta-gray-light border-b border-sta-gray-dark flex justify-between p-4"
       >
         <slot name="header" />
-        <button type="button" @click="close">
+        <button type="button" class="hover:cursor-pointer" @click="close">
           <font-awesome-icon icon="times" />
         </button>
       </header>

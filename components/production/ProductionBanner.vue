@@ -5,7 +5,7 @@
     <div class="relative inline-block m-2 w-full max-w-xl md:w-2/3">
       <production-featured-image
         data-test="featured-image"
-        class="p-4 w-full sm:p-8"
+        class="w-full sm:p-8"
         :image-object="production.featuredImage"
         :alt="`${production.name} feature image`"
       />
@@ -18,7 +18,7 @@
       />
     </div>
     <div
-      class="flex flex-col items-center px-10 w-full text-center text-white md:block md:w-auto md:max-w-md md:text-left"
+      class="flex flex-col items-center md:px-10 w-full text-center text-white md:block md:w-auto md:max-w-md md:text-left"
     >
       <span class="font-semibold">
         <NuxtLink
@@ -47,7 +47,7 @@
             Live at
             <span v-for="(venue, index) in venues" :key="index">
               <template v-if="index < venueOverflow">
-                <template v-if="index > 0">and</template>
+                <template v-if="index > 0"> and </template>
                 <NuxtLink
                   v-if="venue.publiclyListed"
                   class="hover:text-gray-300 font-semibold"
@@ -90,7 +90,7 @@
               :text="miscCostsDisplay"
               :delay-duration="0"
             >
-              <small class="pl-1"
+              <small class="pl-1 hover:cursor-help"
                 >(inc. fees)<font-awesome-icon icon="circle-info" class="ml-1"
               /></small>
             </UTooltip>
